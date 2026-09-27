@@ -1,0 +1,62 @@
+{
+  "method": {
+    "model": "nearest-neighbor spin-1/2 triangular-lattice Heisenberg AF",
+    "cluster": "6x3 periodic triangular Bravais torus, Sz=0 exact diagonalization",
+    "baselines": "three simple two-color gauges; maxcut_x cuts two of the three local bond directions",
+    "threshold": "fixed-amplitude energy-minimizing t; no hidden signs",
+    "oracle": "best sign-overlap threshold only as capacity diagnostic"
+  },
+  "spectrum": [
+    -10.459935635774272,
+    -9.894660946902157,
+    -9.889498156127212
+  ],
+  "gap": 0.5652746888721154,
+  "gap2": 0.5704374796470599,
+  "results": [
+    {
+      "baseline": "maxcut_x",
+      "O_S_0": 8.708311849403572e-16,
+      "O_S_1": 9.71445146547012e-16,
+      "oracle_O_S_1": 0.06039355120928213,
+      "E0": -10.459935635774272,
+      "fixed_amp_energy_error0_per_site": 0.23757761266795985,
+      "fixed_amp_energy_error1_per_site": 0.22333572788307304,
+      "oracle_fixed_amp_error1_per_site": 0.30297503383124824,
+      "P_stable_1": 0.9223799068505898,
+      "changed_weight": 0.09724076132393518,
+      "threshold_energyopt": -3.7044181606085136,
+      "threshold_oracle": -5.960217856695808
+    },
+    {
+      "baseline": "parity_y",
+      "O_S_0": 5.811323644522304e-17,
+      "O_S_1": 5.204170427930421e-18,
+      "oracle_O_S_1": 0.01725530034550893,
+      "E0": -10.459935635774272,
+      "fixed_amp_energy_error0_per_site": 0.4373474938402733,
+      "fixed_amp_energy_error1_per_site": 0.3461622361592729,
+      "oracle_fixed_amp_error1_per_site": 0.5058478624578194,
+      "P_stable_1": 0.7800838164418729,
+      "changed_weight": 0.19507870935410337,
+      "threshold_energyopt": -0.8801777640301327,
+      "threshold_oracle": -4.071370110617338
+    },
+    {
+      "baseline": "parity_xy",
+      "O_S_0": 3.642919299551295e-16,
+      "O_S_1": 2.636779683484747e-16,
+      "oracle_O_S_1": 0.02013118373642731,
+      "E0": -10.459935635774272,
+      "fixed_amp_energy_error0_per_site": 0.22222231700020206,
+      "fixed_amp_energy_error1_per_site": 0.1972223157748742,
+      "oracle_fixed_amp_error1_per_site": 0.41171845573795296,
+      "P_stable_1": 0.9473849048212366,
+      "changed_weight": 0.0912581120756556,
+      "threshold_energyopt": -2.9999999999999956,
+      "threshold_oracle": -7.178469611563735
+    }
+  ],
+  "best_baseline_before": "parity_xy",
+  "best_baseline_after": "parity_xy"
+}

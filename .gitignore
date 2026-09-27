@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# Python/runtime
+__pycache__/
+*.pyc
+*.log
+*.pid
+
+# Chatty ephemeral runtime state
+.chatty/
+jobs/
+tools/local_loop/keysetup/
+tools/local_loop/inbox.txt
+tools/local_loop/outbox.txt
+tools/local_loop/agent_inbox.txt
+tools/local_loop/agent_outbox.txt
+tools/local_loop/model_scratch/
+
+# One-off reverse-engineering/probe scripts
+tools/local_loop/apple_agent_test.swift
+tools/local_loop/cua_*.py
+tools/local_loop/loop.py
+tools/local_loop/agent_loop.py

@@ -10,6 +10,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import fcntl
 import shlex
 import signal
 import subprocess
@@ -95,31 +96,70 @@ def wake_message(job_dir: Path, data: dict) -> str:
     )
 
 
-def wake(job_dir: Path, data: dict, retries: int = 3) -> bool:
+def wake(job_dir: Path, data: dict, retries: int = 1) -> bool:
+    """Attempt same-thread delivery.
+
+    WAKE_PENDING is durable intent to deliver. WAKE_FAILED means the most
+    recent delivery attempt failed, not that the job is abandoned. A recovery
+    worker can retry it later.
+    """
+    submitted = job_dir / "WAKE_SUBMITTED"
+    pending = job_dir / "WAKE_PENDING"
+    failed = job_dir / "WAKE_FAILED"
+    if submitted.exists():
+        pending.unlink(missing_ok=True)
+        failed.unlink(missing_ok=True)
+        return True
+
+    pending.touch(exist_ok=True)
     prompt = wake_message(job_dir, data)
     wake_log = job_dir / "wake.log"
-    for attempt in range(1, retries + 1):
-        with wake_log.open("a") as log:
-            log.write(f"[{now_iso()}] wake attempt {attempt}\n")
-            log.flush()
-            try:
-                cp = subprocess.run(
-                    [sys.executable, str(WAKE), data["thread_id"], prompt],
-                    stdout=log,
-                    stderr=subprocess.STDOUT,
-                    timeout=300,
-                    check=False,
-                )
-                if cp.returncode == 0:
-                    (job_dir / "WAKE_SUBMITTED").write_text(now_iso() + "\n")
-                    return True
-                log.write(f"wake return code={cp.returncode}\n")
-            except Exception as exc:
-                log.write(f"wake exception={exc!r}\n")
-        time.sleep(min(30, 3 * attempt))
-    (job_dir / "WAKE_FAILED").write_text(now_iso() + "\n")
-    return False
+    lock_path = job_dir / "wake.lock"
 
+    with lock_path.open("a+") as lockf:
+        try:
+            fcntl.flock(lockf.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return False
+
+        caffeine = launch_caffeinate(os.getpid())
+        try:
+            for attempt in range(1, retries + 1):
+                if submitted.exists():
+                    pending.unlink(missing_ok=True)
+                    failed.unlink(missing_ok=True)
+                    return True
+                with wake_log.open("a") as log:
+                    log.write(f"[{now_iso()}] wake attempt {attempt}\n")
+                    log.flush()
+                    try:
+                        cp = subprocess.run(
+                            [sys.executable, str(WAKE), data["thread_id"], prompt],
+                            stdout=log,
+                            stderr=subprocess.STDOUT,
+                            # chatty-wake-browser waits across short CUA calls
+                            # for up to 15 minutes for the target thread to idle.
+                            timeout=1000,
+                            check=False,
+                        )
+                        if cp.returncode == 0:
+                            submitted.write_text(now_iso() + "\n")
+                            pending.unlink(missing_ok=True)
+                            failed.unlink(missing_ok=True)
+                            return True
+                        log.write(f"wake return code={cp.returncode}\n")
+                    except Exception as exc:
+                        log.write(f"wake exception={exc!r}\n")
+                if attempt < retries:
+                    time.sleep(min(60, 5 * attempt))
+            failed.write_text(now_iso() + "\n")
+            return False
+        finally:
+            if caffeine is not None:
+                try:
+                    caffeine.terminate()
+                except Exception:
+                    pass
 
 def launch_caffeinate(pid: int):
     if sys.platform != "darwin":
@@ -200,6 +240,7 @@ def cmd_run(args) -> int:
         exit_code=rc,
         finished_at=now_iso(),
     )
+    (job_dir / "WAKE_PENDING").touch(exist_ok=True)
     (job_dir / "DONE").write_text(now_iso() + "\n")
     ok = wake(job_dir, data)
     mark(job_dir, data, wake_submitted=ok, wake_finished_at=now_iso())
@@ -262,10 +303,62 @@ def cmd_watch(args) -> int:
         exit_code=None,
         finished_at=now_iso(),
     )
+    (job_dir / "WAKE_PENDING").touch(exist_ok=True)
     (job_dir / "DONE").write_text(now_iso() + "\n")
     ok = wake(job_dir, data)
     mark(job_dir, data, wake_submitted=ok, wake_finished_at=now_iso())
     print(job_dir)
+    return 0
+
+
+
+
+def cmd_retry(args) -> int:
+    """Retry one durable job by id or path."""
+    job_dir = Path(args.job)
+    if not job_dir.is_absolute():
+        job_dir = JOBS / args.job
+    if not job_dir.is_dir():
+        raise SystemExit(f"job not found: {job_dir}")
+    data = json.loads((job_dir / "job.json").read_text())
+    (job_dir / "WAKE_PENDING").touch(exist_ok=True)
+    ok = wake(job_dir, data, retries=args.retries)
+    mark(job_dir, data, wake_submitted=ok, wake_finished_at=now_iso())
+    print(f"RETRY job={job_dir.name} delivered={int(ok)}")
+    return 0
+
+
+def cmd_recover(args) -> int:
+    """Retry durable completed jobs whose wake was never confirmed."""
+    JOBS.mkdir(parents=True, exist_ok=True)
+    candidates = []
+    for job_dir in sorted(JOBS.iterdir(), key=lambda p: p.name):
+        if not job_dir.is_dir():
+            continue
+        if (job_dir / "WAKE_CANCELLED").exists() or (job_dir / "WAKE_SUBMITTED").exists():
+            continue
+        if not (job_dir / "WAKE_PENDING").exists():
+            # Migrate jobs produced by the pre-WAKE_PENDING watcher.
+            if (job_dir / "DONE").exists() and (job_dir / "WAKE_FAILED").exists():
+                (job_dir / "WAKE_PENDING").touch()
+            else:
+                continue
+        try:
+            data = json.loads((job_dir / "job.json").read_text())
+        except Exception:
+            continue
+        if not data.get("thread_id"):
+            continue
+        candidates.append((job_dir, data))
+
+    delivered = 0
+    attempted = 0
+    for job_dir, data in candidates[-args.max_jobs:]:
+        attempted += 1
+        ok = wake(job_dir, data, retries=1)
+        mark(job_dir, data, wake_submitted=ok, wake_finished_at=now_iso())
+        delivered += int(ok)
+    print(f"RECOVER attempted={attempted} delivered={delivered}")
     return 0
 
 
@@ -296,6 +389,15 @@ def build_parser() -> argparse.ArgumentParser:
     w.add_argument("--poll", type=float, default=2.0)
     w.add_argument("--allow-sleep", action="store_true")
     w.set_defaults(func=cmd_watch)
+
+    q = sub.add_parser("recover")
+    q.add_argument("--max-jobs", type=int, default=5)
+    q.set_defaults(func=cmd_recover)
+
+    y = sub.add_parser("retry")
+    y.add_argument("job")
+    y.add_argument("--retries", type=int, default=1)
+    y.set_defaults(func=cmd_retry)
     return p
 
 

@@ -153,3 +153,19 @@ q=0.05 -> 5/12;
 q=0.10 -> 8/12.
 
 Conclusion: wrong symmetry sectors are invariant cores surrounded by finite nonlinear attraction basins.
+
+## 2026-09-28 — Structured amplitude mismatch
+
+Used exact ground-state moduli from neighboring J2 values as approximate fixed amplitudes for target H, with Marshall signs and the same label-free threshold update.
+
+Target J2=0.5:
+- source 0.4: amplitude fidelity 0.9404, final O_S=0.99683;
+- exact source 0.5: O_S=1 exactly;
+- source 0.6: fidelity 0.8078, final O_S=0.96692.
+
+Target J2=1.0:
+- source 0.8: fidelity 0.9690, final O_S=0.99981;
+- exact source 1.0: O_S=1 exactly;
+- source 0.6: fidelity 0.2510, yet final O_S=0.99660.
+
+Conclusion: sign descent is robust in overlap but exact recovery depends on the exact amplitude modulus. Approximate amplitudes change the fixed-amplitude sign objective and produce biased fixed points.

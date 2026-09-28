@@ -56,3 +56,16 @@ The one-step miracle is the first strong contraction step of projected-Krylov si
 
 ## Next question
 The conceptual mechanism is now substantially closed. The next high-value question is algorithmic/scaling: does the same basin contraction survive when a(x) and the threshold-energy objective are only approximate/sampled rather than exact?
+
+## Approximate-amplitude robustness
+A structured mismatch test now removes the exact-modulus assumption in a controlled way by using the exact modulus from a neighboring J2 as the fixed trial modulus for the target Hamiltonian.
+
+Results:
+- target J2=0.5, amplitude from J2=0.4: F_a=0.9404 -> final O_S=0.99683, but not exact;
+- target J2=1.0, amplitude from J2=0.8: F_a=0.9690 -> final O_S=0.99981, but not exact;
+- poorer amplitudes degrade the terminal sign structure, though surprisingly high sign overlap can survive substantial modulus mismatch.
+
+Thus the exact-sign attractor is tied to the exact modulus. With approximate amplitudes, the same sign dynamics remains useful but converges to the minimum/fixed point of a biased fixed-amplitude objective.
+
+## Updated next question
+For this theory/mechanism subproject, the core picture is now closed enough to park. The next step belongs to the separate algorithmic amplitude/sign loop: determine whether an efficient approximate-amplitude solver can keep the modulus inside the regime where the cheap sign update remains accurate as system size grows.

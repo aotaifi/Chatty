@@ -1,0 +1,600 @@
+[
+  {
+    "target": 0.5,
+    "amp_source": 0.0,
+    "baseline": "marshall",
+    "amp_fidelity": 0.7132453600732332,
+    "prob_TV": 0.44664703214888857,
+    "terminal": "fixed",
+    "iterations": 0,
+    "final_O": 0.9745380645578009,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -7.808238642038049
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 0.2,
+    "baseline": "marshall",
+    "amp_fidelity": 0.8064333992527483,
+    "prob_TV": 0.36014845526264205,
+    "terminal": "fixed",
+    "iterations": 2,
+    "final_O": 0.974532797801807,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -8.06306647059967
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9745373684121248,
+        "E_fixed_approx_amp": -8.063155381363813
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.974532797801807,
+        "E_fixed_approx_amp": -8.063169713834634
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 0.4,
+    "baseline": "marshall",
+    "amp_fidelity": 0.940444505868413,
+    "prob_TV": 0.17923116524335514,
+    "terminal": "fixed",
+    "iterations": 2,
+    "final_O": 0.9968306958481632,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -8.349154917777206
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9961799666003432,
+        "E_fixed_approx_amp": -8.367599477531677
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.9968306958481632,
+        "E_fixed_approx_amp": -8.367679375963448
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 0.5,
+    "baseline": "marshall",
+    "amp_fidelity": 1.0,
+    "prob_TV": 0.0,
+    "terminal": "exact_signs",
+    "iterations": 3,
+    "final_O": 1.0000000000000002,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -8.272909135968277
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9993188978408852,
+        "E_fixed_approx_amp": -8.449101255066923
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.9999982292406698,
+        "E_fixed_approx_amp": -8.45790225129812
+      },
+      {
+        "it": 3,
+        "O_true_sign": 1.0000000000000002,
+        "E_fixed_approx_amp": -8.457923351394847
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 0.6,
+    "baseline": "marshall",
+    "amp_fidelity": 0.807823058353189,
+    "prob_TV": 0.2922690356369385,
+    "terminal": "fixed",
+    "iterations": 6,
+    "final_O": 0.9669162506621172,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -7.41156427532414
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9858455531720928,
+        "E_fixed_approx_amp": -7.577733259743058
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.9831780089078981,
+        "E_fixed_approx_amp": -7.991763553928346
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.9960350312195724,
+        "E_fixed_approx_amp": -8.160470883146672
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.967157652963871,
+        "E_fixed_approx_amp": -8.18153541798376
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.9668210476288788,
+        "E_fixed_approx_amp": -8.183360197295602
+      },
+      {
+        "it": 6,
+        "O_true_sign": 0.9669162506621172,
+        "E_fixed_approx_amp": -8.183360443234372
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 0.8,
+    "baseline": "marshall",
+    "amp_fidelity": 0.17106546139838005,
+    "prob_TV": 0.7884819947136203,
+    "terminal": "fixed",
+    "iterations": 13,
+    "final_O": 0.8571295062477171,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -1.7276236931114184
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9342815247413465,
+        "E_fixed_approx_amp": -2.736184957234915
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.9322373685244252,
+        "E_fixed_approx_amp": -3.951209238287287
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.9454170373037614,
+        "E_fixed_approx_amp": -4.109994907992769
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.9507407239614369,
+        "E_fixed_approx_amp": -4.338073132945621
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.9073278243908602,
+        "E_fixed_approx_amp": -4.571877539470016
+      },
+      {
+        "it": 6,
+        "O_true_sign": 0.8862829132683141,
+        "E_fixed_approx_amp": -4.857453745423081
+      },
+      {
+        "it": 7,
+        "O_true_sign": 0.7395408011077189,
+        "E_fixed_approx_amp": -5.1153647790367875
+      },
+      {
+        "it": 8,
+        "O_true_sign": 0.6435096695182531,
+        "E_fixed_approx_amp": -5.261990734194957
+      },
+      {
+        "it": 9,
+        "O_true_sign": 0.29305329555409015,
+        "E_fixed_approx_amp": -5.570959152576311
+      },
+      {
+        "it": 10,
+        "O_true_sign": 0.09143977958594543,
+        "E_fixed_approx_amp": -6.520916848793798
+      },
+      {
+        "it": 11,
+        "O_true_sign": 0.40448636930850373,
+        "E_fixed_approx_amp": -6.707371230582814
+      },
+      {
+        "it": 12,
+        "O_true_sign": 0.7480108263804199,
+        "E_fixed_approx_amp": -6.782640573447765
+      },
+      {
+        "it": 13,
+        "O_true_sign": 0.8571295062477171,
+        "E_fixed_approx_amp": -6.787216579766179
+      }
+    ]
+  },
+  {
+    "target": 0.5,
+    "amp_source": 1.0,
+    "baseline": "marshall",
+    "amp_fidelity": 0.09267907786265714,
+    "prob_TV": 0.8642395401344056,
+    "terminal": "fixed",
+    "iterations": 9,
+    "final_O": 0.6586503129648982,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.9745380645578009,
+        "E_fixed_approx_amp": -0.33685026963298736
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.9347333787885848,
+        "E_fixed_approx_amp": -2.1469962191685563
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.8665981732877872,
+        "E_fixed_approx_amp": -3.412270335226655
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.7093772644922258,
+        "E_fixed_approx_amp": -4.282292421745623
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.5229777827735789,
+        "E_fixed_approx_amp": -5.3792812345402625
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.4778217753857158,
+        "E_fixed_approx_amp": -6.048884972430099
+      },
+      {
+        "it": 6,
+        "O_true_sign": 0.5879549993161332,
+        "E_fixed_approx_amp": -6.378839808048667
+      },
+      {
+        "it": 7,
+        "O_true_sign": 0.03799926345135989,
+        "E_fixed_approx_amp": -6.47019890186545
+      },
+      {
+        "it": 8,
+        "O_true_sign": 0.6290405920090513,
+        "E_fixed_approx_amp": -6.51561370070112
+      },
+      {
+        "it": 9,
+        "O_true_sign": 0.6586503129648982,
+        "E_fixed_approx_amp": -6.5189469413253125
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.0,
+    "baseline": "marshall",
+    "amp_fidelity": 0.10255757369048714,
+    "prob_TV": 0.863934911879288,
+    "terminal": "fixed",
+    "iterations": 4,
+    "final_O": 0.16336604133772265,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": -4.387994075647232
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.03348710357713726,
+        "E_fixed_approx_amp": -5.271776356861846
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.07767708503947356,
+        "E_fixed_approx_amp": -5.42709518324591
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.15119268979129447,
+        "E_fixed_approx_amp": -5.479724805938485
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.16336604133772265,
+        "E_fixed_approx_amp": -5.506892793960599
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.2,
+    "baseline": "marshall",
+    "amp_fidelity": 0.09552499674539447,
+    "prob_TV": 0.868671133489658,
+    "terminal": "fixed",
+    "iterations": 4,
+    "final_O": 0.02605346109482338,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": -4.971538814134881
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.03793485012340213,
+        "E_fixed_approx_amp": -5.6889362289059715
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.014491945291759291,
+        "E_fixed_approx_amp": -5.93218435915181
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.024371269086254463,
+        "E_fixed_approx_amp": -5.947969303000319
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.02605346109482338,
+        "E_fixed_approx_amp": -5.948024750737297
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.4,
+    "baseline": "marshall",
+    "amp_fidelity": 0.0827904392994301,
+    "prob_TV": 0.8717299772413971,
+    "terminal": "fixed",
+    "iterations": 5,
+    "final_O": 0.5212056890714646,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": -6.051505359545322
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.4556426665996617,
+        "E_fixed_approx_amp": -6.540169500754999
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.5126816876459392,
+        "E_fixed_approx_amp": -6.622516142480718
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.5114912961908776,
+        "E_fixed_approx_amp": -6.6308743703517035
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.5177371717614193,
+        "E_fixed_approx_amp": -6.631007491936181
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.5212056890714646,
+        "E_fixed_approx_amp": -6.631010910362715
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.5,
+    "baseline": "marshall",
+    "amp_fidelity": 0.09267907786265714,
+    "prob_TV": 0.8642395401344056,
+    "terminal": "fixed",
+    "iterations": 4,
+    "final_O": 0.6778529360753365,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": -6.597649777483536
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.6662887739699288,
+        "E_fixed_approx_amp": -7.38160655861092
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.6755031453616815,
+        "E_fixed_approx_amp": -7.4211660656788885
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.6761707440667675,
+        "E_fixed_approx_amp": -7.423363273381852
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.6778529360753365,
+        "E_fixed_approx_amp": -7.423522552714649
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.6,
+    "baseline": "marshall",
+    "amp_fidelity": 0.2510237969045797,
+    "prob_TV": 0.7630215315862835,
+    "terminal": "fixed",
+    "iterations": 3,
+    "final_O": 0.9966030792052674,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": -6.369722453176161
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.4785529285673053,
+        "E_fixed_approx_amp": -8.933163746484716
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.959946223564474,
+        "E_fixed_approx_amp": -9.358245063045496
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.9966030792052674,
+        "E_fixed_approx_amp": -9.414955824056397
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 0.8,
+    "baseline": "marshall",
+    "amp_fidelity": 0.9690465486029606,
+    "prob_TV": 0.11909487125282023,
+    "terminal": "fixed",
+    "iterations": 8,
+    "final_O": 0.999809365357502,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": 0.14809795129825712
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.1728747493730303,
+        "E_fixed_approx_amp": -3.6146254022913933
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.2252877385515746,
+        "E_fixed_approx_amp": -6.3954491856142806
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.361563309978931,
+        "E_fixed_approx_amp": -6.796430017710756
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.832375287783129,
+        "E_fixed_approx_amp": -8.512736690368206
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.9630047396278556,
+        "E_fixed_approx_amp": -10.90492728261453
+      },
+      {
+        "it": 6,
+        "O_true_sign": 0.9987923214621157,
+        "E_fixed_approx_amp": -12.070270976945071
+      },
+      {
+        "it": 7,
+        "O_true_sign": 0.9998862604452807,
+        "E_fixed_approx_amp": -12.202759398750281
+      },
+      {
+        "it": 8,
+        "O_true_sign": 0.999809365357502,
+        "E_fixed_approx_amp": -12.204146623470612
+      }
+    ]
+  },
+  {
+    "target": 1.0,
+    "amp_source": 1.0,
+    "baseline": "marshall",
+    "amp_fidelity": 0.9999999999999998,
+    "prob_TV": 0.0,
+    "terminal": "exact_signs",
+    "iterations": 9,
+    "final_O": 1.0,
+    "trajectory": [
+      {
+        "it": 0,
+        "O_true_sign": 0.06421470542957097,
+        "E_fixed_approx_amp": 1.6241854692642457
+      },
+      {
+        "it": 1,
+        "O_true_sign": 0.17134605511368492,
+        "E_fixed_approx_amp": -2.4801859050416186
+      },
+      {
+        "it": 2,
+        "O_true_sign": 0.2902028924197334,
+        "E_fixed_approx_amp": -6.341957976362974
+      },
+      {
+        "it": 3,
+        "O_true_sign": 0.3392602304755024,
+        "E_fixed_approx_amp": -7.36200381852588
+      },
+      {
+        "it": 4,
+        "O_true_sign": 0.91039090888995,
+        "E_fixed_approx_amp": -10.856835774155599
+      },
+      {
+        "it": 5,
+        "O_true_sign": 0.9907779742444305,
+        "E_fixed_approx_amp": -12.097719915393046
+      },
+      {
+        "it": 6,
+        "O_true_sign": 0.9985619508080619,
+        "E_fixed_approx_amp": -12.256926180167776
+      },
+      {
+        "it": 7,
+        "O_true_sign": 0.9999754255412115,
+        "E_fixed_approx_amp": -12.294838523938402
+      },
+      {
+        "it": 8,
+        "O_true_sign": 0.9999994110704342,
+        "E_fixed_approx_amp": -12.295476322676617
+      },
+      {
+        "it": 9,
+        "O_true_sign": 1.0,
+        "E_fixed_approx_amp": -12.295490216102483
+      }
+    ]
+  }
+]

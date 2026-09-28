@@ -4,15 +4,24 @@ This repository is the durable source of truth for long-running research work.
 
 ## Long-running research jobs
 
-Do not keep a ChatGPT turn open merely to wait for a simulation, benchmark, download, or other long-running Mac process.
+Do not keep a ChatGPT turn open merely to wait for a simulation, benchmark,
+download, or other long-running Mac process.
 
-1. If you leave a process running, report it in the chat before ending the turn. Include the PID, what is running, where stdout/stderr/results are written, and what should be checked when it finishes.
-2. For a new process, you may launch it through `~/Chatty/tools/local_loop/chatty-run`.
-3. For a process that is already running, you may attach `~/Chatty/tools/local_loop/chatty-watch --pid <pid>`.
-4. Launch the wrapper detached (`nohup ... &`) so it survives the current ChatGPT turn.
-5. A watcher may notify the user by email when the run finishes.
-6. A watcher must NOT wake ChatGPT, open ChatGPT/Chrome tabs, inject prompts, use Computer Use/CUA, or try to continue the conversation automatically.
-7. The next research agent should resume from the durable files on the Mac after the user returns to ChatGPT.
+1. For a new long process, launch it through
+   `~/Chatty/tools/local_loop/chatty-run`.
+2. For a process that is already running, attach
+   `~/Chatty/tools/local_loop/chatty-watch --pid <pid>`.
+3. Launch the wrapper detached (`nohup ... &`) so it survives the current
+   ChatGPT turn.
+4. The watcher sends an email immediately when monitoring starts and another
+   when the process exits.
+5. Before ending the turn, report in chat what is running: PID, task, job
+   directory, output/result paths, and what should be checked after completion.
+6. Then end the turn. Do NOT poll or wait for the process from ChatGPT.
+7. The user will receive the completion email and return to the research chat to
+   tell the agent to proceed. At that point read the durable files and continue.
+8. Watchers must NOT wake ChatGPT, open ChatGPT/Chrome tabs, inject prompts, use
+   Computer Use/CUA, or continue the conversation automatically.
 
 See `tools/local_loop/README.md` for the watcher interface.
 

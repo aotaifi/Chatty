@@ -10,12 +10,19 @@ CUA/Computer Use when a run finishes.
 
 Instead:
 
-1. The agent launches or attaches a durable watcher.
-2. Before ending its turn, the agent reports the PID, task, output paths, and
-   what should be checked after completion.
-3. The watcher records completion under `~/Chatty/jobs/<job-id>/`.
-4. The user returns to ChatGPT when convenient; the next agent resumes from the
-   durable files.
+1. The agent launches a long job through `chatty-run` or attaches `chatty-watch`.
+2. The watcher immediately emails `alyotaifi@gmail.com` that the job started,
+   including PID, task, command, and job/result paths.
+3. The ChatGPT turn ends. It does not poll or wait for the job.
+4. The detached watcher keeps running independently on the Mac.
+5. When the process exits, the watcher writes durable completion state and sends
+   a second email with status and result/log locations.
+6. The user returns to the research chat and says to proceed. The next agent
+   reads the durable job/project files and continues.
+
+The mail transport uses Apple's built-in Automator Mail actions through the
+already-authenticated macOS Mail account. It does not use ChatGPT, Chrome, CUA,
+Postfix, an OpenAI API key, or a stored Gmail password.
 
 ## Launch a new long run
 
@@ -26,6 +33,9 @@ nohup ~/Chatty/tools/local_loop/chatty-run \
   -- python3 scripts/benchmark.py \
   > /tmp/chatty-launch.log 2>&1 &
 ```
+
+The launching agent should report the job PID/task/paths in chat and then end its
+turn rather than monitoring it.
 
 ## Attach to an existing process
 
@@ -46,26 +56,32 @@ the parent; it records `exit_code: null`.
   job.json
   stdout.log              # chatty-run only
   stderr.log              # chatty-run only
+  email.log
+  EMAIL_START_SENT
+  EMAIL_START_FAILED      # only if start notification failed
+  EMAIL_FINISH_SENT
+  EMAIL_FINISH_FAILED     # only if completion notification failed
   DONE
-  NOTIFICATION_NOT_SENT
 ```
 
-## Email notification status
+## Email transport
 
-Automatic email is intentionally **not enabled yet**. Tests on 2026-09-28 found:
+Recipient:
 
-- macOS Postfix/sendmail: message was rejected by the destination server
-  because the Mac has no valid reverse DNS;
-- Apple Mail scripting: hangs even for basic outgoing-message operations;
-- Mail UI/key injection: did not produce a delivered message;
-- no noninteractive SMTP/Google CLI credential is exposed to the watcher.
+```
+~/Chatty/.chatty/notify_email
+```
 
-Do not claim email delivery works until a real completion email is verified in
-the recipient mailbox. A dedicated authenticated relay/app password or another
-noninteractive notification transport is still required.
+Current value: `alyotaifi@gmail.com`.
+
+`chatty-email.py` copies the tested `mail_template.workflow`, fills its
+recipient/subject/body for that notification, and runs it with `/usr/bin/automator`.
+The template contains only Apple's built-in `New Mail Message` and
+`Send Outgoing Messages` actions.
+
+A real delivery test on 2026-09-28 was verified in Gmail.
 
 ## Parked wake implementation
 
-The old same-thread wake/CUA experiments are archived under
-`tools/local_loop/parked_same_thread_wake/` for reference only. They are not
-part of the active agent workflow.
+The old same-thread wake/CUA experiments are retained only for historical
+reference and are not part of the active agent workflow.

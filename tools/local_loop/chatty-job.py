@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 """Durable long-run launcher/watcher for Chatty research.
 
-This module records long-running work under ~/Chatty/jobs. It deliberately does
-NOT wake ChatGPT, open browser tabs, inject prompts, or use Computer Use/CUA.
-
-Notification policy:
-- Agents must report running jobs in chat before ending their turn.
-- Email notification is not enabled until a reliable noninteractive mail
-  transport is configured and tested on this Mac.
+Long jobs run independently of the ChatGPT turn. The watcher sends an email when
+it starts and another when it exits. It never wakes ChatGPT, opens browser tabs,
+injects prompts, or uses Computer Use/CUA.
 """
 from __future__ import annotations
 
@@ -17,11 +13,14 @@ import json
 import os
 import shlex
 import subprocess
+import sys
 import time
 from pathlib import Path
 
 REPO = Path.home() / "Chatty"
 JOBS = REPO / "jobs"
+HERE = Path(__file__).resolve().parent
+EMAIL = HERE / "chatty-email.py"
 
 
 def now_iso() -> str:
@@ -47,7 +46,7 @@ def new_job(task: str, mode: str, extra: dict) -> tuple[Path, dict]:
         "cwd": os.getcwd(),
         "status": "running",
         "started_at": now_iso(),
-        "notification": "chat_report_required",
+        "notification": "email",
         **extra,
     }
     atomic_json(job_dir / "job.json", data)
@@ -72,19 +71,91 @@ def launch_caffeinate(pid: int):
         return None
 
 
-def finish_without_auto_notification(job_dir: Path, data: dict) -> None:
-    """Persist completion. Never trigger ChatGPT/browser/CUA."""
+def email_body(job_dir: Path, data: dict, phase: str) -> str:
+    lines = [
+        f"Chatty research job {phase}.",
+        "",
+        f"Job: {data['id']}",
+        f"Task: {data['task']}",
+        f"Mode: {data['mode']}",
+    ]
+    pid = data.get("pid") or data.get("watched_pid")
+    if pid is not None:
+        lines.append(f"PID: {pid}")
+    command = data.get("command_display") or data.get("watched_command")
+    if command:
+        lines.append(f"Command: {command}")
+    lines.extend([
+        f"Working directory: {data.get('cwd')}",
+        f"Job directory: {job_dir}",
+    ])
+    if data["mode"] == "run":
+        lines.extend([
+            f"stdout: {job_dir / 'stdout.log'}",
+            f"stderr: {job_dir / 'stderr.log'}",
+        ])
+    if phase != "STARTED":
+        lines.extend([
+            f"Status: {data.get('status')}",
+            f"Exit code: {data.get('exit_code')}",
+            f"Finished: {data.get('finished_at')}",
+            "",
+            "Return to the research chat and tell the agent to proceed.",
+        ])
+    return "\n".join(lines) + "\n"
+
+
+def notify(job_dir: Path, data: dict, phase: str) -> bool:
+    phase = phase.upper()
+    status = data.get("status", "")
+    if phase == "STARTED":
+        subject = f"[Chatty] STARTED {data['id']}"
+        marker = job_dir / "EMAIL_START_SENT"
+        failed = job_dir / "EMAIL_START_FAILED"
+    else:
+        label = "FINISHED" if status in {"completed", "exited"} else "FAILED"
+        subject = f"[Chatty] {label} {data['id']}"
+        marker = job_dir / "EMAIL_FINISH_SENT"
+        failed = job_dir / "EMAIL_FINISH_FAILED"
+
+    log = job_dir / "email.log"
+    try:
+        cp = subprocess.run(
+            [
+                sys.executable,
+                str(EMAIL),
+                "--subject",
+                subject,
+                "--body",
+                email_body(job_dir, data, phase),
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=90,
+            check=False,
+        )
+        with log.open("a") as f:
+            f.write(f"[{now_iso()}] {phase} rc={cp.returncode}\n{cp.stdout}\n")
+        if cp.returncode == 0:
+            marker.write_text(now_iso() + "\n")
+            failed.unlink(missing_ok=True)
+            mark(job_dir, data, **{f"email_{phase.lower()}": "sent"})
+            return True
+        failed.write_text(now_iso() + "\n")
+        mark(job_dir, data, **{f"email_{phase.lower()}": "failed"})
+        return False
+    except Exception as exc:
+        with log.open("a") as f:
+            f.write(f"[{now_iso()}] {phase} exception={exc!r}\n")
+        failed.write_text(now_iso() + "\n")
+        mark(job_dir, data, **{f"email_{phase.lower()}": "failed"})
+        return False
+
+
+def finish(job_dir: Path, data: dict) -> None:
     (job_dir / "DONE").write_text(now_iso() + "\n")
-    (job_dir / "NOTIFICATION_NOT_SENT").write_text(
-        "Automatic email notification is not configured on this Mac.\n"
-        "The launching agent must have reported this job in chat.\n"
-    )
-    mark(
-        job_dir,
-        data,
-        notification="not_sent_email_transport_unconfigured",
-        notification_finished_at=now_iso(),
-    )
+    notify(job_dir, data, "FINISHED")
 
 
 def cmd_run(args) -> int:
@@ -97,13 +168,20 @@ def cmd_run(args) -> int:
     job_dir, data = new_job(
         args.task,
         "run",
-        {"command": command, "command_display": shlex.join(command)},
+        {
+            "cwd": str(Path(args.cwd).expanduser().resolve()) if args.cwd else os.getcwd(),
+            "command": command,
+            "command_display": shlex.join(command),
+        },
     )
     out = (job_dir / "stdout.log").open("wb")
     err = (job_dir / "stderr.log").open("wb")
     try:
         proc = subprocess.Popen(command, cwd=args.cwd, stdout=out, stderr=err)
         mark(job_dir, data, pid=proc.pid)
+        notify(job_dir, data, "STARTED")
+        print(f"STARTED job={data['id']} pid={proc.pid} dir={job_dir}", flush=True)
+
         caffeine = None if args.allow_sleep else launch_caffeinate(proc.pid)
         rc = proc.wait()
         if caffeine is not None:
@@ -118,8 +196,9 @@ def cmd_run(args) -> int:
             status="launcher_error",
             finished_at=now_iso(),
             launcher_error=repr(exc),
+            exit_code=None,
         )
-        finish_without_auto_notification(job_dir, data)
+        finish(job_dir, data)
         raise
     finally:
         out.close()
@@ -132,8 +211,8 @@ def cmd_run(args) -> int:
         exit_code=rc,
         finished_at=now_iso(),
     )
-    finish_without_auto_notification(job_dir, data)
-    print(job_dir)
+    finish(job_dir, data)
+    print(f"DONE job={data['id']} rc={rc} dir={job_dir}", flush=True)
     return rc
 
 
@@ -171,6 +250,9 @@ def cmd_watch(args) -> int:
             "watched_command": command,
         },
     )
+    notify(job_dir, data, "STARTED")
+    print(f"WATCHING job={data['id']} pid={args.pid} dir={job_dir}", flush=True)
+
     caffeine = None if args.allow_sleep else launch_caffeinate(args.pid)
     while True:
         time.sleep(args.poll)
@@ -190,8 +272,8 @@ def cmd_watch(args) -> int:
         exit_code=None,
         finished_at=now_iso(),
     )
-    finish_without_auto_notification(job_dir, data)
-    print(job_dir)
+    finish(job_dir, data)
+    print(f"DONE job={data['id']} watched_pid={args.pid} dir={job_dir}", flush=True)
     return 0
 
 

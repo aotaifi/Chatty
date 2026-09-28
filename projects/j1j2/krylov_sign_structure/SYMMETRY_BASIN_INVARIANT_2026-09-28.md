@@ -70,3 +70,16 @@ The basin structure has at least two layers:
 2. **Within a compatible symmetry sector**, the energy-decreasing threshold dynamics may still have multiple attraction basins / fixed points. The triangular parity_y case is evidence for this second layer.
 
 This gives the first analytic predictor of basin membership found in the subproject.
+
+## Full symmetry closure of parity_y
+A full audit of the 72 affine automorphisms of the periodic 6x3 triangular bond graph finds an additional exact obstruction for the previously unexplained parity_y start.
+
+For the inversion-like symmetry
+
+P:(x,y) -> (-x,2-y),
+
+the exact ground state has character P=-1, while parity_y and its converged wrong fixed point both have P=+1. The fixed modulus is P-invariant to numerical residual ~1e-10.
+
+Hence parity_y is also rigorously sector-forbidden from reaching the ground-state signs. All three simple triangular structured gauges tested so far are now explained by exact symmetry mismatch.
+
+A follow-up perturbation test shows that the invariant sector is surrounded by a finite nonlinear basin: weakly breaking P does not immediately cause escape. See `TRIANGULAR_PARITY_BASIN_2026-09-28.md`.

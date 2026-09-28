@@ -162,3 +162,10 @@ Hence **r_x-E0 is exactly the weighted boundary load of the current wrong-sign d
 This sharpens the mechanism: the projected-Krylov threshold step is a synchronous threshold dynamics on defect-boundary load. Recomputing r after each update exposes the next boundary layer. The square-lattice basin results show that this boundary dynamics often contracts toward the planted ground-state signs; the triangular results show that symmetry sectors and competing threshold-stable domains can obstruct that contraction.
 
 The next theory target is therefore a sufficient contraction criterion stated in terms of these weighted defect-boundary loads, refined by the exact symmetry-sector invariant already identified above.
+
+## Update: all three tested triangular structured gauges are symmetry-forbidden
+A full affine space-group audit closes the parity_y exception left above. parity_y is even under P:(x,y)->(-x,2-y), while the exact ground state is odd. Thus parity_y, maxcut_x, and parity_xy are all in exact symmetry sectors incompatible with the ground state.
+
+Breaking parity_y's wrong symmetry by a tiny random perturbation is not by itself enough to escape: no recovery occurred through q=0.01 in 12 trials per q, with recovery beginning at q=0.02 and reaching 8/12 by q=0.10. This shows that exact symmetry sectors act as invariant cores of finite nonlinear attraction basins.
+
+The remaining mechanism is therefore cleaner than previously stated: the observed competing triangular basins tested here are symmetry-protected at their core, with finite basin thickness around them.

@@ -134,3 +134,22 @@ Files:
 - results/random_sign_start_exact.{json,csv}
 - experiments/amplitude_power_robustness.py
 - results/amplitude_power_robustness.{json,csv}
+
+## 2026-09-28 — Full triangular symmetry closure
+
+Enumerated all 72 affine automorphisms of the periodic 6x3 triangular NN graph. The exact modulus is invariant under all of them to ~1e-10 or better.
+
+The formerly unexplained parity_y start is an eigenstate of P:(x,y)->(-x,2-y):
+- ground: P=-1;
+- parity_y start: P=+1;
+- parity_y fixed point: P=+1.
+
+Therefore parity_y is exactly symmetry-forbidden from reaching the ground state. Together with the previous Tx=-1 obstruction for maxcut_x/parity_xy, all three tested simple triangular structured gauges are now explained by exact symmetry mismatch.
+
+Symmetry-breaking perturbations of parity_y:
+q=1e-4,5e-4,1e-3,5e-3,1e-2 -> 0/12 recovery;
+q=0.02 -> 2/12;
+q=0.05 -> 5/12;
+q=0.10 -> 8/12.
+
+Conclusion: wrong symmetry sectors are invariant cores surrounded by finite nonlinear attraction basins.

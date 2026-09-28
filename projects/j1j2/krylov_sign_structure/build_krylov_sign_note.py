@@ -72,7 +72,7 @@ def box(title, body, bg=PALE):
     t = Table([
         [Paragraph(title, styles["BoxHead"])],
         [Paragraph(body, styles["BoxBody"])]
-    ], colWidths=[178*mm])
+    ], colWidths=[178*mm], splitByRow=0)
     t.setStyle(TableStyle([
         ("BACKGROUND",(0,0),(-1,-1),bg),
         ("BOX",(0,0),(-1,-1),0.7,LINE),
@@ -208,12 +208,11 @@ story += [
         "It mainly makes the first step exceptionally efficient. Even Marshall at J2/J1=0.8 and 1.0, where the first step is poor, eventually reaches the exact signs.",
         styles["Bodyx"]
     ),
-    box(
-        "Why the first step looked like a miracle",
-        "At J2/J1=0.5, the Marshall state is already positioned so that the scalar coordinate r_0 orders nearly all physically important residual sign defects. "
-        "The first global threshold therefore removes almost all of them at once. Recomputing r exposes progressively smaller residual defects. "
-        "The observed sequence 0.97454 -> 0.999319 -> 0.999998 -> 1 is the signature of rapid basin contraction, not a one-off accident.",
-        PALE
+    Paragraph(
+        "<b>Why one step looked miraculous.</b> At J2/J1=0.5 the Marshall state is already positioned so that r_0 orders nearly all physically important residual sign defects. "
+        "The first threshold removes almost all of them at once; recomputing r then exposes smaller residual defects. "
+        "Thus 0.97454 -> 0.999319 -> 0.999998 -> 1 is rapid basin contraction, not a one-off accident.",
+        styles["Bodyx"]
     ),
     Paragraph("3. The attraction basin is large, but distance is not the whole story", styles["H1x"]),
     Paragraph(
@@ -229,7 +228,6 @@ story += [
     ),
 ]
 story += [
-    PageBreak(),
     Paragraph("4. Triangular lattice: competing basins, not failure of contraction", styles["H1x"]),
     Paragraph(
         "For the nearest-neighbor triangular Heisenberg antiferromagnet on a periodic 6x3 torus (18 spins, S^z=0), "
@@ -298,7 +296,7 @@ story += [
         "<b>(v)</b> Exact symmetry characters are invariant and can split sign space into disconnected basins.",
         PALE2
     ),
-    Spacer(1,5),
+    Spacer(1,2),
     box(
         "Still open",
         "This is not yet a scalable ground-state algorithm. The controlled tests use the exact ground-state modulus and evaluate the threshold objective over the finite Hilbert space. "
@@ -329,17 +327,8 @@ story += [
         + ".",
         styles["Bodyx"]
     ),
-    Spacer(1,3),
-    HRFlowable(width="100%", thickness=0.5, color=LINE, spaceBefore=2, spaceAfter=5),
     Paragraph(
-        "<b>Working interpretation.</b> The one-step J1-J2 result is not a mysterious shortcut to the ground state. "
-        "It is the exceptionally strong first move of an energy-decreasing projected-Krylov sign dynamics whose exact target is an attractor. "
-        "What determines success is not sign overlap alone, but basin membership; exact symmetry sectors provide the first rigorous invariant separating those basins.",
-        styles["Bodyx"]
-    ),
-    Paragraph(
-        "This note is an internal snapshot of the falsification-driven subproject, not a publication claim. "
-        "Finite-size and exact-amplitude assumptions are deliberately kept explicit.",
+        "<font color=\"#5E6973\">Internal research snapshot; finite-size and exact-amplitude assumptions are explicit.</font>",
         styles["Smallx"]
     ),
 ]

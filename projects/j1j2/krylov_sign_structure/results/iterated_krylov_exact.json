@@ -1,0 +1,250 @@
+{
+  "method": {
+    "system": "4x4 periodic square J1-J2, Sz=0 exact diagonalization",
+    "amplitudes": "held fixed to exact ground-state |psi| throughout",
+    "update": "r_k=(H a s_k)/(a s_k); s_{k+1}=s_k sign(t_k-r_k)",
+    "threshold": "label-free exact minimization of fixed-amplitude energy over all realizable r_k threshold groups",
+    "degeneracies": "equal/near-equal r_k values are flipped as a group; no threshold can split them",
+    "oracle_next_O": "diagnostic only: best hidden-sign-overlap threshold on same r_k coordinate"
+  },
+  "summaries": [
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "E0": -8.457923351394827,
+      "spectrum": [
+        -8.457923351394827,
+        -8.138989060843276,
+        -7.627830262529609,
+        -7.5927682133713335,
+        -7.559821355304151,
+        -7.487237834084842
+      ],
+      "iterations_reached": 3,
+      "final_O": 0.9999999999999998,
+      "final_energy_error_per_site": 5.551115123125783e-16,
+      "final_P_stable": 0.9999999999999998,
+      "exact_signs": true
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "E0": -8.414333152240197,
+      "spectrum": [
+        -8.414333152240197,
+        -8.305427400679397,
+        -8.066051321752232,
+        -7.709828991143505,
+        -7.704046170398883,
+        -7.681952860575642
+      ],
+      "iterations_reached": 4,
+      "final_O": 1.0,
+      "final_energy_error_per_site": 6.661338147750939e-16,
+      "final_P_stable": 1.0,
+      "exact_signs": true
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "E0": -12.295490216102452,
+      "spectrum": [
+        -12.295490216102452,
+        -11.608806942981117,
+        -11.313704749827254,
+        -11.313704749827224,
+        -10.744926244015977,
+        -10.114303402147451
+      ],
+      "iterations_reached": 4,
+      "final_O": 1.0,
+      "final_energy_error_per_site": -9.992007221626409e-16,
+      "final_P_stable": 1.0,
+      "exact_signs": true
+    }
+  ],
+  "trajectory": [
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "iteration": 0,
+      "O_S": 0.9745380645577972,
+      "energy_error_per_site": 0.011563388464161606,
+      "P_stable": 0.9900679211086552,
+      "state_key": "6b6f9d172e6c",
+      "threshold_to_next": -6.108998748526373,
+      "changed_weight_to_next": 0.012584143969625535,
+      "oracle_next_O": 0.9993188978408843,
+      "n_r_groups": 101
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "iteration": 1,
+      "O_S": 0.9993188978408843,
+      "energy_error_per_site": 0.0005513810204961223,
+      "P_stable": 0.9996584922958057,
+      "state_key": "00409765691f",
+      "threshold_to_next": 0.9507453482352444,
+      "changed_weight_to_next": 0.00033966569989251656,
+      "oracle_next_O": 0.9999982292406693,
+      "n_r_groups": 83
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "iteration": 2,
+      "O_S": 0.9999982292406693,
+      "energy_error_per_site": 1.3187560460314884e-06,
+      "P_stable": 0.9999991146203346,
+      "state_key": "a781eb1429f3",
+      "threshold_to_next": -2.289454368245723,
+      "changed_weight_to_next": 8.853796652020858e-07,
+      "oracle_next_O": 0.9999999999999998,
+      "n_r_groups": 23
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "iteration": 3,
+      "O_S": 0.9999999999999998,
+      "energy_error_per_site": 5.551115123125783e-16,
+      "P_stable": 0.9999999999999998,
+      "state_key": "cf9515a52383",
+      "threshold_to_next": -9.457923351401071,
+      "changed_weight_to_next": 0.0,
+      "oracle_next_O": 0.9999999999999998,
+      "n_r_groups": 1
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "iteration": 0,
+      "O_S": 0.7955724433085035,
+      "energy_error_per_site": 0.07569607758410524,
+      "P_stable": 0.9452873835558269,
+      "state_key": "6b6f9d172e6c",
+      "threshold_to_next": -4.7476503966133,
+      "changed_weight_to_next": 0.1045070717289623,
+      "oracle_next_O": 0.9571308288270188,
+      "n_r_groups": 107
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "iteration": 1,
+      "O_S": 0.9571308288270188,
+      "energy_error_per_site": 0.03713886867448646,
+      "P_stable": 0.9765548659469911,
+      "state_key": "306d369e7d89",
+      "threshold_to_next": 1.9196139179726086,
+      "changed_weight_to_next": 0.019740275907193423,
+      "oracle_next_O": 0.991266954451322,
+      "n_r_groups": 101
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "iteration": 2,
+      "O_S": 0.991266954451322,
+      "energy_error_per_site": 0.008009219959053793,
+      "P_stable": 0.9956351030931865,
+      "state_key": "e72afff6b839",
+      "threshold_to_next": 3.034797607801522,
+      "changed_weight_to_next": 0.0041846462394496,
+      "oracle_next_O": 0.9994437710494288,
+      "n_r_groups": 98
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "iteration": 3,
+      "O_S": 0.9994437710494288,
+      "energy_error_per_site": 0.0005377134281407958,
+      "P_stable": 0.9997218855247144,
+      "state_key": "3f1c549d7af2",
+      "threshold_to_next": 0.05624735059798258,
+      "changed_weight_to_next": 0.0002781144752855672,
+      "oracle_next_O": 1.0,
+      "n_r_groups": 65
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "iteration": 4,
+      "O_S": 1.0,
+      "energy_error_per_site": 6.661338147750939e-16,
+      "P_stable": 1.0,
+      "state_key": "1284701ecd8a",
+      "threshold_to_next": -9.414333152242056,
+      "changed_weight_to_next": 0.0,
+      "oracle_next_O": 1.0,
+      "n_r_groups": 1
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "iteration": 0,
+      "O_S": 0.9558187845895008,
+      "energy_error_per_site": 0.02649222063841339,
+      "P_stable": 0.9824889636878597,
+      "state_key": "6bae463044fb",
+      "threshold_to_next": -7.457743557672826,
+      "changed_weight_to_next": 0.022427765767249835,
+      "oracle_next_O": 0.9948843846679598,
+      "n_r_groups": 177
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "iteration": 1,
+      "O_S": 0.9948843846679598,
+      "energy_error_per_site": 0.005776365500634095,
+      "P_stable": 0.997444736503392,
+      "state_key": "56cd67fa2ef0",
+      "threshold_to_next": -1.37754792477343,
+      "changed_weight_to_next": 0.0025552634966079764,
+      "oracle_next_O": 0.9996917732676208,
+      "n_r_groups": 166
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "iteration": 2,
+      "O_S": 0.9996917732676208,
+      "energy_error_per_site": 0.0004084824955875588,
+      "P_stable": 0.9998461674689555,
+      "state_key": "0d20b3da6f02",
+      "threshold_to_next": 0.866499064352092,
+      "changed_weight_to_next": 0.00015383253104440627,
+      "oracle_next_O": 0.9999994383297097,
+      "n_r_groups": 120
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "iteration": 3,
+      "O_S": 0.9999994383297097,
+      "energy_error_per_site": 7.930426576541194e-07,
+      "P_stable": 0.9999997191648549,
+      "state_key": "8c7a5ccd6113",
+      "threshold_to_next": -0.8334489918328885,
+      "changed_weight_to_next": 2.808351451488609e-07,
+      "oracle_next_O": 1.0,
+      "n_r_groups": 34
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "iteration": 4,
+      "O_S": 1.0,
+      "energy_error_per_site": -9.992007221626409e-16,
+      "P_stable": 1.0,
+      "state_key": "95b02b156b06",
+      "threshold_to_next": -13.2954902161094,
+      "changed_weight_to_next": 0.0,
+      "oracle_next_O": 1.0,
+      "n_r_groups": 1
+    }
+  ]
+}

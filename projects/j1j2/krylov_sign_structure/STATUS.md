@@ -28,5 +28,17 @@ Triangular frustration violates (1)-(2) and exposes many locally stable but glob
 - results/square_exact_energyopt.{json,csv}
 - results/triangular_exact_test.json
 
+## New decisive result: iterated contraction
+With exact ground-state amplitudes held fixed, repeated label-free fixed-amplitude-energy Krylov sign updates converge to the **exact ground-state signs** on all three representative square-lattice tests:
+- J2/J1=0.5, Marshall: exact after 3 updates.
+- J2/J1=0.6, Marshall: exact after 4 updates.
+- J2/J1=1.0, stripe baseline: exact after 4 updates.
+
+At every step, the energy-selected threshold attains the same next-step sign overlap as the hidden-sign oracle threshold on the same r_k coordinate.
+
+This upgrades the mechanism from “one unusually good step” to **finite-cluster basin contraction**: once the starting gauge is in the correct broad sign basin, recomputing r_k progressively exposes the remaining defects.
+
+See `ITERATED_KRYLOV_CONVERGENCE_2026-09-28.md`.
+
 ## Next question
-The conceptual bottleneck is no longer whether one-step Krylov is universally powerful. It is whether the “good gauge + thresholdable residual defects” criterion can be formalized in terms of weighted sign-Ising frustration/loop flux strongly enough to predict success before knowing the reference signs.
+The key unresolved issue is now scaling/generalization: can this contraction be predicted or proved from a sign-Ising frustration/loop-flux criterion, and does it survive when the amplitudes and threshold objective are only approximate rather than exact?

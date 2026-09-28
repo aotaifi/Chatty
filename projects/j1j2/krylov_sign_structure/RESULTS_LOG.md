@@ -53,3 +53,18 @@ No subproject-specific calculations yet. Append decisive tests here with date, m
 **REJECT:** generic-frustration simplification; universal Marshall rule; using P_stable^(1) alone as evidence that the correct sign sector has been found.
 
 Full tables and interpretation: `MECHANISM_VERDICT_2026-09-28.md`.
+
+## 2026-09-28 — Iterated fixed-amplitude Krylov contraction
+
+Controlled exact 4x4 test with exact ground-state amplitudes held fixed. At each iteration:
+r_k = H(a s_k)/(a s_k), followed by s_(k+1) = s_k sign(t_k-r_k).
+The threshold is selected without sign labels by exact fixed-amplitude energy minimization over realizable r_k threshold groups.
+
+Results:
+- J2/J1=0.5, Marshall: O_S = 0.974538 -> 0.999319 -> 0.99999823 -> 1.000000. Exact signs after 3 updates.
+- J2/J1=0.6, Marshall: O_S = 0.795572 -> 0.957131 -> 0.991267 -> 0.999444 -> 1.000000. Exact after 4.
+- J2/J1=1.0, stripe: O_S = 0.955819 -> 0.994884 -> 0.9996918 -> 0.99999944 -> 1.000000. Exact after 4.
+
+In every nontrivial step, the label-free energy-selected threshold reaches the same next-step O_S as the hidden-sign oracle threshold on the same r_k coordinate.
+
+Verdict: PASS. On the tested exact square clusters, a good starting sign basin is not merely sufficient for one excellent Krylov correction; the iterated map is contractive all the way to the exact ground-state sign structure. This does not yet establish a scalable algorithm because the amplitudes and fixed-amplitude energy objective were exact.

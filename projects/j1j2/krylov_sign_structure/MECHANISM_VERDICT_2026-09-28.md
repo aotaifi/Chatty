@@ -76,3 +76,11 @@ Raw outputs:
 Diagnostic showing why forced two-cluster thresholding is not universal:
 - experiments/square_exact_sweep.py
 - results/square_exact_sweep.json
+
+## Follow-up: iterated contraction
+A subsequent exact fixed-amplitude iteration test closes the immediate “two or more Krylov steps” question. Recomputing r_k after every sign update reaches the exact ground-state signs on the representative square cases:
+- J2/J1=0.5, Marshall: exact after 3 updates.
+- J2/J1=0.6, Marshall: exact after 4 updates.
+- J2/J1=1.0, stripe: exact after 4 updates.
+
+Two steps are already extremely accurate at J2/J1=0.5 (O_S=0.99999823) but not literally exact. The label-free fixed-amplitude-energy threshold follows the hidden-sign oracle optimum at every tested iteration. This strengthens the good-gauge interpretation into a finite-cluster **basin-contraction** result. See `ITERATED_KRYLOV_CONVERGENCE_2026-09-28.md`.

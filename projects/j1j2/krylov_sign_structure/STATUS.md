@@ -69,3 +69,26 @@ Thus the exact-sign attractor is tied to the exact modulus. With approximate amp
 
 ## Updated next question
 For this theory/mechanism subproject, the core picture is now closed enough to park. The next step belongs to the separate algorithmic amplitude/sign loop: determine whether an efficient approximate-amplitude solver can keep the modulus inside the regime where the cheap sign update remains accurate as system size grows.
+
+## Closed FN <-> current-sign Krylov loop launched — 2026-09-28
+
+A key distinction from the older 4x4 loop was identified: the previous "energy-opt" implementation rebuilt signs relative to the fixed Marshall coordinate r_M each iteration. It did **not** iterate the current-sign map
+
+r_k = (H a_k s_k)/(a_k s_k),
+s_{k+1}=s_k sign(t_k-r_k).
+
+A new exact 4x4 benchmark now implements the genuinely recursive current-sign map, with the threshold chosen label-free by exact fixed-amplitude energy minimization over grouped r_k values.
+
+Loop:
+1. current guide (a_k,s_k) defines the standard lattice fixed-node Hamiltonian;
+2. exact FN ground state supplies positive amplitudes a_{k+1};
+3. current-sign projected-Krylov update produces s_{k+1};
+4. repeat.
+
+Target exact ground-state information is used only after each step for diagnostics E-E0, sign overlap, and amplitude fidelity; it never enters the FN solve or threshold choice.
+
+Two J2/J1=0.5 runs are being made:
+- best-case control: exact target modulus used only as the *initial* amplitude, with Marshall signs;
+- no-target-oracle bootstrap: J2=0 Marshall ground-state modulus used as the initial amplitude, with Marshall signs.
+
+The decisive question is whether the coupled FN/Krylov map converges to the exact target pair, cycles, or settles at a self-consistent biased fixed point.

@@ -1,5 +1,7 @@
 # Mechanism verdict — 2026-09-28
 
+> **Historical one-step stage; partly superseded.** Later repeated-dynamics and grouped-degeneracy tests changed the interpretation. The current authoritative verdict is `BASIN_DYNAMICS_VERDICT_2026-09-28.md`. In particular, repeated square-lattice dynamics can recover from Marshall even at J2/J1=0.8 and 1.0, and the earlier triangular oracle <=0.0604 allowed splitting of degenerate r values and should not be treated as the final threshold-capacity result.
+
 ## Core result
 The one-step Krylov sign miracle is **not a generic property of frustration**.
 It is a **good-gauge / large-basin phenomenon**: when the baseline sign gauge is aligned with the dominant antiferromagnetic structure, the scalar

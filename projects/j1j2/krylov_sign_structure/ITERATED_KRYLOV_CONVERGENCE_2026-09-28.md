@@ -53,11 +53,9 @@ Thus the observed convergence is not being limited by threshold selection in the
 ## Verdict
 **PASS — basin contraction on the tested exact cluster.**
 
-The data support a stronger mechanism than the original one-step statement:
+This file records the first representative iteration test. A later wrong-gauge test showed that the attraction basin on the 4x4 square cluster is substantially larger than inferred here: even Marshall starts at J2/J1=0.8 and 1.0 eventually reach the exact signs. Thus “good sign basin” is sufficient for rapid convergence but is not required for eventual convergence in the tested square cases.
 
-**good sign basin -> repeated Krylov/local-energy sign updates contract to the exact sign structure**
-
-on the tested 4x4 square J1-J2 cases.
+See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` for the current interpretation.
 
 Two steps are not literally exact:
 - at J2/J1=0.5, step 2 gives O_S=0.99999823;

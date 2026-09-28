@@ -31,11 +31,13 @@ SUCCESS: derive a structural criterion explaining when one global local-field/Kr
 FAILURE: identify a controlled frustration regime/model where the first-step rule breaks and isolate which assumption fails.
 
 ## Current mechanism verdict (2026-09-28)
-The sweep falsifies a generic-frustration principle. The one-step rule is instead a **good-gauge / large-basin phenomenon**: Marshall works through the low/intermediate-J2 regime, a stripe/J2-adapted gauge restores the structure near J2/J1~1, while the triangular-lattice antiferromagnet defeats the scalar r0 threshold even with an oracle threshold. High local-field stability by itself is not sufficient; the triangular test reaches P_stable^(1) about 0.95 while having essentially zero sign overlap.
+The one-step rule is the first move of a **projected-Krylov sign descent**. With fixed amplitudes, the threshold family is the sign of `(t-H)psi`; choosing the threshold by fixed-amplitude energy minimization makes the update energy non-increasing.
 
-A follow-up exact fixed-amplitude iteration strengthens this substantially. For representative square-lattice cases, recomputing r_k after every sign update converges to the exact ground-state sign structure: 3 updates at J2/J1=0.5 and 4 updates at J2/J1=0.6 and at J2/J1=1.0 with the stripe baseline. Thus the leading picture is now **basin contraction**, not merely a special first step.
+With exact ground-state amplitudes, repeated updates reach the exact signs on every tested 4x4 square J1-J2 start, including Marshall at J2/J1=0.8 and 1.0 where the first step fails badly. A good gauge therefore explains why **one step** is spectacular, but is not required for eventual convergence on this finite square cluster.
 
-See `MECHANISM_VERDICT_2026-09-28.md` and `ITERATED_KRYLOV_CONVERGENCE_2026-09-28.md`.
+The 6x3 triangular model reveals the real caveat: simple two-color gauges flow to competing wrong fixed points, while random perturbations around the exact signs still contract strongly back to them. Basin membership is therefore structural, not determined by overlap alone.
+
+See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` for the current authoritative interpretation. `MECHANISM_VERDICT_2026-09-28.md` records the earlier one-step stage and is partly superseded.
 
 ## Rule
 This subproject is theory/mechanism only. Do not duplicate the fixed-node loop engineering being run elsewhere.

@@ -68,3 +68,26 @@ Results:
 In every nontrivial step, the label-free energy-selected threshold reaches the same next-step O_S as the hidden-sign oracle threshold on the same r_k coordinate.
 
 Verdict: PASS. On the tested exact square clusters, a good starting sign basin is not merely sufficient for one excellent Krylov correction; the iterated map is contractive all the way to the exact ground-state sign structure. This does not yet establish a scalable algorithm because the amplitudes and fixed-amplitude energy objective were exact.
+
+## 2026-09-28 — Basin dynamics correction and closure
+
+The basin-radius and wrong-gauge follow-ups materially revise the earlier “good gauge required” interpretation.
+
+**Square wrong-gauge recovery**
+- J2/J1=0.8, Marshall: O_S 0.123664 -> 0.061971 -> 0.098225 -> 0.219270 -> 0.469895 -> 0.507588 -> 0.848923 -> 0.962882 -> 0.991197 -> 0.999846 -> 1. Exact after 10 updates.
+- J2/J1=1.0, Marshall: O_S 0.064215 -> 0.171346 -> 0.290203 -> 0.339260 -> 0.910391 -> 0.990778 -> 0.998562 -> 0.999975 -> 0.99999941 -> 1. Exact after 9.
+
+Thus good gauge is not required for eventual convergence on the tested 4x4 square cluster; it mainly makes the first update efficient.
+
+**Random-corruption profile**
+With exact amplitudes and exact signs randomly corrupted by physical probability weight q, all 32/32 sampled square starts converged through q=0.42. This corresponds to initial sign overlap only about 0.16. The transition becomes pattern/model dependent for q>=0.44, so this is an empirical random-corruption profile, not a rigorous worst-case basin radius.
+
+**Triangular repeated dynamics**
+On the 6x3 triangular Heisenberg model, maxcut_x/parity_y/parity_xy flow to wrong fixed points after 13/18/18 updates with O_S essentially zero. Yet random corruptions around the exact signs converge in all 8/8 trials through q=0.45 and in 4/8 at q=0.49.
+
+Interpretation: the exact signs are a strong attractor even on triangular, but simple structured gauges occupy competing basins. Basin membership is not determined by overlap alone.
+
+**Degeneracy correction**
+The older triangular one-step script could split exactly/near-degenerate r values by sweeping configurations individually. That can produce states not realizable by any single threshold. The grouped-threshold implementation is authoritative; the previous triangular oracle <=0.0604 is a legacy artifact/upper bound.
+
+Current mechanism: projected-Krylov sign descent with monotone fixed-amplitude energy and multiple attraction basins. See `BASIN_DYNAMICS_VERDICT_2026-09-28.md`.

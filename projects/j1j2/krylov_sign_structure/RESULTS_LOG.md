@@ -91,3 +91,17 @@ Interpretation: the exact signs are a strong attractor even on triangular, but s
 The older triangular one-step script could split exactly/near-degenerate r values by sweeping configurations individually. That can produce states not realizable by any single threshold. The grouped-threshold implementation is authoritative; the previous triangular oracle <=0.0604 is a legacy artifact/upper bound.
 
 Current mechanism: projected-Krylov sign descent with monotone fixed-amplitude energy and multiple attraction basins. See `BASIN_DYNAMICS_VERDICT_2026-09-28.md`.
+
+## 2026-09-28 — Exact symmetry-sector basin invariant
+
+For any symmetry P with [P,H]=0 and P a=a, if psi_s=a s obeys P psi_s=chi psi_s, then r_s=(H psi_s)/psi_s is P-invariant. Therefore sign(t-r_s) is P-invariant and every projected-Krylov sign update preserves chi.
+
+Audit:
+- triangular ground state: Tx=+1, Ty=+1;
+- triangular maxcut_x: Tx=-1, Ty=+1;
+- triangular parity_xy: Tx=-1;
+- square ground state, Marshall, stripe at J2/J1=0.8 and 1.0: Tx=Ty=+1.
+
+Hence maxcut_x/parity_xy are exactly symmetry-forbidden from reaching the triangular ground signs, while square Marshall is not. Random corruption usually breaks the wrong exact character and can recover.
+
+parity_y is not a Ty eigenstate and remains an unexplained wrong basin, so symmetry is a first basin invariant, not the whole story.

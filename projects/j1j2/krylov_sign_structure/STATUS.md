@@ -49,5 +49,16 @@ The one-step “miracle” is the first strong contraction step of a projected-K
 - results/triangular_iterated_exact.json
 - results/triangular_basin_exact.json
 
+## New analytic basin criterion
+A symmetry-sector invariant is now proved and numerically verified. If P commutes with H, the fixed modulus is P-invariant, and psi_s=a s is a P eigenstate with character chi, then r_s is P-invariant and every threshold update preserves chi.
+
+This explains the best triangular obstruction exactly:
+- triangular ground state: Tx=+1;
+- maxcut_x and parity_xy starts: Tx=-1;
+so those starts can never converge to the ground signs.
+By contrast square ground state, Marshall, and stripe all have Tx=Ty=+1, consistent with eventual recovery.
+
+See `SYMMETRY_BASIN_INVARIANT_2026-09-28.md`.
+
 ## Next question
-Formalize a basin criterion in terms of symmetry / weighted sign flux / effective sign-Ising frustration, then test whether it predicts the triangular wrong basins and the square global-like basin without reference signs.
+The remaining nontrivial basin problem is now narrower: explain wrong fixed points that are **not** symmetry-forbidden (notably triangular parity_y), likely through weighted sign flux / frustration or another invariant of the threshold dynamics. Separately, test robustness when amplitudes and threshold energies are approximate rather than exact.

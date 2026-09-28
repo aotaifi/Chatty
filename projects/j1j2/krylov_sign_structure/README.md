@@ -37,7 +37,9 @@ With exact ground-state amplitudes, repeated updates reach the exact signs on ev
 
 The 6x3 triangular model reveals the real caveat: simple two-color gauges flow to competing wrong fixed points, while random perturbations around the exact signs still contract strongly back to them. Basin membership is therefore structural, not determined by overlap alone.
 
-See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` for the current authoritative interpretation. `MECHANISM_VERDICT_2026-09-28.md` records the earlier one-step stage and is partly superseded.
+We also identified one exact basin invariant: symmetry character. If the current fixed-amplitude wavefunction is in a symmetry sector of H, the projected-Krylov threshold map preserves that sector. On the triangular cluster the exact ground state has Tx=+1 while maxcut_x and parity_xy have Tx=-1, so those starts are rigorously unable to reach the ground signs. Square Marshall/stripe share the ground-state translation sector, so this obstruction is absent.
+
+See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` and `SYMMETRY_BASIN_INVARIANT_2026-09-28.md` for the current authoritative interpretation. `MECHANISM_VERDICT_2026-09-28.md` records the earlier one-step stage and is partly superseded.
 
 ## Rule
 This subproject is theory/mechanism only. Do not duplicate the fixed-node loop engineering being run elsewhere.

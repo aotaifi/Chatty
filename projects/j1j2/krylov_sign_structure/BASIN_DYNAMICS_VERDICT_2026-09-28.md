@@ -99,3 +99,23 @@ The corrected grouped-threshold implementation treats equal/near-equal r values 
 The empirical mechanism is now clear. The next genuinely new theoretical question is to characterize the competing basins: what symmetry, sign-flux, or weighted-frustration quantity distinguishes a start that flows to s_* from one that flows to a wrong threshold-stable fixed point?
 
 For algorithmic use, a separate practical question remains: how much of this survives when a(x) and the threshold-energy objective are only sampled/approximate rather than exact?
+
+## Exact symmetry-sector invariant
+
+A further audit gives an analytic obstruction explaining the best triangular wrong basin.
+
+If P is a symmetry with [P,H]=0, the fixed modulus satisfies P a=a, and psi_s=a s has character P psi_s=chi psi_s, then r_s(Px)=r_s(x). Therefore every threshold mask sign(t-r_s) is P-invariant and the updated wavefunction retains the same character chi.
+
+So the projected-Krylov sign map cannot change an exact symmetry sector.
+
+Numerically:
+- triangular exact ground state: Tx=+1, Ty=+1;
+- triangular maxcut_x: Tx=-1, Ty=+1;
+- triangular parity_xy: Tx=-1;
+- square exact ground state, Marshall, and stripe at J2/J1=0.8 and 1.0: Tx=Ty=+1.
+
+This exactly explains why triangular maxcut_x/parity_xy can never reach the ground signs while square Marshall can. Random corruptions generally break the wrong exact character and therefore are not symmetry-forbidden.
+
+The triangular parity_y wrong basin is not explained by this simple translation character and remains evidence for additional basin structure.
+
+See `SYMMETRY_BASIN_INVARIANT_2026-09-28.md`.

@@ -169,3 +169,34 @@ Target J2=1.0:
 - source 0.6: fidelity 0.2510, yet final O_S=0.99660.
 
 Conclusion: sign descent is robust in overlap but exact recovery depends on the exact amplitude modulus. Approximate amplitudes change the fixed-amplitude sign objective and produce biased fixed points.
+
+## 2026-09-28 — Genuine recursive FN -> current-sign Krylov loop
+
+A critical distinction from the older 4x4 loop was resolved. The prior "energy-opt" loop still rebuilt each sign pattern from the fixed Marshall coordinate r_M. The new benchmark instead iterates the true current-sign map
+
+r_k=(H a_{k+1}s_k)/(a_{k+1}s_k),
+s_{k+1}=s_k sign(t_k-r_k),
+
+with t_k chosen label-free by exact fixed-amplitude energy minimization over grouped r_k values.
+
+### Best-case control: target exact modulus as initial a_0, Marshall signs
+Target J2/J1=0.5. Ground-state data are diagnostics only after initialization.
+
+The recursive loop reaches the **exact ground-state sign pattern at iteration 27**:
+- O_S=1.0 at iteration 27.
+- iteration 30: F_a=0.9999964688, E_guide-E0=8.667e-6 total.
+- once the residual sign pattern a781... is reached at iteration 4, the sign update waits while repeated FN amplitude solves improve a; at iteration 27 a tiny final sign sector flips and the exact signs are obtained.
+
+This falsifies the interpretation that the earlier O~0.9994 recurrence is intrinsic to FN<->Krylov. It was tied to the Marshall-referenced sign-update parametrization.
+
+### No-target-oracle bootstrap: J2=0 modulus as a_0, Marshall signs
+The target J2=0.5 ground state is used only for offline diagnostics.
+
+By iteration 30:
+- O_S=0.99999822924,
+- F_a=0.9997866970,
+- E_guide-E0=4.3915e-4 total.
+
+The bootstrap reaches the same residual sign hash a781... at iteration 20 that the best-case control later escaped from to the exact signs. This strongly suggests slower convergence rather than a distinct wrong fixed point, but 30 iterations are not enough for a verdict.
+
+A durable 100-iteration extension is running under Chatty job 20260928-112353-51474. Do not poll; completion is emailed.

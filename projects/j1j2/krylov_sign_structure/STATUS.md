@@ -92,3 +92,16 @@ Two J2/J1=0.5 runs are being made:
 - no-target-oracle bootstrap: J2=0 Marshall ground-state modulus used as the initial amplitude, with Marshall signs.
 
 The decisive question is whether the coupled FN/Krylov map converges to the exact target pair, cycles, or settles at a self-consistent biased fixed point.
+
+## Recursive FN/current-sign Krylov result — 2026-09-28
+
+The genuinely recursive map has now passed the best-case exact 4x4 control at J2/J1=0.5.
+
+Unlike the older loop, the sign step is built from the **current** sign pattern:
+r_k=(H a_{k+1}s_k)/(a_{k+1}s_k), followed by an exact label-free energy-optimal threshold.
+
+Starting from the exact target modulus with Marshall signs, the coupled FN/Krylov loop reaches O_S=1 exactly at iteration 27. At iteration 30 F_a=0.99999647 and the guide-energy error is only 8.67e-6 total.
+
+Starting instead from the J2=0 modulus plus Marshall signs, with no target information in any update, the loop reaches O_S=0.99999823 by iteration 20 and remains on the same residual sign pattern through iteration 30 while amplitudes continue improving to F_a=0.9997867. This is the same residual pattern the control eventually escaped from.
+
+A 100-iteration no-oracle extension is running under job 20260928-112353-51474 to decide whether the bootstrap also reaches the exact sign pattern.

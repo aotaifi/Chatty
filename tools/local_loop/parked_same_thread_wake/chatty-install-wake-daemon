@@ -1,0 +1,35 @@
+#!/bin/zsh
+set -euo pipefail
+LABEL="com.chatty.wake-daemon"
+REPO="$HOME/Chatty"
+STATE="$REPO/.chatty"
+PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
+PYTHON="$(command -v python3)"
+mkdir -p "$STATE" "$HOME/Library/LaunchAgents"
+cat > "$PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>$LABEL</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>$PYTHON</string>
+    <string>$REPO/tools/local_loop/chatty-wake-daemon.py</string>
+  </array>
+  <key>WorkingDirectory</key><string>$REPO</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ProcessType</key><string>Background</string>
+  <key>StandardOutPath</key><string>$STATE/wake-daemon.stdout.log</string>
+  <key>StandardErrorPath</key><string>$STATE/wake-daemon.stderr.log</string>
+</dict>
+</plist>
+EOF
+plutil -lint "$PLIST"
+DOMAIN="gui/$(id -u)"
+launchctl bootout "$DOMAIN/$LABEL" >/dev/null 2>&1 || true
+launchctl bootstrap "$DOMAIN" "$PLIST"
+launchctl enable "$DOMAIN/$LABEL"
+launchctl kickstart -k "$DOMAIN/$LABEL"
+echo "INSTALLED $PLIST"

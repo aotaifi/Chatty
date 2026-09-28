@@ -1,41 +1,21 @@
-# Durable long-run wake loop
+# Chatty long-run jobs
 
-This directory contains the Mac-side bridge used for long-running research jobs.
+This directory contains the Mac-side helpers for durable research jobs.
 
-## What it does
+## Current policy
 
-A run can outlive the ChatGPT turn that launched it:
+The previous same-thread ChatGPT wake bridge is **parked**. Active research
+agents must not wake ChatGPT, open ChatGPT/Chrome tabs, inject prompts, or use
+CUA/Computer Use when a run finishes.
 
-```
-ChatGPT research turn
-  -> Mac simulation / benchmark
-  -> durable job state under ~/Chatty/jobs/<job-id>/
-  -> run exits
-  -> WAKE_PENDING is written
-  -> ChatGPT.app bundled browser CUA
-  -> prompt submitted into the SAME ChatGPT conversation
-  -> a fresh model turn continues the research
-```
+Instead:
 
-No OpenAI API key is used.
-
-## One-time binding for a conversation
-
-Bind the exact ChatGPT conversation that should be woken:
-
-```bash
-~/Chatty/tools/local_loop/chatty-bind-thread <conversation-id>
-```
-
-The binding lives in `~/Chatty/.chatty/default_thread_id` and is intentionally not committed. A run can override it with `--thread <id>`.
-
-## Install durable recovery once
-
-```bash
-~/Chatty/tools/local_loop/chatty-install-recovery
-```
-
-This installs `~/Library/LaunchAgents/com.chatty.recover.plist`. Once per minute it checks for jobs that still contain `WAKE_PENDING` and have no `WAKE_SUBMITTED`, and retries delivery. Per-job file locking prevents two recovery attempts from delivering simultaneously.
+1. The agent launches or attaches a durable watcher.
+2. Before ending its turn, the agent reports the PID, task, output paths, and
+   what should be checked after completion.
+3. The watcher records completion under `~/Chatty/jobs/<job-id>/`.
+4. The user returns to ChatGPT when convenient; the next agent resumes from the
+   durable files.
 
 ## Launch a new long run
 
@@ -47,74 +27,45 @@ nohup ~/Chatty/tools/local_loop/chatty-run \
   > /tmp/chatty-launch.log 2>&1 &
 ```
 
-`chatty-run` records the command, PID, timestamps, exit code, stdout and stderr. It uses `caffeinate -i` while the child is alive and again while a wake delivery is in progress.
-
-## Attach to a run that already exists
+## Attach to an existing process
 
 ```bash
 nohup ~/Chatty/tools/local_loop/chatty-watch \
   --pid 12345 \
-  --task "When this run ends, inspect its output and continue the scaling analysis" \
+  --task "Inspect the result and continue the scaling analysis" \
   > /tmp/chatty-watch.log 2>&1 &
 ```
 
-An attached watcher cannot recover the target process's exit code because it is not the parent; it records `exit_code: null` and wakes the conversation when the original PID disappears (or is reused).
+An attached watcher cannot know the target process's exit code because it is not
+the parent; it records `exit_code: null`.
 
-## Durable job layout
+## Job layout
 
 ```
 ~/Chatty/jobs/<job-id>/
   job.json
-  stdout.log          # chatty-run
-  stderr.log          # chatty-run
+  stdout.log              # chatty-run only
+  stderr.log              # chatty-run only
   DONE
-  WAKE_PENDING        # delivery still required
-  wake.log
-  WAKE_SUBMITTED      # delivery confirmed
-  WAKE_FAILED         # latest attempt failed; recovery still retries
-  wake.lock
+  NOTIFICATION_NOT_SENT
 ```
 
-`WAKE_FAILED` is not terminal. `WAKE_PENDING` is the durable source of truth that a continuation still needs delivery.
+## Email notification status
 
-## Wake implementation
+Automatic email is intentionally **not enabled yet**. Tests on 2026-09-28 found:
 
-The CUA node runtime has a roughly 30-second deadline per JavaScript request. Therefore the wake helper never waits in one long JS call. It keeps one CUA session alive and uses short calls for:
+- macOS Postfix/sendmail: message was rejected by the destination server
+  because the Mac has no valid reverse DNS;
+- Apple Mail scripting: hangs even for basic outgoing-message operations;
+- Mail UI/key injection: did not produce a delivered message;
+- no noninteractive SMTP/Google CLI credential is exposed to the watcher.
 
-1. creating a browser tab;
-2. navigating to the target conversation;
-3. polling thread readiness from Python with repeated AX-state calls;
-4. setting the composer value;
-5. submitting Return.
+Do not claim email delivery works until a real completion email is verified in
+the recipient mailbox. A dedicated authenticated relay/app password or another
+noninteractive notification transport is still required.
 
-The thread may remain busy for up to 15 minutes without hitting the per-call CUA timeout. If delivery still fails, launchd recovery tries again later.
+## Parked wake implementation
 
-## Requirements / failure behavior
-
-- ChatGPT.app must remain installed and logged in.
-- The Mac needs network access when delivery eventually occurs.
-- Browser-origin permission is auto-approved only for exactly `https://chatgpt.com`.
-- The ChatGPT app version is detected from its Info.plist at runtime.
-- If delivery fails, inspect `wake.log`; do not remove `WAKE_PENDING` unless the continuation is intentionally abandoned.
-
-## Recovery / manual retry
-
-Retry one job immediately:
-
-```bash
-~/Chatty/tools/local_loop/chatty-retry-wake <job-id>
-```
-
-Scan pending jobs now:
-
-```bash
-~/Chatty/tools/local_loop/chatty-recover --max-jobs 10
-```
-
-## Manual wake test
-
-```bash
-~/Chatty/tools/local_loop/chatty-wake-browser.py \
-  "$(~/Chatty/tools/local_loop/chatty-thread)" \
-  "[CHATTY_MANUAL_WAKE_TEST] Reply exactly CHATTY_WAKE_OK"
-```
+The old same-thread wake/CUA experiments are archived under
+`tools/local_loop/parked_same_thread_wake/` for reference only. They are not
+part of the active agent workflow.

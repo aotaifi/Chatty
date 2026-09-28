@@ -6,18 +6,15 @@ This repository is the durable source of truth for long-running research work.
 
 Do not keep a ChatGPT turn open merely to wait for a simulation, benchmark, download, or other long-running Mac process.
 
-1. Bind the current ChatGPT conversation once with:
-   `~/Chatty/tools/local_loop/chatty-bind-thread <conversation-id>`
-2. For a new process, launch it through `~/Chatty/tools/local_loop/chatty-run`.
-3. For a process that is already running, attach `~/Chatty/tools/local_loop/chatty-watch --pid <pid>`.
+1. If you leave a process running, report it in the chat before ending the turn. Include the PID, what is running, where stdout/stderr/results are written, and what should be checked when it finishes.
+2. For a new process, you may launch it through `~/Chatty/tools/local_loop/chatty-run`.
+3. For a process that is already running, you may attach `~/Chatty/tools/local_loop/chatty-watch --pid <pid>`.
 4. Launch the wrapper detached (`nohup ... &`) so it survives the current ChatGPT turn.
-5. Give `--task` a concrete continuation instruction: what output to inspect, what decision/test to make next, and what durable files should be updated.
-6. On completion the watcher writes `WAKE_PENDING` under `~/Chatty/jobs/<job-id>/` and attempts to wake the SAME ChatGPT conversation through ChatGPT.app. The fresh turn should inspect the job and continue without asking the user to type "go".
-7. `WAKE_SUBMITTED` means delivery succeeded. `WAKE_FAILED` only means the latest attempt failed; while `WAKE_PENDING` remains, the recovery worker must keep retrying.
-8. Ensure the recovery worker is installed with `~/Chatty/tools/local_loop/chatty-install-recovery`. Use `chatty-retry-wake <job-id>` for an immediate targeted retry.
-9. Never put a long wait loop inside one CUA JavaScript call: node_repl has a ~30 s per-call execution limit. Poll from the outer Python process using short CUA calls.
+5. A watcher may notify the user by email when the run finishes.
+6. A watcher must NOT wake ChatGPT, open ChatGPT/Chrome tabs, inject prompts, use Computer Use/CUA, or try to continue the conversation automatically.
+7. The next research agent should resume from the durable files on the Mac after the user returns to ChatGPT.
 
-See `tools/local_loop/README.md` for usage and details.
+See `tools/local_loop/README.md` for the watcher interface.
 
 ## J1-J2 project
 

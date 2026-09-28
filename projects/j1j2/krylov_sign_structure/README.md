@@ -47,3 +47,11 @@ See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` and `SYMMETRY_BASIN_INVARIANT_2026-09
 
 ## Rule
 This subproject is theory/mechanism only. Do not duplicate the fixed-node loop engineering being run elsewhere.
+
+## Final closure (2026-09-28)
+
+The finite-size mechanism campaign is closed positively. A genuinely recursive **current-sign** FN <-> projected-Krylov loop reaches the exact J2/J1=0.5 ground-state signs on 4x4:
+- exact-target-modulus control: exact signs at iteration 27;
+- no-target-oracle initialization from the J2=0 modulus + Marshall signs: exact signs at iteration 100.
+
+See \`FINAL_VERDICT_2026-09-28.md\` for the authoritative final statement. The active problem has moved to 6x6/8x8 amplitude-handoff and population/sample scaling.

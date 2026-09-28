@@ -105,3 +105,30 @@ Starting from the exact target modulus with Marshall signs, the coupled FN/Krylo
 Starting instead from the J2=0 modulus plus Marshall signs, with no target information in any update, the loop reaches O_S=0.99999823 by iteration 20 and remains on the same residual sign pattern through iteration 30 while amplitudes continue improving to F_a=0.9997867. This is the same residual pattern the control eventually escaped from.
 
 A 100-iteration no-oracle extension is running under job 20260928-112353-51474 to decide whether the bootstrap also reaches the exact sign pattern.
+
+## FINAL CLOSURE — 2026-09-28
+
+The no-target-oracle 100-iteration extension completed successfully.
+
+Initialization:
+- target: J2/J1=0.5;
+- signs: Marshall;
+- amplitudes: exact J2=0 ground-state modulus;
+- target J2=0.5 ED data used only for diagnostics, never for an update.
+
+The current-sign FN <-> projected-Krylov loop reaches the **exact target sign pattern at iteration 100**.
+
+Final diagnostics:
+- O_S = 1.0000000000;
+- F_a = 0.9999946178;
+- E_guide - E0 = 2.6044e-5 total.
+
+The best-case exact-target-modulus initialization reaches exact signs earlier, at iteration 27.
+
+Therefore the mechanism subproject is CLOSED / ACCEPTED at finite size:
+a standard lattice FN amplitude solve alternated with a current-sign, label-free, energy-optimal projected-Krylov threshold update can self-correct both amplitudes and signs and reach the exact target sign chamber on the tested 4x4 J1-J2 benchmark without target-ground-state information entering the recursive updates.
+
+The active unresolved problem is now scaling/sampling, not mechanism:
+can a sampled/compact representation of FN amplitudes preserve this loop on 6x6, 8x8, ... with polynomial resources?
+
+See FINAL_VERDICT_2026-09-28.md.

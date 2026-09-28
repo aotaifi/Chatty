@@ -459,3 +459,53 @@ If that map converges to \(E_0\), \(F_a=1\), and \(O_S=1\) from a nontrivial sta
 - KRYLOV_SIGN_STRUCTURE_NOTE_2026-09-28.pdf
 - STATUS.md
 - RESULTS_LOG.md
+
+---
+
+## 16. Final closure: the no-target-oracle loop reaches the exact signs
+
+After the campaign summary above was written, the decisive fully recursive benchmark was completed.
+
+The crucial correction relative to the older 4x4 loop is that the Krylov coordinate is recomputed from the **current** sign pattern,
+
+\[
+r_k=\frac{H(a_{k+1}s_k)}{a_{k+1}s_k},
+\]
+
+rather than from a fixed Marshall reference.
+
+For target J2/J1=0.5, initialize with:
+- Marshall signs;
+- the exact ground-state modulus of the unfrustrated J2=0 Hamiltonian.
+
+No target-J2 ground-state information enters an update.
+
+The coupled loop
+
+\[
+s_k \xrightarrow{\rm FN} a_{k+1}
+\xrightarrow{\rm current-sign\ projected\ Krylov} s_{k+1}
+\]
+
+reaches the exact target sign structure at **iteration 100**.
+
+Final diagnostics:
+\[
+O_S=1,\qquad
+F_a=0.9999946178,\qquad
+E-E_0=2.6044\times10^{-5}.
+\]
+
+A best-case control initialized with the exact target modulus reaches the exact signs at iteration 27.
+
+### Final campaign verdict
+
+The mechanism subproject is **CLOSED / ACCEPTED at finite size**.
+
+The demonstrated finite-size principle is:
+
+> A standard lattice fixed-node amplitude solve alternated with a current-sign, label-free projected-Krylov threshold update can form a self-correcting loop and reach the exact ground-state sign chamber without target-ground-state information entering the recursive updates.
+
+The remaining research problem is scaling: whether sampled/compact FN amplitudes preserve this loop with polynomial resources as L increases.
+
+See \`FINAL_VERDICT_2026-09-28.md\`.

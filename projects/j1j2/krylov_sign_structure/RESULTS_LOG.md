@@ -200,3 +200,23 @@ By iteration 30:
 The bootstrap reaches the same residual sign hash a781... at iteration 20 that the best-case control later escaped from to the exact signs. This strongly suggests slower convergence rather than a distinct wrong fixed point, but 30 iterations are not enough for a verdict.
 
 A durable 100-iteration extension is running under Chatty job 20260928-112353-51474. Do not poll; completion is emailed.
+
+## 2026-09-28 — No-target-oracle closed loop reaches exact signs
+
+The 100-iteration extension of the genuine current-sign FN/Krylov recursion completed.
+
+Start: J2=0 modulus + Marshall signs. Target: J2/J1=0.5. No target ground-state information enters FN or the threshold update.
+
+Milestones:
+- it 2: O_S=0.995945
+- it 8: O_S=0.999532
+- it 15: O_S=0.9999358
+- it 20: O_S=0.999998229
+- it 20-99: same residual sign pattern, while FN amplitudes continue to improve
+- it 100: final tiny sign sector flips; O_S=1 exactly
+
+At it 100:
+F_a=0.9999946178,
+E_guide-E0=2.6044e-5 total.
+
+This is the decisive finite-size demonstration of a self-correcting FN amplitude <-> current-sign projected-Krylov sign loop.

@@ -39,6 +39,10 @@ The 6x3 triangular model reveals the real caveat: simple two-color gauges flow t
 
 We also identified one exact basin invariant: symmetry character. If the current fixed-amplitude wavefunction is in a symmetry sector of H, the projected-Krylov threshold map preserves that sector. On the triangular cluster the exact ground state has Tx=+1 while maxcut_x and parity_xy have Tx=-1, so those starts are rigorously unable to reach the ground signs. Square Marshall/stripe share the ground-state translation sector, so this obstruction is absent.
 
+Two further tests sharpen this. First, iid random square-lattice sign starts with only O_S~0.04-0.06 still reach the exact signs in 37-61% of 64 trials when exact amplitudes are fixed. Second, the mechanism survives substantial smooth amplitude distortion: using a_gamma proportional to |psi_GS|^gamma with gamma=0.75 still gives exact recovery at J2/J1=0.5 and 0.6 and near-perfect recovery at J2/J1=1, while gamma=0.5 largely destroys it.
+
+Analytically, in the exact ground-state sign gauge the local-energy displacement r_x-E0 is exactly the amplitude-weighted boundary load of the current wrong-sign domain. This identifies the iteration as a threshold dynamics on defect boundaries, constrained by exact symmetry sectors.
+
 See `BASIN_DYNAMICS_VERDICT_2026-09-28.md` and `SYMMETRY_BASIN_INVARIANT_2026-09-28.md` for the current authoritative interpretation. `MECHANISM_VERDICT_2026-09-28.md` records the earlier one-step stage and is partly superseded.
 
 ## Rule

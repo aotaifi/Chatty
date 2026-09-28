@@ -1,0 +1,448 @@
+{
+  "method": {
+    "system": "4x4 periodic square J1-J2, Sz=0 exact diagonalization",
+    "approx_amplitudes": "a_gamma proportional to max(|psi_GS|,floor)^gamma; gamma=1 exact, gamma=0 uniform",
+    "start": "Marshall for J2=0.5,0.6; stripe_x for J2=1.0",
+    "update": "iterated local-energy/Krylov sign map, threshold minimizing fixed-a_gamma energy",
+    "score": "physical sign overlap evaluated with exact ground-state probability weights",
+    "max_iterations": 30
+  },
+  "rows": [
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 0.0,
+      "O_initial": 0.9745380645577977,
+      "O_final": 0.9745380645577977,
+      "max_O": 0.9745380645577977,
+      "iterations": 2,
+      "exact_signs_reached": false,
+      "approx_energy": -5.06666666666667,
+      "approx_energy_error_per_site": 0.21195354279551148,
+      "trajectory": [
+        0.9745380645577977,
+        0.9745085257453041,
+        0.9745380645577977
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 0.25,
+      "O_initial": 0.9745380645577977,
+      "O_final": 0.9745380645577977,
+      "max_O": 0.9745380645577977,
+      "iterations": 0,
+      "exact_signs_reached": false,
+      "approx_energy": -6.267875751734933,
+      "approx_energy_error_per_site": 0.13687797497874504,
+      "trajectory": [
+        0.9745380645577977
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 0.5,
+      "O_initial": 0.9745380645577977,
+      "O_final": 0.9745352873831403,
+      "max_O": 0.9745380645577977,
+      "iterations": 1,
+      "exact_signs_reached": false,
+      "approx_energy": -7.323775623287807,
+      "approx_energy_error_per_site": 0.07088423300669044,
+      "trajectory": [
+        0.9745380645577977,
+        0.9745352873831403
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 0.75,
+      "O_initial": 0.9745380645577977,
+      "O_final": 1.0,
+      "max_O": 1.0,
+      "iterations": 4,
+      "exact_signs_reached": true,
+      "approx_energy": -8.230681087749186,
+      "approx_energy_error_per_site": 0.014202641477854216,
+      "trajectory": [
+        0.9745380645577977,
+        0.9984344634467384,
+        0.9998394411167288,
+        0.9999996259406414,
+        1.0
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 0.9,
+      "O_initial": 0.9745380645577977,
+      "O_final": 1.0,
+      "max_O": 1.0,
+      "iterations": 3,
+      "exact_signs_reached": true,
+      "approx_energy": -8.425060816536385,
+      "approx_energy_error_per_site": 0.002053908428654272,
+      "trajectory": [
+        0.9745380645577977,
+        0.999271000353426,
+        0.9999982292406697,
+        1.0
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 1.0,
+      "O_initial": 0.9745380645577977,
+      "O_final": 1.0,
+      "max_O": 1.0,
+      "iterations": 3,
+      "exact_signs_reached": true,
+      "approx_energy": -8.45792335139485,
+      "approx_energy_error_per_site": 2.220446049250313e-16,
+      "trajectory": [
+        0.9745380645577977,
+        0.9993188978408847,
+        0.9999982292406697,
+        1.0
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 1.1,
+      "O_initial": 0.9745380645577977,
+      "O_final": 0.9999996259406414,
+      "max_O": 0.9999996259406414,
+      "iterations": 3,
+      "exact_signs_reached": false,
+      "approx_energy": -8.428978854901358,
+      "approx_energy_error_per_site": 0.001809031030843511,
+      "trajectory": [
+        0.9745380645577977,
+        0.9993265245336738,
+        0.9999941711727076,
+        0.9999996259406414
+      ]
+    },
+    {
+      "J2": 0.5,
+      "baseline": "marshall",
+      "gamma": 1.25,
+      "O_initial": 0.9745380645577977,
+      "O_final": 0.9999959419320381,
+      "max_O": 0.9999959419320381,
+      "iterations": 2,
+      "exact_signs_reached": false,
+      "approx_energy": -8.292148967559411,
+      "approx_energy_error_per_site": 0.01036089898971515,
+      "trajectory": [
+        0.9745380645577977,
+        0.9997063962366255,
+        0.9999959419320381
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 0.0,
+      "O_initial": 0.7955724433085023,
+      "O_final": 0.7954737349993113,
+      "max_O": 0.7955724433085023,
+      "iterations": 1,
+      "exact_signs_reached": false,
+      "approx_energy": -4.26865578865579,
+      "approx_energy_error_per_site": 0.2591048352240277,
+      "trajectory": [
+        0.7955724433085023,
+        0.7954737349993113
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 0.25,
+      "O_initial": 0.7955724433085023,
+      "O_final": 0.7941133621957823,
+      "max_O": 0.7955724433085023,
+      "iterations": 3,
+      "exact_signs_reached": false,
+      "approx_energy": -5.211890170354588,
+      "approx_energy_error_per_site": 0.20015268636785288,
+      "trajectory": [
+        0.7955724433085023,
+        0.7950683516337202,
+        0.7937681937551473,
+        0.7941133621957823
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 0.5,
+      "O_initial": 0.7955724433085023,
+      "O_final": 0.7772124980408455,
+      "max_O": 0.7955724433085023,
+      "iterations": 8,
+      "exact_signs_reached": false,
+      "approx_energy": -6.409199857340732,
+      "approx_energy_error_per_site": 0.12532083093121887,
+      "trajectory": [
+        0.7955724433085023,
+        0.7828671562747267,
+        0.7821242287281466,
+        0.7776864662343816,
+        0.7785818732469605,
+        0.778362577437882,
+        0.7783277390419723,
+        0.7771184806735161,
+        0.7772124980408455
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 0.75,
+      "O_initial": 0.7955724433085023,
+      "O_final": 1.0000000000000002,
+      "max_O": 1.0000000000000002,
+      "iterations": 7,
+      "exact_signs_reached": true,
+      "approx_energy": -8.206482747169634,
+      "approx_energy_error_per_site": 0.012990650316912489,
+      "trajectory": [
+        0.7955724433085023,
+        0.7821111160094293,
+        0.9367698134467355,
+        0.9585153121077643,
+        0.9608063133715925,
+        0.961250671910759,
+        0.9915736938357206,
+        1.0000000000000002
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 0.9,
+      "O_initial": 0.7955724433085023,
+      "O_final": 1.0000000000000002,
+      "max_O": 1.0000000000000002,
+      "iterations": 4,
+      "exact_signs_reached": true,
+      "approx_energy": -8.383297850187546,
+      "approx_energy_error_per_site": 0.0019397063782929935,
+      "trajectory": [
+        0.7955724433085023,
+        0.9555130443703119,
+        0.9896229191950188,
+        0.999443771049429,
+        1.0000000000000002
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 1.0,
+      "O_initial": 0.7955724433085023,
+      "O_final": 1.0000000000000002,
+      "max_O": 1.0000000000000002,
+      "iterations": 4,
+      "exact_signs_reached": true,
+      "approx_energy": -8.414333152240209,
+      "approx_energy_error_per_site": 1.5543122344752192e-15,
+      "trajectory": [
+        0.7955724433085023,
+        0.9571308288270184,
+        0.991266954451322,
+        0.999443771049429,
+        1.0000000000000002
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 1.1,
+      "O_initial": 0.7955724433085023,
+      "O_final": 1.0000000000000002,
+      "max_O": 1.0000000000000002,
+      "iterations": 4,
+      "exact_signs_reached": true,
+      "approx_energy": -8.386269950939088,
+      "approx_energy_error_per_site": 0.0017539500813216202,
+      "trajectory": [
+        0.7955724433085023,
+        0.963210396883411,
+        0.9944215167462571,
+        0.9997188497595183,
+        1.0000000000000002
+      ]
+    },
+    {
+      "J2": 0.6,
+      "baseline": "marshall",
+      "gamma": 1.25,
+      "O_initial": 0.7955724433085023,
+      "O_final": 0.9998985132383371,
+      "max_O": 0.9998985132383371,
+      "iterations": 4,
+      "exact_signs_reached": false,
+      "approx_energy": -8.25262943678829,
+      "approx_energy_error_per_site": 0.010106482215746504,
+      "trajectory": [
+        0.7955724433085023,
+        0.9648906903431583,
+        0.9955285370808177,
+        0.999871597452503,
+        0.9998985132383371
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 0.0,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9558187845895003,
+      "max_O": 0.9558187845895003,
+      "iterations": 0,
+      "exact_signs_reached": false,
+      "approx_energy": -9.600000000000005,
+      "approx_energy_error_per_site": 0.1684681385064054,
+      "trajectory": [
+        0.9558187845895003
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 0.25,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9558187845895003,
+      "max_O": 0.9558187845895003,
+      "iterations": 2,
+      "exact_signs_reached": false,
+      "approx_energy": -10.346749442305999,
+      "approx_energy_error_per_site": 0.12179629836228079,
+      "trajectory": [
+        0.9558187845895003,
+        0.9558175153382638,
+        0.9558187845895003
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 0.5,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9558187845895003,
+      "max_O": 0.9558187845895003,
+      "iterations": 2,
+      "exact_signs_reached": false,
+      "approx_energy": -11.035492873602838,
+      "approx_energy_error_per_site": 0.07874983390622836,
+      "trajectory": [
+        0.9558187845895003,
+        0.9558175153382638,
+        0.9558187845895003
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 0.75,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9999759318726769,
+      "max_O": 0.9999991438649268,
+      "iterations": 4,
+      "exact_signs_reached": false,
+      "approx_energy": -12.015347368203141,
+      "approx_energy_error_per_site": 0.0175089279937094,
+      "trajectory": [
+        0.9558187845895003,
+        0.9912852403331326,
+        0.9990075223483854,
+        0.9999991438649268,
+        0.9999759318726769
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 0.9,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9999988766594194,
+      "max_O": 0.9999991438649268,
+      "iterations": 4,
+      "exact_signs_reached": false,
+      "approx_energy": -12.24926339619418,
+      "approx_energy_error_per_site": 0.0028891762442694313,
+      "trajectory": [
+        0.9558187845895003,
+        0.9941422143695025,
+        0.9995509200560028,
+        0.9999991438649268,
+        0.9999988766594194
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 1.0,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9999999999999999,
+      "max_O": 0.9999999999999999,
+      "iterations": 4,
+      "exact_signs_reached": true,
+      "approx_energy": -12.295490216102476,
+      "approx_energy_error_per_site": 9.992007221626409e-16,
+      "trajectory": [
+        0.9558187845895003,
+        0.9948843846679597,
+        0.9996917732676208,
+        0.9999994383297096,
+        0.9999999999999999
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 1.1,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9999994110704341,
+      "max_O": 0.9999997055352171,
+      "iterations": 4,
+      "exact_signs_reached": false,
+      "approx_energy": -12.248421102492083,
+      "approx_energy_error_per_site": 0.0029418196006505415,
+      "trajectory": [
+        0.9558187845895003,
+        0.9957022527932914,
+        0.999794771901453,
+        0.9999997055352171,
+        0.9999994110704341
+      ]
+    },
+    {
+      "J2": 1.0,
+      "baseline": "stripe_x",
+      "gamma": 1.25,
+      "O_initial": 0.9558187845895003,
+      "O_final": 0.9999994110704341,
+      "max_O": 0.9999994110704341,
+      "iterations": 3,
+      "exact_signs_reached": false,
+      "approx_energy": -12.007598106094907,
+      "approx_energy_error_per_site": 0.01799325687547404,
+      "trajectory": [
+        0.9558187845895003,
+        0.9961352892964772,
+        0.999910291117382,
+        0.9999994110704341
+      ]
+    }
+  ]
+}

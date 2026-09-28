@@ -1,0 +1,1783 @@
+{
+  "method": {
+    "system": "4x4 periodic square J1-J2, Sz=0 exact diagonalization",
+    "amplitudes": "exact ground-state |psi| fixed",
+    "initialization": "iid random signs, global gauge fixed at largest-amplitude configuration",
+    "update": "iterated r_k=(H a s_k)/(a s_k), label-free threshold minimizing exact fixed-amplitude energy",
+    "success": "exact ground-state signs within O_S>1-1e-12",
+    "trials": 64,
+    "max_iterations": 60,
+    "seed": 20260945
+  },
+  "summaries": [
+    {
+      "J2": 0.5,
+      "trials": 64,
+      "O_initial_mean": 0.04337788080156749,
+      "O_initial_median": 0.041065550602204834,
+      "O_initial_max": 0.13197644861844124,
+      "success_fraction": 0.390625,
+      "median_iterations": 23.0,
+      "max_iterations_success": 40,
+      "O_final_mean": 0.5355878430764677,
+      "O_final_median": 0.3486555577597934,
+      "oracle_first_mean": 0.1560958979712731
+    },
+    {
+      "J2": 0.6,
+      "trials": 64,
+      "O_initial_mean": 0.04216590274515203,
+      "O_initial_median": 0.040074664305462075,
+      "O_initial_max": 0.11857544497011387,
+      "success_fraction": 0.375,
+      "median_iterations": 23.0,
+      "max_iterations_success": 40,
+      "O_final_mean": 0.562761140446912,
+      "O_final_median": 0.48820293075520926,
+      "oracle_first_mean": 0.13913083440288704
+    },
+    {
+      "J2": 1.0,
+      "trials": 64,
+      "O_initial_mean": 0.06358131624147742,
+      "O_initial_median": 0.06795182057642238,
+      "O_initial_max": 0.13985875008224463,
+      "success_fraction": 0.609375,
+      "median_iterations": 19.0,
+      "max_iterations_success": 30,
+      "O_final_mean": 0.6938411085939609,
+      "O_final_median": 1.0,
+      "oracle_first_mean": 0.19973181667357998
+    }
+  ],
+  "rows": [
+    {
+      "J2": 0.5,
+      "trial": 0,
+      "O_initial": 0.00915029911994129,
+      "success_exact": false,
+      "iterations": 18,
+      "O_final": 0.10313352701735205,
+      "oracle_O_after_first": 0.11323408210352669
+    },
+    {
+      "J2": 0.5,
+      "trial": 1,
+      "O_initial": 0.01840105280712124,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.25960832985198845,
+      "oracle_O_after_first": 0.11400718102650745
+    },
+    {
+      "J2": 0.5,
+      "trial": 2,
+      "O_initial": 0.08972136704194075,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.26483535902777366
+    },
+    {
+      "J2": 0.5,
+      "trial": 3,
+      "O_initial": 0.07061747851793457,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.28201770640436213,
+      "oracle_O_after_first": 0.2371004341062938
+    },
+    {
+      "J2": 0.5,
+      "trial": 4,
+      "O_initial": 0.05855427249175496,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.15350322201017672
+    },
+    {
+      "J2": 0.5,
+      "trial": 5,
+      "O_initial": 0.00940208627798767,
+      "success_exact": false,
+      "iterations": 17,
+      "O_final": 0.028406390785537715,
+      "oracle_O_after_first": 0.09806569619671358
+    },
+    {
+      "J2": 0.5,
+      "trial": 6,
+      "O_initial": 0.11840212686805124,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.3195745328382313
+    },
+    {
+      "J2": 0.5,
+      "trial": 7,
+      "O_initial": 0.005604449078146835,
+      "success_exact": false,
+      "iterations": 18,
+      "O_final": 0.0579015816790537,
+      "oracle_O_after_first": 0.10229445971327646
+    },
+    {
+      "J2": 0.5,
+      "trial": 8,
+      "O_initial": 0.05173619839348435,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.15518271629510472
+    },
+    {
+      "J2": 0.5,
+      "trial": 9,
+      "O_initial": 0.030026460428637637,
+      "success_exact": false,
+      "iterations": 17,
+      "O_final": 0.13081156058491977,
+      "oracle_O_after_first": 0.12975117947589881
+    },
+    {
+      "J2": 0.5,
+      "trial": 10,
+      "O_initial": 0.061125088309063894,
+      "success_exact": true,
+      "iterations": 22,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.18785185137713645
+    },
+    {
+      "J2": 0.5,
+      "trial": 11,
+      "O_initial": 0.013223412111732733,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.026568457411712598,
+      "oracle_O_after_first": 0.06484525717512435
+    },
+    {
+      "J2": 0.5,
+      "trial": 12,
+      "O_initial": 0.090791891663034,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.27980666484894445
+    },
+    {
+      "J2": 0.5,
+      "trial": 13,
+      "O_initial": 0.07333875433832618,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.5546474249576866,
+      "oracle_O_after_first": 0.18636356551192299
+    },
+    {
+      "J2": 0.5,
+      "trial": 14,
+      "O_initial": 0.014514533255244738,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.26668739421650894,
+      "oracle_O_after_first": 0.1257069986903994
+    },
+    {
+      "J2": 0.5,
+      "trial": 15,
+      "O_initial": 0.026712027046086453,
+      "success_exact": false,
+      "iterations": 28,
+      "O_final": 0.2934150093310387,
+      "oracle_O_after_first": 0.14059068502237365
+    },
+    {
+      "J2": 0.5,
+      "trial": 16,
+      "O_initial": 0.09633801611237397,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.2979576016696045
+    },
+    {
+      "J2": 0.5,
+      "trial": 17,
+      "O_initial": 0.010525382769620544,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.14142181728454192,
+      "oracle_O_after_first": 0.057050221170409504
+    },
+    {
+      "J2": 0.5,
+      "trial": 18,
+      "O_initial": 0.04200484952604639,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.14330646800991578,
+      "oracle_O_after_first": 0.13443763037442938
+    },
+    {
+      "J2": 0.5,
+      "trial": 19,
+      "O_initial": 0.0652677158392407,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.18828796275115345
+    },
+    {
+      "J2": 0.5,
+      "trial": 20,
+      "O_initial": 0.021923559610588766,
+      "success_exact": false,
+      "iterations": 33,
+      "O_final": 0.22443106832263354,
+      "oracle_O_after_first": 0.13328983110316645
+    },
+    {
+      "J2": 0.5,
+      "trial": 21,
+      "O_initial": 0.06446183754578941,
+      "success_exact": false,
+      "iterations": 40,
+      "O_final": 0.7935730331065218,
+      "oracle_O_after_first": 0.17357018198166838
+    },
+    {
+      "J2": 0.5,
+      "trial": 22,
+      "O_initial": 0.04937502892276993,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.33555212593174943,
+      "oracle_O_after_first": 0.12644116117225598
+    },
+    {
+      "J2": 0.5,
+      "trial": 23,
+      "O_initial": 0.09038405083559999,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.25109561017915016
+    },
+    {
+      "J2": 0.5,
+      "trial": 24,
+      "O_initial": 0.03620005841136968,
+      "success_exact": true,
+      "iterations": 38,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.15465567593475865
+    },
+    {
+      "J2": 0.5,
+      "trial": 25,
+      "O_initial": 0.13197644861844124,
+      "success_exact": true,
+      "iterations": 13,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.3457627926794832
+    },
+    {
+      "J2": 0.5,
+      "trial": 26,
+      "O_initial": 0.07409642659072306,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.2426676080388152
+    },
+    {
+      "J2": 0.5,
+      "trial": 27,
+      "O_initial": 0.05934634147496048,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.6218222744894121,
+      "oracle_O_after_first": 0.16371995619221433
+    },
+    {
+      "J2": 0.5,
+      "trial": 28,
+      "O_initial": 0.05122541258440278,
+      "success_exact": true,
+      "iterations": 38,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.13815937470426842
+    },
+    {
+      "J2": 0.5,
+      "trial": 29,
+      "O_initial": 0.048328487644831615,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.21120869251853036
+    },
+    {
+      "J2": 0.5,
+      "trial": 30,
+      "O_initial": 0.015575846022851808,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.2903383900000854,
+      "oracle_O_after_first": 0.13539330670028327
+    },
+    {
+      "J2": 0.5,
+      "trial": 31,
+      "O_initial": 0.005472109970998972,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.2329945508777716,
+      "oracle_O_after_first": 0.06024336457381515
+    },
+    {
+      "J2": 0.5,
+      "trial": 32,
+      "O_initial": 0.06249203575373493,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.515152877601321,
+      "oracle_O_after_first": 0.16988933516569407
+    },
+    {
+      "J2": 0.5,
+      "trial": 33,
+      "O_initial": 0.0503873919925452,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.27720514726644874,
+      "oracle_O_after_first": 0.14358574836851024
+    },
+    {
+      "J2": 0.5,
+      "trial": 34,
+      "O_initial": 0.06889539024519697,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.2763288408252167,
+      "oracle_O_after_first": 0.22492137020580277
+    },
+    {
+      "J2": 0.5,
+      "trial": 35,
+      "O_initial": 0.05308833832863122,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.16606507736418347
+    },
+    {
+      "J2": 0.5,
+      "trial": 36,
+      "O_initial": 0.03431949077572763,
+      "success_exact": true,
+      "iterations": 40,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.10161663985764802
+    },
+    {
+      "J2": 0.5,
+      "trial": 37,
+      "O_initial": 0.012733133690362546,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.14893678981681424,
+      "oracle_O_after_first": 0.08343945626175012
+    },
+    {
+      "J2": 0.5,
+      "trial": 38,
+      "O_initial": 0.0573555820250357,
+      "success_exact": true,
+      "iterations": 20,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.20859172565981365
+    },
+    {
+      "J2": 0.5,
+      "trial": 39,
+      "O_initial": 0.0007427808011743649,
+      "success_exact": false,
+      "iterations": 18,
+      "O_final": 0.0018926602378371155,
+      "oracle_O_after_first": 0.0738136002650372
+    },
+    {
+      "J2": 0.5,
+      "trial": 40,
+      "O_initial": 0.046580057709716766,
+      "success_exact": false,
+      "iterations": 31,
+      "O_final": 0.3799545176034951,
+      "oracle_O_after_first": 0.15079064287638858
+    },
+    {
+      "J2": 0.5,
+      "trial": 41,
+      "O_initial": 0.00935082471585947,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.1379597263911013
+    },
+    {
+      "J2": 0.5,
+      "trial": 42,
+      "O_initial": 0.0061399108305199915,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.13046350546752816,
+      "oracle_O_after_first": 0.07265098291519559
+    },
+    {
+      "J2": 0.5,
+      "trial": 43,
+      "O_initial": 0.03400260816084795,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.2506089112989433,
+      "oracle_O_after_first": 0.11103251823132503
+    },
+    {
+      "J2": 0.5,
+      "trial": 44,
+      "O_initial": 0.026911397857728947,
+      "success_exact": false,
+      "iterations": 27,
+      "O_final": 0.36175898958783737,
+      "oracle_O_after_first": 0.13117434955569254
+    },
+    {
+      "J2": 0.5,
+      "trial": 45,
+      "O_initial": 0.018762753152933798,
+      "success_exact": false,
+      "iterations": 32,
+      "O_final": 0.28743560466701434,
+      "oracle_O_after_first": 0.09298411561312966
+    },
+    {
+      "J2": 0.5,
+      "trial": 46,
+      "O_initial": 0.06430505244556227,
+      "success_exact": true,
+      "iterations": 24,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.20236584833089244
+    },
+    {
+      "J2": 0.5,
+      "trial": 47,
+      "O_initial": 0.03347500611231301,
+      "success_exact": false,
+      "iterations": 27,
+      "O_final": 0.4592023012693932,
+      "oracle_O_after_first": 0.15662630133865474
+    },
+    {
+      "J2": 0.5,
+      "trial": 48,
+      "O_initial": 0.06233333542951387,
+      "success_exact": true,
+      "iterations": 24,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.20481217060802198
+    },
+    {
+      "J2": 0.5,
+      "trial": 49,
+      "O_initial": 0.017566674913998513,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.03680092099459342,
+      "oracle_O_after_first": 0.10535642827457803
+    },
+    {
+      "J2": 0.5,
+      "trial": 50,
+      "O_initial": 0.014006332977982303,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.2671616040218924,
+      "oracle_O_after_first": 0.0736600402587445
+    },
+    {
+      "J2": 0.5,
+      "trial": 51,
+      "O_initial": 0.09278747690838265,
+      "success_exact": true,
+      "iterations": 18,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.25557391435693644
+    },
+    {
+      "J2": 0.5,
+      "trial": 52,
+      "O_initial": 0.02665291511173998,
+      "success_exact": false,
+      "iterations": 42,
+      "O_final": 0.2676543124679324,
+      "oracle_O_after_first": 0.10498001156224632
+    },
+    {
+      "J2": 0.5,
+      "trial": 53,
+      "O_initial": 0.06415081585579632,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.28691321960125304,
+      "oracle_O_after_first": 0.21680512470251925
+    },
+    {
+      "J2": 0.5,
+      "trial": 54,
+      "O_initial": 0.07533116994247573,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.18628329605549204
+    },
+    {
+      "J2": 0.5,
+      "trial": 55,
+      "O_initial": 0.035365646683642366,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.2279545495412364,
+      "oracle_O_after_first": 0.12594720560801242
+    },
+    {
+      "J2": 0.5,
+      "trial": 56,
+      "O_initial": 0.002573279129697105,
+      "success_exact": false,
+      "iterations": 18,
+      "O_final": 0.09178943836909839,
+      "oracle_O_after_first": 0.09837836143642559
+    },
+    {
+      "J2": 0.5,
+      "trial": 57,
+      "O_initial": 0.009411806833402014,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.11974988905160003,
+      "oracle_O_after_first": 0.10296077739284464
+    },
+    {
+      "J2": 0.5,
+      "trial": 58,
+      "O_initial": 0.0240954683855127,
+      "success_exact": false,
+      "iterations": 17,
+      "O_final": 0.0252139018025209,
+      "oracle_O_after_first": 0.08962273165816707
+    },
+    {
+      "J2": 0.5,
+      "trial": 59,
+      "O_initial": 0.042210561258210315,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.12970637788447295
+    },
+    {
+      "J2": 0.5,
+      "trial": 60,
+      "O_initial": 0.060690317852497254,
+      "success_exact": true,
+      "iterations": 29,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.20504872776919772
+    },
+    {
+      "J2": 0.5,
+      "trial": 61,
+      "O_initial": 0.010930626636819242,
+      "success_exact": false,
+      "iterations": 17,
+      "O_final": 0.0782628308334927,
+      "oracle_O_after_first": 0.10157149114239838
+    },
+    {
+      "J2": 0.5,
+      "trial": 62,
+      "O_initial": 0.040126251678363284,
+      "success_exact": true,
+      "iterations": 29,
+      "O_final": 0.9999999999999999,
+      "oracle_O_after_first": 0.20291902503704243
+    },
+    {
+      "J2": 0.5,
+      "trial": 63,
+      "O_initial": 0.01458686687529661,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.0005440343056764968,
+      "oracle_O_after_first": 0.07234949085014708
+    },
+    {
+      "J2": 0.6,
+      "trial": 0,
+      "O_initial": 0.0417257139758726,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.15363109963969843
+    },
+    {
+      "J2": 0.6,
+      "trial": 1,
+      "O_initial": 0.03510829058535274,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.2074203674031575,
+      "oracle_O_after_first": 0.1343962632443338
+    },
+    {
+      "J2": 0.6,
+      "trial": 2,
+      "O_initial": 0.08710170414643273,
+      "success_exact": true,
+      "iterations": 18,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.259349736691212
+    },
+    {
+      "J2": 0.6,
+      "trial": 3,
+      "O_initial": 0.10952401438299453,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.3109053153521703
+    },
+    {
+      "J2": 0.6,
+      "trial": 4,
+      "O_initial": 0.00088559752975843,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.021857440271393067,
+      "oracle_O_after_first": 0.060087449221412806
+    },
+    {
+      "J2": 0.6,
+      "trial": 5,
+      "O_initial": 0.04372228986437181,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.16628231074229605
+    },
+    {
+      "J2": 0.6,
+      "trial": 6,
+      "O_initial": 0.05747009634874743,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.14998597777611888
+    },
+    {
+      "J2": 0.6,
+      "trial": 7,
+      "O_initial": 0.076052186733511,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1819382008785737
+    },
+    {
+      "J2": 0.6,
+      "trial": 8,
+      "O_initial": 0.04352497958590038,
+      "success_exact": false,
+      "iterations": 29,
+      "O_final": 0.1925205953743339,
+      "oracle_O_after_first": 0.11727639437359927
+    },
+    {
+      "J2": 0.6,
+      "trial": 9,
+      "O_initial": 0.03086056178927557,
+      "success_exact": false,
+      "iterations": 37,
+      "O_final": 0.723173759763975,
+      "oracle_O_after_first": 0.10246897898129018
+    },
+    {
+      "J2": 0.6,
+      "trial": 10,
+      "O_initial": 0.06546009962326735,
+      "success_exact": true,
+      "iterations": 19,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.17761724541398596
+    },
+    {
+      "J2": 0.6,
+      "trial": 11,
+      "O_initial": 0.008871535512767582,
+      "success_exact": false,
+      "iterations": 36,
+      "O_final": 0.29801802815461803,
+      "oracle_O_after_first": 0.0697132734968757
+    },
+    {
+      "J2": 0.6,
+      "trial": 12,
+      "O_initial": 0.06313462399377229,
+      "success_exact": true,
+      "iterations": 26,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.17305465825452854
+    },
+    {
+      "J2": 0.6,
+      "trial": 13,
+      "O_initial": 0.040416844980242866,
+      "success_exact": false,
+      "iterations": 34,
+      "O_final": 0.49791845803377505,
+      "oracle_O_after_first": 0.14572583075314208
+    },
+    {
+      "J2": 0.6,
+      "trial": 14,
+      "O_initial": 0.05948114097323481,
+      "success_exact": false,
+      "iterations": 31,
+      "O_final": 0.536302922737435,
+      "oracle_O_after_first": 0.17946657327088514
+    },
+    {
+      "J2": 0.6,
+      "trial": 15,
+      "O_initial": 0.011133132171636917,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.03243355164390481,
+      "oracle_O_after_first": 0.07794238120407446
+    },
+    {
+      "J2": 0.6,
+      "trial": 16,
+      "O_initial": 0.08881871211337147,
+      "success_exact": true,
+      "iterations": 18,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2137944632876904
+    },
+    {
+      "J2": 0.6,
+      "trial": 17,
+      "O_initial": 0.11337372552445872,
+      "success_exact": true,
+      "iterations": 12,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2781713526336474
+    },
+    {
+      "J2": 0.6,
+      "trial": 18,
+      "O_initial": 0.0019372800736801657,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.13945113780537324,
+      "oracle_O_after_first": 0.06688522891759005
+    },
+    {
+      "J2": 0.6,
+      "trial": 19,
+      "O_initial": 0.0178278786700924,
+      "success_exact": false,
+      "iterations": 15,
+      "O_final": 0.048823523897857574,
+      "oracle_O_after_first": 0.09266621997905154
+    },
+    {
+      "J2": 0.6,
+      "trial": 20,
+      "O_initial": 0.02034140355869335,
+      "success_exact": false,
+      "iterations": 47,
+      "O_final": 0.5657257379517027,
+      "oracle_O_after_first": 0.07049451888814391
+    },
+    {
+      "J2": 0.6,
+      "trial": 21,
+      "O_initial": 0.014038498636699679,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.0585219732906581,
+      "oracle_O_after_first": 0.05967131519253287
+    },
+    {
+      "J2": 0.6,
+      "trial": 22,
+      "O_initial": 0.052488924981753504,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.44123466769737807,
+      "oracle_O_after_first": 0.13305180618919218
+    },
+    {
+      "J2": 0.6,
+      "trial": 23,
+      "O_initial": 0.02025516034425493,
+      "success_exact": false,
+      "iterations": 22,
+      "O_final": 0.24926122864527844,
+      "oracle_O_after_first": 0.09399634131341361
+    },
+    {
+      "J2": 0.6,
+      "trial": 24,
+      "O_initial": 0.023546005961248617,
+      "success_exact": false,
+      "iterations": 45,
+      "O_final": 0.7991238828995328,
+      "oracle_O_after_first": 0.07809034309547154
+    },
+    {
+      "J2": 0.6,
+      "trial": 25,
+      "O_initial": 0.11857544497011387,
+      "success_exact": true,
+      "iterations": 15,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.29101290138066666
+    },
+    {
+      "J2": 0.6,
+      "trial": 26,
+      "O_initial": 0.052302520358481104,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.15873815414670048
+    },
+    {
+      "J2": 0.6,
+      "trial": 27,
+      "O_initial": 0.006315879218383337,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.04115957981223571,
+      "oracle_O_after_first": 0.06082269785198652
+    },
+    {
+      "J2": 0.6,
+      "trial": 28,
+      "O_initial": 0.04680911695237393,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.4265951699664876,
+      "oracle_O_after_first": 0.187664242104632
+    },
+    {
+      "J2": 0.6,
+      "trial": 29,
+      "O_initial": 0.043361746454963754,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.13661790285686504
+    },
+    {
+      "J2": 0.6,
+      "trial": 30,
+      "O_initial": 0.04059097205834314,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.11093026271594883,
+      "oracle_O_after_first": 0.16191721028071931
+    },
+    {
+      "J2": 0.6,
+      "trial": 31,
+      "O_initial": 0.06441464553341772,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.347077538232181,
+      "oracle_O_after_first": 0.14560410633749035
+    },
+    {
+      "J2": 0.6,
+      "trial": 32,
+      "O_initial": 0.007769274181366748,
+      "success_exact": false,
+      "iterations": 26,
+      "O_final": 0.12590861363313244,
+      "oracle_O_after_first": 0.06555964894761422
+    },
+    {
+      "J2": 0.6,
+      "trial": 33,
+      "O_initial": 0.014833707397415019,
+      "success_exact": false,
+      "iterations": 38,
+      "O_final": 0.44517294193040435,
+      "oracle_O_after_first": 0.06897771549514861
+    },
+    {
+      "J2": 0.6,
+      "trial": 34,
+      "O_initial": 0.061949005427248585,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.4784874034766434,
+      "oracle_O_after_first": 0.155897279015572
+    },
+    {
+      "J2": 0.6,
+      "trial": 35,
+      "O_initial": 0.10503385819955185,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.27792582323344933
+    },
+    {
+      "J2": 0.6,
+      "trial": 36,
+      "O_initial": 0.03374964287933857,
+      "success_exact": false,
+      "iterations": 20,
+      "O_final": 0.25593194592991675,
+      "oracle_O_after_first": 0.10991494845939331
+    },
+    {
+      "J2": 0.6,
+      "trial": 37,
+      "O_initial": 0.023321831542445638,
+      "success_exact": true,
+      "iterations": 28,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.08113409418947112
+    },
+    {
+      "J2": 0.6,
+      "trial": 38,
+      "O_initial": 0.009916384033902699,
+      "success_exact": false,
+      "iterations": 16,
+      "O_final": 0.029933670238875353,
+      "oracle_O_after_first": 0.057844813753762936
+    },
+    {
+      "J2": 0.6,
+      "trial": 39,
+      "O_initial": 0.026495550984993205,
+      "success_exact": false,
+      "iterations": 20,
+      "O_final": 0.06082336332404216,
+      "oracle_O_after_first": 0.0902233368257322
+    },
+    {
+      "J2": 0.6,
+      "trial": 40,
+      "O_initial": 0.014693807438198338,
+      "success_exact": false,
+      "iterations": 27,
+      "O_final": 0.2642160189330087,
+      "oracle_O_after_first": 0.08457151111852618
+    },
+    {
+      "J2": 0.6,
+      "trial": 41,
+      "O_initial": 0.05960614962760753,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.15495563056538764
+    },
+    {
+      "J2": 0.6,
+      "trial": 42,
+      "O_initial": 0.038805242268916816,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.3954074059214992,
+      "oracle_O_after_first": 0.1278179307828821
+    },
+    {
+      "J2": 0.6,
+      "trial": 43,
+      "O_initial": 0.0591600262168987,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.18047267845458081
+    },
+    {
+      "J2": 0.6,
+      "trial": 44,
+      "O_initial": 0.06755949819112737,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.36911444550239375,
+      "oracle_O_after_first": 0.22962573241929646
+    },
+    {
+      "J2": 0.6,
+      "trial": 45,
+      "O_initial": 0.07826171197892103,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.22533784475838642
+    },
+    {
+      "J2": 0.6,
+      "trial": 46,
+      "O_initial": 0.03824527651644783,
+      "success_exact": true,
+      "iterations": 26,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1620314708056417
+    },
+    {
+      "J2": 0.6,
+      "trial": 47,
+      "O_initial": 0.0671435004847216,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.20737098762898215
+    },
+    {
+      "J2": 0.6,
+      "trial": 48,
+      "O_initial": 0.030637066920272585,
+      "success_exact": false,
+      "iterations": 44,
+      "O_final": 0.6728571627261519,
+      "oracle_O_after_first": 0.12596590741975178
+    },
+    {
+      "J2": 0.6,
+      "trial": 49,
+      "O_initial": 0.017166080615028816,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.03352098663678804,
+      "oracle_O_after_first": 0.10340978728480368
+    },
+    {
+      "J2": 0.6,
+      "trial": 50,
+      "O_initial": 0.04361246141767474,
+      "success_exact": false,
+      "iterations": 33,
+      "O_final": 0.629867471799541,
+      "oracle_O_after_first": 0.1721210874118944
+    },
+    {
+      "J2": 0.6,
+      "trial": 51,
+      "O_initial": 0.039732483630681284,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1472023319655954
+    },
+    {
+      "J2": 0.6,
+      "trial": 52,
+      "O_initial": 0.045723356391023526,
+      "success_exact": true,
+      "iterations": 40,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2091945848148497
+    },
+    {
+      "J2": 0.6,
+      "trial": 53,
+      "O_initial": 0.02450278168239205,
+      "success_exact": false,
+      "iterations": 38,
+      "O_final": 0.7597266443383754,
+      "oracle_O_after_first": 0.08603272841183066
+    },
+    {
+      "J2": 0.6,
+      "trial": 54,
+      "O_initial": 0.02253205031346657,
+      "success_exact": false,
+      "iterations": 31,
+      "O_final": 0.25103304975085927,
+      "oracle_O_after_first": 0.09443585159850204
+    },
+    {
+      "J2": 0.6,
+      "trial": 55,
+      "O_initial": 0.007992926134449433,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.052564833552121944,
+      "oracle_O_after_first": 0.07975955327856783
+    },
+    {
+      "J2": 0.6,
+      "trial": 56,
+      "O_initial": 0.029518678898298706,
+      "success_exact": true,
+      "iterations": 36,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.09824854377109735
+    },
+    {
+      "J2": 0.6,
+      "trial": 57,
+      "O_initial": 0.055014589210589576,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.36024586225587085,
+      "oracle_O_after_first": 0.1325512802853827
+    },
+    {
+      "J2": 0.6,
+      "trial": 58,
+      "O_initial": 0.0735515964064932,
+      "success_exact": true,
+      "iterations": 22,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1656668576805612
+    },
+    {
+      "J2": 0.6,
+      "trial": 59,
+      "O_initial": 0.00010090838369387206,
+      "success_exact": false,
+      "iterations": 18,
+      "O_final": 0.06296470741046455,
+      "oracle_O_after_first": 0.07207252481967655
+    },
+    {
+      "J2": 0.6,
+      "trial": 60,
+      "O_initial": 0.01482959356754018,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.07632395734181543,
+      "oracle_O_after_first": 0.09638975925413575
+    },
+    {
+      "J2": 0.6,
+      "trial": 61,
+      "O_initial": 0.015533091251093159,
+      "success_exact": false,
+      "iterations": 22,
+      "O_final": 0.10941294723120978,
+      "oracle_O_after_first": 0.1085883548380419
+    },
+    {
+      "J2": 0.6,
+      "trial": 62,
+      "O_initial": 0.05322819430476356,
+      "success_exact": false,
+      "iterations": 30,
+      "O_final": 0.47032331123901067,
+      "oracle_O_after_first": 0.18649785525903703
+    },
+    {
+      "J2": 0.6,
+      "trial": 63,
+      "O_initial": 0.01892672158569836,
+      "success_exact": false,
+      "iterations": 33,
+      "O_final": 0.3753264191330093,
+      "oracle_O_after_first": 0.05753445348722537
+    },
+    {
+      "J2": 1.0,
+      "trial": 0,
+      "O_initial": 0.13985875008224463,
+      "success_exact": true,
+      "iterations": 12,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.3100411715758849
+    },
+    {
+      "J2": 1.0,
+      "trial": 1,
+      "O_initial": 0.06517033043276785,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.0904900979700516,
+      "oracle_O_after_first": 0.2044733433372026
+    },
+    {
+      "J2": 1.0,
+      "trial": 2,
+      "O_initial": 0.02195745487168474,
+      "success_exact": true,
+      "iterations": 22,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1122523625822052
+    },
+    {
+      "J2": 1.0,
+      "trial": 3,
+      "O_initial": 0.07318112183472708,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.21404147209365976
+    },
+    {
+      "J2": 1.0,
+      "trial": 4,
+      "O_initial": 0.12356080543433245,
+      "success_exact": true,
+      "iterations": 12,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.30220228703515933
+    },
+    {
+      "J2": 1.0,
+      "trial": 5,
+      "O_initial": 0.0032713238903768656,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.08415800288847086,
+      "oracle_O_after_first": 0.09460377080618267
+    },
+    {
+      "J2": 1.0,
+      "trial": 6,
+      "O_initial": 0.00443341791701083,
+      "success_exact": false,
+      "iterations": 51,
+      "O_final": 0.3185293446438457,
+      "oracle_O_after_first": 0.14901588389575443
+    },
+    {
+      "J2": 1.0,
+      "trial": 7,
+      "O_initial": 0.05583581944950272,
+      "success_exact": false,
+      "iterations": 32,
+      "O_final": 0.5253434982093734,
+      "oracle_O_after_first": 0.21550886892710114
+    },
+    {
+      "J2": 1.0,
+      "trial": 8,
+      "O_initial": 0.08906313901665544,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.25939479252810804
+    },
+    {
+      "J2": 1.0,
+      "trial": 9,
+      "O_initial": 0.1349690528146895,
+      "success_exact": false,
+      "iterations": 17,
+      "O_final": 0.18605560127004367,
+      "oracle_O_after_first": 0.4139265304715738
+    },
+    {
+      "J2": 1.0,
+      "trial": 10,
+      "O_initial": 0.1046837312617334,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2554635285671966
+    },
+    {
+      "J2": 1.0,
+      "trial": 11,
+      "O_initial": 0.07864674919406023,
+      "success_exact": true,
+      "iterations": 21,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.23271663225579614
+    },
+    {
+      "J2": 1.0,
+      "trial": 12,
+      "O_initial": 0.08763421694129948,
+      "success_exact": true,
+      "iterations": 19,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24384152590737385
+    },
+    {
+      "J2": 1.0,
+      "trial": 13,
+      "O_initial": 0.13072224370964847,
+      "success_exact": true,
+      "iterations": 14,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.3291462209879302
+    },
+    {
+      "J2": 1.0,
+      "trial": 14,
+      "O_initial": 0.09256001272530928,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24241592727128342
+    },
+    {
+      "J2": 1.0,
+      "trial": 15,
+      "O_initial": 0.04513947589410528,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1699179489387602
+    },
+    {
+      "J2": 1.0,
+      "trial": 16,
+      "O_initial": 0.08535517031721568,
+      "success_exact": false,
+      "iterations": 21,
+      "O_final": 0.2620405368118282,
+      "oracle_O_after_first": 0.27108282520211047
+    },
+    {
+      "J2": 1.0,
+      "trial": 17,
+      "O_initial": 0.021196847850468784,
+      "success_exact": false,
+      "iterations": 32,
+      "O_final": 0.008170069054637172,
+      "oracle_O_after_first": 0.09688410651565943
+    },
+    {
+      "J2": 1.0,
+      "trial": 18,
+      "O_initial": 0.017492960410905582,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.3593935133959071,
+      "oracle_O_after_first": 0.08720841789890996
+    },
+    {
+      "J2": 1.0,
+      "trial": 19,
+      "O_initial": 0.03559501361540701,
+      "success_exact": true,
+      "iterations": 15,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1198654537698412
+    },
+    {
+      "J2": 1.0,
+      "trial": 20,
+      "O_initial": 0.08831649809370329,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.23567061677168516
+    },
+    {
+      "J2": 1.0,
+      "trial": 21,
+      "O_initial": 0.10047740771960978,
+      "success_exact": true,
+      "iterations": 16,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.25785631005522713
+    },
+    {
+      "J2": 1.0,
+      "trial": 22,
+      "O_initial": 0.03836953733973748,
+      "success_exact": true,
+      "iterations": 19,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.10986740277341094
+    },
+    {
+      "J2": 1.0,
+      "trial": 23,
+      "O_initial": 0.12337126547145054,
+      "success_exact": true,
+      "iterations": 14,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.30220016925547993
+    },
+    {
+      "J2": 1.0,
+      "trial": 24,
+      "O_initial": 0.027144530817207815,
+      "success_exact": true,
+      "iterations": 17,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.10048998891208778
+    },
+    {
+      "J2": 1.0,
+      "trial": 25,
+      "O_initial": 0.019661120813589842,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.11453730787310697,
+      "oracle_O_after_first": 0.17147452706895455
+    },
+    {
+      "J2": 1.0,
+      "trial": 26,
+      "O_initial": 0.06803828367329334,
+      "success_exact": false,
+      "iterations": 28,
+      "O_final": 0.07431266376897375,
+      "oracle_O_after_first": 0.23306256543403375
+    },
+    {
+      "J2": 1.0,
+      "trial": 27,
+      "O_initial": 0.08066317489187166,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.22981160872960485
+    },
+    {
+      "J2": 1.0,
+      "trial": 28,
+      "O_initial": 0.03477733544523396,
+      "success_exact": true,
+      "iterations": 15,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.11239393758395935
+    },
+    {
+      "J2": 1.0,
+      "trial": 29,
+      "O_initial": 0.12755138080798845,
+      "success_exact": true,
+      "iterations": 13,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.30416707818360444
+    },
+    {
+      "J2": 1.0,
+      "trial": 30,
+      "O_initial": 0.00461507006811963,
+      "success_exact": false,
+      "iterations": 37,
+      "O_final": 0.5960775792175932,
+      "oracle_O_after_first": 0.0785266804151099
+    },
+    {
+      "J2": 1.0,
+      "trial": 31,
+      "O_initial": 0.012481368252834302,
+      "success_exact": false,
+      "iterations": 34,
+      "O_final": 0.4016930577601968,
+      "oracle_O_after_first": 0.0833530411994437
+    },
+    {
+      "J2": 1.0,
+      "trial": 32,
+      "O_initial": 0.04949456122563453,
+      "success_exact": true,
+      "iterations": 26,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.20073298247045987
+    },
+    {
+      "J2": 1.0,
+      "trial": 33,
+      "O_initial": 0.08598275151375903,
+      "success_exact": true,
+      "iterations": 30,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24750110758293878
+    },
+    {
+      "J2": 1.0,
+      "trial": 34,
+      "O_initial": 0.003970773810919655,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.10567380230631271
+    },
+    {
+      "J2": 1.0,
+      "trial": 35,
+      "O_initial": 0.033632379134930376,
+      "success_exact": true,
+      "iterations": 25,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.08935115161398514
+    },
+    {
+      "J2": 1.0,
+      "trial": 36,
+      "O_initial": 0.07277270303125037,
+      "success_exact": false,
+      "iterations": 23,
+      "O_final": 0.006403886444330917,
+      "oracle_O_after_first": 0.23008922802989357
+    },
+    {
+      "J2": 1.0,
+      "trial": 37,
+      "O_initial": 0.11656018022121042,
+      "success_exact": true,
+      "iterations": 13,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.3018039469492454
+    },
+    {
+      "J2": 1.0,
+      "trial": 38,
+      "O_initial": 0.11201221026953373,
+      "success_exact": true,
+      "iterations": 13,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.29873047099689815
+    },
+    {
+      "J2": 1.0,
+      "trial": 39,
+      "O_initial": 0.09826584306276562,
+      "success_exact": true,
+      "iterations": 19,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24189348812107478
+    },
+    {
+      "J2": 1.0,
+      "trial": 40,
+      "O_initial": 0.05105405003306248,
+      "success_exact": true,
+      "iterations": 27,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2055571264047167
+    },
+    {
+      "J2": 1.0,
+      "trial": 41,
+      "O_initial": 0.10050158705881712,
+      "success_exact": true,
+      "iterations": 17,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24066716633482194
+    },
+    {
+      "J2": 1.0,
+      "trial": 42,
+      "O_initial": 0.06934588695588742,
+      "success_exact": false,
+      "iterations": 35,
+      "O_final": 0.3455871756266365,
+      "oracle_O_after_first": 0.24689854897373284
+    },
+    {
+      "J2": 1.0,
+      "trial": 43,
+      "O_initial": 0.05589046827449365,
+      "success_exact": false,
+      "iterations": 36,
+      "O_final": 0.08612248422563515,
+      "oracle_O_after_first": 0.196417903453074
+    },
+    {
+      "J2": 1.0,
+      "trial": 44,
+      "O_initial": 0.0867489777396922,
+      "success_exact": true,
+      "iterations": 19,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.24810576699543113
+    },
+    {
+      "J2": 1.0,
+      "trial": 45,
+      "O_initial": 0.047148460771591655,
+      "success_exact": false,
+      "iterations": 22,
+      "O_final": 0.6638847217457329,
+      "oracle_O_after_first": 0.16439180281335744
+    },
+    {
+      "J2": 1.0,
+      "trial": 46,
+      "O_initial": 0.06925059512832489,
+      "success_exact": true,
+      "iterations": 14,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.18005793474561532
+    },
+    {
+      "J2": 1.0,
+      "trial": 47,
+      "O_initial": 0.011105243393865857,
+      "success_exact": false,
+      "iterations": 24,
+      "O_final": 0.10207871438644733,
+      "oracle_O_after_first": 0.09784161786182852
+    },
+    {
+      "J2": 1.0,
+      "trial": 48,
+      "O_initial": 0.0038901013641531035,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.008540338987107848,
+      "oracle_O_after_first": 0.08178736668619832
+    },
+    {
+      "J2": 1.0,
+      "trial": 49,
+      "O_initial": 0.10862847797141606,
+      "success_exact": true,
+      "iterations": 15,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.29070585017642625
+    },
+    {
+      "J2": 1.0,
+      "trial": 50,
+      "O_initial": 0.040759422925249776,
+      "success_exact": true,
+      "iterations": 18,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.22828408105927075
+    },
+    {
+      "J2": 1.0,
+      "trial": 51,
+      "O_initial": 0.06418545354566649,
+      "success_exact": false,
+      "iterations": 34,
+      "O_final": 0.09542609658964846,
+      "oracle_O_after_first": 0.20797281435700363
+    },
+    {
+      "J2": 1.0,
+      "trial": 52,
+      "O_initial": 0.0234977625707484,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.1080532204300669
+    },
+    {
+      "J2": 1.0,
+      "trial": 53,
+      "O_initial": 0.07504599369498524,
+      "success_exact": false,
+      "iterations": 22,
+      "O_final": 0.1573580823535154,
+      "oracle_O_after_first": 0.22933644872681144
+    },
+    {
+      "J2": 1.0,
+      "trial": 54,
+      "O_initial": 0.0992464660197247,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2522885471515973
+    },
+    {
+      "J2": 1.0,
+      "trial": 55,
+      "O_initial": 0.017226014488988566,
+      "success_exact": true,
+      "iterations": 26,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.11219174189868493
+    },
+    {
+      "J2": 1.0,
+      "trial": 56,
+      "O_initial": 0.06786535747955143,
+      "success_exact": false,
+      "iterations": 29,
+      "O_final": 0.29295930464425013,
+      "oracle_O_after_first": 0.1989935963802923
+    },
+    {
+      "J2": 1.0,
+      "trial": 57,
+      "O_initial": 0.0019196260159811407,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.13144827054095842,
+      "oracle_O_after_first": 0.09020828088865447
+    },
+    {
+      "J2": 1.0,
+      "trial": 58,
+      "O_initial": 0.012136845476604294,
+      "success_exact": false,
+      "iterations": 22,
+      "O_final": 0.1040661081647005,
+      "oracle_O_after_first": 0.11852692417107485
+    },
+    {
+      "J2": 1.0,
+      "trial": 59,
+      "O_initial": 0.07975091088956221,
+      "success_exact": false,
+      "iterations": 25,
+      "O_final": 0.25993179697620516,
+      "oracle_O_after_first": 0.2609739432319609
+    },
+    {
+      "J2": 1.0,
+      "trial": 60,
+      "O_initial": 0.009135446967787224,
+      "success_exact": false,
+      "iterations": 19,
+      "O_final": 0.13122269646429519,
+      "oracle_O_after_first": 0.10463247088528146
+    },
+    {
+      "J2": 1.0,
+      "trial": 61,
+      "O_initial": 0.03128038961703465,
+      "success_exact": true,
+      "iterations": 23,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.09035438733969794
+    },
+    {
+      "J2": 1.0,
+      "trial": 62,
+      "O_initial": 0.13553192860371258,
+      "success_exact": true,
+      "iterations": 13,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.3063471555876368
+    },
+    {
+      "J2": 1.0,
+      "trial": 63,
+      "O_initial": 0.09957275913886507,
+      "success_exact": true,
+      "iterations": 17,
+      "O_final": 1.0,
+      "oracle_O_after_first": 0.2635883955347794
+    }
+  ]
+}

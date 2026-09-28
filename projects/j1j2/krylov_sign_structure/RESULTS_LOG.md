@@ -105,3 +105,32 @@ Audit:
 Hence maxcut_x/parity_xy are exactly symmetry-forbidden from reaching the triangular ground signs, while square Marshall is not. Random corruption usually breaks the wrong exact character and can recover.
 
 parity_y is not a Ty eigenstate and remains an unexplained wrong basin, so symmetry is a first basin invariant, not the whole story.
+
+## 2026-09-28 — iid random starts, amplitude robustness, and boundary-load identity
+
+**iid random signs on 4x4 square with exact amplitudes, 64 trials**
+- J2/J1=0.5: mean initial O_S=0.0434; 25/64 exact; median 23 updates among successes.
+- J2/J1=0.6: mean initial O_S=0.0422; 24/64 exact; median 23 updates.
+- J2/J1=1.0: mean initial O_S=0.0636; 39/64 exact; median 19 updates.
+
+This shows that appreciable initial overlap is not required for convergence on the tested square cluster.
+
+**Amplitude power distortion**
+Use a_gamma proportional to |psi_GS|^gamma from the physical Marshall/stripe starts.
+- gamma=0.75: exact signs at J2/J1=0.5 and 0.6; max O_S=0.99999914 at J2/J1=1.
+- gamma=0.9: exact signs at 0.5 and 0.6; O_S=0.99999888 at 1.0.
+- gamma=0.5: correction largely collapses.
+Thus exact amplitudes are unnecessary, but a reasonably faithful weighted amplitude profile is important.
+
+**Exact identity**
+With z_x=s_x s_x^* and off-diagonal J_xy=H_xy a_x a_y s_x^*s_y^* for x!=y,
+
+a_x^2 [r_x(s)-E0] = -2 sum_{y!=x:z_y != z_x} J_xy.
+
+So r_x-E0 is the weighted boundary load of the wrong-sign domain. The projected-Krylov sign update is therefore a threshold dynamics on defect boundaries. Combined with the exact symmetry-sector invariant, this is the current analytic mechanism picture.
+
+Files:
+- experiments/random_sign_start_exact.py
+- results/random_sign_start_exact.{json,csv}
+- experiments/amplitude_power_robustness.py
+- results/amplitude_power_robustness.{json,csv}

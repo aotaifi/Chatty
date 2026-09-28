@@ -119,3 +119,46 @@ This exactly explains why triangular maxcut_x/parity_xy can never reach the grou
 The triangular parity_y wrong basin is not explained by this simple translation character and remains evidence for additional basin structure.
 
 See `SYMMETRY_BASIN_INVARIANT_2026-09-28.md`.
+
+## Further mechanism tests: iid random signs and amplitude distortion
+
+### iid random sign starts on square
+With exact amplitudes fixed and completely iid random initial signs (global gauge fixed), 64 trials give:
+- J2/J1=0.5: mean initial O_S=0.0434; 25/64 (39.1%) reach the exact signs; median 23 updates among successes.
+- J2/J1=0.6: mean initial O_S=0.0422; 24/64 (37.5%) exact; median 23 updates.
+- J2/J1=1.0: mean initial O_S=0.0636; 39/64 (60.9%) exact; median 19 updates.
+
+Thus square-lattice recovery is not restricted to starts with appreciable initial sign overlap. Exact amplitudes generate a broad attraction structure that captures a substantial fraction of essentially uncorrelated sign states.
+
+### Controlled amplitude distortion
+Replace the exact modulus by a_gamma(x) proportional to |psi_GS(x)|^gamma, while starting from the physical Marshall/stripe gauges.
+
+- gamma=0.75: exact signs are recovered for J2/J1=0.5 and 0.6; J2/J1=1 reaches max O_S=0.99999914.
+- gamma=0.9: exact signs are recovered for J2/J1=0.5 and 0.6; J2/J1=1 reaches O_S=0.99999888.
+- gamma=0.5: the sign correction largely collapses; final O_S stays near or below the starting value.
+- gamma=0 or 0.25: essentially no useful reconstruction.
+
+So exact amplitudes are not necessary, but a reasonably faithful amplitude profile is essential to preserve the useful weighted configuration-space geometry.
+
+## Exact defect-boundary identity
+
+Let psi_*(x)=a_x s_x^* be the exact ground state and gauge a trial sign pattern by z_x=s_x s_x^*. Define
+
+For x != y, define
+J_xy = H_xy a_x a_y s_x^* s_y^*.
+
+For the wrong-sign set D={x:z_x=-1}, the eigenvalue equation implies
+
+sum_{y!=x} J_xy = a_x^2 (E0-H_xx).
+
+For an arbitrary trial sign pattern,
+
+a_x^2 [r_x(s)-E0]
+= sum_{y!=x} J_xy (z_x z_y-1)
+= -2 sum_{y!=x:z_y != z_x} J_xy.
+
+Hence **r_x-E0 is exactly the weighted boundary load of the current wrong-sign domain at x**.
+
+This sharpens the mechanism: the projected-Krylov threshold step is a synchronous threshold dynamics on defect-boundary load. Recomputing r after each update exposes the next boundary layer. The square-lattice basin results show that this boundary dynamics often contracts toward the planted ground-state signs; the triangular results show that symmetry sectors and competing threshold-stable domains can obstruct that contraction.
+
+The next theory target is therefore a sufficient contraction criterion stated in terms of these weighted defect-boundary loads, refined by the exact symmetry-sector invariant already identified above.

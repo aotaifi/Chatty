@@ -60,5 +60,16 @@ By contrast square ground state, Marshall, and stripe all have Tx=Ty=+1, consist
 
 See `SYMMETRY_BASIN_INVARIANT_2026-09-28.md`.
 
+## New mechanism refinements
+Two follow-ups sharpen the picture further.
+
+1. **iid random square starts:** with exact amplitudes, completely random initial signs still reach the exact signs in 25/64 trials at J2/J1=0.5, 24/64 at 0.6, and 39/64 at 1.0. Thus appreciable initial sign overlap is not required.
+
+2. **Amplitude robustness:** replacing a_* by a_*^gamma shows that gamma=0.75 still gives exact recovery at J2/J1=0.5 and 0.6 and O_S=0.99999914 at J2/J1=1, whereas gamma=0.5 largely destroys the correction. The amplitudes need not be exact, but their weighted profile matters strongly.
+
+There is also an exact identity in the ground-state sign gauge:
+a_x^2[r_x(s)-E0] = -2 sum_{y!=x:z_y!=z_x} J_xy,
+with off-diagonal J_xy=H_xy a_x a_y s_x^* s_y^*. Thus r-E0 is precisely the weighted boundary load of the current wrong-sign domain.
+
 ## Next question
-The remaining nontrivial basin problem is now narrower: explain wrong fixed points that are **not** symmetry-forbidden (notably triangular parity_y), likely through weighted sign flux / frustration or another invariant of the threshold dynamics. Separately, test robustness when amplitudes and threshold energies are approximate rather than exact.
+The remaining theory problem is now very specific: derive a sufficient **boundary-load contraction criterion**, compatible with the symmetry-sector invariant, that separates the square ground-state basin from wrong fixed points such as triangular parity_y. A separate practical question is how the threshold-energy minimization behaves when estimated stochastically rather than exactly.

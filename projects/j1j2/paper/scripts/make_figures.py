@@ -25,7 +25,9 @@ def panel(ax, letter):
 
 def save(fig, name):
     fig.tight_layout()
-    fig.savefig(FIG / name, dpi=240, bbox_inches="tight")
+    stem = Path(name).stem
+    fig.savefig(FIG / f"{stem}.pdf", bbox_inches="tight")
+    fig.savefig(FIG / f"{stem}.png", dpi=240, bbox_inches="tight")
     plt.close(fig)
 
 def chain_stats(v):
@@ -200,7 +202,6 @@ def fig5_amplitude_learning():
     save(fig,"fig5_amplitude_learning.png")
 
 if __name__=="__main__":
-    fig1_method()
     fig2_sign_story()
     fig3_closed_loop()
     fig4_8x8_benchmark()

@@ -2,575 +2,320 @@
 
 \usepackage{amsmath,amssymb,bm}
 \usepackage{graphicx}
-\usepackage{booktabs}
 \usepackage{hyperref}
 \graphicspath{{figures/}}
-
 \newcommand{\FN}{\mathrm{FN}}
-\newcommand{\K}{\mathrm{K}}
-\newcommand{\OS}{O_s}
 
 \begin{document}
 
-\title{Reconstructing frustrated many-body signs from amplitudes with fixed-node and Krylov updates}
+\title{Reconstructing frustrated signs from amplitudes with fixed-node and Krylov updates}
 
 \author{A. Otaifi}
 \affiliation{Arnold Sommerfeld Center for Theoretical Physics, Ludwig-Maximilians-Universit\"at M\"unchen, 80333 M\"unchen, Germany}
 \date{\today}
 
 \begin{abstract}
-The sign structure of a frustrated many-body wave function is difficult to
-sample and difficult to learn, even when its positive amplitude is already
-accurate. We study whether the two tasks can be separated in the square-lattice
-spin-$1/2$ $J_1$--$J_2$ Heisenberg model. Writing a real wave function as
-$\psi(x)=s(x)a(x)$ with $a(x)>0$, we update the sign from a single Krylov
-vector, while fixed-node projection supplies information about the amplitude.
-
-For a given amplitude, the sign of $(T-H)\psi$ is determined by a scalar
-threshold of the local energy. On a $4\times4$ exact-diagonalization
-benchmark at $J_2/J_1=0.5$, this one-step rule reduces the exact wrong-sign
-probability mass from $1.27\times10^{-2}$ to $3.41\times10^{-4}$ and the
-fixed-amplitude energy error from $1.16\times10^{-2}$ to
-$5.51\times10^{-4}$ per site. On $6\times6$, with the positive amplitude
-held fixed, the reconstructed signs reproduce the energy of a trained neural
-quantum-state sign structure within the sampling uncertainty. With those
-signs, fixed-node projection remains stable on $8\times8$ and yields an
-energy in the same range as high-accuracy variational benchmarks.
-
-The converse step can also be closed. On $4\times4$, an exact fixed-node
-amplitude followed by the Krylov sign update recovers the exact ground-state
-signs from a nonfrustrated starting state. For sampled fixed-node walkers,
-maximum likelihood has an exact target:
-$a_{\rm new}\propto\sqrt{a\phi_{\FN}}$. At $8\times8$, ordinary
-Euclidean likelihood gradients from independent walker populations are
-strongly inconsistent, whereas a stochastic-reconfiguration direction
-improves a held-out population. These results identify one-step sign
-reconstruction as the simple part of the loop and the conversion of
-fixed-node walkers into a transferable callable amplitude as the remaining
-scaling problem.
+We separate the sign and amplitude problems of a frustrated wave function,
+$\psi(x)=s(x)a(x)$, in the square-lattice spin-$1/2$ $J_1$--$J_2$
+Heisenberg model.  For fixed amplitude, one shifted Krylov step gives
+$s'(x)=s(x)\operatorname{sgn}[T-r_s(x)]$, where
+$r_s=(H\psi)/\psi$.  At $J_2/J_1=0.5$ this reduces the exact $4\times4$
+wrong-sign weight from $1.27\times10^{-2}$ to $3.41\times10^{-4}$.
+On $6\times6$, with the same neural-network amplitude, the reconstructed
+signs are energetically indistinguishable from the original neural signs.
+Conversely, fixed-node projection supplies a sign-free amplitude update; an
+exact $4\times4$ fixed-node/Krylov loop reaches the exact ground-state
+signs.  On $8\times8$, the reconstructed signs retain a competitive
+fixed-node energy.  The remaining scaling problem is learning a callable
+amplitude from fixed-node walkers.  Maximum likelihood targets
+$a_{\rm new}\propto\sqrt{a\phi_{\FN}}$, and stochastic
+reconfiguration yields an update direction that transfers between
+independent walker populations.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
 
-The sign problem is one of the central obstacles to Monte Carlo calculations
-of frustrated quantum matter. In a basis where off-diagonal matrix elements
-cannot all be made nonpositive, positive and negative contributions cancel,
-and the cost of direct sampling can grow exponentially
-\cite{HeneliusSandvik2000,TroyerWiese2005}. The square-lattice
-$J_1$--$J_2$ Heisenberg antiferromagnet is a standard example.
+Frustration produces sign-changing path weights and the Monte Carlo sign
+problem \cite{HeneliusSandvik2000,TroyerWiese2005}.  The square-lattice
+$J_1$--$J_2$ Heisenberg model is a standard case: the Marshall sign rule is
+exact at $J_2=0$ \cite{Marshall1955}, but fails near
+$J_2/J_1=1/2$, where accurate variational states are already nontrivial
+\cite{Choo2019,ChenHeyl2024}.
 
-At $J_2=0$ the Marshall sign rule fixes the ground-state sign structure on
-the bipartite square lattice \cite{Marshall1955}. Around
-$J_2/J_1=1/2$, frustration invalidates that simple rule and simultaneously
-makes the model a demanding benchmark for modern variational methods,
-including neural quantum states \cite{Choo2019,ChenHeyl2024}.
-
-A common response is to improve the entire wave function at once. Neural
-quantum states can represent both amplitudes and signs
-\cite{CarleoTroyer2017}, while fixed-node methods avoid the sign problem by
-holding a trial sign structure fixed \cite{vanBemmel1994}. Here we ask a
-different question: can the sign and amplitude be improved by different
-numerical operations?
-
-The answer suggested by our data is yes. Given a positive amplitude
-$a(x)$ and a current sign pattern $s(x)$, the sign of one Krylov vector
-$(T-H)as$ can be read off from a scalar local quantity. Conversely, once
-the sign is fixed, a lattice fixed-node projector can improve the positive
-amplitude without a sign problem. This gives the feedback structure shown
-in Fig.~\ref{fig:method}. The method is not an attempt to make the original
-Hamiltonian stoquastic. It instead alternates between a sign-free amplitude
-problem and an explicit sign-changing update.
+We ask whether signs and amplitudes can be improved separately.  Write a
+real wave function as
+\begin{equation}
+\psi(x)=s(x)a(x),\qquad s(x)=\pm1,quad a(x)>0 .
+\label{eq:decomp}
+\end{equation}
+Given $a$, a single Krylov step changes only $s$.  Given $s$, lattice
+fixed node gives a sign-free positive-amplitude problem
+\cite{vanBemmel1994}.  One iteration is therefore
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\columnwidth]{fig1_method.png}
-\caption{Sign--amplitude feedback used throughout the paper. A guide
-$\psi_k=s_k a_k$ is projected with its signs held fixed. The resulting
-positive-amplitude information is converted into a new callable amplitude,
-and only then is a one-step Krylov update used to change the signs.}
+\resizebox{0.98\columnwidth}{!}{$
+\boxed{(s_k,a_k)}
+\;\xrightarrow{\ \mathrm{fixed\ node}\ }\;
+\boxed{(s_k,\phi_k^{\FN})}
+\;\xrightarrow{\ \mathrm{learn}\ }\;
+\boxed{(s_k,a_{k+1})}
+\;\xrightarrow{\ \mathrm{Krylov}\ }\;
+\boxed{(s_{k+1},a_{k+1})}
+$}
+\caption{One feedback iteration. Fixed node updates the amplitude at fixed
+signs; the Krylov step then updates the signs.}
 \label{fig:method}
 \end{figure}
 
-Our tests are organized to isolate the two parts of this loop. Exact
-diagonalization first asks whether one Krylov step reconstructs the signs when
-the amplitude is known. A same-amplitude $6\times6$ comparison then asks
-whether the reconstructed signs have the same physical effect as the signs of
-a trained neural quantum state. An exact $4\times4$ feedback loop tests
-whether fixed-node amplitude improvement and sign reconstruction can
-self-correct when composed. Finally, $8\times8$ calculations identify the
-practical bottleneck: converting fixed-node walkers into a callable amplitude
-that generalizes beyond one walker population.
+We test these two operations separately and then together.  Exact
+diagonalization establishes the sign update, $6\times6$ and $8\times8$
+calculations test its physical effect, and an exact $4\times4$ loop tests
+closure.  The large-system bottleneck is then isolated to the amplitude
+handoff from fixed-node walkers.
 
-\section{Model and update rules}
+\section{Model and method}
 
-We consider
+We study
 \begin{equation}
 H=J_1\sum_{\langle ij\rangle}\mathbf S_i\!\cdot\!\mathbf S_j
- +J_2\sum_{\langle\!\langle ij\rangle\!\rangle}\mathbf S_i\!\cdot\!\mathbf S_j ,
+ +J_2\sum_{\langle\!\langle ij\rangle\!\rangle}
+ \mathbf S_i\!\cdot\!\mathbf S_j ,
 \label{eq:H}
 \end{equation}
-on $L\times L$ periodic square lattices, with $J_1=1$. Calculations are
-performed in the $S^z=0$ sector. Since Eq.~\eqref{eq:H} is real, the wave
-function can be written
-\begin{equation}
-\psi(x)=s(x)a(x),\qquad s(x)=\pm1,\quad a(x)>0,
-\label{eq:decomp}
-\end{equation}
-for spin configurations $x$.
+on periodic $L\times L$ lattices with $J_1=1$ and $S^z=0$.
 
-When the exact ground state $\psi_0=s_0a_0$ is available, we quantify the sign
-error by
-\begin{equation}
-O_s=\left|\sum_x a_0(x)^2 s(x)s_0(x)\right|,
-\qquad
-w_s=\frac{1-O_s}{2}.
-\label{eq:signoverlap}
-\end{equation}
-After fixing the irrelevant global sign, $w_s$ is simply the exact
-ground-state probability carried by configurations with the wrong sign.
-For larger systems, where exact signs are unavailable, we instead compare
-energies at fixed amplitude or fixed-node projected energies.
+\subsection{Krylov sign update}
 
-\subsection{One-step Krylov sign reconstruction}
-
-For a signed guide $\psi=sa$, define its local energy
+For $\psi=sa$, define the local energy
 \begin{equation}
-r_s(x)=\frac{(H\psi)(x)}{\psi(x)}.
-\label{eq:rs}
+r_s(x)=\frac{(H\psi)(x)}{\psi(x)} .
 \end{equation}
-A single shifted Krylov vector satisfies
+Since
 \begin{equation}
-[(T-H)\psi](x)=[T-r_s(x)]\psi(x).
+[(T-H)\psi](x)=[T-r_s(x)]\psi(x),
 \end{equation}
-Therefore its sign is obtained without evaluating a new many-body amplitude:
+the sign of the shifted Krylov vector is
 \begin{equation}
-s_{\rm K}(x)=s(x)\,\operatorname{sgn}[T-r_s(x)].
+s_{\rm K}(x)=s(x)\operatorname{sgn}[T-r_s(x)] .
 \label{eq:k1}
 \end{equation}
-The amplitude factor $|T-r_s|a$ is discarded. We retain only the sign and
-restore or re-solve the amplitude before another sign update. This distinction
-is important: repeated Krylov multiplication is not the algorithm studied
-here.
+We keep this sign and discard the Krylov amplitude factor
+$|T-r_s|$.  Thus the method is not repeated Lanczos multiplication.
+For exact systems, $T$ minimizes the fixed-amplitude energy; on sampled
+systems it is obtained from a two-cluster split of the $r_s$ distribution.
 
-The shift $T$ acts as a one-dimensional decision threshold. In exact
-small-system tests we choose it by minimizing the fixed-amplitude variational
-energy after the sign update; this uses the Hamiltonian but no target sign
-labels. On sampled larger systems we determine $T$ from the distribution of
-$r_s$ itself with a robust two-cluster split. Exact or neural signs are used
-only afterward as diagnostics.
+When the exact ground state $\psi_0=s_0a_0$ is available, we report
+\begin{equation}
+O_s=\left|\sum_x a_0(x)^2s(x)s_0(x)\right|,qquad
+w_s=\frac{1-O_s}{2},
+\end{equation}
+where $w_s$ is the exact probability weight carrying the wrong sign.
 
 \subsection{Fixed-node amplitude update}
 
-For a guide $\psi_G(x)=s(x)a(x)$, define the sign-violating neighbors
-\begin{equation}
-\mathcal V_x=
-\left\{y\neq x:
-H_{xy}\frac{\psi_G(y)}{\psi_G(x)}>0
-\right\}.
-\end{equation}
-The lattice fixed-node Hamiltonian removes every sign-violating hopping
-term and transfers its contribution to the diagonal:
-\begin{align}
-(H_{\FN})_{xy}&=
-\begin{cases}
-H_{xy}, & y\notin\mathcal V_x,\\
-0, & y\in\mathcal V_x,
-\end{cases}
-\qquad x\neq y,\\
-(H_{\FN})_{xx}&=
-H_{xx}+\sum_{y\in\mathcal V_x}
-H_{xy}\frac{\psi_G(y)}{\psi_G(x)} .
-\label{eq:fn}
-\end{align}
-After importance sampling with the guide, $H_{\FN}$ is sign free
-\cite{vanBemmel1994}. Its ground state has the imposed sign pattern $s(x)$
-and a positive modulus that we denote by $\phi_{\FN}(x)$.
+For guide $\psi_G$, a bond $x\leftrightarrow y$ is sign violating when
+$H_{xy}\psi_G(y)/\psi_G(x)>0$.  Lattice fixed node removes these
+off-diagonal terms and adds their contribution to the diagonal
+\cite{vanBemmel1994}.  The resulting Hamiltonian is sign free after
+importance sampling and has the imposed guide signs.
 
-On an exact small system one may simply feed that modulus back into
-Eq.~\eqref{eq:k1}. In a walker calculation, however, the projector does not
-return a table of $\phi_{\FN}(x)$. With guide amplitude $a(x)$, the
-stationary mixed distribution is
+If its positive ground-state modulus is $\phi_{\FN}$, an exact small-system
+loop can feed $\phi_{\FN}$ directly into Eq.~\eqref{eq:k1}.  In a walker
+calculation the stationary mixed distribution is instead
 \begin{equation}
 f(x)\propto a(x)\phi_{\FN}(x).
 \label{eq:mixed}
 \end{equation}
-If a positive model is trained by maximum likelihood with Born probability
-$p_\theta(x)\propto a_\theta(x)^2$, the ideal maximum-likelihood target is
-therefore
+For a Born model $p_\theta(x)\propto a_\theta(x)^2$, exact
+maximum likelihood therefore gives
 \begin{equation}
-a_{\rm new}(x)\propto
-\sqrt{a(x)\phi_{\FN}(x)} .
+a_{\rm new}(x)\propto\sqrt{a(x)\phi_{\FN}(x)} .
 \label{eq:halfstep}
 \end{equation}
-Equation~\eqref{eq:halfstep} is the precise amplitude handoff that we later
-benchmark. It is a geometric-mean, or half, step toward the current
-fixed-node amplitude; because $H_{\FN}$ itself depends on the guide ratios,
-the target changes after every accepted update.
 
-\subsection{Numerical protocol}
-
-The exact $4\times4$ calculations use the full $S^z=0$ Hilbert space of
-dimension $12\,870$. For $6\times6$ and $8\times8$ we use a previously
-optimized translationally invariant complex vision-transformer (ViT) guide at
-$J_2/J_1=0.5$, with eight transformer layers, embedding dimension 60 and ten
-attention heads. In the controlled sign benchmarks we keep its modulus
-$a(x)=|\psi_{\rm ViT}(x)|$ fixed and replace only its sign; the neural state
-is not retrained during that comparison.
-
-The $8\times8$ fixed-node calculations use population $M=128$ and projection
-length $\beta=1.2$. Whenever only two independent fixed-node populations are
-available, we show both population means and use half their difference as a
-reproducibility scale. We do not interpret that two-population spread as a
-precision statistical error bar. Sampling and estimator details for each
-plotted quantity are retained with the source data in the accompanying
-reproducibility files.
+The $4\times4$ exact calculations use the full $S^z=0$ space
+($12\,870$ states).  For $6\times6$ and $8\times8$ we use a previously
+optimized translationally invariant vision-transformer neural quantum state
+(ViT) at $J_2/J_1=0.5$.  The controlled sign tests hold its modulus fixed.
+The $8\times8$ fixed-node runs use population $M=128$ and projection length
+$\beta=1.2$.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.98\textwidth]{fig2_sign_story.png}
-\caption{Why one Krylov step is useful. (a) Exact $4\times4$ wrong-sign
-probability mass before and after the sign update. (b) The corresponding
-fixed-amplitude energy error. At strong frustration the parent state is a
-stripe sign pattern rather than Marshall. (c) $6\times6$ energies obtained
-with the identical ViT modulus and three different sign structures, shown
-relative to the original ViT signs. (d) On an $8\times8$ sample, the
-Marshall local field separates configurations whose stored ViT sign agrees
-or disagrees with Marshall; ViT signs are used only for this offline coloring,
-not to choose the threshold. (e) Independent $6\times6$ train and validation
-sets confirm an approximately twenty-fold reduction of physically weighted
-wrong-sign mass.}
+\includegraphics[width=0.98\textwidth]{fig2_sign_story.pdf}
+\caption{Sign reconstruction. (a,b) Exact $4\times4$ sign weight and
+fixed-amplitude energy error. (c) $6\times6$ energies with identical ViT
+modulus and different signs. (d) $8\times8$ Marshall local-field
+distributions, colored afterward by the ViT sign. (e) Independent
+$6\times6$ train/validation wrong-sign weights.}
 \label{fig:signbench}
 \end{figure*}
 
-\section{One Krylov step reconstructs the important signs}
-\label{sec:k1}
+\section{One-step sign reconstruction}
 
-We first isolate the sign problem by supplying a high-quality positive
-amplitude and changing only the signs. Figure~\ref{fig:signbench}(a,b) uses
-the exact $4\times4$ ground-state modulus. For $J_2/J_1\leq0.6$ the parent
-sign is the Marshall pattern; on the strongly stripe-dominated side we use
-the corresponding stripe reference. Thus the sweep tests reconstruction
-within the physically appropriate sign basin rather than asking a single
-Marshall reference to describe every coupling.
+Figure~\ref{fig:signbench}(a,b) uses the exact $4\times4$ ground-state
+modulus.  At $J_2/J_1=0.5$, Marshall signs have
+$O_s=0.974538$ ($w_s=1.27\times10^{-2}$).  One Krylov update gives
+$O_s=0.999319$ ($w_s=3.41\times10^{-4}$) and reduces the
+fixed-amplitude energy error per site from $1.16\times10^{-2}$ to
+$5.51\times10^{-4}$.  The same construction remains effective across the
+sweep when the parent sign pattern is chosen in the appropriate Marshall or
+stripe basin.
 
-At the maximally frustrated point $J_2/J_1=0.5$, the Marshall sign overlap is
-$O_s=0.974538$, corresponding to
-$w_s=1.27\times10^{-2}$. A single update raises the overlap to
-$0.999319$ and leaves only $w_s=3.41\times10^{-4}$. The same change reduces
-the fixed-amplitude energy error from $1.16\times10^{-2}$ to
-$5.51\times10^{-4}$ per site. Thus the improvement is not merely a better
-classification score: at fixed exact amplitude it removes almost all of the
-energy penalty associated with the wrong signs.
-
-The $6\times6$ panel provides a less oracle-dependent test. We take the
-positive amplitude from a trained ViT neural quantum state and evaluate three
-signed states with that \emph{same} amplitude. Their energies per site are
+The $6\times6$ test removes the exact-sign oracle.  Using the same ViT
+modulus for all states,
 \begin{align}
-e_{\rm Marshall}&=-0.4981534,\\
-e_{\rm Krylov}&=-0.5033337,\\
-e_{\rm ViT}&=-0.5034504.
+e_{\rm Marshall}&=-0.4981534,\nonumber\\
+e_{\rm Krylov}&=-0.5033337,\nonumber\\
+e_{\rm ViT}&=-0.5034504 .
 \end{align}
-The paired difference between the Krylov and ViT signs is
-$e_{\rm Krylov}-e_{\rm ViT}=1.17(287)\times10^{-4}$, whereas the Krylov
-signs improve over Marshall by $4.79\times10^{-3}$ per site. Because the
-amplitude is identical in all three evaluations, this comparison isolates the
-physical quality of the sign structure.
+The paired difference $e_{\rm Krylov}-e_{\rm ViT}
+=1.17(287)\times10^{-4}$ is unresolved, while Krylov improves over Marshall
+by $4.79\times10^{-3}$ per site.  Thus the energy gain comes from the signs,
+not from changing the amplitude.
 
-\subsection{Why does one step work so well?}
-
-The local quantity in Eq.~\eqref{eq:rs} can be decomposed in the Marshall
-gauge as
+The mechanism is visible in the Marshall local field,
 \begin{equation}
-r_M(x)=D(x)+F_{J_1}(x)+F_{J_2}(x),
-\label{eq:decompfield}
+r_M=D+F_{J_1}+F_{J_2}.
 \end{equation}
-where $D$ is diagonal, $F_{J_1}$ is the unfrustrated nearest-neighbor hopping
-contribution, and $F_{J_2}$ is the frustrating next-nearest-neighbor
-contribution. The useful sign information is carried predominantly by the
-competition of the two off-diagonal terms, weighted by neighboring
-amplitudes, rather than by a classical diagonal motif.
-
-Figure~\ref{fig:signbench}(d) makes this separation visible on $8\times8$.
-Although the two distributions overlap, the sign-defect population is
-strongly biased toward one side of the scalar threshold. On the independent
-$6\times6$ mechanism audit, the physically weighted wrong-sign mass changes
-from $0.01635$ to $8.08\times10^{-4}$ on the training sample and from
-$0.01811$ to $8.02\times10^{-4}$ on validation. The first Krylov step
-therefore removes about $95\%$ of the relevant sign-defect weight.
-
-This success does not imply that repeated bare Krylov steps form a convergent
-sign solver. The first Krylov vector also multiplies the amplitude by
-$|T-r_s(x)|$. If that distorted amplitude is retained, a second unsupervised
-threshold acts on a residual defect population that is already extremely
-small and is dominated by amplitude and local-energy outliers. Direct
-two-step tests on $6\times6$ worsen the fixed-amplitude energy. This is why
-our feedback loop returns to a fixed-node amplitude solve before asking for
-another sign update; quantitative two-step data are summarized in
-Appendix~\ref{app:k2}.
+The useful signal is mainly the competition between the two off-diagonal
+terms.  On independent $6\times6$ samples, the physically weighted wrong-sign
+mass falls from $0.01635$ to $8.08\times10^{-4}$ (train) and from $0.01811$
+to $8.02\times10^{-4}$ (validation), i.e. about a twenty-fold reduction.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.82\textwidth]{fig3_closed_loop.png}
-\caption{Exact $4\times4$ feedback loop at $J_2/J_1=0.5$.
-(a) Exact sign-error mass and amplitude infidelity versus iteration. Markers
-on the sign-error curve indicate iterations at which the sign pattern
-actually changes. (b) Guide and fixed-node energy errors relative to the
-exact ground-state energy. The update itself never uses the target
-ground-state wave function.}
+\includegraphics[width=0.82\textwidth]{fig3_closed_loop.pdf}
+\caption{Exact $4\times4$ fixed-node/Krylov loop at $J_2/J_1=0.5$.
+(a) Sign error and amplitude infidelity. Markers denote sign changes.
+(b) Guide and fixed-node energy errors.}
 \label{fig:closedloop}
 \end{figure*}
 
-\section{Exact closure of the fixed-node--Krylov loop}
-\label{sec:exactloop}
+\section{Closing the loop exactly}
 
-The previous section assumed that a useful positive amplitude was available.
-We next ask whether the two operations in Fig.~\ref{fig:method} can generate
-each other's input. This can be tested without sampling noise on $4\times4$.
-We target $J_2/J_1=0.5$ but initialize the guide with the exact
-\emph{nonfrustrated} ($J_2=0$) ground-state modulus and Marshall signs.
-At each iteration we solve the lattice fixed-node problem exactly for the
-current guide, use its positive modulus as the next amplitude, and then
-recompute the one-step sign rule of Eq.~\eqref{eq:k1}. The target frustrated
-ground state is used only to measure the errors plotted below.
+We now target $J_2/J_1=0.5$ but initialize with the exact $J_2=0$ modulus
+and Marshall signs.  At each step we solve the current fixed-node problem
+exactly, replace the amplitude by its positive modulus, and recompute
+Eq.~\eqref{eq:k1}.  Target-state information is used only for diagnostics.
 
-The result is shown in Fig.~\ref{fig:closedloop}. The initial amplitude
-fidelity to the target state is only $0.7132$, while the initial sign overlap
-is the Marshall value $0.974538$. The fixed-node amplitude improves rapidly;
-sign changes then occur in discrete bursts when the updated amplitude moves
-the local-energy threshold across a new set of configurations. After two
-iterations the sign overlap is already $0.995945$, after twenty iterations it
-is $0.9999982$, and by iteration 100 the exact target sign pattern is reached.
-At that point the amplitude fidelity is $0.9999946$ and the guide energy lies
-only $2.60\times10^{-5}$ above the exact ground-state energy.
+Figure~\ref{fig:closedloop} shows the result.  The initial amplitude fidelity
+is $0.7132$ and the sign overlap is $0.974538$.  After two iterations the sign
+overlap is $0.995945$, after twenty it is $0.9999982$, and at iteration 100
+the exact sign pattern is reached.  The final amplitude fidelity is
+$0.9999946$ and the guide energy is $2.60\times10^{-5}$ above the exact
+ground state.
 
-The staircase structure in panel (a) is useful conceptually. The sign update
-does not need to improve at every iteration. Fixed-node projection can first
-reshape the positive amplitude while the sign pattern remains unchanged;
-once enough amplitude information has accumulated, Eq.~\eqref{eq:k1}
-crosses another sign boundary. The exact loop therefore demonstrates genuine
-feedback between the two sectors rather than repeated application of the same
-sign rule to a frozen amplitude.
-
-\section{Scaling the sign update to $8\times8$}
-\label{sec:scale}
-
-The exact loop is a proof of principle, not a scalable implementation,
-because a generic amplitude cannot be tabulated on large lattices. Before
-addressing that handoff, we first test whether the sign update itself remains
-useful when the system size is increased.
-
-On $8\times8$ we start from the same trained ViT amplitude used to construct
-the one-step sign guide and perform lattice fixed-node projection with
-population $M=128$. Two independent Krylov-sign fixed-node runs give total
-energies $-31.88702$ and $-31.88383$, while matched Marshall-sign controls
-give $-31.70383$ and $-31.65113$. The mean difference is
-\begin{equation}
-E_{\rm Krylov\text{-}FN}-E_{\rm Marshall\text{-}FN}
-=-0.20795 ,
-\end{equation}
-with a two-replica spread proxy of $0.02640$. We use this spread only as a
-reproducibility diagnostic; with two populations it is not a precision
-asymptotic uncertainty estimate.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{fig4_8x8_benchmark.png}
-\caption{Same-geometry energy benchmark for the $8\times8$ periodic
-$J_1$--$J_2$ model at $J_2/J_1=0.5$. We plot
-$10^3(E/N+0.5)$ so that lower values correspond to lower energies. Literature
-numbers are taken from Table I of Ref.~\cite{QianQin2023}. Vertical ticks on
-our two fixed-node entries show the individual populations; their horizontal
-error bars are two-replica spread proxies.}
-\label{fig:8x8bench}
-\end{figure}
-
-Figure~\ref{fig:8x8bench} places this result next to published calculations
-on the identical $8\times8$ periodic geometry. The Krylov-sign fixed-node
-mean is
-\begin{equation}
-E/N=-0.498210 ,
-\end{equation}
-compared with $-0.494961$ for the Marshall-sign fixed-node control. The
-Krylov-guided value lies in the same narrow energy range as the high-bond
-dimension DMRG/FAMPS and RBM+pair-product benchmarks compiled in
-Ref.~\cite{QianQin2023}. We do not interpret the small ordering among these
-numbers as a precision ranking: our fixed-node result has finite-population
-systematics and only two independent populations. The useful conclusion is
-more limited and more robust: the one-step reconstructed sign structure
-survives to $8\times8$ and removes most of the large energy penalty of the
-Marshall signs.
-
-At this point the bottleneck changes. Fixed-node projection can be sampled at
-$8\times8$, and the one-step sign rule can be evaluated from a callable
-guide. What is missing is a scalable map from a cloud of fixed-node walkers
-back to a callable positive amplitude. A low-dimensional histogram correction
-works as a diagnostic on smaller lattices, but nested evaluation of such
-corrections becomes prohibitively expensive at $8\times8$. We therefore turn
-to direct learning of the amplitude update in Eq.~\eqref{eq:halfstep}.
+The plateaus are physical: fixed node can improve the amplitude for many
+steps without changing a sign.  A sign update occurs only when the improved
+amplitude shifts the local-energy threshold across a new set of
+configurations.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.82\textwidth]{fig5_amplitude_learning.png}
-\caption{Amplitude-learning benchmarks. (a) Exact $4\times4$ iterations of
-the ideal walker-MLE half step, Eq.~\eqref{eq:halfstep}, interleaved with the
-Krylov sign update. The uniform-amplitude start illustrates that the first
-step need not lower the energy globally. (b) On $8\times8$, a
-stochastic-reconfiguration (SR) direction is trained on one fixed-node walker
-population and evaluated on an independent population. The held-out
-log-likelihood remains positive up to a finite step and is maximal near
-$\eta=0.01$.}
+\includegraphics[width=0.55\textwidth]{fig4_8x8_benchmark.pdf}
+\caption{$8\times8$ periodic-boundary energy benchmark at
+$J_2/J_1=0.5$. Literature values are from Ref.~\cite{QianQin2023};
+ticks mark the two fixed-node populations.}
+\label{fig:8x8bench}
+\end{figure*}
+
+\section{Scaling to $8\times8$}
+
+At $M=128$, the two-population means are
+\begin{equation}
+E_{\rm K-FN}=-31.88542,\qquad
+E_{\rm M-FN}=-31.67748 .
+\end{equation}
+Their difference is $-0.20795$.  Two-population spreads are used only as
+reproducibility scales.
+
+The Krylov-sign mean is $E/N=-0.498210$, compared with $-0.494961$ for
+Marshall signs.  Figure~\ref{fig:8x8bench} shows that it lies in the same
+energy range as high-accuracy DMRG/FAMPS and neural benchmarks on the same
+geometry.  We use this only as a scale comparison, not as a ranking between
+methods.
+
+The sign update therefore survives to $8\times8$.  The bottleneck is now
+different: fixed-node walkers must be converted into an amplitude that can be
+evaluated on arbitrary configurations.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.82\textwidth]{fig5_amplitude_learning.pdf}
+\caption{Amplitude handoff. (a) Exact $4\times4$ iterations of the ideal
+MLE half step, Eq.~\eqref{eq:halfstep}. (b) $8\times8$ SR line search:
+the update is fitted on one fixed-node population and tested on another.}
 \label{fig:amplearn}
 \end{figure*}
 
-\section{Learning the fixed-node amplitude from walkers}
-\label{sec:learning}
+\section{Learning the amplitude from walkers}
 
-Equation~\eqref{eq:halfstep} provides an exact target for the learning
-problem. Before using a neural network, we can apply that geometric-mean
-update exactly on $4\times4$. Figure~\ref{fig:amplearn}(a) shows two
-initial conditions. Starting from the exact target modulus but Marshall signs,
-the first ideal maximum-likelihood half step followed by the Krylov sign
-update changes the energy from $-8.27291$ to $-8.44579$, close to the exact
-$E_0=-8.45792$. Starting instead from a uniform modulus is deliberately much
-harder: the first update is nonmonotone, but subsequent fixed-node/half-step
-iterations recover and approach the correct low-energy basin. Thus the
-geometric-mean target is locally contracting toward each current fixed-node
-amplitude, but it does not define a global energy-descent theorem.
+Equation~\eqref{eq:halfstep} can be tested exactly on $4\times4$.
+Starting from the exact target modulus with Marshall signs, one ideal
+half-step plus the Krylov sign update changes the energy from $-8.27291$ to
+$-8.44579$, close to $E_0=-8.45792$.  A uniform-amplitude start is initially
+nonmonotone but subsequently recovers [Fig.~\ref{fig:amplearn}(a)].
 
-The finite-sample problem is more subtle. We fine-tune the existing ViT
-amplitude rather than replacing it with a newly initialized network. Let
-$g_1$ and $g_2$ denote maximum-likelihood gradients estimated from two
-independent $M=128$ fixed-node populations. At the initial $8\times8$ guide,
-their Euclidean cosine is
+At $8\times8$, the issue is sampling noise.  Let $g_1$ and $g_2$ be
+maximum-likelihood gradients from two independent fixed-node populations.
+Their Euclidean cosine is
 \begin{equation}
-\frac{g_1\!\cdot g_2}{\|g_1\|\|g_2\|}=-0.853 .
+\frac{g_1\cdot g_2}{\|g_1\|\|g_2\|}=-0.853,
 \end{equation}
-A naive Euclidean update therefore points in a direction that does not
-generalize even at infinitesimal step size.
+so an ordinary gradient step does not transfer between populations.
 
-We instead use stochastic reconfiguration (SR) \cite{Sorella2001}.
-With empirical Fisher matrix $S$ and diagonal shift $\lambda$, its update is
+We therefore use stochastic reconfiguration (SR)
+\cite{Sorella2001},
 \begin{equation}
 \delta\theta=(S+\lambda I)^{-1}g_1 .
-\label{eq:sr}
 \end{equation}
-Using $\lambda=1$ and a matrix-free solve, the same two populations give the
-held-out directional derivative
-\begin{equation}
-g_2^{\mathsf T}\delta\theta=+3.85 ,
-\end{equation}
-despite the negative Euclidean cosine. The finite line search in
-Fig.~\ref{fig:amplearn}(b) confirms that this is not merely an infinitesimal
-effect: at $\eta=0.01$ the held-out log-likelihood gain is $+0.0156$, while
-the importance-sampling effective sample size remains $3236$ out of $4096$.
+For $\lambda=1$, the held-out directional derivative becomes
+$g_2^{\mathsf T}\delta\theta=+3.85$.  The finite line search in
+Fig.~\ref{fig:amplearn}(b) remains positive and peaks near $\eta=0.01$,
+where the held-out log-likelihood gain is $0.0156$ and the reweighting
+effective sample size is $3236/4096$.
 
-This is the scalable amplitude result established here. It shows that
-fixed-node walker information can be converted into a neural-amplitude
-direction that transfers between independent populations. It does
-\emph{not} yet establish convergence of a repeatedly learned $8\times8$
-fixed-node--Krylov loop. In particular, likelihood improvement is a surrogate
-for the amplitude handoff, whereas the projected fixed-node energy remains
-the physical acceptance criterion for future iterations.
+This establishes a transferable amplitude-learning direction.  It does not
+yet establish convergence of a repeatedly learned $8\times8$ loop; fixed-node
+energy remains the physical acceptance test.
 
-\section{Discussion}
+\section{Discussion and outlook}
 
-The numerical picture that emerges is simpler than trying to learn an entire
-frustrated wave function in one operation. Once a useful positive amplitude
-is available, the dominant correction to the sign structure is already
-encoded in the amplitude-weighted local action of the Hamiltonian. A single
-shifted Krylov vector converts that information into a scalar threshold
-problem. Exact diagonalization shows that this removes almost all of the
-sign-defect weight at $J_2/J_1=0.5$, and the same-amplitude $6\times6$ test
-shows that the reconstructed signs have essentially the same energetic effect
-as the signs of the trained neural state.
+The data point to a simple division of labor.  A good amplitude makes the
+dominant frustrated sign correction almost one-dimensional: a threshold in
+the local Krylov field.  Fixed node solves the complementary positive-amplitude
+problem at fixed signs, and the exact $4\times4$ loop shows that the two
+updates can close.
 
-Fixed-node projection plays a complementary role. It does not infer a new sign
-pattern: by construction it keeps the current signs fixed and solves a
-sign-free positive-amplitude problem. The sign change occurs only when the
-resulting amplitude is inserted back into Eq.~\eqref{eq:k1}. The exact
-$4\times4$ calculation demonstrates that this composition can cross many
-distinct sign patterns and eventually recover the exact frustrated ground
-state from a nonfrustrated starting point.
-
-The scaling tests separate two questions that are often conflated. The
-Krylov sign rule itself remains useful through $8\times8$, where its
-fixed-node energy is competitive with established same-geometry variational
-benchmarks. The difficult step is instead statistical: a fixed-node walker
-population represents the mixed distribution of Eq.~\eqref{eq:mixed}, not a
-callable wave-function modulus. Direct Euclidean maximum-likelihood gradients
-are population dependent at $8\times8$. A natural-gradient/SR metric repairs
-that first transfer test, but a robust repeated large-system feedback loop
-still requires a physical acceptance test and controlled population
-statistics.
-
-Three boundaries of the present result are therefore important. First, the
-one-step rule is not a generic solution of the sign problem: it requires a
-useful starting amplitude and a parent sign basin. Second, the excellent first
-step should not be extrapolated to an undamped Krylov sequence; the direct
-second step is demonstrably worse. Third, the exact small-system closure does
-not prove polynomial scaling of the learned amplitude handoff. What it does
-establish is a concrete decomposition of the problem in which sign
-reconstruction is inexpensive and quantitatively accurate, while the
-remaining hard object---a transferable positive amplitude learned from
-projector data---can be isolated and tested independently.
-
-\section{Conclusion}
-
-For the frustrated square-lattice $J_1$--$J_2$ model, accurate amplitudes
-contain enough local Hamiltonian information to reconstruct most of the
-non-Marshall sign structure with one projected Krylov step. Exact
-diagonalization, same-amplitude neural-state tests, and $8\times8$
-fixed-node calculations all support this statement. Fixed-node projection
-can in turn improve the amplitude without a sign problem, and on $4\times4$
-the two updates form a self-correcting loop that reaches the exact signs.
-
-For large systems the central unresolved issue is no longer how to propose a
-sign change, but how to turn sampled fixed-node amplitude information into a
-stable callable guide. The mixed-distribution identity
-$a_{\rm new}\propto\sqrt{a\phi_{\FN}}$ gives the correct learning target,
-and stochastic reconfiguration produces a direction that transfers between
-independent $8\times8$ walker populations. Closing that learned loop
-repeatedly, with fixed-node energy rather than likelihood as the acceptance
-criterion, is the remaining step.
+The unresolved large-system problem is the amplitude handoff from projector
+walkers.  SR makes one $8\times8$ update transferable across independent
+populations, but repeated updates still need fixed-node energy validation.
+The method also requires a useful initial amplitude and should not be confused
+with repeated bare Krylov iteration; the direct second step is worse on
+$6\times6$.
 
 \appendix
 
-\section{Why a direct second Krylov step is not used}
-\label{app:k2}
+\section{Direct second Krylov step}
 
-A natural alternative to the feedback construction would be to retain the
-full first Krylov vector and apply a second Krylov step. We tested this
-directly on $6\times6$. The first operation changes not only the signs but
-also the modulus,
-\begin{equation}
-a_1(x)=|T_1-r_0(x)|a_0(x),
-\end{equation}
-whose multiplier has a coefficient of variation of approximately $0.18$ on
-the physical diagnostic sample.
+On $6\times6$, retaining the full first Krylov amplitude gives
+$a_1(x)=|T_1-r_0(x)|a_0(x)$ with coefficient of variation about $0.18$.
+A second unsupervised threshold changes only $0.8$--$2.0\%$ of physical
+weight but raises the fixed-amplitude energy by $0.65$--$0.96$ in total
+energy.  The feedback construction therefore restores or re-solves the
+amplitude before another sign update.
 
-Across three unsupervised second-step thresholds, the physical sign-change
-mass is only $0.8$--$2.0\%$, but the fixed-amplitude energy rises by
-$0.65$--$0.96$ in total energy relative to the one-step signs. The residual
-correctable sign defects are much rarer than the population selected by an
-ordinary second threshold. Restoring the original high-quality amplitude
-removes most of the directly observed bad second-step flips. We therefore
-interpret the failure as amplitude distortion and rare-tail sensitivity, not
-as evidence that the dominant first-step sign correction was spurious.
+\section{Statistical convention}
 
-\section{Statistical conventions}
-
-Exact-diagonalization quantities are deterministic up to numerical
-eigensolver precision. For the $6\times6$ fixed-amplitude comparison we use
-independent chains and report a correlation-robust between-chain standard
-error. For $8\times8$ fixed-node calculations the manuscript reports two
-independent populations. The quantity shown as an error bar is the
-between-population spread divided by two, equal to the usual standard-error
-formula for two samples. Because two populations are insufficient to
-establish asymptotic normal statistics, we refer to this quantity throughout
-as a \emph{two-replica spread proxy}, not as a precision statistical
-uncertainty.
+Exact-diagonalization data are deterministic up to eigensolver precision.
+For the $6\times6$ fixed-amplitude comparison we use correlation-robust
+between-chain standard errors.  For $8\times8$ fixed-node data with two
+independent populations, error bars denote half the population difference and
+are treated only as reproducibility scales.
 
 \bibliography{refs}
 \end{document}

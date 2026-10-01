@@ -101,8 +101,9 @@ The threshold $T$ is inferred without target sign labels, using either
 fixed-amplitude energy minimization on exact small systems or robust
 two-cluster thresholding on sampled larger systems.
 
-\begin{figure}[t]
-\includegraphics[width=\columnwidth]{fig1_exact_k1.png}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.82\textwidth]{fig1_exact_k1.png}
 \caption{Exact $4\times4$ benchmark of one-step projected-Krylov sign
 reconstruction. At each coupling the parent sign convention shown is the
 appropriate Marshall or stripe reference. The left panel shows the
@@ -110,7 +111,7 @@ ground-state probability mass carrying the wrong sign; the right panel shows
 the corresponding fixed-amplitude variational energy error per site.
 Source: \texttt{square\_exact\_energyopt.csv}.}
 \label{fig:k1exact}
-\end{figure}
+\end{figure*}
 
 Figure~\ref{fig:k1exact} shows the exact $4\times4$ result. At
 $J_2/J_1=0.5$, Marshall signs have $\OS=0.974538$, while one K1 update reaches
@@ -159,15 +160,16 @@ projected ground state provides a positive amplitude $\phi_{\FN}(x)$.
 The desired feedback is therefore Eq.~\eqref{eq:loop}, with each K1 field
 recomputed from the current amplitude and current sign state.
 
-\begin{figure}[t]
-\includegraphics[width=\columnwidth]{fig3_exact_closed_loop.png}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.82\textwidth]{fig3_exact_closed_loop.png}
 \caption{Exact $4\times4$ current-sign fixed-node/K1 loop at
 $J_2/J_1=0.5$, initialized with Marshall signs and the exact $J_2=0$
 ground-state modulus. Target-$J_2$ exact information is used only for the
 plotted diagnostics. Both the sign error and amplitude infidelity contract,
 with long plateaus followed by discrete sign-chamber changes.}
 \label{fig:closed4}
-\end{figure}
+\end{figure*}
 
 The exact $4\times4$ benchmark in Fig.~\ref{fig:closed4} starts from the
 $J_2=0$ modulus and Marshall signs. No target-$J_2$ ground-state information

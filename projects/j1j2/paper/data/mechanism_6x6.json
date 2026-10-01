@@ -1,0 +1,7 @@
+{
+  "source": "../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md",
+  "J2_over_J1": 0.5,
+  "train": {"marshall_wrong_mass": 0.01635, "k1_wrong_mass": 0.000808},
+  "validation": {"marshall_wrong_mass": 0.01811, "k1_wrong_mass": 0.000802},
+  "interpretation": "values are physical-weight diagnostics reported by the established mechanism audit"
+}

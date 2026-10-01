@@ -135,169 +135,140 @@ $J_2/J_1=0.5$. In the sign-only benchmarks, its positive amplitude
 $|\psi_{\rm ViT}(x)|$ is held fixed. The $8\times8$ fixed-node calculations
 use a walker population $M=128$ and projection length $\beta=1.2$.
 
+\section{Results}
+
+\subsection{One-step proof of concept}
+
+The simplest test keeps the positive amplitude fixed and changes only the
+signs.  On $4\times4$ the exact ground state is available, so we can measure
+both the sign error and the corresponding energy error directly.
+
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.98\textwidth]{fig2_sign_story.pdf}
-\caption{Sign reconstruction. (a,b) Exact $4\times4$ wrong-sign weight
-$w_s$ and fixed-amplitude energy error. The initial sign rule is Marshall for
-$J_2/J_1\leq0.6$ and a stripe rule for $J_2/J_1\geq0.8$; the stripe rule
-uses alternating columns instead of the checkerboard sublattices of the
-Marshall rule. The positive amplitude is always the exact ground-state
-amplitude. (c) $6\times6$ energies obtained with the same ViT positive
-amplitude and three different sign patterns; error bars are between-chain
-standard errors. (d) $8\times8$ distributions of the Marshall local energy
-$r_M(x)$. ViT signs are used only afterward to identify configurations that
-agree or disagree with Marshall; the threshold is obtained from the $r_M$
-values alone. (e) Fraction of the ViT probability weight
-$|\psi_{\rm ViT}|^2$ whose sign disagrees with the ViT sign, before and
-after the Krylov update, on two independent samples. Exact zeros in
-panels (a,b) are displayed at $10^{-12}$ only to make them visible on the
-logarithmic axes.}
-\label{fig:signbench}
+\includegraphics[width=0.82\textwidth]{fig1_proof_of_concept.pdf}
+\caption{One-step proof of concept on $4\times4$. (a) Exact probability
+weight carried by configurations with the wrong sign. (b) Variational energy
+error per site using the same exact positive amplitude before and after the
+Krylov sign update. For $J_2/J_1\leq0.6$ the initial sign rule is Marshall;
+for $J_2/J_1\geq0.8$ we use the corresponding stripe reference pattern.
+Exact zeros are shown at $10^{-12}$ on the logarithmic axes.}
+\label{fig:proof}
 \end{figure*}
 
-\section{One-step sign reconstruction}
+At $J_2/J_1=0.5$, the wrong-sign probability decreases from
+$1.27\times10^{-2}$ to $3.41\times10^{-4}$.  With the amplitude unchanged,
+the energy error per site falls at the same time from $1.16\times10^{-2}$ to
+$5.51\times10^{-4}$.  Thus one Krylov step makes the signs substantially
+more accurate and recovers most of the energy lost to the incorrect signs.
 
-Figure~\ref{fig:signbench}(a,b) uses the exact $4\times4$ positive
-ground-state amplitude. At $J_2/J_1=0.5$, Marshall signs place
-$1.27\times10^{-2}$ of the exact ground-state probability on configurations
-with the wrong sign. One Krylov update reduces this to
-$3.41\times10^{-4}$ and lowers the fixed-amplitude energy error per site from
-$1.16\times10^{-2}$ to $5.51\times10^{-4}$.
+\subsection{Larger-system validation}
 
-The $6\times6$ test no longer uses exact signs. With the same ViT positive
-amplitude for all three states,
+We next remove the exact-sign benchmark.  On $6\times6$ we use the same ViT
+positive amplitude with three sign choices: Marshall, one-step Krylov, and
+the original ViT signs.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.96\textwidth]{fig2_larger_system_check.pdf}
+\caption{Larger-system checks. (a) $6\times6$ energy with an identical ViT
+positive amplitude and three sign structures. (b) On $8\times8$, the
+Marshall local energy separates configurations whose ViT sign agrees or
+disagrees with Marshall; the threshold is obtained from the local-energy data
+alone. (c) On two independent $6\times6$ samples, the fraction of
+$|\psi_{\rm ViT}|^2$ weight whose sign disagrees with the ViT sign drops by
+about a factor of twenty after the Krylov update.}
+\label{fig:larger}
+\end{figure*}
+
+The $6\times6$ energies per site are
 \begin{align}
 e_{\rm Marshall}&=-0.4981534,\nonumber\\
 e_{\rm Krylov}&=-0.5033337,\nonumber\\
 e_{\rm ViT}&=-0.5034504 .
 \end{align}
-The paired difference
-$e_{\rm Krylov}-e_{\rm ViT}=1.17(287)\times10^{-4}$ is unresolved, whereas
-Krylov improves over Marshall by $4.79\times10^{-3}$ per site. The energy
-gain therefore comes from the signs, not from changing the amplitude.
+The paired difference $e_{\rm Krylov}-e_{\rm ViT}=1.17(287)\times10^{-4}$ is
+unresolved, whereas Krylov improves over Marshall by $4.79\times10^{-3}$ per
+site.  The larger-system data therefore support the same conclusion as the
+exact benchmark: the one-step sign update captures the energetically relevant
+sign structure.
 
-The mechanism is visible in the Marshall local energy,
-\begin{equation}
-r_M(x)=D(x)+F_{J_1}(x)+F_{J_2}(x),
-\end{equation}
-where $D$ is the diagonal contribution and $F_{J_1},F_{J_2}$ are the two
-off-diagonal exchange contributions. The useful signal is mainly their
-competition. On two independent $6\times6$ samples, the fraction of
-$|\psi_{\rm ViT}|^2$ weight with the wrong sign falls from $0.01635$ to
-$8.08\times10^{-4}$ and from $0.01811$ to $8.02\times10^{-4}$,
-respectively.
+\subsection{Closing the fixed-node--Krylov loop}
+
+We now test whether the positive amplitude can also be updated.  We target
+$J_2/J_1=0.5$ but initialize with the exact $J_2=0$ positive amplitude and
+Marshall signs.  Each iteration solves the current fixed-node problem exactly,
+uses its positive ground-state amplitude, and recomputes Eq.~\eqref{eq:k1}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.82\textwidth]{fig3_closed_loop.pdf}
 \caption{Exact $4\times4$ fixed-node/Krylov loop at $J_2/J_1=0.5$.
-(a) Wrong-sign weight $w_s$ and amplitude error $1-F_a$. For normalized
-positive amplitudes, $F_a=|\langle a|a_0\rangle|^2$. Markers indicate
-iterations at which the sign pattern changes. The exact zero reached at
-the end is displayed at $10^{-12}$ on the logarithmic axis. (b) Energy above
-the exact ground state for the current trial state and for the fixed-node
-projected state.}
+(a) Wrong-sign weight $w_s$ and amplitude error $1-F_a$, with
+$F_a=|\langle a|a_0\rangle|^2$. Markers indicate iterations at which the sign
+pattern changes. (b) Energy above the exact ground state for the current trial
+state and the fixed-node projected state.}
 \label{fig:closedloop}
 \end{figure*}
 
-\section{Closing the loop exactly}
+The wrong-sign weight falls from $1.27\times10^{-2}$ initially to
+$2.03\times10^{-3}$ after two iterations and $8.85\times10^{-7}$ after
+twenty.  At iteration 100 it is zero to numerical precision.  The final
+amplitude fidelity is $0.9999946$ and the trial-state energy is only
+$2.60\times10^{-5}$ above the exact ground state.
 
-We target $J_2/J_1=0.5$ but initialize with the exact positive ground-state
-amplitude at $J_2=0$ and Marshall signs. At each iteration we solve the
-current fixed-node problem exactly, replace the positive amplitude by the
-fixed-node ground-state amplitude, and recompute Eq.~\eqref{eq:k1}. The exact
-$J_2/J_1=0.5$ ground state is used only to evaluate the plotted errors.
+\subsection{Scaling to $8\times8$}
 
-Initially $F_a=0.7132$ and the wrong-sign weight is $w_s=1.27\times10^{-2}$.
-After two iterations $w_s=2.03\times10^{-3}$; after twenty,
-$w_s=8.85\times10^{-7}$; at iteration 100 it is zero to numerical precision.
-The final amplitude fidelity is $0.9999946$, and the energy of the current
-trial state is $2.60\times10^{-5}$ above the exact ground state.
-
-The plateaus in Fig.~\ref{fig:closedloop}(a) have a simple interpretation:
-fixed node can improve the amplitude for several iterations without changing
-any sign. A new sign pattern appears only when the improved amplitude moves
-the local-energy threshold across additional configurations.
+At $M=128$, the mean total fixed-node energies from two independent walker
+populations are
+\begin{equation}
+E_{\rm Krylov}=-31.88542,\qquad E_{\rm Marshall}=-31.67748 .
+\end{equation}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.55\textwidth]{fig4_8x8_benchmark.pdf}
 \caption{Energy per site on the periodic $8\times8$ lattice at
 $J_2/J_1=0.5$. ``FN'' denotes lattice fixed node. The two FN entries use
-Marshall signs or the one-step Krylov-reconstructed signs. Short ticks show
-the two independent walker populations. Literature values are from
+Marshall signs or the one-step Krylov signs. Short ticks show the two
+independent walker populations. Literature values are from
 Ref.~\cite{QianQin2023}.}
 \label{fig:8x8bench}
 \end{figure*}
 
-\section{Scaling to $8\times8$}
+Using the Krylov signs gives $E/N=-0.498210$, compared with $-0.494961$ for
+Marshall signs.  Figure~\ref{fig:8x8bench} places this in the range of
+high-accuracy same-geometry benchmarks.  With only two populations we treat
+their spread as a reproducibility scale rather than a precision error bar.
 
-At $M=128$, the mean total fixed-node energies from two independent walker
-populations are
-\begin{equation}
-E_{\rm Krylov}=-31.88542,\qquad
-E_{\rm Marshall}=-31.67748 .
-\end{equation}
-Their difference is $-0.20795$. With only two populations, their spread is
-used only as a reproducibility scale.
+\subsection{Learning the positive amplitude from walkers}
 
-Using the Krylov-reconstructed signs gives $E/N=-0.498210$, compared with
-$-0.494961$ when the same fixed-node calculation uses Marshall signs.
-Figure~\ref{fig:8x8bench} shows that it lies in the same energy range as
-high-accuracy DMRG/FAMPS and neural benchmarks on the same geometry. We use
-this only as a scale comparison, not as a ranking between methods.
-
-Thus the reconstructed signs remain useful on $8\times8$. The remaining
-problem is to infer from fixed-node walkers a positive amplitude function
-that can be evaluated on configurations not present in the walker sample.
+For sampled fixed-node walkers, Eq.~\eqref{eq:halfstep} defines the amplitude
+learning target.  Its exact $4\times4$ behavior and the first scalable
+$8\times8$ learning step are shown in Fig.~\ref{fig:amplearn}.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.82\textwidth]{fig5_amplitude_learning.pdf}
 \caption{Learning the positive amplitude. (a) Exact $4\times4$ test of
-Eq.~\eqref{eq:halfstep}. ``Exact amplitudes'' means the exact
-$J_2/J_1=0.5$ ground-state amplitudes; ``equal amplitudes'' means the same positive value $a(x)=\mathrm{const.}$
-for every basis state, followed by normalization. Both start with
-Marshall signs. (b) Stochastic-reconfiguration (SR) step-size scan on
-$8\times8$: the update is fitted to one fixed-node walker sample and evaluated
-on an independent sample.}
+Eq.~\eqref{eq:halfstep}. The two curves start from the exact target amplitudes
+or from equal positive amplitudes, in both cases with Marshall signs.
+(b) Stochastic-reconfiguration (SR) step-size scan on $8\times8$: the update
+is fitted to one fixed-node walker sample and evaluated on an independent
+sample.}
 \label{fig:amplearn}
 \end{figure*}
 
-\section{Learning the amplitude from walkers}
-
-Equation~\eqref{eq:halfstep} can be tested exactly on $4\times4$. Starting
-from the exact $J_2/J_1=0.5$ ground-state amplitudes but assigning Marshall
-signs, one exact amplitude update from Eq.~\eqref{eq:halfstep} followed by
-the Krylov sign update changes the energy from $-8.27291$ to $-8.44579$,
-close to $E_0=-8.45792$. A deliberately poor start in which all positive
-amplitudes are equal initially moves to higher energy, but later iterations
-recover [Fig.~\ref{fig:amplearn}(a)].
-
-At $8\times8$, let $g_1$ and $g_2$ be maximum-likelihood gradients estimated
-from two independent fixed-node walker samples. Their Euclidean cosine is
-\begin{equation}
-\frac{g_1\cdot g_2}{\|g_1\|\,\|g_2\|}=-0.853,
-\end{equation}
-so an ordinary gradient step fitted to one sample does not generalize to the
-other.
-
-We therefore use stochastic reconfiguration (SR) \cite{Sorella2001},
+On $8\times8$, ordinary maximum-likelihood gradients from two independent
+walker samples have Euclidean cosine $-0.853$, so a standard gradient step
+does not transfer between samples.  With stochastic reconfiguration,
 \begin{equation}
 \delta\theta=(S+\lambda I)^{-1}g_1 ,
 \end{equation}
-where $S$ is the empirical Fisher matrix of the amplitude model and
-$\lambda$ is a diagonal regularization.
-For $\lambda=1$, the directional derivative on the independent second walker
-sample becomes $g_2^{\mathsf T}\delta\theta=+3.85$. The finite step-size scan
-in Fig.~\ref{fig:amplearn}(b) remains positive and peaks near $\eta=0.01$,
-where the log-likelihood change on the independent sample is $+0.0156$ and
-the reweighting effective sample size is $3236/4096$.
-
-This shows that one learned amplitude update generalizes between independent
-walker samples. It does not yet establish convergence of repeated
-$8\times8$ updates; the fixed-node energy remains the acceptance test.
+and $\lambda=1$, the directional derivative on the second sample is $+3.85$.
+A finite step $\eta=0.01$ gives a positive independent-sample log-likelihood
+change of $0.0156$ with effective sample size $3236/4096$.  This establishes a
+transferable first amplitude update, but not yet convergence of repeated
+$8\times8$ feedback iterations.
 
 \section{Discussion and outlook}
 

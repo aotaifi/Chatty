@@ -209,8 +209,88 @@ def fig5_amplitude_learning():
     ax[1].legend(frameon=False,fontsize=7.5); panel(ax[1],"b")
     save(fig,"fig5_amplitude_learning.png")
 
+def fig1_proof_of_concept():
+    rows=list(csv.DictReader(open(ROOT/"krylov_sign_structure/results/square_exact_energyopt.csv")))
+    chosen=[]
+    for r in rows:
+        j=float(r["J2"])
+        if (j<=.6 and r["baseline"]=="marshall") or (j>=.8 and r["baseline"]=="stripe_x"):
+            chosen.append(r)
+    j2=np.array([float(r["J2"]) for r in chosen])
+    o0=np.array([float(r["O_S_0"]) for r in chosen])
+    o1=np.array([float(r["O_S_1"]) for r in chosen])
+    w0=np.maximum((1-o0)/2,1e-12)
+    w1=np.maximum((1-o1)/2,1e-12)
+    de0=np.array([max(float(r["fixed_amp_energy_error0_per_site"]),1e-12) for r in chosen])
+    de1=np.array([max(float(r["fixed_amp_energy_error1_per_site"]),1e-12) for r in chosen])
+
+    fig,ax=plt.subplots(1,2,figsize=(7.1,2.8))
+    ax[0].plot(j2,w0,"o--",label="before Krylov update")
+    ax[0].plot(j2,w1,"s-",label="after Krylov update")
+    ax[0].set_yscale("log")
+    ax[0].set_xlabel("J2 / J1")
+    ax[0].set_ylabel("Wrong-sign probability")
+    ax[0].set_title("Are the signs more accurate?")
+    ax[0].legend(frameon=False)
+    panel(ax[0],"a")
+
+    ax[1].plot(j2,de0,"o--",label="before Krylov update")
+    ax[1].plot(j2,de1,"s-",label="after Krylov update")
+    ax[1].set_yscale("log")
+    ax[1].set_xlabel("J2 / J1")
+    ax[1].set_ylabel("Energy error per site")
+    ax[1].set_title("Does the energy improve?")
+    ax[1].legend(frameon=False)
+    panel(ax[1],"b")
+    save(fig,"fig1_proof_of_concept.png")
+
+def fig2_larger_system_check():
+    z=np.load(ROOT/"results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz")
+    eM,eV,eK=chain_stats(z["eM"]),chain_stats(z["eVA"]),chain_stats(z["eVA"]+z["dKA"])
+    base=eV[0]/36
+    mus=np.array([eM[0]/36,eK[0]/36,eV[0]/36])
+    ses=np.array([eM[1]/36,eK[1]/36,eV[1]/36])
+
+    z8=np.load(ROOT/"results/8x8_krylov_3471544/krylov_phys8_a2_fixedT.npz")
+    r=np.asarray(z8["r"],float); y=np.asarray(z8["y"],float)
+    t=-28.37107876288694
+    mech=json.load(open(DATA/"mechanism_6x6.json"))
+
+    fig,ax=plt.subplots(1,3,figsize=(10.0,2.8))
+    x=np.arange(3); rel=1e3*(mus-base); er=1e3*ses
+    ax[0].errorbar(x,rel,yerr=er,fmt="o",capsize=3)
+    ax[0].axhline(0,lw=.8)
+    ax[0].set_xticks(x,["Marshall","Krylov","ViT"])
+    ax[0].set_ylabel("Energy/site minus ViT (10^-3)")
+    ax[0].set_title("6 x 6, identical amplitude")
+    panel(ax[0],"a")
+
+    bins=np.linspace(np.quantile(r,.01),np.quantile(r,.99),45)
+    ax[1].hist(r[y>0],bins=bins,density=True,alpha=.55,label="same sign as Marshall")
+    ax[1].hist(r[y<0],bins=bins,density=True,alpha=.55,label="opposite sign to Marshall")
+    ax[1].axvline(t,ls="--",lw=1.1,label=f"threshold: {t:.2f}")
+    ax[1].set_xlabel("Marshall local energy rM(x)")
+    ax[1].set_ylabel("Sample density")
+    ax[1].set_title("8 x 8: sign-flip signal")
+    ax[1].legend(frameon=False,fontsize=7.2)
+    panel(ax[1],"b")
+
+    before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
+    after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
+    xx=np.arange(2); width=.34
+    ax[2].bar(xx-width/2,before,width,label="before")
+    ax[2].bar(xx+width/2,after,width,label="after")
+    ax[2].set_yscale("log")
+    ax[2].set_xticks(xx,["sample A","sample B"])
+    ax[2].set_ylabel("ViT-weighted sign disagreement")
+    ax[2].set_title("6 x 6: independent samples")
+    ax[2].legend(frameon=False,fontsize=7.5)
+    panel(ax[2],"c")
+    save(fig,"fig2_larger_system_check.png")
+
 if __name__=="__main__":
-    fig2_sign_story()
+    fig1_proof_of_concept()
+    fig2_larger_system_check()
     fig3_closed_loop()
     fig4_8x8_benchmark()
     fig5_amplitude_learning()

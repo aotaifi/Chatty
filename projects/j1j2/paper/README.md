@@ -47,17 +47,20 @@ repeated learned 8x8 FN/Krylov loop is not claimed to be converged.
 
 ## Main figure provenance
 
-- **Fig. 1 — sign reconstruction:** exact 4x4 energy-optimized sweep from
-  `square_exact_energyopt.csv`; 6x6 fixed-amplitude Marshall/Krylov/ViT
-  energies from `energy_krylov_vs_vit_6x6_indep.npz`; the 8x8 local-energy
-  diagnostic from `krylov_phys8_a2_fixedT.npz`; 6x6 independent-sample sign
-  disagreement values in `data/mechanism_6x6.json`.
-- **Fig. 2 — exact feedback:** current-sign 4x4 fixed-node/Krylov history from
+- **Fig. 1 — one-step proof of concept:** exact 4x4 sign and fixed-amplitude
+  energy errors from `square_exact_energyopt.csv`. Panels (c,d) highlight the
+  J2/J1=0.5 reductions: 37.4x in wrong-sign probability and 21.0x in energy
+  error.
+- **Fig. 2 — larger-system validation:** 6x6 same-amplitude
+  Marshall/Krylov/ViT energies from `energy_krylov_vs_vit_6x6_indep.npz`;
+  8x8 local-energy diagnostic from `krylov_phys8_a2_fixedT.npz`; independent
+  6x6 ViT-weighted sign-disagreement values in `data/mechanism_6x6.json`.
+- **Fig. 3 — exact feedback:** current-sign 4x4 fixed-node/Krylov history from
   `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json`.
-- **Fig. 3 — 8x8 benchmark:** Krylov-sign and Marshall-sign fixed-node
+- **Fig. 4 — 8x8 benchmark:** Krylov-sign and Marshall-sign fixed-node
   replicas plus Qian-Qin Table I values in
   `data/literature_8x8_pbc_J2p5.json`.
-- **Fig. 4 — amplitude learning:** exact 4x4 maximum-likelihood amplitude
+- **Fig. 5 — amplitude learning:** exact 4x4 maximum-likelihood amplitude
   update in `data/fn_mle_halfstep_exact4x4.out` and the 8x8
   stochastic-reconfiguration line search from Slurm job 3506041.
 

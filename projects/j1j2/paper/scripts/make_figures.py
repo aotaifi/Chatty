@@ -57,68 +57,6 @@ def fig1_method():
     b.set_title("Separate amplitude and sign updates")
     save(fig,"fig1_method.png")
 
-def fig2_sign_story():
-    rows=list(csv.DictReader(open(ROOT/"krylov_sign_structure/results/square_exact_energyopt.csv")))
-    chosen=[]
-    for r in rows:
-        j=float(r["J2"])
-        if (j<=.6 and r["baseline"]=="marshall") or (j>=.8 and r["baseline"]=="stripe_x"):
-            chosen.append(r)
-    j2=np.array([float(r["J2"]) for r in chosen])
-    o0=np.array([float(r["O_S_0"]) for r in chosen])
-    o1=np.array([float(r["O_S_1"]) for r in chosen])
-    w0=np.maximum((1-o0)/2,1e-12); w1=np.maximum((1-o1)/2,1e-12)
-    de0=np.array([max(float(r["fixed_amp_energy_error0_per_site"]),1e-12) for r in chosen])
-    de1=np.array([max(float(r["fixed_amp_energy_error1_per_site"]),1e-12) for r in chosen])
-
-    z=np.load(ROOT/"results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz")
-    eM,eV,eK=chain_stats(z["eM"]),chain_stats(z["eVA"]),chain_stats(z["eVA"]+z["dKA"])
-    base=eV[0]/36
-    mus=np.array([eM[0]/36,eK[0]/36,eV[0]/36])
-    ses=np.array([eM[1]/36,eK[1]/36,eV[1]/36])
-
-    z8=np.load(ROOT/"results/8x8_krylov_3471544/krylov_phys8_a2_fixedT.npz")
-    r=np.asarray(z8["r"],float); y=np.asarray(z8["y"],float); pred=np.asarray(z8["pred"],float)
-    t=-28.37107876288694  # stored production threshold; see FN_REFRESH_SECOND_SIGNSTEP_8X8_2026-09-30.md
-    mech=json.load(open(DATA/"mechanism_6x6.json"))
-
-    fig=plt.figure(figsize=(10.0,5.5))
-    gs=fig.add_gridspec(2,6,height_ratios=[1,1.05])
-    a=fig.add_subplot(gs[0,0:2]); b=fig.add_subplot(gs[0,2:4]); c=fig.add_subplot(gs[0,4:6])
-    d=fig.add_subplot(gs[1,0:3]); e=fig.add_subplot(gs[1,3:6])
-
-    a.plot(j2,w0,"o--",label="before Krylov update"); a.plot(j2,w1,"s-",label="after Krylov update")
-    a.set_yscale("log"); a.set_xlabel("J2 / J1"); a.set_ylabel("Wrong-sign weight")
-    a.legend(frameon=False); panel(a,"a")
-
-    b.plot(j2,de0,"o--",label="before Krylov update"); b.plot(j2,de1,"s-",label="after Krylov update")
-    b.set_yscale("log"); b.set_xlabel("J2 / J1"); b.set_ylabel("Energy error per site")
-    b.legend(frameon=False); panel(b,"b")
-
-    x=np.arange(3); rel=1e3*(mus-base); er=1e3*ses
-    c.errorbar(x,rel,yerr=er,fmt="o",capsize=3); c.axhline(0,lw=.8)
-    c.set_xticks(x,["Marshall signs","Krylov signs","ViT signs"])
-    c.set_ylabel("Energy/site minus ViT (10^-3)")
-    c.set_title("6 x 6: same neural-network amplitude"); panel(c,"c")
-
-    bins=np.linspace(np.quantile(r,.01),np.quantile(r,.99),45)
-    d.hist(r[y>0],bins=bins,density=True,alpha=.55,label="same sign as Marshall")
-    d.hist(r[y<0],bins=bins,density=True,alpha=.55,label="opposite sign to Marshall")
-    d.axvline(t,ls="--",lw=1.1,label=f"threshold from local-field data: {t:.2f}")
-    d.set_xlabel("Marshall local energy rM(x)"); d.set_ylabel("Sample density")
-    d.set_title("8 x 8: which configurations need a sign flip?")
-    d.legend(frameon=False,fontsize=7.5); panel(d,"d")
-
-    before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
-    after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
-    xx=np.arange(2); width=.34
-    e.bar(xx-width/2,before,width,label="Marshall signs")
-    e.bar(xx+width/2,after,width,label="after Krylov update")
-    e.set_yscale("log"); e.set_xticks(xx,["sample A","sample B"])
-    e.set_ylabel("ViT-weighted sign disagreement"); e.set_title("6 x 6: independent samples")
-    e.legend(frameon=False,fontsize=7.5); panel(e,"e")
-    save(fig,"fig2_sign_story.png")
-
 def fig3_closed_loop():
     d=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json"))
     h=d["history"]; e0=d["E0"]
@@ -224,14 +162,24 @@ def fig1_proof_of_concept():
     de0=np.array([max(float(r["fixed_amp_energy_error0_per_site"]),1e-12) for r in chosen])
     de1=np.array([max(float(r["fixed_amp_energy_error1_per_site"]),1e-12) for r in chosen])
 
-    fig,ax=plt.subplots(1,2,figsize=(7.1,2.8))
+    i05=int(np.argmin(np.abs(j2-0.5)))
+    w_before,w_after=w0[i05],w1[i05]
+    e_before,e_after=de0[i05],de1[i05]
+    w_factor=w_before/w_after
+    e_factor=e_before/e_after
+
+    fig=plt.figure(figsize=(7.2,5.4))
+    gs=fig.add_gridspec(2,2,height_ratios=[1.05,.95],hspace=.42,wspace=.32)
+    ax=[fig.add_subplot(gs[0,0]),fig.add_subplot(gs[0,1]),
+        fig.add_subplot(gs[1,0]),fig.add_subplot(gs[1,1])]
+
     ax[0].plot(j2,w0,"o--",label="before Krylov update")
     ax[0].plot(j2,w1,"s-",label="after Krylov update")
     ax[0].set_yscale("log")
     ax[0].set_xlabel("J2 / J1")
     ax[0].set_ylabel("Wrong-sign probability")
-    ax[0].set_title("Are the signs more accurate?")
-    ax[0].legend(frameon=False)
+    ax[0].set_title("Exact sign benchmark")
+    ax[0].legend(frameon=False,fontsize=7.8)
     panel(ax[0],"a")
 
     ax[1].plot(j2,de0,"o--",label="before Krylov update")
@@ -239,9 +187,27 @@ def fig1_proof_of_concept():
     ax[1].set_yscale("log")
     ax[1].set_xlabel("J2 / J1")
     ax[1].set_ylabel("Energy error per site")
-    ax[1].set_title("Does the energy improve?")
-    ax[1].legend(frameon=False)
+    ax[1].set_title("Exact energy benchmark")
+    ax[1].legend(frameon=False,fontsize=7.8)
     panel(ax[1],"b")
+
+    cats=["before","after"]
+    ax[2].bar(cats,[w_before,w_after])
+    ax[2].set_yscale("log")
+    ax[2].set_ylabel("Wrong-sign probability")
+    ax[2].set_title("J2 / J1 = 0.5")
+    ax[2].text(.5,np.sqrt(w_before*w_after),f"{w_factor:.1f}x smaller",
+               ha="center",va="center",fontsize=10,fontweight="bold")
+    panel(ax[2],"c")
+
+    ax[3].bar(cats,[e_before,e_after])
+    ax[3].set_yscale("log")
+    ax[3].set_ylabel("Energy error per site")
+    ax[3].set_title("J2 / J1 = 0.5")
+    ax[3].text(.5,np.sqrt(e_before*e_after),f"{e_factor:.1f}x smaller",
+               ha="center",va="center",fontsize=10,fontweight="bold")
+    panel(ax[3],"d")
+
     save(fig,"fig1_proof_of_concept.png")
 
 def fig2_larger_system_check():

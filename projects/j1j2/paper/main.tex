@@ -148,18 +148,21 @@ both the sign error and the corresponding energy error directly.
 \includegraphics[width=0.82\textwidth]{fig1_proof_of_concept.pdf}
 \caption{One-step proof of concept on $4\times4$. (a) Exact probability
 weight carried by configurations with the wrong sign. (b) Variational energy
-error per site using the same exact positive amplitude before and after the
-Krylov sign update. For $J_2/J_1\leq0.6$ the initial sign rule is Marshall;
-for $J_2/J_1\geq0.8$ we use the corresponding stripe reference pattern.
-Exact zeros are shown at $10^{-12}$ on the logarithmic axes.}
+error per site using the same exact positive amplitude. (c,d) The same two
+quantities at $J_2/J_1=0.5$, shown explicitly before and after one Krylov
+sign update: the wrong-sign probability is reduced by a factor $37.4$ and
+the energy error by a factor $21.0$. For $J_2/J_1\leq0.6$ the initial sign
+rule is Marshall; for $J_2/J_1\geq0.8$ we use the corresponding stripe
+reference pattern. Exact zeros are shown at $10^{-12}$ on logarithmic axes.}
 \label{fig:proof}
 \end{figure*}
 
 At $J_2/J_1=0.5$, the wrong-sign probability decreases from
-$1.27\times10^{-2}$ to $3.41\times10^{-4}$.  With the amplitude unchanged,
-the energy error per site falls at the same time from $1.16\times10^{-2}$ to
-$5.51\times10^{-4}$.  Thus one Krylov step makes the signs substantially
-more accurate and recovers most of the energy lost to the incorrect signs.
+$1.27\times10^{-2}$ to $3.41\times10^{-4}$, a factor $37.4$. With the
+amplitude unchanged, the energy error per site falls from
+$1.16\times10^{-2}$ to $5.51\times10^{-4}$, a factor $21.0$. Thus one
+Krylov step removes about $97\%$ of the wrong-sign probability and about
+$95\%$ of the fixed-amplitude energy error.
 
 \subsection{Larger-system validation}
 

@@ -8,11 +8,11 @@ explicitly labeled provisional.
 
 | Result | Source | Paper use |
 |---|---|---|
-| Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(a,b) |
-| Exact 4x4 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json | Main Fig. 2 |
+| Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(a-d) |
+| Exact 4x4 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json | Main Fig. 3 |
 | Exact-init 4x4 control | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_exactinit.json | Control / possible supplement |
-| 6x6 K1 mechanism | ../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md | Main Fig. 1(d,e) |
-| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | ../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz | Main Fig. 1(c) |
+| 6x6 K1 mechanism | ../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md | Main Fig. 2(b,c) |
+| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | ../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz | Main Fig. 2(a) |
 | 6x6 naive K2 falsification | ../results/true_k2_6x6_3471990/true_k2_6x6.npz | Appendix |
 
 ## STABLE: fixed-node scaling
@@ -21,16 +21,16 @@ explicitly labeled provisional.
 |---|---|---|
 | 6x6 K1-FN vs Marshall-FN | ../results/krylov_fn_6x6_matched_verdict_2026-09-28.md | Main text / scaling |
 | 6x6 practical FN/K1 fixed point | ../results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md | Main text |
-| 8x8 K1-FN replicas | ../results/8x8_krylov_3471544/gr_8x8_population_scaling_M128.npz | Main Fig. 3 |
-| 8x8 Marshall-FN replicas | ../results/8x8_marshall_3471545/marshall_8x8_M128_summary.npz | Main Fig. 3 |
+| 8x8 K1-FN replicas | ../results/8x8_krylov_3471544/gr_8x8_population_scaling_M128.npz | Main Fig. 4 |
+| 8x8 Marshall-FN replicas | ../results/8x8_marshall_3471545/marshall_8x8_M128_summary.npz | Main Fig. 4 |
 
 ## STABLE: amplitude handoff and SR geometry
 
 | Result | Source | Paper use |
 |---|---|---|
-| Exact 4x4 MLE half-step identity | data/fn_mle_halfstep_exact4x4.out and ../results/fn_mle_halfstep_4x4_2026-09-30.md | Main Fig. 4(a) |
+| Exact 4x4 MLE half-step identity | data/fn_mle_halfstep_exact4x4.out and ../results/fn_mle_halfstep_4x4_2026-09-30.md | Main Fig. 5(a) |
 | Failed Adam/full-batch Euclidean MLE | ../results/fnmle_vit8_gate_2026-10-01.md | Appendix |
-| SR cross-replica direction, lambda=1 | data/fnmle8_sr_lambda1_linesearch_3506041.json | Main Fig. 4(b) |
+| SR cross-replica direction, lambda=1 | data/fnmle8_sr_lambda1_linesearch_3506041.json | Main Fig. 5(b) |
 | Iteration-2 SR training diagnostics | data/fnmle_sr_iter2_train_3506071.json | Provisional; not used in current main text |
 
 ## EXTERNAL BENCHMARK

@@ -1,0 +1,26 @@
+{
+  "system": "spin-1/2 square-lattice J1-J2 Heisenberg model",
+  "J2_over_J1": 0.5,
+  "size": "8x8",
+  "boundary": "periodic",
+  "quantity": "ground-state energy per site",
+  "source": {
+    "authors": "Xiangjian Qian and Mingpu Qin",
+    "title": "Augmenting Density Matrix Renormalization Group with Disentanglers",
+    "journal": "Chinese Physics Letters",
+    "year": 2023,
+    "volume": 40,
+    "pages": "057102",
+    "doi": "10.1088/0256-307X/40/5/057102",
+    "table": 1
+  },
+  "benchmarks": [
+    {"method": "CNN", "energy_per_site": -0.49639, "uncertainty": 0.00002},
+    {"method": "RBM+PP", "energy_per_site": -0.498460, "uncertainty": 0.000006},
+    {"method": "DMRG D=24000", "energy_per_site": -0.497961},
+    {"method": "DMRG D=32000", "energy_per_site": -0.498175},
+    {"method": "VMC", "energy_per_site": -0.49656, "uncertainty": 0.00001},
+    {"method": "FAMPS D=12000", "energy_per_site": -0.498184},
+    {"method": "FAMPS D=24000", "energy_per_site": -0.498508}
+  ]
+}

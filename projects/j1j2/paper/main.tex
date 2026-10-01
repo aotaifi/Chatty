@@ -1,0 +1,336 @@
+\documentclass[aps,prb,reprint,superscriptaddress,floatfix]{revtex4-2}
+
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\graphicspath{{figures/}}
+
+\newcommand{\Kone}{\mathrm{K1}}
+\newcommand{\FN}{\mathrm{FN}}
+\newcommand{\OS}{O_{S}}
+\newcommand{\TODO}[1]{\textcolor{red}{[TODO: #1]}}
+
+\begin{document}
+
+\title{Projected-Krylov reconstruction of frustrated signs with fixed-node amplitude feedback}
+
+\author{A. Otaifi}
+\affiliation{Arnold Sommerfeld Center for Theoretical Physics, Ludwig-Maximilians-Universit\"at M\"unchen, 80333 M\"unchen, Germany}
+
+\date{\today}
+
+\begin{abstract}
+We study the sign structure of the spin-$1/2$ square-lattice $J_1$--$J_2$
+Heisenberg model near maximal frustration, focusing on $J_2/J_1=1/2$.
+Writing the wave function as $\psi(x)=s(x)a(x)$ with $a(x)>0$, we separate
+the reconstruction problem into a sign update and a positive-amplitude update.
+A single projected Krylov step provides an accurate, label-free reconstruction
+of the physically important sign corrections when supplied with a sufficiently
+accurate amplitude, while a lattice fixed-node projector supplies sign-free
+information about the positive amplitude for fixed signs.
+
+On exact $4\times4$ systems the coupled fixed-node/Krylov map can recover the
+exact ground-state signs without target-ground-state information entering the
+updates. On $6\times6$ and $8\times8$, one-step Krylov signs substantially
+improve fixed-node energies over Marshall signs and remain competitive with
+high-accuracy variational benchmarks. The principal scaling bottleneck is not
+the sign rule itself but the handoff from fixed-node walkers to a callable
+positive amplitude. We show that independent Euclidean maximum-likelihood
+gradients from fixed-node replicas can be strongly anti-aligned, whereas a
+matrix-free stochastic-reconfiguration update rotates the direction into one
+that improves an independent held-out replica. Repeated learned updates remain
+non-monotone in the physical fixed-node objective, motivating a physically
+gated outer feedback loop.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Frustration in the square-lattice $J_1$--$J_2$ Heisenberg antiferromagnet
+produces a nontrivial many-body sign structure precisely where unbiased
+Monte Carlo methods are most difficult to apply. Instead of attempting to
+remove the sign structure globally, we ask whether its two components can be
+treated by different numerical mechanisms:
+\begin{equation}
+    \psi(x)=s(x)a(x),\qquad s(x)=\pm1,\quad a(x)>0.
+\end{equation}
+The central separation in this work is that the sign $s$ is updated by a
+projected Krylov rule, whereas positive-amplitude information is supplied by
+a sign-free fixed-node projection.
+
+This leads to the feedback architecture
+\begin{equation}
+s_k
+\xrightarrow{\FN}
+a_{k+1}
+\xrightarrow{\Kone}
+s_{k+1},
+\label{eq:loop}
+\end{equation}
+where the first arrow denotes a positive fixed-node solve at fixed signs and
+the second denotes a sign-changing projected-Krylov update. The two arrows
+must not be conflated: Krylov reconstruction supplies signs, not the new
+positive amplitude.
+
+The paper is organized around three questions. First, how much of the
+frustrated sign structure is captured by one Krylov step? Second, does the
+coupled fixed-node/Krylov map self-correct on controlled systems? Third, what
+prevents the same feedback from scaling to larger lattices?
+
+\section{Projected-Krylov reconstruction of the sign structure}
+
+For a positive amplitude $a(x)$ and a reference sign pattern $s(x)$, define
+the local Krylov field
+\begin{equation}
+ r_s(x)=\frac{H[a s](x)}{a(x)s(x)}.
+ \label{eq:localfield}
+\end{equation}
+A one-step Krylov vector obeys
+\begin{equation}
+[(T-H)as](x)=[T-r_s(x)]a(x)s(x),
+\end{equation}
+so retaining only its sign gives
+\begin{equation}
+s'(x)=s(x)\,\mathrm{sgn}[T-r_s(x)].
+\label{eq:k1}
+\end{equation}
+The threshold $T$ is inferred without target sign labels, using either
+fixed-amplitude energy minimization on exact small systems or robust
+two-cluster thresholding on sampled larger systems.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig1_exact_k1.png}
+\caption{Exact $4\times4$ benchmark of one-step projected-Krylov sign
+reconstruction. At each coupling the parent sign convention shown is the
+appropriate Marshall or stripe reference. The left panel shows the
+ground-state probability mass carrying the wrong sign; the right panel shows
+the corresponding fixed-amplitude variational energy error per site.
+Source: \texttt{square\_exact\_energyopt.csv}.}
+\label{fig:k1exact}
+\end{figure}
+
+Figure~\ref{fig:k1exact} shows the exact $4\times4$ result. At
+$J_2/J_1=0.5$, Marshall signs have $\OS=0.974538$, while one K1 update reaches
+$\OS=0.999319$. The same step reduces the fixed-amplitude energy error per
+site from $1.16\times10^{-2}$ to $5.51\times10^{-4}$. The one-step
+reconstruction remains effective over a broad frustration range provided the
+reference sign convention lies in the appropriate sign basin.
+
+On $6\times6$, an independent fixed-amplitude comparison using the same ViT
+modulus gives
+\begin{align}
+E_{\rm K1}-E_{\rm ViT}&=+0.00420(1035),\\
+E_{\rm K1}-E_{\rm M}&=-0.17247(4489),
+\end{align}
+in total energy. Thus K1 does not resolve below the ViT sign energy at this
+precision, but it reproduces essentially the same physical energy while
+substantially improving over Marshall signs.
+
+The useful signal is primarily off diagonal. In the Marshall gauge the
+nearest-neighbor $J_1$ exchange contributes with the unfrustrated sign, while
+the frustrating $J_2$ exchange contributes oppositely. Their
+amplitude-weighted competition produces most of the observed K1 separation.
+On the $6\times6$ diagnostic sample, one K1 step removes approximately
+$95\%$ of the physically weighted wrong-sign mass.
+
+A naive second Krylov step does not continue this improvement. With the
+first-step amplitude distortion left in place, unsupervised K2 thresholds
+change only $\sim1$--$2\%$ of physical configurations yet raise the
+fixed-amplitude energy by $0.65$--$0.96$ in total energy. We therefore use K1
+as the sign reconstruction primitive and obtain subsequent amplitude
+information from fixed node rather than from an undamped Krylov continuation.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig5_local_field.png}
+\caption{Distribution of the Marshall local Krylov field on an $8\times8$
+physical sample, separated using the stored ViT sign only as an offline
+diagnostic. The production threshold $T=-28.3711$ is inferred label-free.
+The two populations explain why a single scalar K1 step removes most of the
+physically relevant sign error.}
+\label{fig:field}
+\end{figure}
+
+\section{Fixed-node amplitude feedback}
+For fixed signs, the lattice fixed-node Hamiltonian is sign free and its
+projected ground state provides a positive amplitude $\phi_{\FN}(x)$.
+The desired feedback is therefore Eq.~\eqref{eq:loop}, with each K1 field
+recomputed from the current amplitude and current sign state.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig3_exact_closed_loop.png}
+\caption{Exact $4\times4$ current-sign fixed-node/K1 loop at
+$J_2/J_1=0.5$, initialized with Marshall signs and the exact $J_2=0$
+ground-state modulus. Target-$J_2$ exact information is used only for the
+plotted diagnostics. Both the sign error and amplitude infidelity contract,
+with long plateaus followed by discrete sign-chamber changes.}
+\label{fig:closed4}
+\end{figure}
+
+The exact $4\times4$ benchmark in Fig.~\ref{fig:closed4} starts from the
+$J_2=0$ modulus and Marshall signs. No target-$J_2$ ground-state information
+enters either the fixed-node solve or the threshold update. The loop reaches
+the exact target sign pattern at iteration 100, with final amplitude fidelity
+$F_a=0.9999946$ and guide-energy error $2.60\times10^{-5}$.
+
+This exact result also clarifies an earlier apparent recurrence. A
+Marshall-referenced update repeatedly reconstructs a correction in a fixed
+coordinate and can stall near $\OS\simeq0.9994$. The genuine nonlinear map
+must instead recompute $r_{s_k}$ from the current sign state. In that
+formulation long plateaus are allowed: fixed node can improve the amplitude
+for many iterations before the next sign chamber becomes energetically
+accessible.
+
+\subsection{Mixed walkers and the ideal half step}
+Importance-sampled fixed-node walkers obey
+\begin{equation}
+f(x)\propto a_g(x)\phi_{\FN}(x).
+\end{equation}
+If a Born model is trained by exact maximum likelihood,
+$p_\theta(x)\propto a_\theta(x)^2$, matching $p_\theta=f$ gives
+\begin{equation}
+a_{\rm new}(x)\propto\sqrt{a_g(x)\phi_{\FN}(x)}.
+\label{eq:halfstep}
+\end{equation}
+
+Exact $4\times4$ tests verify this geometric-mean half step. Starting from
+the exact target modulus with Marshall signs, the first half step followed by
+K1 reaches $E=-8.4457866$ from an initial guide energy $-8.2729091$ and has
+sign overlap $0.9994168$. A deliberately poor uniform-amplitude start is
+non-monotone at the first update but subsequently recovers, showing that
+Eq.~\eqref{eq:halfstep} is a local amplitude mechanism rather than a global
+monotonicity theorem.
+
+\section{Scaling and the amplitude-handoff bottleneck}
+
+A raw walker histogram is not a scalable callable amplitude. On exact
+$4\times4$, millions of ideal independent samples are already required to
+approach the exact-amplitude K1 ceiling when each configuration amplitude is
+estimated independently. A four-bin density-ratio correction provides a
+controlled low-dimensional prototype and stabilizes the $4\times4$ loop
+with $\mathcal{O}(10^4)$ samples.
+
+At $6\times6$, increasing the fixed-node population removes the dominant
+replica disagreement and the tested four-bin loop reaches a practical fixed
+point: after the first amplitude handoff the K1 sign guide is unchanged on
+the physical diagnostic measure and the next fitted correction is an order
+of magnitude smaller than its pairwise noise. The same static construction
+is not computationally viable at $8\times8$, where recomputing nested local
+energies generates tens of millions of cached states and hundreds of
+millions of ViT evaluations. This identifies the principal scalable object:
+a flat callable model for the positive amplitude.
+
+\begin{figure*}[t]
+\includegraphics[width=0.96\textwidth]{fig2_energy_benchmarks.png}
+\caption{Energy benchmarks. Left: $6\times6$ fixed-amplitude energies using
+the same ViT modulus and Marshall, K1, or ViT signs. Right: $8\times8$
+periodic-boundary $J_2/J_1=0.5$ ground-state energy benchmarks. Literature
+values are from Qian and Qin, Ref.~\cite{QianQin2023}, Table I. The K1-FN and
+Marshall-FN error bars are two-replica spread proxies, not asymptotic
+statistical uncertainties.}
+\label{fig:bench}
+\end{figure*}
+
+The $8\times8$ K1-FN mean is $E/N=-0.498210$ from two $M=128$ replicas,
+compared with $-0.494961$ for Marshall-FN. On the identical $8\times8$
+periodic geometry, this places the K1-guided fixed-node result below the
+reported DMRG $D=32000$ and FAMPS $D=12000$ energies, while remaining above
+the RBM+PP and FAMPS $D=24000$ benchmarks in Ref.~\cite{QianQin2023}.
+Because the fixed-node estimate is itself population sampled, this comparison
+is used as a scale benchmark rather than a claim of precision ordering among
+methods.
+
+\section{Scalable amplitude learning by stochastic reconfiguration}
+
+Direct warm-start maximum-likelihood training of the full ViT amplitude does
+not transfer between independent fixed-node replicas under ordinary
+Euclidean optimization. At the initial $8\times8$ guide, the two empirical
+MLE gradients have
+\begin{equation}
+\cos(g_1,g_2)=-0.8529.
+\end{equation}
+This anti-alignment persists in an infinitesimal Euclidean line search and is
+therefore not merely an oversized Adam step.
+
+Matrix-free stochastic reconfiguration changes the geometry. With empirical
+Fisher matrix $S$ and diagonal shift $\lambda=1$,
+\begin{equation}
+g_2^T(S+\lambda I)^{-1}g_1=+3.85,
+\end{equation}
+despite the negative Euclidean cosine. A finite line search then gives a
+held-out log-likelihood gain $+0.015575$ at $\eta=0.01$, while retaining an
+importance-sampling ESS of $3236/4096$.
+
+\begin{figure}[t]
+\includegraphics[width=\columnwidth]{fig4_sr_learning.png}
+\caption{Cross-replica amplitude-learning diagnostics on $8\times8$.
+Left: Euclidean gradient cosine for the first and second learned updates.
+Right: held-out likelihood gain along the matrix-free SR direction at
+$\lambda=1$. The validation-selected steps are $\eta=0.01$ and $0.003$.}
+\label{fig:sr}
+\end{figure}
+
+The corresponding amplitude refresh shifts the label-free K1 threshold from
+$T_0=-28.37108$ to $T_1=-28.82417$. Under the correct
+$a^{1.2}$ threshold measure, the K1 branch changes on $9.27\%$ of the
+reweighted mass. Thus the learned amplitude update is not merely a
+likelihood perturbation; it generates a nontrivial sign refresh.
+
+\section{Closed-loop convergence and present limitation}
+
+A first pair of matched $M=128$ fixed-node runs using the SR-updated amplitude
+and refreshed K1 signs gave total energies $-31.89679$ and $-31.90567$.
+However, an independent reconstruction of a numerically indistinguishable SR
+checkpoint produced a second pair with mean $-31.83896$, despite log-amplitude
+differences below $5\times10^{-6}$ on a direct state audit. We therefore do
+not use the first pair alone as evidence for a statistically resolved energy
+improvement over the baseline K1-FN value $-31.88542$.
+
+The second learned SR step provides a complementary convergence diagnostic.
+Its independent-replica Euclidean gradients become aligned,
+$\cos(g_1,g_2)=+0.8568$, and the validation-optimal SR step shrinks to
+$\eta=0.003$. Nevertheless, after amplitude refresh and K1 reconstruction,
+the matched FN mean worsens to
+\begin{equation}
+E_{\rm iter2}=-31.81537,
+\end{equation}
+with a two-replica spread proxy $0.00947$. Improving the MLE objective is
+therefore not sufficient to accept an outer-loop update.
+
+A frozen-sign diagnostic isolates this failure mode by holding the successful
+iteration-1 signs $s_1$ fixed while replacing $a_1$ by the iteration-2
+amplitude $a_2$. The first completed replica gives
+$E_{\FN}[a_2,s_1]=-31.84646$, already worse than the corresponding
+$E_{\FN}[a_1,s_1]=-31.89679$. The paired frozen-sign run is still in
+progress; the interpretation will be updated only after that control closes.
+
+\section{Discussion}
+
+The results support a clean division of labor. One projected Krylov step is
+a cheap extractor of the physically important frustrated sign structure.
+Fixed node supplies positive-amplitude information without reintroducing a
+sign problem. Their exact $4\times4$ composition is self-correcting, and the
+K1 sign guide remains effective through $8\times8$.
+
+The unresolved scaling problem is the amplitude handoff. Static
+nonparametric or nested corrections become computationally expensive, while
+ordinary Euclidean neural updates are replica dependent. Matrix-free
+stochastic reconfiguration supplies the first transferable learned direction
+at $8\times8$, but the physical projector must remain the acceptance
+criterion for repeated updates.
+
+The natural next step is therefore not a more complicated sign model. It is
+a statistically controlled outer loop in which each learned amplitude step is
+validated on independent FN populations and accepted only if a matched
+fixed-node energy diagnostic is stable under replication. The current
+frozen-sign experiment further separates amplitude degradation from any
+failure of K1 itself.
+
+\begin{acknowledgments}
+\TODO{Add funding, computing resources, and collaborators.}
+\end{acknowledgments}
+
+\bibliography{refs}
+\end{document}

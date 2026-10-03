@@ -1,87 +1,180 @@
-# Chatty long-run jobs
+# Chatty durable Slurm wake workflow
 
-This directory contains the Mac-side helpers for durable research jobs.
+Use this for long-running Slurm jobs that should resume the exact originating
+normal ChatGPT conversation when the job finishes.
 
-## Current policy
+## Supported clusters
 
-The previous same-thread ChatGPT wake bridge is **parked**. Active research
-agents must not wake ChatGPT, open ChatGPT/Chrome tabs, inject prompts, or use
-CUA/Computer Use when a run finishes.
+Exactly two profiles are supported:
 
-Instead:
+- `theorie`: the LMU Theorie Slurm cluster. `ws1` and `ws3` are equivalent
+  gateways; polling fails over between them.
+- `paderborn`: PC2/Paderborn through `ws1 -> paderborn`. The rootless PC2
+  VPN is expected on `ws1`.
 
-1. The agent launches a long job through `chatty-run` or attaches `chatty-watch`.
-2. The watcher immediately emails `alyotaifi@gmail.com` that the job started,
-   including PID, task, command, and job/result paths.
-3. The ChatGPT turn ends. It does not poll or wait for the job.
-4. The detached watcher keeps running independently on the Mac.
-5. When the process exits, the watcher writes durable completion state and sends
-   a second email with status and result/log locations.
-6. The user returns to the research chat and says to proceed. The next agent
-   reads the durable job/project files and continues.
+## One command after sbatch
 
-The mail transport uses Apple's built-in Automator Mail actions through the
-already-authenticated macOS Mail account. It does not use ChatGPT, Chrome, CUA,
-Postfix, an OpenAI API key, or a stored Gmail password.
-
-## Launch a new long run
+After `sbatch` returns a numeric root job ID, run:
 
 ```bash
-nohup ~/Chatty/tools/local_loop/chatty-run \
-  --task "Analyze the finite-size scaling and update STATUS.md" \
-  --cwd ~/Chatty/projects/j1j2 \
-  -- python3 scripts/benchmark.py \
-  > /tmp/chatty-launch.log 2>&1 &
+~/Chatty/tools/local_loop/chatty-slurm-watch \
+  <job_id> "<short description>" <PROJECT_TAG> \
+  --cluster theorie
 ```
 
-The launching agent should report the job PID/task/paths in chat and then end its
-turn rather than monitoring it.
-
-## Attach to an existing process
+or:
 
 ```bash
-nohup ~/Chatty/tools/local_loop/chatty-watch \
-  --pid 12345 \
-  --task "Inspect the result and continue the scaling analysis" \
-  > /tmp/chatty-watch.log 2>&1 &
+~/Chatty/tools/local_loop/chatty-slurm-watch \
+  <job_id> "<short description>" <PROJECT_TAG> \
+  --cluster paderborn
 ```
 
-An attached watcher cannot know the target process's exit code because it is not
-the parent; it records `exit_code: null`.
+Then report the job ID/output locations in chat and end the turn. Do not keep
+ChatGPT polling.
 
-## Job layout
+## What registration does
 
+The public wrapper:
+
+1. Verifies that the Slurm job really exists.
+2. Identifies the currently visible normal ChatGPT conversation and captures
+   its immutable thread ID from the loaded ChatGPT WebArea.
+3. Treats the title as metadata only; routing and post-navigation verification
+   use the thread ID.
+4. Freezes cluster, job ID, project tag, thread ID and description into one
+   immutable per-job target.
+5. Starts exactly one detached watcher.
+6. Sends Slack STARTED.
+7. On FINISHED/FAILED, persists terminal state, sends Slack, and wakes the exact
+   frozen ChatGPT thread.
+
+A later chat cannot retarget an already registered job.
+
+## Delivery safety
+
+The wake path is deliberately fail-closed:
+
+- one global ChatGPT UI lock serializes different job completions;
+- one per-job lock prevents duplicate watcher processes;
+- the wake ledger prevents the same exact payload from being knowingly sent
+  twice;
+- wake prompts include `cluster=<name>`, so equal numeric job IDs on Theorie
+  and Paderborn cannot collide;
+- the target thread ID is verified against ChatGPT's own loaded conversation ID
+  after navigation;
+- existing user drafts are never overwritten;
+- FINISHED/FAILED is first persisted as durable terminal state; delivery is a
+  separate queue step;
+- if the target chat is answering, has a draft, is temporarily inaccessible, or
+  changes during the safety window, the wake stays `pending` and the daemon
+  exits cleanly;
+- the launchd recovery dispatcher retries pending wakes every 60 seconds and
+  after login/reboot, so a long active turn cannot lose the event;
+- cross-device activity gets a continuous idle window before staging and a
+  second stability window after staging before Send;
+- if Send may have happened but cannot be verified, the workflow enters
+  verification/manual-review mode and never blindly presses Send again;
+- temporary ChatGPT/Accessibility/SSH/VPN failures retry rather than being
+  misclassified as simulation failure;
+- permanent thread identity failures stop safely and Slack remains the backup.
+
+### Multi-device race limit
+
+A mobile/web turn normally synchronizes to the Mac as an unavailable composer
+or active Stop state, so the watcher waits. The release also requires several
+seconds of stable target state before Send.
+
+There is still a very small unavoidable race if another device submits a new
+message in the final moments before our Send and that remote activity has not
+yet synchronized to the Mac. Eliminating that last window would require a
+server-side transactional "send only if conversation version is unchanged"
+primitive, which this local workflow does not have.
+
+## Arrays and accounting
+
+The watcher handles Slurm array jobs. While any allocation/task remains in
+`squeue`, the job is considered active. After it leaves the live queue, the
+watcher checks `sacct` and aggregates array-task state when needed.
+
+A scheduler-level `squeue` "invalid job id" for an already completed job is
+not treated as a transport error; the watcher proceeds to accounting.
+
+## Crash, sleep and reboot recovery
+
+Recovery is automatic through the macOS LaunchAgent:
+
+`com.chatty.slurm-recover`
+
+It scans registered unfinished jobs every 60 seconds and after login, and
+restarts missing watchers. Per-job locks make repeated recovery scans safe.
+
+Manual recovery is also available:
+
+```bash
+~/Chatty/tools/local_loop/chatty-slurm-recover
 ```
-~/Chatty/jobs/<job-id>/
-  job.json
-  stdout.log              # chatty-run only
-  stderr.log              # chatty-run only
-  email.log
-  EMAIL_START_SENT
-  EMAIL_START_FAILED      # only if start notification failed
-  EMAIL_FINISH_SENT
-  EMAIL_FINISH_FAILED     # only if completion notification failed
-  DONE
+
+Transient UI failures do not expire merely because the Mac slept overnight.
+
+## Diagnostics
+
+To verify the real job and current chat without persisting a target or launching
+a watcher:
+
+```bash
+~/Chatty/tools/local_loop/chatty-slurm-watch \
+  <real_job_id> "diagnostic" TEST_TAG \
+  --cluster theorie --prepare-only
 ```
 
-## Email transport
+Use `--cluster paderborn` for PC2.
 
-Recipient:
+## Public commands
 
-```
-~/Chatty/.chatty/notify_email
-```
+Future chats should use only:
 
-Current value: `alyotaifi@gmail.com`.
+- `chatty-slurm-watch` — registration
+- `chatty-slurm-recover` — manual recovery/diagnostic recovery scan
 
-`chatty-email.py` copies the tested `mail_template.workflow`, fills its
-recipient/subject/body for that notification, and runs it with `/usr/bin/automator`.
-The template contains only Apple's built-in `New Mail Message` and
-`Send Outgoing Messages` actions.
+Do not call legacy `watch_paderborn_slurm.sh` scripts for new jobs, manually
+copy thread IDs, edit `project_threads.json` for a new job, or rebuild the
+same-thread wake path per conversation.
 
-A real delivery test on 2026-09-28 was verified in Gmail.
+The public commands are pinned to a tested release directory. Internal release
+files are implementation detail and should not be edited by ordinary research
+chats.
 
-## Parked wake implementation
+## Local non-Slurm processes
 
-The old same-thread wake/CUA experiments are retained only for historical
-reference and are not part of the active agent workflow.
+For local Mac jobs, continue using `chatty-run` / `chatty-watch`. Those use
+separate durable state and email notifications.
+
+## Native plugin route review (2026-10-03)
+
+OpenAI now exposes MCP Events for webhook-driven plugin subscriptions, which is
+the clean server-side architecture we would prefer. Today, however, MCP Events
+are documented for Work chats (and dots), not arbitrary normal ChatGPT chats.
+Slack event-triggered tasks have the same Work requirement.
+
+Plugin UI also exposes `sendFollowUpMessage`, but that is a runtime API for a
+loaded component. It is not a durable background webhook that can wake an
+arbitrary closed/inactive normal conversation after ChatGPT restarts.
+
+Therefore the normal-chat production path remains the local trusted UI broker.
+If MCP Events becomes available for normal chats, replace the AX delivery layer
+with MCP Events and keep the same immutable per-job binding/idempotency model.
+
+## Proven baseline
+
+Release `1.2.2-release-20261003-1137-safeguard` passed fresh end-to-end terminal
+wake tests on both supported backends into the same exact normal ChatGPT thread:
+
+- Theorie job `16805444`: `COMPLETED 0:0`, exact payload verified in transcript,
+  ledger `delivered`, one wake attempt.
+- Paderborn job `3554875`: `COMPLETED 0:0`; first delivery attempt correctly
+  deferred while the target chat was in an active turn, recovery retried, exact
+  payload was then verified in transcript, ledger `delivered`, two attempts.
+- Re-registering the Paderborn job with changed immutable metadata was refused.
+  Re-registering the exact original binding returned `ALREADY_DELIVERED` and did
+  not send a duplicate.

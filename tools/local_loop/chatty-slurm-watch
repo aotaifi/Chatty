@@ -1,0 +1,7 @@
+#!/bin/zsh
+set -u
+REL="/Users/aliotaifi/Chatty/tools/local_loop/slurm_wake_release_20261003_1137_safeguard"
+"/opt/homebrew/bin/python3" "$REL/register.py" "$@"
+rc=$?
+"/opt/homebrew/bin/python3" "$REL/broker_bootstrap.py" >/dev/null 2>&1 || true
+exit $rc

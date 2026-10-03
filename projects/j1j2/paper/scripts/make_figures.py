@@ -58,27 +58,34 @@ def fig1_method():
     save(fig,"fig1_method.png")
 
 def fig3_closed_loop():
-    d=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json"))
-    h=d["history"]; e0=d["E0"]
-    it=np.array([x["it"] for x in h])
-    os=np.array([x["O_sign"] for x in h])
-    fa=np.array([x["F_amp"] for x in h])
-    eg=np.array([x["E_error"] for x in h])
-    efn=np.array([np.nan if "E_FN" not in x else x["E_FN"]-e0 for x in h])
-    changed=np.array([i==0 or h[i]["sign_hash"]!=h[i-1]["sign_hash"] for i in range(len(h))])
+    d16=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json"))
+    d20=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_20site_J2p5_J2zero_init.json"))
 
-    fig,ax=plt.subplots(1,2,figsize=(7.2,2.8))
-    signerr=np.maximum((1-os)/2,1e-12); amperr=np.maximum(1-fa,1e-12)
-    ax[0].plot(it,signerr,"-",label="wrong-sign weight")
-    ax[0].plot(it,amperr,"--",label="1 - amplitude fidelity")
-    ax[0].plot(it[changed],signerr[changed],"o",ms=3,label="iterations where signs change")
-    ax[0].set_yscale("log"); ax[0].set_xlabel("Iteration"); ax[0].set_ylabel("Error")
-    ax[0].legend(frameon=False); panel(ax[0],"a")
+    def unpack(d):
+        h=d["history"]; e0=d["E0"]
+        it=np.array([x["it"] for x in h])
+        os=np.array([x["O_sign"] for x in h])
+        fa=np.array([x["F_amp"] for x in h])
+        eg=np.array([x.get("E_relative_error",x["E_error"]/abs(e0)) for x in h])
+        efn=np.array([np.nan if "E_FN" not in x else x.get("E_FN_relative_error",(x["E_FN"]-e0)/abs(e0)) for x in h])
+        return it,np.maximum((1-os)/2,1e-12),np.maximum(1-fa,1e-12),np.maximum(eg,1e-12),efn
 
-    ax[1].plot(it,np.maximum(eg,1e-12),"-",label="current trial state")
-    ok=np.isfinite(efn); ax[1].plot(it[ok],np.maximum(efn[ok],1e-12),"--",label="fixed-node projected state")
-    ax[1].set_yscale("log"); ax[1].set_xlabel("Iteration"); ax[1].set_ylabel("Energy above exact ground state")
-    ax[1].legend(frameon=False); panel(ax[1],"b")
+    z16=unpack(d16); z20=unpack(d20)
+    fig,ax=plt.subplots(2,2,figsize=(7.2,5.4))
+    for z,lab,marker in [(z16,"N = 16","o"),(z20,"N = 20","s")]:
+        it,ws,amp,eg,efn=z
+        ax[0,0].plot(it,ws,marker+"-",ms=2.5,label=lab)
+        ax[0,1].plot(it,amp,marker+"-",ms=2.5,label=lab)
+        ax[1,0].plot(it,eg,marker+"-",ms=2.5,label=lab)
+        ok=np.isfinite(efn)
+        ax[1,1].plot(it[ok],np.maximum(efn[ok],1e-12),marker+"-",ms=2.5,label=lab)
+
+    ax[0,0].set_yscale("log"); ax[0,0].set_ylabel("Wrong-sign probability"); ax[0,0].set_xlabel("Feedback iteration"); ax[0,0].set_title("Sign error")
+    ax[0,1].set_yscale("log"); ax[0,1].set_ylabel("1 - amplitude fidelity"); ax[0,1].set_xlabel("Feedback iteration"); ax[0,1].set_title("Amplitude error")
+    ax[1,0].set_yscale("log"); ax[1,0].set_ylabel("Relative energy error"); ax[1,0].set_xlabel("Feedback iteration"); ax[1,0].set_title("Current trial state")
+    ax[1,1].set_yscale("log"); ax[1,1].set_ylabel("Relative energy error"); ax[1,1].set_xlabel("Feedback iteration"); ax[1,1].set_title("Fixed-node projected state")
+    for a0,l in zip(ax.flat,"abcd"):
+        a0.legend(frameon=False,fontsize=7.5); panel(a0,l)
     save(fig,"fig3_closed_loop.png")
 
 def fig4_8x8_benchmark():
@@ -127,10 +134,10 @@ def fig5_amplitude_learning():
     for lab,pretty,marker in [
         ("exactAbs_Marshall","exact ground-state amplitudes + Marshall signs","o"),
         ("uniform_Marshall","all amplitudes equal + Marshall signs","s")]:
-        it=np.array(h[lab]["it"]); ee=np.maximum(np.array(h[lab]["E"])-e0,1e-12)
+        it=np.array(h[lab]["it"]); ee=np.maximum((np.array(h[lab]["E"])-e0)/abs(e0),1e-12)
         ax[0].plot(it,ee,marker+"-",ms=3,label=pretty)
     ax[0].set_yscale("log"); ax[0].set_xlabel("Feedback iteration")
-    ax[0].set_ylabel("Energy above exact ground state")
+    ax[0].set_ylabel("Relative energy error")
     ax[0].set_title("4 x 4: exact amplitude-learning test")
     ax[0].legend(frameon=False,fontsize=7.5); panel(ax[0],"a")
 
@@ -159,14 +166,19 @@ def fig1_proof_of_concept():
     o1=np.array([float(r["O_S_1"]) for r in chosen])
     w0=np.maximum((1-o0)/2,1e-12)
     w1=np.maximum((1-o1)/2,1e-12)
-    de0=np.array([max(float(r["fixed_amp_energy_error0_per_site"]),1e-12) for r in chosen])
-    de1=np.array([max(float(r["fixed_amp_energy_error1_per_site"]),1e-12) for r in chosen])
+    de0_site=np.array([float(r["fixed_amp_energy_error0_per_site"]) for r in chosen])
+    de1_site=np.array([float(r["fixed_amp_energy_error1_per_site"]) for r in chosen])
+    ebase=np.array([float(r["E_fixed_baseline"]) for r in chosen])
+    e0=ebase-16*de0_site
+    de0=np.maximum(16*de0_site/np.abs(e0),1e-12)
+    de1=np.maximum(16*de1_site/np.abs(e0),1e-12)
 
     i05=int(np.argmin(np.abs(j2-0.5)))
-    w_before,w_after=w0[i05],w1[i05]
-    e_before,e_after=de0[i05],de1[i05]
-    w_factor=w_before/w_after
-    e_factor=e_before/e_after
+    exact20=json.load(open(ROOT/"krylov_sign_structure/results/groundstate_k1_20site_exact_J2p5.json"))
+    wb=np.array([w0[i05],exact20["wrong_weight_0"]])
+    wa=np.array([w1[i05],exact20["wrong_weight_1"]])
+    eb=np.array([de0[i05],exact20["epsilon_rel_0"]])
+    ea=np.array([de1[i05],exact20["epsilon_rel_1"]])
 
     fig=plt.figure(figsize=(7.2,5.4))
     gs=fig.add_gridspec(2,2,height_ratios=[1.05,.95],hspace=.42,wspace=.32)
@@ -175,83 +187,66 @@ def fig1_proof_of_concept():
 
     ax[0].plot(j2,w0,"o--",label="before Krylov update")
     ax[0].plot(j2,w1,"s-",label="after Krylov update")
-    ax[0].set_yscale("log")
-    ax[0].set_xlabel("J2 / J1")
-    ax[0].set_ylabel("Wrong-sign probability")
-    ax[0].set_title("Exact sign benchmark")
-    ax[0].legend(frameon=False,fontsize=7.8)
-    panel(ax[0],"a")
+    ax[0].set_yscale("log"); ax[0].set_xlim(0.38,1.02)
+    ax[0].set_xlabel("J2 / J1"); ax[0].set_ylabel("Wrong-sign probability")
+    ax[0].set_title("4 x 4 exact sign benchmark")
+    ax[0].legend(frameon=False,fontsize=7.8); panel(ax[0],"a")
 
     ax[1].plot(j2,de0,"o--",label="before Krylov update")
     ax[1].plot(j2,de1,"s-",label="after Krylov update")
-    ax[1].set_yscale("log")
-    ax[1].set_xlabel("J2 / J1")
-    ax[1].set_ylabel("Energy error per site")
-    ax[1].set_title("Exact energy benchmark")
-    ax[1].legend(frameon=False,fontsize=7.8)
-    panel(ax[1],"b")
+    ax[1].set_yscale("log"); ax[1].set_xlim(0.38,1.02)
+    ax[1].set_xlabel("J2 / J1"); ax[1].set_ylabel("Relative energy error")
+    ax[1].set_title("4 x 4 exact energy benchmark")
+    ax[1].legend(frameon=False,fontsize=7.8); panel(ax[1],"b")
 
-    cats=["before","after"]
-    ax[2].bar(cats,[w_before,w_after])
-    ax[2].set_yscale("log")
-    ax[2].set_ylabel("Wrong-sign probability")
-    ax[2].set_title("J2 / J1 = 0.5")
-    ax[2].text(.5,np.sqrt(w_before*w_after),f"{w_factor:.1f}x smaller",
-               ha="center",va="center",fontsize=10,fontweight="bold")
-    panel(ax[2],"c")
+    xx=np.arange(2); width=.34
+    ax[2].bar(xx-width/2,wb,width,label="before")
+    ax[2].bar(xx+width/2,wa,width,label="after")
+    ax[2].set_yscale("log"); ax[2].set_xticks(xx,["N = 16","N = 20"])
+    ax[2].set_ylabel("Wrong-sign probability"); ax[2].set_title("J2 / J1 = 0.5, exact")
+    for i,(x,y) in enumerate(zip(xx,wa)):
+        ax[2].text(x+width/2,y*1.7,f"{wb[i]/wa[i]:.1f}x",ha="center",va="bottom",fontsize=8,fontweight="bold")
+    ax[2].legend(frameon=False,fontsize=7.8); panel(ax[2],"c")
 
-    ax[3].bar(cats,[e_before,e_after])
-    ax[3].set_yscale("log")
-    ax[3].set_ylabel("Energy error per site")
-    ax[3].set_title("J2 / J1 = 0.5")
-    ax[3].text(.5,np.sqrt(e_before*e_after),f"{e_factor:.1f}x smaller",
-               ha="center",va="center",fontsize=10,fontweight="bold")
-    panel(ax[3],"d")
+    ax[3].bar(xx-width/2,eb,width,label="before")
+    ax[3].bar(xx+width/2,ea,width,label="after")
+    ax[3].set_yscale("log"); ax[3].set_xticks(xx,["N = 16","N = 20"])
+    ax[3].set_ylabel("Relative energy error"); ax[3].set_title("J2 / J1 = 0.5, exact")
+    for i,(x,y) in enumerate(zip(xx,ea)):
+        ax[3].text(x+width/2,y*1.7,f"{eb[i]/ea[i]:.1f}x",ha="center",va="bottom",fontsize=8,fontweight="bold")
+    ax[3].legend(frameon=False,fontsize=7.8); panel(ax[3],"d")
 
     save(fig,"fig1_proof_of_concept.png")
 
 def fig2_larger_system_check():
     z=np.load(ROOT/"results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz")
-    eM,eV,eK=chain_stats(z["eM"]),chain_stats(z["eVA"]),chain_stats(z["eVA"]+z["dKA"])
-    base=eV[0]/36
-    mus=np.array([eM[0]/36,eK[0]/36,eV[0]/36])
-    ses=np.array([eM[1]/36,eK[1]/36,eV[1]/36])
-
-    z8=np.load(ROOT/"results/8x8_krylov_3471544/krylov_phys8_a2_fixedT.npz")
-    r=np.asarray(z8["r"],float); y=np.asarray(z8["y"],float)
-    t=-28.37107876288694
     mech=json.load(open(DATA/"mechanism_6x6.json"))
-
-    fig,ax=plt.subplots(1,3,figsize=(10.0,2.8))
-    x=np.arange(3); rel=1e3*(mus-base); er=1e3*ses
-    ax[0].errorbar(x,rel,yerr=er,fmt="o",capsize=3)
-    ax[0].axhline(0,lw=.8)
-    ax[0].set_xticks(x,["Marshall","Krylov","ViT"])
-    ax[0].set_ylabel("Energy/site minus ViT (10^-3)")
-    ax[0].set_title("6 x 6, identical amplitude")
-    panel(ax[0],"a")
-
-    bins=np.linspace(np.quantile(r,.01),np.quantile(r,.99),45)
-    ax[1].hist(r[y>0],bins=bins,density=True,alpha=.55,label="same sign as Marshall")
-    ax[1].hist(r[y<0],bins=bins,density=True,alpha=.55,label="opposite sign to Marshall")
-    ax[1].axvline(t,ls="--",lw=1.1,label=f"threshold: {t:.2f}")
-    ax[1].set_xlabel("Marshall local energy rM(x)")
-    ax[1].set_ylabel("Sample density")
-    ax[1].set_title("8 x 8: sign-flip signal")
-    ax[1].legend(frameon=False,fontsize=7.2)
-    panel(ax[1],"b")
 
     before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
     after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
+
+    dMV=np.asarray(z["eM"]-z["eVA"],float)
+    dKV=np.asarray(z["dKA"],float)
+    mMV,seMV=chain_stats(dMV); mKV,seKV=chain_stats(dKV)
+    vals=np.array([mMV,mKV])/36
+    errs=np.array([seMV,seKV])/36
+
+    fig,ax=plt.subplots(1,2,figsize=(7.1,2.8))
     xx=np.arange(2); width=.34
-    ax[2].bar(xx-width/2,before,width,label="before")
-    ax[2].bar(xx+width/2,after,width,label="after")
-    ax[2].set_yscale("log")
-    ax[2].set_xticks(xx,["sample A","sample B"])
-    ax[2].set_ylabel("ViT-weighted sign disagreement")
-    ax[2].set_title("6 x 6: independent samples")
-    ax[2].legend(frameon=False,fontsize=7.5)
-    panel(ax[2],"c")
+    ax[0].bar(xx-width/2,before,width,label="before K1")
+    ax[0].bar(xx+width/2,after,width,label="after K1")
+    ax[0].set_yscale("log"); ax[0].set_xticks(xx,["sample A","sample B"])
+    ax[0].set_ylabel("ViT-weighted sign disagreement")
+    ax[0].set_title("6 x 6: sign reference = ViT")
+    ax[0].legend(frameon=False,fontsize=7.8); panel(ax[0],"a")
+
+    x=np.arange(2)
+    ax[1].errorbar(x,vals,yerr=errs,fmt="o",capsize=4)
+    ax[1].axhline(0,lw=.8)
+    ax[1].set_xticks(x,["Marshall signs","after K1"])
+    ax[1].set_ylabel("Energy/site minus ViT")
+    ax[1].set_title("6 x 6: identical ViT amplitude")
+    panel(ax[1],"b")
     save(fig,"fig2_larger_system_check.png")
 
 if __name__=="__main__":

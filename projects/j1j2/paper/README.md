@@ -47,16 +47,18 @@ repeated learned 8x8 FN/Krylov loop is not claimed to be converged.
 
 ## Main figure provenance
 
-- **Fig. 1 — one-step proof of concept:** exact 4x4 sign and fixed-amplitude
-  energy errors from `square_exact_energyopt.csv`. Panels (c,d) highlight the
-  J2/J1=0.5 reductions: 37.4x in wrong-sign probability and 21.0x in energy
-  error.
+- **Fig. 1 — one-step proof of concept:** exact 4x4 sweep from
+  `square_exact_energyopt.csv`, plus an independent exact N=20 skew-torus
+  energy-optimized check from `groundstate_k1_20site_exact_J2p5.json`. At
+  J2/J1=0.5 the wrong-sign probability drops by 37.4x (N=16) and 49.5x
+  (N=20), while the relative energy error drops by 21.0x and 24.1x.
 - **Fig. 2 — larger-system validation:** 6x6 same-amplitude
-  Marshall/Krylov/ViT energies from `energy_krylov_vs_vit_6x6_indep.npz`;
-  8x8 local-energy diagnostic from `krylov_phys8_a2_fixedT.npz`; independent
-  6x6 ViT-weighted sign-disagreement values in `data/mechanism_6x6.json`.
-- **Fig. 3 — exact feedback:** current-sign 4x4 fixed-node/Krylov history from
-  `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json`.
+  Marshall/Krylov/ViT energies from `energy_krylov_vs_vit_6x6_indep.npz` and
+  independent 6x6 ViT-weighted sign-disagreement values in
+  `data/mechanism_6x6.json`. The ViT is a reference here, not exact truth.
+- **Fig. 3 — exact feedback:** current-sign fixed-node/Krylov histories on
+  N=16 from `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json` and on N=20
+  from `closed_fn_krylov_20site_J2p5_J2zero_init.json`.
 - **Fig. 4 — 8x8 benchmark:** Krylov-sign and Marshall-sign fixed-node
   replicas plus Qian-Qin Table I values in
   `data/literature_8x8_pbc_J2p5.json`.

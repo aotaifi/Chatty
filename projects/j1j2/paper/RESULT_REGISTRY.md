@@ -9,10 +9,12 @@ explicitly labeled provisional.
 | Result | Source | Paper use |
 |---|---|---|
 | Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(a-d) |
+| Exact N=20 K1 check at J2/J1=0.5 | ../krylov_sign_structure/results/groundstate_k1_20site_exact_J2p5.json | Main Fig. 1(c,d) |
 | Exact 4x4 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json | Main Fig. 3 |
+| Exact N=20 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_20site_J2p5_J2zero_init.json | Main Fig. 3 |
 | Exact-init 4x4 control | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_exactinit.json | Control / possible supplement |
-| 6x6 K1 mechanism | ../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md | Main Fig. 2(b,c) |
-| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | ../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz | Main Fig. 2(a) |
+| 6x6 K1 mechanism | ../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md | Main Fig. 2(a) |
+| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | ../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz | Main Fig. 2(b) |
 | 6x6 naive K2 falsification | ../results/true_k2_6x6_3471990/true_k2_6x6.npz | Appendix |
 
 ## STABLE: fixed-node scaling

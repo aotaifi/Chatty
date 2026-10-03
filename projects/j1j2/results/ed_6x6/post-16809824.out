@@ -1,0 +1,60 @@
+host=th-cl-262h02n3.hpc.physik.uni-muenchen.de
+orbits ok 28.206022024154663 True
+Marshall w_s = 0.019558252288183198
+uniform norm [0.8450871686987285, 0.07457114627715239]
+{
+ "E0": -18.137147540071616,
+ "E0_per_site": -0.5038096538908783,
+ "dim_sector": 15804956,
+ "t_orbits": 28.206022024154663,
+ "ls_rep_equals_min_rep": true,
+ "sum_orbit_sizes": 9075135300,
+ "C36_18": 9075135300,
+ "marshall_wrong_sign_weight": 0.019558252288183198,
+ "marshall_wrong_sign_orbit_fraction": 0.4973120456646637,
+ "marshall_wrong_sign_config_fraction": 0.49775092344904215,
+ "n_zero_amplitude_orbits": 0,
+ "min_abs_v": 2.7167149697973026e-14,
+ "full_norm_exact": 1.0,
+ "uniform_norm_estimate": [
+  0.8450871686987285,
+  0.07457114627715239
+ ],
+ "samples": {
+  "n": 100000,
+  "marshall_wrong_frac": 0.01965
+ },
+ "local_energy_sampled": {
+  "max_abs_dev": 2.7711166694643907e-13,
+  "n": 3000
+ },
+ "local_energy_uniform": {
+  "max_abs_dev": 9.945809154032759e-08,
+  "median_abs_dev": 9.43245481721533e-13,
+  "min_abs_psi": 3.0222523352203445e-12,
+  "n": 3000
+ }
+}
+	Command being timed: "ls_env/bin/python postprocess_6x6.py run_gs 100000"
+	User time (seconds): 269.85
+	System time (seconds): 144.57
+	Percent of CPU this job got: 1065%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:38.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3016768
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1277
+	Minor (reclaiming a frame) page faults: 12846545
+	Voluntary context switches: 19745
+	Involuntary context switches: 1995
+	Swaps: 0
+	File system inputs: 555288
+	File system outputs: 560384
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -30,7 +30,7 @@ exact fixed node converges to the exact ground state on $4\times4$ and
 20-site clusters, about three times faster with Anderson acceleration. On
 $6\times6$ and $8\times8$, Krylov signs built from a neural-network amplitude
 reduce the fixed-node energy gap to the network from $4\times10^{-3}$ to
-$6\times10^{-4}$ per site, without closing it. Iterating further requires
+$4$--$6\times10^{-4}$ per site, without closing it. Iterating further requires
 learning the fixed-node amplitude from walkers, which remains the open problem.
 \end{abstract}
 
@@ -279,11 +279,16 @@ error per site of the Marshall guide and after one step.}
 
 One Krylov step reduces the disagreement with the ViT signs by a factor
 $20$--$23$ [Fig.~\ref{fig:vit6}(a)]. With the same amplitude, Marshall signs
-lie $(5.3\pm1.6)\times10^{-3}$ per site above the ViT signs, while the Krylov
-signs are statistically indistinguishable from them,
-$e_{\rm Krylov}-e_{\rm ViT}=(1.2\pm2.9)\times10^{-4}$
-[Fig.~\ref{fig:vit6}(b)]. A single label-free step thus recovers the
-energetically relevant sign structure of an optimized neural network.
+lie $(5.3\pm1.6)\times10^{-3}$ per site above the ViT signs and the Krylov
+signs $(8.1\pm0.5)\times10^{-4}$ [Fig.~\ref{fig:vit6}(b)]. The remaining gap
+comes from rare configurations where the two sign rules differ and the local
+energy is large; resolving it requires about $5\times10^4$ samples. A single
+label-free step thus removes most, but not all, of the energy cost of the
+Marshall signs.
+Conversely, applied to the ViT's own signs the step flips less than $10^{-4}$
+of the probability and leaves the energy unchanged within
+$5\times10^{-5}$ per site: the optimized signs are a fixed point of the Krylov
+update.
 
 \subsection{Fixed-node--Krylov loop}
 \label{sec:loop}
@@ -368,13 +373,18 @@ ViT variational energy and (b) fixed node with the full ViT guide.}
 \label{fig:guides}
 \end{figure}
 
-Krylov signs recover most of the gap between Marshall and the network signs,
-from $4\times10^{-3}$ to $6\times10^{-4}$ per site on both lattices, but not
-all of it (Fig.~\ref{fig:guides}). Fixed node does not close the remaining gap:
-our energies, $-0.502984(18)$ on $6\times6$ and $-0.498210(25)$ on $8\times8$,
-lie above the ViT itself, $-0.503600(41)$ and $-0.498823(35)$. Fixed node with
-the full ViT guide reproduces the ViT energy within errors, which bounds the
-fixed-node bias at this $M$ to about $10^{-4}$ per site.
+Fixed node lowers the Krylov guide by $(4.5\pm1.0)\times10^{-4}$ per site on
+$6\times6$, independent of projection length ($\beta=1.2$ and $2.4$) and time
+step. The resulting energies, $-0.503288(90)$ on $6\times6$ and
+$-0.498210(25)$ on $8\times8$, close most of the gap between Marshall and the
+network but remain above the ViT itself, $-0.503654(21)$ and $-0.498823(35)$,
+by $4\times10^{-4}$ and $6\times10^{-4}$ per site (Fig.~\ref{fig:guides}). On
+$6\times6$ the exact energy is $E_0/N=-0.5038097$ (our symmetry-resolved ED),
+so the relative errors are $1.0\times10^{-3}$ for Krylov fixed node and
+$3\times10^{-4}$ for the ViT. Fixed node with the full ViT guide reproduces the
+ViT energy within errors. The $8\times8$ values rest on two walker populations
+each; on $6\times6$ the spread between eight populations is $3\times10^{-4}$
+per site, so two-population error bars underestimate the uncertainty.
 Figure~\ref{fig:bench} places all values among published results.
 
 \begin{figure}[H]
@@ -425,8 +435,9 @@ node is the open problem.
 Splitting $\psi=s\,a$ separates two problems of different difficulty. The
 sign problem, given the amplitude, is easy: a label-free threshold on the
 local energy captures the frustrated sign corrections, a few repetitions
-reach the exact signs on exact clusters, and on $6\times6$ one step matches
-the signs of an optimized neural network energetically. With an approximate
+reach the exact signs on exact clusters, and on $6\times6$ one step removes
+most of the energy cost of Marshall signs relative to an optimized neural
+network, whose own signs it leaves unchanged. With an approximate
 amplitude the same step returns the best signs for that amplitude, so the
 residual error is an amplitude error.
 
@@ -440,7 +451,7 @@ needed to follow the exact loop, and correlated walkers are worth about three
 times fewer.
 
 On $6\times6$ and $8\times8$ one untrained iteration brings the fixed-node
-energy within $6\times10^{-4}$ per site of the underlying network but not
+energy within $4$--$6\times10^{-4}$ per site of the underlying network but not
 below it. Iterating requires a callable amplitude learned from fixed node.
 For the energy to decrease with certainty, the learned guide must reach a
 variational energy below the previous fixed-node energy, since

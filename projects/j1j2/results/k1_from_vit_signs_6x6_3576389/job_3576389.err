@@ -1,0 +1,6 @@
+CPU_SET_HEX_STR_SIZE: 257, Size of mstr: 257
+cpu-bind=MASK - cn0138, task  0  0 [9232]: mask |--------|--------|BBBBBBBB|--------|BBBBBBBB|BBBBBBBB|--------|BBBBBBBB|BBBBBBBB|--------|--------|BBBBBBBB||||BBBBBBBB|BBBBBBBB|BBBBBBBB|BBBBBBBB|BBBBBBBB|--------|BBBBBBBB|BBBBBBBB|--------|BBBBBBBB|BBBBBBBB|BBBBBBBB| set
+/pc2/users/h/hpcalot/chatty/.venv-j1j2-py311/lib/python3.11/site-packages/netket/utils/struct/pytree_serialization_sharding.py:148: UserWarning: Sharded data (n_accepted_proc) has shape (6000,) but target has shape (16,).This probably means that you serialized the data with more nodes. We will try to load it anyway by ignoring the extra data.
+  warnings.warn(
+/pc2/users/h/hpcalot/chatty/.venv-j1j2-py311/lib/python3.11/site-packages/netket/utils/struct/pytree_serialization_sharding.py:148: UserWarning: Sharded data (σ) has shape (6000, 36) but target has shape (16, 36).This probably means that you serialized the data with more nodes. We will try to load it anyway by ignoring the extra data.
+  warnings.warn(

@@ -1,0 +1,33 @@
+{
+ "E0": -18.137147540071616,
+ "E0_per_site": -0.5038096538908783,
+ "dim_sector": 15804956,
+ "t_orbits": 28.206022024154663,
+ "ls_rep_equals_min_rep": true,
+ "sum_orbit_sizes": 9075135300,
+ "C36_18": 9075135300,
+ "marshall_wrong_sign_weight": 0.019558252288183198,
+ "marshall_wrong_sign_orbit_fraction": 0.4973120456646637,
+ "marshall_wrong_sign_config_fraction": 0.49775092344904215,
+ "n_zero_amplitude_orbits": 0,
+ "min_abs_v": 2.7167149697973026e-14,
+ "full_norm_exact": 1.0,
+ "uniform_norm_estimate": [
+  0.8450871686987285,
+  0.07457114627715239
+ ],
+ "samples": {
+  "n": 100000,
+  "marshall_wrong_frac": 0.01965
+ },
+ "local_energy_sampled": {
+  "max_abs_dev": 2.7711166694643907e-13,
+  "n": 3000
+ },
+ "local_energy_uniform": {
+  "max_abs_dev": 9.945809154032759e-08,
+  "median_abs_dev": 9.43245481721533e-13,
+  "min_abs_psi": 3.0222523352203445e-12,
+  "n": 3000
+ }
+}

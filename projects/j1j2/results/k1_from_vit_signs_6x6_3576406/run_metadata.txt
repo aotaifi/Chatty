@@ -1,0 +1,5 @@
+job_id=3576406
+host=cn1509
+args=--batch 4096 --kmax 2 --ntrain-rounds 16 --train-range 0:256 --thresholds=-9.827068509961125 --parts train,eval,ab --eval-curve --out k1_from_vit_signs_6x6_k2
+started=2026-10-03T23:39:21+02:00
+finished=2026-10-04T00:39:52+02:00

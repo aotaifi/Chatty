@@ -1,0 +1,13 @@
+{
+ "note": "6x6 fixed-amplitude energies per site relative to ViT signs (same |psi_ViT|).",
+ "krylov": {
+  "dE": 0.0008133415846492942,
+  "SE": 4.544673067290982e-05,
+  "source": "fn_bound_check_6x6, 49k samples, defect-attributed estimator, T=-14.9858"
+ },
+ "marshall": {
+  "dE": 0.005297,
+  "SE": 0.001598,
+  "source": "energy_krylov_vs_vit_6x6_3479622 (256 samples, older paired estimator)"
+ }
+}

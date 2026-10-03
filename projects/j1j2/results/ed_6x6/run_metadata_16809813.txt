@@ -1,0 +1,7 @@
+job_id=16809813
+host=th-cl-262h03n1.hpc.physik.uni-muenchen.de
+cpus=32
+args=0,0,B1,1 0,0,A1,-1 0,0,A2,1 0,0,A2,-1 0,0,B1,-1 0,0,B2,1 0,0,B2,-1 0,0,E,1 0,0,E,-1 3,3,A1,-1 3,3,A1,1 3,3,B1,-1 3,3,B1,1 3,3,A2,-1 3,3,A2,1 3,3,B2,-1 3,3,B2,1
+started=2026-10-03T23:03:41+02:00
+Model name:                              Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz
+finished=2026-10-04T00:11:25+02:00

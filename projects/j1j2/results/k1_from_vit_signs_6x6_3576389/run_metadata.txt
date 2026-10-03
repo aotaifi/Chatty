@@ -1,0 +1,5 @@
+job_id=3576389
+host=cn0138
+args=--batch 4096 --kmax 1 --ntrain-rounds 16 --parts train,eval,ab --eval-curve --out k1_from_vit_signs_6x6_k1
+started=2026-10-03T23:32:15+02:00
+finished=2026-10-03T23:37:56+02:00

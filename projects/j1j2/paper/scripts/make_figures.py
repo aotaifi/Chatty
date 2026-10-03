@@ -300,8 +300,9 @@ def fig3_krylov_vit_6x6():
     mech=json.load(open(DATA/"mechanism_6x6.json"))
     before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
     after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
-    mMV,seMV=chain_stats(np.asarray(z["eM"]-z["eVA"],float))   # paired, 64-chain errors
-    mKV,seKV=chain_stats(np.asarray(z["dKA"],float))
+    en=json.load(open(DATA/"vit6_energies.json"))   # per site, relative to ViT signs
+    mMV,seMV=en["marshall"]["dE"]*36,en["marshall"]["SE"]*36
+    mKV,seKV=en["krylov"]["dE"]*36,en["krylov"]["SE"]*36
 
     fig,ax=plt.subplots(1,2,figsize=(6.4,2.9),gridspec_kw=dict(wspace=.45))
     fig.suptitle(r"6 x 6, J2 / J1 = 0.5:   guide $\psi=s_{\rm Marshall}\,|\psi_{\rm ViT}|$"
@@ -324,7 +325,7 @@ def fig3_krylov_vit_6x6():
     ax[1].set_ylabel(r"$(e-e_{\rm ViT})$ per site  [$10^{-3}$]")
     ax[1].set_title("energy error"); panel(ax[1],"b")
     for x,v,e in zip(xx,vals,errs):
-        ax[1].text(x,v+e+.25,f"{v:.1f} $\\pm$ {e:.1f}",ha="center",fontsize=7.5)
+        ax[1].text(x,v+e+.25,f"{v:.2f} $\\pm$ {e:.2f}",ha="center",fontsize=7.5)
     ax[1].set_ylim(-.8,8.5)
     save(fig,"fig4_krylov_vit_6x6.png")
 

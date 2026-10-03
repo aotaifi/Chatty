@@ -1,0 +1,74 @@
+[k00_B1_p] dim=15796390 group=288x2 basis 21.5s
+[k00_B1_p] nnz=1.184e+09 csr 92.3s
+[k00_B1_p] E=[-17.7818768306] E/N=-0.49394102 res=[1.1878162276922205e-10] matvecs=103 81.4s
+[k00_A1_m] dim=15761166 group=288x2 basis 20.9s
+[k00_A1_m] nnz=1.180e+09 csr 88.3s
+[k00_A1_m] E=[-16.4178357674] E/N=-0.45605099 res=[4.2406551143113754e-11] matvecs=163 126.8s
+[k00_A2_p] dim=15741544 group=288x2 basis 20.8s
+[k00_A2_p] nnz=1.178e+09 csr 87.7s
+[k00_A2_p] E=[-16.3861407152] E/N=-0.45517058 res=[4.40136274080689e-11] matvecs=133 102.7s
+[k00_A2_m] dim=15730582 group=288x2 basis 20.7s
+[k00_A2_m] nnz=1.177e+09 csr 86.9s
+[k00_A2_m] E=[-16.3186105194] E/N=-0.45329474 res=[3.099310161661813e-11] matvecs=153 124.0s
+[k00_B1_m] dim=15752772 group=288x2 basis 20.8s
+[k00_B1_m] nnz=1.179e+09 csr 87.5s
+[k00_B1_m] E=[-16.3757451577] E/N=-0.45488181 res=[2.7520121024774206e-11] matvecs=163 131.7s
+[k00_B2_p] dim=15749947 group=288x2 basis 20.8s
+[k00_B2_p] nnz=1.179e+09 csr 87.6s
+[k00_B2_p] E=[-16.5309324318] E/N=-0.45919257 res=[1.8492752678609944e-11] matvecs=133 104.2s
+[k00_B2_m] dim=15739069 group=288x2 basis 20.7s
+[k00_B2_m] nnz=1.178e+09 csr 86.9s
+[k00_B2_m] E=[-16.3107455047] E/N=-0.45307626 res=[1.1425641405837724e-10] matvecs=163 126.9s
+[k00_E_p] dim=31481894 group=144x2 basis 20.4s
+[k00_E_p] nnz=2.356e+09 csr 102.2s
+[k00_E_p] E=[-16.2003609428] E/N=-0.45001003 res=[9.924605642676721e-11] matvecs=183 280.8s
+[k00_E_m] dim=31525574 group=144x2 basis 20.4s
+[k00_E_m] nnz=2.361e+09 csr 102.4s
+[k00_E_m] E=[-17.0613580667] E/N=-0.47392661 res=[2.9542766808529185e-11] matvecs=133 202.2s
+[k33_A1_m] dim=15784983 group=288x2 basis 20.7s
+[k33_A1_m] nnz=1.183e+09 csr 86.5s
+[k33_A1_m] E=[-17.6661556541] E/N=-0.49072655 res=[6.1175634740693746e-12] matvecs=103 80.2s
+[k33_A1_p] dim=15770329 group=288x2 basis 20.7s
+[k33_A1_p] nnz=1.181e+09 csr 86.4s
+[k33_A1_p] E=[-16.3075465825] E/N=-0.45298741 res=[1.2306343016452345e-10] matvecs=173 136.4s
+[k33_B1_m] dim=15776417 group=288x2 basis 20.7s
+[k33_B1_m] nnz=1.182e+09 csr 86.5s
+[k33_B1_m] E=[-17.1372326222] E/N=-0.47603424 res=[1.730039841633004e-11] matvecs=123 98.4s
+[k33_B1_p] dim=15761935 group=288x2 basis 20.7s
+[k33_B1_p] nnz=1.180e+09 csr 85.9s
+[k33_B1_p] E=[-16.2415139425] E/N=-0.45115317 res=[9.726715566339025e-11] matvecs=183 143.6s
+[k33_A2_m] dim=15736554 group=288x2 basis 20.6s
+[k33_A2_m] nnz=1.178e+09 csr 86.3s
+[k33_A2_m] E=[-16.2150934002] E/N=-0.45041926 res=[6.75733315980391e-11] matvecs=153 121.1s
+[k33_A2_p] dim=15732872 group=288x2 basis 20.7s
+[k33_A2_p] nnz=1.177e+09 csr 86.1s
+[k33_A2_p] E=[-16.4594255294] E/N=-0.45720626 res=[6.693208452622246e-11] matvecs=153 118.9s
+[k33_B2_m] dim=15744957 group=288x2 basis 20.7s
+[k33_B2_m] nnz=1.178e+09 csr 86.4s
+[k33_B2_m] E=[-16.463710394] E/N=-0.45732529 res=[4.5220809655333726e-11] matvecs=133 103.5s
+[k33_B2_p] dim=15741359 group=288x2 basis 20.7s
+[k33_B2_p] nnz=1.178e+09 csr 86.0s
+[k33_B2_p] E=[-16.9864413064] E/N=-0.47184559 res=[1.1205330425839822e-11] matvecs=113 86.9s
+	Command being timed: "ls_env/bin/python ed6x6_run.py run_sectors 0,0,B1,1 0,0,A1,-1 0,0,A2,1 0,0,A2,-1 0,0,B1,-1 0,0,B2,1 0,0,B2,-1 0,0,E,1 0,0,E,-1 3,3,A1,-1 3,3,A1,1 3,3,B1,-1 3,3,B1,1 3,3,A2,-1 3,3,A2,1 3,3,B2,-1 3,3,B2,1"
+	User time (seconds): 112940.23
+	System time (seconds): 590.22
+	Percent of CPU this job got: 2794%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:07:43
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 56547252
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1230
+	Minor (reclaiming a frame) page faults: 45909001
+	Voluntary context switches: 2086036
+	Involuntary context switches: 11843048
+	Swaps: 0
+	File system inputs: 238200
+	File system outputs: 648
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

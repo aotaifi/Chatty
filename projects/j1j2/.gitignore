@@ -11,3 +11,7 @@ krylov_sign_structure/results/k2_gnn_residual_cached_M100000_dt0125.npz
 krylov_sign_structure/experiments/vit_J2=*.mpack
 
 *.bak
+
+# 6x6 ED ground-state table (285 MB); kept local / on ws1:~/chatty_ed6x6
+results/ed_6x6/psi0_6x6_table.npz
+results/ed_6x6/samples_extra_psi0sq_6x6.npz

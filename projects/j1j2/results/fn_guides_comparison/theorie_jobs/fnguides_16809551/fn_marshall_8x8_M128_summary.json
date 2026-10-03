@@ -1,0 +1,27 @@
+{
+ "L": 8,
+ "N": 64,
+ "guide": "marshall",
+ "M": 128,
+ "beta_target": 1.2,
+ "burn_beta": 0.4,
+ "tau_max": 0.025,
+ "phi": 0.0,
+ "T": null,
+ "reps": [
+  {
+   "seed": 11501,
+   "Emean": -31.703826476888686,
+   "tail8": -31.665055586843273,
+   "naiveSE": 0.011386006563603961,
+   "nE": 43,
+   "mixed": 5504,
+   "unique": 2739,
+   "sec": 230.4428470134735
+  }
+ ],
+ "mean": -31.703826476888686,
+ "between_rep_SE": null,
+ "mean_site": -0.4953722887013857,
+ "SE_site": null
+}

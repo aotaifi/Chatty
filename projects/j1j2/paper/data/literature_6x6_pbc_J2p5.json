@@ -1,0 +1,50 @@
+{
+ "system": "spin-1/2 square-lattice J1-J2 Heisenberg model",
+ "J2_over_J1": 0.5,
+ "size": "6x6",
+ "boundary": "periodic",
+ "quantity": "ground-state energy per site",
+ "source": {
+  "authors": "H.-Y. Lin et al.",
+  "title": "The Green's function Monte Carlo combined with projected entangled pair state approach to the frustrated J1-J2 Heisenberg model",
+  "journal": "Phys. Rev. B",
+  "volume": 109,
+  "pages": "235133",
+  "year": 2024,
+  "arxiv": "2406.12207",
+  "table": 2,
+  "note": "ED, VMC, DMRG, CNN, improved RBM values are quoted there from earlier work"
+ },
+ "exact": -0.50381,
+ "benchmarks": [
+  {
+   "method": "VMC",
+   "energy_per_site": -0.50117,
+   "uncertainty": 1e-05
+  },
+  {
+   "method": "CNN",
+   "energy_per_site": -0.50185,
+   "uncertainty": 1e-05
+  },
+  {
+   "method": "RBM+PP",
+   "energy_per_site": -0.503765,
+   "uncertainty": 1e-06
+  },
+  {
+   "method": "DMRG",
+   "energy_per_site": -0.503805
+  },
+  {
+   "method": "PEPS+GFMC D=5",
+   "energy_per_site": -0.5029,
+   "uncertainty": 0.0001
+  },
+  {
+   "method": "PEPS+GFMC D=6",
+   "energy_per_site": -0.5033,
+   "uncertainty": 0.0004
+  }
+ ]
+}

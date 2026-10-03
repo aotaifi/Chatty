@@ -33,7 +33,7 @@ Files are not moved between folders: many scripts hardcode absolute
 
 | Thread | Status | Main files |
 |---|---|---|
-| Exact one-step Krylov sign benchmark (4x4 sweep, N=20) | Stable, paper Fig. 1 | `krylov_sign_structure/experiments/square_exact_energyopt.py`, `groundstate_k1_20site_exact.py`; `paper/scripts/k1_threshold_4x4.py` |
+| Exact one-step Krylov sign benchmark (4x4 sweep, N=20) | Stable, paper Fig. 1 | `krylov_sign_structure/experiments/square_exact_energyopt.py`, `groundstate_k1_20site_exact.py`; `paper/scripts/k1_exact_4x4.py` |
 | Exact FN/Krylov feedback loop | Stable, paper Fig. 2 | `krylov_sign_structure/experiments/closed_fn_krylov_*.py` |
 | 6x6 fixed-amplitude Marshall vs Krylov vs ViT | Stable, paper Fig. 3 | `experiments/energy_krylov_vs_vit_6x6_indep.py`, `results/a1_node_audit_3479622/` |
 | 6x6 Krylov-FN vs Marshall-FN, 6x6 fixed point | Stable, paper Sec. III C | `experiments/gfmc_6x6_*`, `results/krylov_fn_6x6_matched_verdict_2026-09-28.md`, `results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md` |

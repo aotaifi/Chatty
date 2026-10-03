@@ -1,0 +1,9 @@
+job_id=16809584
+host=th-cl-262h05n2.hpc.physik.uni-muenchen.de
+cpus=32
+args=vmc 6 256 12 3 60 20261062
+started=2026-10-03T22:10:16+02:00
+CPU(s):                                  128
+Model name:                              Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz
+CPU(s) scaling MHz:                      59%
+finished=2026-10-03T22:13:50+02:00

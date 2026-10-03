@@ -1,0 +1,10 @@
+{
+  "description": "8x8 J2/J1=0.5 lattice FN energies (M=128, beta=1.2, two independent replicas) along the learned FN/Krylov loop. Sources: ../results/8x8_krylov_fn_scaling_verdict_2026-09-30.md, ../results/fnmle_sr_closedloop_8x8_iter1_2026-10-01.md, ../STATUS.md (2026-10-01 entries).",
+  "N": 64,
+  "rows": [
+    {"label": "start: ViT amplitude + Krylov signs", "jobs": "3471544", "E": [-31.8870157191, -31.8838325000]},
+    {"label": "iteration 1 (SR amplitude update)", "jobs": "seeds 13001/13002", "E": [-31.8967878286, -31.9056697050]},
+    {"label": "iteration 1, independent rebuild", "jobs": "3506074", "E": [-31.8455282, -31.8323841]},
+    {"label": "iteration 2", "jobs": "seeds 14001/14002", "E": [-31.8059041913, -31.8248371930]}
+  ]
+}

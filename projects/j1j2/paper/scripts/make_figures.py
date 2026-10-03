@@ -44,58 +44,118 @@ def chain_stats(v):
     cm=v.reshape(-1,64).mean(axis=0)
     return float(v.mean()), float(cm.std(ddof=1)/np.sqrt(len(cm)))
 
-def fig2_closed_loop():
-    d16=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json"))
-    d20=json.load(open(ROOT/"krylov_sign_structure/results/closed_fn_krylov_20site_J2p5_J2zero_init.json"))
-
-    def unpack(d):
-        h=d["history"]; e0=d["E0"]
+def fig4_fn_krylov_loop():
+    """Exact FN/Krylov loop: plain full step, Anderson-accelerated (m=3), and the walker half step."""
+    R=ROOT/"krylov_sign_structure/results"
+    def load(path,ws_key,eps_key):
+        h=json.load(open(path))["history"]; e0=json.load(open(path)).get("E0")
         it=np.array([x["it"] for x in h])
-        os=np.array([x["O_sign"] for x in h])
-        fa=np.array([x["F_amp"] for x in h])
-        eg=np.array([x.get("E_relative_error",x["E_error"]/abs(e0)) for x in h])
-        efn=np.array([np.nan if "E_FN" not in x else x.get("E_FN_relative_error",(x["E_FN"]-e0)/abs(e0)) for x in h])
-        return it,np.maximum((1-os)/2,1e-12),np.maximum(1-fa,1e-12),np.maximum(eg,1e-12),efn
+        if ws_key=="O_sign":
+            ws=(1-np.array([x["O_sign"] for x in h]))/2
+            eps=np.array([x["E_error"]/abs(e0) for x in h])
+        else:
+            ws=np.array([x["w_s"] for x in h]); eps=np.array([x["eps"] for x in h])
+        return it,ws,eps
+    runs=[(r"4 x 4, $a\leftarrow\phi_{\rm FN}$","C0","o","-",load(R/"anderson_loop/full_4x4_plain.json","w_s","eps")),
+          (r"4 x 4, $a\leftarrow\phi_{\rm FN}$ + Anderson","C0","^","--",load(R/"anderson_loop/full_4x4_and_m3.json","w_s","eps")),
+          (r"20-site, $a\leftarrow\phi_{\rm FN}$","C1","o","-",load(R/"anderson_loop/full_20_plain.json","w_s","eps")),
+          (r"20-site, $a\leftarrow\phi_{\rm FN}$ + Anderson","C1","^","--",load(R/"anderson_loop/full_20_and_m3.json","w_s","eps"))]
+    hs=R/"closed_fn_krylov_4x4_J2p5_J2zero_init_halfstep.json"
+    if hs.exists():
+        runs.insert(1,(r"4 x 4, $a\leftarrow\sqrt{a\,\phi_{\rm FN}}$ (walkers)","C2","s",":",load(hs,"O_sign","E_error")))
+    FLOOR=1e-11
+    fig,ax=plt.subplots(1,2,figsize=(7.0,2.9),gridspec_kw=dict(wspace=.38))
+    for lab,c,m,ls,(it,ws,eps) in runs:
+        ax[0].plot(it,np.where(ws<1e-14,FLOOR,ws),marker=m,ls=ls,ms=3,lw=.7,color=c,label=lab)
+        ax[1].plot(it,np.maximum(eps,FLOOR),marker=m,ls=ls,ms=3,lw=.7,color=c,label=lab)
+    ax[0].set_ylim(FLOOR/3,.1); ax[1].set_ylim(FLOOR/3,.2)
+    for a_,lab,ttl,l in ((ax[0],"wrong-sign probability","sign error","a"),
+                         (ax[1],"rel. energy error","energy error","b")):
+        a_.set_yscale("log"); decades(a_); a_.set_xlim(-5,240)
+        a_.set_xlabel("loop iteration"); a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
+    for a_ in ax:
+        a_.set_yticks(10.0**np.array([-11,-9,-7,-5,-3,-1])); a_.set_yticklabels(["exact","-9","-7","-5","-3","-1"])
+        a_.axhline(FLOOR,color="0.6",lw=.8,ls=":")
+    ax[1].legend(frameon=False,fontsize=6.6,loc="upper right")
+    save(fig,"fig5_fn_krylov_loop.png")
 
-    z16=unpack(d16); z20=unpack(d20)
-    fig,ax=plt.subplots(2,2,figsize=(7.2,5.4))
-    for z,lab,marker in [(z16,"N = 16","o"),(z20,"N = 20","s")]:
-        it,ws,amp,eg,efn=z
-        ax[0,0].plot(it,ws,marker+"-",ms=2.5,label=lab)
-        ax[0,1].plot(it,amp,marker+"-",ms=2.5,label=lab)
-        ax[1,0].plot(it,eg,marker+"-",ms=2.5,label=lab)
-        ok=np.isfinite(efn)
-        ax[1,1].plot(it[ok],np.maximum(efn[ok],1e-12),marker+"-",ms=2.5,label=lab)
+def fig_sampled_4x4():
+    """III.C: FN/Krylov loop on 4x4 with phi_FN estimated from N i.i.d. samples of the exact FN mixed distribution."""
+    import glob
+    R=ROOT/"results/fn_krylov_loop_sampled_4x4"
+    fig,ax=plt.subplots(1,2,figsize=(6.6,2.8),gridspec_kw=dict(wspace=.4))
+    cmap=plt.get_cmap("viridis")
+    Ns=["1e05","1e06","1e07","1e08","1e09"]
+    for k,n in enumerate(Ns):
+        runs=[json.load(open(f))["history"] for f in sorted(glob.glob(str(R/f"iid_N{n}_cap_seed*.json")))]
+        L=min(len(h) for h in runs)
+        it=np.array([runs[0][i]["it"] for i in range(L)])
+        for a_,key in ((ax[0],"w_s"),(ax[1],"eps")):
+            v=np.exp(np.mean([np.log(np.maximum([h[i][key] for i in range(L)],1e-12)) for h in runs],axis=0))
+            a_.plot(it,v,"o-",ms=2.6,lw=.7,color=cmap(k/(len(Ns)-.5)),label=f"N = {n.replace('e0','e')}")
+    ex=json.load(open(R/"iid_exact_cap_seed0.json"))["history"]
+    for a_,key in ((ax[0],"w_s"),(ax[1],"eps")):
+        a_.plot([h["it"] for h in ex],[max(h[key],1e-12) for h in ex],"k--",lw=1.1,label="exact")
+    for a_,lab,ttl,l in ((ax[0],"wrong-sign probability","sign error","a"),(ax[1],"rel. energy error","energy error","b")):
+        a_.set_yscale("log"); decades(a_); a_.set_xlim(-1,51)
+        a_.set_xlabel("loop iteration"); a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
+    ax[1].legend(frameon=False,fontsize=6.8,loc="center left",bbox_to_anchor=(1.02,.5),title="samples /\niteration",title_fontsize=6.8)
+    save(fig,"fig6_sampled_4x4.png")
 
-    ax[0,0].set_yscale("log"); ax[0,0].set_ylabel("Wrong-sign probability"); ax[0,0].set_xlabel("Feedback iteration"); ax[0,0].set_title("Sign error")
-    ax[0,1].set_yscale("log"); ax[0,1].set_ylabel("1 - amplitude fidelity"); ax[0,1].set_xlabel("Feedback iteration"); ax[0,1].set_title("Amplitude error")
-    ax[1,0].set_yscale("log"); ax[1,0].set_ylabel("Relative energy error"); ax[1,0].set_xlabel("Feedback iteration"); ax[1,0].set_title("Current trial state")
-    ax[1,1].set_yscale("log"); ax[1,1].set_ylabel("Relative energy error"); ax[1,1].set_xlabel("Feedback iteration"); ax[1,1].set_title("Fixed-node projected state")
-    for a0,l in zip(ax.flat,"abcd"):
-        a0.legend(frameon=False,fontsize=7.5); panel(a0,l)
-    save(fig,"fig2_closed_loop.png")
+def fig6_guides_compare():
+    """III.D: one untrained iteration (ViT amplitude + Krylov signs -> FN) vs (a) ViT alone, (b) FN with the full ViT guide."""
+    d=json.load(open(DATA/"fn_guides_comparison.json"))
+    Ls=["6x6","8x8"]; xx=np.arange(2)
+    fig,ax=plt.subplots(1,2,figsize=(6.6,2.8),gridspec_kw=dict(wspace=.45))
+    for a_,ref,title,l in ((ax[0],lambda L:d[L]["E_ViT_VMC"],"vs ViT alone","a"),
+                           (ax[1],lambda L:d[L]["FN"]["vit"],"vs FN with full ViT guide","b")):
+        for k,(key,lab,c,m) in enumerate((("krylov","FN, Krylov signs (ours)","C3","o"),("marshall","FN, Marshall signs","0.5","s"))):
+            v=[(d[L]["FN"][key]["E_site"]-ref(L)["E_site"])*1e4 for L in Ls]
+            e=[np.hypot(d[L]["FN"][key]["SE_site"],ref(L)["SE_site"])*1e4 for L in Ls]
+            a_.errorbar(xx+(k-.5)*.18,v,yerr=e,fmt=m,ms=5.5,capsize=3,color=c,label=lab)
+        a_.axhline(0,color="k",lw=.8)
+        a_.set_xticks(xx,["6 x 6","8 x 8"]); a_.set_xlim(-.5,1.5)
+        a_.set_ylabel(r"$\Delta E$ per site  [$10^{-4}$]"); a_.set_title(title); panel(a_,l)
+    ax[0].legend(frameon=False,fontsize=7.2,loc="center",bbox_to_anchor=(.5,.6))
+    save(fig,"fig7_guides_compare.png")
 
-def fig4_8x8_benchmark():
+def fig6_fn_benchmarks():
+    """Fixed node with Marshall or Krylov signs vs published values: (a) 6x6 with ED, (b) 8x8."""
+    fig,ax=plt.subplots(1,2,figsize=(7.2,3.4),gridspec_kw=dict(wspace=.95))
+
+    def draw(a_,own,lit,title,exact=None):
+        rows=own+[(x["method"],x["energy_per_site"],x.get("uncertainty",0.),None) for x in lit]
+        rows=sorted(rows,key=lambda q:q[1],reverse=True)
+        yy=np.arange(len(rows))
+        for i,(name,v,e,pts) in enumerate(rows):
+            col="C3" if name=="FN, Krylov signs" else ("0.45" if name.startswith("FN") or name.startswith("ViT") else "C0")
+            a_.errorbar([v],[i],xerr=[e],fmt="o",ms=5,capsize=2.5,color=col)
+            if pts is not None:
+                a_.plot(pts,[i]*len(pts),"|",ms=10,mew=1.1,color="0.35")
+        if exact is not None:
+            a_.axvline(exact,color="k",ls="--",lw=.9); a_.text(exact,-.75,"ED ",fontsize=7.5,ha="right",va="center")
+        a_.set_yticks(yy,[r[0] for r in rows],fontsize=7.5); a_.invert_yaxis()
+        a_.set_xlabel("energy per site"); a_.set_title(title); a_.grid(axis="x",alpha=.2)
+        a_.xaxis.set_major_formatter(FuncFormatter(lambda v,_: f"{v:.3f}"))
+
+    g=json.load(open(DATA/"fn_guides_comparison.json"))
+    def ours(L):
+        f=g[L]["FN"]; out=[]
+        for key,name in (("marshall","FN, Marshall signs"),("krylov","FN, Krylov signs")):
+            out.append((name,f[key]["E_site"],f[key]["SE_site"],np.array(f[key]["rep_values"])/(36 if L=="6x6" else 64)))
+        out.append(("ViT (VMC)",g[L]["E_ViT_VMC"]["E_site"],g[L]["E_ViT_VMC"]["SE_site"],None))
+        out.append(("FN, ViT guide",f["vit"]["E_site"],f["vit"]["SE_site"],None))
+        return out
+    l6=json.load(open(DATA/"literature_6x6_pbc_J2p5.json"))
+    draw(ax[0],ours("6x6"),l6["benchmarks"],"6 x 6",exact=l6["exact"])
+    ax[0].set_xticks([-0.504,-0.502,-0.500])
+    panel(ax[0],"a")
+
     lit=json.load(open(DATA/"literature_8x8_pbc_J2p5.json"))
-    kz=np.load(DATA/"fn8_krylov_M128_3471544.npz")
-    mz=np.load(DATA/"fn8_marshall_M128_3471545.npz")
-    ek=np.asarray(kz["rows"],float)[:,1]/64
-    em=np.asarray(mz["rows"],float)[:,1]/64
-    own=[("FN, Marshall signs",em.mean(),abs(em[0]-em[1])/2,em),
-         ("FN, Krylov signs",ek.mean(),abs(ek[0]-ek[1])/2,ek)]
-    rows=own+[(x["method"],x["energy_per_site"],x.get("uncertainty",0.),None) for x in lit["benchmarks"]]
-    rows=sorted(rows,key=lambda q:q[1],reverse=True)
-    names=[x[0] for x in rows]; vals=np.array([x[1] for x in rows]); err=np.array([x[2] for x in rows])
-    yy=np.arange(len(rows))
-    fig,ax=plt.subplots(figsize=(4.0,3.55))
-    ax.errorbar(vals,yy,xerr=err,fmt="o",capsize=2.5)
-    for i,row in enumerate(rows):
-        if row[3] is not None:
-            pts=np.asarray(row[3]); ax.plot(pts,[i]*len(pts),"|",ms=12,mew=1.2,color="0.35")
-    ax.set_yticks(yy,names); ax.invert_yaxis()
-    ax.set_xlabel("Energy per site E/N  (lower is better)")
-    ax.set_title("Periodic 8 x 8 lattice, J2 / J1 = 0.5"); ax.grid(axis="x",alpha=.2)
-    save(fig,"fig4_8x8_benchmark.png")
+    draw(ax[1],ours("8x8"),lit["benchmarks"],"8 x 8")
+    ax[1].set_xticks([-0.498,-0.496])
+    panel(ax[1],"b")
+    save(fig,"fig8_benchmarks.png")
 
 def parse_halfstep():
     lines=open(DATA/"fn_mle_halfstep_exact4x4.out").read().splitlines()
@@ -113,35 +173,23 @@ def parse_halfstep():
             out[lab]["it"].append(it); out[lab]["E"].append(float(vals["halfE"]))
     return e0,out
 
-def fig5_amplitude_learning():
-    e0,h=parse_halfstep()
-    sr=json.load(open(DATA/"fnmle8_sr_lambda1_linesearch_3506041.json"))
-    rows=[x for x in sr["rows"] if "eta" in x]
-    fig,ax=plt.subplots(1,2,figsize=(7.2,2.8))
-    for lab,pretty,marker in [
-        ("exactAbs_Marshall","start: exact amplitude, Marshall signs","o"),
-        ("uniform_Marshall","start: uniform amplitude, Marshall signs","s")]:
-        it=np.array(h[lab]["it"]); ee=np.maximum((np.array(h[lab]["E"])-e0)/abs(e0),1e-12)
-        ax[0].plot(it,ee,marker+"-",ms=3,label=pretty)
-    ax[0].set_yscale("log"); ax[0].set_ylim(1.5e-4,8); ax[0].set_xticks(range(0,13,2))
-    ax[0].set_xlabel("Half-step iteration")
-    ax[0].set_ylabel("Relative energy error")
-    ax[0].set_title("4 x 4: exact half-step target")
-    ax[0].legend(frameon=False,fontsize=7.2,loc="upper right"); panel(ax[0],"a")
-
-    eta=np.array([x["eta"] for x in rows])
-    tg=np.array([x["train_gain"] for x in rows]); vg=np.array([x["val_gain"] for x in rows])
-    ax[1].plot(eta,tg,"o--",ms=3,label="walker sample used for update")
-    ax[1].plot(eta,vg,"s-",ms=3,label="independent walker sample")
-    ax[1].axhline(0,lw=.8); ax[1].axvline(.01,ls=":",lw=1)
-    ax[1].set_xscale("log"); ax[1].set_yscale("symlog",linthresh=1e-3)
-    ax[1].set_xlabel(r"SR step size $\eta$")
-    ax[1].set_ylabel("Change in log likelihood")
-    ax[1].set_title("8 x 8: SR step, held-out walkers")
-    ax[1].text(.03,.93,f"plain-gradient cosine\nbetween samples: {sr['euclidean']['cos']:.2f}",
-               transform=ax[1].transAxes,fontsize=7.2,va="top")
-    ax[1].legend(frameon=False,fontsize=7.2,loc="lower left"); panel(ax[1],"b")
-    save(fig,"fig5_amplitude_learning.png")
+def fig7_learning_8x8():
+    d=json.load(open(DATA/"fn8_loop_iterations.json"))
+    lit=json.load(open(DATA/"literature_8x8_pbc_J2p5.json"))
+    rows=d["rows"]; N=d["N"]
+    fig,ax=plt.subplots(figsize=(4.6,2.9))
+    x=np.arange(len(rows))
+    for i,r in enumerate(rows):
+        e=np.array(r["E"])/N
+        ax.errorbar([i],[e.mean()],yerr=[abs(e[0]-e[1])/2],fmt="o",ms=6,capsize=4,color="C0" if i==0 else "C3")
+        ax.plot([i]*len(e),e,"_",ms=10,mew=1.2,color="0.4")
+    best=min(b["energy_per_site"] for b in lit["benchmarks"])
+    ax.axhline(best,color="0.6",ls=":",lw=1); ax.text(len(rows)-.5,best,"best literature",fontsize=7,va="bottom",ha="right",color="0.4")
+    ax.set_xticks(x,["no training\n(Sec. III D)","1 learned\nupdate","same update,\nrebuilt","2 learned\nupdates"],fontsize=8)
+    ax.set_ylabel("FN energy per site"); ax.set_xlim(-.5,len(rows)-.5)
+    ax.yaxis.set_major_formatter(FuncFormatter(lambda v,_: f"{v:.4f}"))
+    ax.set_title("8 x 8, J2 / J1 = 0.5: learned amplitude updates")
+    save(fig,"fig9_learning_8x8.png")
 
 def fig1_proof_of_concept():
     rows=list(csv.DictReader(open(ROOT/"krylov_sign_structure/results/square_exact_energyopt.csv")))
@@ -172,7 +220,10 @@ def fig1_proof_of_concept():
     thr=np.load(DATA/"k1_threshold_4x4_J2p5.npz")
     r=thr["r"]; p=thr["p"]; wrong=thr["is_wrong0"]; T=float(thr["T"])
 
-    fig,ax=plt.subplots(2,2,figsize=(7.2,5.4),gridspec_kw=dict(hspace=.45,wspace=.32))
+    it=json.load(open(DATA/"k1_iterated_4x4.json"))["rows"]
+    FLOOR=1e-10  # exact zeros (exact ground-state signs) are drawn on this line
+
+    fig,ax=plt.subplots(2,2,figsize=(7.2,5.6),gridspec_kw=dict(hspace=.5,wspace=.34))
     ax=ax.flat
 
     bins=np.linspace(-30,12,85)
@@ -184,76 +235,106 @@ def fig1_proof_of_concept():
     ax[0].set_yscale("log"); ax[0].set_ylim(1e-6,3e3); decades(ax[0]); ax[0].set_yticks(10.0**np.arange(-6,1))
     ax[0].set_xlabel(r"local energy $r(x)=(H\psi)(x)/\psi(x)$")
     ax[0].set_ylabel(r"$\log_{10}$ probability $|\psi_0(x)|^2$")
-    ax[0].set_title("4 x 4, J2 / J1 = 0.5: one Krylov step")
+    ax[0].set_title("4 x 4, J2 / J1 = 0.5: first Krylov step")
     ax[0].legend(frameon=False,fontsize=7.2,loc="upper left",handlelength=1.2); panel(ax[0],"a")
 
-    sel=j2>=0.4
-    ax[1].plot(j2[sel],w0[sel],"o--",label="Marshall/stripe guide")
-    ax[1].plot(j2[sel],w1[sel],"s-",label="after one Krylov step")
-    ax[1].set_yscale("log"); ax[1].set_xlim(0.38,1.02)
-    ax[1].set_xlabel("J2 / J1"); ax[1].set_ylabel(r"$\log_{10}$ wrong-sign probability")
-    ax[1].set_title("4 x 4: sign error vs ED")
-    ax[1].legend(frameon=False,fontsize=7.5); panel(ax[1],"b")
-
-    ax[2].plot(j2[sel],de0[sel],"o--",label="Marshall/stripe guide")
-    ax[2].plot(j2[sel],de1[sel],"s-",label="after one Krylov step")
-    ax[2].set_yscale("log"); ax[2].set_xlim(0.38,1.02)
-    ax[2].set_xlabel("J2 / J1"); ax[2].set_ylabel(r"$\log_{10}$ relative energy error")
-    ax[2].set_title("4 x 4: energy error vs ED")
-    ax[2].legend(frameon=False,fontsize=7.5); panel(ax[2],"c")
+    cmap=plt.get_cmap("viridis")
+    for k,row in enumerate(it):
+        st=np.array([h["step"] for h in row["history"]])
+        for a_,key in ((ax[1],"wrong"),(ax[2],"eps")):
+            v=np.array([h[key] for h in row["history"]]); v=np.where(v>FLOOR,v,FLOOR)
+            ref="Marshall" if row["start"]=="marshall" else "stripe"
+            a_.plot(st,v,"o-",ms=4.5,lw=.9,color=cmap(k/(len(it)-.5)),label=f"{row['J2']:.1f}  {ref}")
+    for a_,lab,ttl,l in ((ax[1],"wrong-sign probability","4 x 4: sign error vs ED","b"),
+                         (ax[2],"relative energy error","4 x 4: energy error vs ED","c")):
+        a_.set_yscale("log"); a_.set_ylim(FLOOR/3,1); decades(a_)
+        a_.set_yticks(10.0**np.arange(-10,1,2))
+        a_.set_yticklabels(["exact"]+[f"{e}" for e in range(-8,1,2)])
+        a_.axhline(FLOOR,color="0.6",lw=.8,ls=":")
+        a_.set_xlabel("Krylov sign steps"); a_.set_xticks(range(0,7))
+        a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
+    ax[1].legend(frameon=False,fontsize=7,loc="upper right",title="J2/J1  start",title_fontsize=7)
 
     xx=np.array([0,1,2.6,3.6]); width=.36
     before=np.r_[wb,eb]; after=np.r_[wa,ea]
-    ax[3].bar(xx-width/2,before,width,label="guide")
-    ax[3].bar(xx+width/2,after,width,label="after one step")
+    ax[3].bar(xx-width/2,before,width,label="Marshall guide")
+    ax[3].bar(xx+width/2,after,width,label="one Krylov step")
     for x,b0,b1 in zip(xx,before,after):
         ax[3].text(x+width/2,b1*1.5,f"{b0/b1:.0f}x",ha="center",va="bottom",fontsize=7.5,fontweight="bold")
-    ax[3].set_yscale("log"); ax[3].set_ylim(1e-4,before.max()*8)
-    ax[3].set_xticks(xx,["N=16","N=20","N=16","N=20"])
+    ax[3].set_yscale("log"); ax[3].set_ylim(1e-4,before.max()*12); decades(ax[3])
+    ax[3].set_xticks(xx,["4 x 4","20-site","4 x 4","20-site"],fontsize=8)
     ax[3].text(.5,-.2,"wrong-sign prob.",ha="center",transform=ax[3].get_xaxis_transform(),fontsize=8)
     ax[3].text(3.1,-.2,"rel. energy error",ha="center",transform=ax[3].get_xaxis_transform(),fontsize=8)
     ax[3].set_title("J2 / J1 = 0.5: two exact clusters"); ax[3].set_ylabel(r"$\log_{10}$ error")
-    ax[3].legend(frameon=False,fontsize=7.5,ncol=2,loc="upper center"); panel(ax[3],"d")
-    for a_ in ax[1:]: decades(a_)
+    ax[3].legend(frameon=False,fontsize=7.2,ncol=2,loc="upper center"); panel(ax[3],"d")
 
-    save(fig,"fig1_proof_of_concept.png")
+    save(fig,"fig2_krylov_exact_amp.png")
 
-def fig3_6x6_validation():
+def fig2_krylov_approx_amp():
+    d=json.load(open(DATA/"k1_approx_amp_4x4.json"))
+    FLOOR=1e-10
+    fig,ax=plt.subplots(1,2,figsize=(6.4,2.75),gridspec_kw=dict(wspace=.45))
+    show=[0.5,0.45,0.55,0.4,0.6]                      # amplitude source J2, best to worst
+    cmap=plt.get_cmap("plasma")
+    for k,j in enumerate(show):
+        r=[x for x in d["rows"] if abs(x["amp_source_J2"]-j)<1e-9][0]
+        st=[h["step"] for h in r["history"]]
+        lab=f"{j:.2f}  ({'exact' if j==0.5 else 'F=%.2f' % r['amp_fidelity']})"
+        for a_,key in ((ax[0],"wrong"),(ax[1],"eps")):
+            v=np.array([h[key] for h in r["history"]]); v=np.where(v>FLOOR,v,FLOOR)
+            a_.plot(st,v,"o-",ms=4.5,lw=.9,color=cmap(k/5.5),label=lab)
+    for a_,lab,ttl,l in ((ax[0],"wrong-sign probability","sign error","a"),
+                         (ax[1],"rel. energy error","energy error","b")):
+        a_.set_yscale("log"); a_.set_ylim(FLOOR/3,1); decades(a_)
+        a_.set_yticks(10.0**np.arange(-10,1,2)); a_.set_yticklabels(["exact"]+[f"{e}" for e in range(-8,1,2)])
+        a_.axhline(FLOOR,color="0.6",lw=.8,ls=":")
+        a_.set_xlabel("Krylov sign steps"); a_.set_xticks(range(0,9,2))
+        a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
+    ax[0].legend(frameon=False,fontsize=6.3,title="amplitude from J2 =",title_fontsize=6.3,
+                 loc="center right",bbox_to_anchor=(1.02,.42))
+
+    save(fig,"fig3_krylov_approx_amp.png")
+
+def fig3_krylov_vit_6x6():
     z=np.load(DATA/"energy_krylov_vs_vit_6x6_3479622.npz")
     mech=json.load(open(DATA/"mechanism_6x6.json"))
-
     before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
     after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
+    mMV,seMV=chain_stats(np.asarray(z["eM"]-z["eVA"],float))   # paired, 64-chain errors
+    mKV,seKV=chain_stats(np.asarray(z["dKA"],float))
 
-    dMV=np.asarray(z["eM"]-z["eVA"],float)
-    dKV=np.asarray(z["dKA"],float)
-    mMV,seMV=chain_stats(dMV); mKV,seKV=chain_stats(dKV)
-    vals=np.array([mMV,mKV])/36
-    errs=np.array([seMV,seKV])/36
+    fig,ax=plt.subplots(1,2,figsize=(6.4,2.9),gridspec_kw=dict(wspace=.45))
+    fig.suptitle(r"6 x 6, J2 / J1 = 0.5:   guide $\psi=s_{\rm Marshall}\,|\psi_{\rm ViT}|$"
+                 r"   $\rightarrow$   one Krylov sign step   (reference: ViT signs)",fontsize=8.5,y=1.03)
+    xx=np.arange(2); width=.36
+    ax[0].bar(xx-width/2,before,width,label="Marshall guide")
+    ax[0].bar(xx+width/2,after,width,label="one Krylov step")
+    for x,b0,b1 in zip(xx,before,after):
+        ax[0].text(x+width/2,b1*1.5,f"{b0/b1:.0f}x",ha="center",va="bottom",fontsize=7.5,fontweight="bold")
+    ax[0].set_yscale("log"); ax[0].set_ylim(1e-4,1); decades(ax[0])
+    ax[0].set_xticks(xx,["sample A","sample B"])
+    ax[0].set_ylabel(r"$\log_{10}$ wrong-sign probability")
+    ax[0].set_title("sign error"); panel(ax[0],"a")
+    ax[0].legend(frameon=False,fontsize=7.2,ncol=2,loc="upper center")
 
-    fig,ax=plt.subplots(1,2,figsize=(7.1,2.8))
-    xx=np.arange(2); width=.34
-    ax[0].bar(xx-width/2,before,width,label="before K1")
-    ax[0].bar(xx+width/2,after,width,label="after K1")
-    ax[0].set_yscale("log"); ax[0].set_xticks(xx,["sample A","sample B"])
-    ax[0].set_ylabel("ViT-weighted sign disagreement")
-    ax[0].set_title("6 x 6: sign reference = ViT")
-    ax[0].set_ylim(top=before.max()*6)
-    ax[0].legend(frameon=False,fontsize=7.8,ncol=2,loc="upper center"); panel(ax[0],"a")
-
-    x=np.arange(2)
-    ax[1].errorbar(x,vals,yerr=errs,fmt="o",capsize=4)
-    ax[1].axhline(0,lw=.8)
-    ax[1].set_xticks(x,["Marshall signs","after K1"])
-    ax[1].set_ylabel("Energy/site minus ViT")
-    ax[1].set_title("6 x 6: identical ViT amplitude")
-    panel(ax[1],"b")
-    save(fig,"fig3_6x6_validation.png")
+    vals=np.array([mMV,mKV])/36*1e3; errs=np.array([seMV,seKV])/36*1e3
+    ax[1].bar(xx,vals,.5,yerr=errs,capsize=4,color=["C0","C1"])
+    ax[1].axhline(0,color="k",lw=.8)
+    ax[1].set_xticks(xx,["Marshall guide","one Krylov step"])
+    ax[1].set_ylabel(r"$(e-e_{\rm ViT})$ per site  [$10^{-3}$]")
+    ax[1].set_title("energy error"); panel(ax[1],"b")
+    for x,v,e in zip(xx,vals,errs):
+        ax[1].text(x,v+e+.25,f"{v:.1f} $\\pm$ {e:.1f}",ha="center",fontsize=7.5)
+    ax[1].set_ylim(-.8,8.5)
+    save(fig,"fig4_krylov_vit_6x6.png")
 
 if __name__=="__main__":
     fig1_proof_of_concept()
-    fig2_closed_loop()
-    fig3_6x6_validation()
-    fig4_8x8_benchmark()
-    fig5_amplitude_learning()
+    fig2_krylov_approx_amp()
+    fig3_krylov_vit_6x6()
+    fig4_fn_krylov_loop()
+    fig_sampled_4x4()
+    fig6_guides_compare()
+    fig6_fn_benchmarks()
+    fig7_learning_8x8()
     print("wrote final paper figures to",FIG)

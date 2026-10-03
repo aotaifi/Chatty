@@ -22,8 +22,8 @@ paper retain their Slurm job IDs in `data/`.
 2. Methods: model and error measures, one-step Krylov sign update, fixed-node
    amplitude update, learning the amplitude from walkers (MLE + SR), setup.
 3. Results, in order of increasing difficulty:
-   A. Benchmark 1 — exact 4x4 amplitude with Marshall signs, one Krylov step,
-      compared with ED (plus N=20);
+   A. Krylov sign update — exact 4x4 ED amplitude with Marshall signs, one and
+      then repeated Krylov sign steps, compared with ED (plus N=20);
    B. exact FN/Krylov feedback loop (4x4, N=20);
    C. 6x6 with fixed ViT amplitude, and 6x6 FN;
    D. 8x8 FN vs literature;
@@ -46,9 +46,9 @@ repeated learned 8x8 FN/Krylov loop is not claimed to be converged.
 All figure inputs live in `data/` or in the tracked
 `../krylov_sign_structure/results/`, so `make pdf` works from a fresh clone.
 
-- **Fig. 1 — Benchmark 1, one Krylov step:** (a) `data/k1_threshold_4x4_J2p5.npz`
-  from `scripts/k1_threshold_4x4.py` (recomputes the 4x4 ED and the threshold,
-  about 2 s); (b,c) `square_exact_energyopt.csv`; (d) adds
+- **Fig. 1 — Krylov sign update:** (a) `data/k1_threshold_4x4_J2p5.npz`
+  from `scripts/k1_exact_4x4.py` (recomputes the 4x4 ED and the threshold,
+  about 10 s); (b,c) `data/k1_iterated_4x4.json` from the same script (repeated steps, J2/J1 = 0.4-1.0); (d) adds
   `groundstate_k1_20site_exact_J2p5.json`.
 - **Fig. 2 — exact FN/Krylov feedback:** `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json`
   and `closed_fn_krylov_20site_J2p5_J2zero_init.json`.

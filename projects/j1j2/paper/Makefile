@@ -1,6 +1,7 @@
 PYTHON ?= python3
 
 figures:
+	$(PYTHON) scripts/make_lattice_sketch.py
 	$(PYTHON) scripts/make_figures.py
 
 pdf: figures

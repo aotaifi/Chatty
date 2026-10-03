@@ -8,8 +8,8 @@ explicitly labeled provisional.
 
 | Result | Source | Paper use |
 |---|---|---|
-| Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(b,c) |
-| 4x4 r(x) distribution and threshold at J2=0.5 | data/k1_threshold_4x4_J2p5.npz (scripts/k1_threshold_4x4.py) | Main Fig. 1(a) |
+| Exact 4x4 repeated K1 steps, J2=0.4-1.0 (step 1 = square_exact_energyopt.csv) | data/k1_iterated_4x4.json (scripts/k1_exact_4x4.py); cf. ../krylov_sign_structure/ITERATED_KRYLOV_CONVERGENCE_2026-09-28.md | Main Fig. 1(b,c) |
+| 4x4 r(x) distribution and threshold at J2=0.5 | data/k1_threshold_4x4_J2p5.npz (scripts/k1_exact_4x4.py) | Main Fig. 1(a) |
 | Exact N=20 K1 check at J2/J1=0.5 | ../krylov_sign_structure/results/groundstate_k1_20site_exact_J2p5.json | Main Fig. 1(d) |
 | Exact 4x4 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json | Main Fig. 2 |
 | Exact N=20 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_20site_J2p5_J2zero_init.json | Main Fig. 2 |

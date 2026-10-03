@@ -1,0 +1,66 @@
+{
+  "y": 59279,
+  "M": 20000,
+  "tau": 0.25,
+  "replicas": {
+    "ess": [
+      9389.403373772238,
+      9521.210418358012
+    ],
+    "unique": [
+      13216,
+      13169
+    ],
+    "fn_amp_fidelity": [
+      0.9767871603537267,
+      0.9714621914462859
+    ],
+    "cross_fidelity": 0.9430849024993723
+  },
+  "ratio_metrics": [
+    {
+      "threshold_mult": 1,
+      "n_edges": 5344,
+      "replica_logratio_rmse": 0.6506662525312847,
+      "oracle_logratio_rmse_rep1": 0.4352444740386031,
+      "oracle_logratio_rmse_rep2": 0.4503622830886881
+    },
+    {
+      "threshold_mult": 2,
+      "n_edges": 3202,
+      "replica_logratio_rmse": 0.59016462353056,
+      "oracle_logratio_rmse_rep1": 0.3873453502968418,
+      "oracle_logratio_rmse_rep2": 0.417465262759934
+    },
+    {
+      "threshold_mult": 5,
+      "n_edges": 932,
+      "replica_logratio_rmse": 0.5072707073466534,
+      "oracle_logratio_rmse_rep1": 0.3262566557023755,
+      "oracle_logratio_rmse_rep2": 0.35959951782024246
+    }
+  ],
+  "physical_residual": {
+    "uniform": {
+      "l2": 0.5712059731197435,
+      "wabs": 0.2489662460888465,
+      "wrms": 0.5712059731197433
+    },
+    "walker_guide": {
+      "l2": 100.03879915374404,
+      "wabs": 1.8528693005177508,
+      "wrms": 100.03879915374401
+    },
+    "exact": {
+      "l2": 9.611267801064386e-17,
+      "wabs": 2.4478822746398724e-17,
+      "wrms": 9.611267801064382e-17
+    }
+  },
+  "k1_next_sign": {
+    "fixed": 7.067701988583547e-07,
+    "walker_amp": 7.466192321479579e-06,
+    "exact_fn_amp": 5.58650296234987e-07,
+    "exact_physical_amp": 1.2210478284446935e-09
+  }
+}

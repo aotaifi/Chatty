@@ -1,0 +1,123 @@
+{
+  "y": 59279,
+  "M": 100000,
+  "tau": 0.5,
+  "block": 0.05,
+  "rows": [
+    {
+      "rep": 1,
+      "amp_fidelity": 0.9719339656985542,
+      "final_unique": 40174,
+      "blocks": [
+        {
+          "tau": 0.05,
+          "ess_pre_resample": 98387.46181937883,
+          "unique": 4355
+        },
+        {
+          "tau": 0.1,
+          "ess_pre_resample": 95391.93322928641,
+          "unique": 10261
+        },
+        {
+          "tau": 0.15000000000000002,
+          "ess_pre_resample": 93989.92624606124,
+          "unique": 15784
+        },
+        {
+          "tau": 0.2,
+          "ess_pre_resample": 93371.2205588172,
+          "unique": 20784
+        },
+        {
+          "tau": 0.25,
+          "ess_pre_resample": 93210.89216122404,
+          "unique": 25020
+        },
+        {
+          "tau": 0.3,
+          "ess_pre_resample": 93217.31243584237,
+          "unique": 28865
+        },
+        {
+          "tau": 0.35,
+          "ess_pre_resample": 93322.9938048578,
+          "unique": 32265
+        },
+        {
+          "tau": 0.39999999999999997,
+          "ess_pre_resample": 93436.79598617498,
+          "unique": 35142
+        },
+        {
+          "tau": 0.44999999999999996,
+          "ess_pre_resample": 93603.23275766797,
+          "unique": 37870
+        },
+        {
+          "tau": 0.49999999999999994,
+          "ess_pre_resample": 93741.23415003592,
+          "unique": 40174
+        }
+      ]
+    },
+    {
+      "rep": 2,
+      "amp_fidelity": 0.9725228389952466,
+      "final_unique": 39926,
+      "blocks": [
+        {
+          "tau": 0.05,
+          "ess_pre_resample": 98382.07151825665,
+          "unique": 4364
+        },
+        {
+          "tau": 0.1,
+          "ess_pre_resample": 95389.24131791922,
+          "unique": 10233
+        },
+        {
+          "tau": 0.15000000000000002,
+          "ess_pre_resample": 93983.29985438145,
+          "unique": 15783
+        },
+        {
+          "tau": 0.2,
+          "ess_pre_resample": 93350.80210106527,
+          "unique": 20861
+        },
+        {
+          "tau": 0.25,
+          "ess_pre_resample": 93143.3908266595,
+          "unique": 25206
+        },
+        {
+          "tau": 0.3,
+          "ess_pre_resample": 93155.01842412932,
+          "unique": 29022
+        },
+        {
+          "tau": 0.35,
+          "ess_pre_resample": 93284.1875798063,
+          "unique": 32343
+        },
+        {
+          "tau": 0.39999999999999997,
+          "ess_pre_resample": 93432.85031803219,
+          "unique": 35204
+        },
+        {
+          "tau": 0.44999999999999996,
+          "ess_pre_resample": 93566.84809002152,
+          "unique": 37890
+        },
+        {
+          "tau": 0.49999999999999994,
+          "ess_pre_resample": 93743.74102030304,
+          "unique": 39926
+        }
+      ]
+    }
+  ],
+  "cross_fidelity": 0.946736332983456
+}

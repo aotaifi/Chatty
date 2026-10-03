@@ -1,0 +1,17 @@
+{
+  "E0": -8.457923351394845,
+  "Efn": -8.341524115478814,
+  "nsamp": 10000,
+  "pretrain_fid_guide": 0.9677635908720651,
+  "learned_fid_ideal_half": 0.949840705749084,
+  "learned_fid_FN": 0.9492234384443897,
+  "KL_exact_mixed_to_model": 0.10574095843650318,
+  "ideal_half_E": -8.445786567377738,
+  "learned_E": -7.987534012283515,
+  "ideal_half_sign_overlap": 0.9994167496000645,
+  "learned_sign_overlap": 0.992410127306562,
+  "learned_vs_ideal_K1_disagree_trueW": 0.003771063368670914,
+  "T_ideal": -3.7396863186078533,
+  "T_learn": -5.452504148627424,
+  "walker_unique": 2085
+}

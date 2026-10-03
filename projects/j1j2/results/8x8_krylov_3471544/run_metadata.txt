@@ -1,0 +1,4 @@
+job=3471544 host=gpu1019 started=2026-09-30T04:26:35+02:00
+GPU 0: NVIDIA H100 (UUID: GPU-a7634ba0-57c9-898b-e193-fa81ac2a3217)
+backend gpu devices [CudaDevice(id=0)]
+finished=2026-09-30T04:39:57+02:00

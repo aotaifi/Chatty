@@ -1,0 +1,9 @@
+{
+  "M": 32768,
+  "pair_train": 50000,
+  "pair_val": 50000,
+  "replica_sign_disagreement_tau05": 1.605670251355192e-06,
+  "model_amplitude_fidelity": 0.20606517039685107,
+  "current_sign_error": 6.353471149452309e-06,
+  "ratio_model_k1_next_sign_error": 1.4120234682252649e-05
+}

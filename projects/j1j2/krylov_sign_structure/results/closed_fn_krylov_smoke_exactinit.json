@@ -1,0 +1,43 @@
+{
+  "method": {
+    "target_J2": 0.5,
+    "init_amplitude_source_J2": 0.5,
+    "initial_signs": "Marshall",
+    "FN": "standard lattice fixed node; current a,s define H_FN",
+    "sign_update": "current-sign projected Krylov r=(H a s)/(a s); exact fixed-amplitude energy-optimal grouped threshold",
+    "oracle_policy": "target ED ground state used only for diagnostics O_sign,F_amp,E0; never in FN or sign update",
+    "maxiter": 1
+  },
+  "E0": -8.45792335139486,
+  "terminal": "maxiter",
+  "history": [
+    {
+      "it": 0,
+      "stage": "initial",
+      "sign_hash": "6b6f9d172e6c",
+      "E_guide": -8.27290913596811,
+      "E_error": 0.1850142154267509,
+      "O_sign": 0.9745380645578282,
+      "F_amp": 1.0,
+      "min_amp": 2.7029330082286653e-05,
+      "max_amp": 0.16303087324089052
+    },
+    {
+      "it": 1,
+      "stage": "after_fn_krylov",
+      "sign_hash": "9257e25ee481",
+      "E_guide": -8.435495480851696,
+      "E_error": 0.022427870543165085,
+      "O_sign": 0.999733751845799,
+      "F_amp": 0.9936214670109764,
+      "min_amp": 1.9332902192274542e-05,
+      "max_amp": 0.16587886503244928,
+      "E_FN": -8.341524115478668,
+      "threshold_t": -7.439712467182776,
+      "r_groups": 135,
+      "amp_delta_l2": 0.07992957512144075,
+      "sign_change_trial_weight": 0.002219082571634364,
+      "threshold_energy": -8.43549548085169
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "method": {
+    "J2": 0.5,
+    "dt": 0.05,
+    "beta": 0.5,
+    "floor": 1e-10,
+    "initial_sign": "Marshall relative to column y",
+    "first_guide": "uniform",
+    "later_guide": "current transient FN amplitude with tiny positive floor",
+    "sign_update": "s[n+1]=sign((I-dt H) a[n]s[n])",
+    "oracle": "exact exp(-dt H) used only for diagnostics"
+  },
+  "columns": {
+    "stripe": {
+      "basis_index": 4081,
+      "records": [
+        {
+          "step": 1,
+          "tau": 0.05,
+          "sign_mismatch_mass": 4.281354922937473e-05,
+          "baseline_marshall_mismatch_mass": 0.004199182404898134,
+          "sign_overlap": 0.9999143729015413,
+          "fidelity": 0.9961821841454623,
+          "amplitude_fidelity": 0.9961911849201301,
+          "sign_change_mass": 1.2800331124843393e-05
+        },
+        {
+          "step": 2,
+          "tau": 0.1,
+          "sign_mismatch_mass": 4.306153318362674e-06,
+          "baseline_marshall_mismatch_mass": 0.014144914605835416,
+          "sign_overlap": 0.9999913876933633,
+          "fidelity": 0.9916276365471087,
+          "amplitude_fidelity": 0.9916277190380679,
+          "sign_change_mass": 1.481695348199873e-08
+        },
+        {
+          "step": 3,
+          "tau": 0.15000000000000002,
+          "sign_mismatch_mass": 8.252327399800133e-06,
+          "baseline_marshall_mismatch_mass": 0.026920104966106764,
+          "sign_overlap": 0.9999834953452004,
+          "fidelity": 0.9897646562517001,
+          "amplitude_fidelity": 0.9897647319131814,
+          "sign_change_mass": 2.375377265654898e-12
+        },
+        {
+          "step": 4,
+          "tau": 0.2,
+          "sign_mismatch_mass": 2.541369872162644e-07,
+          "baseline_marshall_mismatch_mass": 0.04069173737500866,
+          "sign_overlap": 0.9999994917260255,
+          "fidelity": 0.9879493469072913,
+          "amplitude_fidelity": 0.9879493470532139,
+          "sign_change_mass": 4.238646886874701e-12
+        },
+        {
+          "step": 5,
+          "tau": 0.25,
+          "sign_mismatch_mass": 1.5999131716743777e-09,
+          "baseline_marshall_mismatch_mass": 0.05435441005095581,
+          "sign_overlap": 0.9999999968001737,
+          "fidelity": 0.986758218391102,
+          "amplitude_fidelity": 0.9867582184958538,
+          "sign_change_mass": 1.895063844533391e-15
+        },
+        {
+          "step": 6,
+          "tau": 0.30000000000000004,
+          "sign_mismatch_mass": 1.487633564552861e-10,
+          "baseline_marshall_mismatch_mass": 0.06726851144319357,
+          "sign_overlap": 0.9999999997024733,
+          "fidelity": 0.9862019056218049,
+          "amplitude_fidelity": 0.9862019074630238,
+          "sign_change_mass": 9.724608627406125e-17
+        },
+        {
+          "step": 7,
+          "tau": 0.35000000000000003,
+          "sign_mismatch_mass": 2.7749146342249863e-09,
+          "baseline_marshall_mismatch_mass": 0.07908313420471581,
+          "sign_overlap": 0.9999999944501707,
+          "fidelity": 0.9859664617891094,
+          "amplitude_fidelity": 0.9859664692767109,
+          "sign_change_mass": 0.0
+        },
+        {
+          "step": 8,
+          "tau": 0.4,
+          "sign_mismatch_mass": 4.8757207416460386e-08,
+          "baseline_marshall_mismatch_mass": 0.08962178145434783,
+          "sign_overlap": 0.9999999024855851,
+          "fidelity": 0.985878537555196,
+          "amplitude_fidelity": 0.9858785698309479,
+          "sign_change_mass": 2.516110626922952e-10
+        },
+        {
+          "step": 9,
+          "tau": 0.45,
+          "sign_mismatch_mass": 1.2586837134527635e-07,
+          "baseline_marshall_mismatch_mass": 0.09881099178768123,
+          "sign_overlap": 0.9999997482632573,
+          "fidelity": 0.9858638961066029,
+          "amplitude_fidelity": 0.9858649239130038,
+          "sign_change_mass": 0.0
+        },
+        {
+          "step": 10,
+          "tau": 0.5,
+          "sign_mismatch_mass": 1.2593916131488863e-06,
+          "baseline_marshall_mismatch_mass": 0.10663802975591634,
+          "sign_overlap": 0.9999974812167737,
+          "fidelity": 0.9858874502090708,
+          "amplitude_fidelity": 0.98589192853395,
+          "sign_change_mass": 3.853162413133911e-11
+        }
+      ]
+    },
+    "random": {
+      "basis_index": 137,
+      "records": [
+        {
+          "step": 1,
+          "tau": 0.05,
+          "sign_mismatch_mass": 3.0235471252826202e-05,
+          "baseline_marshall_mismatch_mass": 0.002211614649542875,
+          "sign_overlap": 0.9999395290574944,
+          "fidelity": 0.9979978416118279,
+          "amplitude_fidelity": 0.9980042762761479,
+          "sign_change_mass": 6.226705532491548e-06
+        },
+        {
+          "step": 2,
+          "tau": 0.1,
+          "sign_mismatch_mass": 2.318547170754142e-06,
+          "baseline_marshall_mismatch_mass": 0.007856406398647249,
+          "sign_overlap": 0.9999953629056585,
+          "fidelity": 0.99528089192788,
+          "amplitude_fidelity": 0.9952809735101494,
+          "sign_change_mass": 2.4415951399683762e-08
+        },
+        {
+          "step": 3,
+          "tau": 0.15000000000000002,
+          "sign_mismatch_mass": 1.389308767885448e-06,
+          "baseline_marshall_mismatch_mass": 0.015736427720761774,
+          "sign_overlap": 0.9999972213824643,
+          "fidelity": 0.9935700741497449,
+          "amplitude_fidelity": 0.9935701156479283,
+          "sign_change_mass": 4.5487020639435694e-10
+        },
+        {
+          "step": 4,
+          "tau": 0.2,
+          "sign_mismatch_mass": 4.498422788596216e-06,
+          "baseline_marshall_mismatch_mass": 0.02493283374395686,
+          "sign_overlap": 0.9999910031544228,
+          "fidelity": 0.9915042700693378,
+          "amplitude_fidelity": 0.9915044840862477,
+          "sign_change_mass": 3.8955431672008533e-10
+        },
+        {
+          "step": 5,
+          "tau": 0.25,
+          "sign_mismatch_mass": 3.656516038310477e-06,
+          "baseline_marshall_mismatch_mass": 0.03472397488061815,
+          "sign_overlap": 0.9999926869679234,
+          "fidelity": 0.9897837511891817,
+          "amplitude_fidelity": 0.9897842410165816,
+          "sign_change_mass": 1.3553937191636117e-09
+        },
+        {
+          "step": 6,
+          "tau": 0.30000000000000004,
+          "sign_mismatch_mass": 7.731021678355506e-06,
+          "baseline_marshall_mismatch_mass": 0.04454090652781111,
+          "sign_overlap": 0.9999845379566433,
+          "fidelity": 0.988521900578189,
+          "amplitude_fidelity": 0.9885240921932855,
+          "sign_change_mass": 2.1892454705381878e-08
+        },
+        {
+          "step": 7,
+          "tau": 0.35000000000000003,
+          "sign_mismatch_mass": 1.3422918799089741e-05,
+          "baseline_marshall_mismatch_mass": 0.05394205775253546,
+          "sign_overlap": 0.9999731541624018,
+          "fidelity": 0.9874592890431634,
+          "amplitude_fidelity": 0.9874644960817062,
+          "sign_change_mass": 3.218188314021514e-08
+        },
+        {
+          "step": 8,
+          "tau": 0.4,
+          "sign_mismatch_mass": 9.70420110549055e-05,
+          "baseline_marshall_mismatch_mass": 0.06259633105734079,
+          "sign_overlap": 0.9998059159778901,
+          "fidelity": 0.9864656330571808,
+          "amplitude_fidelity": 0.9865095221295835,
+          "sign_change_mass": 1.0913723556448521e-06
+        },
+        {
+          "step": 9,
+          "tau": 0.45,
+          "sign_mismatch_mass": 8.664682532157719e-05,
+          "baseline_marshall_mismatch_mass": 0.07026779041100187,
+          "sign_overlap": 0.9998267063493569,
+          "fidelity": 0.985570245566854,
+          "amplitude_fidelity": 0.9856348951533319,
+          "sign_change_mass": 3.93885868807607e-07
+        },
+        {
+          "step": 10,
+          "tau": 0.5,
+          "sign_mismatch_mass": 4.825539242028116e-05,
+          "baseline_marshall_mismatch_mass": 0.07680088958802427,
+          "sign_overlap": 0.9999034892151595,
+          "fidelity": 0.9847500691790193,
+          "amplitude_fidelity": 0.9848238572717115,
+          "sign_change_mass": 7.229814132148977e-07
+        }
+      ]
+    }
+  }
+}

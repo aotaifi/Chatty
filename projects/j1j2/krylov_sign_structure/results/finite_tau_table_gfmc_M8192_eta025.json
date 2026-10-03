@@ -1,0 +1,65 @@
+{
+  "M": 8192,
+  "block_dt": 0.05,
+  "beta": 0.25,
+  "tau_max": 0.005,
+  "eta": 0.25,
+  "prior": 32.0,
+  "ys": [
+    63661
+  ],
+  "columns": {
+    "63661": [
+      {
+        "tau": 0.05,
+        "guide_fidelity": 0.020728574638408867,
+        "sign_mismatch_mass": 0.0,
+        "occupied_bins": 37,
+        "n_bins": 175,
+        "unique_walkers": 333,
+        "nsub": 10,
+        "theta_rms_step": 0.7115927907549884
+      },
+      {
+        "tau": 0.1,
+        "guide_fidelity": 0.3129158421379509,
+        "sign_mismatch_mass": 0.0,
+        "occupied_bins": 31,
+        "n_bins": 175,
+        "unique_walkers": 388,
+        "nsub": 10,
+        "theta_rms_step": 0.5748971318072041
+      },
+      {
+        "tau": 0.15000000000000002,
+        "guide_fidelity": 0.6867843964346992,
+        "sign_mismatch_mass": 3.1593956728205114e-14,
+        "occupied_bins": 31,
+        "n_bins": 175,
+        "unique_walkers": 386,
+        "nsub": 10,
+        "theta_rms_step": 1.0647365775590827
+      },
+      {
+        "tau": 0.2,
+        "guide_fidelity": 0.8838636829905465,
+        "sign_mismatch_mass": 4.52487776590148e-12,
+        "occupied_bins": 27,
+        "n_bins": 175,
+        "unique_walkers": 435,
+        "nsub": 10,
+        "theta_rms_step": 1.2337887075486484
+      },
+      {
+        "tau": 0.25,
+        "guide_fidelity": 0.964292215963881,
+        "sign_mismatch_mass": 1.3726033762630035e-10,
+        "occupied_bins": 25,
+        "n_bins": 175,
+        "unique_walkers": 459,
+        "nsub": 10,
+        "theta_rms_step": 1.2759379324502789
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "D": 184756,
+  "ys": [
+    63661,
+    59279,
+    77112,
+    107830
+  ],
+  "nsamp": 20000,
+  "times": {
+    "0.25": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 9.920346634404486e-05,
+          "guided_average_sign": 0.43384374431574624,
+          "guided_se": 0.0013402872167480478,
+          "guided_negative_sample_fraction": 0.00025
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 0.0001075892652043315,
+          "guided_average_sign": 0.3791758349088019,
+          "guided_se": 0.0013951161233992486,
+          "guided_negative_sample_fraction": 0.00645
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 0.0003590038278875162,
+          "guided_average_sign": 0.3450974294974794,
+          "guided_se": 0.0014935795816828556,
+          "guided_negative_sample_fraction": 0.0154
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 0.0002158749957263777,
+          "guided_average_sign": 0.35685953672902576,
+          "guided_se": 0.0014878832895747446,
+          "guided_negative_sample_fraction": 0.0129
+        }
+      ],
+      "raw_mean": 0.00019541788879056754,
+      "guided_mean": 0.37874413636276333
+    },
+    "0.5": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 1.938825644648318e-08,
+          "guided_average_sign": 0.09092145404067335,
+          "guided_se": 0.0006041816609506326,
+          "guided_negative_sample_fraction": 0.0148
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 2.244634168727542e-08,
+          "guided_average_sign": 0.068351081089018,
+          "guided_se": 0.0005541871825435377,
+          "guided_negative_sample_fraction": 0.0403
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 1.0154567020139599e-07,
+          "guided_average_sign": 0.037640289150647044,
+          "guided_se": 0.00041199693793235925,
+          "guided_negative_sample_fraction": 0.1446
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 5.564505911837571e-08,
+          "guided_average_sign": 0.04685599430348934,
+          "guided_se": 0.00046430196222871454,
+          "guided_negative_sample_fraction": 0.104
+        }
+      ],
+      "raw_mean": 4.975633186338258e-08,
+      "guided_mean": 0.06094220464595694
+    }
+  }
+}

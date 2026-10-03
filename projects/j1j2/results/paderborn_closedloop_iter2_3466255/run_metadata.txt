@@ -1,0 +1,13 @@
+job_id=3466255
+host=gpu1011
+started=2026-09-29T06:40:35+02:00
+cpus=16
+GPU 0: NVIDIA H100 (UUID: GPU-cb2e43ce-9939-2b43-48cc-9afe22e774cb)
+jax 0.10.2 backend gpu devices [CudaDevice(id=0)]
+flax 0.12.8 netket 3.22.4
+numpy 2.4.6 numba 0.67.0 scipy 1.17.1
+c30cf1d4a1651e4fb0bb625e8b511aeb0d163695e3710a12ccc01673758a9bd2  vit_J2=0.50_N=6x6_k=0.mpack
+4712b0f8fc8477e472a7b5558f2d1f4554247749c4160942afe60946238d2a9d  energy_krylov_vs_vit_6x6_indep.npz
+79f424805b9086fe07c22ca10ff0c94cca95d7c8ce1e1609d73eec6a21b14b94  gr_6x6_population_scaling_M128.npz
+9d3d94ab97068eb84c7c91e450dc8d592c6d1b31cc127047a1adbd6f15e2571c  krylov_scaling_6x6_a1.20_tr4096_va2048.npz
+finished=2026-09-29T07:10:15+02:00

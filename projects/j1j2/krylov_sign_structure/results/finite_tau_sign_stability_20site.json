@@ -1,0 +1,820 @@
+{
+  "D": 184756,
+  "ys": [
+    63661,
+    59279,
+    67730,
+    86127,
+    107827,
+    55981,
+    77110,
+    139920
+  ],
+  "taus": [
+    0.02,
+    0.05,
+    0.1,
+    0.15,
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5,
+    2.0
+  ],
+  "rows": [
+    {
+      "tau": 0.02,
+      "y": 63661,
+      "weighted_mismatch": 0.0,
+      "sign_overlap": 1.000000000000004,
+      "unweighted_mismatch_fraction": 0.0,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 59279,
+      "weighted_mismatch": 2.1451446707065324e-27,
+      "sign_overlap": 0.9999999999999993,
+      "unweighted_mismatch_fraction": 8.761554299732773e-05,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 67730,
+      "weighted_mismatch": 7.359827975755963e-26,
+      "sign_overlap": 1.0,
+      "unweighted_mismatch_fraction": 3.8199772074693286e-05,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 86127,
+      "weighted_mismatch": 1.4814138843647352e-25,
+      "sign_overlap": 1.0000000000000016,
+      "unweighted_mismatch_fraction": 2.415706926435685e-05,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 107827,
+      "weighted_mismatch": 1.737283544713874e-23,
+      "sign_overlap": 1.0000000000000024,
+      "unweighted_mismatch_fraction": 0.00016682582233625183,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 55981,
+      "weighted_mismatch": 4.942505255783369e-24,
+      "sign_overlap": 1.000000000000004,
+      "unweighted_mismatch_fraction": 8.432698632216282e-05,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 77110,
+      "weighted_mismatch": 1.799336830059692e-23,
+      "sign_overlap": 1.0000000000000024,
+      "unweighted_mismatch_fraction": 0.00048354744734705574,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.02,
+      "y": 139920,
+      "weighted_mismatch": 4.4780719990537906e-29,
+      "sign_overlap": 1.0000000000000029,
+      "unweighted_mismatch_fraction": 0.0,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.05,
+      "y": 63661,
+      "weighted_mismatch": 0.0,
+      "sign_overlap": 1.0000000000000016,
+      "unweighted_mismatch_fraction": 0.0,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.05,
+      "y": 59279,
+      "weighted_mismatch": 2.6777955559913317e-16,
+      "sign_overlap": 1.0000000000000004,
+      "unweighted_mismatch_fraction": 0.0012990105869362836,
+      "crossing_count_since_prev_tau": 224,
+      "crossing_mass_current": 2.677721450803973e-16
+    },
+    {
+      "tau": 0.05,
+      "y": 67730,
+      "weighted_mismatch": 5.62694440654186e-17,
+      "sign_overlap": 1.0,
+      "unweighted_mismatch_fraction": 0.0020558561988415413,
+      "crossing_count_since_prev_tau": 271,
+      "crossing_mass_current": 5.55425146634779e-17
+    },
+    {
+      "tau": 0.05,
+      "y": 86127,
+      "weighted_mismatch": 1.2367460114881101e-17,
+      "sign_overlap": 1.0000000000000024,
+      "unweighted_mismatch_fraction": 0.0006451298120449531,
+      "crossing_count_since_prev_tau": 92,
+      "crossing_mass_current": 1.1647868316819485e-17
+    },
+    {
+      "tau": 0.05,
+      "y": 107827,
+      "weighted_mismatch": 8.844375779007403e-17,
+      "sign_overlap": 1.0000000000000018,
+      "unweighted_mismatch_fraction": 0.0035132925885225223,
+      "crossing_count_since_prev_tau": 542,
+      "crossing_mass_current": 8.300722100316147e-17
+    },
+    {
+      "tau": 0.05,
+      "y": 55981,
+      "weighted_mismatch": 1.1339788541741169e-16,
+      "sign_overlap": 1.0000000000000042,
+      "unweighted_mismatch_fraction": 0.0037347767253044653,
+      "crossing_count_since_prev_tau": 561,
+      "crossing_mass_current": 1.114451959229973e-16
+    },
+    {
+      "tau": 0.05,
+      "y": 77110,
+      "weighted_mismatch": 1.0798676624654307e-16,
+      "sign_overlap": 1.000000000000006,
+      "unweighted_mismatch_fraction": 0.00749966156761879,
+      "crossing_count_since_prev_tau": 831,
+      "crossing_mass_current": 1.005402300186135e-16
+    },
+    {
+      "tau": 0.05,
+      "y": 139920,
+      "weighted_mismatch": 6.760526713383373e-19,
+      "sign_overlap": 1.000000000000005,
+      "unweighted_mismatch_fraction": 0.0017791760462151827,
+      "crossing_count_since_prev_tau": 221,
+      "crossing_mass_current": 6.742988978268394e-19
+    },
+    {
+      "tau": 0.1,
+      "y": 63661,
+      "weighted_mismatch": 0.0,
+      "sign_overlap": 1.0000000000000007,
+      "unweighted_mismatch_fraction": 0.0,
+      "crossing_count_since_prev_tau": 0,
+      "crossing_mass_current": 0.0
+    },
+    {
+      "tau": 0.1,
+      "y": 59279,
+      "weighted_mismatch": 1.0647712336372128e-11,
+      "sign_overlap": 0.9999999999787059,
+      "unweighted_mismatch_fraction": 0.005737296758968585,
+      "crossing_count_since_prev_tau": 820,
+      "crossing_mass_current": 5.933798887929421e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 67730,
+      "weighted_mismatch": 3.9554731032974086e-12,
+      "sign_overlap": 0.9999999999920897,
+      "unweighted_mismatch_fraction": 0.012562922868741543,
+      "crossing_count_since_prev_tau": 1887,
+      "crossing_mass_current": 2.641712926647568e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 86127,
+      "weighted_mismatch": 1.6085614059378653e-12,
+      "sign_overlap": 0.9999999999967838,
+      "unweighted_mismatch_fraction": 0.009905009336689129,
+      "crossing_count_since_prev_tau": 1696,
+      "crossing_mass_current": 1.3203630070879535e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 107827,
+      "weighted_mismatch": 4.79249333128125e-12,
+      "sign_overlap": 0.9999999999904157,
+      "unweighted_mismatch_fraction": 0.019588103163649156,
+      "crossing_count_since_prev_tau": 2945,
+      "crossing_mass_current": 3.160167605260915e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 55981,
+      "weighted_mismatch": 5.5722513853492216e-12,
+      "sign_overlap": 0.9999999999888547,
+      "unweighted_mismatch_fraction": 0.016573210071662084,
+      "crossing_count_since_prev_tau": 2367,
+      "crossing_mass_current": 3.4234937585442754e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 77110,
+      "weighted_mismatch": 6.21165601548753e-12,
+      "sign_overlap": 0.9999999999875785,
+      "unweighted_mismatch_fraction": 0.026624448594084058,
+      "crossing_count_since_prev_tau": 3494,
+      "crossing_mass_current": 4.291384826843814e-12
+    },
+    {
+      "tau": 0.1,
+      "y": 139920,
+      "weighted_mismatch": 1.2894232364654632e-12,
+      "sign_overlap": 0.999999999997427,
+      "unweighted_mismatch_fraction": 0.014516443309012968,
+      "crossing_count_since_prev_tau": 2300,
+      "crossing_mass_current": 1.2686621143575104e-12
+    },
+    {
+      "tau": 0.15,
+      "y": 63661,
+      "weighted_mismatch": 3.1593956728090635e-14,
+      "sign_overlap": 0.9999999999999365,
+      "unweighted_mismatch_fraction": 0.0008660070579575224,
+      "crossing_count_since_prev_tau": 160,
+      "crossing_mass_current": 3.1593956728090635e-14
+    },
+    {
+      "tau": 0.15,
+      "y": 59279,
+      "weighted_mismatch": 6.418748964693012e-10,
+      "sign_overlap": 0.9999999987162508,
+      "unweighted_mismatch_fraction": 0.012178224252527658,
+      "crossing_count_since_prev_tau": 1190,
+      "crossing_mass_current": 2.1071610639031148e-11
+    },
+    {
+      "tau": 0.15,
+      "y": 67730,
+      "weighted_mismatch": 8.199570934036478e-10,
+      "sign_overlap": 0.9999999983600861,
+      "unweighted_mismatch_fraction": 0.030970745040729615,
+      "crossing_count_since_prev_tau": 3395,
+      "crossing_mass_current": 3.5101468587168396e-10
+    },
+    {
+      "tau": 0.15,
+      "y": 86127,
+      "weighted_mismatch": 6.0122172214703e-10,
+      "sign_overlap": 0.9999999987975572,
+      "unweighted_mismatch_fraction": 0.027907077442681158,
+      "crossing_count_since_prev_tau": 3325,
+      "crossing_mass_current": 3.5062659716300036e-10
+    },
+    {
+      "tau": 0.15,
+      "y": 107827,
+      "weighted_mismatch": 9.51391375620826e-10,
+      "sign_overlap": 0.9999999980972161,
+      "unweighted_mismatch_fraction": 0.04366299335339583,
+      "crossing_count_since_prev_tau": 4447,
+      "crossing_mass_current": 3.140739871902533e-10
+    },
+    {
+      "tau": 0.15,
+      "y": 55981,
+      "weighted_mismatch": 9.488620902221662e-10,
+      "sign_overlap": 0.9999999981022737,
+      "unweighted_mismatch_fraction": 0.03707051462469419,
+      "crossing_count_since_prev_tau": 3791,
+      "crossing_mass_current": 2.685635307439321e-10
+    },
+    {
+      "tau": 0.15,
+      "y": 77110,
+      "weighted_mismatch": 1.2043408805276736e-09,
+      "sign_overlap": 0.999999997591318,
+      "unweighted_mismatch_fraction": 0.05386080950886043,
+      "crossing_count_since_prev_tau": 5033,
+      "crossing_mass_current": 4.112079519581358e-10
+    },
+    {
+      "tau": 0.15,
+      "y": 139920,
+      "weighted_mismatch": 5.456439635736618e-10,
+      "sign_overlap": 0.9999999989087105,
+      "unweighted_mismatch_fraction": 0.037113814977592065,
+      "crossing_count_since_prev_tau": 4175,
+      "crossing_mass_current": 3.2203431314854796e-10
+    },
+    {
+      "tau": 0.25,
+      "y": 63661,
+      "weighted_mismatch": 1.3726033762629006e-10,
+      "sign_overlap": 0.999999999725479,
+      "unweighted_mismatch_fraction": 0.006603303816926108,
+      "crossing_count_since_prev_tau": 1060,
+      "crossing_mass_current": 6.227182813395164e-11
+    },
+    {
+      "tau": 0.25,
+      "y": 59279,
+      "weighted_mismatch": 1.3171875738307166e-07,
+      "sign_overlap": 0.999999736562486,
+      "unweighted_mismatch_fraction": 0.029736517352616423,
+      "crossing_count_since_prev_tau": 3244,
+      "crossing_mass_current": 7.38650903395338e-08
+    },
+    {
+      "tau": 0.25,
+      "y": 67730,
+      "weighted_mismatch": 4.979327358973246e-07,
+      "sign_overlap": 0.9999990041345282,
+      "unweighted_mismatch_fraction": 0.0736430751910628,
+      "crossing_count_since_prev_tau": 7887,
+      "crossing_mass_current": 1.665635017667621e-07
+    },
+    {
+      "tau": 0.25,
+      "y": 86127,
+      "weighted_mismatch": 3.9946582450820596e-07,
+      "sign_overlap": 0.9999992010683516,
+      "unweighted_mismatch_fraction": 0.07607371924981733,
+      "crossing_count_since_prev_tau": 8899,
+      "crossing_mass_current": 1.226990961148305e-07
+    },
+    {
+      "tau": 0.25,
+      "y": 107827,
+      "weighted_mismatch": 4.4998022381566327e-07,
+      "sign_overlap": 0.9999991000395533,
+      "unweighted_mismatch_fraction": 0.09857325337201499,
+      "crossing_count_since_prev_tau": 10159,
+      "crossing_mass_current": 1.6148232813115206e-07
+    },
+    {
+      "tau": 0.25,
+      "y": 55981,
+      "weighted_mismatch": 4.473952538907356e-07,
+      "sign_overlap": 0.9999991052094926,
+      "unweighted_mismatch_fraction": 0.08524756976769361,
+      "crossing_count_since_prev_tau": 8921,
+      "crossing_mass_current": 1.4283797274238523e-07
+    },
+    {
+      "tau": 0.25,
+      "y": 77110,
+      "weighted_mismatch": 6.166424944384657e-07,
+      "sign_overlap": 0.9999987667150104,
+      "unweighted_mismatch_fraction": 0.1133332611660785,
+      "crossing_count_since_prev_tau": 11024,
+      "crossing_mass_current": 1.6982554923051086e-07
+    },
+    {
+      "tau": 0.25,
+      "y": 139920,
+      "weighted_mismatch": 3.6894837157339705e-07,
+      "sign_overlap": 0.9999992621032571,
+      "unweighted_mismatch_fraction": 0.08736928705968953,
+      "crossing_count_since_prev_tau": 9285,
+      "crossing_mass_current": 1.0617656080890686e-07
+    },
+    {
+      "tau": 0.5,
+      "y": 63661,
+      "weighted_mismatch": 1.2028574536596935e-06,
+      "sign_overlap": 0.9999975942850925,
+      "unweighted_mismatch_fraction": 0.03366602437809868,
+      "crossing_count_since_prev_tau": 5000,
+      "crossing_mass_current": 6.606962648319484e-07
+    },
+    {
+      "tau": 0.5,
+      "y": 59279,
+      "weighted_mismatch": 2.624543687552092e-05,
+      "sign_overlap": 0.9999475091262485,
+      "unweighted_mismatch_fraction": 0.06639026608066856,
+      "crossing_count_since_prev_tau": 6772,
+      "crossing_mass_current": 4.6467064258251065e-06
+    },
+    {
+      "tau": 0.5,
+      "y": 67730,
+      "weighted_mismatch": 0.0003946616749909684,
+      "sign_overlap": 0.9992106766500178,
+      "unweighted_mismatch_fraction": 0.18392366147784103,
+      "crossing_count_since_prev_tau": 20683,
+      "crossing_mass_current": 0.00017654803910729645
+    },
+    {
+      "tau": 0.5,
+      "y": 86127,
+      "weighted_mismatch": 0.00028069636152123936,
+      "sign_overlap": 0.9994386072769575,
+      "unweighted_mismatch_fraction": 0.18524432224122628,
+      "crossing_count_since_prev_tau": 20631,
+      "crossing_mass_current": 0.00010473037485174241
+    },
+    {
+      "tau": 0.5,
+      "y": 107827,
+      "weighted_mismatch": 0.0002772653900580715,
+      "sign_overlap": 0.999445469219884,
+      "unweighted_mismatch_fraction": 0.2209075753967395,
+      "crossing_count_since_prev_tau": 23326,
+      "crossing_mass_current": 0.0001004132335981619
+    },
+    {
+      "tau": 0.5,
+      "y": 55981,
+      "weighted_mismatch": 0.00026067471271753545,
+      "sign_overlap": 0.9994786505745644,
+      "unweighted_mismatch_fraction": 0.20421528935460825,
+      "crossing_count_since_prev_tau": 22526,
+      "crossing_mass_current": 0.00010305539144475459
+    },
+    {
+      "tau": 0.5,
+      "y": 77110,
+      "weighted_mismatch": 0.0004598458711939087,
+      "sign_overlap": 0.9990803082576125,
+      "unweighted_mismatch_fraction": 0.23778930048279892,
+      "crossing_count_since_prev_tau": 24000,
+      "crossing_mass_current": 0.000180766806356943
+    },
+    {
+      "tau": 0.5,
+      "y": 139920,
+      "weighted_mismatch": 0.0002276437502151258,
+      "sign_overlap": 0.9995447124995693,
+      "unweighted_mismatch_fraction": 0.2047727813981684,
+      "crossing_count_since_prev_tau": 21997,
+      "crossing_mass_current": 9.160787457022644e-05
+    },
+    {
+      "tau": 0.75,
+      "y": 63661,
+      "weighted_mismatch": 2.626174086827352e-05,
+      "sign_overlap": 0.9999474765182643,
+      "unweighted_mismatch_fraction": 0.06397627140661197,
+      "crossing_count_since_prev_tau": 5600,
+      "crossing_mass_current": 2.7306140806051233e-06
+    },
+    {
+      "tau": 0.75,
+      "y": 59279,
+      "weighted_mismatch": 0.00021866301236290306,
+      "sign_overlap": 0.999562673975275,
+      "unweighted_mismatch_fraction": 0.09992638940007362,
+      "crossing_count_since_prev_tau": 6404,
+      "crossing_mass_current": 1.1959028119395037e-05
+    },
+    {
+      "tau": 0.75,
+      "y": 67730,
+      "weighted_mismatch": 0.006287630443706805,
+      "sign_overlap": 0.9874247391125863,
+      "unweighted_mismatch_fraction": 0.2716122886401524,
+      "crossing_count_since_prev_tau": 18665,
+      "crossing_mass_current": 0.00034698146924583783
+    },
+    {
+      "tau": 0.75,
+      "y": 86127,
+      "weighted_mismatch": 0.0050323252467030025,
+      "sign_overlap": 0.9899353495065943,
+      "unweighted_mismatch_fraction": 0.2723159193747429,
+      "crossing_count_since_prev_tau": 19383,
+      "crossing_mass_current": 0.000367612391992219
+    },
+    {
+      "tau": 0.75,
+      "y": 107827,
+      "weighted_mismatch": 0.005121373593965695,
+      "sign_overlap": 0.9897572528120686,
+      "unweighted_mismatch_fraction": 0.30395223971075364,
+      "crossing_count_since_prev_tau": 18395,
+      "crossing_mass_current": 0.0005140238944535991
+    },
+    {
+      "tau": 0.75,
+      "y": 55981,
+      "weighted_mismatch": 0.005116042322339157,
+      "sign_overlap": 0.9897679153553218,
+      "unweighted_mismatch_fraction": 0.2981066920695404,
+      "crossing_count_since_prev_tau": 20415,
+      "crossing_mass_current": 0.0010435629357410932
+    },
+    {
+      "tau": 0.75,
+      "y": 77110,
+      "weighted_mismatch": 0.00845315402216519,
+      "sign_overlap": 0.98309369195567,
+      "unweighted_mismatch_fraction": 0.3202385849444673,
+      "crossing_count_since_prev_tau": 19523,
+      "crossing_mass_current": 0.0006309896547207497
+    },
+    {
+      "tau": 0.75,
+      "y": 139920,
+      "weighted_mismatch": 0.004103677406873863,
+      "sign_overlap": 0.9917926451862524,
+      "unweighted_mismatch_fraction": 0.30007685812639373,
+      "crossing_count_since_prev_tau": 20482,
+      "crossing_mass_current": 0.000469292115755448
+    },
+    {
+      "tau": 1.0,
+      "y": 63661,
+      "weighted_mismatch": 0.00011289863733504992,
+      "sign_overlap": 0.99977420272533,
+      "unweighted_mismatch_fraction": 0.08995648314533763,
+      "crossing_count_since_prev_tau": 5160,
+      "crossing_mass_current": 1.5078331518093928e-06
+    },
+    {
+      "tau": 1.0,
+      "y": 59279,
+      "weighted_mismatch": 0.0006224809450891109,
+      "sign_overlap": 0.9987550381098219,
+      "unweighted_mismatch_fraction": 0.13409036783649786,
+      "crossing_count_since_prev_tau": 8160,
+      "crossing_mass_current": 9.907107838491238e-06
+    },
+    {
+      "tau": 1.0,
+      "y": 67730,
+      "weighted_mismatch": 0.024512948920863822,
+      "sign_overlap": 0.9509741021582722,
+      "unweighted_mismatch_fraction": 0.3468033514473143,
+      "crossing_count_since_prev_tau": 21384,
+      "crossing_mass_current": 0.0005049708697592574
+    },
+    {
+      "tau": 1.0,
+      "y": 86127,
+      "weighted_mismatch": 0.02316748900539927,
+      "sign_overlap": 0.9536650219892013,
+      "unweighted_mismatch_fraction": 0.3470523284764771,
+      "crossing_count_since_prev_tau": 21218,
+      "crossing_mass_current": 0.0007379964248144387
+    },
+    {
+      "tau": 1.0,
+      "y": 107827,
+      "weighted_mismatch": 0.0223310363838218,
+      "sign_overlap": 0.9553379272323566,
+      "unweighted_mismatch_fraction": 0.36449695815020894,
+      "crossing_count_since_prev_tau": 17574,
+      "crossing_mass_current": 0.00041952482452986
+    },
+    {
+      "tau": 1.0,
+      "y": 55981,
+      "weighted_mismatch": 0.02470725180568015,
+      "sign_overlap": 0.9505854963886398,
+      "unweighted_mismatch_fraction": 0.3695576868951482,
+      "crossing_count_since_prev_tau": 19565,
+      "crossing_mass_current": 0.00048354356033446125
+    },
+    {
+      "tau": 1.0,
+      "y": 77110,
+      "weighted_mismatch": 0.03704164606297527,
+      "sign_overlap": 0.9259167078740494,
+      "unweighted_mismatch_fraction": 0.38181709930935936,
+      "crossing_count_since_prev_tau": 19031,
+      "crossing_mass_current": 0.0005909093788811461
+    },
+    {
+      "tau": 1.0,
+      "y": 139920,
+      "weighted_mismatch": 0.01941942107073112,
+      "sign_overlap": 0.9611611578585376,
+      "unweighted_mismatch_fraction": 0.3835328757929377,
+      "crossing_count_since_prev_tau": 22015,
+      "crossing_mass_current": 0.0009406585863495616
+    },
+    {
+      "tau": 1.25,
+      "y": 63661,
+      "weighted_mismatch": 0.00025015728158437993,
+      "sign_overlap": 0.9994996854368317,
+      "unweighted_mismatch_fraction": 0.10608586459979649,
+      "crossing_count_since_prev_tau": 4140,
+      "crossing_mass_current": 3.27663988469525e-06
+    },
+    {
+      "tau": 1.25,
+      "y": 59279,
+      "weighted_mismatch": 0.001120594177801085,
+      "sign_overlap": 0.9977588116443983,
+      "unweighted_mismatch_fraction": 0.17205395223971076,
+      "crossing_count_since_prev_tau": 10018,
+      "crossing_mass_current": 3.782898115722208e-05
+    },
+    {
+      "tau": 1.25,
+      "y": 67730,
+      "weighted_mismatch": 0.05563195576087238,
+      "sign_overlap": 0.8887360884782549,
+      "unweighted_mismatch_fraction": 0.4072939444456472,
+      "crossing_count_since_prev_tau": 22264,
+      "crossing_mass_current": 0.0008615603116000903
+    },
+    {
+      "tau": 1.25,
+      "y": 86127,
+      "weighted_mismatch": 0.059926674776007584,
+      "sign_overlap": 0.8801466504479852,
+      "unweighted_mismatch_fraction": 0.4066769144168525,
+      "crossing_count_since_prev_tau": 20430,
+      "crossing_mass_current": 0.0014107197122793808
+    },
+    {
+      "tau": 1.25,
+      "y": 107827,
+      "weighted_mismatch": 0.05246262463342578,
+      "sign_overlap": 0.8950747507331485,
+      "unweighted_mismatch_fraction": 0.4180594946848817,
+      "crossing_count_since_prev_tau": 18780,
+      "crossing_mass_current": 0.0007692283857233982
+    },
+    {
+      "tau": 1.25,
+      "y": 55981,
+      "weighted_mismatch": 0.061468374572402576,
+      "sign_overlap": 0.8770632508551952,
+      "unweighted_mismatch_fraction": 0.42101474377016174,
+      "crossing_count_since_prev_tau": 19147,
+      "crossing_mass_current": 0.0005254647039211868
+    },
+    {
+      "tau": 1.25,
+      "y": 77110,
+      "weighted_mismatch": 0.08758202666268577,
+      "sign_overlap": 0.8248359466746282,
+      "unweighted_mismatch_fraction": 0.4311416138041525,
+      "crossing_count_since_prev_tau": 19911,
+      "crossing_mass_current": 0.0007573439789897496
+    },
+    {
+      "tau": 1.25,
+      "y": 139920,
+      "weighted_mismatch": 0.04995812107508472,
+      "sign_overlap": 0.9000837578498306,
+      "unweighted_mismatch_fraction": 0.4436283530710775,
+      "crossing_count_since_prev_tau": 20885,
+      "crossing_mass_current": 0.0013549162927857662
+    },
+    {
+      "tau": 1.5,
+      "y": 63661,
+      "weighted_mismatch": 0.00042231377484894993,
+      "sign_overlap": 0.9991553724503026,
+      "unweighted_mismatch_fraction": 0.12968455692913897,
+      "crossing_count_since_prev_tau": 5200,
+      "crossing_mass_current": 4.2619777645720406e-06
+    },
+    {
+      "tau": 1.5,
+      "y": 59279,
+      "weighted_mismatch": 0.002001249423905062,
+      "sign_overlap": 0.9959975011521898,
+      "unweighted_mismatch_fraction": 0.23774058758578884,
+      "crossing_count_since_prev_tau": 15800,
+      "crossing_mass_current": 0.0001688239521519981
+    },
+    {
+      "tau": 1.5,
+      "y": 67730,
+      "weighted_mismatch": 0.09848333806835949,
+      "sign_overlap": 0.803033323863281,
+      "unweighted_mismatch_fraction": 0.44432115871744354,
+      "crossing_count_since_prev_tau": 18119,
+      "crossing_mass_current": 0.0008796887930092167
+    },
+    {
+      "tau": 1.5,
+      "y": 86127,
+      "weighted_mismatch": 0.11292725688686082,
+      "sign_overlap": 0.7741454862262782,
+      "unweighted_mismatch_fraction": 0.4459719846716751,
+      "crossing_count_since_prev_tau": 16822,
+      "crossing_mass_current": 0.0009235793147098576
+    },
+    {
+      "tau": 1.5,
+      "y": 107827,
+      "weighted_mismatch": 0.09391261140868527,
+      "sign_overlap": 0.8121747771826294,
+      "unweighted_mismatch_fraction": 0.45313278053216133,
+      "crossing_count_since_prev_tau": 17026,
+      "crossing_mass_current": 0.0012027009272568465
+    },
+    {
+      "tau": 1.5,
+      "y": 55981,
+      "weighted_mismatch": 0.10868638973379008,
+      "sign_overlap": 0.7826272205324201,
+      "unweighted_mismatch_fraction": 0.4540962133841391,
+      "crossing_count_since_prev_tau": 16422,
+      "crossing_mass_current": 0.0006342566709857508
+    },
+    {
+      "tau": 1.5,
+      "y": 77110,
+      "weighted_mismatch": 0.1530705450446106,
+      "sign_overlap": 0.6938589099107793,
+      "unweighted_mismatch_fraction": 0.46125159670051313,
+      "crossing_count_since_prev_tau": 17147,
+      "crossing_mass_current": 0.0010018761542494642
+    },
+    {
+      "tau": 1.5,
+      "y": 139920,
+      "weighted_mismatch": 0.09375713792030076,
+      "sign_overlap": 0.8124857241593981,
+      "unweighted_mismatch_fraction": 0.47303470523284763,
+      "crossing_count_since_prev_tau": 16915,
+      "crossing_mass_current": 0.001960579580817975
+    },
+    {
+      "tau": 2.0,
+      "y": 63661,
+      "weighted_mismatch": 0.0009080352871995775,
+      "sign_overlap": 0.9981839294256009,
+      "unweighted_mismatch_fraction": 0.17450042217844075,
+      "crossing_count_since_prev_tau": 10400,
+      "crossing_mass_current": 7.117027956376101e-05
+    },
+    {
+      "tau": 2.0,
+      "y": 59279,
+      "weighted_mismatch": 0.01316081026920108,
+      "sign_overlap": 0.9736783794615977,
+      "unweighted_mismatch_fraction": 0.3404706748359999,
+      "crossing_count_since_prev_tau": 27444,
+      "crossing_mass_current": 0.003684752300245845
+    },
+    {
+      "tau": 2.0,
+      "y": 67730,
+      "weighted_mismatch": 0.20164142968390839,
+      "sign_overlap": 0.5967171406321837,
+      "unweighted_mismatch_fraction": 0.47659074671458573,
+      "crossing_count_since_prev_tau": 24900,
+      "crossing_mass_current": 0.0038682504169567653
+    },
+    {
+      "tau": 2.0,
+      "y": 86127,
+      "weighted_mismatch": 0.23027851252983322,
+      "sign_overlap": 0.5394429749403332,
+      "unweighted_mismatch_fraction": 0.47954058325575355,
+      "crossing_count_since_prev_tau": 24198,
+      "crossing_mass_current": 0.0036549396938877414
+    },
+    {
+      "tau": 2.0,
+      "y": 107827,
+      "weighted_mismatch": 0.20933716428064353,
+      "sign_overlap": 0.5813256714387132,
+      "unweighted_mismatch_fraction": 0.48348091536946025,
+      "crossing_count_since_prev_tau": 27389,
+      "crossing_mass_current": 0.00868716655934277
+    },
+    {
+      "tau": 2.0,
+      "y": 55981,
+      "weighted_mismatch": 0.20682756307503286,
+      "sign_overlap": 0.5863448738499342,
+      "unweighted_mismatch_fraction": 0.4816081751066271,
+      "crossing_count_since_prev_tau": 24493,
+      "crossing_mass_current": 0.004090924889552164
+    },
+    {
+      "tau": 2.0,
+      "y": 77110,
+      "weighted_mismatch": 0.28895440348478063,
+      "sign_overlap": 0.4220911930304385,
+      "unweighted_mismatch_fraction": 0.4867825672779233,
+      "crossing_count_since_prev_tau": 25691,
+      "crossing_mass_current": 0.007117998228570922
+    },
+    {
+      "tau": 2.0,
+      "y": 139920,
+      "weighted_mismatch": 0.20048275063306592,
+      "sign_overlap": 0.5990344987338685,
+      "unweighted_mismatch_fraction": 0.49408408928532765,
+      "crossing_count_since_prev_tau": 29261,
+      "crossing_mass_current": 0.010735494004076248
+    }
+  ]
+}

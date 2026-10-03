@@ -1,0 +1,20 @@
+{
+  "ns": 2000,
+  "epochs": 10,
+  "train_unique": 17882,
+  "train_frac_D": 0.0967871138149776,
+  "train_boundary": 30,
+  "val_boundary": 26,
+  "val_strat_rmse": 1.913138508796692,
+  "raw_f_rms_p": 0.36205126297322887,
+  "eta": 0.13810199028002604,
+  "target_fid": 0.997098412392425,
+  "edge_seenY_frac": 0.89788906222231,
+  "edge_base_rmse": 0.18585958597375582,
+  "edge_proj_rmse": 0.196018523738193,
+  "edge_proj_seenY": 0.1074510741603499,
+  "edge_proj_unseenY": 0.5353626732844442,
+  "edge_boundary_count": 31,
+  "edge_boundary_rmse": 2.84957128304025,
+  "edge_boundary_base": 2.866503489809364
+}

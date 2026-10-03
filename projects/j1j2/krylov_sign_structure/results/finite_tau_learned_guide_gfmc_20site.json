@@ -1,0 +1,153 @@
+{
+  "M": 8192,
+  "ys": [
+    63661,
+    59279
+  ],
+  "columns": {
+    "63661": [
+      {
+        "tau": 0.05,
+        "walker_amp_fidelity": 0.9997893239887241,
+        "model_amp_fidelity": 0.9663017161051316,
+        "unique_walkers": 965,
+        "occupied_rich_bins": 59
+      },
+      {
+        "tau": 0.1,
+        "walker_amp_fidelity": 0.9945665183105521,
+        "model_amp_fidelity": 0.9930523176623993,
+        "unique_walkers": 51,
+        "occupied_rich_bins": 8
+      },
+      {
+        "tau": 0.15000000000000002,
+        "walker_amp_fidelity": 0.9901963279526435,
+        "model_amp_fidelity": 0.9930424480209312,
+        "unique_walkers": 69,
+        "occupied_rich_bins": 11
+      },
+      {
+        "tau": 0.2,
+        "walker_amp_fidelity": 0.9871662926731819,
+        "model_amp_fidelity": 0.9809190909982115,
+        "unique_walkers": 108,
+        "occupied_rich_bins": 20
+      },
+      {
+        "tau": 0.25,
+        "walker_amp_fidelity": 0.9815263208277366,
+        "model_amp_fidelity": 0.9711384277722552,
+        "unique_walkers": 170,
+        "occupied_rich_bins": 31
+      },
+      {
+        "tau": 0.30000000000000004,
+        "walker_amp_fidelity": 0.984045277816384,
+        "model_amp_fidelity": 0.9697905191078714,
+        "unique_walkers": 277,
+        "occupied_rich_bins": 45
+      },
+      {
+        "tau": 0.35000000000000003,
+        "walker_amp_fidelity": 0.9833731910180298,
+        "model_amp_fidelity": 0.9718835693814349,
+        "unique_walkers": 401,
+        "occupied_rich_bins": 52
+      },
+      {
+        "tau": 0.4,
+        "walker_amp_fidelity": 0.9802520964604958,
+        "model_amp_fidelity": 0.9713474709764299,
+        "unique_walkers": 554,
+        "occupied_rich_bins": 62
+      },
+      {
+        "tau": 0.45,
+        "walker_amp_fidelity": 0.9781207277955485,
+        "model_amp_fidelity": 0.9645759618931838,
+        "unique_walkers": 660,
+        "occupied_rich_bins": 70
+      },
+      {
+        "tau": 0.5,
+        "walker_amp_fidelity": 0.9702217331424124,
+        "model_amp_fidelity": 0.9512229362070147,
+        "unique_walkers": 694,
+        "occupied_rich_bins": 67
+      }
+    ],
+    "59279": [
+      {
+        "tau": 0.05,
+        "walker_amp_fidelity": 0.9998494785577478,
+        "model_amp_fidelity": 0.953819933876324,
+        "unique_walkers": 1040,
+        "occupied_rich_bins": 131
+      },
+      {
+        "tau": 0.1,
+        "walker_amp_fidelity": 0.989030217107434,
+        "model_amp_fidelity": 0.9850038074991267,
+        "unique_walkers": 65,
+        "occupied_rich_bins": 13
+      },
+      {
+        "tau": 0.15000000000000002,
+        "walker_amp_fidelity": 0.9657952441426434,
+        "model_amp_fidelity": 0.9942418908371693,
+        "unique_walkers": 87,
+        "occupied_rich_bins": 29
+      },
+      {
+        "tau": 0.2,
+        "walker_amp_fidelity": 0.9663000856170869,
+        "model_amp_fidelity": 0.9867918154410351,
+        "unique_walkers": 117,
+        "occupied_rich_bins": 41
+      },
+      {
+        "tau": 0.25,
+        "walker_amp_fidelity": 0.9640787836736164,
+        "model_amp_fidelity": 0.9762655385242783,
+        "unique_walkers": 164,
+        "occupied_rich_bins": 59
+      },
+      {
+        "tau": 0.30000000000000004,
+        "walker_amp_fidelity": 0.8665038115066318,
+        "model_amp_fidelity": 0.9747472013832864,
+        "unique_walkers": 232,
+        "occupied_rich_bins": 79
+      },
+      {
+        "tau": 0.35000000000000003,
+        "walker_amp_fidelity": 0.9082037077767768,
+        "model_amp_fidelity": 0.9763702519780021,
+        "unique_walkers": 322,
+        "occupied_rich_bins": 101
+      },
+      {
+        "tau": 0.4,
+        "walker_amp_fidelity": 0.924035670323163,
+        "model_amp_fidelity": 0.9716220326214967,
+        "unique_walkers": 422,
+        "occupied_rich_bins": 117
+      },
+      {
+        "tau": 0.45,
+        "walker_amp_fidelity": 0.9083104855301034,
+        "model_amp_fidelity": 0.958424593496239,
+        "unique_walkers": 480,
+        "occupied_rich_bins": 122
+      },
+      {
+        "tau": 0.5,
+        "walker_amp_fidelity": 0.8954831594622428,
+        "model_amp_fidelity": 0.9382008253119604,
+        "unique_walkers": 549,
+        "occupied_rich_bins": 144
+      }
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "M": 8192,
+  "block_dt": 0.05,
+  "beta": 0.5,
+  "tau_max": 0.005,
+  "eta": 0.5,
+  "prior": 32.0,
+  "ys": [
+    63661,
+    59279
+  ],
+  "columns": {
+    "63661": [
+      {
+        "tau": 0.05,
+        "guide_fidelity": 0.5191024288598247,
+        "sign_mismatch_mass": 0.0,
+        "occupied_bins": 37,
+        "n_bins": 175,
+        "unique_walkers": 116,
+        "nsub": 10,
+        "theta_rms_step": 1.4231855815099768
+      },
+      {
+        "tau": 0.1,
+        "guide_fidelity": 0.9344723883251266,
+        "sign_mismatch_mass": 0.0,
+        "occupied_bins": 18,
+        "n_bins": 175,
+        "unique_walkers": 111,
+        "nsub": 10,
+        "theta_rms_step": 2.4432360395855346
+      },
+      {
+        "tau": 0.15000000000000002,
+        "guide_fidelity": 0.993338554969942,
+        "sign_mismatch_mass": 3.1593956728205114e-14,
+        "occupied_bins": 14,
+        "n_bins": 175,
+        "unique_walkers": 132,
+        "nsub": 10,
+        "theta_rms_step": 2.6562416265479643
+      },
+      {
+        "tau": 0.2,
+        "guide_fidelity": 0.9974637885279782,
+        "sign_mismatch_mass": 4.52487776590148e-12,
+        "occupied_bins": 13,
+        "n_bins": 175,
+        "unique_walkers": 170,
+        "nsub": 10,
+        "theta_rms_step": 2.669152502490317
+      },
+      {
+        "tau": 0.25,
+        "guide_fidelity": 0.9916983522811861,
+        "sign_mismatch_mass": 1.3726033762630035e-10,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 222,
+        "nsub": 10,
+        "theta_rms_step": 2.682782909831524
+      },
+      {
+        "tau": 0.30000000000000004,
+        "guide_fidelity": 0.9841815465862971,
+        "sign_mismatch_mass": 2.7725475593055544e-09,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 297,
+        "nsub": 10,
+        "theta_rms_step": 2.6830939983402016
+      },
+      {
+        "tau": 0.35000000000000003,
+        "guide_fidelity": 0.9756630568364281,
+        "sign_mismatch_mass": 2.4413207238739083e-08,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 366,
+        "nsub": 10,
+        "theta_rms_step": 2.6821098857501013
+      },
+      {
+        "tau": 0.4,
+        "guide_fidelity": 0.9637550292431465,
+        "sign_mismatch_mass": 1.2314313107718151e-07,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 420,
+        "nsub": 10,
+        "theta_rms_step": 2.6832654279108175
+      },
+      {
+        "tau": 0.45,
+        "guide_fidelity": 0.9484827297926294,
+        "sign_mismatch_mass": 4.358208570740045e-07,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 470,
+        "nsub": 10,
+        "theta_rms_step": 2.6845718639307
+      },
+      {
+        "tau": 0.5,
+        "guide_fidelity": 0.9324572895043386,
+        "sign_mismatch_mass": 1.2028574536596994e-06,
+        "occupied_bins": 11,
+        "n_bins": 175,
+        "unique_walkers": 521,
+        "nsub": 10,
+        "theta_rms_step": 2.6842330488271315
+      }
+    ],
+    "59279": [
+      {
+        "tau": 0.05,
+        "guide_fidelity": 0.4917217850941044,
+        "sign_mismatch_mass": 2.6777955558056003e-16,
+        "occupied_bins": 67,
+        "n_bins": 401,
+        "unique_walkers": 114,
+        "nsub": 10,
+        "theta_rms_step": 1.2514379548665218
+      },
+      {
+        "tau": 0.1,
+        "guide_fidelity": 0.9315851310616171,
+        "sign_mismatch_mass": 1.0647712336367998e-11,
+        "occupied_bins": 28,
+        "n_bins": 401,
+        "unique_walkers": 119,
+        "nsub": 10,
+        "theta_rms_step": 2.430774047706725
+      },
+      {
+        "tau": 0.15000000000000002,
+        "guide_fidelity": 0.9924190685273632,
+        "sign_mismatch_mass": 6.418748964693188e-10,
+        "occupied_bins": 21,
+        "n_bins": 401,
+        "unique_walkers": 134,
+        "nsub": 10,
+        "theta_rms_step": 2.693224409107059
+      },
+      {
+        "tau": 0.2,
+        "guide_fidelity": 0.9934930469433906,
+        "sign_mismatch_mass": 1.1408176256666531e-08,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 152,
+        "nsub": 10,
+        "theta_rms_step": 2.7101600330162268
+      },
+      {
+        "tau": 0.25,
+        "guide_fidelity": 0.9868083099216678,
+        "sign_mismatch_mass": 1.3171875738307174e-07,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 186,
+        "nsub": 10,
+        "theta_rms_step": 2.70882490661435
+      },
+      {
+        "tau": 0.30000000000000004,
+        "guide_fidelity": 0.9789284832823661,
+        "sign_mismatch_mass": 7.067701988583577e-07,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 230,
+        "nsub": 10,
+        "theta_rms_step": 2.707603488363238
+      },
+      {
+        "tau": 0.35000000000000003,
+        "guide_fidelity": 0.9714089498342662,
+        "sign_mismatch_mass": 2.4019022075784294e-06,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 287,
+        "nsub": 10,
+        "theta_rms_step": 2.7080922923685673
+      },
+      {
+        "tau": 0.4,
+        "guide_fidelity": 0.961416325464122,
+        "sign_mismatch_mass": 6.164942266089738e-06,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 328,
+        "nsub": 10,
+        "theta_rms_step": 2.7079130671500815
+      },
+      {
+        "tau": 0.45,
+        "guide_fidelity": 0.9481291126883049,
+        "sign_mismatch_mass": 1.334158319642498e-05,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 383,
+        "nsub": 10,
+        "theta_rms_step": 2.709313722414291
+      },
+      {
+        "tau": 0.5,
+        "guide_fidelity": 0.9328793911694827,
+        "sign_mismatch_mass": 2.6245436875520928e-05,
+        "occupied_bins": 18,
+        "n_bins": 401,
+        "unique_walkers": 426,
+        "nsub": 10,
+        "theta_rms_step": 2.7095702052760964
+      }
+    ]
+  }
+}

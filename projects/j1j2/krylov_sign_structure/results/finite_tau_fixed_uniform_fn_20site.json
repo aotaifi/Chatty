@@ -1,0 +1,18 @@
+{
+  "rows": [
+    {
+      "y": 63661,
+      "tau": 0.5,
+      "sign_mismatch_mass": 1.2028574536596954e-06,
+      "amplitude_fidelity": 0.9955827753236025,
+      "full_fidelity": 0.995573996074981
+    },
+    {
+      "y": 59279,
+      "tau": 0.5,
+      "sign_mismatch_mass": 2.624543687552089e-05,
+      "amplitude_fidelity": 0.9719288393667077,
+      "full_fidelity": 0.9717528940687101
+    }
+  ]
+}

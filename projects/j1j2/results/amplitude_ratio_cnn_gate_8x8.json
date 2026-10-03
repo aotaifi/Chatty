@@ -1,0 +1,14 @@
+{
+  "rows": [
+    {
+      "best_step": 400,
+      "best_auc": 0.641198476155599,
+      "direction": "rep1_to_rep2"
+    },
+    {
+      "best_step": 400,
+      "best_auc": 0.636087002961532,
+      "direction": "rep2_to_rep1"
+    }
+  ]
+}

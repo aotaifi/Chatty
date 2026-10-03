@@ -1,0 +1,64 @@
+{
+  "geometry": "20-site skew torus T=(4,0),(1,5)",
+  "D": 184756,
+  "ys": [
+    63661,
+    59279,
+    77112,
+    107830
+  ],
+  "times": {
+    "0.25": {
+      "rows": [
+        {
+          "y": 63661,
+          "matching_error": 0.0,
+          "marshall_error": 0.0024
+        },
+        {
+          "y": 59279,
+          "matching_error": 0.0,
+          "marshall_error": 0.0588
+        },
+        {
+          "y": 77112,
+          "matching_error": 0.0,
+          "marshall_error": 0.0484
+        },
+        {
+          "y": 107830,
+          "matching_error": 0.0,
+          "marshall_error": 0.0466
+        }
+      ],
+      "matching_mean": 0.0,
+      "marshall_mean": 0.03905
+    },
+    "0.5": {
+      "rows": [
+        {
+          "y": 63661,
+          "matching_error": 0.0,
+          "marshall_error": 0.0092
+        },
+        {
+          "y": 59279,
+          "matching_error": 0.0,
+          "marshall_error": 0.099
+        },
+        {
+          "y": 77112,
+          "matching_error": 0.0002,
+          "marshall_error": 0.1242
+        },
+        {
+          "y": 107830,
+          "matching_error": 0.0,
+          "marshall_error": 0.1094
+        }
+      ],
+      "matching_mean": 5e-05,
+      "marshall_mean": 0.08545
+    }
+  }
+}

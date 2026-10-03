@@ -1,0 +1,9 @@
+{
+  "M": 32768,
+  "npairs": 131072,
+  "val_ploss": 0.48233407665217876,
+  "current_sign_error": 5.289892593636663e-06,
+  "model_amplitude_fidelity": 0.9743170653095835,
+  "k1_next_sign_error": 1.1998965538295285e-05,
+  "carry_next_sign_error": 1.2298882337750175e-05
+}

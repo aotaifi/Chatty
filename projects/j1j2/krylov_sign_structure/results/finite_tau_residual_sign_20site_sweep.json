@@ -1,0 +1,182 @@
+{
+  "D": 184756,
+  "ys": [
+    63661,
+    59279,
+    77112,
+    107830
+  ],
+  "nsamp": 10000,
+  "times": {
+    "0.05": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 0.14152923037398396,
+          "guided_average_sign": 0.9545974221383904,
+          "guided_se": 0.0004807469158932562,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 0.1426107777866984,
+          "guided_average_sign": 0.9414522453533744,
+          "guided_se": 0.0006402015195770376,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 0.21083401350088332,
+          "guided_average_sign": 0.948827812890392,
+          "guided_se": 0.0006235080519789353,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 0.17727851775407752,
+          "guided_average_sign": 0.9462930823793607,
+          "guided_se": 0.0006214761785265321,
+          "guided_negative_sample_fraction": 0.0
+        }
+      ],
+      "raw_mean": 0.1680631348539108,
+      "guided_mean": 0.9477926406903794
+    },
+    "0.1": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 0.021533076471516185,
+          "guided_average_sign": 0.8420376254933908,
+          "guided_se": 0.0011464106119450982,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 0.022053887322593287,
+          "guided_average_sign": 0.8092225383381768,
+          "guided_se": 0.0013678326260189017,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 0.04376685919191545,
+          "guided_average_sign": 0.8209061057796126,
+          "guided_se": 0.0014237946844701701,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 0.03238199262675175,
+          "guided_average_sign": 0.815697174332005,
+          "guided_se": 0.0014385392509905137,
+          "guided_negative_sample_fraction": 0.0
+        }
+      ],
+      "raw_mean": 0.02993395390319417,
+      "guided_mean": 0.8219658609857963
+    },
+    "0.15": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 0.003454594561793866,
+          "guided_average_sign": 0.7049775253458315,
+          "guided_se": 0.0016152496275567963,
+          "guided_negative_sample_fraction": 0.0
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 0.0036069789496897815,
+          "guided_average_sign": 0.6539356027289681,
+          "guided_se": 0.0018578357309584374,
+          "guided_negative_sample_fraction": 0.0002
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 0.008943645169639396,
+          "guided_average_sign": 0.6526623247516261,
+          "guided_se": 0.0020149433925499183,
+          "guided_negative_sample_fraction": 0.0011
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 0.006029391535069357,
+          "guided_average_sign": 0.6544144274384549,
+          "guided_se": 0.0019765475993726127,
+          "guided_negative_sample_fraction": 0.001
+        }
+      ],
+      "raw_mean": 0.0055086525540481,
+      "guided_mean": 0.6664974700662202
+    },
+    "0.25": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 9.920346634404486e-05,
+          "guided_average_sign": 0.43449855195214615,
+          "guided_se": 0.001889279952608035,
+          "guided_negative_sample_fraction": 0.0004
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 0.0001075892652043315,
+          "guided_average_sign": 0.37574539964803405,
+          "guided_se": 0.0019488549934618394,
+          "guided_negative_sample_fraction": 0.0073
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 0.0003590038278875162,
+          "guided_average_sign": 0.3479189939427776,
+          "guided_se": 0.002112088627354291,
+          "guided_negative_sample_fraction": 0.0168
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 0.0002158749957263777,
+          "guided_average_sign": 0.35525698887313745,
+          "guided_se": 0.0020696509720233196,
+          "guided_negative_sample_fraction": 0.0118
+        }
+      ],
+      "raw_mean": 0.00019541788879056754,
+      "guided_mean": 0.3783549836040238
+    },
+    "0.5": {
+      "rows": [
+        {
+          "y": 63661,
+          "raw_average_sign": 1.938825644648318e-08,
+          "guided_average_sign": 0.09010644057889623,
+          "guided_se": 0.0008496424922485765,
+          "guided_negative_sample_fraction": 0.0137
+        },
+        {
+          "y": 59279,
+          "raw_average_sign": 2.244634168727542e-08,
+          "guided_average_sign": 0.06741198668218785,
+          "guided_se": 0.0007579720189610323,
+          "guided_negative_sample_fraction": 0.0373
+        },
+        {
+          "y": 77112,
+          "raw_average_sign": 1.0154567020139599e-07,
+          "guided_average_sign": 0.03962193174066676,
+          "guided_se": 0.0006159286045093012,
+          "guided_negative_sample_fraction": 0.1344
+        },
+        {
+          "y": 107830,
+          "raw_average_sign": 5.564505911837571e-08,
+          "guided_average_sign": 0.045250318278656415,
+          "guided_se": 0.0006369860686520232,
+          "guided_negative_sample_fraction": 0.1057
+        }
+      ],
+      "raw_mean": 4.975633186338258e-08,
+      "guided_mean": 0.06059766932010182
+    }
+  }
+}

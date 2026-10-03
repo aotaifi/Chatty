@@ -1,0 +1,24 @@
+{
+  "iter1_auc": [
+    0.887290745973587,
+    0.88850487023592
+  ],
+  "iter1_eta": 1.01,
+  "iter2_auc": [
+    0.6858889907598495,
+    0.6841724626719952
+  ],
+  "iter2_eta": 1.03,
+  "rows": [
+    {
+      "y": 63661,
+      "two_refresh_full_fidelity": 0.997220351238489,
+      "two_refresh_amplitude_fidelity": 0.9972311410204687
+    },
+    {
+      "y": 59279,
+      "two_refresh_full_fidelity": 0.9977781240222767,
+      "two_refresh_amplitude_fidelity": 0.9978588824661935
+    }
+  ]
+}

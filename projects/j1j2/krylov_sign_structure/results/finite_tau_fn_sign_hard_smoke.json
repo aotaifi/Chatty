@@ -1,0 +1,79 @@
+{
+  "method": {
+    "J2": 0.5,
+    "dt": 0.05,
+    "beta": 0.15,
+    "floor": 1e-10,
+    "initial_sign": "Marshall relative to column y",
+    "first_guide": "J2=0 ground-state modulus",
+    "later_guide": "current transient FN amplitude with tiny J2=0 floor",
+    "sign_update": "s[n+1]=sign((I-dt H) a[n]s[n])",
+    "oracle": "exact exp(-dt H) used only for diagnostics"
+  },
+  "columns": {
+    "stripe": {
+      "basis_index": 4081,
+      "records": [
+        {
+          "step": 1,
+          "tau": 0.05,
+          "sign_mismatch_mass": 4.281354922937473e-05,
+          "sign_overlap": 0.9999143729015413,
+          "fidelity": 0.996183652679351,
+          "amplitude_fidelity": 0.9961921791908096,
+          "sign_change_mass": 1.17055658513811e-05
+        },
+        {
+          "step": 2,
+          "tau": 0.1,
+          "sign_mismatch_mass": 4.306153318362674e-06,
+          "sign_overlap": 0.9999913876933633,
+          "fidelity": 0.991552816479092,
+          "amplitude_fidelity": 0.9915528941885817,
+          "sign_change_mass": 1.3592271854305493e-08
+        },
+        {
+          "step": 3,
+          "tau": 0.15000000000000002,
+          "sign_mismatch_mass": 8.26024253765637e-06,
+          "sign_overlap": 0.9999834795149247,
+          "fidelity": 0.9896967200774572,
+          "amplitude_fidelity": 0.9896967895450619,
+          "sign_change_mass": 2.1978147217054735e-12
+        }
+      ]
+    },
+    "random": {
+      "basis_index": 137,
+      "records": [
+        {
+          "step": 1,
+          "tau": 0.05,
+          "sign_mismatch_mass": 3.0235471252826202e-05,
+          "sign_overlap": 0.9999395290574944,
+          "fidelity": 0.9979883111911763,
+          "amplitude_fidelity": 0.9979945429742719,
+          "sign_change_mass": 5.85260242666917e-06
+        },
+        {
+          "step": 2,
+          "tau": 0.1,
+          "sign_mismatch_mass": 2.318547170754142e-06,
+          "sign_overlap": 0.9999953629056585,
+          "fidelity": 0.9952233612044536,
+          "amplitude_fidelity": 0.9952234358739972,
+          "sign_change_mass": 2.379994605415811e-08
+        },
+        {
+          "step": 3,
+          "tau": 0.15000000000000002,
+          "sign_mismatch_mass": 1.3876839598585249e-06,
+          "sign_overlap": 0.9999972246320803,
+          "fidelity": 0.9935016474705035,
+          "amplitude_fidelity": 0.9935016876962742,
+          "sign_change_mass": 3.9320740216868417e-10
+        }
+      ]
+    }
+  }
+}

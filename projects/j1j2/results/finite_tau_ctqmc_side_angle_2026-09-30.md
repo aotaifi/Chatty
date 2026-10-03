@@ -1,0 +1,133 @@
+# Finite-temperature / CTQMC adaptive-sign side angle — 2026-09-30
+
+Goal: test whether the ground-state FN -> amplitude -> sign-reconstruction idea has a finite-imaginary-time analogue for propagator columns psi_y(x,tau)=<x|exp(-tau H)|y>.
+
+4x4 test at J2/J1=0.5, dt=0.05. Exact exp(-tau H)|y> is used only as an oracle diagnostic. The adaptive scheme propagates amplitudes with the current fixed-node Hamiltonian and updates signs each short-time step by sign[(I-dt H) a_n s_n].
+
+At tau=0.5:
+- stripe column: Marshall weighted sign mismatch = 0.1066380; adaptive mismatch = 1.259e-6; full-state fidelity = 0.985879; amplitude fidelity = 0.985883.
+- random column: Marshall weighted sign mismatch = 0.0768009; adaptive mismatch = 4.825e-5; full-state fidelity = 0.984675; amplitude fidelity = 0.984749.
+
+Interpretation: sign tracking is dramatically more accurate than the amplitudes and remains near-exact out to tau=0.5 for these two nontrivial columns. This is not standard fixed node: the nodal/sign constraint is updated on the fly.
+
+Open bottleneck: the current 4x4 implementation has a full callable transient vector for each fixed boundary y. A scalable finite-T/QMC route must avoid constructing exponentially many propagator columns and instead learn/sample a shared sign/amplitude rule in joint (x,y) or history space.
+
+Current falsifier: repeat the beta=0.5 test with a uniform positive first guide rather than the J2=0 ground-state modulus, to determine whether the strong result depends on that sign-free but nontrivial amplitude crutch.
+
+Active durable job: 20260930-062608-96686, target PID 96688. Result path: /Users/aliotaifi/Chatty/projects/j1j2/krylov_sign_structure/results/finite_tau_fn_sign_beta05_uniform.json
+
+Uniform-guide falsifier completed and passed essentially identically to the J2=0 guide. At tau=0.5: stripe adaptive mismatch 1.259e-6, random 4.826e-5; fidelities 0.98589 and 0.98475. Therefore the initial J2=0 amplitude guide is not responsible for the strong sign tracking.
+
+Cross-column exact diagnostic at tau=0.5:
+- 16 columns: Marshall mean mismatch 0.10282; y-independent shared correction LOO 0.34751; best single source transferred to other columns 0.23734. Therefore a correction depending only on x does not transfer.
+- Allowing the shared correction to depend only on the endpoint XOR d=x xor y gives LOO mismatch 0.00715 for 16 columns.
+- With 64 columns, Marshall mean mismatch 0.10670; XOR-rule LOO mismatch improves to 0.00543.
+- Compressing XOR further to Hamming weight |x xor y| gives 0.10670, exactly no improvement over Marshall. Thus the useful transferable structure depends on the geometry/pattern of the endpoint difference, not merely its size.
+- Weighted SVD of the correction family is not low rank (64 columns: rank-16 captures only ~0.469), so simple y-independent low-rank factorization is not supported.
+
+Interpretation: a scalable finite-T rule, if it exists, should be sought as a joint endpoint/history representation s_theta(x,y,tau), with x xor y geometry as a strong first feature. The raw XOR lookup itself is exponential and is only a structural diagnostic, not a scalable algorithm.
+
+Further structural result: the exact short-time sign is almost entirely determined by the leading operator-path parity. For 64 random 4x4 columns at tau=0.5, predicting sign G_tau(x,y) by (-1)^{d_cfg(x,y)}, where d_cfg is the shortest number of off-diagonal exchange operators connecting y to x, gives weighted mean sign error 4.17e-4 (0.0417%) and max-column error 1.33e-3, versus Marshall mean error 0.1148.
+
+A polynomial endpoint surrogate was then tested. For 12,800 sampled endpoint pairs, d_cfg exactly equaled a minimum-cost bipartite matching distance between sites occupied in y but not x and sites occupied in x but not y, with physical-site costs given by shortest paths using allowed J1/J2 bonds. Distance and parity agreement were both 100% on this sample. This is evidence, not yet a proof, that the leading sign rule may be computable polynomially from endpoints.
+
+Tau sweep of shortest-path parity (32 columns): mean weighted error is 3.8e-12 at tau=0.1, 8.55e-7 at 0.25, 4.14e-4 at 0.5, 2.70e-2 at 1.0, 0.203 at 2.0, and 0.405 at 4.0. Thus the rule is a short-/intermediate-time kernel rule, not a low-temperature/global sign solution. This strongly supports the role of repeated short-time sign reconstruction plus amplitude refresh: higher-order path interference eventually overturns the leading shortest-path sign if one simply propagates without reconditioning.
+
+Next decisive tasks: (1) prove or falsify configuration-distance = physical min-cost matching beyond sampled 4x4 pairs; (2) test the matching-parity kernel sign on a larger exactly tractable geometry such as 4x5; (3) formulate a sampled adaptive-QMC step that uses only endpoint/history information plus positive amplitudes, avoiding storage of full propagator columns.
+
+20-site exact scaling test (skew square torus generated by T=(4,0),(1,5), Sz=0 Hilbert dimension 184,756) confirms the polynomial endpoint matching-sign rule. Four boundary columns were propagated exactly and 5,000 endpoints per column were sampled from the exact |G_tau(:,y)|^2 distribution.
+- tau=0.25: matching-parity sign error = 0/20,000 sampled endpoints; Marshall mean error = 3.905%.
+- tau=0.5: matching-parity sign error = 1/20,000 = 5e-5 mean; Marshall mean error = 8.545%.
+Per-column tau=0.5 matching errors were 0, 0, 2e-4, 0. Thus the 4x4 shortest-path/matching sign structure survives to a 20-site Hilbert space of dimension 184,756 with no visible degradation at tau<=0.5. This is now the strongest evidence that the short-time finite-T sign rule is not a 4x4 artifact.
+Next step is no longer another small exact-size test; formulate the short-time positive-QMC kernel using the endpoint matching sign and test whether repeated positive propagation + sign refresh can be sampled without storing full propagator columns.
+
+Algorithm-level absolute-history diagnostic on the 20-site system: define H_abs by flipping all off-diagonal signs so A_tau=<x|exp(-tau H_abs)|y> is the sum of absolute CT-history weights. The average residual sign after factoring out the endpoint matching guide is [sum_x s_match(x,y) G_tau(x,y)]/[sum_x A_tau(x,y)]. Monte Carlo over endpoints distributed by A gives, averaged over four y columns: raw history average sign 1.95e-4 at tau=0.25 and 4.98e-8 at tau=0.5; matching-guided residual average sign 0.379 at tau=0.25 and 0.0609 at tau=0.5. Thus the endpoint rule improves the history sign problem by orders of magnitude but does not remove the internal cancellations. Near-perfect endpoint sign accuracy under |G|^2 is therefore not sufficient for a sign-free sampled algorithm.
+A shorter-tau residual-sign sweep (0.05,0.1,0.15,0.25,0.5) is running as Chatty job 20260930-070228-98300 to determine the decay rate and whether sufficiently short adaptive blocks can avoid exponential sign loss.
+
+20-site adaptive constrained-propagation validation completed (job 20260930-071658-98819, exit 0). Exact Hilbert dimension D=184,756, dt=0.05, beta=0.5, two boundary columns. The update used only the endpoint-distance sign guide plus positive FN propagation; exact exp(-tau H)|y> was diagnostic only.
+At tau=0.5:
+- column y=63661: sign mismatch mass 1.203e-6, amplitude fidelity 0.999992747, full fidelity 0.999992206.
+- column y=59279: sign mismatch mass 2.625e-5, amplitude fidelity 0.999902660, full fidelity 0.999892899.
+Thus the adaptive positive/FN short-time propagation that worked on 4x4 survives on a 20-site Hilbert space with essentially exact transient amplitudes and signs through tau=0.5. This exact-vector implementation is computationally prohibitive and should not be repeated; the next decisive step is a finite-population walker implementation of the same short-time positive propagation/sign-refresh loop.
+
+Final finite-population/amplitude-compression update for this stage:
+- Exact adaptive 20-site positive/FN propagation completed at dt=0.05 to tau=0.5 with full-state fidelities 0.9999922 and 0.9998929 for two columns; sign mismatch masses 1.20e-6 and 2.62e-5. Correction to wording: the endpoint sign guide is fixed per column y; the positive FN amplitude guide is what is refreshed.
+- The small-tau residual-history penalty after factoring endpoint sign is quadratic, with c16~16.8 and c20~23 in -log<sigma_res>~c_N dt^2, compatible with roughly extensive c_N at these sizes. However endpoint signs across blocks still carry the original sign, so simple reweighting is not a cure; the positive constrained propagator is essential.
+- Polynomiality: lexicographic physical-lattice minimum-cost matching reproduced both configuration-space exchange distance d and minimum J2-count n2 on 4000/4000 sampled 20-site endpoint pairs.
+- Amplitude compression capacity at tau=0.5: d only 0.9582/0.8399 fidelity; (d,n2) 0.9638/0.9724; (d,n2,Ediag) 0.9845/0.9874; adding separate J1/J2 flippable-bond counts reaches 0.99256/0.99008 (349/961 bins). At tau<=0.25 the rich representation is >=0.99876.
+- Finite-pop GFMC with the (d,n2,Ediag) table and proportional-prior density-ratio updates: M=8192, dt=0.05, eta=0.5 gives guide fidelities ~0.9975 near tau=0.2 and ~0.9325/0.9329 at tau=0.5. M increase helps at eta=0.5; eta=0.25 lags, eta=1 collapses support. Symmetric pseudocount + eta=1 oscillates violently and is rejected. More frequent dt=0.025 refresh is worse (M=8192 final ~0.875), showing repeated sparse-bin shrinkage bias.
+Verdict: sign structure and exact positive constrained propagation pass strongly; polynomial endpoint features have >0.99 amplitude capacity. The current bottleneck is finite-walker amplitude estimation/generalization, not sign reconstruction. Stop hand-tuned bin refinement and move to a shared learned callable amplitude model conditioned on polynomial endpoint features (x,y,tau / d,n2,local bond features), trained from walker populations with cross-replica validation.
+
+Learned-amplitude finite-T continuation:
+- A flat NumPy MLP amplitude model was trained only from FN walker data, not ED amplitudes. Reweighted walkers (importance factor 1/g) were aggregated by polynomial endpoint features and the model was trained directly on log per-state amplitude density log(m_b/n_b), rather than using classification logits. Independent-replica grouped log-amplitude RMSE: train 0.2308, validation 0.2431.
+- Exact-oracle amplitude fidelities of this walker-trained callable model: at tau=0.25, 0.97114 and 0.97627; at tau=0.5, 0.95122 and 0.93820. Classification-based density-ratio variants had AUC ~0.99 but poor amplitude fidelity and are rejected as an objective mismatch.
+- Plugging the learned callable guide into the actual positive GFMC exposed and fixed a crucial guide-handoff bug: when changing g_old -> g_new, walkers represent g_old*a and must be reweighted/resampled by g_new/g_old before continuing. Without this, fidelity artificially collapsed.
+- Corrected M=8192 learned-guide GFMC with immediate handoff gives tau=0.5 walker amplitude fidelities 0.9702 and 0.8955 for the two columns.
+- Delaying the difficult second-column handoff until tau=0.15 improves its M=8192 final fidelity to 0.93687. The handoff causes strong particle degeneracy but this improves systematically with population:
+  M=8192: F=0.936870
+  M=32768: F=0.970386
+  M=65536: F=0.979261
+  A log-log fit of 1-F versus M gives exponent -0.537, consistent with ordinary ~1/sqrt(M) Monte Carlo convergence over these points rather than an exponential population catastrophe.
+- For M=65536 on the hard column, walker amplitude fidelity remains >=0.983 through tau=0.45 and is 0.97926 at tau=0.5, despite the callable model itself having only 0.9382 direct amplitude fidelity there. Thus the positive FN dynamics plus finite walkers correct substantial guide error.
+Current verdict: the finite-T construction is algorithmically alive. Sign structure is polynomial, exact constrained propagation is nearly exact, a walker-trained callable amplitude transfers across replicas, and the remaining 20-site error scales approximately statistically with walker number. Next high-ROI task is size scaling of required M and removal/bridging of guide-handoff particle degeneracy before any 6x6 claim.
+
+Major algorithm correction / preferred construction:
+- The FN amplitude guide and the Monte Carlo importance function must be treated as separate objects. The learned amplitude enters only the fixed-node diagonal correction on forbidden same-sign edges, while walkers can use q(x)=1 (uniform importance), so allowed-hop rates remain |H_xy| and there is no guide-handoff resampling.
+- This removes the genealogical-collapse problem entirely. On the hard 20-site column at tau=0.5:
+  uniform FN amplitude + uniform importance: F_amp=0.94345 (M=8192), 0.96155 (M=32768).
+  learned FN amplitude + uniform importance: F_amp=0.98075 (M=8192), 0.98642 (M=32768).
+  other column with learned FN amplitude: F_amp=0.98270 already at M=8192.
+- Walker diversity stays high (hard column M=32768: 18,177 unique walkers at tau=0.5), unlike the earlier conflated learned-guide importance sampler.
+- Extending the hard-column learned-FN/uniform-importance run to tau=1 with M=32768 gives:
+  F_amp(0.5)=0.98651, 0.6=0.97520, 0.75=0.95429, 0.8=0.94828, 0.9=0.92180, 1.0=0.89845.
+  The endpoint matching sign itself remains excellent: sign-mismatch mass =2.62e-5 at tau=.5, 7.52e-5 at .6, 2.19e-4 at .75, 6.22e-4 at 1.0.
+Thus long-time degradation is amplitude-model extrapolation, not sign failure or particle handoff. Current model was trained only through tau=.5. Next step is a second-stage walker-trained amplitude model on tau=.5..1 using the corrected uniform-importance FN sampler.
+- Population scaling control: 16-site learned-guide/delayed-handoff prototype gave F=.90265 (M=2048), .95299 (8192), .97371 (32768), with 1-F ~ M^-0.47; 20-site delayed-handoff curve gave exponent ~-0.54. However abrupt guide-handoff ESS fraction decreases with size (ideal uniform->a at tau=.15: 0.265 for N=16 vs 0.183 for N=20), which is precisely why the preferred construction now avoids importance-guide handoffs.
+
+Endpoint-sign stability stress test (exact 20-site, 8 independent columns, fixed s=(-1)^d, tau up to 2):
+weighted mismatch mass mean/max:
+tau=.05: 8.09e-17 / 2.68e-16
+.10: 4.26e-12 / 1.06e-11
+.15: 7.14e-10 / 1.20e-9
+.25: 3.64e-7 / 6.17e-7
+.50: 2.410e-4 / 4.598e-4
+.75: 4.295e-3 / 8.453e-3
+1.00: 1.899e-2 / 3.704e-2
+1.25: 4.605e-2 / 8.758e-2
+1.50: 8.291e-2 / 0.1531
+2.00: 0.16895 / 0.28895.
+Actual sign crossings occur, so tau-independence is NOT exact. However within the current construction range tau<=.5 the fixed rule is extraordinarily accurate; by tau~.75 mismatch is sub-percent on average; around tau~1 it reaches percent-level and by tau>=1.5 it is clearly breaking down. Therefore the endpoint rule should be treated as a short/intermediate-time sign approximation, not a theorem. Long-beta construction must compose short blocks and/or refresh the sign rule rather than assume one fixed y->x parity remains exact indefinitely.
+
+Learned-refresh breakthrough:
+- Fixed uniform positive guide with polynomial endpoint sign at tau=0.5 already gives full fidelities 0.995574 (y=63661) and 0.971753 (y=59279).
+- A first guide-matched density-ratio learner uses FN walkers p~g*a and reference samples q~g^2, so the classifier learns log(a/g) without 1/g importance weights. Cross-replica transfer AUC ~0.885 for uniform->first correction. One learned refresh gives full fidelities 0.996247 and 0.987123.
+- Repeating the same construction from the first learned guide yields cross-replica AUC ~0.684 and a second learned refresh gives full fidelities 0.997220 and 0.997778.
+Thus the actual iterative walker->density-ratio guide->FN loop improves the 20-site finite-tau propagator monotonically across two learned refreshes, especially closing the hard-column gap 0.97175 -> 0.98712 -> 0.99778. Global amplitude fidelity of the classifier itself is not the correct target; improvement of the FN propagator/local guide ratios is.
+
+Three-refresh convergence test (fresh independent seeds) completed:
+- Iter 0 uniform guide: full fidelities 0.995574 / 0.971753.
+- Iter 1 learned density-ratio refresh: 0.995698 / 0.985178; train/val AUC 0.8828/0.8874.
+- Iter 2: 0.997406 / 0.997049; AUC 0.6911/0.6915.
+- Iter 3: 0.997161 / 0.998565; AUC 0.6051/0.5950.
+Thus the hard column improves monotonically through three refreshes, while the easy column peaks at iter 2 and moves slightly backward at iter 3. The residual classifier AUC trends toward 0.5 as the guide improves, giving a natural stopping/gating signal. Do not blindly iterate past the point where cross-replica residual transfer becomes weak; use a validation gate (e.g. require statistically meaningful cross-replica AUC above 0.5 and/or predicted FN improvement).
+
+Learned-amplitude replica test (20-site) completed. A NumPy MLP trained on one independent walker replica and validated on another using polynomial endpoint features had excellent density-classification transfer: train AUC 0.99757, validation AUC 0.98974. However this did NOT translate into accurate amplitudes. Raw learned-amplitude oracle fidelities were only ~0.534/0.565 at tau=0.25 and ~0.754/0.733 at tau=0.5. A validation-replica scalar calibration gave eta~1.02 and negligible loss improvement; a per-tau monotone density-ratio calibration actually worsened ED-oracle fidelity to 0.357/0.177 at tau=0.25 and 0.660/0.546 at tau=0.5. Verdict: REJECT the current weighted-walker-vs-uniform classifier as the amplitude handoff. High AUC mainly captures support/ranking and is not sufficient for the quantitative log-amplitude ratios required by FN propagation. Next step should target local amplitude ratios/projector consistency directly, rather than global density classification.
+
+Endpoint-sign tau-dependence falsifier (20-site exact) — decisive update:
+- Tested 8 complete propagator columns, i.e. 8 x 184,756 = 1,478,048 endpoint pairs at each of 21 tau values from 0.005 to 8.0, using exact sequential exp(-dt H) propagation. The fixed rule s_dist(x,y)=(-1)^d is NOT tau-independent.
+- A concrete pair y=107827, x=150976, d=5 has a true zero crossing of S_tau=(-1)^d G_tau at tau ~= 0.01405245. The amplitude there is microscopic; at tau=0.02 the violating endpoint has relative amplitude 1.23e-12 and column weight 1.50e-24.
+- Weighted mismatch remains negligible initially but grows: mean/max across 8 columns are ~7.14e-10/1.20e-9 at tau=.15; 3.64e-7/6.17e-7 at .25; 2.41e-4/4.60e-4 at .5; 4.29e-3/8.45e-3 at .75; 1.899e-2/3.704e-2 at 1.0; 0.169/0.289 at 2.0; 0.388/0.500 at 8.0.
+- Exact ground state: E0=-10.4466607312, E1=-9.6938229765. The distance rule does not equal sign[psi0(x)psi0(y)]. Weighted ground-state mismatch is 0.0080 for y=63661, 0.1481 for y=59279, and ~0.48-0.51 for most random tested y. Thus the large-tau sign structure is genuinely different.
+- Asymptotic consistency check: at tau=8, propagated-column signs agree with ground-state sign products to weighted mismatch 2.0e-9 and 1.4e-8 for the two high-overlap special columns; most other columns are also <=1e-6, except two columns with extremely tiny psi0(y), where convergence is slower (3.6e-3 and 5.9e-4).
+Verdict: REJECT a fixed endpoint sign s=(-1)^d for all tau. KEEP it as a very accurate short-time/initial sign guide. The finite-T algorithm needs a tau-dependent sign refresh (natural candidate: short-time Krylov/K1 update after each positive FN amplitude-refresh block).
+
+
+## 2026-10-01 adaptive CTQMC update
+A genuine continuous-time implementation now passes on the 20-site hard column.
+Positive FN histories are sampled with CT-SMC and resampled every dtau=.05; guide damping is selected only by independent walker replicas.
+At tau=.5, M=100k, three refreshes improve full fidelity
+.971753 -> .987186 -> .991467 -> .993437, while minimum block ESS stays ~88.8k-93.1k.
+The K1 next-block sign mismatch is reduced to 2.09e-5 versus 4.65e-5 for carrying the original distance sign.
+This establishes the working architecture: CT-SMC FN amplitude refresh <-> K1 sign refresh.
+Next falsifier is composed propagation with the K1-updated sign across the next short block.
+Full note: results/finite_tau_adaptive_ctqmc_2026-10-01.md

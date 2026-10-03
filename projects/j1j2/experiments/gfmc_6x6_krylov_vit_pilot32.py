@@ -1,0 +1,120 @@
+import math,time
+import numpy as np
+import jax,jax.numpy as jnp
+import netket as nk, flax
+import netket.jax as nkjax
+from nqsmagic.models import ViT
+from nqsmagic.utils import _logpsi_transl_2d
+
+L=6;N=36;J2=.5
+T=-14.985799779143964  # alpha=1.2 label-free Otsu 5-95
+hi=nk.hilbert.Spin(s=.5,N=N)
+g=nk.graph.Hypercube(length=L,n_dim=2,pbc=True,max_neighbor_order=2)
+model=ViT(num_layers=4,d_model=60,heads=10,L_eff=9,b=2,transl_invariant=True,two_dimensional=True)
+apply=nkjax.HashablePartial(_logpsi_transl_2d,model.apply,2)
+sam0=nk.sampler.MetropolisExchange(hi,graph=g,d_max=2,n_chains=16,sweep_size=N)
+v0=nk.vqs.MCState(sampler=sam0,apply_fun=apply,n_samples=16,
+ variables=model.init(jax.random.PRNGKey(1234),jnp.zeros((1,N))),n_discard_per_chain=10)
+with open('vit_J2=0.50_N=6x6_k=0.mpack','rb') as f:v0=flax.serialization.from_bytes(v0,f.read())
+print("LOADED",v0.n_parameters,"T",T,flush=True)
+
+def evalz(X,batch=4096):
+ out=[];X=np.asarray(X,float)
+ for i in range(0,len(X),batch):out.append(np.asarray(v0.log_value(jnp.asarray(X[i:i+batch]))))
+ return np.concatenate(out)
+def bits2x(ss):
+ a=np.asarray(ss,np.uint64).reshape(-1,1)
+ return 2*((a>>np.arange(N,dtype=np.uint64))&1).astype(float)-1
+def bonds():
+ nn=[];nnn=[];q=lambda x,y:(x%L)+L*(y%L)
+ for y in range(L):
+  for x in range(L):
+   i=q(x,y);nn += [(i,q(x+1,y)),(i,q(x,y+1))]
+   nnn += [(i,q(x+1,y+1)),(i,q(x+1,y-1))]
+ return nn,nnn
+NN,NNN=bonds();ALL=[(i,j,1.,-1.) for i,j in NN]+[(i,j,J2,1.) for i,j in NNN]
+A_MASK=sum(1<<(x+L*y) for y in range(L) for x in range(L) if (x+y)%2==0)
+def marshall(s):return 1 if ((int(s)&A_MASK).bit_count()%2)==0 else -1
+def diag_energy(s):
+ e=0.
+ for i,j,J,mr in ALL:e += J*(.25 if (((s>>i)&1)==((s>>j)&1)) else -.25)
+ return e
+def neigh(s):
+ out=[]
+ for i,j,J,mr in ALL:
+  if ((s>>i)^(s>>j))&1:out.append((s^(1<<i)^(1<<j),J,mr))
+ return out
+
+logc={};rc={};signc={};localc={};neval=0
+def ensure_log(ss):
+ global neval
+ miss=[int(x) for x in np.unique(np.asarray(ss,np.uint64)) if int(x) not in logc]
+ if miss:
+  z=evalz(bits2x(np.asarray(miss,np.uint64))).real;neval+=len(miss)
+  for x,v in zip(miss,z):logc[x]=float(v)
+def ensure_r(ss):
+ miss=[int(x) for x in np.unique(np.asarray(ss,np.uint64)) if int(x) not in rc]
+ if not miss:return
+ alln=[]
+ meta=[]
+ for x in miss:
+  ls=neigh(x);meta.append(ls);alln.extend(y for y,J,mr in ls)
+ ensure_log(miss+alln)
+ for x,ls in zip(miss,meta):
+  lx=logc[x];r=diag_energy(x)
+  for y,J,mr in ls:r += .5*J*mr*math.exp(logc[y]-lx)
+  rc[x]=float(r);signc[x]=marshall(x)*(1 if r<=T else -1)
+def ensure_local(ss):
+ miss=[int(x) for x in np.unique(np.asarray(ss,np.uint64)) if int(x) not in localc]
+ if not miss:return
+ alln=[];met=[]
+ for x in miss:
+  ls=neigh(x);met.append(ls);alln.extend(y for y,J,mr in ls)
+ ensure_r(miss+alln)
+ for x,ls in zip(miss,met):
+  lx=logc[x];sx=signc[x];d=diag_energy(x);ys=[];rates=[]
+  for y,J,mr in ls:
+   rat=math.exp(logc[y]-lx)
+   if sx*signc[y]<0:
+    ys.append(y);rates.append(.5*J*rat)
+   else:d += .5*J*rat
+  rates=np.asarray(rates,float);ys=np.asarray(ys,np.uint64)
+  localc[x]=(float(d),float(d-rates.sum()),ys,rates)
+
+def systematic(w,rng,M):
+ c=np.cumsum(w);c[-1]=1
+ return np.searchsorted(c,rng.random()/M+np.arange(M)/M,'right')
+
+def run(M=128,beta_target=1.4,burn_beta=.5,tau_max=.025,seed=777):
+ rg=np.random.default_rng(seed)
+ pool=np.load('energy_krylov_vs_vit_6x6_indep.npz')['states'].astype(np.uint64)
+ walkers=pool[rg.choice(len(pool),M,replace=False)].copy()
+ beta=0.;it=0;Es=[];snaps=[];t0=time.time()
+ while beta<beta_target:
+  ensure_local(walkers);dat=[localc[int(x)] for x in walkers]
+  diag=np.array([z[0] for z in dat]);el=np.array([z[1] for z in dat]);Eref=float(el.mean())
+  mx=max(0.,float(np.max(diag-Eref)));tau=min(tau_max,0.8/mx if mx>0 else tau_max)
+  nxt=np.empty(M,np.uint64);bw=np.empty(M)
+  for k,(x,(d,e,ys,rate)) in enumerate(zip(walkers,dat)):
+   stay=1-tau*(d-Eref);ws=tau*rate;tot=stay+ws.sum()
+   if stay<0 or tot<=0:raise RuntimeError(("bad",stay,tot,tau,d,Eref))
+   u=rg.random()*tot
+   if u<stay:y=x
+   else:
+    j=np.searchsorted(np.cumsum(ws),u-stay,'right');y=int(ys[min(j,len(ys)-1)])
+   nxt[k]=y;bw[k]=tot
+  bw/=bw.sum();walkers=nxt[systematic(bw,rg,M)]
+  beta+=tau;it+=1
+  if beta>=burn_beta and it%2==0:
+   ensure_local(walkers);ee=float(np.mean([localc[int(x)][1] for x in walkers]))
+   Es.append(ee);snaps.append(walkers.copy())
+  if it==1 or it%5==0:
+   print("PROG",it,"beta",beta,"tau",tau,"E",Eref,"uniq",len(np.unique(walkers)),
+         "rc",len(rc),"local",len(localc),"neval",neval,"sec",time.time()-t0,flush=True)
+ mixed=np.concatenate(snaps)
+ print("RESULT Emean",np.mean(Es),"tail",np.mean(Es[-min(8,len(Es)):]),
+       "naiveSE",np.std(Es,ddof=1)/np.sqrt(len(Es)) if len(Es)>1 else np.nan,
+       "nE",len(Es),"mixed",len(mixed),"unique",len(np.unique(mixed)),
+       "neval",neval,"sec",time.time()-t0,flush=True)
+ np.savez_compressed('gfmc_6x6_krylov_vit_pilot.npz',mixed=mixed,Es=np.asarray(Es),threshold=T)
+run(M=32,beta_target=0.9,burn_beta=.3)

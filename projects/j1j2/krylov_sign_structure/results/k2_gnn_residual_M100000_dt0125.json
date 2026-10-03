@@ -1,0 +1,15 @@
+{
+  "M": 100000,
+  "dt": 0.0125,
+  "ns": 2000,
+  "epochs": 15,
+  "val_state_rmse": 0.014613304287195206,
+  "target_fid": 0.9997076649187966,
+  "edge_seenY_frac": 0.4361286117749294,
+  "edge_base_rmse": 0.1809213816327552,
+  "edge_proj_rmse": 0.18009393811314986,
+  "edge_base_seenY": 0.011387101406194176,
+  "edge_proj_seenY": 0.010648509062771904,
+  "edge_base_unseenY": 0.24431505732839154,
+  "edge_proj_unseenY": 0.2432233369522877
+}

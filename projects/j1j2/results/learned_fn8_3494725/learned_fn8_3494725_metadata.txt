@@ -1,0 +1,7 @@
+job=3494725 host=fpga1701 started=2026-09-30T14:31:05+02:00
+GPU 0: NVIDIA A40 (UUID: GPU-1adbbe86-053b-a9ef-c6e4-174645854dd5)
+jax 0.10.2 backend gpu devices [CudaDevice(id=0)]
+flax 0.12.8 netket 3.22.4 numpy 2.4.6 scipy 1.17.1
+b75e7155e01fd961a1021f2d73610c86a706153b160de3e841de2369f0b4692a  fn_residual_cnn_8x8.mpack
+6da03313c6dc7319bf0e821aecdab5f43a674cfcff9d2c21e1cbad1ec43f3ca6  learned_fn_handoff_8x8.npz
+b787a63d3b21f7e83a577da820b9d353e7a308ba26d66a7397ee04df129abd55  vit_J2=0.50_N=8x8_k=0.mpack

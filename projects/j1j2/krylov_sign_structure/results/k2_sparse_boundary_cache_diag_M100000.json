@@ -1,0 +1,34 @@
+{
+  "shell_n": 18388,
+  "B_n": 33,
+  "BN_n": 1357,
+  "rows": [
+    {
+      "mode": "network",
+      "cache_n": 0,
+      "target_fid": 0.9997076649187968,
+      "edge_rmse": 0.18130853005946374,
+      "boundary_edge_n": 30,
+      "boundary_edge_rmse": 2.1327344354495694,
+      "nonboundary_edge_rmse": 0.17801526855251978
+    },
+    {
+      "mode": "B",
+      "cache_n": 33,
+      "target_fid": 0.9997077019157923,
+      "edge_rmse": 0.1810989994764034,
+      "boundary_edge_n": 30,
+      "boundary_edge_rmse": 2.0636638705395436,
+      "nonboundary_edge_rmse": 0.17801526855251978
+    },
+    {
+      "mode": "BplusN",
+      "cache_n": 1357,
+      "target_fid": 0.9997132405115841,
+      "edge_rmse": 0.18013324882203213,
+      "boundary_edge_n": 30,
+      "boundary_edge_rmse": 2.0649423096773267,
+      "nonboundary_edge_rmse": 0.17702853153788448
+    }
+  ]
+}

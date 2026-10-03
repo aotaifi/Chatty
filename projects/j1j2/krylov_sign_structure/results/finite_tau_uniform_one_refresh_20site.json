@@ -1,0 +1,21 @@
+{
+  "train_auc": 0.8848937712609768,
+  "val_auc": 0.8852636851370335,
+  "eta": 1.0,
+  "rows": [
+    {
+      "y": 63661,
+      "model_amplitude_fidelity": 0.3697891347821501,
+      "one_refresh_amplitude_fidelity": 0.9962573278715378,
+      "one_refresh_full_fidelity": 0.9962469314735393,
+      "sign_mismatch_mass": 1.2028574536596954e-06
+    },
+    {
+      "y": 59279,
+      "model_amplitude_fidelity": 0.35900468963240567,
+      "one_refresh_amplitude_fidelity": 0.9872332847656593,
+      "one_refresh_full_fidelity": 0.9871225130383329,
+      "sign_mismatch_mass": 2.624543687552089e-05
+    }
+  ]
+}

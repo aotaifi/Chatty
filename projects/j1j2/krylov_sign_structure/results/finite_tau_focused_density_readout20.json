@@ -1,0 +1,66 @@
+{
+  "M": 8192,
+  "auc_train": 0.660888209939003,
+  "auc_val": 0.6053521186113358,
+  "eta": 0.19,
+  "guide_amp_fid": 0.9787030429936596,
+  "carry_next_err": 4.646544432398251e-05,
+  "rows": [
+    {
+      "threshold": 0.2,
+      "spread": "self",
+      "mask_n": 536,
+      "amp_fid": 0.9773082824229857,
+      "k1_next_err": 4.251774179900968e-05
+    },
+    {
+      "threshold": 0.2,
+      "spread": "self+1hop",
+      "mask_n": 15140,
+      "amp_fid": 0.9747584924515955,
+      "k1_next_err": 4.64042843576526e-05
+    },
+    {
+      "threshold": 0.5,
+      "spread": "self",
+      "mask_n": 2168,
+      "amp_fid": 0.976459827642566,
+      "k1_next_err": 4.48154616561367e-05
+    },
+    {
+      "threshold": 0.5,
+      "spread": "self+1hop",
+      "mask_n": 37884,
+      "amp_fid": 0.9743525354272913,
+      "k1_next_err": 4.646691626470829e-05
+    },
+    {
+      "threshold": 1.0,
+      "spread": "self",
+      "mask_n": 10562,
+      "amp_fid": 0.9748960345015734,
+      "k1_next_err": 4.647556533806386e-05
+    },
+    {
+      "threshold": 1.0,
+      "spread": "self+1hop",
+      "mask_n": 90508,
+      "amp_fid": 0.9732169272188607,
+      "k1_next_err": 4.646637156090314e-05
+    },
+    {
+      "threshold": 1.5,
+      "spread": "self",
+      "mask_n": 58385,
+      "amp_fid": 0.9685428318051045,
+      "k1_next_err": 4.6468882986472394e-05
+    },
+    {
+      "threshold": 1.5,
+      "spread": "self+1hop",
+      "mask_n": 175361,
+      "amp_fid": 0.9697012418145241,
+      "k1_next_err": 4.646836107639306e-05
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "M": 100000,
+  "dt": 0.0125,
+  "ntrain": 30000,
+  "nval": 10000,
+  "epochs": 15,
+  "train_unique": 10761,
+  "train_frac_D": 0.05824438719175561,
+  "val_edge_rmse": 0.17291411757469177,
+  "raw_f_rms_p": 0.046333136673684626,
+  "eta": 1.0,
+  "target_fid": 0.99688542942167,
+  "edge_seenY_frac": 0.8350629365110681,
+  "edge_base_rmse": 0.1900592999994306,
+  "edge_proj_rmse": 0.1713255704208972,
+  "edge_base_seenY": 0.06564715551671378,
+  "edge_proj_seenY": 0.06422848302476128,
+  "edge_base_unseenY": 0.4550379386314123,
+  "edge_proj_unseenY": 0.406081943017061
+}

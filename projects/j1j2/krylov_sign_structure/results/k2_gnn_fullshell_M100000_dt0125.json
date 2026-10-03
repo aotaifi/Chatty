@@ -1,0 +1,20 @@
+{
+  "ns": 2000,
+  "epochs": 10,
+  "train_centers_unique": 739,
+  "train_shell_unique": 18193,
+  "train_frac_D": 0.09875186732771872,
+  "train_crossing_unique": 22,
+  "train_lowmargin_unique": 13,
+  "val_mix_rmse": 0.25305455923080444,
+  "raw_f_rms_p": 0.04785966008457389,
+  "eta": 1.0,
+  "target_fid": 0.996776518137574,
+  "edge_seenY_frac": 0.8986459774659024,
+  "edge_base_rmse": 0.18637206555097358,
+  "edge_proj_rmse": 0.17224545698458704,
+  "edge_base_seenY": 0.0988528586034765,
+  "edge_proj_seenY": 0.09911354722236305,
+  "edge_base_unseenY": 0.5158775755163605,
+  "edge_proj_unseenY": 0.46219555621297426
+}

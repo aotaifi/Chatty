@@ -1,0 +1,13 @@
+# Private collaboration state (never commit)
+.research_workspace_state.json
+.tim_reply_*.txt
+
+# Large binaries kept on this Mac only (>5 MB)
+results/boundary_cache_core5.npz
+krylov_sign_structure/experiments/frustration_scan_checkpoints_8x8.tgz
+krylov_sign_structure/results/k2_gnn_residual_cached_M100000_dt0125.npz
+
+# Symlinks into ~/j1j2_vit_bench (outside this repository)
+krylov_sign_structure/experiments/vit_J2=*.mpack
+
+*.bak

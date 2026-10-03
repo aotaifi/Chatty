@@ -1,0 +1,47 @@
+{
+  "method": {
+    "J2": 0.5,
+    "dt": 0.05,
+    "beta": 0.15,
+    "floor": 1e-10,
+    "initial_sign": "Marshall relative to column y",
+    "first_guide": "J2=0 ground-state modulus",
+    "later_guide": "current transient FN amplitude with tiny J2=0 floor",
+    "sign_update": "s[n+1]=sign((I-dt H) a[n]s[n])",
+    "oracle": "exact exp(-dt H) used only for diagnostics"
+  },
+  "columns": {
+    "neel": {
+      "basis_index": 8463,
+      "records": [
+        {
+          "step": 1,
+          "tau": 0.05,
+          "sign_mismatch_mass": 9.559392785321613e-06,
+          "sign_overlap": 0.9999808812144294,
+          "fidelity": 0.9999888024605604,
+          "amplitude_fidelity": 0.9999906421619363,
+          "sign_change_mass": 0.0
+        },
+        {
+          "step": 2,
+          "tau": 0.1,
+          "sign_mismatch_mass": 1.229154652481995e-09,
+          "sign_overlap": 0.9999999975416907,
+          "fidelity": 0.9998828069881265,
+          "amplitude_fidelity": 0.9998828069881815,
+          "sign_change_mass": 1.3861223867422872e-09
+        },
+        {
+          "step": 3,
+          "tau": 0.15000000000000002,
+          "sign_mismatch_mass": 0.0,
+          "sign_overlap": 1.0,
+          "fidelity": 0.9995605926832795,
+          "amplitude_fidelity": 0.9995605926832795,
+          "sign_change_mass": 1.1964671587510647e-18
+        }
+      ]
+    }
+  }
+}

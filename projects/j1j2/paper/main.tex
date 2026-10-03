@@ -136,18 +136,19 @@ $J_2/J_1=0.5$. In the sign-only benchmarks, its positive amplitude
 $|\psi_{\rm ViT}(x)|$ is held fixed. The $8\times8$ fixed-node calculations
 use a walker population $M=128$ and projection length $\beta=1.2$.
 
-\section{Results}
-
-\subsection{One-step proof of concept}
+\section{One-step Krylov sign reconstruction}
 
 The simplest test keeps the positive amplitude fixed and changes only the
 signs. On exactly tractable clusters we can therefore measure both the sign
 error and the corresponding energy error directly.
 
-\begin{figure*}[t]
-\centering
+\begin{widetext}
+\begin{center}
+\refstepcounter{figure}\label{fig:proof}
 \includegraphics[width=0.82\textwidth]{fig1_proof_of_concept.pdf}
-\caption{One-step proof of concept. (a,b) Exact $4\times4$ sweep of
+\par\smallskip
+\begin{minipage}{0.94\textwidth}\small
+\textbf{FIG. \thefigure.} One-step proof of concept. (a,b) Exact $4\times4$ sweep of
 the wrong-sign probability and relative variational energy error
 $\epsilon_{\rm rel}=(E-E_0)/|E_0|$, keeping the exact positive amplitude
 fixed. (c,d) The same before/after comparison at $J_2/J_1=0.5$ on two exact
@@ -156,9 +157,10 @@ probability is reduced by factors $37.4$ and $49.5$, while the energy error
 is reduced by factors $21.0$ and $24.1$, respectively. For the $4\times4$
 sweep, the initial sign rule is Marshall through $J_2/J_1=0.6$ and the
 corresponding stripe reference at $J_2/J_1\geq0.8$. Exact zeros are shown at
-$10^{-12}$ on logarithmic axes.}
-\label{fig:proof}
-\end{figure*}
+$10^{-12}$ on logarithmic axes.
+\end{minipage}
+\end{center}
+\end{widetext}
 
 At $J_2/J_1=0.5$, the $N=16$ wrong-sign probability decreases from
 $1.27\times10^{-2}$ to $3.41\times10^{-4}$, a factor $37.4$, while the
@@ -169,7 +171,47 @@ improvement is therefore not peculiar to the $4\times4$ cluster.
 
 \FloatBarrier
 
-\subsection{Larger-system validation}
+\clearpage
+\section{Fixed-node--Krylov feedback}
+
+We now test whether the positive amplitude can also be updated. We target
+$J_2/J_1=0.5$ but initialize with the exact $J_2=0$ positive amplitude and
+Marshall signs. At every iteration we construct the current fixed-node
+Hamiltonian, diagonalize it exactly to obtain its positive ground-state
+amplitude $\phi_{\FN}(x)$, use that amplitude for the next state, and then
+recompute the signs with Eq.~\eqref{eq:k1}. No target-ground-state information
+enters either update; exact diagonalization of the physical Hamiltonian is used
+only to evaluate the plotted errors.
+
+\begin{widetext}
+\begin{center}
+\refstepcounter{figure}\label{fig:closedloop}
+\includegraphics[width=0.82\textwidth]{fig3_closed_loop.pdf}
+\par\smallskip
+\begin{minipage}{0.94\textwidth}\small
+\textbf{FIG. \thefigure.} Exact fixed-node/Krylov feedback loop at $J_2/J_1=0.5$ on
+two periodic clusters, $N=16$ and $N=20$. Each iteration exactly diagonalizes
+the current fixed-node Hamiltonian to update the positive amplitude and then
+applies one Krylov sign update. (a) Wrong-sign probability. (b) Amplitude
+error $1-F_a$, with $F_a=|\langle a|a_0\rangle|^2$. (c) Relative energy
+error $\epsilon_{\rm rel}=(E-E_0)/|E_0|$ of the updated trial state. (d) The
+same energy error for the fixed-node projected state.
+\end{minipage}
+\end{center}
+\end{widetext}
+
+On $N=16$, the wrong-sign probability falls from $1.27\times10^{-2}$
+to $8.85\times10^{-7}$ after twenty iterations and reaches zero to numerical
+precision by iteration 100. The final amplitude fidelity is $0.9999946$ and
+the trial-state relative energy error is $3.08\times10^{-6}$. The independent
+$N=20$ cluster shows the same behavior: by iteration 40 the wrong-sign
+probability is $2.55\times10^{-7}$, the amplitude error is
+$8.15\times10^{-5}$, and the relative energy error is $1.41\times10^{-5}$.
+Thus the exact feedback mechanism survives beyond the $4\times4$ cluster.
+
+\FloatBarrier
+
+\section{Larger-system validation}
 
 We next remove the exact-sign benchmark.  On $6\times6$ we use the same ViT
 positive amplitude with three sign choices: Marshall, one-step Krylov, and
@@ -200,42 +242,8 @@ site.  The larger-system data therefore support the same conclusion as the
 exact benchmark: the one-step sign update captures the energetically relevant
 sign structure.
 
-\FloatBarrier
 
-\subsection{Closing the fixed-node--Krylov loop}
-
-We now test whether the positive amplitude can also be updated. We target
-$J_2/J_1=0.5$ but initialize with the exact $J_2=0$ positive amplitude and
-Marshall signs. At every iteration we construct the current fixed-node
-Hamiltonian, diagonalize it exactly to obtain its positive ground-state
-amplitude $\phi_{\FN}(x)$, use that amplitude for the next state, and then
-recompute the signs with Eq.~\eqref{eq:k1}. No target-ground-state information
-enters either update; exact diagonalization of the physical Hamiltonian is used
-only to evaluate the plotted errors.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.82\textwidth]{fig3_closed_loop.pdf}
-\caption{Exact fixed-node/Krylov feedback loop at $J_2/J_1=0.5$ on
-two periodic clusters, $N=16$ and $N=20$. Each iteration exactly diagonalizes
-the current fixed-node Hamiltonian to update the positive amplitude and then
-applies one Krylov sign update. (a) Wrong-sign probability. (b) Amplitude
-error $1-F_a$, with $F_a=|\langle a|a_0\rangle|^2$. (c) Relative energy
-error $\epsilon_{\rm rel}=(E-E_0)/|E_0|$ of the updated trial state. (d) The
-same energy error for the fixed-node projected state.}
-\label{fig:closedloop}
-\end{figure*}
-
-On $N=16$, the wrong-sign probability falls from $1.27\times10^{-2}$
-to $8.85\times10^{-7}$ after twenty iterations and reaches zero to numerical
-precision by iteration 100. The final amplitude fidelity is $0.9999946$ and
-the trial-state relative energy error is $3.08\times10^{-6}$. The independent
-$N=20$ cluster shows the same behavior: by iteration 40 the wrong-sign
-probability is $2.55\times10^{-7}$, the amplitude error is
-$8.15\times10^{-5}$, and the relative energy error is $1.41\times10^{-5}$.
-Thus the exact feedback mechanism survives beyond the $4\times4$ cluster.
-
-\FloatBarrier
+\clearpage
 
 \subsection{Scaling to $8\times8$}
 
@@ -263,7 +271,9 @@ their spread as a reproducibility scale rather than a precision error bar.
 
 \FloatBarrier
 
-\subsection{Learning the positive amplitude from walkers}
+\FloatBarrier
+
+\section{Learning the fixed-node amplitude from walkers}
 
 For sampled fixed-node walkers, Eq.~\eqref{eq:halfstep} defines the amplitude
 learning target.  Its exact $4\times4$ behavior and the first scalable

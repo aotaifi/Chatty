@@ -47,24 +47,18 @@ repeated learned 8x8 FN/Krylov loop is not claimed to be converged.
 
 ## Main figure provenance
 
-- **Fig. 1 — one-step proof of concept:** exact 4x4 sweep from
-  `square_exact_energyopt.csv`, plus an independent exact N=20 skew-torus
-  energy-optimized check from `groundstate_k1_20site_exact_J2p5.json`. At
-  J2/J1=0.5 the wrong-sign probability drops by 37.4x (N=16) and 49.5x
-  (N=20), while the relative energy error drops by 21.0x and 24.1x.
-- **Fig. 2 — larger-system validation:** 6x6 same-amplitude
-  Marshall/Krylov/ViT energies from `energy_krylov_vs_vit_6x6_indep.npz` and
-  independent 6x6 ViT-weighted sign-disagreement values in
-  `data/mechanism_6x6.json`. The ViT is a reference here, not exact truth.
-- **Fig. 3 — exact feedback:** current-sign fixed-node/Krylov histories on
-  N=16 from `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json` and on N=20
-  from `closed_fn_krylov_20site_J2p5_J2zero_init.json`.
+- **Fig. 1 — one-step Krylov benchmark:** exact 4x4 sweep from
+  `square_exact_energyopt.csv`, plus the independent exact N=20 skew-torus
+  check from `groundstate_k1_20site_exact_J2p5.json`.
+- **Fig. 2 — exact fixed-node/Krylov feedback:** N=16 history from
+  `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json` and N=20 history from
+  `closed_fn_krylov_20site_J2p5_J2zero_init.json`.
+- **Fig. 3 — larger-system Krylov validation:** 6x6 same-amplitude
+  Marshall/Krylov/ViT energies and independent ViT-weighted sign diagnostics.
 - **Fig. 4 — 8x8 benchmark:** Krylov-sign and Marshall-sign fixed-node
-  replicas plus Qian-Qin Table I values in
-  `data/literature_8x8_pbc_J2p5.json`.
-- **Fig. 5 — amplitude learning:** exact 4x4 maximum-likelihood amplitude
-  update in `data/fn_mle_halfstep_exact4x4.out` and the 8x8
-  stochastic-reconfiguration line search from Slurm job 3506041.
+  replicas plus the same-geometry literature benchmarks.
+- **Fig. 5 — amplitude learning:** exact 4x4 amplitude-update test and the
+  8x8 stochastic-reconfiguration cross-sample line search.
 
 The 8x8 fixed-node bars display the two individual populations and use their
 half-difference only as a reproducibility scale, not a precision asymptotic

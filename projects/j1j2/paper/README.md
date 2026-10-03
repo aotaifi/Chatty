@@ -16,23 +16,19 @@ outputs directly from `../results/` and
 `../krylov_sign_structure/results/`. Remote SR diagnostics copied for the
 paper retain their Slurm job IDs in `data/`.
 
-## Scientific organization
+## Structure
 
-The manuscript is written for a reader with no knowledge of the project
-history:
-
-1. define the J1-J2 Hamiltonian and the decomposition `psi=s*a`;
-2. derive the one-step Krylov sign rule from the local energy;
-3. define the lattice fixed-node amplitude problem and the walker mixed
-   distribution;
-4. benchmark signs with ED and a same-amplitude ViT comparison;
-5. close the exact 4x4 FN/Krylov loop;
-6. scale the sign guide to 8x8 and compare with same-geometry literature;
-7. isolate the remaining amplitude-learning problem and test SR transfer
-   across independent FN populations.
-
-Failed implementation branches and unresolved learned-loop energy claims are
-not used as the narrative spine.
+1. Introduction
+2. Methods: model and error measures, one-step Krylov sign update, fixed-node
+   amplitude update, learning the amplitude from walkers (MLE + SR), setup.
+3. Results, in order of increasing difficulty:
+   A. Benchmark 1 — exact 4x4 amplitude with Marshall signs, one Krylov step,
+      compared with ED (plus N=20);
+   B. exact FN/Krylov feedback loop (4x4, N=20);
+   C. 6x6 with fixed ViT amplitude, and 6x6 FN;
+   D. 8x8 FN vs literature;
+   E. open problem: learning the FN amplitude from walkers.
+4. Discussion; appendices on the second Krylov step and statistics.
 
 ## Result policy
 
@@ -47,19 +43,25 @@ repeated learned 8x8 FN/Krylov loop is not claimed to be converged.
 
 ## Main figure provenance
 
-- **Fig. 1 — one-step Krylov benchmark:** exact 4x4 sweep from
-  `square_exact_energyopt.csv`, plus the independent exact N=20 skew-torus
-  check from `groundstate_k1_20site_exact_J2p5.json`.
-- **Fig. 2 — exact fixed-node/Krylov feedback:** N=16 history from
-  `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json` and N=20 history from
-  `closed_fn_krylov_20site_J2p5_J2zero_init.json`.
-- **Fig. 3 — larger-system Krylov validation:** 6x6 same-amplitude
-  Marshall/Krylov/ViT energies and independent ViT-weighted sign diagnostics.
-- **Fig. 4 — 8x8 benchmark:** Krylov-sign and Marshall-sign fixed-node
-  replicas plus the same-geometry literature benchmarks.
-- **Fig. 5 — amplitude learning:** exact 4x4 amplitude-update test and the
-  8x8 stochastic-reconfiguration cross-sample line search.
+All figure inputs live in `data/` or in the tracked
+`../krylov_sign_structure/results/`, so `make pdf` works from a fresh clone.
 
-The 8x8 fixed-node bars display the two individual populations and use their
-half-difference only as a reproducibility scale, not a precision asymptotic
-uncertainty.
+- **Fig. 1 — Benchmark 1, one Krylov step:** (a) `data/k1_threshold_4x4_J2p5.npz`
+  from `scripts/k1_threshold_4x4.py` (recomputes the 4x4 ED and the threshold,
+  about 2 s); (b,c) `square_exact_energyopt.csv`; (d) adds
+  `groundstate_k1_20site_exact_J2p5.json`.
+- **Fig. 2 — exact FN/Krylov feedback:** `closed_fn_krylov_4x4_J2p5_J2zero_init_100.json`
+  and `closed_fn_krylov_20site_J2p5_J2zero_init.json`.
+- **Fig. 3 — 6x6 fixed ViT amplitude:** `data/mechanism_6x6.json` and
+  `data/energy_krylov_vs_vit_6x6_3479622.npz` (copy of
+  `../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz`).
+- **Fig. 4 — 8x8 benchmark:** `data/fn8_krylov_M128_3471544.npz`,
+  `data/fn8_marshall_M128_3471545.npz` (copies from `../results/8x8_*`) and
+  `data/literature_8x8_pbc_J2p5.json`.
+- **Fig. 5 — amplitude learning:** `data/fn_mle_halfstep_exact4x4.out` and
+  `data/fnmle8_sr_lambda1_linesearch_3506041.json`.
+
+Numbers in the text: 6x6 paired differences are recomputed from the Fig. 3 npz
+with 64-chain standard errors; 6x6 FN energies come from
+`../results/krylov_fn_6x6_matched_verdict_2026-09-28.md` and
+`../results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md`.

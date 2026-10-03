@@ -8,23 +8,24 @@ explicitly labeled provisional.
 
 | Result | Source | Paper use |
 |---|---|---|
-| Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(a-d) |
-| Exact N=20 K1 check at J2/J1=0.5 | ../krylov_sign_structure/results/groundstate_k1_20site_exact_J2p5.json | Main Fig. 1(c,d) |
+| Exact 4x4 K1 sweep vs J2 | ../krylov_sign_structure/results/square_exact_energyopt.csv | Main Fig. 1(b,c) |
+| 4x4 r(x) distribution and threshold at J2=0.5 | data/k1_threshold_4x4_J2p5.npz (scripts/k1_threshold_4x4.py) | Main Fig. 1(a) |
+| Exact N=20 K1 check at J2/J1=0.5 | ../krylov_sign_structure/results/groundstate_k1_20site_exact_J2p5.json | Main Fig. 1(d) |
 | Exact 4x4 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_J2zero_init_100.json | Main Fig. 2 |
 | Exact N=20 current-sign FN/K1 loop | ../krylov_sign_structure/results/closed_fn_krylov_20site_J2p5_J2zero_init.json | Main Fig. 2 |
 | Exact-init 4x4 control | ../krylov_sign_structure/results/closed_fn_krylov_4x4_J2p5_exactinit.json | Control / possible supplement |
 | 6x6 K1 mechanism | ../krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md | Main Fig. 3(a) |
-| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | ../results/a1_node_audit_3479622/energy_krylov_vs_vit_6x6_indep.npz | Main Fig. 3(b) |
+| 6x6 K1 vs Marshall vs ViT fixed-amplitude energy | data/energy_krylov_vs_vit_6x6_3479622.npz | Main Fig. 3(b); quote paired K-M = -4.79(125)e-3/site, not the difference of means |
 | 6x6 naive K2 falsification | ../results/true_k2_6x6_3471990/true_k2_6x6.npz | Appendix |
 
 ## STABLE: fixed-node scaling
 
 | Result | Source | Paper use |
 |---|---|---|
-| 6x6 K1-FN vs Marshall-FN | ../results/krylov_fn_6x6_matched_verdict_2026-09-28.md | Main text / scaling |
-| 6x6 practical FN/K1 fixed point | ../results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md | Main text |
-| 8x8 K1-FN replicas | ../results/8x8_krylov_3471544/gr_8x8_population_scaling_M128.npz | Main Fig. 4 |
-| 8x8 Marshall-FN replicas | ../results/8x8_marshall_3471545/marshall_8x8_M128_summary.npz | Main Fig. 4 |
+| 6x6 K1-FN vs Marshall-FN | ../results/krylov_fn_6x6_matched_verdict_2026-09-28.md | Main Sec. III C |
+| 6x6 practical FN/K1 fixed point | ../results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md | Main Sec. III C |
+| 8x8 K1-FN replicas | data/fn8_krylov_M128_3471544.npz | Main Fig. 4 |
+| 8x8 Marshall-FN replicas | data/fn8_marshall_M128_3471545.npz | Main Fig. 4 |
 
 ## STABLE: amplitude handoff and SR geometry
 
@@ -51,7 +52,9 @@ and energy normalization. It includes CNN, RBM+PP, DMRG, VMC, and FAMPS results.
 | 8x8 SR iter-1 FN mean -31.90123 | replicated inconsistently by a near-identical checkpoint | Do not claim robust energy lowering yet |
 | 8x8 independent SR rebuild mean -31.83896 | real reproducibility warning | Keep visible in diagnostics |
 | Iteration-2 FN mean -31.81537 | stable failure of repeated update | Main limitation |
-| Frozen-s1 a2 diagnostic | first replica -31.84646; second replica pending | Interpretation provisional |
+| Frozen-s1 a2 diagnostic | replicas -31.84646 and -31.80947 (mean -31.82797) | Amplitude update causes the iteration-2 loss |
+| Exact 4x4 frozen-H_FN factorized SR | recovers 99.7% of rebuilt E_FN gain (3551953/4) | Quoted in Sec. III E as representability evidence |
+| 8x8 frozen-H_FN SR and split-amplitude K1 A/B | live as of 2026-10-03 | Not in paper |
 
 ## SUPERSEDED / FORBIDDEN FOR MAIN FIGURES
 

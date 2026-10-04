@@ -296,37 +296,34 @@ def fig2_krylov_approx_amp():
     save(fig,"fig3_krylov_approx_amp.png")
 
 def fig3_krylov_vit_6x6():
-    z=np.load(DATA/"energy_krylov_vs_vit_6x6_3479622.npz")
-    mech=json.load(open(DATA/"mechanism_6x6.json"))
-    before=np.array([mech["train"]["marshall_wrong_mass"],mech["validation"]["marshall_wrong_mass"]])
-    after=np.array([mech["train"]["k1_wrong_mass"],mech["validation"]["k1_wrong_mass"]])
-    en=json.load(open(DATA/"vit6_energies.json"))   # per site, relative to ViT signs
-    mMV,seMV=en["marshall"]["dE"]*36,en["marshall"]["SE"]*36
-    mKV,seKV=en["krylov"]["dE"]*36,en["krylov"]["SE"]*36
-
-    fig,ax=plt.subplots(1,2,figsize=(6.4,2.9),gridspec_kw=dict(wspace=.45))
-    fig.suptitle(r"6 x 6, J2 / J1 = 0.5:   guide $\psi=s_{\rm Marshall}\,|\psi_{\rm ViT}|$"
-                 r"   $\rightarrow$   one Krylov sign step   (reference: ViT signs)",fontsize=8.5,y=1.03)
-    xx=np.arange(2); width=.36
-    ax[0].bar(xx-width/2,before,width,label="Marshall guide")
-    ax[0].bar(xx+width/2,after,width,label="one Krylov step")
-    for x,b0,b1 in zip(xx,before,after):
-        ax[0].text(x+width/2,b1*1.5,f"{b0/b1:.0f}x",ha="center",va="bottom",fontsize=7.5,fontweight="bold")
-    ax[0].set_yscale("log"); ax[0].set_ylim(1e-4,1); decades(ax[0])
-    ax[0].set_xticks(xx,["sample A","sample B"])
-    ax[0].set_ylabel(r"$\log_{10}$ wrong-sign probability")
-    ax[0].set_title("sign error"); panel(ax[0],"a")
-    ax[0].legend(frameon=False,fontsize=7.2,ncol=2,loc="upper center")
-
-    vals=np.array([mMV,mKV])/36*1e3; errs=np.array([seMV,seKV])/36*1e3
-    ax[1].bar(xx,vals,.5,yerr=errs,capsize=4,color=["C0","C1"])
-    ax[1].axhline(0,color="k",lw=.8)
-    ax[1].set_xticks(xx,["Marshall guide","one Krylov step"])
-    ax[1].set_ylabel(r"$(e-e_{\rm ViT})$ per site  [$10^{-3}$]")
-    ax[1].set_title("energy error"); panel(ax[1],"b")
-    for x,v,e in zip(xx,vals,errs):
-        ax[1].text(x,v+e+.25,f"{v:.2f} $\\pm$ {e:.2f}",ha="center",fontsize=7.5)
-    ax[1].set_ylim(-.8,8.5)
+    """6x6, ViT amplitude fixed: Marshall guide, 1 and 2 Krylov steps, and the ViT signs, compared with ED."""
+    se=json.load(open(DATA/"ed_6x6_sign_errors_final.json"))
+    ed=json.load(open(ROOT/"results/ed_6x6/ed6x6_summary.json")) if (ROOT/"results/ed_6x6/ed6x6_summary.json").exists() else None
+    en=json.load(open(DATA/"vit6_energies.json"))
+    E0=se["E0_per_site"]; eV=se["e_ViT"]
+    k2=se["sets"]["K2"]["w"]; k1=se["sets"]["K1T"]["w"]
+    w_marshall=0.019558   # exact, full ED table (ed_6x6/postprocess.json)
+    labels=["Marshall\nguide","1 Krylov\nstep","2 Krylov\nsteps","ViT signs\n(ref.)"]
+    w=np.array([w_marshall,k1["K1"]["w"],k2["K2"]["w"],k1["ViT"]["w"]])
+    we=np.array([0,k1["K1"]["err"],k2["K2"]["err"],k1["ViT"]["err"]])
+    eps=np.array([(eV+en["marshall"]["dE"]-E0)/abs(E0),(eV+en["krylov"]["dE"]-E0)/abs(E0),np.nan,(eV-E0)/abs(E0)])
+    epe=np.array([en["marshall"]["SE"],en["krylov"]["SE"],np.nan,se["e_ViT_se"]])/abs(E0)
+    cols=["C0","C1","C1","0.55"]
+    fig,ax=plt.subplots(1,2,figsize=(6.6,2.9),gridspec_kw=dict(wspace=.45))
+    fig.suptitle(r"6 x 6, J2 / J1 = 0.5, amplitude $|\psi_{\rm ViT}|$ fixed, compared with ED",fontsize=8.5,y=1.02)
+    xx=np.arange(4)
+    ax[0].bar(xx,w,.6,yerr=we,capsize=3,color=cols)
+    for x,v in zip(xx[1:3],w[1:3]):
+        ax[0].text(x,v*1.6,f"{w[0]/v:.0f}x",ha="center",fontsize=7.5,fontweight="bold")
+    ax[0].set_yscale("log"); ax[0].set_ylim(5e-5,.2); decades(ax[0])
+    ax[0].set_ylabel(r"$\log_{10}$ wrong-sign probability"); ax[0].set_title("sign error"); panel(ax[0],"a")
+    ok=np.isfinite(eps)
+    bars=ax[1].bar(xx[ok],eps[ok],.6,yerr=epe[ok],capsize=3,color=[c for c,o in zip(cols,ok) if o])
+    bars[0].set_hatch("///"); bars[0].set_facecolor("white"); bars[0].set_edgecolor("C0")
+    ax[1].text(xx[2],2e-4,"n/a",ha="center",fontsize=7.5,color="0.4")
+    ax[1].set_yscale("log"); ax[1].set_ylim(1e-4,.05); decades(ax[1])
+    ax[1].set_ylabel(r"$\log_{10}$ rel. energy error"); ax[1].set_title("energy error"); panel(ax[1],"b")
+    for a_ in ax: a_.set_xticks(xx,labels,fontsize=7.5)
     save(fig,"fig4_krylov_vit_6x6.png")
 
 if __name__=="__main__":

@@ -13,7 +13,7 @@ module load lang
 module load Python/3.11.5-GCCcore-13.2.0
 source /pc2/users/h/hpcalot/chatty/.venv-j1j2-py311/bin/activate
 export JAX_PLATFORMS=cpu XLA_PYTHON_CLIENT_PREALLOCATE=false
-KMAX=${KMAX:-2}; N=${N:-100000}; NSHARDS=${NSHARDS:-16}; CHUNK=${CHUNK:-256}; MAXSEC=${MAXSEC:-1e9}; START=${START:-0}; SAMPLES=${SAMPLES:-samples_psi0sq_6x6.npz}; TAG=${TAG:-ed6x6_sign}
+KMAX=${KMAX:-2}; N=${N:-100000}; NSHARDS=${NSHARDS:-16}; CHUNK=${CHUNK:-256}; MAXSEC=${MAXSEC:-1e9}; START=${START:-0}; SAMPLES=${SAMPLES:-samples_psi0sq_6x6.npz}; TAG=${TAG:-ed6x6_sign}; TT=${TT:--15.024319756762353,-1.7500295942988462}
 BASE=/pc2/users/h/hpcalot/chatty/j1j2
 SRC=$BASE/ed_6x6_sign_errors
 OUT="$BASE/results/ed_6x6_sign_errors_${SLURM_JOB_ID}"
@@ -29,7 +29,7 @@ CPS=$(( SLURM_CPUS_PER_TASK / NSHARDS ))
 for ((j=0; j<NSHARDS; j++)); do
   lo=$(( j*CPS )); hi=$(( (j+1)*CPS - 1 ))
   OMP_NUM_THREADS=$CPS taskset -c ${lo}-${hi} python ed_6x6_sign_errors.py --kmax $KMAX --n $N --shard $j --nshards $NSHARDS \
-     --chunk $CHUNK --batch 4096 --max-seconds $MAXSEC --start $START --samples $SAMPLES --out $TAG > shard${j}.log 2>&1 &
+     --chunk $CHUNK --batch 4096 --max-seconds $MAXSEC --start $START --samples $SAMPLES --out $TAG --T=$TT > shard${j}.log 2>&1 &
 done
 wait
 echo "finished=$(date -Is)" >> "$OUT/run_metadata.txt"

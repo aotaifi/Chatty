@@ -159,7 +159,11 @@ where $S$ is the quantum geometric tensor of $\log a_\theta$.
 
 Exact calculations use two periodic clusters (Fig.~\ref{fig:lattices}): the
 $4\times4$ square ($N=16$, $12\,870$ states with $S^z=0$) and a tilted 20-site
-torus with periodic vectors $(4,0)$ and $(1,5)$.
+torus with periodic vectors $(4,0)$ and $(1,5)$. For $6\times6$ we computed
+the exact ground state with the lattice-symmetries library, using spin flip,
+translations and the point group (576 elements); the ground state lies in
+the fully symmetric sector of dimension $1.58\times10^7$, with
+$E_0/N=-0.5038097$ in agreement with Ref.~\cite{Schulz1996}.
 
 \begin{figure}[H]
 \centering
@@ -264,31 +268,32 @@ motivates updating the amplitude itself (Sec.~\ref{sec:loop}).
 \subsubsection{Neural-network amplitude on $6\times6$}
 \label{sec:vit6}
 
-On $6\times6$ no exact amplitude exists. We take the positive amplitude of
-the optimized ViT state, give it Marshall signs, and apply one Krylov step.
-The ViT's own signs serve as a reference.
+On $6\times6$ we take the positive amplitude of the optimized ViT state, give
+it Marshall signs, and apply Krylov steps. We compare with our
+symmetry-resolved exact ground state ($E_0/N=-0.5038097$; Methods).
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{fig4_krylov_vit_6x6.pdf}
-\caption{One Krylov sign step on the ViT amplitude ($6\times6$). No ED is
-available, so the ViT signs are the reference. (a) Sign error and (b) energy
-error per site of the Marshall guide and after one step.}
+\caption{Krylov sign steps on the ViT amplitude ($6\times6$), compared with ED,
+with the ViT's own signs as reference. (a) Wrong-sign probability
+($4\times10^5$ exact samples). (b) Relative energy error; the Marshall value
+(hatched) is a lower bound from a smaller sample, the two-step energy is not
+resolved.}
 \label{fig:vit6}
 \end{figure}
 
-One Krylov step reduces the disagreement with the ViT signs by a factor
-$20$--$23$ [Fig.~\ref{fig:vit6}(a)]. With the same amplitude, Marshall signs
-lie $(5.3\pm1.6)\times10^{-3}$ per site above the ViT signs and the Krylov
-signs $(8.1\pm0.5)\times10^{-4}$ [Fig.~\ref{fig:vit6}(b)]. The remaining gap
-comes from rare configurations where the two sign rules differ and the local
-energy is large; resolving it requires about $5\times10^4$ samples. A single
-label-free step thus removes most, but not all, of the energy cost of the
-Marshall signs.
-Conversely, applied to the ViT's own signs the step flips less than $10^{-4}$
-of the probability and leaves the energy unchanged within
-$5\times10^{-5}$ per site: the optimized signs are a fixed point of the Krylov
-update.
+The Marshall guide puts $2.0\times10^{-2}$ of the probability on wrong signs.
+One Krylov step reduces this 17-fold to $1.1\times10^{-3}$ and a second step
+to $2.3\times10^{-4}$, close to the $1.3\times10^{-4}$ of the ViT's optimized
+signs [Fig.~\ref{fig:vit6}(a)]. After one step the energy error is
+$1.9\times10^{-3}$, against at least $1.1\times10^{-2}$ for Marshall and
+$3.1\times10^{-4}$ for the ViT [Fig.~\ref{fig:vit6}(b)]; the remaining gap comes
+from rare configurations with large local energy, which require about
+$5\times10^4$ samples to resolve. Applied to the ViT's own signs, the step
+flips less than $10^{-4}$ of the probability and leaves the energy unchanged
+within $5\times10^{-5}$ per site: the optimized signs are a fixed point of the
+Krylov update.
 
 \subsection{Fixed-node--Krylov loop}
 \label{sec:loop}

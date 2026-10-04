@@ -1,0 +1,134 @@
+{
+ "E0_per_site": -0.5038096538908783,
+ "e_ViT": -0.5036542608124052,
+ "e_ViT_se": 2.131044877124918e-05,
+ "sets": {
+  "K1T": {
+   "n": 400000,
+   "nfiles": 32,
+   "neval": 32793631,
+   "T": [
+    -14.985799779
+   ],
+   "w": {
+    "Marshall": {
+     "w": 0.0200425,
+     "err": 0.00026273270109033396,
+     "global_sign": 1,
+     "nwrong": 8017
+    },
+    "ViT": {
+     "w": 0.00013,
+     "err": 1.8285060413994613e-05,
+     "global_sign": 1,
+     "nwrong": 52
+    },
+    "K1": {
+     "w": 0.001125,
+     "err": 5.418123347254155e-05,
+     "global_sign": 1,
+     "nwrong": 450
+    }
+   },
+   "paired_K1_minus_Marshall": {
+    "mean": -0.0189175,
+    "err": 0.00024595348886907113
+   },
+   "paired_ViT_minus_Marshall": {
+    "mean": -0.0199125,
+    "err": 0.00026143965736751776
+   },
+   "amp_check": {
+    "pearson_log": 0.9995112539449202,
+    "std_dlog_after_shift": 0.047583148578844325,
+    "mean_dlog": 4.214384298369467,
+    "spearman_log": 0.9999667464265678
+   }
+  },
+  "K2": {
+   "n": 400000,
+   "nfiles": 48,
+   "neval": 1248412152,
+   "T": [
+    -15.024319756762353,
+    -1.7500295942988462
+   ],
+   "w": {
+    "Marshall": {
+     "w": 0.0200425,
+     "err": 0.00026273270109033396,
+     "global_sign": 1,
+     "nwrong": 8017
+    },
+    "ViT": {
+     "w": 0.00013,
+     "err": 1.8285060413994613e-05,
+     "global_sign": 1,
+     "nwrong": 52
+    },
+    "K1": {
+     "w": 0.0011175,
+     "err": 5.2878625075724055e-05,
+     "global_sign": 1,
+     "nwrong": 447
+    },
+    "K2": {
+     "w": 0.0002275,
+     "err": 2.074831135881719e-05,
+     "global_sign": 1,
+     "nwrong": 91
+    }
+   },
+   "paired_K1_minus_Marshall": {
+    "mean": -0.018925,
+    "err": 0.0002464008600601545
+   },
+   "paired_K2_minus_K1": {
+    "mean": -0.00089,
+    "err": 4.876246279442601e-05
+   },
+   "paired_ViT_minus_Marshall": {
+    "mean": -0.0199125,
+    "err": 0.00026143965736751776
+   },
+   "K2_changed_vs_K1": 358,
+   "K1_changed_vs_Marshall": 7758,
+   "amp_check": {
+    "pearson_log": 0.9995112539449202,
+    "std_dlog_after_shift": 0.047583148578844325,
+    "mean_dlog": 4.214384298369467,
+    "spearman_log": 0.9999667464265678
+   }
+  }
+ },
+ "eps": {
+  "ViT": {
+   "e": -0.5036542608124052,
+   "e_se": 2.131044877124918e-05,
+   "eps": 0.0003084360874648457,
+   "eps_se": 4.229861140347437e-05,
+   "note": "VMC sampled, bound_check_final.json"
+  },
+  "K1(T=-14.9858)": {
+   "e": -0.5028409192277559,
+   "e_se": 5.0195025208560645e-05,
+   "eps": 0.0019228187781654502,
+   "eps_se": 9.963093168403745e-05,
+   "note": "matched paired Delta=+8.133(45)e-4/site on 49k samples + E_ViT"
+  },
+  "Marshall": {
+   "e": -0.49835730218630675,
+   "e_se": 0.001597992083118022,
+   "eps": 0.010822245390622222,
+   "eps_se": 0.00317181711540632,
+   "note": "OLDER 256-sample paired estimator (+5.30(1.6)e-3 added to e_ViT); biased low"
+  },
+  "K2(T0=-15.024,T1=-1.750)": {
+   "e": -0.5033024450693513,
+   "e_se": 0.00022632443570504702,
+   "eps": 0.001006746928348563,
+   "eps_se": 0.0004492260796456817,
+   "note": "OLDER 256-sample paired estimator (+3.5(2.3)e-4); known biased low (misses rare sign defects) -> lower bound only"
+  }
+ }
+}

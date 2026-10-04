@@ -1,0 +1,9 @@
+{
+ "chain_params": [
+  "base"
+ ],
+ "Ts": [
+  -14.985799779143964
+ ],
+ "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy"
+}

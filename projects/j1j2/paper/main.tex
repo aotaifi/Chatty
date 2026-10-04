@@ -30,7 +30,7 @@ exact fixed node converges to the exact ground state on $4\times4$ and
 20-site clusters, about three times faster with Anderson acceleration. On
 $6\times6$ and $8\times8$, Krylov signs built from a neural-network amplitude
 reduce the fixed-node energy gap to the network from $4\times10^{-3}$ to
-$4$--$6\times10^{-4}$ per site, without closing it. Iterating further requires
+$6\times10^{-4}$ per site, without closing it. Iterating further requires
 learning the fixed-node amplitude: on $4\times4$ a network trained on the frozen
 fixed-node energy from samples iterates the loop stably, while on $8\times8$
 learned updates have not yet lowered the energy.
@@ -367,8 +367,24 @@ slowness comes from the amplitude, since the fixed-node Hamiltonian depends on
 the guide amplitude through the moved matrix elements. Anderson acceleration
 of $\log a$ cuts this to 31 and 59 iterations. The geometric-mean update $a\leftarrow\sqrt{a\,\phi_\FN}$ that walker
 learning provides converges as well, exactly twice as slowly (200 iterations).
-Exact diagonalization of $H_\FN$ costs as much as ED itself, so this proves
-the idea, not its scaling.
+How does the number of iterations grow with system size? Running the exact
+loop in the fully symmetric sector on tori with $N=16$ to $36$ sites, the
+iterations needed for an energy error below $10^{-6}$ stay between 82 and 104
+(32 and 57 with Anderson), and for a sign error below $10^{-8}$ between 89 and
+125 (28 and 70) (Fig.~\ref{fig:scaling}). Only the last wrong signs on
+configurations of negligible weight ($<10^{-12}$) take longer at larger $N$.
+Exact diagonalization of $H_\FN$ costs as much as ED itself, so this tests
+the iteration count, not the cost per iteration.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig6_loop_scaling.pdf}
+\caption{Iterations of the exact fixed-node--Krylov loop needed to reach (a) a
+wrong-sign probability below $10^{-8}$ and (b) a relative energy error below
+$10^{-6}$, versus the number of sites ($4\times4$, 20-site, $4\times6$, 28-,
+32-site tori, $6\times6$; the $6\times6$ plain run is still in progress).}
+\label{fig:scaling}
+\end{figure}
 
 \subsection{Sampled fixed node on $4\times4$}
 \label{sec:sampled4}
@@ -382,7 +398,7 @@ stays exact.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{fig6_sampled_4x4.pdf}
+\includegraphics[width=0.9\textwidth]{fig7_sampled_4x4.pdf}
 \caption{Fixed-node--Krylov loop on $4\times4$ with $\phi_\FN$ estimated from
 $N$ independent samples per iteration (mean over four seeds; two for
 $N=10^9$), and the exact loop. (a) Sign and (b) energy error vs iteration,
@@ -409,30 +425,31 @@ walker populations.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.85\textwidth]{fig7_guides_compare.pdf}
+\includegraphics[width=0.85\textwidth]{fig8_guides_compare.pdf}
 \caption{One untrained iteration on $6\times6$ and $8\times8$: fixed-node
 energy with Krylov or Marshall signs on the ViT amplitude, relative to (a) the
 ViT variational energy and (b) fixed node with the full ViT guide.}
 \label{fig:guides}
 \end{figure}
 
-Fixed node lowers the Krylov guide by $(4.5\pm1.0)\times10^{-4}$ per site on
+Fixed node lowers the Krylov guide by $(2.6\pm0.6)\times10^{-4}$ per site on
 $6\times6$, independent of projection length ($\beta=1.2$ and $2.4$) and time
-step. The resulting energies, $-0.503288(90)$ on $6\times6$ and
-$-0.498210(25)$ on $8\times8$, close most of the gap between Marshall and the
-network but remain above the ViT itself, $-0.503654(21)$ and $-0.498823(35)$,
-by $4\times10^{-4}$ and $6\times10^{-4}$ per site (Fig.~\ref{fig:guides}). On
+step. The resulting energies, $-0.503100(40)$ on $6\times6$ (76 walker
+populations) and $-0.498210(25)$ on $8\times8$, close most of the gap between
+Marshall and the network but remain above the ViT itself, $-0.503654(21)$ and
+$-0.498823(35)$, by $6\times10^{-4}$ per site on both lattices
+(Fig.~\ref{fig:guides}). On
 $6\times6$ the exact energy is $E_0/N=-0.5038097$ (our symmetry-resolved ED),
-so the relative errors are $1.0\times10^{-3}$ for Krylov fixed node and
+so the relative errors are $1.4\times10^{-3}$ for Krylov fixed node and
 $3\times10^{-4}$ for the ViT. Fixed node with the full ViT guide reproduces the
 ViT energy within errors. The $8\times8$ values rest on two walker populations
-each; on $6\times6$ the spread between eight populations is $3\times10^{-4}$
-per site, so two-population error bars underestimate the uncertainty.
+each; on $6\times6$ single populations scatter by about $3\times10^{-4}$ per
+site, so two-population error bars underestimate the uncertainty.
 Figure~\ref{fig:bench} places all values among published results.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{fig8_benchmarks.pdf}
+\includegraphics[width=\textwidth]{fig9_benchmarks.pdf}
 \caption{Energies per site at $J_2/J_1=0.5$: our fixed-node values (Marshall,
 Krylov, full ViT guide; $M=128$, not extrapolated), the ViT, and published
 results: (a) $6\times6$, (b) $8\times8$. ED \cite{Schulz1996}, VMC
@@ -454,7 +471,7 @@ decreases, and iterate the full loop.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{fig9_learning_4x4.pdf}
+\includegraphics[width=\textwidth]{fig10_learning_4x4.pdf}
 \caption{Fixed-node--Krylov loop on $4\times4$ with a network amplitude trained
 on the frozen fixed-node energy from $N$ samples per SR step (mean over three
 seeds), compared with the exact loops. (a) Sign and (b) energy error vs
@@ -476,6 +493,18 @@ On $6\times6$, a minimal amplitude correction with four parameters already
 reaches a fixed point after one iteration: the signs no longer change and the
 next correction is consistent with zero, with $E_\FN=-18.1130(36)$.
 
+With a network instead, one full iteration on $6\times6$ (frozen-energy SR on
+the ViT amplitude, a second Krylov step, fixed node with 16 populations) gives
+$E_\FN=-0.503667(63)$, equal to the ViT within errors, and a true wrong-sign
+probability of $8\times10^{-5}$, below the ViT's $1.3\times10^{-4}$. A control
+without learning, the second Krylov step alone, reaches $-0.503596(52)$, so most
+of the gain comes from the sign step, helped by the learned amplitude. A
+further iteration is costly: the signs are defined recursively, and each
+Krylov step adds one hop of neighbours ($1.3\times10^3$, $5\times10^4$ and
+$1.2\times10^6$ configurations per state after one, two and three steps),
+which raises the estimated cost of the next iteration from 5 to over 50
+GPU-hours.
+
 On $8\times8$ we trained the ViT amplitude by maximum likelihood on the
 walkers, whose distribution $f\propto a\,\phi_\FN$ gives the target
 $a_{\rm new}^2\propto a\,\phi_\FN$, Eq.~\eqref{eq:halfstep}, with SR, followed
@@ -483,7 +512,7 @@ by a Krylov step and a new fixed-node run (Fig.~\ref{fig:amplearn}).
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{fig10_learning_8x8.pdf}
+\includegraphics[width=0.6\textwidth]{fig11_learning_8x8.pdf}
 \caption{$8\times8$ fixed-node energy per site along learned amplitude updates
 (two walker populations each). Dotted: best same-geometry literature value
 \cite{QianQin2023}.}
@@ -520,7 +549,7 @@ needed to follow the exact loop, and correlated walkers are worth about three
 times fewer.
 
 On $6\times6$ and $8\times8$ one untrained iteration brings the fixed-node
-energy within $4$--$6\times10^{-4}$ per site of the underlying network but not
+energy within $6\times10^{-4}$ per site of the underlying network but not
 below it. Iterating requires a callable amplitude learned from fixed node.
 For the energy to decrease with certainty, the learned guide must reach a
 variational energy below the previous fixed-node energy, since
@@ -529,7 +558,12 @@ updates did not, and the energy rose. The consistent objective is the energy
 of the network under the frozen fixed-node Hamiltonian. On $4\times4$ it
 recovers $99.7\%$ of the fixed-node gain with exact information and, trained
 from $10^4$--$10^5$ fresh samples per step, iterates the loop stably toward the
-ground state; testing it at $8\times8$ is the next step. Fixed node then serves as the referee of each
+ground state; testing it at $8\times8$ is the next step. Two costs must be controlled at scale. The number of
+loop iterations stays roughly constant from 16 to 36 sites in the exact loop,
+but the recursive sign definition makes each further Krylov step about two
+orders of magnitude more expensive to evaluate; storing or learning the signs
+after each iteration, instead of recomputing them recursively, would remove
+this growth. Fixed node then serves as the referee of each
 learned step and supplies the reported energy.
 
 The approach also requires a useful starting amplitude and differs from

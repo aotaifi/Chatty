@@ -1,0 +1,11 @@
+{
+ "chain_params": [
+  "base",
+  "/home/a/A.Otaifi/chatty_ll6/runs/it_smoke_16818002/smoke_params.npy"
+ ],
+ "Ts": [
+  -14.985799779143964,
+  -3.7836389262395005
+ ],
+ "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it_smoke_16818002/smoke_params.npy"
+}

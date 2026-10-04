@@ -1,0 +1,5 @@
+job_id=16818144
+host=kng-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_ed.py state_it1.json it1 200000 512
+started=2026-10-04T22:02:10+02:00
+NVIDIA A40, 46068 MiB

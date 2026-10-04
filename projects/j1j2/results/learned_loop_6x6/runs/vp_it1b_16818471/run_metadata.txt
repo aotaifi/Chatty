@@ -1,0 +1,6 @@
+job_id=16818471
+host=kng-cl-nv02.hpc.physik.uni-muenchen.de
+args=ll6_vmcpair.py state_it1b.json it1b 2048 2
+started=2026-10-04T22:53:46+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T23:24:21+02:00

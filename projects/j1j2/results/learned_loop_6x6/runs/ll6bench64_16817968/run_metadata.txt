@@ -1,0 +1,6 @@
+job_id=16817968
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_bench.py float64
+started=2026-10-04T21:02:01+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T21:04:52+02:00

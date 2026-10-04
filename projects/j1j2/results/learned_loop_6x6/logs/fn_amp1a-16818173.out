@@ -1,0 +1,223 @@
+[22:13:21] FN_SETUP state_it1b_amp.json K 1 Ts [-14.985799779143964] M 128 beta 1.2 burn 0.4 seeds [42001, 42002, 42003, 42004, 42005, 42006, 42007, 42008, 42009, 42010, 42011, 42012, 42013, 42014, 42015, 42016, 42017, 42018, 42019, 42020, 42021, 42022, 42023, 42024, 42025, 42026, 42027, 42028, 42029, 42030, 42031, 42032]
+[22:13:34] PROG 42001 1 beta 0.025 E -18.134747569369743 cache 128 amp_new {'base': 397832, '/it1b_16818096/it1b_params.npy': 10521} sec 13.5
+[22:13:39] PROG 42001 11 beta 0.2748 E -18.110771213727098 cache 572 amp_new {'base': 1531693, '/it1b_16818096/it1b_params.npy': 43826} sec 18.7
+[22:13:44] PROG 42001 21 beta 0.5176 E -18.148290967243433 cache 1018 amp_new {'base': 2649390, '/it1b_16818096/it1b_params.npy': 77112} sec 23.8
+[22:13:50] PROG 42001 31 beta 0.7676 E -18.1827731194581 cache 1459 amp_new {'base': 3724436, '/it1b_16818096/it1b_params.npy': 109678} sec 29.0
+[22:13:55] PROG 42001 41 beta 1.0107 E -18.11090644997784 cache 1906 amp_new {'base': 4811505, '/it1b_16818096/it1b_params.npy': 142728} sec 34.1
+[22:14:00] FN_REP {"seed": 42001, "Emean": -18.13217511544616, "Emean_site": -0.5036715309846156, "tail8": -18.14202531267844, "nE": 33, "E_beta0": -18.134747569369743, "E_final": -18.21093724930688, "mean_unique": 127.34693877551021, "sec": 39.02218151092529, "amp_evals": {"base": 5834427, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 173777}, "cache_states": 2324}
+[22:14:00] PROG 42002 1 beta 0.025 E -18.135879745816162 cache 2391 amp_new {'base': 6030785, '/it1b_16818096/it1b_params.npy': 179229} sec 39.8
+[22:14:05] PROG 42002 11 beta 0.2677 E -18.130381037718767 cache 2802 amp_new {'base': 7030545, '/it1b_16818096/it1b_params.npy': 209736} sec 44.8
+[22:14:11] PROG 42002 21 beta 0.499 E -18.12985316577236 cache 3234 amp_new {'base': 8080513, '/it1b_16818096/it1b_params.npy': 241882} sec 50.0
+[22:14:16] PROG 42002 31 beta 0.7484 E -18.116505550035978 cache 3662 amp_new {'base': 9097991, '/it1b_16818096/it1b_params.npy': 273476} sec 55.2
+[22:14:21] PROG 42002 41 beta 0.992 E -18.134399596753166 cache 4096 amp_new {'base': 10119500, '/it1b_16818096/it1b_params.npy': 305354} sec 60.4
+[22:14:26] PROG 42002 51 beta 1.2216 E -18.103911559554575 cache 4484 amp_new {'base': 11025099, '/it1b_16818096/it1b_params.npy': 333824} sec 65.2
+[22:14:26] FN_REP {"seed": 42002, "Emean": -18.117358390334303, "Emean_site": -0.503259955287064, "tail8": -18.092068478007597, "nE": 35, "E_beta0": -18.135879745816162, "E_final": -17.916354456581786, "mean_unique": 127.58823529411765, "sec": 26.734251022338867, "amp_evals": {"base": 11124756, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 336928}, "cache_states": 4526}
+[22:14:27] PROG 42003 1 beta 0.025 E -18.09907329459312 cache 4556 amp_new {'base': 11212458, '/it1b_16818096/it1b_params.npy': 339390} sec 66.2
+[22:14:32] PROG 42003 11 beta 0.2735 E -18.155290205931678 cache 5026 amp_new {'base': 12326629, '/it1b_16818096/it1b_params.npy': 374173} sec 71.8
+[22:14:38] PROG 42003 21 beta 0.5012 E -18.118305828962974 cache 5424 amp_new {'base': 13269483, '/it1b_16818096/it1b_params.npy': 403655} sec 76.9
+[22:14:43] PROG 42003 31 beta 0.7451 E -18.038614799369938 cache 5884 amp_new {'base': 14348822, '/it1b_16818096/it1b_params.npy': 437521} sec 82.5
+[22:14:48] PROG 42003 41 beta 0.9569 E -18.157627944232168 cache 6289 amp_new {'base': 15300747, '/it1b_16818096/it1b_params.npy': 467401} sec 87.7
+[22:14:54] PROG 42003 51 beta 1.2063 E -18.097443000306885 cache 6752 amp_new {'base': 16382295, '/it1b_16818096/it1b_params.npy': 501420} sec 93.4
+[22:14:55] FN_REP {"seed": 42003, "Emean": -18.110811500930414, "Emean_site": -0.5030780972480671, "tail8": -18.122887544507986, "nE": 35, "E_beta0": -18.09907329459312, "E_final": -18.11835991090858, "mean_unique": 127.6078431372549, "sec": 28.245599031448364, "amp_evals": {"base": 16490762, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 504953}, "cache_states": 6801}
+[22:14:55] PROG 42004 1 beta 0.025 E -18.129958543115478 cache 6817 amp_new {'base': 16534680, '/it1b_16818096/it1b_params.npy': 506250} sec 94.3
+[22:15:01] PROG 42004 11 beta 0.273 E -18.13394140038325 cache 7265 amp_new {'base': 17581186, '/it1b_16818096/it1b_params.npy': 539313} sec 99.9
+[22:15:06] PROG 42004 21 beta 0.4857 E -18.134740138369278 cache 7695 amp_new {'base': 18574587, '/it1b_16818096/it1b_params.npy': 570910} sec 105.3
+[22:15:10] PROG 42004 31 beta 0.6624 E -17.99372293597424 cache 8007 amp_new {'base': 19278110, '/it1b_16818096/it1b_params.npy': 593686} sec 109.5
+[22:15:15] PROG 42004 41 beta 0.8896 E -18.122699286638127 cache 8401 amp_new {'base': 20188273, '/it1b_16818096/it1b_params.npy': 622733} sec 114.7
+[22:15:20] PROG 42004 51 beta 1.1066 E -18.116778684515335 cache 8769 amp_new {'base': 21040850, '/it1b_16818096/it1b_params.npy': 649969} sec 119.8
+[22:15:24] FN_REP {"seed": 42004, "Emean": -18.112711602473105, "Emean_site": -0.5031308778464751, "tail8": -18.102205668115868, "nE": 40, "E_beta0": -18.129958543115478, "E_final": -18.06366724640688, "mean_unique": 127.89285714285714, "sec": 28.888257026672363, "amp_evals": {"base": 21564990, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 666830}, "cache_states": 8999}
+[22:15:24] PROG 42005 1 beta 0.0199 E -18.09836968146463 cache 9004 amp_new {'base': 21578144, '/it1b_16818096/it1b_params.npy': 667222} sec 123.1
+[22:15:29] PROG 42005 11 beta 0.239 E -18.076701675983706 cache 9395 amp_new {'base': 22444351, '/it1b_16818096/it1b_params.npy': 695506} sec 128.3
+[22:15:35] PROG 42005 21 beta 0.4765 E -18.095687650990694 cache 9837 amp_new {'base': 23420785, '/it1b_16818096/it1b_params.npy': 727542} sec 133.9
+[22:15:40] PROG 42005 31 beta 0.7152 E -18.11636776853284 cache 10250 amp_new {'base': 24329922, '/it1b_16818096/it1b_params.npy': 757472} sec 139.1
+[22:15:45] PROG 42005 41 beta 0.9268 E -18.091454103652367 cache 10652 amp_new {'base': 25218154, '/it1b_16818096/it1b_params.npy': 786641} sec 144.4
+[22:15:51] PROG 42005 51 beta 1.171 E -18.117823970997065 cache 11101 amp_new {'base': 26187120, '/it1b_16818096/it1b_params.npy': 818900} sec 150.0
+[22:15:52] FN_REP {"seed": 42005, "Emean": -18.122203383105333, "Emean_site": -0.5033945384195926, "tail8": -18.131125989511347, "nE": 36, "E_beta0": -18.09836968146463, "E_final": -18.09790903741721, "mean_unique": 127.88679245283019, "sec": 28.86505627632141, "amp_evals": {"base": 26488460, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 828914}, "cache_states": 11240}
+[22:15:53] PROG 42006 1 beta 0.025 E -18.127292261132276 cache 11246 amp_new {'base': 26502217, '/it1b_16818096/it1b_params.npy': 829365} sec 152.0
+[22:15:58] PROG 42006 11 beta 0.2473 E -18.10223146888239 cache 11637 amp_new {'base': 27326201, '/it1b_16818096/it1b_params.npy': 857206} sec 157.1
+[22:16:03] PROG 42006 21 beta 0.461 E -18.142195266277632 cache 12007 amp_new {'base': 28153530, '/it1b_16818096/it1b_params.npy': 884312} sec 162.2
+[22:16:08] PROG 42006 31 beta 0.6947 E -18.1390293187172 cache 12409 amp_new {'base': 29033730, '/it1b_16818096/it1b_params.npy': 913385} sec 167.5
+[22:16:14] PROG 42006 41 beta 0.9304 E -18.12343630858352 cache 12848 amp_new {'base': 29963846, '/it1b_16818096/it1b_params.npy': 944877} sec 173.1
+[22:16:19] PROG 42006 51 beta 1.1759 E -18.055235224570495 cache 13257 amp_new {'base': 30846028, '/it1b_16818096/it1b_params.npy': 974395} sec 178.5
+[22:16:20] FN_REP {"seed": 42006, "Emean": -18.12178900881143, "Emean_site": -0.5033830280225398, "tail8": -18.096030303028424, "nE": 35, "E_beta0": -18.127292261132276, "E_final": -18.017314723005, "mean_unique": 127.61538461538461, "sec": 27.825371742248535, "amp_evals": {"base": 31032719, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 980595}, "cache_states": 13343}
+[22:16:20] PROG 42007 1 beta 0.0199 E -18.123419448246064 cache 13345 amp_new {'base': 31038581, '/it1b_16818096/it1b_params.npy': 980763} sec 179.8
+[22:16:26] PROG 42007 11 beta 0.2576 E -18.12161346251633 cache 13750 amp_new {'base': 31882317, '/it1b_16818096/it1b_params.npy': 1009506} sec 185.1
+[22:16:32] PROG 42007 21 beta 0.5076 E -18.128492718709694 cache 14219 amp_new {'base': 32867981, '/it1b_16818096/it1b_params.npy': 1043064} sec 191.1
+[22:16:38] PROG 42007 31 beta 0.7558 E -18.10888208692166 cache 14685 amp_new {'base': 33858702, '/it1b_16818096/it1b_params.npy': 1076434} sec 197.2
+[22:16:44] PROG 42007 41 beta 0.9898 E -18.12628988274571 cache 15111 amp_new {'base': 34762405, '/it1b_16818096/it1b_params.npy': 1106837} sec 202.9
+[22:16:49] PROG 42007 51 beta 1.1963 E -18.020466227599854 cache 15507 amp_new {'base': 35604218, '/it1b_16818096/it1b_params.npy': 1135353} sec 208.4
+[22:16:50] FN_REP {"seed": 42007, "Emean": -18.11731459200724, "Emean_site": -0.5032587386668678, "tail8": -18.09719089819965, "nE": 36, "E_beta0": -18.123419448246064, "E_final": -18.133272354075572, "mean_unique": 128.0, "sec": 29.56409502029419, "amp_evals": {"base": 35698577, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1138541}, "cache_states": 15551}
+[22:16:50] PROG 42008 1 beta 0.0199 E -18.105811060529035 cache 15552 amp_new {'base': 35699952, '/it1b_16818096/it1b_params.npy': 1138604} sec 209.4
+[22:16:55] PROG 42008 11 beta 0.2233 E -18.11461096531298 cache 15923 amp_new {'base': 36458725, '/it1b_16818096/it1b_params.npy': 1164809} sec 214.6
+[22:17:01] PROG 42008 21 beta 0.4531 E -18.121719497788007 cache 16318 amp_new {'base': 37288098, '/it1b_16818096/it1b_params.npy': 1193149} sec 220.1
+[22:17:06] PROG 42008 31 beta 0.6906 E -18.108821375546484 cache 16742 amp_new {'base': 38177996, '/it1b_16818096/it1b_params.npy': 1223447} sec 225.8
+[22:17:12] PROG 42008 41 beta 0.9127 E -18.104916953588216 cache 17100 amp_new {'base': 38908708, '/it1b_16818096/it1b_params.npy': 1248859} sec 230.9
+[22:17:18] PROG 42008 51 beta 1.1592 E -18.15373266819869 cache 17583 amp_new {'base': 39919190, '/it1b_16818096/it1b_params.npy': 1283309} sec 237.3
+[22:17:20] FN_REP {"seed": 42008, "Emean": -18.113651404295734, "Emean_site": -0.5031569834526592, "tail8": -18.129766821370787, "nE": 35, "E_beta0": -18.105811060529035, "E_final": -18.137751832483204, "mean_unique": 127.62264150943396, "sec": 30.037528038024902, "amp_evals": {"base": 40208588, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1293447}, "cache_states": 17727}
+[22:17:20] PROG 42009 1 beta 0.0199 E -18.110105262625638 cache 17727 amp_new {'base': 40208588, '/it1b_16818096/it1b_params.npy': 1293447} sec 239.2
+[22:17:25] PROG 42009 11 beta 0.2486 E -18.178063937394988 cache 18134 amp_new {'base': 41025169, '/it1b_16818096/it1b_params.npy': 1322065} sec 244.8
+[22:17:30] PROG 42009 21 beta 0.4415 E -18.11800857520172 cache 18464 amp_new {'base': 41689802, '/it1b_16818096/it1b_params.npy': 1345378} sec 249.6
+[22:17:36] PROG 42009 31 beta 0.6813 E -18.145997975058158 cache 18902 amp_new {'base': 42570999, '/it1b_16818096/it1b_params.npy': 1376295} sec 255.8
+[22:17:43] PROG 42009 41 beta 0.923 E -18.108475627233368 cache 19368 amp_new {'base': 43497421, '/it1b_16818096/it1b_params.npy': 1409050} sec 262.2
+[22:17:48] PROG 42009 51 beta 1.1166 E -18.12017935822046 cache 19690 amp_new {'base': 44137421, '/it1b_16818096/it1b_params.npy': 1431627} sec 267.2
+[22:17:51] FN_REP {"seed": 42009, "Emean": -18.125017112161927, "Emean_site": -0.5034726975600535, "tail8": -18.135088036647964, "nE": 36, "E_beta0": -18.110105262625638, "E_final": -18.08906702380001, "mean_unique": 127.69090909090909, "sec": 30.950976848602295, "amp_evals": {"base": 44555306, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1446406}, "cache_states": 19899}
+[22:17:51] PROG 42010 1 beta 0.0199 E -18.13499128915626 cache 19899 amp_new {'base': 44555306, '/it1b_16818096/it1b_params.npy': 1446406} sec 270.1
+[22:17:55] PROG 42010 11 beta 0.1702 E -18.66397186216556 cache 20191 amp_new {'base': 45125146, '/it1b_16818096/it1b_params.npy': 1466786} sec 274.7
+[22:18:00] PROG 42010 21 beta 0.3864 E -18.107864990582968 cache 20538 amp_new {'base': 45835873, '/it1b_16818096/it1b_params.npy': 1491434} sec 279.8
+[22:18:06] PROG 42010 31 beta 0.625 E -18.148344618164966 cache 20946 amp_new {'base': 46677262, '/it1b_16818096/it1b_params.npy': 1520520} sec 285.7
+[22:18:12] PROG 42010 41 beta 0.8358 E -18.13413015229038 cache 21304 amp_new {'base': 47408529, '/it1b_16818096/it1b_params.npy': 1546038} sec 291.2
+[22:18:18] PROG 42010 51 beta 1.0837 E -18.110699183447384 cache 21758 amp_new {'base': 48332028, '/it1b_16818096/it1b_params.npy': 1578310} sec 297.5
+[22:18:22] FN_REP {"seed": 42010, "Emean": -18.133218451172002, "Emean_site": -0.5037005125325557, "tail8": -18.100540580057434, "nE": 36, "E_beta0": -18.13499128915626, "E_final": -18.071898050168066, "mean_unique": 127.54385964912281, "sec": 31.41862177848816, "amp_evals": {"base": 48902683, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1598592}, "cache_states": 22046}
+[22:18:22] PROG 42011 1 beta 0.025 E -18.103529572265632 cache 22046 amp_new {'base': 48902683, '/it1b_16818096/it1b_params.npy': 1598592} sec 301.6
+[22:18:28] PROG 42011 11 beta 0.275 E -18.09297154084699 cache 22478 amp_new {'base': 49741003, '/it1b_16818096/it1b_params.npy': 1628666} sec 307.6
+[22:18:34] PROG 42011 21 beta 0.4915 E -18.197508994801048 cache 22911 amp_new {'base': 50600406, '/it1b_16818096/it1b_params.npy': 1659384} sec 313.7
+[22:18:40] PROG 42011 31 beta 0.7101 E -18.12762913659393 cache 23270 amp_new {'base': 51295493, '/it1b_16818096/it1b_params.npy': 1684549} sec 319.1
+[22:18:45] PROG 42011 41 beta 0.9234 E -18.12028285704855 cache 23643 amp_new {'base': 52039883, '/it1b_16818096/it1b_params.npy': 1710891} sec 324.7
+[22:18:52] PROG 42011 51 beta 1.1647 E -18.139391758878162 cache 24082 amp_new {'base': 52892490, '/it1b_16818096/it1b_params.npy': 1741548} sec 330.9
+[22:18:53] FN_REP {"seed": 42011, "Emean": -18.13171303814255, "Emean_site": -0.5036586955039597, "tail8": -18.13095279159783, "nE": 37, "E_beta0": -18.103529572265632, "E_final": -18.12747320757114, "mean_unique": 127.88679245283019, "sec": 30.910722494125366, "amp_evals": {"base": 53075598, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1748439}, "cache_states": 24184}
+[22:18:53] PROG 42012 1 beta 0.025 E -18.11891900876424 cache 24184 amp_new {'base': 53075598, '/it1b_16818096/it1b_params.npy': 1748439} sec 332.5
+[22:18:59] PROG 42012 11 beta 0.2717 E -18.128556955347534 cache 24583 amp_new {'base': 53808509, '/it1b_16818096/it1b_params.npy': 1775686} sec 338.2
+[22:19:05] PROG 42012 21 beta 0.5192 E -18.122047661572772 cache 25046 amp_new {'base': 54724455, '/it1b_16818096/it1b_params.npy': 1808502} sec 344.7
+[22:19:11] PROG 42012 31 beta 0.7074 E -18.25581907429707 cache 25398 amp_new {'base': 55404339, '/it1b_16818096/it1b_params.npy': 1833048} sec 350.1
+[22:19:17] PROG 42012 41 beta 0.956 E -18.146602231744122 cache 25816 amp_new {'base': 56199175, '/it1b_16818096/it1b_params.npy': 1862162} sec 356.1
+[22:19:23] PROG 42012 51 beta 1.1885 E -18.110669226309447 cache 26215 amp_new {'base': 56981253, '/it1b_16818096/it1b_params.npy': 1890190} sec 362.1
+[22:19:24] FN_REP {"seed": 42012, "Emean": -18.126436353840987, "Emean_site": -0.5035121209400274, "tail8": -18.08250781331293, "nE": 36, "E_beta0": -18.11891900876424, "E_final": -17.992898398600737, "mean_unique": 127.84615384615384, "sec": 31.086820125579834, "amp_evals": {"base": 57191272, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 1897777}, "cache_states": 26324}
+[22:19:24] PROG 42013 1 beta 0.0199 E -18.118899014952 cache 26324 amp_new {'base': 57191272, '/it1b_16818096/it1b_params.npy': 1897777} sec 363.6
+[22:19:30] PROG 42013 11 beta 0.2466 E -18.120229496526733 cache 26657 amp_new {'base': 57806436, '/it1b_16818096/it1b_params.npy': 1920555} sec 368.9
+[22:19:36] PROG 42013 21 beta 0.4773 E -18.1224269720122 cache 27071 amp_new {'base': 58610070, '/it1b_16818096/it1b_params.npy': 1949523} sec 375.0
+[22:19:42] PROG 42013 31 beta 0.6873 E -17.928763839232236 cache 27465 amp_new {'base': 59368771, '/it1b_16818096/it1b_params.npy': 1977097} sec 380.9
+[22:19:48] PROG 42013 41 beta 0.9213 E -18.125485849295366 cache 27860 amp_new {'base': 60136177, '/it1b_16818096/it1b_params.npy': 2004856} sec 386.9
+[22:19:53] PROG 42013 51 beta 1.134 E -18.127767767976607 cache 28239 amp_new {'base': 60861085, '/it1b_16818096/it1b_params.npy': 2031097} sec 392.7
+[22:19:56] FN_REP {"seed": 42013, "Emean": -18.100000045255566, "Emean_site": -0.5027777790348769, "tail8": -18.118750318154117, "nE": 38, "E_beta0": -18.118899014952, "E_final": -18.131854168391868, "mean_unique": 127.63636363636364, "sec": 31.993056774139404, "amp_evals": {"base": 61211795, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2043502}, "cache_states": 28412}
+[22:19:56] PROG 42014 1 beta 0.0199 E -18.094009399266138 cache 28412 amp_new {'base': 61211795, '/it1b_16818096/it1b_params.npy': 2043502} sec 395.5
+[22:20:02] PROG 42014 11 beta 0.2508 E -18.12962551555859 cache 28764 amp_new {'base': 61837355, '/it1b_16818096/it1b_params.npy': 2067304} sec 401.1
+[22:20:08] PROG 42014 21 beta 0.4667 E -18.151671300242327 cache 29188 amp_new {'base': 62628460, '/it1b_16818096/it1b_params.npy': 2096713} sec 407.4
+[22:20:14] PROG 42014 31 beta 0.6836 E -18.085221425350433 cache 29559 amp_new {'base': 63317420, '/it1b_16818096/it1b_params.npy': 2122244} sec 413.2
+[22:20:20] PROG 42014 41 beta 0.896 E -17.961980324511885 cache 29958 amp_new {'base': 64068609, '/it1b_16818096/it1b_params.npy': 2150066} sec 419.2
+[22:20:25] PROG 42014 51 beta 1.1075 E -18.11916929570196 cache 30291 amp_new {'base': 64717161, '/it1b_16818096/it1b_params.npy': 2173599} sec 424.8
+[22:20:29] FN_REP {"seed": 42014, "Emean": -18.097757181713554, "Emean_site": -0.5027154772698209, "tail8": -18.124383919384957, "nE": 39, "E_beta0": -18.094009399266138, "E_final": -18.118760432152, "mean_unique": 127.7090909090909, "sec": 32.6087532043457, "amp_evals": {"base": 65139683, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2189113}, "cache_states": 30512}
+[22:20:29] PROG 42015 1 beta 0.025 E -18.098172738924546 cache 30512 amp_new {'base': 65139683, '/it1b_16818096/it1b_params.npy': 2189113} sec 428.2
+[22:20:34] PROG 42015 11 beta 0.2615 E -18.119114966414255 cache 30892 amp_new {'base': 65787357, '/it1b_16818096/it1b_params.npy': 2214196} sec 433.9
+[22:20:41] PROG 42015 21 beta 0.4999 E -18.12524234558667 cache 31284 amp_new {'base': 66512610, '/it1b_16818096/it1b_params.npy': 2241300} sec 439.9
+[22:20:47] PROG 42015 31 beta 0.741 E -18.0390553537263 cache 31720 amp_new {'base': 67321904, '/it1b_16818096/it1b_params.npy': 2271473} sec 446.4
+[22:20:53] PROG 42015 41 beta 0.9664 E -18.111550826543198 cache 32095 amp_new {'base': 68012863, '/it1b_16818096/it1b_params.npy': 2297365} sec 452.3
+[22:21:00] PROG 42015 51 beta 1.2035 E -18.13535046250677 cache 32527 amp_new {'base': 68845618, '/it1b_16818096/it1b_params.npy': 2327824} sec 459.1
+[22:21:00] FN_REP {"seed": 42015, "Emean": -18.088304578742793, "Emean_site": -0.5024529049650776, "tail8": -18.128866254409996, "nE": 34, "E_beta0": -18.098172738924546, "E_final": -18.126409708558313, "mean_unique": 127.92156862745098, "sec": 31.555898666381836, "amp_evals": {"base": 68918199, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2330413}, "cache_states": 32563}
+[22:21:00] PROG 42016 1 beta 0.025 E -18.109109948922892 cache 32563 amp_new {'base': 68918199, '/it1b_16818096/it1b_params.npy': 2330413} sec 459.7
+[22:21:06] PROG 42016 11 beta 0.2589 E -18.11475179792076 cache 32943 amp_new {'base': 69579482, '/it1b_16818096/it1b_params.npy': 2355827} sec 465.8
+[22:21:13] PROG 42016 21 beta 0.5048 E -18.130373547115656 cache 33402 amp_new {'base': 70418547, '/it1b_16818096/it1b_params.npy': 2387488} sec 472.7
+[22:21:20] PROG 42016 31 beta 0.7471 E -18.12351259878718 cache 33827 amp_new {'base': 71195182, '/it1b_16818096/it1b_params.npy': 2416888} sec 479.4
+[22:21:27] PROG 42016 41 beta 0.9946 E -18.111844289655803 cache 34253 amp_new {'base': 71993574, '/it1b_16818096/it1b_params.npy': 2446635} sec 486.1
+[22:21:34] FN_REP {"seed": 42016, "Emean": -18.12058988621593, "Emean_site": -0.5033497190615537, "tail8": -18.11993488867843, "nE": 34, "E_beta0": -18.109109948922892, "E_final": -18.101439657283365, "mean_unique": 127.88, "sec": 33.258676290512085, "amp_evals": {"base": 72823913, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2477338}, "cache_states": 34689}
+[22:21:34] PROG 42017 1 beta 0.025 E -18.120560534648096 cache 34689 amp_new {'base': 72823913, '/it1b_16818096/it1b_params.npy': 2477338} sec 493.0
+[22:21:40] PROG 42017 11 beta 0.2505 E -18.123398924326906 cache 35050 amp_new {'base': 73438137, '/it1b_16818096/it1b_params.npy': 2501683} sec 498.9
+[22:21:45] PROG 42017 21 beta 0.4649 E -18.144684949951007 cache 35401 amp_new {'base': 74076960, '/it1b_16818096/it1b_params.npy': 2525864} sec 504.7
+[22:21:51] PROG 42017 31 beta 0.682 E -18.12634353136765 cache 35757 amp_new {'base': 74698866, '/it1b_16818096/it1b_params.npy': 2550040} sec 510.6
+[22:21:58] PROG 42017 41 beta 0.9178 E -17.944483423209597 cache 36163 amp_new {'base': 75414666, '/it1b_16818096/it1b_params.npy': 2577636} sec 516.9
+[22:22:04] PROG 42017 51 beta 1.1486 E -18.126255282874112 cache 36548 amp_new {'base': 76123795, '/it1b_16818096/it1b_params.npy': 2604301} sec 523.3
+[22:22:07] FN_REP {"seed": 42017, "Emean": -18.09604626638733, "Emean_site": -0.5026679518440925, "tail8": -18.101659885836437, "nE": 36, "E_beta0": -18.120560534648096, "E_final": -18.131231731865178, "mean_unique": 127.77777777777777, "sec": 32.96418738365173, "amp_evals": {"base": 76435471, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2616307}, "cache_states": 36724}
+[22:22:07] PROG 42018 1 beta 0.025 E -18.095593819897058 cache 36724 amp_new {'base': 76435471, '/it1b_16818096/it1b_params.npy': 2616307} sec 525.9
+[22:22:12] PROG 42018 11 beta 0.2455 E -18.11319286065507 cache 37034 amp_new {'base': 76941609, '/it1b_16818096/it1b_params.npy': 2636636} sec 531.3
+[22:22:19] PROG 42018 21 beta 0.4744 E -18.1220158377186 cache 37443 amp_new {'base': 77676228, '/it1b_16818096/it1b_params.npy': 2664651} sec 537.9
+[22:22:25] PROG 42018 31 beta 0.7116 E -18.108591938867146 cache 37841 amp_new {'base': 78390756, '/it1b_16818096/it1b_params.npy': 2692035} sec 544.3
+[22:22:32] PROG 42018 41 beta 0.9391 E -18.12057346711783 cache 38267 amp_new {'base': 79131437, '/it1b_16818096/it1b_params.npy': 2720857} sec 551.0
+[22:22:38] PROG 42018 51 beta 1.1759 E -18.117606597630306 cache 38691 amp_new {'base': 79910189, '/it1b_16818096/it1b_params.npy': 2750119} sec 557.7
+[22:22:40] FN_REP {"seed": 42018, "Emean": -18.119727534413244, "Emean_site": -0.5033257648448123, "tail8": -18.117223964778635, "nE": 36, "E_beta0": -18.095593819897058, "E_final": -18.114637337573967, "mean_unique": 127.9622641509434, "sec": 33.54202485084534, "amp_evals": {"base": 80096376, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2757004}, "cache_states": 38790}
+[22:22:40] PROG 42019 1 beta 0.025 E -18.11041721017605 cache 38790 amp_new {'base': 80096376, '/it1b_16818096/it1b_params.npy': 2757004} sec 559.5
+[22:22:46] PROG 42019 11 beta 0.2391 E -18.134821703375618 cache 39125 amp_new {'base': 80662424, '/it1b_16818096/it1b_params.npy': 2779188} sec 565.3
+[22:22:53] PROG 42019 21 beta 0.4698 E -18.147186672411532 cache 39544 amp_new {'base': 81437756, '/it1b_16818096/it1b_params.npy': 2808142} sec 572.2
+[22:22:59] PROG 42019 31 beta 0.6608 E -18.14337187150761 cache 39930 amp_new {'base': 82177055, '/it1b_16818096/it1b_params.npy': 2835339} sec 578.8
+[22:23:06] PROG 42019 41 beta 0.8915 E -18.144388330980167 cache 40335 amp_new {'base': 82931628, '/it1b_16818096/it1b_params.npy': 2863555} sec 585.5
+[22:23:13] PROG 42019 51 beta 1.1303 E -18.106643346872186 cache 40751 amp_new {'base': 83665303, '/it1b_16818096/it1b_params.npy': 2891997} sec 592.2
+[22:23:16] FN_REP {"seed": 42019, "Emean": -18.125640444425024, "Emean_site": -0.5034900123451396, "tail8": -18.10843713650386, "nE": 37, "E_beta0": -18.11041721017605, "E_final": -18.112643408777707, "mean_unique": 127.81818181818181, "sec": 35.86920213699341, "amp_evals": {"base": 83996831, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 2904766}, "cache_states": 40940}
+[22:23:16] PROG 42020 1 beta 0.0199 E -18.105715420683204 cache 40940 amp_new {'base': 83996831, '/it1b_16818096/it1b_params.npy': 2904766} sec 595.3
+[22:23:22] PROG 42020 11 beta 0.2357 E -18.117655155861115 cache 41301 amp_new {'base': 84571783, '/it1b_16818096/it1b_params.npy': 2928084} sec 601.4
+[22:23:28] PROG 42020 21 beta 0.4473 E -18.07763708665281 cache 41635 amp_new {'base': 85155335, '/it1b_16818096/it1b_params.npy': 2950812} sec 607.3
+[22:23:35] PROG 42020 31 beta 0.6962 E -18.091634855702402 cache 42077 amp_new {'base': 85950078, '/it1b_16818096/it1b_params.npy': 2981393} sec 614.4
+[22:23:42] PROG 42020 41 beta 0.9259 E -17.903820538972457 cache 42502 amp_new {'base': 86713841, '/it1b_16818096/it1b_params.npy': 3010773} sec 621.4
+[22:23:49] PROG 42020 51 beta 1.1396 E -18.128556620436555 cache 42895 amp_new {'base': 87418588, '/it1b_16818096/it1b_params.npy': 3037806} sec 628.0
+[22:23:51] FN_REP {"seed": 42020, "Emean": -18.095707192819997, "Emean_site": -0.5026585331338889, "tail8": -18.12623310751444, "nE": 35, "E_beta0": -18.105715420683204, "E_final": -18.110332313654062, "mean_unique": 127.85185185185185, "sec": 35.27486228942871, "amp_evals": {"base": 87696693, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3048748}, "cache_states": 43055}
+[22:23:51] PROG 42021 1 beta 0.0199 E -18.13755256823056 cache 43055 amp_new {'base': 87696693, '/it1b_16818096/it1b_params.npy': 3048748} sec 630.6
+[22:23:58] PROG 42021 11 beta 0.2575 E -18.142473939591778 cache 43430 amp_new {'base': 88305268, '/it1b_16818096/it1b_params.npy': 3073416} sec 636.9
+[22:24:04] PROG 42021 21 beta 0.5053 E -18.103885956654942 cache 43849 amp_new {'base': 89008975, '/it1b_16818096/it1b_params.npy': 3101304} sec 643.8
+[22:24:11] PROG 42021 31 beta 0.7553 E -18.113678023061517 cache 44287 amp_new {'base': 89762672, '/it1b_16818096/it1b_params.npy': 3130937} sec 650.8
+[22:24:17] PROG 42021 41 beta 0.9603 E -18.078473132424023 cache 44610 amp_new {'base': 90322250, '/it1b_16818096/it1b_params.npy': 3152849} sec 656.9
+[22:24:24] PROG 42021 51 beta 1.2016 E -18.114064276950806 cache 45032 amp_new {'base': 91066884, '/it1b_16818096/it1b_params.npy': 3181758} sec 663.8
+[22:24:25] FN_REP {"seed": 42021, "Emean": -18.111158547826, "Emean_site": -0.5030877374396111, "tail8": -18.11152250119778, "nE": 35, "E_beta0": -18.13755256823056, "E_final": -18.11507576558686, "mean_unique": 127.86274509803921, "sec": 33.861382246017456, "amp_evals": {"base": 91142949, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3184822}, "cache_states": 45077}
+[22:24:25] PROG 42022 1 beta 0.025 E -18.11709567474648 cache 45077 amp_new {'base': 91142949, '/it1b_16818096/it1b_params.npy': 3184822} sec 664.5
+[22:24:31] PROG 42022 11 beta 0.2641 E -18.11756897697066 cache 45425 amp_new {'base': 91686974, '/it1b_16818096/it1b_params.npy': 3207414} sec 670.6
+[22:24:38] PROG 42022 21 beta 0.4996 E -18.123833231376175 cache 45851 amp_new {'base': 92391923, '/it1b_16818096/it1b_params.npy': 3235878} sec 677.5
+[22:24:45] PROG 42022 31 beta 0.7407 E -18.112771858047275 cache 46272 amp_new {'base': 93085808, '/it1b_16818096/it1b_params.npy': 3264134} sec 684.3
+[22:24:51] PROG 42022 41 beta 0.9421 E -18.153870710107803 cache 46630 amp_new {'base': 93698422, '/it1b_16818096/it1b_params.npy': 3288544} sec 690.8
+[22:24:58] PROG 42022 51 beta 1.1709 E -18.12119787178034 cache 47025 amp_new {'base': 94386074, '/it1b_16818096/it1b_params.npy': 3315664} sec 697.5
+[22:25:00] FN_REP {"seed": 42022, "Emean": -18.12574824756776, "Emean_site": -0.5034930068768823, "tail8": -18.133661974992975, "nE": 36, "E_beta0": -18.11709567474648, "E_final": -18.15354563906583, "mean_unique": 127.84905660377359, "sec": 35.18974852561951, "amp_evals": {"base": 94614673, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3324779}, "cache_states": 47158}
+[22:25:00] PROG 42023 1 beta 0.025 E -18.092932517111727 cache 47158 amp_new {'base': 94614673, '/it1b_16818096/it1b_params.npy': 3324779} sec 699.7
+[22:25:06] PROG 42023 11 beta 0.2191 E -18.131639927887953 cache 47451 amp_new {'base': 95078499, '/it1b_16818096/it1b_params.npy': 3343776} sec 705.4
+[22:25:13] PROG 42023 21 beta 0.4572 E -18.11721625067354 cache 47882 amp_new {'base': 95819630, '/it1b_16818096/it1b_params.npy': 3372833} sec 712.5
+[22:25:20] PROG 42023 31 beta 0.6973 E -18.13029691772144 cache 48320 amp_new {'base': 96597843, '/it1b_16818096/it1b_params.npy': 3402921} sec 719.8
+[22:25:27] PROG 42023 41 beta 0.9338 E -18.11592804437151 cache 48737 amp_new {'base': 97314457, '/it1b_16818096/it1b_params.npy': 3431202} sec 726.8
+[22:25:35] PROG 42023 51 beta 1.1631 E -18.09268220046889 cache 49151 amp_new {'base': 98042792, '/it1b_16818096/it1b_params.npy': 3459618} sec 733.9
+[22:25:37] FN_REP {"seed": 42023, "Emean": -18.11071447199495, "Emean_site": -0.5030754019998597, "tail8": -18.09605501625012, "nE": 35, "E_beta0": -18.092932517111727, "E_final": -18.10154450856423, "mean_unique": 127.88679245283019, "sec": 36.455679416656494, "amp_evals": {"base": 98275086, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3468639}, "cache_states": 49279}
+[22:25:37] PROG 42024 1 beta 0.025 E -18.099919123423753 cache 49279 amp_new {'base': 98275086, '/it1b_16818096/it1b_params.npy': 3468639} sec 736.1
+[22:25:43] PROG 42024 11 beta 0.2713 E -18.132344467636123 cache 49667 amp_new {'base': 98871554, '/it1b_16818096/it1b_params.npy': 3493470} sec 742.9
+[22:25:50] PROG 42024 21 beta 0.5036 E -18.123689191266834 cache 50051 amp_new {'base': 99505029, '/it1b_16818096/it1b_params.npy': 3519093} sec 749.7
+[22:25:57] PROG 42024 31 beta 0.7483 E -18.11584289818073 cache 50473 amp_new {'base': 100215694, '/it1b_16818096/it1b_params.npy': 3547504} sec 756.8
+[22:26:04] PROG 42024 41 beta 0.9818 E -18.13264013659206 cache 50842 amp_new {'base': 100808668, '/it1b_16818096/it1b_params.npy': 3571816} sec 763.6
+[22:26:12] PROG 42024 51 beta 1.2187 E -18.10975953057769 cache 51278 amp_new {'base': 101539905, '/it1b_16818096/it1b_params.npy': 3600942} sec 771.0
+[22:26:12] FN_REP {"seed": 42024, "Emean": -18.120401081845586, "Emean_site": -0.5033444744957107, "tail8": -18.117239822158908, "nE": 35, "E_beta0": -18.099919123423753, "E_final": -18.099232867473347, "mean_unique": 127.62745098039215, "sec": 35.49977946281433, "amp_evals": {"base": 101603617, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3603505}, "cache_states": 51316}
+[22:26:12] PROG 42025 1 beta 0.025 E -18.135000503042555 cache 51316 amp_new {'base': 101603617, '/it1b_16818096/it1b_params.npy': 3603505} sec 771.6
+[22:26:19] PROG 42025 11 beta 0.2422 E -18.137286150536212 cache 51669 amp_new {'base': 102123427, '/it1b_16818096/it1b_params.npy': 3625895} sec 778.0
+[22:26:25] PROG 42025 21 beta 0.476 E -18.1221507002211 cache 52021 amp_new {'base': 102665879, '/it1b_16818096/it1b_params.npy': 3648869} sec 784.5
+[22:26:32] PROG 42025 31 beta 0.712 E -18.12905574365393 cache 52432 amp_new {'base': 103336972, '/it1b_16818096/it1b_params.npy': 3676308} sec 791.8
+[22:26:40] PROG 42025 41 beta 0.9575 E -18.11494159677327 cache 52859 amp_new {'base': 104067670, '/it1b_16818096/it1b_params.npy': 3705496} sec 799.2
+[22:26:47] PROG 42025 51 beta 1.1871 E -18.117098075511933 cache 53255 amp_new {'base': 104724088, '/it1b_16818096/it1b_params.npy': 3732097} sec 806.3
+[22:26:48] FN_REP {"seed": 42025, "Emean": -18.12100325538365, "Emean_site": -0.5033612015384347, "tail8": -18.117507784351055, "nE": 35, "E_beta0": -18.135000503042555, "E_final": -18.080181736009063, "mean_unique": 127.67307692307692, "sec": 36.06335639953613, "amp_evals": {"base": 104847627, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3737229}, "cache_states": 53332}
+[22:26:48] PROG 42026 1 beta 0.025 E -18.093038420178406 cache 53332 amp_new {'base': 104847627, '/it1b_16818096/it1b_params.npy': 3737229} sec 807.7
+[22:26:55] PROG 42026 11 beta 0.2696 E -18.11934032339454 cache 53724 amp_new {'base': 105468488, '/it1b_16818096/it1b_params.npy': 3762809} sec 814.7
+[22:27:02] PROG 42026 21 beta 0.4794 E -18.116835654564813 cache 54084 amp_new {'base': 106061158, '/it1b_16818096/it1b_params.npy': 3786682} sec 821.6
+[22:27:10] PROG 42026 31 beta 0.69 E -18.143138959459947 cache 54490 amp_new {'base': 106744898, '/it1b_16818096/it1b_params.npy': 3814012} sec 828.9
+[22:27:17] PROG 42026 41 beta 0.9116 E -18.116809517445027 cache 54876 amp_new {'base': 107400819, '/it1b_16818096/it1b_params.npy': 3840159} sec 836.2
+[22:27:24] PROG 42026 51 beta 1.1408 E -18.151394977568437 cache 55271 amp_new {'base': 108047214, '/it1b_16818096/it1b_params.npy': 3866413} sec 843.3
+[22:27:27] FN_REP {"seed": 42026, "Emean": -18.10351465865155, "Emean_site": -0.5028754071847653, "tail8": -18.124638967150787, "nE": 37, "E_beta0": -18.093038420178406, "E_final": -18.08309829118642, "mean_unique": 127.66666666666667, "sec": 38.52857255935669, "amp_evals": {"base": 108308140, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 3876917}, "cache_states": 55427}
+[22:27:27] PROG 42027 1 beta 0.025 E -18.12370628075028 cache 55427 amp_new {'base': 108308140, '/it1b_16818096/it1b_params.npy': 3876917} sec 846.2
+[22:27:34] PROG 42027 11 beta 0.2608 E -18.132324692270206 cache 55813 amp_new {'base': 108884125, '/it1b_16818096/it1b_params.npy': 3901425} sec 853.2
+[22:27:41] PROG 42027 21 beta 0.5081 E -18.136228041061702 cache 56216 amp_new {'base': 109515419, '/it1b_16818096/it1b_params.npy': 3927806} sec 860.6
+[22:27:49] PROG 42027 31 beta 0.7581 E -18.108161079834858 cache 56633 amp_new {'base': 110137693, '/it1b_16818096/it1b_params.npy': 3954940} sec 867.9
+[22:27:56] PROG 42027 41 beta 1.0081 E -18.10852377713825 cache 57048 amp_new {'base': 110799378, '/it1b_16818096/it1b_params.npy': 3982453} sec 875.2
+[22:28:03] FN_REP {"seed": 42027, "Emean": -18.11098266497763, "Emean_site": -0.5030828518049342, "tail8": -18.084398176591968, "nE": 34, "E_beta0": -18.12370628075028, "E_final": -18.111958557940866, "mean_unique": 127.92, "sec": 36.17205286026001, "amp_evals": {"base": 111427331, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4008459}, "cache_states": 57437}
+[22:28:03] PROG 42028 1 beta 0.0199 E -18.14248032926702 cache 57437 amp_new {'base': 111427331, '/it1b_16818096/it1b_params.npy': 4008459} sec 882.4
+[22:28:10] PROG 42028 11 beta 0.2666 E -18.12195530100415 cache 57789 amp_new {'base': 111918478, '/it1b_16818096/it1b_params.npy': 4030371} sec 889.0
+[22:28:17] PROG 42028 21 beta 0.4815 E -18.12335231788819 cache 58172 amp_new {'base': 112527007, '/it1b_16818096/it1b_params.npy': 4055464} sec 896.3
+[22:28:24] PROG 42028 31 beta 0.7215 E -18.13251733347253 cache 58553 amp_new {'base': 113156390, '/it1b_16818096/it1b_params.npy': 4080938} sec 903.5
+[22:28:32] PROG 42028 41 beta 0.9634 E -18.12314055331615 cache 58957 amp_new {'base': 113818539, '/it1b_16818096/it1b_params.npy': 4107979} sec 911.0
+[22:28:39] PROG 42028 51 beta 1.2 E -18.11908289606037 cache 59356 amp_new {'base': 114467565, '/it1b_16818096/it1b_params.npy': 4134795} sec 918.5
+[22:28:40] FN_REP {"seed": 42028, "Emean": -18.117671363428038, "Emean_site": -0.5032686489841122, "tail8": -18.108422699750918, "nE": 35, "E_beta0": -18.14248032926702, "E_final": -18.114484927828702, "mean_unique": 127.37254901960785, "sec": 36.9088191986084, "amp_evals": {"base": 114539577, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4137541}, "cache_states": 59396}
+[22:28:40] PROG 42029 1 beta 0.0199 E -18.102883394623106 cache 59396 amp_new {'base': 114539577, '/it1b_16818096/it1b_params.npy': 4137541} sec 919.3
+[22:28:47] PROG 42029 11 beta 0.256 E -18.123960917182224 cache 59774 amp_new {'base': 115108593, '/it1b_16818096/it1b_params.npy': 4161711} sec 926.2
+[22:28:54] PROG 42029 21 beta 0.5058 E -18.099430738418803 cache 60194 amp_new {'base': 115785206, '/it1b_16818096/it1b_params.npy': 4189729} sec 933.8
+[22:29:02] PROG 42029 31 beta 0.7537 E -18.10766041505281 cache 60649 amp_new {'base': 116567520, '/it1b_16818096/it1b_params.npy': 4220888} sec 941.8
+[22:29:09] PROG 42029 41 beta 0.954 E -18.13669792888371 cache 60987 amp_new {'base': 117129564, '/it1b_16818096/it1b_params.npy': 4243823} sec 948.9
+[22:29:17] PROG 42029 51 beta 1.1912 E -18.100816818044052 cache 61398 amp_new {'base': 117799387, '/it1b_16818096/it1b_params.npy': 4271351} sec 956.4
+[22:29:19] FN_REP {"seed": 42029, "Emean": -18.12028726426768, "Emean_site": -0.5033413128963244, "tail8": -18.12391887697159, "nE": 36, "E_beta0": -18.102883394623106, "E_final": -18.125693075746895, "mean_unique": 127.53846153846153, "sec": 38.60606503486633, "amp_evals": {"base": 117938462, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4277062}, "cache_states": 61484}
+[22:29:19] PROG 42030 1 beta 0.0199 E -18.13898607919155 cache 61484 amp_new {'base': 117938462, '/it1b_16818096/it1b_params.npy': 4277062} sec 957.9
+[22:29:25] PROG 42030 11 beta 0.2656 E -18.116976392153525 cache 61830 amp_new {'base': 118430956, '/it1b_16818096/it1b_params.npy': 4298721} sec 964.7
+[22:29:33] PROG 42030 21 beta 0.5051 E -18.114145401811783 cache 62228 amp_new {'base': 119046903, '/it1b_16818096/it1b_params.npy': 4324823} sec 972.1
+[22:29:40] PROG 42030 31 beta 0.7131 E -17.949425707678884 cache 62586 amp_new {'base': 119616639, '/it1b_16818096/it1b_params.npy': 4348486} sec 979.3
+[22:29:46] PROG 42030 41 beta 0.8713 E -18.129242344513102 cache 62842 amp_new {'base': 120028933, '/it1b_16818096/it1b_params.npy': 4365422} sec 985.6
+[22:29:54] PROG 42030 51 beta 1.1078 E -18.149835663327597 cache 63287 amp_new {'base': 120766549, '/it1b_16818096/it1b_params.npy': 4395526} sec 993.7
+[22:29:59] FN_REP {"seed": 42030, "Emean": -18.0961412777928, "Emean_site": -0.5026705910497999, "tail8": -18.138985405752372, "nE": 40, "E_beta0": -18.13898607919155, "E_final": -18.16433038620955, "mean_unique": 127.82142857142857, "sec": 40.39477229118347, "amp_evals": {"base": 121146477, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4410934}, "cache_states": 63516}
+[22:29:59] PROG 42031 1 beta 0.0199 E -18.134261552472562 cache 63516 amp_new {'base': 121146477, '/it1b_16818096/it1b_params.npy': 4410934} sec 998.3
+[22:30:06] PROG 42031 11 beta 0.2639 E -18.110902204606152 cache 63890 amp_new {'base': 121712712, '/it1b_16818096/it1b_params.npy': 4434795} sec 1005.6
+[22:30:14] PROG 42031 21 beta 0.4875 E -18.13371568719414 cache 64276 amp_new {'base': 122320281, '/it1b_16818096/it1b_params.npy': 4460195} sec 1013.2
+[22:30:22] PROG 42031 31 beta 0.7346 E -18.12668387503175 cache 64688 amp_new {'base': 122968131, '/it1b_16818096/it1b_params.npy': 4487535} sec 1021.0
+[22:30:29] PROG 42031 41 beta 0.9658 E -18.160175188450136 cache 65098 amp_new {'base': 123629164, '/it1b_16818096/it1b_params.npy': 4514715} sec 1028.8
+[22:30:37] PROG 42031 51 beta 1.1898 E -18.126429674989424 cache 65477 amp_new {'base': 124231806, '/it1b_16818096/it1b_params.npy': 4539857} sec 1036.3
+[22:30:38] FN_REP {"seed": 42031, "Emean": -18.123430526651664, "Emean_site": -0.503428625740324, "tail8": -18.12103847594897, "nE": 35, "E_beta0": -18.134261552472562, "E_final": -18.133845827366756, "mean_unique": 127.90384615384616, "sec": 39.36920213699341, "amp_evals": {"base": 124324757, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4543920}, "cache_states": 65540}
+[22:30:38] PROG 42032 1 beta 0.0199 E -18.135353897187503 cache 65540 amp_new {'base': 124324757, '/it1b_16818096/it1b_params.npy': 4543920} sec 1037.7
+[22:30:45] PROG 42032 11 beta 0.2251 E -18.171873745427522 cache 65852 amp_new {'base': 124776646, '/it1b_16818096/it1b_params.npy': 4563510} sec 1044.5
+[22:30:53] PROG 42032 21 beta 0.4473 E -18.12427631704184 cache 66252 amp_new {'base': 125417467, '/it1b_16818096/it1b_params.npy': 4590000} sec 1052.4
+[22:31:01] PROG 42032 31 beta 0.6874 E -18.110093504891218 cache 66647 amp_new {'base': 126075912, '/it1b_16818096/it1b_params.npy': 4616605} sec 1060.3
+[22:31:09] PROG 42032 41 beta 0.9087 E -18.110466754195834 cache 67044 amp_new {'base': 126696531, '/it1b_16818096/it1b_params.npy': 4642583} sec 1067.9
+[22:31:16] PROG 42032 51 beta 1.1393 E -17.90602327665151 cache 67442 amp_new {'base': 127326756, '/it1b_16818096/it1b_params.npy': 4668865} sec 1075.6
+[22:31:19] FN_REP {"seed": 42032, "Emean": -18.110095757658193, "Emean_site": -0.5030582154905053, "tail8": -18.10158747563805, "nE": 36, "E_beta0": -18.135353897187503, "E_final": -18.122714267220616, "mean_unique": 127.72222222222223, "sec": 41.06277322769165, "amp_evals": {"base": 127572176, "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 4679234}, "cache_states": 67599}
+[22:31:19] FN_SUMMARY amp1a -0.5031938560770313 5.7508295565682496e-05

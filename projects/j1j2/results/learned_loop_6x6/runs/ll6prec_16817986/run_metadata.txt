@@ -1,0 +1,6 @@
+job_id=16817986
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=-c import subprocess,sys; subprocess.run(["bash","prec_test.sh"])
+started=2026-10-04T21:04:31+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T21:04:31+02:00

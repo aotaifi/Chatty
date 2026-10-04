@@ -1,0 +1,7 @@
+job_id=16818105
+host=th-cl-262h02n3.hpc.physik.uni-muenchen.de
+cpus=32
+tag=sym6x6_and_m3
+args=--method anderson --m 3 --maxiter 600 --stop-eps 1e-7 --resume
+started=2026-10-04T21:46:05+02:00
+finished=2026-10-04T23:39:51+02:00

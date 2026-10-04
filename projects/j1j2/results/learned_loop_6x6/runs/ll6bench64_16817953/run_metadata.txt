@@ -1,0 +1,5 @@
+job_id=16817953
+host=cip-cl-h01g06n2.hpc.physik.uni-muenchen.de
+args=ll6_bench.py float64
+started=2026-10-04T20:58:30+02:00
+NVIDIA A40-24Q, 24576 MiB

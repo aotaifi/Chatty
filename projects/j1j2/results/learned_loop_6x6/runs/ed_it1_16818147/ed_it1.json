@@ -1,0 +1,48 @@
+{
+ "state": {
+  "chain_params": [
+   "base",
+   "/home/a/A.Otaifi/chatty_ll6/runs/it1_16818020/it1_params.npy"
+  ],
+  "Ts": [
+   -14.985799779143964,
+   -1.7020081211097309
+  ],
+  "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it1_16818020/it1_params.npy"
+ },
+ "tag": "it1",
+ "n": 200000,
+ "K": 2,
+ "sec": 2718.0271747112274,
+ "evals": 636012950,
+ "w_s0": {
+  "w": 0.019865,
+  "err": 0.0003120126742217373,
+  "nwrong": 3973,
+  "global_sign": 1
+ },
+ "w_s1": {
+  "w": 0.00113,
+  "err": 7.512400082530216e-05,
+  "nwrong": 226,
+  "global_sign": 1
+ },
+ "w_s2": {
+  "w": 0.00024,
+  "err": 3.463685897999413e-05,
+  "nwrong": 48,
+  "global_sign": 1
+ },
+ "paired_w1_minus_w0": {
+  "mean": -0.018735,
+  "err": 0.00030703496580577127,
+  "changed": 3841
+ },
+ "paired_w2_minus_w1": {
+  "mean": -0.00089,
+  "err": 6.667879520738699e-05,
+  "changed": 178
+ },
+ "std_dlog_a0_base": 0.047755390781477836,
+ "std_dlog_a_guide": 0.047755390781477836
+}

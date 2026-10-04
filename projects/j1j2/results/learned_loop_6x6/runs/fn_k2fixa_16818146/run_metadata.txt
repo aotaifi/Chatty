@@ -1,0 +1,6 @@
+job_id=16818146
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_fn.py state_it1.json k2fixa 128 1.2 0.4 0.025 43001 43002 43003 43004
+started=2026-10-04T22:02:40+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T22:47:51+02:00

@@ -1,0 +1,5 @@
+job_id=16818473
+host=kng-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_iter.py --state state_it1b.json --out it2amp --ntr 2048 --nva 4096 --sr-steps 6 --trust 0.02 --shift 10 --neval-chains 2048 --neval-rounds 1 --skip-sign --seed 3
+started=2026-10-04T23:44:22+02:00
+NVIDIA A40, 46068 MiB

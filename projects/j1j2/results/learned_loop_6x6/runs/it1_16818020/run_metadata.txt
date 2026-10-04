@@ -1,0 +1,6 @@
+job_id=16818020
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_iter.py --state state_base.json --out it1 --ntr 2048 --nva 2048 --sr-steps 20 --trust 0.02 --shift 0.05 --neval-chains 2048 --neval-rounds 2 --nthr-chains 1024 --nthr-rounds 2
+started=2026-10-04T21:16:34+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T22:01:35+02:00

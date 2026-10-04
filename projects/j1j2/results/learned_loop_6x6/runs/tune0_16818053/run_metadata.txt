@@ -1,0 +1,5 @@
+job_id=16818053
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_tune.py --state state_base.json --out tune0
+started=2026-10-04T21:35:37+02:00
+NVIDIA A40, 46068 MiB

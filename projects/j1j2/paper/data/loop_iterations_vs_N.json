@@ -1,0 +1,82 @@
+{
+ "source": "krylov_sign_structure/results/closed_fn_krylov_6x6/iterations_vs_N_table.txt",
+ "note": "exact FN/Krylov loop from the J2=0 amplitude with Marshall signs; iterations to reach rel. energy error <1e-6 and wrong-sign probability <1e-8",
+ "rows": {
+  "anderson": [
+   {
+    "N": 16,
+    "eps_1e6": 32,
+    "ws_1e8": 28,
+    "partial": false
+   },
+   {
+    "N": 20,
+    "eps_1e6": 32,
+    "ws_1e8": 39,
+    "partial": false
+   },
+   {
+    "N": 24,
+    "eps_1e6": 52,
+    "ws_1e8": 54,
+    "partial": false
+   },
+   {
+    "N": 28,
+    "eps_1e6": 56,
+    "ws_1e8": 70,
+    "partial": false
+   },
+   {
+    "N": 32,
+    "eps_1e6": 42,
+    "ws_1e8": 42,
+    "partial": false
+   },
+   {
+    "N": 36,
+    "eps_1e6": 57,
+    "ws_1e8": 60,
+    "partial": false
+   }
+  ],
+  "plain": [
+   {
+    "N": 16,
+    "eps_1e6": 104,
+    "ws_1e8": 100,
+    "partial": false
+   },
+   {
+    "N": 20,
+    "eps_1e6": 87,
+    "ws_1e8": 125,
+    "partial": false
+   },
+   {
+    "N": 24,
+    "eps_1e6": 82,
+    "ws_1e8": 89,
+    "partial": false
+   },
+   {
+    "N": 28,
+    "eps_1e6": 88,
+    "ws_1e8": 116,
+    "partial": false
+   },
+   {
+    "N": 32,
+    "eps_1e6": 84,
+    "ws_1e8": 95,
+    "partial": false
+   },
+   {
+    "N": 36,
+    "eps_1e6": 99,
+    "ws_1e8": 123,
+    "partial": true
+   }
+  ]
+ }
+}

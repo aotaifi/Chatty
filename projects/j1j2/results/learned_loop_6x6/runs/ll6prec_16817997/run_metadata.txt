@@ -1,0 +1,6 @@
+job_id=16817997
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=prec_driver.py
+started=2026-10-04T21:07:02+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T21:08:30+02:00

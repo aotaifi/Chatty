@@ -83,6 +83,20 @@ def fig4_fn_krylov_loop():
     ax[1].legend(frameon=False,fontsize=6.6,loc="center left",bbox_to_anchor=(1.02,.5))
     save(fig,"fig5_fn_krylov_loop.png")
 
+def fig_loop_scaling():
+    """Iterations of the exact FN/Krylov loop vs number of sites (16..36), plain and Anderson."""
+    d=json.load(open(DATA/"loop_iterations_vs_N.json"))["rows"]
+    fig,ax=plt.subplots(1,2,figsize=(6.4,2.7),gridspec_kw=dict(wspace=.4))
+    for kind,lab,c,m in (("plain",r"$a\leftarrow\phi_{\rm FN}$","C0","o"),("anderson",r"$a\leftarrow\phi_{\rm FN}$ + Anderson","C3","^")):
+        r=sorted(d[kind],key=lambda x:x["N"]); N=[x["N"] for x in r]
+        for a_,key in ((ax[0],"ws_1e8"),(ax[1],"eps_1e6")):
+            a_.plot(N,[x[key] for x in r],m+"-",ms=5,lw=.9,color=c,label=lab)
+    for a_,ttl,l in ((ax[0],r"sign error $<10^{-8}$","a"),(ax[1],r"energy error $<10^{-6}$","b")):
+        a_.set_xlabel("number of sites N"); a_.set_ylabel("loop iterations needed"); a_.set_title(ttl)
+        a_.set_xticks([16,20,24,28,32,36]); a_.set_ylim(0,None); panel(a_,l)
+    ax[0].legend(frameon=False,fontsize=7.2,loc="upper left")
+    save(fig,"fig6_loop_scaling.png")
+
 def fig_sampled_4x4():
     """III.C: FN/Krylov loop on 4x4 with phi_FN estimated from N i.i.d. samples of the exact FN mixed distribution."""
     import glob
@@ -104,7 +118,7 @@ def fig_sampled_4x4():
         a_.set_yscale("log"); decades(a_); a_.set_xlim(-1,51)
         a_.set_xlabel("loop iteration"); a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
     ax[1].legend(frameon=False,fontsize=6.8,loc="center left",bbox_to_anchor=(1.02,.5),title="samples /\niteration",title_fontsize=6.8)
-    save(fig,"fig6_sampled_4x4.png")
+    save(fig,"fig7_sampled_4x4.png")
 
 def fig_learning_4x4():
     """III.E: 4x4 loop with a network amplitude trained by SR on the frozen <H_FN> from N samples per step."""
@@ -134,7 +148,7 @@ def fig_learning_4x4():
         a_.set_yticks(10.0**np.array([-9,-7,-5,-3,-1])); a_.set_yticklabels(["exact","-7","-5","-3","-1"])
         a_.set_xlabel("loop iteration"); a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
     ax[1].legend(frameon=False,fontsize=6.4,loc="center left",bbox_to_anchor=(1.02,.5))
-    save(fig,"fig9_learning_4x4.png")
+    save(fig,"fig10_learning_4x4.png")
 
 def fig6_guides_compare():
     """III.D: one untrained iteration (ViT amplitude + Krylov signs -> FN) vs (a) ViT alone, (b) FN with the full ViT guide."""
@@ -151,7 +165,7 @@ def fig6_guides_compare():
         a_.set_xticks(xx,["6 x 6","8 x 8"]); a_.set_xlim(-.5,1.5)
         a_.set_ylabel(r"$\Delta E$ per site  [$10^{-4}$]"); a_.set_title(title); panel(a_,l)
     ax[0].legend(frameon=False,fontsize=7.2,loc="center",bbox_to_anchor=(.5,.6))
-    save(fig,"fig7_guides_compare.png")
+    save(fig,"fig8_guides_compare.png")
 
 def fig6_fn_benchmarks():
     """Fixed node with Marshall or Krylov signs vs published values: (a) 6x6 with ED, (b) 8x8."""
@@ -189,7 +203,7 @@ def fig6_fn_benchmarks():
     draw(ax[1],ours("8x8"),lit["benchmarks"],"8 x 8")
     ax[1].set_xticks([-0.498,-0.496])
     panel(ax[1],"b")
-    save(fig,"fig8_benchmarks.png")
+    save(fig,"fig9_benchmarks.png")
 
 def parse_halfstep():
     lines=open(DATA/"fn_mle_halfstep_exact4x4.out").read().splitlines()
@@ -223,7 +237,7 @@ def fig7_learning_8x8():
     ax.set_ylabel("FN energy per site"); ax.set_xlim(-.5,len(rows)-.5)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v,_: f"{v:.4f}"))
     ax.set_title("8 x 8, J2 / J1 = 0.5: learned amplitude updates")
-    save(fig,"fig10_learning_8x8.png")
+    save(fig,"fig11_learning_8x8.png")
 
 def fig1_proof_of_concept():
     rows=list(csv.DictReader(open(ROOT/"krylov_sign_structure/results/square_exact_energyopt.csv")))
@@ -365,6 +379,7 @@ if __name__=="__main__":
     fig2_krylov_approx_amp()
     fig3_krylov_vit_6x6()
     fig4_fn_krylov_loop()
+    fig_loop_scaling()
     fig_sampled_4x4()
     fig_learning_4x4()
     fig6_guides_compare()

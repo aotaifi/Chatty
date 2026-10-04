@@ -1,0 +1,54 @@
+E1004 20:58:33.826565 1748823 platform_util.cc:271] Failed to create stream executor for device CUDA:0: Device 0 does not support CUDA Virtual Memory Management (VMM). VMM is required for device memory allocation in XLA.
+Traceback (most recent call last):
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 839, in backends
+    backend = _init_backend(platform)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 923, in _init_backend
+    backend = registration.factory()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/xla_bridge.py", line 576, in make_pjrt_c_api_client
+    return xla_client.make_c_api_client(plugin_name, updated_options, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jaxlib/xla_client.py", line 160, in make_c_api_client
+    return _xla.get_c_api_client(
+           ^^^^^^^^^^^^^^^^^^^^^^
+jax.errors.JaxRuntimeError: INTERNAL: no supported devices found for platform CUDA
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/a/A.Otaifi/chatty_ll6/runs/ll6bench64_16817953/ll6_bench.py", line 7, in <module>
+    import ll6_core as C
+  File "/home/a/A.Otaifi/chatty_ll6/runs/ll6bench64_16817953/ll6_core.py", line 318, in <module>
+    BI_J = jnp.asarray(BI.astype(np.int32)); BJ_J = jnp.asarray(BJ.astype(np.int32))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/numpy/array_constructors.py", line 453, in asarray
+    return array(a, dtype=dtype, copy=bool(copy), order=order, device=device,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/numpy/array_constructors.py", line 208, in array
+    return lax.stage(object)
+           ^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/lax/lax.py", line 1626, in stage
+    return stage_p.bind(x)
+           ^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/core.py", line 705, in bind
+    return self.bind_with_trace(prev_trace, args, avals, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/lax/lax.py", line 5406, in _stage_bind_with_trace
+    return trace.stage_value(args[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/core.py", line 1283, in stage_value
+    return self.process_primitive(stage_p, [val], {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/core.py", line 1294, in process_primitive
+    return primitive.impl(*args, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/lax/lax.py", line 5396, in _stage_impl
+    return dispatch.apply_primitive(stage_p, x)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/a/A.Otaifi/chatty_ll6/venv_gpu/lib/python3.11/site-packages/jax/_src/dispatch.py", line 88, in apply_primitive
+    outs = fun(*args)
+           ^^^^^^^^^^
+RuntimeError: Unable to initialize backend 'cuda': INTERNAL: no supported devices found for platform CUDA (you may need to uninstall the failing plugin package, or set JAX_PLATFORMS=cpu to skip this backend.)
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

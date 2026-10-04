@@ -1,0 +1,6 @@
+job_id=16818362
+host=kng-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_fn.py state_it1.json k2fixb 128 1.2 0.4 0.025 42001 42002 42003 42004 42005 42006
+started=2026-10-04T22:44:15+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-04T23:43:57+02:00

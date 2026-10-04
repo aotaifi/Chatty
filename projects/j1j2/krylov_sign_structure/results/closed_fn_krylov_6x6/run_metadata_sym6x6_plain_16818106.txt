@@ -1,0 +1,6 @@
+job_id=16818106
+host=th-cl-262h02n4.hpc.physik.uni-muenchen.de
+cpus=32
+tag=sym6x6_plain
+args=--method plain --maxiter 2500 --stop-eps 1e-6 --resume
+started=2026-10-04T21:46:05+02:00

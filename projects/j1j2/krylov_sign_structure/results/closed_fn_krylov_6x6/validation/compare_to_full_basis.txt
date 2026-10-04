@@ -1,0 +1,59 @@
+== sym4x4 plain vs stored full_4x4_plain ==
+lengths new/old 287 287 E0 new/old -8.45792335139485 -8.457923351394854
+summary new {'it_exact_signs_first': 100, 'it_exact_signs_settled': 100, 'it_eps_1e5': 58, 'it_eps_1e6': 104, 'it_eps_1e7': 142, 'n_resets': 0, 'n_iter': 286, 'final_eps': 9.92016369964424e-09, 'final_w_s': 0.0, 'terminal': 'converged_eps<1e-08'}
+summary old {'it_exact_signs_first': 100, 'it_exact_signs_settled': 100, 'it_eps_1e5': 58, 'it_eps_1e6': 104, 'it_eps_1e7': 142, 'n_resets': 0, 'n_iter': 286, 'final_eps': 9.920164749758292e-09, 'final_w_s': 5.551115123125783e-17, 'terminal': 'converged_eps<1e-08'}
+w_s            max dev 8.460e-14  first dev>tol at it None
+eps            max dev 1.059e-07  first dev>tol at it None
+E_FN           max dev 8.152e-14  first dev>tol at it None
+F_amp          max dev 8.620e-13  first dev>tol at it None
+amp_delta_l2   max dev 3.611e-08  first dev>tol at it None
+n_hist         max dev 0.000e+00  first dev>tol at it None
+r_groups       max dev 2.150e+02  first dev>tol at it 3
+
+== sym4x4 anderson m3 (fn_tol 2e-11) vs stored full_4x4_and_m3 (fn_tol 2e-11) ==
+lengths new/old 55 59 E0 new/old -8.45792335139485 -8.457923351394854
+summary new {'it_exact_signs_first': 28, 'it_exact_signs_settled': 28, 'it_eps_1e5': 24, 'it_eps_1e6': 32, 'it_eps_1e7': 42, 'n_resets': 2, 'n_iter': 54, 'final_eps': 9.40242113602398e-09, 'final_w_s': 0.0, 'terminal': 'converged_eps<1e-08'}
+summary old {'it_exact_signs_first': 31, 'it_exact_signs_settled': 31, 'it_eps_1e5': 27, 'it_eps_1e6': 35, 'it_eps_1e7': 45, 'n_resets': 1, 'n_iter': 58, 'final_eps': 8.717622437920551e-09, 'final_w_s': 5.551115123125783e-17, 'terminal': 'converged_eps<1e-08'}
+w_s            max dev 3.122e-05  first dev>tol at it 10
+eps            max dev 7.393e-01  first dev>tol at it 11
+E_FN           max dev 1.255e-04  first dev>tol at it 12
+F_amp          max dev 4.988e-04  first dev>tol at it 11
+amp_delta_l2   max dev 1.010e+01  first dev>tol at it 11
+n_hist         max dev 3.000e+00  first dev>tol at it 16
+r_groups       max dev 1.276e+04  first dev>tol at it 8
+
+== sym4x4 anderson m3 (fn_tol 1e-12) vs reference rerun at fn_tol 1e-12 ==
+lengths new/old 55 55 E0 new/old -8.45792335139485 -8.457923351394866
+summary new {'it_exact_signs_first': 28, 'it_exact_signs_settled': 28, 'it_eps_1e5': 24, 'it_eps_1e6': 32, 'it_eps_1e7': 42, 'n_resets': 2, 'n_iter': 54, 'final_eps': 9.40245200937723e-09, 'final_w_s': 0.0, 'terminal': 'converged_eps<1e-08'}
+summary old {'it_exact_signs_first': 28, 'it_exact_signs_settled': 28, 'it_eps_1e5': 24, 'it_eps_1e6': 32, 'it_eps_1e7': 42, 'n_resets': 2, 'n_iter': 54, 'final_eps': 9.40246020026685e-09, 'final_w_s': 1.3877787807814457e-15, 'terminal': 'converged_eps<1e-08'}
+w_s            max dev 8.316e-14  first dev>tol at it None
+eps            max dev 9.501e-07  first dev>tol at it None
+E_FN           max dev 1.097e-13  first dev>tol at it None
+F_amp          max dev 8.620e-13  first dev>tol at it None
+amp_delta_l2   max dev 1.113e-06  first dev>tol at it 45
+n_hist         max dev 0.000e+00  first dev>tol at it None
+r_groups       max dev 4.900e+01  first dev>tol at it 13
+
+== sym20 plain vs stored full_20_plain ==
+lengths new/old 334 334 E0 new/old -10.446660731199726 -10.44666073119976
+summary new {'it_exact_signs_first': 224, 'it_exact_signs_settled': 224, 'it_eps_1e5': 45, 'it_eps_1e6': 87, 'it_eps_1e7': 175, 'n_resets': 0, 'n_iter': 333, 'final_eps': 9.916902038723455e-09, 'final_w_s': 0.0, 'terminal': 'converged_eps<1e-08'}
+summary old {'it_exact_signs_first': 224, 'it_exact_signs_settled': 224, 'it_eps_1e5': 45, 'it_eps_1e6': 87, 'it_eps_1e7': 175, 'n_resets': 0, 'n_iter': 333, 'final_eps': 9.91691598205561e-09, 'final_w_s': 1.1102230246251565e-16, 'terminal': 'converged_eps<1e-08'}
+w_s            max dev 2.167e-10  first dev>tol at it None
+eps            max dev 1.773e-04  first dev>tol at it 67
+E_FN           max dev 3.251e-10  first dev>tol at it None
+F_amp          max dev 1.283e-09  first dev>tol at it None
+amp_delta_l2   max dev 1.023e-02  first dev>tol at it 68
+n_hist         max dev 0.000e+00  first dev>tol at it None
+r_groups       max dev 1.817e+05  first dev>tol at it 1
+
+== sym20 anderson m3 vs stored full_20_and_m3 ==
+lengths new/old 71 71 E0 new/old -10.446660731199726 -10.44666073119976
+summary new {'it_exact_signs_first': 59, 'it_exact_signs_settled': 59, 'it_eps_1e5': 23, 'it_eps_1e6': 32, 'it_eps_1e7': 49, 'n_resets': 4, 'n_iter': 70, 'final_eps': 8.204912676215298e-09, 'final_w_s': 0.0, 'terminal': 'converged_eps<1e-08'}
+summary old {'it_exact_signs_first': 59, 'it_exact_signs_settled': 59, 'it_eps_1e5': 23, 'it_eps_1e6': 32, 'it_eps_1e7': 49, 'n_resets': 4, 'n_iter': 70, 'final_eps': 8.240551153125344e-09, 'final_w_s': 1.1102230246251565e-16, 'terminal': 'converged_eps<1e-08'}
+w_s            max dev 3.234e-11  first dev>tol at it None
+eps            max dev 1.417e-02  first dev>tol at it 28
+E_FN           max dev 6.552e-09  first dev>tol at it None
+F_amp          max dev 2.136e-08  first dev>tol at it None
+amp_delta_l2   max dev 5.032e-02  first dev>tol at it 14
+n_hist         max dev 0.000e+00  first dev>tol at it None
+r_groups       max dev 1.818e+05  first dev>tol at it 1

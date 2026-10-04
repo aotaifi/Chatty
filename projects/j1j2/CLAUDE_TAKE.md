@@ -36,3 +36,10 @@ New results (all in the paper branch `j1j2-organize`):
 Key insight for the learning step: guaranteed improvement needs <H>_{new guide} <= E_FN[old], not just <H>_new <= <H>_old. Train on the frozen <H_FN> (Rayleigh quotient of H_FN[a_k, s_k]); use the FN run as referee (gap <H_FN>_theta - E_FN) and as the reported energy. Ledger of all past attempts: AMPLITUDE_LEARNING_LEDGER.md.
 
 Running at end of session: 6x6 symmetric ED (Opus), 4x4 learning-ladder rung 2 with frozen <H_FN> + SR from samples (Opus), 6x6 FN bound check (Sonnet), related-work literature check (Sonnet).
+
+## Update — 2026-10-05
+- **Loop iterations vs N (exact, 16..36 sites)**: iterations to eps<1e-6 ~82-104 plain, 32-57 Anderson; to w_s<1e-8 ~89-125 plain, 28-70 Anderson. No visible growth with N. Only sign errors on configurations of weight <1e-12 take longer at larger N. (krylov_sign_structure/results/closed_fn_krylov_6x6/)
+- **6x6 baseline corrected again**: Krylov-guide FN = -0.503100(40) from 76 populations (8-population -0.503288 was low). FN lowers the guide by 2.6(6)e-4; 6e-4 above the ViT.
+- **6x6 learned loop, iteration 1**: E_FN = -0.503667(63), equal to ViT within errors; true sign error 8e-5 < ViT 1.3e-4. Control: second Krylov step alone -0.503596(52) -> most gain from the sign step.
+- **Real scaling problem found**: recursive sign definition — each Krylov step adds a neighbour hop (1.3e3, 5e4, 1.2e6 configs per state), iteration 2 would cost >50 GPU-h. Fix to try: store/distill signs after each iteration (sign network or per-iteration sign table on samples) so evaluation cost stays at one hop.
+- FN at M=128 is noisy (single populations scatter ~3e-4/site, one fell below E0): need many populations or larger M for any claim.

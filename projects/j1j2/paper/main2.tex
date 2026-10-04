@@ -1,10 +1,11 @@
-% Draft: single column, figures fixed in place. For submission use "reprint" and figure* floats.
-\documentclass[aps,prb,reprint,onecolumn,superscriptaddress,floatfix]{revtex4-2}
+% Two-column skeleton: each figure spans both columns at the point where it appears (widetext + [H]).
+\documentclass[aps,prb,reprint,superscriptaddress,floatfix]{revtex4-2}
 
 \usepackage{amsmath,amssymb,bm}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{float}
+\hypersetup{hypertexnames=false}
 \graphicspath{{figures/}}
 
 \newcommand{\FN}{\mathrm{FN}}
@@ -116,6 +117,7 @@ L(\theta)=\frac{\langle a_\theta s_k|H_\FN[a_k,s_k]|a_\theta s_k\rangle}{\langle
 \subsection{Numerical setup}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{fig1_lattices.pdf}
@@ -124,6 +126,7 @@ L(\theta)=\frac{\langle a_\theta s_k|H_\FN[a_k,s_k]|a_\theta s_k\rangle}{\langle
 $J_1$/$J_2$ bonds shown for one site.}
 \label{fig:lattices}
 \end{figure}
+\end{widetext}
 
 \section{Results}
 \label{sec:results}
@@ -135,6 +138,7 @@ $J_1$/$J_2$ bonds shown for one site.}
 \subsubsection{Exact amplitude}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{fig2_krylov_exact_amp.pdf}
@@ -145,10 +149,12 @@ $J_2/J_1=0.5$; dashed line: threshold $T$. (b) Wrong-sign probability and
 step on the $4\times4$ and 20-site clusters (Fig.~\ref{fig:lattices}).}
 \label{fig:proof}
 \end{figure}
+\end{widetext}
 
 \subsubsection{Approximate amplitude}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{fig3_krylov_approx_amp.pdf}
@@ -157,11 +163,13 @@ amplitude is the exact one of $J_2'$ (fidelity $F$). (a) Sign and (b) energy
 error vs number of Krylov sign steps, compared with ED.}
 \label{fig:approx}
 \end{figure}
+\end{widetext}
 
 \subsubsection{Neural-network amplitude on $6\times6$}
 \label{sec:vit6}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{fig4_krylov_vit_6x6.pdf}
@@ -172,11 +180,13 @@ with the ViT's own signs as reference. (a) Wrong-sign probability
 resolved.}
 \label{fig:vit6}
 \end{figure}
+\end{widetext}
 
 \subsection{Fixed-node--Krylov loop}
 \label{sec:loop}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{fig5_fn_krylov_loop.pdf}
@@ -189,11 +199,13 @@ Dotted: Krylov steps alone from the same start, which change no sign.
 exact (no statistical error).}
 \label{fig:closedloop}
 \end{figure}
+\end{widetext}
 
 \subsection{Sampled fixed node on $4\times4$}
 \label{sec:sampled4}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{fig6_sampled_4x4.pdf}
@@ -203,10 +215,12 @@ $N=10^9$), and the exact loop. (a) Sign and (b) energy error vs iteration,
 compared with ED.}
 \label{fig:sampled}
 \end{figure}
+\end{widetext}
 
 \subsection{First iteration at scale: $6\times6$ and $8\times8$}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{fig7_guides_compare.pdf}
@@ -215,7 +229,9 @@ energy with Krylov or Marshall signs on the ViT amplitude, relative to (a) the
 ViT variational energy and (b) fixed node with the full ViT guide.}
 \label{fig:guides}
 \end{figure}
+\end{widetext}
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{fig8_benchmarks.pdf}
@@ -226,10 +242,12 @@ results: (a) $6\times6$, (b) $8\times8$. ED \cite{Schulz1996}, VMC
 \cite{NomuraImada2021}, PEPS+GFMC \cite{Lin2024}, FAMPS \cite{QianQin2023}.}
 \label{fig:bench}
 \end{figure}
+\end{widetext}
 
 \subsection{Closing the loop: learning the amplitude}
 % TODO: text
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{fig9_learning_4x4.pdf}
@@ -239,7 +257,9 @@ seeds), compared with the exact loops. (a) Sign and (b) energy error vs
 iteration, compared with ED.}
 \label{fig:learn4}
 \end{figure}
+\end{widetext}
 
+\begin{widetext}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\textwidth]{fig10_learning_8x8.pdf}
@@ -248,6 +268,7 @@ iteration, compared with ED.}
 \cite{QianQin2023}.}
 \label{fig:amplearn}
 \end{figure}
+\end{widetext}
 
 \section{Discussion}
 % TODO: text

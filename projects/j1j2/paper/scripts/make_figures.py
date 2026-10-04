@@ -102,6 +102,36 @@ def fig_sampled_4x4():
     ax[1].legend(frameon=False,fontsize=6.8,loc="center left",bbox_to_anchor=(1.02,.5),title="samples /\niteration",title_fontsize=6.8)
     save(fig,"fig6_sampled_4x4.png")
 
+def fig_learning_4x4():
+    """III.E: 4x4 loop with a network amplitude trained by SR on the frozen <H_FN> from N samples per step."""
+    import glob
+    R=ROOT/"results/learning_ladder_rung2"; K=ROOT/"krylov_sign_structure/results"
+    FLOOR=1e-9
+    fig,ax=plt.subplots(1,2,figsize=(6.8,2.9),gridspec_kw=dict(wspace=.4))
+    def curve(files):
+        H=[json.load(open(f))["history"] for f in files]; L=min(len(h) for h in H)
+        it=np.array([H[0][i]["it"] for i in range(L)])
+        g=lambda key: np.exp(np.mean([np.log(np.maximum([h[i][key] for i in range(L)],FLOOR)) for h in H],axis=0))
+        return it,g("w_s"),g("eps")
+    runs=[("network, N = 1e3","C0","o",sorted(glob.glob(str(R/"long_vmc_b1e3_s*.json")))),
+          ("network, N = 1e4","C1","s",sorted(glob.glob(str(R/"long_vmc_b1e4_s*.json")))),
+          ("network, N = 1e5","C2","^",sorted(glob.glob(str(R/"prod_vmc_b1e5_s*.json"))))]
+    for lab,c,m,files in runs:
+        it,ws,eps=curve(files)
+        ax[0].plot(it,ws,m+"-",ms=2.6,lw=.6,color=c,label=lab); ax[1].plot(it,eps,m+"-",ms=2.6,lw=.6,color=c,label=lab)
+    for lab,c,f,key in ((r"exact, $a\leftarrow\phi_{\rm FN}$","k",K/"anderson_loop/full_4x4_plain.json","w_s"),
+                        (r"exact, $a\leftarrow\sqrt{a\,\phi_{\rm FN}}$","0.5",K/"closed_fn_krylov_4x4_J2p5_J2zero_init_halfstep.json","O_sign")):
+        d=json.load(open(f)); h=d["history"]; it=np.array([x["it"] for x in h])
+        if key=="w_s": ws=np.array([x["w_s"] for x in h]); eps=np.array([x["eps"] for x in h])
+        else: ws=(1-np.array([x["O_sign"] for x in h]))/2; eps=np.array([x["E_error"] for x in h])/abs(d["E0"])
+        ax[0].plot(it,np.maximum(ws,FLOOR),"--",lw=1.1,color=c,label=lab); ax[1].plot(it,np.maximum(eps,FLOOR),"--",lw=1.1,color=c,label=lab)
+    for a_,lab,ttl,l in ((ax[0],"wrong-sign probability","sign error","a"),(ax[1],"rel. energy error","energy error","b")):
+        a_.set_yscale("log"); decades(a_); a_.set_xlim(-3,153); a_.set_ylim(FLOOR/3,.2)
+        a_.set_yticks(10.0**np.array([-9,-7,-5,-3,-1])); a_.set_yticklabels(["exact","-7","-5","-3","-1"])
+        a_.set_xlabel("loop iteration"); a_.set_ylabel(r"$\log_{10}$ "+lab); a_.set_title(ttl); panel(a_,l)
+    ax[1].legend(frameon=False,fontsize=6.4,loc="center left",bbox_to_anchor=(1.02,.5))
+    save(fig,"fig9_learning_4x4.png")
+
 def fig6_guides_compare():
     """III.D: one untrained iteration (ViT amplitude + Krylov signs -> FN) vs (a) ViT alone, (b) FN with the full ViT guide."""
     d=json.load(open(DATA/"fn_guides_comparison.json"))
@@ -189,7 +219,7 @@ def fig7_learning_8x8():
     ax.set_ylabel("FN energy per site"); ax.set_xlim(-.5,len(rows)-.5)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v,_: f"{v:.4f}"))
     ax.set_title("8 x 8, J2 / J1 = 0.5: learned amplitude updates")
-    save(fig,"fig9_learning_8x8.png")
+    save(fig,"fig10_learning_8x8.png")
 
 def fig1_proof_of_concept():
     rows=list(csv.DictReader(open(ROOT/"krylov_sign_structure/results/square_exact_energyopt.csv")))
@@ -332,6 +362,7 @@ if __name__=="__main__":
     fig3_krylov_vit_6x6()
     fig4_fn_krylov_loop()
     fig_sampled_4x4()
+    fig_learning_4x4()
     fig6_guides_compare()
     fig6_fn_benchmarks()
     fig7_learning_8x8()

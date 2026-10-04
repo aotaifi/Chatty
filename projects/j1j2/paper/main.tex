@@ -31,7 +31,9 @@ exact fixed node converges to the exact ground state on $4\times4$ and
 $6\times6$ and $8\times8$, Krylov signs built from a neural-network amplitude
 reduce the fixed-node energy gap to the network from $4\times10^{-3}$ to
 $4$--$6\times10^{-4}$ per site, without closing it. Iterating further requires
-learning the fixed-node amplitude from walkers, which remains the open problem.
+learning the fixed-node amplitude: on $4\times4$ a network trained on the frozen
+fixed-node energy from samples iterates the loop stably, while on $8\times8$
+learned updates have not yet lowered the energy.
 \end{abstract}
 
 \maketitle
@@ -153,7 +155,19 @@ precondition the likelihood gradient $g$ with stochastic reconfiguration
 \delta\theta=(S+\lambda I)^{-1}g ,
 \label{eq:sr}
 \end{equation}
-where $S$ is the quantum geometric tensor of $\log a_\theta$.
+where $S$ is the quantum geometric tensor of $\log a_\theta$. Alternatively,
+since $\phi_\FN$ is the ground state of $H_\FN[a_k,s_k]$, a network
+$a_\theta=a_k\,e^{r_\theta}$ can be trained by minimizing the frozen
+fixed-node energy
+\begin{equation}
+L(\theta)=\frac{\langle a_\theta s_k|H_\FN[a_k,s_k]|a_\theta s_k\rangle}{\langle a_\theta|a_\theta\rangle}
+\label{eq:frozen}
+\end{equation}
+with SR on samples of $a_\theta^2$; its minimum is $E_\FN$, so the gap
+$L-E_\FN$ measures the learning error. Because
+$\langle\psi|H|\psi\rangle\leq\langle\psi|H_\FN|\psi\rangle$ for every $\psi$ with the
+signs $s_k$, a learned guide with $\langle H\rangle\leq E_\FN[a_k,s_k]$
+guarantees $E_\FN[a_{k+1},s_{k+1}]\leq E_\FN[a_k,s_k]$.
 
 \subsection{Numerical setup}
 
@@ -403,37 +417,63 @@ results: (a) $6\times6$, (b) $8\times8$. ED \cite{Schulz1996}, VMC
 \label{fig:bench}
 \end{figure}
 
-\subsection{Closing the loop at scale: learning the amplitude}
+\subsection{Closing the loop: learning the amplitude}
 
-On $6\times6$, closing one loop iteration at $M=128$ with a
-binned amplitude correction leaves the signs unchanged and gives a next
-amplitude correction statistically consistent with zero, with
-$E_\FN=-18.1130(36)$ from two populations. Within this resolution the
-$6\times6$ loop has reached a fixed point.
-
-To iterate further, the walker information must become a positive amplitude
-that can be evaluated on any configuration, i.e. a learned network. Walkers
-sample $f\propto a\,\phi_\FN$, so maximum likelihood gives the geometric-mean update
-$a_{\rm new}^2\propto a\,\phi_\FN$, Eq.~\eqref{eq:halfstep}. On $8\times8$ we
-train the ViT amplitude toward this target with SR, apply a Krylov step, and
-rerun fixed node (Fig.~\ref{fig:amplearn}).
+Beyond the smallest clusters the fixed-node amplitude must be represented by
+a network that can be evaluated on any configuration. We first test this on
+$4\times4$, where ED scores every step. Trained on the exact frozen energy,
+Eq.~\eqref{eq:frozen}, a residual ViT ($1.5\times10^5$ parameters) recovers
+$99.7\%$ of the exact fixed-node energy gain in one step with SR, while Adam
+reaches $37$--$81\%$. We then train only on $N$ fresh samples of $a_\theta^2$
+per SR step, accept a step only if an independent held-out estimate of $L$
+decreases, and iterate the full loop.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.6\textwidth]{fig9_learning_8x8.pdf}
-\caption{$8\times8$ fixed-node energy per site along the learned loop (two
-walker populations each). Dotted: best same-geometry literature value
+\includegraphics[width=\textwidth]{fig9_learning_4x4.pdf}
+\caption{Fixed-node--Krylov loop on $4\times4$ with a network amplitude trained
+on the frozen fixed-node energy from $N$ samples per SR step (mean over three
+seeds), compared with the exact loops. (a) Sign and (b) energy error vs
+iteration, compared with ED.}
+\label{fig:learn4}
+\end{figure}
+
+The learned loop iterates stably for every budget and keeps improving
+(Fig.~\ref{fig:learn4}). With $N=10^5$ it follows the exact geometric-mean
+update; with $N=10^4$ it reaches $w_s=2\times10^{-5}$ and
+$\epsilon_{\rm rel}=8\times10^{-4}$ after 150 iterations, and the energy error at
+fixed iteration falls roughly as $N^{-0.75}$. The learned amplitude, not the
+sign step, limits the speed. Estimating $L$ by reweighting one fixed sample
+set instead of fresh samples fails: the network raises the amplitude on
+unsampled neighbours, lowering the estimate while the true frozen energy
+rises.
+
+On $6\times6$, a minimal amplitude correction with four parameters already
+reaches a fixed point after one iteration: the signs no longer change and the
+next correction is consistent with zero, with $E_\FN=-18.1130(36)$.
+
+On $8\times8$ we trained the ViT amplitude by maximum likelihood on the
+walkers, whose distribution $f\propto a\,\phi_\FN$ gives the target
+$a_{\rm new}^2\propto a\,\phi_\FN$, Eq.~\eqref{eq:halfstep}, with SR, followed
+by a Krylov step and a new fixed-node run (Fig.~\ref{fig:amplearn}).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{fig10_learning_8x8.pdf}
+\caption{$8\times8$ fixed-node energy per site along learned amplitude updates
+(two walker populations each). Dotted: best same-geometry literature value
 \cite{QianQin2023}.}
 \label{fig:amplearn}
 \end{figure}
 
-Starting from the untrained result of Sec.~III~D ($-0.49821$ per site, above the ViT), one
-learned update gave $-0.49846$, but an independent rebuild of the same update
-gave $-0.49748$, and a second update $-0.49711$, both above the start. Keeping
-the signs after the first update and changing only the amplitude already
-raises the energy, so the learned amplitude, not
-the sign step, fails. Learning a callable amplitude accurate enough for fixed
-node is the open problem.
+Starting from the untrained result of Sec.~III~D ($-0.49821$ per site, above
+the ViT), one learned update gave $-0.49846$, but an independent rebuild of
+the same update gave $-0.49748$, and a second update $-0.49711$. Keeping the
+signs after the first update and changing only the amplitude already raises
+the energy. These updates used a likelihood target on about $4\times10^3$
+walker samples, with more than $99\%$ of the neighbour amplitudes the next
+steps need never sampled; the $4\times4$ results indicate that the frozen
+fixed-node objective with fresh samples is the route to test at this size.
 
 \section{Discussion}
 
@@ -462,9 +502,10 @@ For the energy to decrease with certainty, the learned guide must reach a
 variational energy below the previous fixed-node energy, since
 $E_\FN[a_{k+1}]\leq\langle H\rangle_{a_{k+1}}$; on $8\times8$ our learned
 updates did not, and the energy rose. The consistent objective is the energy
-of the network under the frozen fixed-node Hamiltonian, which on exact
-$4\times4$ recovers $99.7\%$ of the fixed-node gain; its finite-sample
-behaviour is the open question. Fixed node then serves as the referee of each
+of the network under the frozen fixed-node Hamiltonian. On $4\times4$ it
+recovers $99.7\%$ of the fixed-node gain with exact information and, trained
+from $10^4$--$10^5$ fresh samples per step, iterates the loop stably toward the
+ground state; testing it at $8\times8$ is the next step. Fixed node then serves as the referee of each
 learned step and supplies the reported energy.
 
 The approach also requires a useful starting amplitude and differs from

@@ -68,6 +68,10 @@ def fig4_fn_krylov_loop():
     for lab,c,m,ls,(it,ws,eps) in runs:
         ax[0].plot(it,np.where(ws<1e-14,FLOOR,ws),marker=m,ls=ls,ms=3,lw=.7,color=c,label=lab)
         ax[1].plot(it,np.maximum(eps,FLOOR),marker=m,ls=ls,ms=3,lw=.7,color=c,label=lab)
+    # same start, Krylov steps only (amplitude never updated): no change at all
+    ko=[r for r in json.load(open(DATA/"k1_approx_amp_4x4.json"))["rows"] if r["amp_source_J2"]==0.0][0]["history"]
+    for a_,key in ((ax[0],"wrong"),(ax[1],"eps")):
+        a_.axhline(ko[-1][key],color="0.35",ls=":",lw=1.3,label="4 x 4, Krylov only")
     ax[0].set_ylim(FLOOR/3,.1); ax[1].set_ylim(FLOOR/3,.2)
     for a_,lab,ttl,l in ((ax[0],"wrong-sign probability","sign error","a"),
                          (ax[1],"rel. energy error","energy error","b")):

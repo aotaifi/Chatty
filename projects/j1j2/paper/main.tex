@@ -350,12 +350,16 @@ ground state $\phi_\FN$ is the new amplitude.
 $J_2=0$ amplitude with Marshall signs, for three amplitude updates:
 $a\leftarrow\phi_\FN$; $a\leftarrow\sqrt{a\,\phi_\FN}$, as learned from walkers;
 and $a\leftarrow\phi_\FN$ with Anderson extrapolation from the last three iterates.
+Dotted: Krylov steps alone from the same start, which change no sign.
 (a) Sign and (b) energy error vs iteration, compared with ED. All values are
 exact (no statistical error).}
 \label{fig:closedloop}
 \end{figure}
 
-The loop reaches the exact ground state (Fig.~\ref{fig:closedloop}): exact
+From this start, Krylov steps alone change no sign: the $J_2=0$ amplitude
+makes the Marshall signs energetically optimal. Updating the amplitude
+unlocks the sign corrections, and the loop reaches the exact ground state
+(Fig.~\ref{fig:closedloop}): exact
 signs after 100 iterations on $4\times4$ and 224 on the 20-site cluster. The
 slowness comes from the amplitude, since the fixed-node Hamiltonian depends on
 the guide amplitude through the moved matrix elements. Anderson acceleration

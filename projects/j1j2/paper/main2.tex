@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{capt-of}
 \hypersetup{hypertexnames=false}
 \graphicspath{{figures/}}
 
@@ -86,8 +87,10 @@ s_{\rm K}(x)=s(x)\operatorname{sgn}[T-r_s(x)] :
 % TODO: text
 
 \begin{equation}
-x_{k+1}=g(x_k)-\sum_{j}\gamma_j\,\Delta g_j,\qquad
-\gamma=\arg\min_\gamma\Big\|f_k-\sum_j\gamma_j\Delta f_j\Big\| .
+\begin{aligned}
+x_{k+1}&=g(x_k)-\sum_{j}\gamma_j\,\Delta g_j,\\
+\gamma&=\arg\min_\gamma\Big\|f_k-\sum_j\gamma_j\Delta f_j\Big\| .
+\end{aligned}
 \label{eq:anderson}
 \end{equation}
 
@@ -118,14 +121,13 @@ L(\theta)=\frac{\langle a_\theta s_k|H_\FN[a_k,s_k]|a_\theta s_k\rangle}{\langle
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.8\textwidth]{fig1_lattices.pdf}
-\caption{Exact clusters with periodic boundaries: (a) $4\times4$, (b) tilted
+\captionof{figure}{Exact clusters with periodic boundaries: (a) $4\times4$, (b) tilted
 20-site torus. Colours: Marshall sublattices; arrows: periodic vectors;
 $J_1$/$J_2$ bonds shown for one site.}
 \label{fig:lattices}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \section{Results}
@@ -139,30 +141,28 @@ $J_1$/$J_2$ bonds shown for one site.}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=\textwidth]{fig2_krylov_exact_amp.pdf}
-\caption{Sign correction by Krylov steps, starting from Marshall signs. Only
+\captionof{figure}{Sign correction by Krylov steps, starting from Marshall signs. Only
 the signs change; the amplitude stays the exact ED one. (a) $r(x)$ at
 $J_2/J_1=0.5$; dashed line: threshold $T$. (b) Wrong-sign probability and
 (c) energy error vs number of Krylov sign steps, compared with ED. (d) First
 step on the $4\times4$ and 20-site clusters (Fig.~\ref{fig:lattices}).}
 \label{fig:proof}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsubsection{Approximate amplitude}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.85\textwidth]{fig3_krylov_approx_amp.pdf}
-\caption{Krylov sign steps on an approximate amplitude at $J_2/J_1=0.5$; the
+\captionof{figure}{Krylov sign steps on an approximate amplitude at $J_2/J_1=0.5$; the
 amplitude is the exact one of $J_2'$ (fidelity $F$). (a) Sign and (b) energy
 error vs number of Krylov sign steps, compared with ED.}
 \label{fig:approx}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsubsection{Neural-network amplitude on $6\times6$}
@@ -170,16 +170,15 @@ error vs number of Krylov sign steps, compared with ED.}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.9\textwidth]{fig4_krylov_vit_6x6.pdf}
-\caption{Krylov sign steps on the ViT amplitude ($6\times6$), compared with ED,
+\captionof{figure}{Krylov sign steps on the ViT amplitude ($6\times6$), compared with ED,
 with the ViT's own signs as reference. (a) Wrong-sign probability
 ($4\times10^5$ exact samples). (b) Relative energy error; the Marshall value
 (hatched) is a lower bound from a smaller sample, the two-step energy is not
 resolved.}
 \label{fig:vit6}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsection{Fixed-node--Krylov loop}
@@ -187,10 +186,9 @@ resolved.}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.85\textwidth]{fig5_fn_krylov_loop.pdf}
-\caption{Fixed-node--Krylov loop with exact diagonalization, started from the
+\captionof{figure}{Fixed-node--Krylov loop with exact diagonalization, started from the
 $J_2=0$ amplitude with Marshall signs, for three amplitude updates:
 $a\leftarrow\phi_\FN$; $a\leftarrow\sqrt{a\,\phi_\FN}$, as learned from walkers;
 and $a\leftarrow\phi_\FN$ with Anderson extrapolation from the last three iterates.
@@ -198,7 +196,7 @@ Dotted: Krylov steps alone from the same start, which change no sign.
 (a) Sign and (b) energy error vs iteration, compared with ED. All values are
 exact (no statistical error).}
 \label{fig:closedloop}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsection{Sampled fixed node on $4\times4$}
@@ -206,68 +204,63 @@ exact (no statistical error).}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.9\textwidth]{fig6_sampled_4x4.pdf}
-\caption{Fixed-node--Krylov loop on $4\times4$ with $\phi_\FN$ estimated from
+\captionof{figure}{Fixed-node--Krylov loop on $4\times4$ with $\phi_\FN$ estimated from
 $N$ independent samples per iteration (mean over four seeds; two for
 $N=10^9$), and the exact loop. (a) Sign and (b) energy error vs iteration,
 compared with ED.}
 \label{fig:sampled}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsection{First iteration at scale: $6\times6$ and $8\times8$}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.85\textwidth]{fig7_guides_compare.pdf}
-\caption{One untrained iteration on $6\times6$ and $8\times8$: fixed-node
+\captionof{figure}{One untrained iteration on $6\times6$ and $8\times8$: fixed-node
 energy with Krylov or Marshall signs on the ViT amplitude, relative to (a) the
 ViT variational energy and (b) fixed node with the full ViT guide.}
 \label{fig:guides}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=\textwidth]{fig8_benchmarks.pdf}
-\caption{Energies per site at $J_2/J_1=0.5$: our fixed-node values (Marshall,
+\captionof{figure}{Energies per site at $J_2/J_1=0.5$: our fixed-node values (Marshall,
 Krylov, full ViT guide; $M=128$, not extrapolated), the ViT, and published
 results: (a) $6\times6$, (b) $8\times8$. ED \cite{Schulz1996}, VMC
 \cite{Hu2013}, CNN \cite{Choo2019}, DMRG \cite{Gong2014}, RBM+PP
 \cite{NomuraImada2021}, PEPS+GFMC \cite{Lin2024}, FAMPS \cite{QianQin2023}.}
 \label{fig:bench}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \subsection{Closing the loop: learning the amplitude}
 % TODO: text
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=\textwidth]{fig9_learning_4x4.pdf}
-\caption{Fixed-node--Krylov loop on $4\times4$ with a network amplitude trained
+\captionof{figure}{Fixed-node--Krylov loop on $4\times4$ with a network amplitude trained
 on the frozen fixed-node energy from $N$ samples per SR step (mean over three
 seeds), compared with the exact loops. (a) Sign and (b) energy error vs
 iteration, compared with ED.}
 \label{fig:learn4}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \begin{widetext}
-\begin{figure}[H]
-\centering
+\begin{center}
 \includegraphics[width=0.6\textwidth]{fig10_learning_8x8.pdf}
-\caption{$8\times8$ fixed-node energy per site along learned amplitude updates
+\captionof{figure}{$8\times8$ fixed-node energy per site along learned amplitude updates
 (two walker populations each). Dotted: best same-geometry literature value
 \cite{QianQin2023}.}
 \label{fig:amplearn}
-\end{figure}
+\end{center}
 \end{widetext}
 
 \section{Discussion}

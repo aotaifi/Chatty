@@ -144,8 +144,10 @@ accelerate it with Anderson mixing \cite{Anderson1965,WalkerNi2011}: with the
 residuals $f_k=g(x_k)-x_k$ and the differences $\Delta f_j$, $\Delta g_j$ of the
 last $m$ iterates,
 \begin{equation}
-x_{k+1}=g(x_k)-\sum_{j}\gamma_j\,\Delta g_j,\qquad
-\gamma=\arg\min_\gamma\Big\|f_k-\sum_j\gamma_j\Delta f_j\Big\| .
+\begin{aligned}
+x_{k+1}&=g(x_k)-\sum_{j}\gamma_j\,\Delta g_j,\\
+\gamma&=\arg\min_\gamma\Big\|f_k-\sum_j\gamma_j\Delta f_j\Big\| .
+\end{aligned}
 \label{eq:anderson}
 \end{equation}
 We use $m=3$ and clear the history whenever the fixed-node energy rises or a

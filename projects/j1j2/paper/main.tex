@@ -40,26 +40,44 @@ learned updates have not yet lowered the energy.
 
 \section{Introduction}
 
+% DRAFT (2026-10-04): new framing after the literature check; for review.
 The Monte Carlo sign problem is severe in frustrated spin systems
 \cite{HeneliusSandvik2000,TroyerWiese2005}. We use the square-lattice
-$J_1$--$J_2$ Heisenberg model as a benchmark. At $J_2=0$ its ground-state
-signs obey the Marshall rule \cite{Marshall1955}; near $J_2/J_1=1/2$ that
-rule fails and accurate variational states become nontrivial
-\cite{Choo2019,ChenHeyl2024}.
-
-We ask whether signs and positive amplitudes can be improved separately.
-For a real wave function we write
+$J_1$--$J_2$ Heisenberg model at $J_2/J_1=0.5$, where the Marshall sign rule
+\cite{Marshall1955} fails and accurate states are hard to obtain
+\cite{Choo2019,ChenHeyl2024}. Writing a real wave function as
 \begin{equation}
-\psi(x)=s(x)a(x),\qquad s(x)=\pm1,\quad a(x)=|\psi(x)|>0 .
+\psi(x)=s(x)a(x),\qquad s(x)=\pm1,\quad a(x)=|\psi(x)|>0,
 \label{eq:decomp}
 \end{equation}
-Given $a$, a single Krylov step updates the signs. Given $s$, lattice fixed
-node gives a sign-free positive-amplitude problem \cite{vanBemmel1994}.
-Section~\ref{sec:methods} defines both updates. Section~\ref{sec:results}
-tests them in order of increasing difficulty: first the sign update alone
-with an exact amplitude, then the exact feedback loop, then larger lattices,
-and finally the open problem of learning the amplitude from fixed-node
-walkers.
+splits the problem into a sign part and a positive amplitude part.
+
+Both halves have well-known tools. For the signs, Sorella observed that one
+Lanczos step corrects the phases of a guide through
+$\operatorname{sgn}[(1+\alpha\,e_L)\psi]$, with $e_L$ the local energy
+\cite{Sorella2001,Sorella2002notes}; Westerhout \textit{et al.} showed that, for
+given amplitudes, the optimal signs solve an Ising problem that is easy in
+practice \cite{Westerhout2023}. For the amplitude, lattice fixed node turns
+the problem with fixed signs into a sign-free one with a variational energy
+bound \cite{vanBemmel1994,tenHaaf1995}. Iterating fixed node with nodes
+improved from the projected state is the idea of self-healing diffusion
+Monte Carlo in the continuum \cite{Reboredo2009}, whose energy can, however,
+increase upon iteration \cite{Caffarel2026}.
+
+Here we combine the two halves on the lattice. We keep only the sign of one
+Krylov step, with a threshold chosen by the variational energy and no sign
+information, and obtain the amplitude from lattice fixed node. Including the
+option of not flipping any sign makes the resulting loop monotone in the
+fixed-node energy. On exact clusters the sign step alone recovers the exact
+signs from an exact amplitude, and the alternation converges to the ground
+state. We then quantify the cost of sampling, test the first iteration on
+$6\times6$ and $8\times8$ with a neural-network amplitude, and identify
+learning the fixed-node amplitude as the remaining problem, for which a
+network trained on the frozen fixed-node energy closes the loop on
+$4\times4$. Neural networks have been fitted to projector walkers before for
+sign-free models \cite{Pilati2019}; their difficulty in generalizing to
+unseen configurations of frustrated magnets \cite{Westerhout2020} reappears
+here as the main obstacle at larger sizes.
 
 \section{Methods}
 \label{sec:methods}

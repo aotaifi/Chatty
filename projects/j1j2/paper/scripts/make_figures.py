@@ -80,7 +80,7 @@ def fig4_fn_krylov_loop():
     for a_ in ax:
         a_.set_yticks(10.0**np.array([-11,-9,-7,-5,-3,-1])); a_.set_yticklabels(["exact","-9","-7","-5","-3","-1"])
         a_.axhline(FLOOR,color="0.6",lw=.8,ls=":")
-    ax[1].legend(frameon=False,fontsize=6.6,loc="upper right")
+    ax[1].legend(frameon=False,fontsize=6.6,loc="center left",bbox_to_anchor=(1.02,.5))
     save(fig,"fig5_fn_krylov_loop.png")
 
 def fig_sampled_4x4():

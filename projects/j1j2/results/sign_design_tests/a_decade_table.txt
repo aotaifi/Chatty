@@ -1,0 +1,31 @@
+
+stored-sign loop (work=net) seed 0, iteration 30: net errors vs hop(same a) errors, by decade of |psi0(x)|^2
+log10p  nconf   weight   n_err_net  w_err_net  n_err_hop  w_err_hop  fixed  broken
+  -10     256 1.87e-07       96 7.01e-08        0 0.00e+00     96      0
+   -9     384 3.04e-06      384 3.04e-06      128 8.85e-07    256      0
+   -8    1056 4.00e-05       32 1.39e-06        0 0.00e+00     32      0
+   -7    3216 1.23e-03       48 2.02e-05        0 0.00e+00     48      0
+total 560 2.47e-05 128 8.85e-07
+
+stored-sign loop (work=net) seed 0, iteration 40: net errors vs hop(same a) errors, by decade of |psi0(x)|^2
+log10p  nconf   weight   n_err_net  w_err_net  n_err_hop  w_err_hop  fixed  broken
+  -10     256 1.87e-07       32 2.34e-08        0 0.00e+00     32      0
+   -9     384 3.04e-06      384 3.04e-06      128 8.85e-07    256      0
+   -8    1056 4.00e-05       48 1.87e-06        0 0.00e+00     48      0
+   -7    3216 1.23e-03       48 2.02e-05        0 0.00e+00     48      0
+total 512 2.52e-05 128 8.85e-07
+
+stored-sign loop (work=net) seed 1, iteration 30: net errors vs hop(same a) errors, by decade of |psi0(x)|^2
+log10p  nconf   weight   n_err_net  w_err_net  n_err_hop  w_err_hop  fixed  broken
+   -9     384 3.04e-06      384 3.04e-06      128 8.85e-07    256      0
+   -8    1056 4.00e-05       32 1.39e-06        0 0.00e+00     32      0
+   -7    3216 1.23e-03       48 2.02e-05        0 0.00e+00     48      0
+total 464 2.47e-05 128 8.85e-07
+
+stored-sign loop (work=net) seed 1, iteration 40: net errors vs hop(same a) errors, by decade of |psi0(x)|^2
+log10p  nconf   weight   n_err_net  w_err_net  n_err_hop  w_err_hop  fixed  broken
+  -10     256 1.87e-07       16 1.17e-08        0 0.00e+00     16      0
+   -9     384 3.04e-06      384 3.04e-06      128 8.85e-07    256      0
+   -8    1056 4.00e-05       32 1.39e-06        0 0.00e+00     32      0
+   -7    3216 1.23e-03       32 7.84e-06        0 0.00e+00     32      0
+total 464 1.23e-05 128 8.85e-07

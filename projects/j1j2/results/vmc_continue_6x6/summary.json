@@ -1,0 +1,9 @@
+{"recipe": "ViT 4L d60 h10 2x2 (154980 real params, fp64) 6x6 J2/J1=0.5; MinSR kernel-form SR (2Ns x 2Ns real-split kernel), diag 1e-4, SGD lr const (5e-3 or 1e-3), Ns=6000 (1500 persistent chains x 4, discard 4 sweeps), MetropolisExchange d_max=2 sweep=36 in Sz=0, no Marshall; custom row-blocked Gram (netket VMC_SR OOMs on 46GB A40)",
+ "gpu": "NVIDIA A40 46GB (full a40 gres; partitions inter/cip)",
+ "per_step_sec": 95, "per_step_breakdown_sec": {"sample": 13.7, "local_energy": 26.7, "jacobian": 1.4, "gram": 49.4, "solve": 3.8},
+ "start_E_site_262k": [-0.503611, 0.00001],
+ "lr5e-3_step168_E_site_262k": [-0.503622, 0.0000094],
+ "lr1e-3_step168_E_site_262k": [-0.503633, 0.0000105],
+ "train_gpu_h_each": 4.5, "jobs": {"lr5e-3": 16818284, "lr1e-3": 16818285, "final_evals": [16818901, 16818902, 16818903]},
+ "cluster_paths": {"params": "ws1:/home/a/A.Otaifi/chatty_vmc6/runs/{lr5e-3,lr1e-3,start_eval}/final_params.mpack", "logs": "ws1:/home/a/A.Otaifi/chatty_vmc6/logs"},
+ "ref": {"ViT_old": [-0.503654, 0.000021], "ED": -0.50380965, "RBM+PP": -0.503765, "DMRG": -0.503805}}

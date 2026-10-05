@@ -503,7 +503,10 @@ further iteration is costly: the signs are defined recursively, and each
 Krylov step adds one hop of neighbours ($1.3\times10^3$, $5\times10^4$ and
 $1.2\times10^6$ configurations per state after one, two and three steps),
 which raises the estimated cost of the next iteration from 5 to over 50
-GPU-hours.
+GPU-hours. For comparison, continuing the ViT's own variational optimization
+with its original recipe for 9 GPU-hours changes its energy by
+$(-1\pm14)\times10^{-5}$ per site: at similar cost, plain VMC does not move,
+while one learned iteration matches the ViT energy and lowers its sign error.
 
 On $8\times8$ we trained the ViT amplitude by maximum likelihood on the
 walkers, whose distribution $f\propto a\,\phi_\FN$ gives the target

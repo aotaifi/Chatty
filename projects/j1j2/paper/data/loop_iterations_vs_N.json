@@ -75,7 +75,9 @@
     "N": 36,
     "eps_1e6": 99,
     "ws_1e8": 123,
-    "partial": true
+    "partial": false,
+    "ws_1e12": 496,
+    "ws_1e14": 1982
    }
   ]
  }

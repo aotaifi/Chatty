@@ -1,0 +1,9 @@
+{
+  "symtab_sec_per_config": 8.8365696137771e-06,
+  "symtab_bitops_per_config": 4096,
+  "cnn_sec_per_config": 9.817531099542975e-06,
+  "cnn_flops_per_config": 165888,
+  "cnn_params": 5313,
+  "batch": 10000,
+  "note": "numpy/torch CPU, 2 threads, batched; 6x6: |G|=576, 36 sites"
+}

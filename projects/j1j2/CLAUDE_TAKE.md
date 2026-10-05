@@ -43,3 +43,9 @@ Running at end of session: 6x6 symmetric ED (Opus), 4x4 learning-ladder rung 2 w
 - **6x6 learned loop, iteration 1**: E_FN = -0.503667(63), equal to ViT within errors; true sign error 8e-5 < ViT 1.3e-4. Control: second Krylov step alone -0.503596(52) -> most gain from the sign step.
 - **Real scaling problem found**: recursive sign definition — each Krylov step adds a neighbour hop (1.3e3, 5e4, 1.2e6 configs per state), iteration 2 would cost >50 GPU-h. Fix to try: store/distill signs after each iteration (sign network or per-iteration sign table on samples) so evaluation cost stays at one hop.
 - FN at M=128 is noisy (single populations scatter ~3e-4/site, one fell below E0): need many populations or larger M for any claim.
+
+## Update — stored signs (2026-10-05, results/stored_signs/)
+- Recursive Krylov signs can be replaced by a stored sign (cost ~1e-5 s per evaluation, independent of k), but only if it is trained on the right distribution.
+- **Self-sealing:** the configurations whose sign must flip have tiny amplitude, because FN suppresses a(x) on wrong-sign states. |a|^2 samples therefore miss the flips (a table covering 99.5% of |a|^2 weight missed 100% of the flip weight), and stored-vs-recursive disagreement measured under the current a looks deceptively small. Any learned sign (or amplitude) must be trained on a broadened distribution, e.g. tempered |a|^{2 beta} with beta=0.5, or with one-hop neighbours.
+- 4x4: translation-invariant net on tempered samples (beta=0.5), N=1e4 per step, comes close to the exact loop (it30: w_s 2.5e-5, eps 7.4e-5 vs exact 8.9e-7 / 5.2e-5); table+neighbours matches exactly but only because 4x4 is fully covered. Untempered |a|^2 variants stall at w_s ~1e-2.
+- Next: test the tempered sign net on 6x6 (stored K2 vs exact K2, then K3 at one-hop cost).

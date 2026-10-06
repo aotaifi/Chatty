@@ -57,3 +57,7 @@ Running at end of session: 6x6 symmetric ED (Opus), 4x4 learning-ladder rung 2 w
 - **Oracle (decisive):** ViT amplitude + exact signs -> FN -0.503682(21) = ViT guide; exact amplitude + ViT signs -> -0.503731(15). Near the ViT the FN error is set by the amplitude on frustrated edges, not by the signs. Ideal loop contracts ~0.85-0.89/iteration => ~1.5e-5/site per ideal iteration at the ViT level, below referee resolution; a 2-sigma win needs ~5 ideal iterations.
 - **4x4 from a VMC-trained net:** sign step w_s 2.4e-4 -> 2e-6 in one step; learned amplitude update realises 0.3-0.5 of the frozen gain per iteration; loop ~tied with continued VMC at equal CPU. (results/net_start_4x4/)
 - **Conclusion:** the amplitude update is THE bottleneck; design discussion in results/amp_design/ before any new runs.
+
+## Takeover log (from 2026-10-06 18:30, PI away; check-in Wed 2026-10-07 09:00)
+Agreed defaults: T3 go if T2 (Krylov signs + best optimizer) <= 0.5x the standard-VMC control error at equal CPU-h on both seeds (one seed -> rerun with a third seed); ceiling 30 GPU-h ws1 + 300 CPU-h, no Paderborn; T2 fail -> no T3, write fallback framing; angle follow-ups <= 20 CPU-h each; no paper edits, emails, workspace posts, chatty-slurm-watch, cancelling others' jobs. Deleting run data only if quota is critical (then our own stale runs; Ruby campaign -> ask ruby_runs).
+- 18:30 quota /project/theorie: 302/475 GB, 411k/475k files.

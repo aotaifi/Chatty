@@ -1,0 +1,225 @@
+{
+ "args": {
+  "spec": "/home/a/A.Otaifi/chatty_ll6it2/data/spec_G1_hop.json",
+  "b": "/home/a/A.Otaifi/chatty_ll6it2/runs/a2small_16845080/params_a2small.npy",
+  "betas": "1,0.5,0.25",
+  "nch": 1024,
+  "nrounds": 16,
+  "between": 4,
+  "burn": 80,
+  "chunk_local": 1024,
+  "ngroups": 16,
+  "njac": 1024,
+  "jac_chunk": 256,
+  "seed": 7,
+  "out": "precheck_6x6.json"
+ },
+ "backend": "gpu",
+ "device": "NVIDIA A40",
+ "npar": 154980,
+ "spec": {
+  "name": "G1",
+  "nets": [
+   "/home/a/A.Otaifi/chatty_ss6/runs/ss6k1_L_b0.3_16830893/net1_k1_L_b0.3.pkl"
+  ],
+  "Ts_nets": [
+   -14.985799779143964
+  ],
+  "hop": {
+   "amp": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy",
+   "T": -6.3717955103175115
+  },
+  "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy"
+ },
+ "b": "/home/a/A.Otaifi/chatty_ll6it2/runs/a2small_16845080/params_a2small.npy",
+ "rows": [
+  {
+   "beta": 1.0,
+   "n": 16384,
+   "acceptance": 0.14432836461950233,
+   "t_sample_s": 70.84795141220093,
+   "t_local_s": 306.7922008037567,
+   "t_b_s": 4.119178295135498,
+   "ess_a": 1.0000000000000004,
+   "ess_b": 0.9998629238279597,
+   "EFa_site": [
+    -0.5036264867554939,
+    4.0333560678815626e-05
+   ],
+   "EFb_site": [
+    -0.5036778842888003,
+    5.203268213485863e-05
+   ],
+   "D_site": [
+    -5.139753330634594e-05,
+    2.3640230394571908e-05
+   ],
+   "EFa_se_chainjk_site": 4.033781863501744e-05,
+   "D_se_chainjk_site": 2.142863777704296e-05,
+   "EFa_se_naive_site": 3.99764028846897e-05,
+   "twotau_rounds_ELa": 1.0181631890137022,
+   "twotau_rounds_loga": 1.2217381409757406,
+   "lag1_ELa": 0.01018424840869046,
+   "lag1_loga": 0.11175431314950914,
+   "wall_med_99_max": [
+    2.53621781581415,
+    10.92290448036639,
+    93.4881288484296
+   ],
+   "wall_mean": 3.006412090988933,
+   "wall_frac_nonzero": 0.9981689453125,
+   "wall_weighted_mean_a": 3.006412090988932,
+   "nbr_total_mean": 81.594482421875,
+   "nbr_viol_mean": 23.6253662109375,
+   "nbr_viol_frac_samples": 0.9981689453125,
+   "nbr_viol_q": [
+    24.0,
+    40.0,
+    52.0
+   ],
+   "dlogb_rms": 0.005771015016007157,
+   "loga_mean_sd": [
+    -3.97175776646327,
+    1.4851630237179099
+   ],
+   "ELa_sd_site": 0.005116979569240282,
+   "EHb_mean_site": -0.5036355421550346,
+   "D_se_naive_site": 2.169021710172534e-05,
+   "D_se_ratio_vs_beta1": 1.0,
+   "D_se_chainjk_ratio_vs_beta1": 1.0,
+   "EFa_se_ratio_vs_beta1": 1.0
+  },
+  {
+   "beta": 0.5,
+   "n": 16384,
+   "acceptance": 0.2686275906032986,
+   "t_sample_s": 30.362953901290894,
+   "t_local_s": 310.7115259170532,
+   "t_b_s": 4.082941055297852,
+   "ess_a": 0.052928069387210015,
+   "ess_b": 0.05357193275148705,
+   "EFa_site": [
+    -0.5036182076316513,
+    1.624228095690396e-05
+   ],
+   "EFb_site": [
+    -0.5035982978889878,
+    2.4827552507617055e-05
+   ],
+   "D_site": [
+    1.990974266361276e-05,
+    1.837719768407856e-05
+   ],
+   "EFa_se_chainjk_site": 1.805089913167389e-05,
+   "D_se_chainjk_site": 1.4815461544758719e-05,
+   "EFa_se_naive_site": 1.776364847632575e-05,
+   "twotau_rounds_ELa": 0.9540573758029699,
+   "twotau_rounds_loga": 0.9668256760232662,
+   "lag1_ELa": 0.007518452095246595,
+   "lag1_loga": 0.0025584803413751466,
+   "wall_med_99_max": [
+    5.536737099433493,
+    51.14851816710942,
+    394.50337470797825
+   ],
+   "wall_mean": 8.39396707908515,
+   "wall_frac_nonzero": 0.99993896484375,
+   "wall_weighted_mean_a": 2.9966844694072856,
+   "nbr_total_mean": 80.38134765625,
+   "nbr_viol_mean": 29.92767333984375,
+   "nbr_viol_frac_samples": 0.99993896484375,
+   "nbr_viol_q": [
+    30.0,
+    43.0,
+    56.0
+   ],
+   "dlogb_rms": 0.047901206233607684,
+   "loga_mean_sd": [
+    -6.863623921170074,
+    1.9534153764410747
+   ],
+   "ELa_sd_site": 0.08178821199416472,
+   "EHb_mean_site": -0.503615801498083,
+   "D_se_naive_site": 1.4673579146735484e-05,
+   "D_se_ratio_vs_beta1": 0.7773696523828377,
+   "D_se_chainjk_ratio_vs_beta1": 0.6913860647096708,
+   "EFa_se_ratio_vs_beta1": 0.4026989108708888
+  },
+  {
+   "beta": 0.25,
+   "n": 16384,
+   "acceptance": 0.3731972023292824,
+   "t_sample_s": 29.912895917892456,
+   "t_local_s": 290.5830011367798,
+   "t_b_s": 3.9978041648864746,
+   "ess_a": 0.016254781490947907,
+   "ess_b": 0.016407507964006005,
+   "EFa_site": [
+    -0.5035927839987815,
+    5.101119491725385e-05
+   ],
+   "EFb_site": [
+    -0.5035536731571782,
+    3.971133017818395e-05
+   ],
+   "D_site": [
+    3.9110841603277415e-05,
+    3.175508259287273e-05
+   ],
+   "EFa_se_chainjk_site": 3.829880148876035e-05,
+   "D_se_chainjk_site": 2.669974039968461e-05,
+   "EFa_se_naive_site": 3.980021052074361e-05,
+   "twotau_rounds_ELa": 1.0585613042737232,
+   "twotau_rounds_loga": 0.9166525853456314,
+   "lag1_ELa": 0.0028479449837684597,
+   "lag1_loga": -0.007246461053894992,
+   "wall_med_99_max": [
+    9.806853681359243,
+    173.36024642561182,
+    1947.153761007843
+   ],
+   "wall_mean": 20.618093071620486,
+   "wall_frac_nonzero": 1.0,
+   "wall_weighted_mean_a": 3.161871941937796,
+   "nbr_total_mean": 78.229736328125,
+   "nbr_viol_mean": 32.53582763671875,
+   "nbr_viol_frac_samples": 1.0,
+   "nbr_viol_q": [
+    33.0,
+    45.0,
+    55.0
+   ],
+   "dlogb_rms": 0.11122316254106521,
+   "loga_mean_sd": [
+    -9.122721990337595,
+    2.3092476899589656
+   ],
+   "ELa_sd_site": 0.5417188080872645,
+   "EHb_mean_site": -0.5035717841968033,
+   "D_se_naive_site": 2.6820099143510812e-05,
+   "D_se_ratio_vs_beta1": 1.3432645140448418,
+   "D_se_chainjk_ratio_vs_beta1": 1.2459840274256124,
+   "EFa_se_ratio_vs_beta1": 1.2647332409718648
+  }
+ ],
+ "gpu_h": {
+  "beta1.0": 0.1095,
+  "beta0.5": 0.0959,
+  "beta0.25": 0.0901,
+  "timing": 0.0216,
+  "total": 0.3171
+ },
+ "timing": {
+  "n_central": 1024,
+  "n_children_all": 83596,
+  "n_children_viol": 24131,
+  "jac_chunk": 256,
+  "fwd_batch": 16384,
+  "a_fwd_all_nbrs_ms_per_x": 0.2855712082237005,
+  "b_grad_x_ms_per_x": 0.0279212836176157,
+  "c_grad_x_plus_viol_ms_per_x": 0.6421413272619247,
+  "d_grad_x_plus_all_ms_per_x": 2.141735516488552,
+  "grad_ms_per_state": 0.025909644609026186,
+  "fwd_ms_per_state": 0.0034540659201903086
+ }
+}

@@ -16,3 +16,9 @@ Decision: not needed; cancel all three sets when Paderborn is reachable.
   objective is a single majorise-minimise step on the fixed-sign VMC energy and is beaten 4-10x by a
   second-order fixed-sign VMC optimizer; first-order SR checkpoints are not the amplitudes we will use.
 - Cost: ~3 H100-h and ~80 GB per arm.
+
+## Executed 2026-10-06 (on user instruction)
+- VPN on ws1 was up; Paderborn login2 was down (maintenance), login1 reachable with the same verified host key.
+- Cancelled 3579917-3579920 and 3579934[0-3] (all pending).
+- Array 3579925 had already run before the maintenance: tasks 0,1,3,4,5 COMPLETED, task 2 TIMEOUT. Its outputs are on Paderborn
+  (other agent's run dir); not analysed here.

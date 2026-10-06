@@ -1,0 +1,17 @@
+{
+ "name": "K2vitS_sign",
+ "nets": [
+  "net1_k1_L_b0.3.pkl",
+  "net2_k2_L_b0.3.pkl"
+ ],
+ "Ts_nets": [
+  -14.985799779143964,
+  -7.736416932248442
+ ],
+ "hop": {
+  "amp": "base",
+  "T": -2.299999999999997
+ },
+ "amp_g": "base",
+ "sign_from": "/home/a/A.Otaifi/chatty_ll6it2/runs/sK3vit_16845101/spec_K2vit_stored.json"
+}

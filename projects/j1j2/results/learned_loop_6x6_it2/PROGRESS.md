@@ -74,3 +74,24 @@ Code: `experiments/learned_loop_6x6_it2/`; run dir ws1 `~/chatty_ll6it2/` (reuse
   RMS(delta log a) = 0.006. Unresolved -> the amplitude step of iteration 2 is at the noise floor (as in iteration 1); the
   per-step validation sum -1.65e-4 was selection bias of the gate. a2 = params_a2small.npy is used for completeness.
   K3vit ED: w_s 4.25(1.0)e-5 (same as K3a1). Submitted sign step G2 = D2 + hop(a2) (16845923) and oracle (a2, exact signs) (16845924).
+- 2026-10-06 14:10: coordinator: it1 recursive guide, 64 pops M=128: -0.503708(29), median -0.503654(42), 17/64 below E0 (skew -1.44) ->
+  M=128 population-control bias. Submitted (a) ViT guide with the SAME seeds as the K3 runs (73001-064, 74001-064) M=128 and
+  M=512 beta 2.4 seeds 75001-032 (16847800); (b) K3a1 at M=512 beta 2.4 burn 0.8, seeds 75001-032 (16847801/2).
+- 2026-10-06 15:00: FN M=128 beta 1.2, 64 pops each: **K3vit = (|ViT|, stored K2 + hop(|ViT|, T=-2.3)) -0.503725(21)**, median -0.503706, 17/64 below E0;
+  K3a1 = (a1, D2 + hop(a1, T=-3.55)) -0.503629(18), median -0.503644, 6/64 below E0. ViT guide same protocol (272 pops) -0.503672(10), 40/272 below E0.
+  K3vit - ViT(VMC) = -7.1(3.0)e-5 (2.4 sigma), K3vit - ViT(FN, M128) = -5.3(2.3)e-5. Below-E0 fraction 27% vs 15% for the ViT guide -> must be checked
+  at M=512 before any claim. Submitted K3vit M=512 beta 2.4, 44 pops (16848xxx).
+- 2026-10-06 15:15: **iteration-2 guide G2 = (a2, D2 + hop(a2, T=-1.95))** (sG2 16845923, 2080Ti 1.13 GPU-h): ED w_s 4.5(1.1)e-5; <H>_G2 - E_ViT = +1.0(1.1)e-5
+  (paired, 16384 held-out) -> <H>_G2 = -0.503644(24). Held-out dH of the sign step is the same within 4e-7/site for T = -1.95, -3.55, -6.37
+  (T bootstrap 68% [-3.6, -1.6] smoothed): the curve is flat, so T is ill-determined but irrelevant. std(log a2 - log|psi0|) 0.062 (ViT 0.048).
+  FN 64 pops submitted (16848136/7, seeds 73001-064 = paired with vitP).
+  Paired ViT guide (same seeds 73001-064, 74001-064) M=128: -0.503666(15), 25/128 below E0. ViT M=512 beta 2.4: 32+32 pops -0.503654(10), -0.503677(11).
+- 2026-10-06 15:20: coordinator note (4x4 net-start: learned refresh realises 0.3-0.5 of the frozen-H_FN gain; SR stopping at first rejection).
+  it2_amp already continues after rejections (trust halved, stop after 3 consecutive or trust < 0.0025): a2small accepted 6 of 9 steps.
+  On 6x6 the limit is not the optimiser but the available gain: <H>_G1 - E_FN[G1] = 2.5(5.3)e-5/site, and the ideal loop contracts by
+  ~0.85-0.89/iteration (4x4 net-start, 6x6 exact loop) = ~1.5e-5/site per iteration at the ViT level, below the FN referee resolution (~2e-5).
+  A stronger optimiser cannot make one iteration visible here; no further amplitude variants run.
+- 2026-10-06 16:00: **FINAL**: G2 (iteration 2) E_FN -0.503687(23) (64 pops, median -0.503661, 16/64 < E0), = ViT within errors.
+  K3vit M=128 -0.503725(21) (17/64 < E0) does NOT survive M=512: -0.503699(29) (42 pops, one at -0.50477), same-seed paired vs ViT guide
+  M=512 +0.6(1.8)e-5. K3a1 M=512 vs ViT +0.1(1.8)e-5. (a2, exact signs) -0.503649(23). Verdict: TIE; iteration 3 not run (no resolvable
+  amplitude gain; oracle shows amplitude limits). See IT2_VERDICT_2026-10-06.md, fig_it2_6x6.pdf, summary_fn.json.

@@ -1,0 +1,17 @@
+{
+ "name": "D2a2_sign",
+ "nets": [
+  "net1_k1_L_b0.3.pkl",
+  "net_d2big.pkl"
+ ],
+ "Ts_nets": [
+  -14.985799779143964,
+  -6.3717955103175115
+ ],
+ "hop": {
+  "amp": "/home/a/A.Otaifi/chatty_ll6it2/runs/a2small_16845080/params_a2small.npy",
+  "T": -1.9499999999999993
+ },
+ "amp_g": "/home/a/A.Otaifi/chatty_ll6it2/runs/a2small_16845080/params_a2small.npy",
+ "sign_from": "/home/a/A.Otaifi/chatty_ll6it2/runs/sG2_16845923/spec_D2_a2.json"
+}

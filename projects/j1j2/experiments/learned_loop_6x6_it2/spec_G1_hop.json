@@ -1,0 +1,7 @@
+{
+ "name": "G1",
+ "nets": ["/home/a/A.Otaifi/chatty_ss6/runs/ss6k1_L_b0.3_16830893/net1_k1_L_b0.3.pkl"],
+ "Ts_nets": [-14.985799779143964],
+ "hop": {"amp": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy", "T": -6.3717955103175115},
+ "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy"
+}

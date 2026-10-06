@@ -1,0 +1,6 @@
+job_id=16843596
+host=cip-cl-nv01.hpc.physik.uni-muenchen.de
+args=ll6_fn.py state_it1b.json it1bx0 128 1.2 0.4 0.025 42017 42018 42019 42020 42021 42022 42023 42024
+started=2026-10-06T11:35:43+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-06T12:53:36+02:00

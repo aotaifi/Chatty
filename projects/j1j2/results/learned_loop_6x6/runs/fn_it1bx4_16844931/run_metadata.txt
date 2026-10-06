@@ -1,0 +1,6 @@
+job_id=16844931
+host=met-cl-vis01.hpc.physik.uni-muenchen.de
+args=ll6_fn.py state_it1b.json it1bx4 128 1.2 0.4 0.025 42049 42050 42051 42052 42053 42054 42055 42056
+started=2026-10-06T11:22:44+02:00
+NVIDIA GeForce RTX 2080 Ti, 11264 MiB
+finished=2026-10-06T13:29:49+02:00

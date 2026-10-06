@@ -1,0 +1,6 @@
+job_id=16843601
+host=kng-cl-nv02.hpc.physik.uni-muenchen.de
+args=ll6_fn.py state_it1b.json it1bx5 128 1.2 0.4 0.025 42057 42058 42059 42060 42061 42062 42063 42064
+started=2026-10-06T10:32:15+02:00
+NVIDIA A40, 46068 MiB
+finished=2026-10-06T12:08:02+02:00

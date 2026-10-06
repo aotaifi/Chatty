@@ -20,7 +20,7 @@ mkdir -p "$OUT"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 cp "$BASE"/code/*.py "$OUT/"; cp "$LL6"/code/ll6_core.py "$LL6"/code/vit_dt.py "$SS6"/code/ss6_core.py "$OUT/"
 cd "$OUT"
-for f in "vit_J2=0.50_N=6x6_k=0.mpack" samples_psi0sq_6x6.npz samples_extra_psi0sq_6x6.npz energy_krylov_vs_vit_6x6_indep.npz; do ln -sf "$LL6/data/$f" .; done
+for f in "vit_J2=0.50_N=6x6_k=0.mpack" samples_psi0sq_6x6.npz samples_extra_psi0sq_6x6.npz energy_krylov_vs_vit_6x6_indep.npz psi0_6x6_table.npz; do ln -sf "$LL6/data/$f" .; done
 for f in "$BASE"/data/*; do [ -e "$f" ] && ln -sf "$f" .; done
 { echo "job_id=${SLURM_JOB_ID}"; echo "host=$(hostname)"; echo "args=$*"; echo "started=$(date -Is)"; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; } > run_metadata.txt
 "$LL6/venv_gpu/bin/python" "$@"

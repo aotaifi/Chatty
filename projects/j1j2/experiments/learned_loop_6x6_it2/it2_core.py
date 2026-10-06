@@ -367,3 +367,49 @@ class VitGuide:
 def vit_phase(net, X):
     z = net.logpsi_c(net.flat0, np.asarray(X, np.uint64))
     return 0.5 * float(np.angle(np.mean(np.exp(2j * z.imag))))
+
+
+# ------------------------------------------------------------------ oracle / mixed guides (diagnostics)
+class FuncGuide:
+    """guide from a log-amplitude function la(S) and a sign function sg(S) (any state sets)."""
+
+    def __init__(self, la, sg):
+        self.la = la; self.sg = sg; self.D = 0
+
+    def local(self, X):
+        X = np.asarray(X, np.uint64)
+        lv, nb = C.build_levels(X, 1)
+        la1 = self.la(lv[1]); s1 = self.sg(lv[1])
+        idx, V, selfidx = nb[0]
+        p0 = np.searchsorted(lv[0], X)
+        idx = idx[p0]; V = V[p0]; sx = s1[selfidx[p0]]; lax_ = la1[selfidx[p0]]
+        sy = s1[idx]; w = 0.5 * C.JB[None, :] * np.exp(np.clip(la1[idx] - lax_[:, None], -700, 700))
+        allowed = V & (sx[:, None] * sy < 0); viol = V & ~allowed
+        diag = C.diag_vec(V)
+        dfn = diag + np.sum(np.where(viol, w, 0.), axis=1)
+        eh = dfn - np.sum(np.where(allowed, w, 0.), axis=1)
+        own, col = np.nonzero(V); NBx = C.neighbors(X)[0]
+        return dict(dfn=dfn, eh=eh, diag=diag, own=own.astype(np.int64), child=NBx[own, col], rate=w[own, col],
+                    allowed=allowed[own, col], lac=la1[idx[own, col]], lax=lax_, s=sx, n=len(X))
+
+
+def make_mixed_guide(desc, net, pool):
+    """desc = 'AMP:SIGN' with AMP in {vit, psi0, <params.npy>} and SIGN in {vit, psi0, <spec.json>}."""
+    amp_d, sign_d = desc.split(':')
+    p0 = None
+    def psi0():
+        nonlocal p0
+        if p0 is None:
+            from psi0_6x6 import Psi0
+            p0 = FnCache(Psi0('psi0_6x6_table.npz'), name='psi0')
+        return p0
+    if amp_d == 'vit': la = FnCache(lambda S: net.logabs(net.flat0, S), name='vit_a')
+    elif amp_d == 'psi0': la = lambda S: np.log(np.maximum(np.abs(psi0()(S)), 1e-300))
+    else: la = FnCache(lambda S, fl=load_flat(net, amp_d): net.logabs(fl, S), name=amp_d)
+    if sign_d == 'vit':
+        phi = vit_phase(net, pool)
+        sg = FnCache(lambda S: np.where(np.cos(net.logpsi_c(net.flat0, S).imag - phi) >= 0, 1., -1.), name='vit_s')
+    elif sign_d == 'psi0': sg = lambda S: np.where(psi0()(S) >= 0, 1., -1.)
+    else:
+        sp, bd = load_spec(sign_d); hg = HGuide(sp, net, base_dir=bd); sg = FnCache(hg.signs, name='hg_s')
+    return FuncGuide(la, sg)

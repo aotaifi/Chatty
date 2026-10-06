@@ -6,7 +6,8 @@ one move per walker per step, systematic resampling every step, mixed estimator 
 initial walkers: M distinct states of the 256-state pool energy_krylov_vs_vit_6x6_indep.npz.
 Guide 'vit': a = |psi_ViT|, s = binarised ViT phase (global phase fixed on the pool) -> common-random-number
 pairing with the same seeds.
-Usage: python it2_fn.py SPEC.json|vit TAG M beta burn tau_max seed1 [seed2 ...]
+Guide 'mix:AMP:SIGN' (it2_core.make_mixed_guide): AMP in vit|psi0|params.npy, SIGN in vit|psi0|spec.json (oracle diagnostics).
+Usage: python it2_fn.py SPEC.json|vit|mix:AMP:SIGN TAG M beta burn tau_max seed1 [seed2 ...]
 """
 import sys, json, time
 import numpy as np
@@ -19,7 +20,9 @@ seeds = [int(s) for s in sys.argv[7:]]
 clk = I.GpuClock()
 net = C.Net(I.CKPT, dtype='float32')
 pool = np.load('energy_krylov_vs_vit_6x6_indep.npz')['states'].astype(np.uint64).reshape(-1)
-if spec_p == 'vit':
+if spec_p.startswith('mix:'):
+    guide = I.make_mixed_guide(spec_p[4:], net, pool); spec = dict(name=spec_p)
+elif spec_p == 'vit':
     phi = I.vit_phase(net, pool); guide = I.VitGuide(net, phi); spec = dict(name='vit', phi=phi)
 else:
     spec, bd = I.load_spec(spec_p); guide = I.HGuide(spec, net, base_dir=bd)

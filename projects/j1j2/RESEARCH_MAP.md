@@ -57,6 +57,9 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Separate paper repo for Overleaf; paper rewrite after the angles settle.
 - Possible NQS collaborators (ViT authors, CQSL).
 
+## 5b. Compute note
+- When Paderborn is back from maintenance (expected ~Oct 9-12), move GPU-heavy work there (H100s; ws1 A40s are slow and the queue is congested). Access via ws1 VPN; if login2 is down use `ssh -o HostName=login1 -o HostKeyAlias=login2 paderborn` (same host key). Check `sinfo` there first.
+
 ## 6. Running now
 | Work | Owner | Budget |
 |---|---|---|

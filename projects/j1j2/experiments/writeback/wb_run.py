@@ -81,20 +81,23 @@ class Corr:
         self.npar = int(self.flat0.size)
         inv = jnp.asarray(np.argsort(SS.space_group()[:8], axis=1))
         net, unravel = self.net, self.unravel
-        app = jax.checkpoint(lambda p, X: net.apply({'params': p}, X))
+        sg = jnp.asarray([1.0, -1.0], jnp.float32)
 
-        def f(flat, X):
+        def f(flat, X):                       # exactly symmetric: mean over the 16 images (forward use)
             p = unravel(flat)
+            Xs = jnp.stack([X[:, inv[k // 2]] * sg[k % 2] for k in range(16)])
+            out = net.apply({'params': p}, Xs.reshape(-1, N)).reshape(16, X.shape[0])
+            return out.mean(0)
 
-            def body(acc, k):
-                Xk = X[:, inv[k // 2]] * jnp.where(k % 2 == 0, 1.0, -1.0).astype(jnp.float32)
-                return acc + app(p, Xk), None
-            acc, _ = jax.lax.scan(body, jnp.zeros(X.shape[0], jnp.float32), jnp.arange(16))
-            return acc / 16.0
+        def f_aug(flat, X, G):                # net on one image G (0..15) per row (training; see DESIGN.md:
+            p = unravel(flat)                 # by convexity of the losses in f, the symmetrised f does at least as well)
+            Xg = jnp.take_along_axis(X, inv[G // 2], axis=1) * sg[G % 2][:, None]
+            return net.apply({'params': p}, Xg)
         self.f = f
+        self.f_aug = f_aug
         self._tab = jax.jit(lambda flat, S: f(flat, bits(S)))
 
-    def table(self, flat, reps, batch=16384):
+    def table(self, flat, reps, batch=4096):
         D = reps.shape[0]; out = []
         for i in range(0, D, batch):
             s = reps[i:i + batch]; m = s.shape[0]
@@ -155,17 +158,27 @@ del s1
 log('REF', res['ref'])
 dump('wb.json', res)
 
-cdf = jnp.cumsum(p)
 dl = (lP - lphi + mu)                                         # log g at f = 0 (centred under phi^2)
 MASKS = jnp.asarray(SS.MASKS); BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB)
 
 
-def make_batch(B, K):
+lpc = jnp.log(jnp.maximum(p, 1e-300)) - jnp.log(sec.n)       # per-configuration log phi^2
+CDFS = {}
+
+
+def make_batch(B, K, beta=1.0):
+    """x ~ q_beta (per-configuration phi^(2 beta), beta = 1: phi^2); returns importance weights p/q (unnormalised)."""
+    if beta not in CDFS:
+        lq = beta * (lpc - jnp.max(lpc)) + jnp.log(sec.n)
+        CDFS[beta] = (jnp.cumsum(jnp.exp(lq)), lq)
+    cdf_b, lq = CDFS[beta]
+
     @jax.jit
     def batch(key):
         k1, k2 = jax.random.split(key)
-        uu = jax.random.uniform(k1, (B,), f64) * cdf[-1]
-        idx = jnp.clip(jnp.searchsorted(cdf, uu), 0, sec.D - 1)
+        uu = jax.random.uniform(k1, (B,), f64) * cdf_b[-1]
+        idx = jnp.clip(jnp.searchsorted(cdf_b, uu), 0, sec.D - 1)
+        lw = (lpc + jnp.log(sec.n) - lq)[idx]; iw = jnp.exp(lw - jnp.max(lw))
         x = sec.reps[idx]
         valid = (((x[:, None] >> BI[None, :]) ^ (x[:, None] >> BJ[None, :])) & jnp.uint64(1)).astype(bool)
         nval = valid.sum(1)
@@ -175,32 +188,43 @@ def make_batch(B, K):
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
         allowed = ok & (sP[idx][:, None] * sP[iy] < 0)
-        w = jnp.where(allowed, 0.5 * JB[bsel] * jnp.exp(lphi[iy] - lphi[idx][:, None]), 0.0) * (nval[:, None] / K)
-        return x, y, dl[idx], dl[iy], w
+        rphi = jnp.exp(lphi[iy] - lphi[idx][:, None])
+        w = jnp.where(allowed, 0.5 * JB[bsel] * rphi, 0.0) * (nval[:, None] / K)
+        # fixed-sign <H>: E_L(x) = diag + sum_y H_xy s_x s_y b_y/b_x, neighbour sum estimated from the K bonds
+        d0 = 0.25 * JB.sum() - 0.5 * (valid * JB[None, :]).sum(1)
+        hv = jnp.where(ok, 0.5 * JB[bsel] * sP[idx][:, None] * sP[iy] * rphi, 0.0) * (nval[:, None] / K)
+        return x, y, dl[idx], dl[iy], w, iw, d0, hv
     return batch
 
 
-def losses(model, flat, x, y, dlx, dly, w, need_y=True):
+def losses(model, flat, x, y, dlx, dly, w, iw, d0, hv, need_y=True, G=None):
+    """G None: exactly symmetrised f (objective estimate); G (B,) image indices: one image per x and its neighbours."""
     B, K = y.shape
+    if G is None:
+        fn = lambda X, g: model.f(flat, X)
+    else:
+        fn = lambda X, g: model.f_aug(flat, X, g)
     if need_y:
-        fa = model.f(flat, bits(jnp.concatenate([x, y.reshape(-1)]))).astype(f64)
+        GG = None if G is None else jnp.concatenate([G, jnp.repeat(G, K)])
+        fa = fn(bits(jnp.concatenate([x, y.reshape(-1)])), GG).astype(f64)
         fx, fy = fa[:B], fa[B:].reshape(B, K)
     else:
-        fx = model.f(flat, bits(x)).astype(f64); fy = None
+        fx = fn(bits(x), G).astype(f64); fy = None
     gx = jnp.exp(fx + dlx)
-    den = jnp.mean(gx * gx)
-    LI = 1.0 - jnp.mean(gx) ** 2 / den
+    iw = iw / jnp.mean(iw)                                     # self-normalised importance weights
+    den = jnp.mean(iw * gx * gx)
+    LI = 1.0 - jnp.mean(iw * gx) ** 2 / den
     if fy is None:
-        return jnp.nan, LI
+        return jnp.nan, LI, jnp.nan
     gy = jnp.exp(fy + dly)
-    LE = 0.5 * jnp.mean(jnp.sum(w * (gx[:, None] - gy) ** 2, 1)) / den / N
-    return LE, LI
+    LE = 0.5 * jnp.mean(iw * jnp.sum(w * (gx[:, None] - gy) ** 2, 1)) / den / N
+    EL = d0 + jnp.sum(hv * gy, 1) / gx
+    LV = (jnp.mean(iw * gx * gx * EL) / den - sec.E0) / N          # fixed-sign <H>(b, s_P) - E0, per site
+    return LE, LI, LV
 
 
 def exact_eval(model, flat, final=False):
-    sec.offload()
     fb = model.table(flat, sec.reps)
-    sec.reload()
     la = lP + fb
     ef = sec.fn_rayleigh(lP, sP, la)
     b = sec.vec(la, jnp.ones_like(la))
@@ -225,13 +249,16 @@ if SPEC.get('check', True):
     chk = []
     for hi in (0.0, 0.05):
         mdl = Corr(32, 2, seed=3, head_init=hi)
-        bt = make_batch(1024, 8)
-        lf = jax.jit(lambda fl, x, y, a, b_, w: losses(mdl, fl, x, y, a, b_, w))
-        est = np.array([[float(q) for q in lf(mdl.flat0, *bt(jax.random.PRNGKey(500 + i)))] for i in range(64)])
         ex = exact_eval(mdl, mdl.flat0)
-        r = dict(head_init=hi, LE_est=est[:, 0].mean(), LE_se=est[:, 0].std() / 8, LE_exact=ex['frozenFN_minus_EFN_site'],
-                 LI_est=est[:, 1].mean(), LI_se=est[:, 1].std() / 8, LI_exact=ex['infid'], rms_f=ex['rms_f'])
-        chk.append(r); log('CHECK', r)
+        lf = jax.jit(lambda fl, *a: losses(mdl, fl, *a))
+        for beta in SPEC.get('check_betas', [0.5]):
+            bt = make_batch(1024, 8, beta)
+            est = np.array([[float(q) for q in lf(mdl.flat0, *bt(jax.random.PRNGKey(500 + i)))] for i in range(64)])
+            r0 = dict(LV_est=est[:, 2].mean(), LV_se=est[:, 2].std() / 8, LV_exact=ex['H_ownsign'])
+            r = dict(head_init=hi, beta=beta, LE_est=est[:, 0].mean(), LE_se=est[:, 0].std() / 8,
+                     LE_exact=ex['frozenFN_minus_EFN_site'], LI_est=est[:, 1].mean(), LI_se=est[:, 1].std() / 8,
+                     LI_exact=ex['infid'], rms_f=ex['rms_f'], **r0)
+            chk.append(r); log('CHECK', r)
     res['check'] = chk; res['check_sec'] = time.time() - t0
     dump('wb.json', res)
 
@@ -245,55 +272,57 @@ for arm in SPEC['arms']:
     sched = optax.warmup_cosine_decay_schedule(0.0, arm['lr'], arm.get('warmup', 200), steps, arm['lr'] * 0.02)
     opt = optax.adam(sched)
     flat = model.flat0; ost = opt.init(flat)
-    bt = make_batch(B, K)
-    need_y = loss_kind == 'energy'
+    bt = make_batch(B, K, arm.get('beta', 1.0))
+    need_y = loss_kind in ('energy', 'var')
 
     @jax.jit
     def step(fl, ost, key):
-        x, y, dlx, dly, w = bt(key)
+        k1, k2 = jax.random.split(key)
+        bd = bt(k1)
+        G = jax.random.randint(k2, (B,), 0, 16)
 
         def L(q):
-            LE, LI = losses(model, q, x, y, dlx, dly, w, need_y=need_y)
-            return (LE if loss_kind == 'energy' else LI), (LE, LI)
+            LE, LI, LV = losses(model, q, *bd, need_y=need_y, G=G)
+            return {'energy': LE, 'infid': LI, 'var': LV}[loss_kind], (LE, LI)
         (l, (LE, LI)), g = jax.value_and_grad(L, has_aux=True)(fl)
         upd, ost = opt.update(g, ost, fl)
         return optax.apply_updates(fl, upd), ost, LE, LI
 
-    vb = make_batch(4096, 8)
-    vkeys = [jax.random.PRNGKey(90_000 + i) for i in range(8)]
-    vl = jax.jit(lambda fl, x, y, a, b_, w: losses(model, fl, x, y, a, b_, w))
+    vb = make_batch(1024, 8, arm.get('beta', 1.0))
+    vkeys = [jax.random.PRNGKey(90_000 + i) for i in range(32)]
+    vl = jax.jit(lambda fl, *a: losses(model, fl, *a))
 
     def val(fl):
         r = np.array([[float(q) for q in vl(fl, *vb(k))] for k in vkeys])
         return r.mean(0)
     log(f'== arm {tag}: loss {loss_kind} C {arm["C"]} layers {arm["layers"]} npar {model.npar} B {B} K {K} steps {steps}')
     hist = []
-    ev = exact_eval(model, flat); ev.update(step=0, sec=0.0); hist.append(ev); log('  exact', ev)
-    own = 'frozenFN_minus_EFN_site' if loss_kind == 'energy' else 'infid'
-    best = (ev[own], flat, ev)
+    own = {'energy': 0, 'infid': 1, 'var': 2}[loss_kind]       # selection by the arm's own (sampled, symmetrised) objective
+    v = val(flat)
+    acc = [dict(step=0, val_LE=float(v[0]), val_LI=float(v[1]), val_LV=float(v[2]), sec=0.0)]
+    log('  val', acc[-1])
+    best = (v[own], flat, 0)
     key = jax.random.PRNGKey(1000 + arm.get('seed', 0))
-    sec.offload()
-    acc = []
     for it in range(1, steps + 1):
         key, k = jax.random.split(key)
         flat, ost, LE, LI = step(flat, ost, k)
-        if it % 250 == 0:
+        if it % arm.get('val_every', 250) == 0 or it == steps:
             v = val(flat)
-            acc.append(dict(step=it, val_LE=float(v[0]), val_LI=float(v[1]), sec=time.time() - t0))
+            acc.append(dict(step=it, val_LE=float(v[0]), val_LI=float(v[1]), val_LV=float(v[2]), sec=time.time() - t0))
             log('  val', acc[-1])
-        if it % arm.get('eval_every', 1000) == 0 or it == steps:
-            ev = exact_eval(model, flat, final=False); ev.update(step=it, sec=time.time() - t0)
-            hist.append(ev); log('  exact', ev)
-            if ev[own] < best[0]: best = (ev[own], flat, ev)
-            sec.offload()
+            if v[own] < best[0]: best = (v[own], flat, it)
             if arm.get('max_sec') and time.time() - t0 > arm['max_sec']:
                 log('  time limit for arm reached'); break
+        if arm.get('eval_every') and it % arm['eval_every'] == 0 and it != steps:
+            ev = exact_eval(model, flat); ev.update(step=it, sec=time.time() - t0)
+            hist.append(ev); log('  exact', ev)
+    t_train = time.time() - t0
     np.save(os.path.join(OUT, f'params_{tag}_last.npy'), np.asarray(flat))
     np.save(os.path.join(OUT, f'params_{tag}_best.npy'), np.asarray(best[1]))
-    fin_last = exact_eval(model, flat, final=arm.get('final', True))
     fin_best = exact_eval(model, best[1], final=arm.get('final', True))
+    fin_last = fin_best if best[2] == it else exact_eval(model, flat, final=False)
     r = dict(tag=tag, arm=arm, npar=model.npar, hist=hist, val=acc, final_last=fin_last, final_best=fin_best,
-             best_step=best[2]['step'], sec=time.time() - t0)
+             best_step=best[2], train_sec=t_train, sec=time.time() - t0)
     res['arms'].append(r)
     log(f'== done {tag}', json.dumps(dict(last=fin_last, best=fin_best)))
     dump('wb.json', res)

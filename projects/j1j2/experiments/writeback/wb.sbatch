@@ -17,7 +17,7 @@ OUT="/project/theorie/a/A.Otaifi/chatty_writeback/runs/${SLURM_JOB_NAME}_${SLURM
 mkdir -p "$OUT/code"
 cp "$B"/code/*.py "$OUT/code/"
 cp "$1" "$OUT/spec.json"
-export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=0.94 OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=${WB_MEMFRAC:-0.80} OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 { echo "job_id=${SLURM_JOB_ID}"; echo "host=$(hostname)"; echo "spec=$1"; echo "started=$(date -Is)"; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; } > "$OUT/run_metadata.txt"
 cd "$OUT/code"
 "/home/a/A.Otaifi/chatty_ll6/venv_gpu/bin/python" wb_run.py "$OUT" "$OUT/spec.json"

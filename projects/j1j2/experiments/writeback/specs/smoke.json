@@ -1,5 +1,6 @@
-{"check": true, "arms": [
- {"tag": "smokeE_lr1e-3", "loss": "energy", "C": 32, "layers": 4, "lr": 1e-3, "steps": 500, "warmup": 50, "eval_every": 500, "final": false},
- {"tag": "smokeE_lr3e-3", "loss": "energy", "C": 32, "layers": 4, "lr": 3e-3, "steps": 500, "warmup": 50, "eval_every": 500, "final": false},
- {"tag": "smokeI_lr1e-3", "loss": "infid", "C": 32, "layers": 4, "lr": 1e-3, "steps": 500, "warmup": 50, "eval_every": 500, "final": false}
+{"check": true, "check_betas": [0.5], "arms": [
+ {"tag": "smokeE_lr1e-3", "loss": "energy", "C": 32, "layers": 4, "lr": 1e-3, "beta": 0.5, "steps": 1000, "warmup": 50, "final": false},
+ {"tag": "smokeE_lr3e-3", "loss": "energy", "C": 32, "layers": 4, "lr": 3e-3, "beta": 0.5, "steps": 1000, "warmup": 50, "final": false},
+ {"tag": "smokeI_lr1e-3", "loss": "infid", "C": 32, "layers": 4, "lr": 1e-3, "beta": 0.5, "steps": 1000, "warmup": 50, "final": false},
+ {"tag": "smokeV_lr1e-3", "loss": "var", "C": 32, "layers": 4, "lr": 1e-3, "beta": 0.5, "steps": 1000, "warmup": 50, "final": false}
 ]}

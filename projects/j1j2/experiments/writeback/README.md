@@ -23,3 +23,21 @@ Stop rule (decided in advance):
   move to non-local factors (pair-product) or hop-based representations.
 - **Metric check:** if I-M reaches a lower frozen-FN energy than E-M, the energy-metric diagnosis is wrong.
 - Budget: <= 6 GPU-h in total (smoke + arms); an arm stops at its step budget or max_sec, whichever first.
+
+## Amendment (2026-10-07 ~18:30, before any training result; review `results/review/REVIEW_2026-10-07.md` + PI)
+- **This is a representability test**, not a loop test: the E and I losses use the exact phi_FN on x and on all
+  sampled neighbours and exact sampling from the sector table. The sampled (8x8) version would need instead:
+  samples from b^2 (VMC) or FN walkers, a_k and b on the one-hop neighbours, no phi; see DESIGN.md section 2.
+- **Same-capacity control arm V-M added:** the same residual net trained on the fixed-sign <H>(b, s_P) itself
+  (fixed-sign VMC estimator: local energies from K = 8 sampled bonds, reference samples x ~ phi^(2 beta) with
+  self-normalised importance weights), same data budget. Without it, a PASS of E-M would only say "representable".
+- **Criterion restated in the energy metric:** the exact identity gives Q_FN(e) := E_f[b] - E_FN =
+  1/2 sum_allowed |H_xy| phi_x phi_y (g_x - g_y)^2 / sum phi^2 g^2 (g = b/phi). PASS requires
+  Q_FN(e) <= 0.5 G0 = 1.5e-5/site (= frac >= 0.5) and <H>(b, s_P) <= 1.079e-4; FAIL is Q_FN(e) > 0.9 G0.
+  The 0.004-rms figure is only the white-noise translation of this (kappa_FN = 0.42).
+- All arms sample x ~ phi^(2 beta) with beta = 0.5 (smoke check: 9x smaller standard error than beta = 1 for the
+  same batch; 81% of the gain sits in configurations holding 7.6% of the phi^2 weight).
+- Training uses one random D4 x flip image per x (shared with its neighbours); validation, model selection and all
+  exact evaluations use the exactly symmetrised f. Selection: best validation value of the arm's own objective.
+- Reading: E passes and V fails -> the FN target carries information the residual VMC does not reach; E and V both
+  pass -> representable, and plain fixed-sign VMC with a residual factor suffices; E fails -> representation-limited.

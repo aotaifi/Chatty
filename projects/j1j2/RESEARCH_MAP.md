@@ -24,11 +24,19 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 | Corrections: our ViT is NOT state of the art at 6x6/8x8 (RBM+PP is better) | CLAUDE_TAKE 2026-10-07 |
 
 ## 3. Open questions, in the order we attack them
-1. ~~Why does the loop stall at the ViT level on 6x6?~~ **Answered 2026-10-07 (stall_6x6/README.md):** not information (ideal exact loop from the symmetrised ViT passes RBM+PP in 3 iterations, 8.8e-6 at 12) and not signs; the network cannot absorb the FN update accurately enough: energy cost 0.33 sigma^2/site, so each update must be written back at <= 0.004 rms in log-amplitude. Symmetrisation is worth 2.4e-5 for free. **New open question 1: an amplitude representation/optimiser that reaches 0.004 rms.**
+1. ~~Why does the loop stall at the ViT level on 6x6?~~ **Answered 2026-10-07 (stall_6x6/README.md):** not information (ideal exact loop from the symmetrised ViT passes RBM+PP in 3 iterations, 8.8e-6 at 12) and not signs; the network cannot absorb the FN update accurately enough: energy cost 0.33 sigma^2/site, so each update must be written back accurately (0.004 rms is the white-noise case; the real criterion is the edge-difference energy form Q(e) <~ 5e-6, review finding 4). Symmetrisation is worth 2.4e-5 for free. **New open question 1: an amplitude representation/optimiser that reaches 0.004 rms.**
 2. ~~Do large-sample amplitude steps beat their own control?~~ **Answered 2026-10-07: no.** Large N fixes generalisation (steps verify at z 2-8), but at the ViT amplitude the fixed-sign optimum is within ~1e-5/site; loop arm ties, control D gains -0.35(0.31)e-5 (amp_design/AMP6_table.md).
 3. **Cost race from scratch:** Marshall + amplitude-only net + Krylov signs vs training a full NQS, total GPU-h to a target energy (6x6 validation -> 8x8 target < -0.49889). Waits for 1 (architecture choice).
 4. **Add-on pitch at scale:** one Krylov sign step on the public 10x10 ViT checkpoint (nqs-models); cheap check.
 5. **Baseline to beat for any energy claim:** Lanczos step + variance extrapolation (Hu et al. 2013).
+
+## 3b. Independent review 2026-10-07 (results/review/REVIEW_2026-10-07.md) — accepted points
+- Critical: at a VMC-converged network the FN amplitude step has zero first-order gain (majorisation); every amplitude test needs a same-capacity VMC control.
+- Critical: 4x4 "3.3-7.2x at equal CPU-h" is not fair/transferable (exact sign table on 4x4; CPU-h implementation-dependent; 1.2-1.8x at equal step count). Do not claim it as is.
+- Critical: one Lanczos step is the untested baseline at equal hop cost. Exact 6x6 comparison running (results/lanczos_baseline_6x6/).
+- Major: FN/DMC referee biased by ~1e-5 at M=128; calibrate vs exact 6x6 FN before any 1e-5 claim.
+- Major: symmetrisation gain 2.4e-5 is ~1 sigma vs the ViT's VMC error; costs 16x per evaluation.
+- Reviewer's viability verdict: not viable as a ground-state solver at 8x8-10x10; narrow add-on survives only if it beats a Lanczos step at equal hop cost.
 
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

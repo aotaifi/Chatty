@@ -59,7 +59,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).
 - Signs are stored as composite nets, always used with one exact hop (angle 2).
-- Claims at the 1e-5/site level need FN at M >= 512, medians, and the reference guide on the same seeds (M=128 has a heavy low tail).
+- FN referee protocol (calibrated 2026-10-07, results/fn_calibration_6x6/): tau_max 0.025, M=512, beta window 0.8-2.4, BETA-TIME-AVERAGED mean over >= 500 populations (bias <= 3e-6, SE ~3e-6). The old step-averaged estimator is biased by -11..+25e-6 (guide-dependent) and medians are biased: do NOT use either. The it2_fn DMC numbers (oracles, G2, K3vit, K3a1, ViT guide) are WITHDRAWN until re-run; ll6_fn runs can be re-evaluated from saved per-step curves.
 - "Beat the ViT" is not a result by itself; 6x6 is a lab with exact references.
 
 ## 5. Parked ideas (not dropped)

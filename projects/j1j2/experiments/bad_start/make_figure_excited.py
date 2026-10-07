@@ -14,8 +14,7 @@ plt.rcParams.update({"font.size": 10, "axes.linewidth": 0.8, "xtick.direction": 
 SEL = [("b_ex1", "#D55E00", "v", r"pure $\phi_1$ (first excited state)"),
        ("c_mix1_w1e-08", "#56B4E9", "D", r"$\phi_1$ + $10^{-8}$ ground-state weight"),
        ("c_mix1_w0.01", "#0072B2", "s", r"$\phi_1$ + $10^{-2}$ ground-state weight"),
-       ("d_S1", "#CC79A7", "P", r"lowest $S\!=\!1$ state (other sector)"),
-       ("a_base_J2zero_Marshall", "#000000", "o", r"reference: $J_2\!=\!0$ amplitude + Marshall")]
+       ("d_S1", "#CC79A7", "P", r"lowest $S\!=\!1$ state (other sector)")]
 fig, (a, b) = plt.subplots(1, 2, figsize=(9.0, 3.7), constrained_layout=True)
 for nm, col, mk, lab in SEL:
     h = R[nm]["hist"]; x = np.arange(len(h["eps_FN"]))

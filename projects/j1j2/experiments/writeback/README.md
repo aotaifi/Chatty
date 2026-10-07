@@ -53,3 +53,8 @@ Stop rule (decided in advance):
   E-L (C64x4, lr 3e-3, capped at 1 h), E-M-lr1e-2 (optimisation-speed probe).
   The VMC arms use lr 1e-3 because at 3e-3 their noisy gradients raised the exact frozen-FN energy in the smoke run.
 - The stop rule is unchanged and applies to the best E arm.
+
+## Result (2026-10-07 22:20)
+PARTIAL by the stop rule: E-M 17% of the frozen-FN gain (I-M 8.4%, E-L 12.7%, lr 1e-2 3.9%); realistic VMC arms
+Vfn-M 0.8%, Vh-M 0.9% (tie -> FN amplitude target dropped per the reviewer's rule). Details, table and figure:
+`results/writeback/DESIGN.md`, `results/writeback/writeback_6x6.png`, run JSONs in `results/writeback/runs/`.

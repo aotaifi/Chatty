@@ -30,6 +30,8 @@ ap.add_argument('--lr', type=float, default=2e-3)
 ap.add_argument('--batch', type=int, default=1024)
 ap.add_argument('--ned', type=int, default=200000)
 ap.add_argument('--seed', type=int, default=7)
+ap.add_argument('--energy-n', type=int, default=0, help='paired <H>_{a, s_net} - <H>_{a, s_G} on x ~ a^2')
+ap.add_argument('--vs-vit', type=int, default=1)
 args = ap.parse_args()
 clk = I.GpuClock(); res = dict(args=vars(args))
 def save(): res['gpu_h'] = clk.hours(); json.dump(res, open(f'distill_{args.out}.json', 'w'), indent=1)
@@ -75,5 +77,20 @@ Xe, strue = S.load_ed(args.ned)
 s_new = Gn.signs(Xe); s_G = G.signs(Xe)
 res['ED'] = dict(n=int(len(Xe)), stored=I.wrong_frac(s_new, strue), G=I.wrong_frac(s_G, strue),
                  paired_stored_minus_G=I.paired_wrong(s_new, s_G, strue))
-I.log('ED', json.dumps(res['ED'])); clk.tick('ed'); res['vit_evals'] = int(net.neval); save()
+I.log('ED', json.dumps(res['ED'])); clk.tick('ed'); save()
+if args.energy_n:
+    nch = 2048
+    Xs, _ = I.sample(net, flat, 1.0, nch, max(1, args.energy_n // nch), 4, 200, 1000 * args.seed + 9); Xs = Xs.reshape(-1)
+    dn = Gn.local_chunked(Xs, 1024); dh = G.local_chunked(Xs, 256)
+    EN = dict(n=int(len(Xs)), H_net=I.chain_mean_se(dn['eh'] / 36, nch), H_hop=I.chain_mean_se(dh['eh'] / 36, nch),
+              paired_net_minus_hop=I.chain_mean_se((dn['eh'] - dh['eh']) / 36, nch))
+    if args.vs_vit:
+        zx = net.logpsi_c(net.flat0, Xs); NB, V = C.neighbors(Xs); own, col = np.nonzero(V)
+        zy = net.logpsi_c(net.flat0, NB[own, col])
+        ev = C.diag_vec(V).astype(complex); np.add.at(ev, own, 0.5 * C.JB[col] * np.exp(zy - zx[own])); ev = ev.real
+        w = np.exp(2 * (zx.real - dn['lax'])); w /= w.mean()
+        EN['net_minus_vit'] = [x / 36 for x in I.jk_ratio_diff(dn['eh'], ev, w, nch)]
+        EN['hop_minus_vit'] = [x / 36 for x in I.jk_ratio_diff(dh['eh'], ev, w, nch)]
+    res['energy'] = EN; I.log('ENERGY', json.dumps(EN)); clk.tick('energy')
+res['vit_evals'] = int(net.neval); save()
 I.log('DONE', json.dumps(res['gpu_h']))

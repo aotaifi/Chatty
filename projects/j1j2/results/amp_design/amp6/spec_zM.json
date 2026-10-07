@@ -1,0 +1,12 @@
+{
+ "nets": [
+  "net_zM.pkl"
+ ],
+ "Ts_nets": [
+  null
+ ],
+ "hop": null,
+ "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+ "name": "K2vit_rgn_comp_sign_comp",
+ "distilled_from": "/home/a/A.Otaifi/chatty_t3/runs/t3sign2_16852733/spec_sign2.json"
+}

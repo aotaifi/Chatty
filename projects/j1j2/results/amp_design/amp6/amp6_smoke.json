@@ -1,0 +1,85 @@
+{
+ "args": {
+  "spec": "/home/a/A.Otaifi/chatty_t3/runs/t3dist1_16852732/spec_dist1.json",
+  "init": null,
+  "out": "smoke",
+  "steps": 1,
+  "N": 8192,
+  "Nv": null,
+  "beta": 0.5,
+  "nch": 2048,
+  "between": 4,
+  "burn": 40,
+  "sr_eps": "1",
+  "cg_iters": 5,
+  "ls_rms": "0.005",
+  "z_acc": 2.0,
+  "cert_start": 0,
+  "cert_end": 0,
+  "chunk_local": 4096,
+  "vchunk": 8192,
+  "seed": 51
+ },
+ "spec": {
+  "nets": [
+   "net_dist1.pkl"
+  ],
+  "Ts_nets": [
+   null
+  ],
+  "hop": null,
+  "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+  "name": "K2vit_rgn_comp",
+  "distilled_from": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/spec_it1.json"
+ },
+ "init": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+ "steps": [
+  {
+   "step": 1,
+   "n": 8192,
+   "nv": 8192,
+   "E_tr_site": -0.5035850970717819,
+   "E_va_site": -0.503590155713217,
+   "gnorm": 10.178335765333848,
+   "trS": 3321.2323471372365,
+   "acc_tr": 0.2705453539651538,
+   "accepted": true,
+   "best": 0,
+   "cands": [
+    {
+     "kind": "gd",
+     "rms_target": 0.005,
+     "alpha": 1.92357720333369e-06,
+     "meas_site": -8.685182320494138e-06,
+     "se_site": 2.842252412682426e-06,
+     "drms_tr": 0.02587034190263452,
+     "drms_va": 0.030317932140256725,
+     "gen_ratio": 1.171918494713411
+    },
+    {
+     "kind": "sr_eps1",
+     "rms_target": 0.005,
+     "alpha": 0.05396057324867153,
+     "meas_site": 1.5258401707561752e-06,
+     "se_site": 6.223575875742384e-06,
+     "drms_tr": 0.036971280187106326,
+     "drms_va": 0.04695726515270901,
+     "gen_ratio": 1.2701011410766696
+    }
+   ],
+   "t_sample": 63.53741407394409,
+   "t_local": 23.985073804855347,
+   "t_dirs": 16.92767906188965,
+   "t_verify": 7.338365793228149,
+   "ess_w": 0.09685746673440632
+  }
+ ],
+ "gpu_h": {
+  "sample": 0.0195,
+  "local": 0.0067,
+  "directions": 0.0047,
+  "verify": 0.002,
+  "total": 0.0329
+ },
+ "vit_evals": 2665997
+}

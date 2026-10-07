@@ -38,6 +38,13 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Major: symmetrisation gain 2.4e-5 is ~1 sigma vs the ViT's VMC error; costs 16x per evaluation.
 - Reviewer's viability verdict: not viable as a ground-state solver at 8x8-10x10; narrow add-on survives only if it beats a Lanczos step at equal hop cost.
 
+## 3c. Pre-registered verdict thresholds (reviewer, 2026-10-07, set BEFORE the results)
+- Lanczos vs Krylov sign (exact 6x6, equal hop cost): toward viable if sign-only recovers >= 50% of the Lanczos gain, or Krylov+Lanczos beats Lanczos alone by >= 2e-5; kill the sign-only add-on if Lanczos wins >= 5x.
+- Write-back with same-capacity VMC control: upgrade only if the FN-target arm captures >= 0.5 of the gain AND beats plain VMC >= 1.5x at equal samples; tie -> drop the FN target (sign step and FN bound survive); < 0.1 -> cost case worsens.
+- Referee: DMC - exact FN bias < 3e-6 at fixed protocol (M >= 512) and shrinking ~1/M -> FN bound usable at 1e-5; guide-dependent or non-shrinking -> withdraw DMC-based 6x6/8x8 differences.
+- Surviving regimes and the evidence required: sign-poor guides (8x8+, >= 3x cheaper than complex VMC to the same energy, all costs, >= 3 seeds, calibrated referee); Krylov+Lanczos must beat two Lanczos steps; FN as a calibrated bound on a strong hop-free guide (8x8 below -0.49889 or first error-barred 12x12/14x14).
+- Killed now: 4x4 equal-CPU claim; more write-back into the converged ViT; from-scratch cost race at 8x8/10x10 until the write-back + VMC-control test passes; histogram/MLE routes; "beat the ViT" and w_s as figures of merit.
+
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).
 - Signs are stored as composite nets, always used with one exact hop (angle 2).

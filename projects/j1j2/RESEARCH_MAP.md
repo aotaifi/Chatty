@@ -25,7 +25,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 
 ## 3. Open questions, in the order we attack them
 1. **Why does the loop stall at the ViT level on 6x6?** Compression vs information vs optimizer noise. Running: stall_6x6/.
-2. **Do large-sample amplitude steps beat their own control?** (same optimizer, ViT signs). Running: amp_design/AMP6_PROGRESS.md.
+2. ~~Do large-sample amplitude steps beat their own control?~~ **Answered 2026-10-07: no.** Large N fixes generalisation (steps verify at z 2-8), but at the ViT amplitude the fixed-sign optimum is within ~1e-5/site; loop arm ties, control D gains -0.35(0.31)e-5 (amp_design/AMP6_table.md).
 3. **Cost race from scratch:** Marshall + amplitude-only net + Krylov signs vs training a full NQS, total GPU-h to a target energy (6x6 validation -> 8x8 target < -0.49889). Waits for 1 (architecture choice).
 4. **Add-on pitch at scale:** one Krylov sign step on the public 10x10 ViT checkpoint (nqs-models); cheap check.
 5. **Baseline to beat for any energy claim:** Lanczos step + variance extrapolation (Hu et al. 2013).
@@ -45,5 +45,4 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 ## 6. Running now
 | Work | Owner | Budget |
 |---|---|---|
-| Large-sample amplitude steps with zM sign vs ViT-sign control (6x6) | Opus (design partner) | <= 25 GPU-h |
 | Stall diagnosis (6x6) | Opus | <= 15 GPU-h + 100 CPU-h |

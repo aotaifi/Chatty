@@ -51,6 +51,11 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 
 - PI caveat (2026-10-07): the 20x is one size. A fixed number of Lanczos steps is a global operation whose per-site gain is expected to shrink with N; the Krylov sign step acts per configuration and may stay size-intensive. Exact scaling test N = 16..36 running (results/lanczos_vs_krylov_scaling/). Result (results/lanczos_vs_krylov_scaling/, f3d10a9): up to N=36 one Lanczos step removes a fixed fraction (0.73-0.92) of the start error at every N, no shrinkage; the Krylov step removes only the sign part of the error (0 for sign-exact guides, 0.84-1.0 for Marshall-type starts, where it beats Lanczos by ~1.2x). No evidence of Krylov overtaking; Lanczos shrinkage expected only for N*dE > gap (N ~ 1e2-1e3), untested. Kill stands for good guides; the sign step matters only for sign-dominated guides.
 
+## 3e. Write-back verdict (results/writeback/DESIGN.md, 2026-10-07) — FAILED ROUTE
+- The FN amplitude update is white-noise-rough in the energy metric (0.97 of white noise) and tail-concentrated (81% of the gain on 7.6% of the weight). Exact oracle data: energy-metric residual net keeps 17% of one FN iteration, infidelity 8%; with realistic VMC samples < 1%, tying plain fixed-sign VMC.
+- Decision: stop writing FN amplitude updates back (no loop, no 8x8 write-back). Amplitude from ordinary VMC; FN/Krylov for signs and as referee. Reopen only if a non-local pair-product residual or stronger tail tempering passes 50% on the same oracle harness.
+- Best remaining route: strong (symmetrised) NQS + Lanczos step(s) + calibrated FN at 8x8+ (3d), pending referee calibration.
+
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).
 - Signs are stored as composite nets, always used with one exact hop (angle 2).

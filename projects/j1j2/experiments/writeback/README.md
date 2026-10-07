@@ -41,3 +41,15 @@ Stop rule (decided in advance):
   exact evaluations use the exactly symmetrised f. Selection: best validation value of the arm's own objective.
 - Reading: E passes and V fails -> the FN target carries information the residual VMC does not reach; E and V both
   pass -> representable, and plain fixed-sign VMC with a residual factor suffices; E fails -> representation-limited.
+
+## Amendment 2 (2026-10-07 19:00, after smoke runs, before main results)
+- Smoke (A40, `wbsmoke2A`): E arm at lr 3e-3 captured 2.8% of the gain in 2000 steps (exact), still falling ~0.7%/500
+  steps; lr 1e-3 was ~3x slower. Estimator checks: the realistic VMC estimators (frozen H_FN and fixed-sign H, full
+  local energies, samples from psi_P^(2 beta), no phi_FN) agree with the exact values within 0.6 SE; their SE is
+  2.3e-5/site per 4096 samples (oracle edge identity: 4.8e-7 per 1024).
+- Main arms (all C32x4 unless stated, 20k Adam steps, beta = 0.5, equal network evaluations per step):
+  E-M (oracle frozen-FN identity, lr 3e-3), I-M (oracle infidelity, lr 3e-3),
+  Vfn-M (realistic VMC on frozen H_FN, B = 64 x all 144 bonds, lr 1e-3), Vh-M (realistic fixed-sign <H> VMC, same),
+  E-L (C64x4, lr 3e-3, capped at 1 h), E-M-lr1e-2 (optimisation-speed probe).
+  The VMC arms use lr 1e-3 because at 3e-3 their noisy gradients raised the exact frozen-FN energy in the smoke run.
+- The stop rule is unchanged and applies to the best E arm.

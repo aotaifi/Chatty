@@ -1,0 +1,4 @@
+{"check": false, "arms": [
+ {"tag": "E-L", "loss": "energy", "C": 64, "layers": 4, "lr": 3e-3, "beta": 0.5, "B": 1024, "K": 8, "steps": 20000, "warmup": 200, "val_every": 1000, "max_sec": 3600},
+ {"tag": "E-M-lr1e-2", "loss": "energy", "C": 32, "layers": 4, "lr": 1e-2, "beta": 0.5, "B": 1024, "K": 8, "steps": 20000, "warmup": 200, "val_every": 1000}
+]}

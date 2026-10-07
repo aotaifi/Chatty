@@ -1,0 +1,4 @@
+{"check": true, "check_betas": [0.5], "arms": [
+ {"tag": "s2E_lr3e-3", "loss": "energy", "C": 32, "layers": 4, "lr": 3e-3, "beta": 0.5, "steps": 2000, "warmup": 100, "val_every": 500, "final": false},
+ {"tag": "s2Vfn", "loss": "vmc_fn", "B": 64, "C": 32, "layers": 4, "lr": 3e-3, "beta": 0.5, "steps": 500, "warmup": 50, "val_every": 250, "final": false}
+]}

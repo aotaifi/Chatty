@@ -49,6 +49,8 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - From the symmetrised ViT psi_P (1.32e-4): one Lanczos step 2.55e-5, two steps 8.6e-6; one Krylov sign step 1.27e-4. Lanczos wins 20x in gain -> per the pre-registered threshold the sign-only add-on is KILLED. Krylov+Lanczos (3.6e-5) is worse than Lanczos alone.
 - FN with the Lanczos-p1 guide: 1.89e-5 (below RBM+PP 4.5e-5). Candidate route: strong NQS guide + Lanczos step(s) + calibrated FN at 8x8+ (check novelty: FN with Lanczos-step guides exists for Gutzwiller states, Sorella 2001 / Becca et al.).
 
+- PI caveat (2026-10-07): the 20x is one size. A fixed number of Lanczos steps is a global operation whose per-site gain is expected to shrink with N; the Krylov sign step acts per configuration and may stay size-intensive. Exact scaling test N = 16..36 running (results/lanczos_vs_krylov_scaling/). The kill of the sign-only add-on is provisional until this trend is in.
+
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).
 - Signs are stored as composite nets, always used with one exact hop (angle 2).

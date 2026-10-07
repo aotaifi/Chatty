@@ -19,6 +19,10 @@
 | T2 loop, adaptive lam/N (Krylov sign + 3 RGN-TR)/iter | 2 | 3.41 | 7.54e-06 [6.2e-06,8.9e-06] | 98% | 3.96e-06 | 99% | 0.0e+00 |
 | T2 net signs fixed, RGN-TR adaptive | 1 | 3.66 | 1.89e-04 [1.9e-04,1.9e-04] | 47% | 1.75e-04 | 45% | 2.4e-04 |
 | T2 complex ViT (sign+amp), RGN-TR adaptive | 1 | 10.16 | 5.76e-05 [5.8e-05,5.8e-05] | 84% | 3.05e-05 | 90% | 1.9e-06 |
+| T2 complex ViT, tuned control: damping S, lam0 0.03, adaptive | 1 | 4.45 | 4.80e-05 [4.8e-05,4.8e-05] | 87% | 2.52e-05 | 92% | 1.5e-06 |
+| T2 complex ViT, tuned control: damping S, lam0 0.1, adaptive | 1 | 4.89 | 6.54e-05 [6.5e-05,6.5e-05] | 82% | 3.79e-05 | 88% | 1.1e-05 |
+| T2 complex ViT, tuned control: damping AS, lam0 0.03, adaptive | 1 | 5.22 | 5.07e-05 [5.1e-05,5.1e-05] | 86% | 2.77e-05 | 91% | 1.8e-06 |
+| T2 complex ViT, tuned control: damping AS, lam0 0.1, adaptive | 1 | 5.28 | 7.73e-05 [7.7e-05,7.7e-05] | 79% | 4.62e-05 | 85% | 1.1e-05 |
 | T2 standard VMC (SR, complex ViT, N=4000, lr 0.05, 600 steps) | 1 | 4.60 | 3.28e-04 | 10% | 2.88e-04 | 10% | 2.1e-04 |
 | reference: same SR VMC, long run on 16-core `cluster` nodes, at 5 CPU-h | 1 | 5 | 3.21e-04 | 11% | | | |
 | reference: same SR VMC, long run on 16-core `cluster` nodes, at 20 CPU-h | 1 | 20 | 2.28e-04 | 37% | | | |
@@ -26,12 +30,12 @@
 
 **At equal CPU-h** (seed mean, log-interpolated; variational eps: loop/net-sign = <H> of the guide, VMC = <H> of psi)
 
-| CPU-h | loop (adaptive, spi3) | loop spi1 | net signs RGN-TR | complex RGN-TR (all runs) | SR VMC |
-|---|---|---|---|---|---|
-| 0.25 | 1.14e-04 (68%, n=2) | 9.65e-05 (73%, n=1) | 2.75e-04 (23%, n=1) | 2.80e-04 (23%, n=3) | 3.73e-04 (-3%) |
-| 0.5 | 6.11e-05 (83%, n=2) | 5.82e-05 (84%, n=1) | 2.45e-04 (32%, n=1) | 2.16e-04 (40%, n=3) | 3.57e-04 (2%) |
-| 1 | 3.52e-05 (90%, n=2) | 5.50e-05 (85%, n=1) | 2.26e-04 (37%, n=1) | 1.43e-04 (61%, n=3) | 3.40e-04 (6%) |
-| 2 | 1.70e-05 (95%, n=2) | 5.50e-05 (85%, n=1) | 2.08e-04 (42%, n=1) | 1.00e-04 (72%, n=3) | 3.47e-04 (4%) |
-| 3 | 9.02e-06 (97%, n=2) | 5.50e-05 (85%, n=1) | 1.94e-04 (46%, n=1) | 8.34e-05 (77%, n=3) | 3.22e-04 (11%) |
-| 4 | - | - | - | 7.33e-05 (80%, n=3) | 3.37e-04 (7%) |
-| 6 | - | - | - | 6.74e-05 (81%, n=3) | - |
+| CPU-h | loop (adaptive, spi3) | loop spi1 | net signs RGN-TR | complex RGN-TR (all runs) | best tuned complex run | SR VMC |
+|---|---|---|---|---|---|---|
+| 0.25 | 1.14e-04 (68%, n=2) | 9.65e-05 (73%, n=1) | 2.75e-04 (23%, n=1) | 2.80e-04 (23%, n=3) | 2.73e-04 (25%, n=7) | 3.73e-04 (-3%) |
+| 0.5 | 6.11e-05 (83%, n=2) | 5.82e-05 (84%, n=1) | 2.45e-04 (32%, n=1) | 2.16e-04 (40%, n=3) | 2.04e-04 (44%, n=7) | 3.57e-04 (2%) |
+| 1 | 3.52e-05 (90%, n=2) | 5.50e-05 (85%, n=1) | 2.26e-04 (37%, n=1) | 1.43e-04 (61%, n=3) | 1.35e-04 (63%, n=7) | 3.40e-04 (6%) |
+| 2 | 1.70e-05 (95%, n=2) | 5.50e-05 (85%, n=1) | 2.08e-04 (42%, n=1) | 1.00e-04 (72%, n=3) | 8.46e-05 (77%, n=7) | 3.47e-04 (4%) |
+| 3 | 9.02e-06 (97%, n=2) | 5.50e-05 (85%, n=1) | 1.94e-04 (46%, n=1) | 8.34e-05 (77%, n=3) | 6.50e-05 (82%, n=7) | 3.22e-04 (11%) |
+| 4 | - | - | - | 7.33e-05 (80%, n=3) | 5.49e-05 (85%, n=7) | 3.37e-04 (7%) |
+| 6 | - | - | - | 6.74e-05 (81%, n=3) | 5.76e-05 (84%, n=3) | - |

@@ -79,6 +79,7 @@ def main():
     ap.add_argument('--eps', type=float, default=1e-6, help='relative identity shift')
     ap.add_argument('--maxiter', type=int, default=150)
     ap.add_argument('--max-cpu-h', type=float, default=1e9)
+    ap.add_argument('--cdamp', choices=['S', 'AS'], default='S', help='complex mode damping: S, or S + sign-aware kept-edge Laplacian on Re J')
     ap.add_argument('--adapt', type=int, default=0, help='1: lam reset per outer iteration and capped at 30*lam0 per step; '
                     'N doubled (up to --Nmax) after a step whose 6 tries all fail verification (noise floor)')
     ap.add_argument('--Nmax', type=int, default=160000)
@@ -242,6 +243,16 @@ def main():
                     m2 = 2.0 * np.real(Jc)
                     return 0.5 * (m1 + m2).astype(np.float64)
                 Dmv = Smv
+                if args.cdamp == 'AS':
+                    th0 = 0.5 * np.angle(np.sum(psi * psi)); sc_ = np.where((psi * np.exp(-1j * th0)).real >= 0, 1.0, -1.0)
+                    bc = np.abs(psi); JR = np.ascontiguousarray(J.real)
+                    keptc = lambda xi, yi, h: np.where(sc_[xi] * h * sc_[yi] < 0, np.abs(h), 0.0)
+                    Lpc = edge_lap(U, w, lambda xi, yi: bc[yi] / bc[xi], keptc)
+                    def Apc(v):
+                        t = JR @ v.astype(np.float32); return (JR.T @ (Lpc @ t).astype(np.float32)).astype(np.float64)
+                    prc = np.random.default_rng(stp + 99).choice([-1.0, 1.0], size=(3, P))
+                    trS0 = max(np.mean([z @ Smv(z) for z in prc]), 1e-300); trA0 = max(np.mean([z @ Apc(z) for z in prc]), 1e-300)
+                    Dmv = lambda v: Smv(v) / trS0 + Apc(v) / trA0
 
             # scales for relative shifts (Hutchinson, 4 probes)
             pr = np.random.default_rng(stp).choice([-1.0, 1.0], size=(4, P))

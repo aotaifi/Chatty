@@ -64,6 +64,9 @@ add('T2 complex ViT (sign+amp), RGN-TR', load('T2_complex_s*.json'), ['eps_psi',
 add('T2 loop, adaptive lam/N (Krylov sign + 3 RGN-TR)/iter', load('T2_loopA_spi3_s*.json'), ['eps_guide', 'eps_FN', 'w_s'])
 add('T2 net signs fixed, RGN-TR adaptive', load('T2_netsignA_s*.json'), ['eps_guide', 'eps_FN', 'w_s'])
 add('T2 complex ViT (sign+amp), RGN-TR adaptive', load('T2_complexA_s*.json'), ['eps_psi', 'eps_guide', 'eps_FN', 'w_s'])
+for cd in ('S', 'AS'):
+    for lam in ('0.03', '0.1'):
+        add(f'T2 complex ViT, tuned control: damping {cd}, lam0 {lam}, adaptive', load(f'T2c_{cd}_lam{lam}_s*.json'), ['eps_psi', 'eps_guide', 'eps_FN', 'w_s'])
 
 lines = ['| arm | seeds | CPU-h | eps<H> (guide or psi) | reduction vs net | eps_FN | reduction vs net FN | w_s |', '|---|---|---|---|---|---|---|---|']
 for name, n, cpu, v in rows:
@@ -88,9 +91,9 @@ for c in (5, 20, 50):
 
 # equal-CPU-h comparison
 lines += ['', '**At equal CPU-h** (seed mean, log-interpolated; variational eps: loop/net-sign = <H> of the guide, VMC = <H> of psi)', '',
-          '| CPU-h | loop (adaptive, spi3) | loop spi1 | net signs RGN-TR | complex RGN-TR (all runs) | SR VMC |', '|---|---|---|---|---|---|']
+          '| CPU-h | loop (adaptive, spi3) | loop spi1 | net signs RGN-TR | complex RGN-TR (all runs) | best tuned complex run | SR VMC |', '|---|---|---|---|---|---|---|']
 arms = {'loop spi3': ('T2_loopA_spi3_s*.json', 'eps_guide'), 'loop spi1': ('T2_loop_spi1_s*.json', 'eps_guide'),
-        'net': ('T2_netsignA_s*.json', 'eps_guide'), 'cplx': ('T2_complex*_s*.json', 'eps_psi')}
+        'net': ('T2_netsignA_s*.json', 'eps_guide'), 'cplx': ('T2_complex*_s*.json', 'eps_psi'), 'cplxbest': ('T2c_*_s*.json', 'eps_psi')}
 def eq_cost(pat, key, c):
     vals = []
     for r in load(pat):
@@ -100,9 +103,14 @@ def eq_cost(pat, key, c):
 
 for c in (0.25, 0.5, 1.0, 2.0, 3.0, 4.0, 6.0):
     cells = []
-    for k in ('loop spi3', 'loop spi1', 'net', 'cplx'):
-        e0k = eps0_psi if k == 'cplx' else eps0_guide
-        v, n = eq_cost(arms[k][0], arms[k][1], c)
+    for k in ('loop spi3', 'loop spi1', 'net', 'cplx', 'cplxbest'):
+        e0k = eps0_psi if k.startswith('cplx') else eps0_guide
+        if k == 'cplxbest':
+            vals = [interp_at(np.array([x['cpu_h'] for x in r['history']]), np.array([x['eps_psi'] for x in r['history']]), c)
+                    for r in load('T2c_*_s*.json') + load('T2_complex*_s*.json')]
+            vals = [x for x in vals if not np.isnan(x)]; v = min(vals) if vals else np.nan; n = len(vals)
+        else:
+            v, n = eq_cost(arms[k][0], arms[k][1], c)
         cells.append('-' if np.isnan(v) else f'{v:.2e} ({100*(1-v/e0k):.0f}%, n={n})')
     if s is not None:
         v = interp_at(s[0], s[1], c); cells.append('-' if np.isnan(v) else f'{v:.2e} ({100*(1-v/eps0_psi):.0f}%)')
@@ -140,8 +148,12 @@ for panel, key_loop, key_cplx, ylab in ((ax[1], 'eps_guide', 'eps_psi', r'$\epsi
                                          (ax[2], 'eps_FN', 'eps_FN', r'$\epsilon$ of $E_{\rm FN}$ of the guide')):
     for k, pat, key, col, lab in (('loop', 'T2_loopA_spi3_s*.json', key_loop, C['loop'], 'loop: Krylov sign + RGN'),
                                   ('net', 'T2_netsignA_s*.json', key_loop, C['net'], 'RGN, net signs fixed'),
-                                  ('cplx', 'T2_complexA_s*.json', key_cplx, C['cplx'], 'RGN, complex ViT (VMC)')):
-        runs = load(pat)
+                                  ('cplx', 'BEST_COMPLEX', key_cplx, C['cplx'], 'RGN, complex ViT (best tuned run)')):
+        if pat == 'BEST_COMPLEX':
+            allr = load('T2c_*_s*.json') + load('T2_complex*_s*.json')
+            runs = [min(allr, key=lambda r: r['history'][-1]['eps_psi'])] if allr else []
+        else:
+            runs = load(pat)
         if not runs: continue
         if k == 'cplx':      # different lengths: plot each run, label once
             for i, r in enumerate(runs):

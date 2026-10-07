@@ -1,9 +1,24 @@
-# Amplitude update for the FN/Krylov loop: design memo (draft 3, 2026-10-06)
+# Amplitude update for the FN/Krylov loop: design memo (draft 4, 2026-10-07)
 
 Draft 3 adds results: the RGN trust-region prototype (linear models), T1 (one amplitude refresh with the ViT) and T2 (a 10-15 iteration loop vs VMC at equal CPU-h), all on 4x4 from the trained ViT "net H".
 Drafts 1 and 2 are kept as `DESIGN_MEMO_draft1.md` and `DESIGN_MEMO_draft2.md`. They contain the identities, Test A (FN surrogate vs VMC objective), the 6x6 sampling pre-check and the literature, which this draft does not repeat.
 
 Figure: `vit_t1t2.png` / `.pdf`. Tables: `vit_t1t2_table.md`. Per-run data: `vit/*.json`.
+
+**Draft 4 update (2026-10-07).**
+
+1. **The 4x4 equal-cost factor survives a tuned control.**
+   - The control: 4 more complex-ViT RGN-TR runs on CPU (damping S or S + sign-aware kept-edge Laplacian, lam0 0.03 or 0.1, adaptive N; about 20 CPU-h). Sign-aware damping did not help.
+   - Against the BEST of all 7 complex runs at each CPU-h, the loop's error is 3.3x lower at 0.5 CPU-h, 3.8x at 1, 5.0x at 2 and 7.2x at 3 (`vit_t1t2_table.md`; figure (b) shows the best tuned run).
+2. **T3 (6x6 at the ViT) stopped at the stop rule after 2 iterations: TIE with the ViT.** Details in `T3_PROGRESS.md`; figure `t3_6x6.png`.
+   - Final guide <H> = -0.503660(21) vs ViT -0.503654(21). The paired gain -0.6(0.3)e-5/site is < 2 sigma.
+   - The sign did improve: composite net + one hop gives w_s 2e-5 vs 1.3e-4 for the ViT.
+   - Only 1 of 6 amplitude steps passed the fresh-sample check.
+   - Causes:
+     - With P >> N, SR-type steps do not generalise off the training samples. Only gradient-like steps do.
+     - The curvature is noise-dominated.
+     - At this capacity the ViT amplitude leaves almost no fixed-sign gain to resolve at 8-16k samples per step (about 0.7 GPU-h per step with the hop sign).
+   - Compute: 9.7 GPU-h of the 30 GPU-h ceiling.
 
 ## 0. Bottom line
 **Headline:** on 4x4, starting from a ViT trained by VMC for 13 CPU-h (eps = 3.6e-4), the loop "Krylov sign step + fixed-sign second-order VMC amplitude update" lowers the energy error by:

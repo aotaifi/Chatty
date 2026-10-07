@@ -1,5 +1,46 @@
-{"runs": [
- {"tag": "scan_lr2e-6", "model": {"kind": "vit"}, "steps": 1500, "lr": 2e-6, "warmup": 200, "fn": false, "kry": false, "asym": false},
- {"tag": "scan_lr1e-5", "model": {"kind": "vit"}, "steps": 1500, "lr": 1e-5, "warmup": 200, "fn": false, "kry": false, "asym": false},
- {"tag": "scan_lr5e-5", "model": {"kind": "vit"}, "steps": 1500, "lr": 5e-5, "warmup": 200, "fn": false, "kry": false, "asym": false}
-]}
+{
+ "runs": [
+  {
+   "tag": "scan_lr2e-6",
+   "model": {
+    "kind": "vit"
+   },
+   "steps": 2000,
+   "lr": 2e-06,
+   "warmup": 200,
+   "fn": false,
+   "kry": false,
+   "asym": false,
+   "B": 512,
+   "K": 4
+  },
+  {
+   "tag": "scan_lr1e-5",
+   "model": {
+    "kind": "vit"
+   },
+   "steps": 2000,
+   "lr": 1e-05,
+   "warmup": 200,
+   "fn": false,
+   "kry": false,
+   "asym": false,
+   "B": 512,
+   "K": 4
+  },
+  {
+   "tag": "scan_lr5e-5",
+   "model": {
+    "kind": "vit"
+   },
+   "steps": 2000,
+   "lr": 5e-05,
+   "warmup": 200,
+   "fn": false,
+   "kry": false,
+   "asym": false,
+   "B": 512,
+   "K": 4
+  }
+ ]
+}

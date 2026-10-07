@@ -1,0 +1,1 @@
+{"iters": 3, "exact_loop": false, "start_sign": "vit", "fit": {"loss": "exact_fn", "outer": 4, "N_sr": 6144, "B_g": 16384, "eta_sr": 0.05, "eta_g": 1e-7}}

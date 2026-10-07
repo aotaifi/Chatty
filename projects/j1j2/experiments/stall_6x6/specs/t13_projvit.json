@@ -1,0 +1,6 @@
+{"runs": [
+ {"tag": "P_cnn16_own", "base": "projvit", "model": {"kind": "cnn", "C": 16, "layers": 2}, "loss": "exact", "sign": "own", "outer": 10, "N_sr": 8192, "B_g": 16384, "eta_sr": 0.5, "eta_g": 1e-3, "fn": true, "kry": true, "asym": false},
+ {"tag": "P_cnn16_exact", "base": "projvit", "model": {"kind": "cnn", "C": 16, "layers": 2}, "loss": "exact", "sign": "exact", "outer": 10, "N_sr": 8192, "B_g": 16384, "eta_sr": 0.5, "eta_g": 1e-3, "fn": true, "kry": true, "asym": false},
+ {"tag": "P_cnn32x3_exact", "base": "projvit", "model": {"kind": "cnn", "C": 32, "layers": 3}, "loss": "exact", "sign": "exact", "outer": 10, "N_sr": 8192, "B_g": 16384, "eta_sr": 0.5, "eta_g": 1e-3, "fn": true, "kry": true, "asym": false},
+ {"tag": "P_rbm8_exact", "base": "projvit", "model": {"kind": "rbm", "C": 8}, "loss": "exact", "sign": "exact", "outer": 10, "N_sr": 8192, "B_g": 16384, "eta_sr": 0.5, "eta_g": 1e-3, "fn": true, "kry": true, "asym": false}
+]}

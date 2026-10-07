@@ -89,16 +89,16 @@ FULL = np.uint64((1 << N) - 1)
 # Compact upper-triangular coded Hamiltonian (st6_build_upper.py):
 #   H = diag(sqrt n) C diag(1/sqrt n), C_rr' = codes/8, only col >= row stored, row = cumsum(inc).
 #   (H x)_r = sqrt(n_r) sum_{r'>=r} C_rr' x_r'/sqrt(n_r') + (1/sqrt n_r) sum_{r''<r} C_r''r sqrt(n_r'') x_r''
-CH = 1 << 24
+CH = 1 << int(os.environ.get("ST6_CHLOG", "23"))
 
 
 @partial(jax.jit, donate_argnums=(0, 1))
-def _up_chunk(acc1, acc2, rbase, inc, idx, cod, z, w):
+def _up_chunk(acc1, acc2, rbase, inc, idx, cod, X, sq):
     row = rbase + jnp.cumsum(inc.astype(jnp.int32))
     c = cod.astype(jnp.float64) * 0.125
-    acc1 = acc1.at[row].add(c[:, None] * z[idx], indices_are_sorted=True)
-    c2 = jnp.where(idx != row, c, 0.0)
-    acc2 = acc2.at[idx].add(c2[:, None] * w[row])
+    acc1 = acc1.at[row].add((c / sq[idx])[:, None] * X[idx], indices_are_sorted=True)
+    c2 = jnp.where(idx != row, c * sq[row], 0.0)
+    acc2 = acc2.at[idx].add(c2[:, None] * X[row])
     return acc1, acc2
 
 
@@ -128,14 +128,15 @@ class Sector:
         t0 = time.time() if t0 is None else t0
         CHs = CH if ch is None else ch
         self.D = D = n.shape[0]; self.nnz_u = nnz = ui.shape[0]; self.E0 = E0
-        self.chunks = []
+        self.chunks = []; self.chunks_host = []
         rprev = 0
         for p0 in range(0, nnz, CHs):
             p1 = min(nnz, p0 + CHs)
             i_ = np.zeros(CHs, np.int32); c_ = np.zeros(CHs, uc.dtype); n_ = np.zeros(CHs, np.uint8)
             i_[:p1 - p0] = ui[p0:p1]; c_[:p1 - p0] = uc[p0:p1]; n_[:p1 - p0] = inc[p0:p1]
             if p1 - p0 < CHs: i_[p1 - p0:] = i_[p1 - p0 - 1]   # padding: code 0, same row
-            self.chunks.append((jnp.asarray(np.int32(rprev)), jnp.asarray(n_), jnp.asarray(i_), jnp.asarray(c_)))
+            self.chunks_host.append((np.int32(rprev), n_, i_, c_))
+            self.chunks.append(tuple(jnp.asarray(q) for q in self.chunks_host[-1]))
             rprev += int(n_[:p1 - p0].astype(np.int64).sum())
         assert rprev <= D - 1
         log(f'[sector] D={D} nnz_upper={nnz} chunks={len(self.chunks)} last row {rprev} load {time.time()-t0:.0f}s')
@@ -144,22 +145,30 @@ class Sector:
         self.reps = jnp.asarray(reps)
         self.v0 = jnp.asarray(amp * np.sqrt(n))
         self.v0 = self.v0 / jnp.linalg.norm(self.v0)
-        self.s0 = jnp.where(self.v0 >= 0, 1.0, -1.0)
+        self.s0 = jnp.where(self.v0 >= 0, 1.0, -1.0).astype(jnp.float32)   # signs stored as float32 (memory)
         self.la0 = jnp.log(jnp.maximum(jnp.abs(jnp.asarray(amp)), 1e-300))
         self.p0 = self.v0 ** 2
         self.T = jnp.asarray(byte_tables(space_group()))        # (288, 5, 256)
         self.nmv = 0
         log(f'[sector] on device {time.time()-t0:.0f}s')
 
+    def offload(self):
+        """free the device copy of H (4.2 GB) while a network is trained; reload() restores it."""
+        self.chunks = None
+
+    def reload(self):
+        if self.chunks is None:
+            self.chunks = [tuple(jnp.asarray(q) for q in c) for c in self.chunks_host]
+
     def Hm(self, X):
         """H applied to the columns of X (D,) or (D, k)."""
+        self.reload()
         one = X.ndim == 1
         if one: X = X[:, None]
         self.nmv += X.shape[1]
-        z = X / self.sqrt_n[:, None]; w = X * self.sqrt_n[:, None]
         a1 = jnp.zeros_like(X); a2 = jnp.zeros_like(X)
         for k, (rb, inc, idx, cod) in enumerate(self.chunks):
-            a1, a2 = _up_chunk(a1, a2, rb, inc, idx, cod, z, w)
+            a1, a2 = _up_chunk(a1, a2, rb, inc, idx, cod, X, self.sqrt_n)
             a1.block_until_ready()      # one chunk in flight (bounds device memory on an 11 GB card)
         Y = self.sqrt_n[:, None] * a1 + a2 / self.sqrt_n[:, None]
         return Y[:, 0] if one else Y
@@ -194,6 +203,32 @@ class Sector:
         return dict(E=E, E_site=E / N, dE_site=(E - self.E0) / N, w_s=ws, std_dlog=sd, amp_infid=1 - fid)
 
     # ----------------------------------------------------------------- FN
+    def fn_op(self, la_g, s):
+        """x -> H_FN[a_g, s] x  (closure holding the FN diagonal)."""
+        la_g = la_g - jnp.max(la_g)
+        a = jnp.exp(la_g); a = a / jnp.sqrt(jnp.sum(self.n * a * a)); a = jnp.maximum(a, 1e-15)
+        w = a * self.sqrt_n; del a
+        h1, h2 = self.H2(w, s * w)
+        Dg = 0.5 * (h1 + s * h2) / w
+        del h1, h2, w
+
+        def A(x):
+            h1, h2 = self.H2(x, s * x)
+            return Dg * x - 0.5 * (h1 - s * h2)
+        return A
+
+    def fn_rayleigh(self, la_g, s, la_b):
+        """exact frozen-FN energy <b|H_FN[a_g, s]|b>/<b|b> of a trial amplitude b (per-config log la_b)."""
+        la_g = la_g - jnp.max(la_g)
+        a = jnp.exp(la_g); a = a / jnp.sqrt(jnp.sum(self.n * a * a)); a = jnp.maximum(a, 1e-15)
+        w = a * self.sqrt_n; del a
+        h1, h2 = self.H2(w, s * w)
+        Dg = 0.5 * (h1 + s * h2) / w
+        del h1, h2, w
+        b = self.vec(la_b, jnp.ones_like(la_b))
+        h1, h2 = self.H2(b, s * b)
+        return float(b @ (Dg * b - 0.5 * (h1 - s * h2)))
+
     def fn_solve(self, la, s, tol=1e-10, maxit=400, x0=None, verbose=False):
         """Perron ground state of H_FN[a, s].  Returns (E_FN, v_FN >= 0 normalised, info)."""
         t0 = time.time(); nm0 = self.nmv
@@ -201,14 +236,17 @@ class Sector:
         a = jnp.exp(la); a = a / jnp.sqrt(jnp.sum(self.n * a * a))
         a = jnp.maximum(a, 1e-15)
         w = a * self.sqrt_n
+        del a, la
         h1, h2 = self.H2(w, s * w)
         Dg = 0.5 * (h1 + s * h2) / w
+        del h1, h2
 
         def A(x):
             h1, h2 = self.H2(x, s * x)
             return Dg * x - 0.5 * (h1 - s * h2)
 
         x = (w if x0 is None else x0); x = x / jnp.linalg.norm(x)
+        del w
         Ax = A(x); th = float(x @ Ax)
         den = jnp.maximum(Dg - th, 1.0)
         P = None; AP = None
@@ -226,6 +264,7 @@ class Sector:
             Sb = [x, z] + ([P] if P is not None else [])
             ASb = [Ax, Az] + ([AP] if P is not None else [])
             m = len(Sb)
+            del r
             GA = np.array([[float(Sb[i] @ ASb[j]) for j in range(m)] for i in range(m)])
             GB = np.array([[float(Sb[i] @ Sb[j]) for j in range(m)] for i in range(m)])
             GA = 0.5 * (GA + GA.T)
@@ -235,7 +274,9 @@ class Sector:
                 P = None; AP = None; continue
             c = ec[:, 0]
             xn = sum(c[i] * Sb[i] for i in range(m)); Axn = sum(c[i] * ASb[i] for i in range(m))
+            del x, Ax, P, AP
             P = sum(c[i] * Sb[i] for i in range(1, m)); AP = sum(c[i] * ASb[i] for i in range(1, m))
+            del Sb, ASb, z, Az
             nr = float(jnp.linalg.norm(xn)); x = xn / nr; Ax = Axn / nr
             pn = float(jnp.linalg.norm(P))
             if pn > 0: P = P / pn; AP = AP / pn

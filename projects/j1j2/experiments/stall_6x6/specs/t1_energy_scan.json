@@ -1,0 +1,5 @@
+{"runs": [
+ {"tag": "en_exact_lr3e-6", "model": {"kind": "vit"}, "loss": "energy", "sign": "exact", "steps": 2000, "lr": 3e-6, "refresh": 500, "fn": false, "kry": false, "asym": false},
+ {"tag": "en_exact_lr1e-5", "model": {"kind": "vit"}, "loss": "energy", "sign": "exact", "steps": 2000, "lr": 1e-5, "refresh": 500, "fn": false, "kry": false, "asym": false},
+ {"tag": "en_exact_lr3e-5", "model": {"kind": "vit"}, "loss": "energy", "sign": "exact", "steps": 2000, "lr": 3e-5, "refresh": 500, "fn": false, "kry": false, "asym": false}
+]}

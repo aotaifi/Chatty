@@ -64,6 +64,27 @@ class Model:
         vit_dt.set_dtype('float32')
         self.spec = spec
         kind = spec['kind']
+        if kind in ('cnn', 'rbm'):                 # correction factor alone (the base log-amplitude is a fixed table)
+            self.corr = CNNCorr(C=spec.get('C', 16), layers=spec.get('layers', 2)) if kind == 'cnn' else RBMCorr(C=spec.get('C', 8))
+            params = {'corr': self.corr.init(jax.random.PRNGKey(99 + seed), jnp.zeros((1, N), jnp.float32))['params']}
+            self.flat0, self.unravel = ravel_pytree(params)
+            self.npar = int(self.flat0.size); self.npar_vit = 0
+            corr = self.corr; unravel = self.unravel
+            # symmetrised over D4 x spin flip (translations: built in), so the factor is a smooth symmetric function
+            pg = SS.space_group()[:8]
+            inv = np.argsort(pg, axis=1)                    # X'[:, p[i]] = X[:, i]  <=>  X' = X[:, inv]
+            invj = jnp.asarray(inv)
+
+            def fsym(flat, X):
+                pr = {'params': unravel(flat)['corr']}
+                out = 0.0
+                for k in range(8):
+                    Xk = X[:, invj[k]]
+                    out = out + corr.apply(pr, Xk) + corr.apply(pr, -Xk)
+                return out / 16.0
+            self.f = fsym
+            self.fc = lambda flat, X: fsym(flat, X).astype(jnp.complex64)
+            return
         if kind == 'vitbig':
             self.vit = vit_dt.ViT(num_layers=spec.get('layers', 4), d_model=spec.get('d_model', 60),
                                   heads=spec.get('heads', 10), L_eff=9, b=2, transl_invariant=True, two_dimensional=True)
@@ -96,6 +117,9 @@ class Model:
 
         self.fc = fc
         self.f = lambda flat, X: jnp.real(fc(flat, X))
+        if self.corr is not None:
+            mk = jax.tree_util.tree_map(jnp.zeros_like, params); mk['corr'] = jax.tree_util.tree_map(jnp.ones_like, params['corr'])
+            self.mask_corr = ravel_pytree(mk)[0]
 
     # ------------------------------------------------------------------ evaluation on all reps
     def eval_reps(self, flat, reps, batch=16384, complex_out=False):
@@ -125,7 +149,7 @@ def bits_to_spins(S):
     return (((S[:, None] >> ar[None, :]) & jnp.uint64(1)).astype(jnp.float32) * 2 - 1)
 
 
-def make_step(model, opt, B, K, lam_amp, lam_edge, wcap=4.0):
+def make_step(model, opt, B, K, lam_amp, lam_edge, wcap=4.0, images=True):
     MASKS = jnp.asarray(SS.MASKS); BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ)
     JB = jnp.asarray(SS.JB, jnp.float32)
     f = model.f
@@ -135,13 +159,14 @@ def make_step(model, opt, B, K, lam_amp, lam_edge, wcap=4.0):
         u = jax.random.uniform(k1, (B,), jnp.float64) * cdf[-1]
         idx = jnp.clip(jnp.searchsorted(cdf, u), 0, cdf.shape[0] - 1)
         g = jax.random.randint(k2, (B,), 0, T.shape[0]); fl = jax.random.bernoulli(k3, 0.5, (B,))
-        x = SS.image(T, reps[idx], g, fl)
+        x = SS.image(T, reps[idx], g, fl) if images else reps[idx]
         valid = (((x[:, None] >> BI[None, :]) ^ (x[:, None] >> BJ[None, :])) & jnp.uint64(1)).astype(bool)
         nval = valid.sum(1)
         sc = jnp.where(valid, jax.random.uniform(k4, valid.shape), -1.0)
         _, bsel = jax.lax.top_k(sc, K)                                    # K distinct valid bonds
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(T, reps, y.reshape(-1)).reshape(B, K)
+        if not images: y = reps[iy]                      # rep-evaluated network: neighbours by their reps
         tx = tlog[idx]; ty = tlog[iy]
         dt = ty - tx[:, None]
         w = 0.5 * JB[bsel] * jnp.exp(jnp.minimum(dt, wcap)).astype(jnp.float32) * (nval[:, None] / K).astype(jnp.float32)
@@ -177,17 +202,18 @@ def make_step(model, opt, B, K, lam_amp, lam_edge, wcap=4.0):
 
 def fit(model, flat, sec, tlog, *, beta=1.0, steps=4000, lr=1e-4, B=1024, K=8, lam_amp=1.0, lam_edge=1.0,
         seed=0, eval_every=0, eval_fn=None, warmup=200, end_lr_frac=0.05, nval=8, val_B_mult=8, hist=None,
-        opt='adam'):
+        opt='adam', images=True, samp_log=None):
     """Fit model (flat params) to the per-config log target tlog (D,) on the sector of `sec`.
     Sampling distribution of reps: p_r^beta with p_r = n_r exp(2 tlog_r) (the target's own sector weights)."""
-    lp = 2.0 * tlog + jnp.log(sec.n)
+    if hasattr(sec, 'offload'): sec.offload()      # H not needed while fitting (device memory)
+    lp = 2.0 * (tlog if samp_log is None else samp_log) + jnp.log(sec.n)
     lp = beta * (lp - jnp.max(lp))
     cdf = jnp.cumsum(jnp.exp(lp))
     sched = optax.warmup_cosine_decay_schedule(0.0, lr, warmup, max(steps, warmup + 1), lr * end_lr_frac)
     opt = optax.adam(sched) if opt == 'adam' else optax.chain(optax.clip_by_global_norm(1.0), optax.adam(sched))
     ost = opt.init(flat)
-    step, val = make_step(model, opt, B, K, lam_amp, lam_edge)
-    _, valb = make_step(model, opt, B * val_B_mult, K, lam_amp, lam_edge)
+    step, val = make_step(model, opt, B, K, lam_amp, lam_edge, images=images)
+    _, valb = make_step(model, opt, B * val_B_mult, K, lam_amp, lam_edge, images=images)
     key = jax.random.PRNGKey(seed)
     vkeys = [jax.random.PRNGKey(10_000 + seed + i) for i in range(nval)]
 
@@ -212,6 +238,290 @@ def fit(model, flat, sec, tlog, *, beta=1.0, steps=4000, lr=1e-4, B=1024, K=8, l
                        sec=time.time() - t0)
             if eval_every and eval_fn is not None and (it % eval_every == 0 or it == steps):
                 rec.update(eval_fn(flat))
+                if hasattr(sec, 'offload'): sec.offload()
             hist.append(rec)
             log('  fit', {k_: (round(v_, 7) if isinstance(v_, float) else v_) for k_, v_ in rec.items()})
+    return flat, hist
+
+
+# ------------------------------------------------------------------ energy fit (fixed sign table, exact local data)
+def make_energy_step(model, opt, B, mode, nchunk=4):
+    """mode 'var':  variational <H> of b*s (s = sign table on reps)
+       mode 'fn' :  frozen lattice-FN energy <H_FN[a_g, s]> of the trial amplitude b (minimiser = phi_FN[a_g, s]).
+    Samples: reps r ~ n_r exp(2 la_ref_r) (la_ref = recent full table of the network), random orbit image,
+    reweighted by exp(2 (f(x) - la_ref(x))); all 144 bond neighbours exact (canonical lookup of s, a_g)."""
+    MASKS = jnp.asarray(SS.MASKS); BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ)
+    JB = jnp.asarray(SS.JB)
+    f = model.f
+    NB = MASKS.shape[0]
+
+    def batch(key, cdf, s_tab, la_g, T, reps):
+        k1, k2, k3 = jax.random.split(key, 3)
+        u = jax.random.uniform(k1, (B,), jnp.float64) * cdf[-1]
+        idx = jnp.clip(jnp.searchsorted(cdf, u), 0, cdf.shape[0] - 1)
+        g = jax.random.randint(k2, (B,), 0, T.shape[0]); fl = jax.random.bernoulli(k3, 0.5, (B,))
+        x = SS.image(T, reps[idx], g, fl)
+        valid = (((x[:, None] >> BI[None, :]) ^ (x[:, None] >> BJ[None, :])) & jnp.uint64(1)).astype(bool)
+        y = jnp.where(valid, x[:, None] ^ MASKS[None, :], x[:, None])
+        iy = SS.canon(T, reps, y.reshape(-1)).reshape(B, NB)
+        diag = 0.25 * JB.sum() - 0.5 * (valid * JB[None, :]).sum(1)
+        sx = s_tab[idx].astype(jnp.float64); sy = s_tab[iy].astype(jnp.float64)
+        h = 0.5 * JB[None, :] * valid
+        if mode == 'fn':
+            rg = jnp.exp(jnp.clip(la_g[iy] - la_g[idx][:, None], -60, 60))
+            viol = valid & (sx[:, None] * sy > 0)
+            dfn = diag + jnp.sum(jnp.where(viol, h * rg, 0.0), 1)
+            hh = jnp.where(viol, 0.0, h)                 # kept (allowed) edges, sign -1 (s s' = -1)
+            return x, y, idx, dfn, -hh
+        return x, y, idx, diag, h * sx[:, None] * sy
+
+    def fy_all(flat, y):
+        yc = y.reshape(nchunk, -1)
+        out = jax.lax.map(lambda yy: f(flat, bits_to_spins(yy)), yc)
+        return out.reshape(y.shape).astype(jnp.float64)
+
+    def eloc(flat, fx, y, d0, hc):
+        fy = jax.lax.stop_gradient(fy_all(flat, y))
+        return d0 + jnp.sum(hc * jnp.exp(jnp.clip(fy - fx[:, None], -60, 60)), 1)
+
+    @jax.jit
+    def step(flat, ost, key, cdf, la_ref, s_tab, la_g, T, reps):
+        x, y, idx, d0, hc = batch(key, cdf, s_tab, la_g, T, reps)
+        X = bits_to_spins(x)
+
+        def sur(fl):
+            fx = f(fl, X).astype(jnp.float64)
+            fs = jax.lax.stop_gradient(fx)
+            EL = eloc(fl, fs, y, d0, hc)
+            w = jnp.exp(2 * (fs - la_ref[idx])); w = w / jnp.sum(w)
+            E = jnp.sum(w * EL)
+            return 2.0 * jnp.sum(w * (EL - E) * fx), (E, jnp.sum(w * (EL - E) ** 2), 1.0 / jnp.sum(w * w))
+        (l, (E, var, ess)), gr = jax.value_and_grad(sur, has_aux=True)(flat)
+        upd, ost = opt.update(gr, ost, flat)
+        return optax.apply_updates(flat, upd), ost, E, var, ess
+
+    return step
+
+
+def fit_energy(model, flat, sec, s_tab, *, mode='var', la_g=None, steps=3000, lr=1e-5, B=256, seed=0,
+               refresh=500, warmup=100, end_lr_frac=0.1, eval_fn=None, hist=None, keep_best=True):
+    """Minimise the exact-local-data energy (mode var / fn) of the network amplitude at fixed signs s_tab.
+    Every `refresh` steps: full table of the network on all reps (sampling reference) and eval_fn(flat, la_tab)
+    (exact sector energy).  Returns the params with the lowest eval_fn()['obj'] if keep_best."""
+    if hasattr(sec, 'offload'): sec.offload()
+    sched = optax.warmup_cosine_decay_schedule(0.0, lr, warmup, max(steps, warmup + 1), lr * end_lr_frac)
+    opt = optax.adam(sched)
+    ost = opt.init(flat)
+    step = make_energy_step(model, opt, B, mode)
+    la_g = jnp.zeros(1) if la_g is None else la_g
+    key = jax.random.PRNGKey(seed)
+    hist = [] if hist is None else hist
+
+    def refresh_tab(fl):
+        la = model.eval_reps(fl, sec.reps)
+        lp = 2.0 * (la - jnp.max(la)) + jnp.log(sec.n)
+        return la, jnp.cumsum(jnp.exp(lp))
+
+    la_ref, cdf = refresh_tab(flat)
+    best = (np.inf, flat, None)
+    ev = eval_fn(flat, la_ref) if eval_fn is not None else {}
+    if hasattr(sec, 'offload'): sec.offload()
+    hist.append(dict(step=0, **ev))
+    log('  efit start', ev)
+    if ev: best = (ev['obj'], flat, ev)
+    t0 = time.time(); Es = []
+    for it in range(1, steps + 1):
+        key, k = jax.random.split(key)
+        flat, ost, E, var, ess = step(flat, ost, k, cdf, la_ref, s_tab, la_g, sec.T, sec.reps)
+        if it % 50 == 0: Es.append((float(E), float(var), float(ess)))
+        if it % refresh == 0 or it == steps:
+            la_ref, cdf = refresh_tab(flat)
+            ev = eval_fn(flat, la_ref) if eval_fn is not None else {}
+            if hasattr(sec, 'offload'): sec.offload()
+            Ea = np.array(Es); Es = []
+            rec = dict(step=it, E_sampled_site=float(Ea[:, 0].mean()) / N, var_site=float(Ea[:, 1].mean()) / N,
+                       ess=float(Ea[:, 2].mean()), sec=time.time() - t0, **ev)
+            hist.append(rec)
+            log('  efit', {k_: (round(v_, 8) if isinstance(v_, float) else v_) for k_, v_ in rec.items()})
+            if ev and ev['obj'] < best[0]: best = (ev['obj'], flat, ev)
+    if keep_best and best[2] is not None:
+        log('  efit best', best[2])
+        return best[1], hist
+    return flat, hist
+
+
+# ------------------------------------------------------------------ energy fit on the exact sector table
+def fit_table(model, flat, sec, s_tab, *, mode='var', la_g=None, outer=15, inner=40, B=4096, lr=1e-5, seed=0,
+              warmup=20, end_lr_frac=0.1, eval_extra=None, hist=None, keep_best=True, log_every=1):
+    """Minimise an exact sector energy of the network state (network evaluated on the reps):
+         mode 'var': E = <v|H|v>, v_r = s_r b_r sqrt(n_r)           (variational energy at fixed signs s_tab)
+         mode 'fn' : E = <v|H_FN[a_g, s_tab]|v>, v_r = b_r sqrt(n_r) (frozen lattice-FN energy; minimiser phi_FN)
+    Outer iteration: full table of the network on all D reps, exact (H v) -> exact energy and exact gradient
+    weights c_r = v_r ((H v)_r - E v_r)  (dE/dtheta = 2 sum_r c_r d f(rep_r)/dtheta).
+    Inner steps: Adam on the importance-sampled gradient (B reps drawn ~ |c_r|; c from the last table, i.e.
+    a first-order-stale but sampling-noise-only estimate).  Keeps the parameters with the lowest exact E."""
+    if mode == 'fn':
+        A = sec.fn_op(la_g, s_tab)
+    total = outer * inner
+    sched = optax.warmup_cosine_decay_schedule(0.0, lr, warmup, max(total, warmup + 1), lr * end_lr_frac)
+    opt = optax.adam(sched); ost = opt.init(flat)
+    f = model.f
+
+    @jax.jit
+    def gstep(fl, ost, key, cdf, sgn, Z, reps):
+        u = jax.random.uniform(key, (B,), jnp.float64) * cdf[-1]
+        idx = jnp.clip(jnp.searchsorted(cdf, u), 0, cdf.shape[0] - 1)
+        X = bits_to_spins(reps[idx])
+        wts = (2.0 * Z / B * sgn[idx]).astype(jnp.float32)
+        g = jax.grad(lambda q: jnp.sum(wts * f(q, X)))(fl)
+        upd, ost = opt.update(g, ost, fl)
+        return optax.apply_updates(fl, upd), ost
+
+    key = jax.random.PRNGKey(seed)
+    hist = [] if hist is None else hist
+    best = (np.inf, flat, None)
+    t0 = time.time()
+    for o in range(outer + 1):
+        la = model.eval_reps(flat, sec.reps)
+        if mode == 'var':
+            v = sec.vec(la, s_tab); Hv = sec.H(v)
+        else:
+            v = sec.vec(la, jnp.ones_like(la)); Hv = A(v)
+        E = float(v @ Hv)
+        c = v * (Hv - E * v); del Hv, v
+        rec = dict(outer=o, step=o * inner, E_site=E / N, dE_site=(E - sec.E0) / N, grad_l1=float(jnp.sum(jnp.abs(c))),
+                   sec=time.time() - t0)
+        if eval_extra is not None: rec.update(eval_extra(flat, la))
+        hist.append(rec)
+        if o % log_every == 0 or o == outer:
+            log('  tfit', {k_: (round(v_, 9) if isinstance(v_, float) else v_) for k_, v_ in rec.items()})
+        if rec['dE_site'] < best[0]: best = (rec['dE_site'], flat, rec)
+        if o == outer: break
+        ac = jnp.abs(c); Z = jnp.sum(ac); cdf = jnp.cumsum(ac); sgn = jnp.sign(c); del ac, c
+        if hasattr(sec, 'offload'): sec.offload()
+        for _ in range(inner):
+            key, k = jax.random.split(key)
+            flat, ost = gstep(flat, ost, k, cdf, sgn, Z, sec.reps)
+        del cdf, sgn
+    if keep_best:
+        log('  tfit best', best[2])
+        return best[1], hist
+    return flat, hist
+
+
+# ------------------------------------------------------------------ exact-verified optimiser (SR + gradient candidates)
+@partial(jax.jit, donate_argnums=(0,))
+def _set_rows(O, rows, i):
+    return jax.lax.dynamic_update_slice(O, rows, (i, 0))
+
+
+def fit_exact(model, flat, sec, s_tab, *, mode='var', la_g=None, outer=12, N_sr=6144, B_g=16384, lam=1e-3,
+              eta_sr=0.3, eta_g=1e-5, seed=0, eval_extra=None, hist=None, jac_chunk=128, max_tries=3, mask=None,
+              base_tab=None):
+    """Minimise an exact sector energy of the network-on-reps state (mode 'var' or 'fn', see fit_table).
+    Per outer iteration, from the exact table of the current parameters (energy E, exact local energies
+    E_L = (Hv)_r / v_r, exact gradient weights c_r = v_r((Hv)_r - E v_r)):
+      SR candidate  : N_sr reps ~ v_r^2, O = d f/d theta (centred), eps = E_L - E,
+                      delta = -O^T (O O^T + lam tr(OO^T)/N I)^{-1} eps,  theta + eta_sr * delta
+      grad candidate: g = 2 sum_r c_r df_r (B_g reps ~ |c_r|),  theta - eta_g * g / rms(g)
+    Both candidates are scored by the EXACT energy (one full table each); the better one is accepted if it
+    lowers E (its step size grows x1.5), otherwise both step sizes shrink /3 (up to max_tries).
+    Every accepted step is an exact, noise-free improvement."""
+    if mode == 'fn':
+        A = sec.fn_op(la_g, s_tab)
+    f = model.f
+    gradf = jax.jit(jax.vmap(jax.grad(lambda fl, x: f(fl, x[None])[0]), in_axes=(None, 0)))
+
+    def table(fl):
+        la = model.eval_reps(fl, sec.reps)
+        if base_tab is not None: la = la + base_tab          # fixed base log-amplitude (e.g. projected ViT)
+        if mode == 'var':
+            v = sec.vec(la, s_tab); Hv = sec.H(v)
+        else:
+            v = sec.vec(la, jnp.ones_like(la)); Hv = A(v)
+        E = float(v @ Hv)
+        return la, v, Hv, E
+
+    @jax.jit
+    def gsum(fl, key, cdf, sgn, Z, reps):
+        B = 4096
+        u = jax.random.uniform(key, (B,), jnp.float64) * cdf[-1]
+        idx = jnp.clip(jnp.searchsorted(cdf, u), 0, cdf.shape[0] - 1)
+        X = bits_to_spins(reps[idx])
+        wts = (2.0 * Z / B * sgn[idx]).astype(jnp.float32)
+        return jax.grad(lambda q: jnp.sum(wts * f(q, X)))(fl)
+
+    key = jax.random.PRNGKey(seed)
+    hist = [] if hist is None else hist
+    t0 = time.time()
+    la, v, Hv, E = table(flat)
+    for o in range(outer + 1):
+        rec = dict(outer=o, E_site=E / N, dE_site=(E - sec.E0) / N, eta_sr=eta_sr, eta_g=eta_g, sec=time.time() - t0)
+        if eval_extra is not None: rec.update(eval_extra(flat, la))
+        if o == outer:
+            hist.append(rec); log('  xfit', rec); break
+        # ---- directions
+        c = v * (Hv - E * v)
+        p = v * v
+        EL = Hv / jnp.where(jnp.abs(v) > 1e-300, v, 1.0)
+        del Hv
+        ac = jnp.abs(c); Z = jnp.sum(ac); cdf = jnp.cumsum(ac); sgn = jnp.sign(c); del ac, c
+        g = jnp.zeros_like(flat)
+        for _ in range(max(1, B_g // 4096)):
+            key, k = jax.random.split(key)
+            g = g + gsum(flat, k, cdf, sgn, Z, sec.reps)
+        g = g / max(1, B_g // 4096)
+        if mask is not None: g = g * mask
+        del cdf, sgn
+        cdfp = jnp.cumsum(p); key, k = jax.random.split(key)
+        idx = jnp.clip(jnp.searchsorted(cdfp, jax.random.uniform(k, (N_sr,), jnp.float64) * cdfp[-1]), 0, sec.D - 1)
+        del cdfp, p
+        eps = EL[idx] - E; del EL
+        if hasattr(sec, 'offload'): sec.offload()
+        X = bits_to_spins(sec.reps[idx])
+        O = jnp.zeros((N_sr, flat.shape[0]), jnp.float32)            # built in place (donated updates)
+        for i in range(0, N_sr, jac_chunk):
+            rows = gradf(flat, X[i:i + jac_chunk])
+            if mask is not None: rows = rows * mask[None, :]
+            O = _set_rows(O, rows, i)
+        m = jnp.mean(O, 0)                                           # centring done implicitly (no copy of O)
+        T = jnp.zeros((N_sr, N_sr), jnp.float64)
+        for j in range(0, O.shape[1], 16384):                       # chunked O O^T (memory / autotuning)
+            Oj = O[:, j:j + 16384]
+            T = T + (Oj @ Oj.T).astype(jnp.float64)
+            del Oj
+        Om = sum(O[:, j:j + 16384] @ m[j:j + 16384] for j in range(0, O.shape[1], 16384)).astype(jnp.float64)
+        mm = float(m.astype(jnp.float64) @ m.astype(jnp.float64))
+        T = T - Om[:, None] - Om[None, :] + mm
+        sh = lam * jnp.trace(T) / N_sr
+        alpha = jnp.linalg.solve(T + sh * jnp.eye(N_sr), eps)
+        a32 = alpha.astype(jnp.float32)
+        dsr = -(jnp.concatenate([O[:, j:j + 16384].T @ a32 for j in range(0, O.shape[1], 16384)]) - m * jnp.sum(a32))
+        pred = float(-(eps @ (T @ alpha)) / N_sr * 2)     # rough first-order model decrease (diagnostic)
+        del O, T, X, alpha, a32, Om, m
+        dg = -g / jnp.sqrt(jnp.sum(g * g) / (flat.shape[0] if mask is None else jnp.sum(mask))); del g
+        rec.update(sr_norm=float(jnp.linalg.norm(dsr)), sr_pred=pred)
+        accepted = False
+        for tr in range(max_tries):
+            cand = {}
+            for name, d, eta in (('sr', dsr, eta_sr), ('grad', dg, eta_g)):
+                fl = flat + eta * d
+                cl, cv, cH, cE = table(fl)
+                cand[name] = (cE, fl, cl, cv, cH)
+                rec[f'try{tr}_{name}_dE'] = (cE - E) / N
+            bname = min(cand, key=lambda k_: cand[k_][0])
+            if cand[bname][0] < E:
+                cE, flat, la, v, Hv = cand[bname]; E = cE
+                if bname == 'sr': eta_sr *= 1.5
+                else: eta_g *= 1.5
+                rec['accepted'] = bname; accepted = True
+                del cand
+                break
+            del cand
+            eta_sr /= 3; eta_g /= 3
+        if not accepted:
+            rec['accepted'] = None
+            la, v, Hv, E = table(flat)
+        hist.append(rec)
+        log('  xfit', {k_: (round(v_, 9) if isinstance(v_, float) else v_) for k_, v_ in rec.items()})
     return flat, hist

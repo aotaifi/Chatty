@@ -1,0 +1,1 @@
+{"base": "projvit", "features": ["pair_all", "w3b4", "w3b6"], "lm_iters": 6, "capacity": false, "alt_rounds": 0, "loop_iters": 6}

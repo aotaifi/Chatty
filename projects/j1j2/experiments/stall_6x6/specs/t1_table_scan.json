@@ -1,0 +1,4 @@
+{"runs": [
+ {"tag": "tab_exact_lr1e-5", "model": {"kind": "vit"}, "loss": "table", "sign": "exact", "outer": 12, "inner": 40, "B": 4096, "lr": 1e-5, "fn": false, "kry": false, "asym": false},
+ {"tag": "tab_exact_lr3e-6", "model": {"kind": "vit"}, "loss": "table", "sign": "exact", "outer": 12, "inner": 40, "B": 4096, "lr": 3e-6, "fn": false, "kry": false, "asym": false}
+]}

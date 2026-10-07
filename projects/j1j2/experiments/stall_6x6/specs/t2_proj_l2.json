@@ -1,0 +1,1 @@
+{"iters": 3, "exact_loop": false, "start_sign": "vit", "fit": {"loss": "l2", "steps": 2000, "lr": 2e-6, "B": 512, "K": 4, "warmup": 100}}

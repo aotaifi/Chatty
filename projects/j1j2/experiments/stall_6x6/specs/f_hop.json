@@ -1,0 +1,1 @@
+{"base": "projvit", "features": [], "lm_iters": 8, "capacity": false, "alt_rounds": 0, "loop_iters": 0, "hop_capacity": true, "hop_loop_iters": 6}

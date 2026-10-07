@@ -64,3 +64,15 @@ Gate: one large-N amplitude iteration must give a verified gain > 2 sigma. Budge
   - The real T3 evidence of overfitting stands: minSR with a tiny shift (1e-3) *raised* the fresh-sample energy, by +1.3e-5 to +3.3e-3/site, while gradient and shifted-SR steps lowered it.
   - At N = 1e5, SR with shift 0.01 and with shift 1 give the same verified gains, so the shift no longer matters.
 - Waiting for an A40 / 2080Ti slot for B_zM (16855760 / 16856048 duplicates; the first to start wins).
+- 13:06 **B with zM, from the ViT amplitude** (16855760, 1.30 A40-h):
+  - Certificate start: +1.11(0.69)e-5. Certificate end: **+0.67(0.90)e-5**.
+  - Verified steps: -3.4(0.9)e-6 (z 4.0), -1.4(0.7)e-6 (z 2.1), then nothing (-0.4(0.4)e-6). The gradient norm collapses after step 1 (7.6 -> 0.4).
+
+## GATE (13:10): PASSED technically, not in physics
+- **What the gate asked for works.** Every arm has verified gains above 2 sigma at N = 1e5 (z up to 8). The fresh/train RMS ratio of the steps is ~1 (gradient 0.9-1.2, SR 0.3-1.0); the step cost is ~20 min on an A40.
+  - **Learning the 6x6 amplitude is no longer limited by sampling or overfitting.**
+- **What it shows.** At fixed sign the ViT amplitude sits within ~1e-5/site of its fixed-sign optimum. After one step the remaining gain per step is ~1e-6/site.
+  - The control D (ViT's own sign) gains -0.35(0.31)e-5 with the same optimiser.
+  - With the zero-hop zM sign the guide ends at +0.67(0.90)e-5. Its sign errors (w_s 6e-5) cost ~1e-5 at the ViT amplitude, and the amplitude recovers only part of that.
+  - **The sign advantage is too small at this amplitude to show up in <H>.**
+- **Compute:** 7.8 GPU-h this phase (distillation zM 2.5, zXL 1.6 cancelled, smoke 0.05, B_N1 1.2, D 1.1, B_zM 1.3), of 25.

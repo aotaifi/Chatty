@@ -59,7 +59,7 @@ for i, (k, r) in enumerate(runs.items()):
     ok = [(x_, p) for x_, p in zip(xs, pts) if p]
     if not ok: continue
     c_.errorbar([o[0] for o in ok], [1e5 * o[1][0] for o in ok], yerr=[1e5 * o[1][1] for o in ok], fmt='o-', color=C[k], lw=0.9, ms=4, capsize=2)
-c_.axhline(0, color=C['ref'], lw=0.6, ls=':'); c_.text(0.55, 0.3, 'ViT (VMC)', fontsize=7, color=C['ref'])
+c_.axhline(0, color=C['ref'], lw=0.6, ls=':'); c_.text(0.3, -0.6, 'ViT (VMC)', fontsize=7, color=C['ref'])
 c_.set_xticks([0, 1]); c_.set_xticklabels(['start (|ViT| amplitude)', 'after 3 steps'])
 c_.set_ylabel(r'$\langle H\rangle_G - E_{\rm ViT}$ [$10^{-5}$/site]'); c_.set_title('Guide energy (paired certificate)', fontsize=9, loc='left')
 for i, a_ in enumerate(ax):

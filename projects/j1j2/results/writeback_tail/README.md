@@ -174,6 +174,39 @@ damping rose 1000x; validation estimate 0.33% of the gain (no exact evaluation: 
 convergence, rs = 0, in the 16th outer step). With curvature accumulated globally and damping validated on the true
 objective, the energy-metric GN direction of this net still does not generalise beyond the pool.
 
+**Learnability control (consultation item 1; jobs wtKA1a 17063942 real target, wtKB 17009145 shuffled target).**
+Same 28k residual CNN, tail-mixture proposal, edge-difference loss, Adam 12k steps.
+- Split: 20% of the orbits (hashed) are test orbits. They are never sampled, and every edge incident to them is
+  removed from training (weight set to 0).
+- Control: delta permuted within 32 x 32 bins of (log a, FN weighted degree), then rescaled to the same Q.
+- Capture is the quadratic share of each target's own Q, split by node.
+
+| | real target | shuffled control |
+|---|---|---|
+| capture on held-out tail orbits (phi^2 < 1e-8, edges withheld) | **20.7%** | 0.4% |
+| capture on training tail orbits | 20.9% | 0.4% |
+| capture on bulk orbits (phi^2 >= 1e-8, train + test) | 28.3% | 2.9% |
+| total quadratic capture / exact frozen-FN frac | 21.4% / 15.2% | 0.5% / (n/a) |
+
+Per weight decade (all orbits; share of each decade's own gain that is captured):
+
+| decade | 1e-7 | 1e-8 | 1e-9 | 1e-10 | 1e-11 | 1e-12 | 1e-13 | 1e-14 |
+|---|---|---|---|---|---|---|---|---|
+| real | 32% | 27% | 25% | 25% | 22% | 18% | 14% | 9% |
+| shuffled | 3.8% | 2.6% | 1.7% | 0.9% | 0.3% | 0.2% | 0.2% | 0.3% |
+
+No per-decade train/test split was computed for the held-out orbits.
+
+**Verdict: the tail correction has learnable structure.**
+- On orbits whose every edge was withheld, the net recovers the same share as on training orbits (20.7% vs 20.9%), so
+  there is no memorisation gap.
+- The shuffled control is captured 50x less, even on its training orbits: the net cannot memorise unstructured tail
+  values at this capacity, so everything it captures on the real target is structure.
+- What limits the capture is therefore representation precision (about a quarter of each decade, falling with depth),
+  not generalisation and not noise in the target. This moves the open question back to capacity and inputs: the 63k
+  and 111k points and the guide-neighbourhood-input arm (wtKA2, still queued). The itfit finding that the FN target is
+  an explicit function of one-hop guide quantities (W, V, H_xx) predicts that those inputs should help.
+
 Capacity with the adaptive tail proposal (Adam, 20k steps, exact frac): 28k 20.4%, **63k 22.8%**, 111k 30.8%
 (old proposal: 28k 17.9%, 111k 15.2%). The 63k net puts |f| > 0.1 on 32% of the orbits and up to |f| = 2 in the deep
 tail (max |f| 0.07 above phi^2 = 1e-8, 0.32 above 1e-10, 0.55 above 1e-12).
@@ -189,7 +222,7 @@ start by backfill; expected starts 20:45-05:40):
 | wtC48 16948146 | 63k residual CNN, adaptive tail (capacity point; equal-parameter control for the tail expert) |
 | wtC96 16998622 | 250k residual CNN, adaptive tail, lr 1e-3 (capacity point) |
 | wtEXP 16961949 | tail expert: frozen TA-R28 bulk + sigmoid gate below phi^2 = 1e-8 x fresh 28k tail net trained only on tail samples (80% of tail orbits); captured % overall, per decade, and on held-out tail orbits |
-| wtKA 16976428 | learnability control (orbit split, all edges incident to test orbits withheld, real target); mechanism-aware inputs (log a, guide violating weight V = FN wall term, kept weight W) + adaptive tail; edge-sampling proposal q_xy ~ \|H_xy\| phi_x phi_y |
+| wtKA (done as wtKA1a 17063942 + wtKB 17009145; inputs/edge arms remain as wtKA2 17063943) | learnability control (orbit split, all edges incident to test orbits withheld, real target); mechanism-aware inputs (log a, guide violating weight V = FN wall term, kept weight W) + adaptive tail; edge-sampling proposal q_xy ~ \|H_xy\| phi_x phi_y |
 | wtKB 17009145 | the same learnability arm on a target shuffled within (log a, FN weighted degree) bins, rescaled to equal Q |
 | wtKGN 16976430 | global Gauss-Newton: one fixed pool of 16 x 4096 x 8 edges, 30 CG steps, damping accepted/rejected on the exact frozen-F identity on independent batches |
 Specs: `experiments/writeback_tail/specs/{cap_C48,cap_C96,expert,consult_A,consult_B,consult_GN}.json`.

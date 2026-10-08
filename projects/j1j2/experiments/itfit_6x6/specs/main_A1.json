@@ -22,14 +22,6 @@
    "dist": "iii"
   },
   {
-   "tag": "ITE-Q-iii-eta1",
-   "arm": "ite",
-   "fit": "Q",
-   "dist": "iii",
-   "eta": 1.0,
-   "n_loop": 1
-  },
-  {
    "tag": "ITE-Q-ii",
    "arm": "ite",
    "fit": "Q",
@@ -42,6 +34,16 @@
    "dist": "iii",
    "scheme": "oracle",
    "n_loop": 1
+  },
+  {
+   "tag": "ITE-Q-iii-eta1",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "iii",
+   "eta": 1.0,
+   "n_loop": 1,
+   "K": 1,
+   "n_in": 500
   }
  ]
 }

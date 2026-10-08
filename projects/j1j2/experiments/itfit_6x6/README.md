@@ -198,3 +198,10 @@ not generalise (synthetic check), so the damping is set by the validation batch.
   fits are NOT converged; convergence evidence = the saved validation curves.
 - VMC controls: one loop iteration each (the ITE arms are expected below the 0.10 stop rule), evaluation budget of an
   ITE-Q arm's first loop iteration (2.47e9 network evaluations) capped at 75 min of GPU time; eta from the VMC scan.
+
+## Result (2026-10-08 18:40)
+Not PASS; INCONCLUSIVE (cause: zero-hop representation of a one-hop correction). Best realistic arm ITE-Q-iii
+captures 3.7% of FN iteration 1 (ORACLE 8.3%, walkers 0.45%); stiffness solved by the semi-implicit step
+(87% / 97% of an iteration in 1 / 2 exact steps vs ~5e4 explicit steps); one exact hop on the net gives 82% but the
+composite loop stalls after iteration 1. Long VMC control runs cancelled unstarted (see results README). Details,
+tables, figure: `results/itfit_6x6/README.md`.

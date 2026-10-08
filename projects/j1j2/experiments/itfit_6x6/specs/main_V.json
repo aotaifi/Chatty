@@ -6,9 +6,14 @@
  "n_loop": 1,
  "lanczos_m": 40,
  "evals_per_loop": 2472960000,
- "max_sec": 4500,
- "eta": "ETAV",
+ "max_sec": 3600,
+ "eta": 0.01,
  "arms": [
+  {
+   "tag": "VMC-iii",
+   "arm": "vmc",
+   "dist": "iii"
+  },
   {
    "tag": "VMC-i",
    "arm": "vmc",

@@ -55,6 +55,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - The FN amplitude update is white-noise-rough in the energy metric (0.97 of white noise) and tail-concentrated (81% of the gain on 7.6% of the weight). Exact oracle data: energy-metric residual net keeps 17% of one FN iteration, infidelity 8%; with realistic VMC samples < 1%, tying plain fixed-sign VMC.
 - Decision: stop writing FN amplitude updates back (no loop, no 8x8 write-back). Amplitude from ordinary VMC; FN/Krylov for signs and as referee. Reopen only if a non-local pair-product residual or stronger tail tempering passes 50% on the same oracle harness.
 - Best remaining route: strong (symmetrised) NQS + Lanczos step(s) + calibrated FN at 8x8+ (3d), pending referee calibration.
+- 2026-10-08 REOPENED (PI + Research Workspace seq100): the loop's novel part is the alternating construction (Krylov sign -> flatten composite sign -> FN amplitude refinement, calibrated referee); NQS+Lanczos and NQS+FN alone are known (Chen et al. NeurIPS 2022; Wang/He/Lu PRB 113, 085120 (2026); NQS->FN-GFMC on Hubbard/t-J). Write-back failed with |psi|^2-type sampling; new test samples the ENERGY METRIC (tail proposal ~ violating/kept-edge weight) and fits edge differences with FN Laplacian weights. Reopen rule: >= 50% of one FN iteration on oracle data (results/writeback_tail/).
 
 ## 4. Decisions taken (and why)
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

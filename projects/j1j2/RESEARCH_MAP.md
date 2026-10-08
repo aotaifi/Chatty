@@ -73,7 +73,9 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 ## 5b. Compute note
 - When Paderborn is back from maintenance (expected ~Oct 9-12), move GPU-heavy work there (H100s; ws1 A40s are slow and the queue is congested). Access via ws1 VPN; if login2 is down use `ssh -o HostName=login1 -o HostKeyAlias=login2 paderborn` (same host key). Check `sinfo` there first.
 
-## 6. Running now
+## 6. Running now (2026-10-08)
 | Work | Owner | Budget |
 |---|---|---|
-| (nothing running) | | |
+| Write-back re-test: tail sampling + energy loss; optimizer arms SR/minSR and Gauss-Newton in Q (Adam = baseline); minSR fine-tuning the ViT itself; 'jump' fit of the ViT to the 3-iteration FN state + VMC polish (results/writeback_tail/) | Opus | <= 15 GPU-h |
+| Imaginary-time fitting with H_FN (SR/Gauss-Newton fits, explicit vs implicit steps, stiffness pre-registered; sampling from |a|^2 vs FN mixed a*phi_FN (walker idea) vs tail; VMC control) (results/itfit_6x6/) | Opus | <= 15 GPU-h |
+| Research Workspace: review request seq99; Chatty replied seq100; awaiting Tim | - | - |

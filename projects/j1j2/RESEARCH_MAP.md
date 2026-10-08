@@ -75,6 +75,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 ## 3i. WRITE-BACK SOLVED on oracle data (results/writeback_tail/, wtKA2, 2026-10-08)
 - A 37k net with three guide-local one-hop inputs (log a, V = FN wall term, W = kept-edge weight) captures 88.7% of one exact FN iteration (quadratic 89.2%), 93% of the <H> gain (1.319e-4 -> 8.86e-5; exact FN step 8.41e-5), ~90% in every weight decade down to 1e-14, held-out tail 89.7% = training 89.8%. Copy error 0.0027 rms (< 0.004). Spin-only nets: 20-31%; tail expert and edge sampling did not help.
 - Cause of all earlier failures: the FN correction is a function of one-hop guide quantities; spin-only nets cannot compute them. Same 'net + one hop' structure as the stored signs.
+- itfit route (results/itfit_6x6/, e8e72c2): realistic tempered samples, 5k net on frozen-base one-hop features, semi-implicit FN target: 95% / 80% / 69% per iteration; E_FN 1.02e-4 -> 4.74e-5 in 3 iterations (ideal 3.81e-5); with one exact hop <H> 4.53e-5 vs RBM+PP 4.47e-5. Same-model VMC control NOT yet run (open condition).
 - Next: pre-registered Step 2 (realistic samples, no phi_FN; same-input fixed-sign VMC control; pass >= 0.5 and >= 1.5x control; guide-evaluation cost per sample -> 8x8), then 3-iteration jump and the 6x6 loop vs RBM+PP. itfit route merged into this.
 
 ## 4. Decisions taken (and why)

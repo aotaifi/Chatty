@@ -1,0 +1,943 @@
+{
+ "spec": {},
+ "iters": [
+  {
+   "it": 1,
+   "E_FN_dE_site": 0.00010183073736935722,
+   "G_site": 3.010801304517388e-05,
+   "Qdelta_site": 3.0783515852710774e-05,
+   "families": [
+    {
+     "family": "base: smooth basis (b), feature clip 6",
+     "frac": 0.6914801215388032,
+     "quad_frac": 0.7056791749951031,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: smooth basis (b), feature clip 1e+09",
+     "frac": 0.9700434025095827,
+     "quad_frac": 0.9723811089798973,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: bins (log a, W, V, H_xx) 8^4",
+     "frac": 0.1664770393183541,
+     "quad_frac": 0.17927772990775503,
+     "groups": 1187
+    },
+    {
+     "family": "base: bins T(tau=1) 256",
+     "frac": 0.9555758389840191,
+     "quad_frac": 0.956267830981577,
+     "groups": 255
+    },
+    {
+     "family": "base: bins (T, log a) 64^2",
+     "frac": 0.9432284157418273,
+     "quad_frac": 0.9446413298504089,
+     "groups": 3104
+    }
+   ],
+   "best_base": "base: smooth basis (b), feature clip 1e+09",
+   "best_base_frac": 0.9700434025095827,
+   "missing_best_base": {
+    "resid_phi2_decades": [
+     {
+      "decade": -13,
+      "edge": "<=",
+      "resid": 0.14326404597273087,
+      "gain": 0.1389538534538711
+     },
+     {
+      "decade": -12,
+      "edge": "",
+      "resid": 0.17272905320847423,
+      "gain": 0.19597677365995092
+     },
+     {
+      "decade": -11,
+      "edge": "",
+      "resid": 0.225288041942258,
+      "gain": 0.25455425045116015
+     },
+     {
+      "decade": -10,
+      "edge": "",
+      "resid": 0.207375161186416,
+      "gain": 0.21609385144410276
+     },
+     {
+      "decade": -9,
+      "edge": "",
+      "resid": 0.14169106336637025,
+      "gain": 0.12646615620361454
+     },
+     {
+      "decade": -8,
+      "edge": "",
+      "resid": 0.07652072810213674,
+      "gain": 0.053846405270276794
+     },
+     {
+      "decade": -7,
+      "edge": "",
+      "resid": 0.02672653917594746,
+      "gain": 0.01244793347319181
+     },
+     {
+      "decade": -6,
+      "edge": "",
+      "resid": 0.005643634785811089,
+      "gain": 0.001544416330412077
+     },
+     {
+      "decade": -5,
+      "edge": ">=",
+      "resid": 0.0007617322598552856,
+      "gain": 0.00011635971341993603
+     }
+    ],
+    "resid_wall_decades": [
+     {
+      "decade": -1,
+      "edge": "<=",
+      "resid": 0.0025753357918530243,
+      "gain": 0.0006117500587343098
+     },
+     {
+      "decade": 0,
+      "edge": "",
+      "resid": 0.7088619467167551,
+      "gain": 0.6479383363420309
+     },
+     {
+      "decade": 1,
+      "edge": "",
+      "resid": 0.2832349828198227,
+      "gain": 0.34360422245986355
+     },
+     {
+      "decade": 2,
+      "edge": "",
+      "resid": 0.0052528987569979285,
+      "gain": 0.007755266119645388
+     },
+     {
+      "decade": 3,
+      "edge": ">=",
+      "resid": 7.483591457124886e-05,
+      "gain": 9.042501972580384e-05
+     }
+    ]
+   },
+   "sec": 166.63512325286865
+  },
+  {
+   "it": 2,
+   "E_FN_dE_site": 6.524456494372277e-05,
+   "G_site": 1.315625399625178e-05,
+   "Qdelta_site": 1.3763574510257608e-05,
+   "families": [
+    {
+     "family": "base: smooth basis (b), feature clip 6",
+     "frac": 0.5746996401566395,
+     "quad_frac": 0.572250659409941,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: smooth basis (b), feature clip 1e+09",
+     "frac": 0.8143569684462186,
+     "quad_frac": 0.7703097430631277,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: bins (log a, W, V, H_xx) 8^4",
+     "frac": 0.11608837861514651,
+     "quad_frac": 0.12591733841502128,
+     "groups": 1187
+    },
+    {
+     "family": "base: bins T(tau=1) 256",
+     "frac": 0.8220967324098529,
+     "quad_frac": 0.8308161875828568,
+     "groups": 255
+    },
+    {
+     "family": "base: bins (T, log a) 64^2",
+     "frac": 0.8122784557869396,
+     "quad_frac": 0.8130027636761394,
+     "groups": 3104
+    },
+    {
+     "family": "current guide: smooth basis (b)",
+     "frac": 0.9750413098617616,
+     "quad_frac": 0.9760810290418505,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "current guide: bins (T, log a) 64^2",
+     "frac": 0.9237526954060032,
+     "quad_frac": 0.9218691449819681,
+     "groups": 3070
+    }
+   ],
+   "best_base": "base: bins T(tau=1) 256",
+   "best_base_frac": 0.8220967324098529,
+   "missing_best_base": {
+    "resid_phi2_decades": [
+     {
+      "decade": -13,
+      "edge": "<=",
+      "resid": 0.29561593641879785,
+      "gain": 0.1935301044600718
+     },
+     {
+      "decade": -12,
+      "edge": "",
+      "resid": 0.17176425432848097,
+      "gain": 0.20966990408102593
+     },
+     {
+      "decade": -11,
+      "edge": "",
+      "resid": 0.194494087206642,
+      "gain": 0.23797409973511507
+     },
+     {
+      "decade": -10,
+      "edge": "",
+      "resid": 0.1658727001508183,
+      "gain": 0.18983992246076264
+     },
+     {
+      "decade": -9,
+      "edge": "",
+      "resid": 0.10060691083610371,
+      "gain": 0.10876754169604326
+     },
+     {
+      "decade": -8,
+      "edge": "",
+      "resid": 0.050565831826936476,
+      "gain": 0.046641066962664506
+     },
+     {
+      "decade": -7,
+      "edge": "",
+      "resid": 0.01739048790845456,
+      "gain": 0.011749551352863603
+     },
+     {
+      "decade": -6,
+      "edge": "",
+      "resid": 0.0035031539733874064,
+      "gain": 0.0017077588577341263
+     },
+     {
+      "decade": -5,
+      "edge": ">=",
+      "resid": 0.00018663735037867033,
+      "gain": 0.0001200503937192879
+     }
+    ],
+    "resid_wall_decades": [
+     {
+      "decade": -1,
+      "edge": "<=",
+      "resid": 0.0010118980736234999,
+      "gain": 0.000568744086606324
+     },
+     {
+      "decade": 0,
+      "edge": "",
+      "resid": 0.5110599823335678,
+      "gain": 0.5105981407413188
+     },
+     {
+      "decade": 1,
+      "edge": "",
+      "resid": 0.40814673142471053,
+      "gain": 0.4616869501591576
+     },
+     {
+      "decade": 2,
+      "edge": "",
+      "resid": 0.07728975104292128,
+      "gain": 0.0266546111235241
+     },
+     {
+      "decade": 3,
+      "edge": ">=",
+      "resid": 0.0024916371251769496,
+      "gain": 0.0004915538893932729
+     }
+    ]
+   },
+   "sec": 226.27425384521484
+  },
+  {
+   "it": 3,
+   "E_FN_dE_site": 4.86600026907702e-05,
+   "G_site": 7.183812986255589e-06,
+   "Qdelta_site": 7.8026439792647e-06,
+   "families": [
+    {
+     "family": "base: smooth basis (b), feature clip 6",
+     "frac": 0.45589358182135736,
+     "quad_frac": 0.44401300046995584,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: smooth basis (b), feature clip 1e+09",
+     "frac": 0.5998836584177708,
+     "quad_frac": 0.5390766579218043,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "base: bins (log a, W, V, H_xx) 8^4",
+     "frac": 0.07980280633318121,
+     "quad_frac": 0.09348679256298509,
+     "groups": 1187
+    },
+    {
+     "family": "base: bins T(tau=1) 256",
+     "frac": 0.6565090147598648,
+     "quad_frac": 0.6746489290540452,
+     "groups": 255
+    },
+    {
+     "family": "base: bins (T, log a) 64^2",
+     "frac": 0.6402649891420436,
+     "quad_frac": 0.6578020222705308,
+     "groups": 3101
+    },
+    {
+     "family": "current guide: smooth basis (b)",
+     "frac": 0.9802774055374518,
+     "quad_frac": 0.9817802846404191,
+     "J": 41,
+     "names": [
+      "la",
+      "la^2",
+      "Hd",
+      "Hd^2",
+      "W",
+      "W^2",
+      "V",
+      "V^2",
+      "nK",
+      "nK^2",
+      "nV",
+      "nV^2",
+      "W2",
+      "W2^2",
+      "V2",
+      "V2^2",
+      "LK",
+      "LK^2",
+      "LV",
+      "LV^2",
+      "la*Hd",
+      "la*W",
+      "la*V",
+      "la*nK",
+      "la*nV",
+      "Hd*W",
+      "Hd*V",
+      "Hd*nK",
+      "Hd*nV",
+      "W*V",
+      "W*nK",
+      "W*nV",
+      "V*nK",
+      "V*nV",
+      "nK*nV",
+      "T0.1",
+      "T0.3",
+      "T1.0",
+      "T3.0",
+      "T10.0",
+      "T100.0"
+     ],
+     "frac_unclipped": null
+    },
+    {
+     "family": "current guide: bins (T, log a) 64^2",
+     "frac": 0.8892867959535699,
+     "quad_frac": 0.8803258487130319,
+     "groups": 3127
+    }
+   ],
+   "best_base": "base: bins T(tau=1) 256",
+   "best_base_frac": 0.6565090147598648,
+   "missing_best_base": {
+    "resid_phi2_decades": [
+     {
+      "decade": -13,
+      "edge": "<=",
+      "resid": 0.2938557406454304,
+      "gain": 0.23830655544558768
+     },
+     {
+      "decade": -12,
+      "edge": "",
+      "resid": 0.1888584657623808,
+      "gain": 0.2114181595207592
+     },
+     {
+      "decade": -11,
+      "edge": "",
+      "resid": 0.20224378611306043,
+      "gain": 0.22121330393344957
+     },
+     {
+      "decade": -10,
+      "edge": "",
+      "resid": 0.16277042693253113,
+      "gain": 0.1734182247348184
+     },
+     {
+      "decade": -9,
+      "edge": "",
+      "resid": 0.0927889058601808,
+      "gain": 0.09945643346172388
+     },
+     {
+      "decade": -8,
+      "edge": "",
+      "resid": 0.04255063587906387,
+      "gain": 0.04286201787470211
+     },
+     {
+      "decade": -7,
+      "edge": "",
+      "resid": 0.013766291456481408,
+      "gain": 0.011280186322478689
+     },
+     {
+      "decade": -6,
+      "edge": "",
+      "resid": 0.0029534929329933153,
+      "gain": 0.0018913650240943792
+     },
+     {
+      "decade": -5,
+      "edge": ">=",
+      "resid": 0.0002122544178778862,
+      "gain": 0.00015375368238627966
+     }
+    ],
+    "resid_wall_decades": [
+     {
+      "decade": -1,
+      "edge": "<=",
+      "resid": 0.0008645906623370386,
+      "gain": 0.0006256737881165982
+     },
+     {
+      "decade": 0,
+      "edge": "",
+      "resid": 0.4683567313434762,
+      "gain": 0.4334297780125507
+     },
+     {
+      "decade": 1,
+      "edge": "",
+      "resid": 0.4232479732556492,
+      "gain": 0.4966823861295811
+     },
+     {
+      "decade": 2,
+      "edge": "",
+      "resid": 0.1033826340951681,
+      "gain": 0.06734053539085949
+     },
+     {
+      "decade": 3,
+      "edge": ">=",
+      "resid": 0.004148070643369464,
+      "gain": 0.0019216266788923046
+     }
+    ]
+   },
+   "sec": 225.7857027053833
+  }
+ ],
+ "projected_loop": [
+  {
+   "family": "projected loop it 1: base smooth basis",
+   "frac": 0.9700434586047721,
+   "quad_frac": 0.9723811089314602,
+   "J": 41,
+   "names": [
+    "la",
+    "la^2",
+    "Hd",
+    "Hd^2",
+    "W",
+    "W^2",
+    "V",
+    "V^2",
+    "nK",
+    "nK^2",
+    "nV",
+    "nV^2",
+    "W2",
+    "W2^2",
+    "V2",
+    "V2^2",
+    "LK",
+    "LK^2",
+    "LV",
+    "LV^2",
+    "la*Hd",
+    "la*W",
+    "la*V",
+    "la*nK",
+    "la*nV",
+    "Hd*W",
+    "Hd*V",
+    "Hd*nK",
+    "Hd*nV",
+    "W*V",
+    "W*nK",
+    "W*nV",
+    "V*nK",
+    "V*nV",
+    "nK*nV",
+    "T0.1",
+    "T0.3",
+    "T1.0",
+    "T3.0",
+    "T10.0",
+    "T100.0"
+   ],
+   "frac_unclipped": null,
+   "it": 1,
+   "E_FN_guide_dE_site": 0.00010183073736946824,
+   "H_oldsign_dE_site": 8.556403710824334e-05,
+   "H_kry_dE_site": 7.989784664064192e-05,
+   "sec": 91.29884004592896
+  },
+  {
+   "family": "projected loop it 2: base smooth basis",
+   "frac": 0.7743014590279929,
+   "quad_frac": 0.7350305780726031,
+   "J": 41,
+   "names": [
+    "la",
+    "la^2",
+    "Hd",
+    "Hd^2",
+    "W",
+    "W^2",
+    "V",
+    "V^2",
+    "nK",
+    "nK^2",
+    "nV",
+    "nV^2",
+    "W2",
+    "W2^2",
+    "V2",
+    "V2^2",
+    "LK",
+    "LK^2",
+    "LV",
+    "LV^2",
+    "la*Hd",
+    "la*W",
+    "la*V",
+    "la*nK",
+    "la*nV",
+    "Hd*W",
+    "Hd*V",
+    "Hd*nK",
+    "Hd*nV",
+    "W*V",
+    "W*nK",
+    "W*nV",
+    "V*nK",
+    "V*nV",
+    "nK*nV",
+    "T0.1",
+    "T0.3",
+    "T1.0",
+    "T3.0",
+    "T10.0",
+    "T100.0"
+   ],
+   "frac_unclipped": null,
+   "it": 2,
+   "E_FN_guide_dE_site": 6.608235465188628e-05,
+   "H_oldsign_dE_site": 6.33005413344101e-05,
+   "H_kry_dE_site": 6.309088427070009e-05,
+   "sec": 91.24733972549438
+  },
+  {
+   "family": "projected loop it 3: base smooth basis",
+   "frac": 0.520458805518933,
+   "quad_frac": 0.48111671092943176,
+   "J": 41,
+   "names": [
+    "la",
+    "la^2",
+    "Hd",
+    "Hd^2",
+    "W",
+    "W^2",
+    "V",
+    "V^2",
+    "nK",
+    "nK^2",
+    "nV",
+    "nV^2",
+    "W2",
+    "W2^2",
+    "V2",
+    "V2^2",
+    "LK",
+    "LK^2",
+    "LV",
+    "LV^2",
+    "la*Hd",
+    "la*W",
+    "la*V",
+    "la*nK",
+    "la*nV",
+    "Hd*W",
+    "Hd*V",
+    "Hd*nK",
+    "Hd*nV",
+    "W*V",
+    "W*nK",
+    "W*nV",
+    "V*nK",
+    "V*nV",
+    "nK*nV",
+    "T0.1",
+    "T0.3",
+    "T1.0",
+    "T3.0",
+    "T10.0",
+    "T100.0"
+   ],
+   "frac_unclipped": null,
+   "it": 3,
+   "E_FN_guide_dE_site": 5.461621812252737e-05,
+   "H_oldsign_dE_site": 5.617229181553718e-05,
+   "H_kry_dE_site": 5.6060955275105684e-05,
+   "sec": 91.26322197914124
+  }
+ ],
+ "projected_loop_final_E_FN_dE_site": 4.89954955312788e-05,
+ "sec": 981.9166805744171
+}

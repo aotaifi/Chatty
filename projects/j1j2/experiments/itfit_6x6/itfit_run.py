@@ -122,6 +122,54 @@ class Model:
         return self._fSa(flat, S, G).astype(f64)
 
 
+class FeatModel:
+    """f(x) = g_theta(features of x): an MLP on one-hop features of the FROZEN base (table FT, looked up by the
+    canonical representative of x; exact, the features are orbit functions).  Same interface as Model."""
+
+    def __init__(self, FT, hid=64, depth=2, seed=0, head_init=1e-4):
+        self.FT = FT
+        class MLP(nn.Module):
+            @nn.compact
+            def __call__(self, z):
+                kw = dict(dtype=jnp.float32, param_dtype=jnp.float32)
+                h = z
+                for _ in range(depth): h = nn.gelu(nn.Dense(hid, **kw)(h))
+                return nn.Dense(1, kernel_init=nn.initializers.zeros, **kw)(h)[:, 0]
+        self.net = MLP()
+        params = self.net.init(jax.random.PRNGKey(seed), jnp.zeros((1, FT.shape[1]), jnp.float32))['params']
+        hd = f'Dense_{depth}'; k = params[hd]['kernel']
+        params[hd]['kernel'] = head_init * jax.random.normal(jax.random.PRNGKey(seed + 7), k.shape, k.dtype)
+        self.flat0, self.unravel = ravel_pytree(params)
+        self.npar = int(self.flat0.size)
+        net, unravel = self.net, self.unravel
+        P2 = jnp.asarray([1 << i for i in range(N)], jnp.uint64)
+
+        def f(flat, X):                                   # X: (R, 36) +-1 -> configs -> representative -> features
+            S = jnp.sum(jnp.where(X > 0, P2[None, :], jnp.uint64(0)), axis=1, dtype=jnp.uint64)
+            idx = SS.canon(sec.T, sec.reps, S)
+            return net.apply({'params': unravel(flat)}, FT[idx])
+        self.f = f; self.f_aug = lambda flat, X, G: f(flat, X)
+        self._fS = jax.jit(lambda flat, S: f(flat, bits(S)))
+        self._fSa = jax.jit(lambda flat, S, G: f(flat, bits(S)))
+        self._tab = jax.jit(lambda flat, Z: net.apply({'params': unravel(flat)}, Z))
+        self._jac = jax.jit(jax.vmap(jax.grad(lambda flat, xb: f(flat, xb[None])[0]), in_axes=(None, 0)))
+        self._jaca = jax.jit(jax.vmap(jax.grad(lambda flat, xb, g: f(flat, xb[None])[0]), in_axes=(None, 0, 0)))
+
+    fS = Model.fS; jac = Model.jac; jac_aug = Model.jac_aug; fS_aug = Model.fS_aug
+
+    lo, hi = -np.inf, np.inf                              # output range seen in training (set by the arms)
+
+    def table(self, flat, reps, chunk=1 << 20):
+        """exact table; the output is clamped to the range of f values the training ever targeted/visited (+-1): the
+        MLP must not extrapolate exponentially on configurations it never saw (phi^2 ~ 1e-25 walls)."""
+        t = jnp.concatenate([self._tab(flat, self.FT[i:i + chunk]) for i in range(0, self.FT.shape[0], chunk)]).astype(f64)
+        return jnp.clip(t, self.lo - 1.0, self.hi + 1.0)
+
+    def see(self, v):
+        self.lo = min(self.lo, float(jnp.min(v))) if np.isfinite(self.lo) else float(jnp.min(v))
+        self.hi = max(self.hi, float(jnp.max(v))) if np.isfinite(self.hi) else float(jnp.max(v))
+
+
 # ============================================================================================ exact setup
 ex = Exact(); sec = ex.sec
 lP, sP0 = ex.lP, ex.sP
@@ -138,7 +186,14 @@ def _nval_max(x):
 
 NVM = int(max(int(_nval_max(sec.reps[i:i + (1 << 20)])) for i in range(0, sec.D, 1 << 20)))
 log(f'max number of valid bonds over the sector: {NVM}')
-model = Model(SPEC.get('C', 32), SPEC.get('layers', 4), seed=SPEC.get('seed', 0), head_init=SPEC.get('head_init', 1e-4))
+if SPEC.get('model') == 'feat':
+    from itfit_common import base_feature_table
+    _E1, _u1, _ = sec.fn_solve(lP, sP0)
+    FT = base_feature_table(ex, lP, sP0, _u1 * _u1, _E1, zclip=SPEC.get('zclip', 6.0)); del _u1
+    model = FeatModel(FT, hid=SPEC.get('hid', 64), depth=SPEC.get('depth', 2), seed=SPEC.get('seed', 0))
+    log(f'feature model: {FT.shape[1]} inputs, {model.npar} parameters')
+else:
+    model = Model(SPEC.get('C', 32), SPEC.get('layers', 4), seed=SPEC.get('seed', 0), head_init=SPEC.get('head_init', 1e-4))
 flat = model.flat0
 res = dict(spec=SPEC, npar=model.npar, loops=[])
 EV = dict(total=0.0)                                            # evaluation counter (see README)
@@ -353,6 +408,7 @@ def run_ite(flat, L, k, lrec):
             key, kb = jax.random.split(key)
             bd = bq(kb, cdf, liw, s, lt, g)
             key, kg = jax.random.split(key)
+            if hasattr(model, 'see'): model.see(bd[2]); model.see(bd[3])
             if fit == 'Q':
                 x, y, gx, gy, c, iw, nval = bd
                 S = jnp.concatenate([x, y.reshape(-1)])
@@ -471,6 +527,7 @@ def run_vmc(flat, L, k, lrec, budget):
             sec.offload()
         key, kk = jax.random.split(key)
         x, rho, EL, Eb, nval, ess = vstep(flat, kk, cdf, liw, fref)
+        if hasattr(model, 'see') and it % 10 == 0: model.see(model.fS(flat, x))
         flat = vupdate(flat, model.jac(flat, x), rho, EL, Eb)          # symmetrised Jacobian, chunked
         if it % 50 == 0: trace.append(dict(it=it, E_batch_dE_site=esite(float(Eb)), ess=float(ess)))
         EV['total'] += B * (1 + float(jnp.mean(nval))) + B
@@ -519,6 +576,7 @@ for sub in (BASE.get('arms') or [{}]) if BASE['arm'] in ('ite', 'vmc', 'multi') 
     log(f'==== arm {tag}: {json.dumps(sub)}')
     ares = dict(tag=tag, spec=dict(SPEC), loops=[]); res['arms'].append(ares); res['loops'] = ares['loops']
     flat = model.flat0; s = sP0; L = L0; EV['total'] = 0.0; ta = time.time()
+    if hasattr(model, 'see'): model.lo, model.hi = -np.inf, np.inf
     for k in range(SPEC.get('n_loop', 3)):
         lrec = dict(it=k + 1, start=L['info'], evals_start=EV['total'])
         ares['loops'].append(lrec); dump(F_OUT, res)

@@ -231,3 +231,21 @@ the best base-feature family captures **frac >= 0.50 in each of iterations 1, 2,
 report which part of the update (phi^2 decade, wall decade) the features miss. Budget for the follow-up <= 5 GPU-h.
 The sibling arm wtKA (writeback_tail, CNN with (log a, log V, log W) inputs, iteration 1, oracle target) is not
 duplicated: this test is exact, covers iterations 2-3 and adds H_xx and the moments.
+
+## Amendment 4 result and amendment 5 (2026-10-08 21:35)
+**Pre-test (exact, `results/itfit_6x6/itfit_feat.json`): GO.** Best frozen-base one-hop family per ideal iteration:
+it 1 0.970 (smooth basis, unclipped features, f clamped to the range of the target), it 2 0.822 and it 3 0.657
+(256 bins of the semi-implicit function T(tau = 1) of the base, bins weighted by phi^2 + gain). All >= 0.50.
+The current guide's one-hop features hold 0.975 / 0.980 (needs a fresh hop per iteration). Projected loop with the
+base smooth family (= perfectly trained base-feature residual): frac 0.97 / 0.77 / 0.52, <H>(Krylov) 7.99e-5 /
+6.31e-5 / 5.61e-5, E_FN 1.02e-4 -> 6.61e-5 -> 5.46e-5 -> 4.90e-5. The missed part is spread over the phi^2 and wall
+decades like the gain itself (slightly over-weighted at phi^2 < 1e-13 and walls > 100 in iterations 2-3): what the
+base cannot see is how the neighbours changed in earlier iterations (two-hop information).
+**Training (amendment 5):** f = MLP(13 standardised base features: log a, H_xx, log W, log V, nK, nV, log W2, log V2,
+LK, LV, T(0.3, 1, 3)), 2 x 64 gelu, 5.1k parameters, zero-ish head; semi-implicit targets K = 2, tau = 1; energy-metric
+GN (Levenberg-Marquardt, minSR form, B = 2048 x 4 bonds = 8192 rows > P, validation acceptance), <= 200 iterations per
+step; arms F-Q-iii, F-Q-ii, and same-model VMC controls (tempered, eta 0.01 / 0.03, 20 min per loop iteration).
+First run (job 17089042, `runs/itF_unclamped.json`): the fits converged (validation fit loss 1.5e-5 -> 3.6e-10 in step 1,
+frac 0.865 after step 1 = the target's 0.865), but the exact table after step 2 blew up (<H> 3.8e-3): the MLP
+extrapolated exponentially on configurations never sampled. Fix (after seeing that run, before the rerun's results):
+the exact table clamps f to the range of values the arm targeted or visited in training, +-1.

@@ -142,3 +142,32 @@ def decade_table(key_vals, weights, lo=-4, hi=7):
             row[k] = float(jnp.sum(jnp.where(m, v, 0.0))) / tots[k] if tots[k] != 0 else float('nan')
         out.append(row)
     return out
+
+
+def base_feature_table(ex, la, s, p, E, taus=(0.3, 1.0, 3.0), zclip=6.0):
+    """(D, 10 + len(taus)) float32 table of standardised (weights p), clipped one-hop features of the guide (la, s):
+    log a, H_xx, log W, log V, nK, nV, log W2, log V2, LK, LV, and T_tau = log(1 + tau W) - log(1 + tau (H_xx + V - E)).
+    (W, V: kept / sign-violating sum_y |H_xy| a(y)/a(x); W2, V2 with squared ratios; nK, nV bond weights; LK, LV sums
+    of |H_xy| log ratios.)  Exact symmetric functions of the orbit, so a lookup by representative is exact."""
+    sec = ex.sec; sqn = ex.sqn; Hd = ex.Hdiag
+    la = la - jnp.max(la)
+    a = jnp.maximum(jnp.exp(la), 1e-300)
+    w = a * sqn
+    X = jnp.stack([w, a * a * sqn, la * sqn, sqn], 1)
+    sm, kp = [], []
+    for j in range(4):
+        Y = sec.Hm(jnp.stack([X[:, j], s * X[:, j]], 1))
+        sm.append(0.5 * (Y[:, 0] + s * Y[:, 1])); kp.append(0.5 * (Y[:, 0] - s * Y[:, 1])); del Y
+    same = jnp.stack(sm, 1); kept = jnp.stack(kp, 1); del X, sm, kp
+    W = kept[:, 0] / w; V = same[:, 0] / w - Hd
+    W2 = kept[:, 1] / (a * a * sqn); V2 = same[:, 1] / (a * a * sqn) - Hd
+    nK = kept[:, 3] / sqn; nV = same[:, 3] / sqn - Hd
+    LK = kept[:, 2] / sqn - la * nK; LV = (same[:, 2] / sqn - Hd * la) - la * nV
+    lg = lambda x: jnp.log(jnp.maximum(x, 0.0) + 1e-6)
+    cols = [la, Hd, lg(W), lg(V), nK, nV, lg(W2), lg(V2), LK, LV]
+    cols += [jnp.log1p(t * jnp.maximum(W, 0)) - jnp.log1p(t * jnp.maximum(Hd + V - E, 1e-12)) for t in taus]
+    out = []
+    for c in cols:
+        m = float(jnp.sum(p * c)); sd = float(jnp.sqrt(jnp.sum(p * (c - m) ** 2))) + 1e-30
+        out.append(jnp.clip((c - m) / sd, -zclip, zclip).astype(jnp.float32))
+    return jnp.stack(out, 1)

@@ -78,3 +78,14 @@ Bases / architectures:
   evaluations are dropped (4.5 min each); training curves come from the common validation estimator (SE ~1e-7).
   The 111k arms are capped at 70 min each (the old E-L cap was 1 h); one tail arm (TA) for the wide net.
 - Rule unchanged: Step 1 PASS iff the best (ii)/(ii-a) arm reaches exact frac >= 0.50.
+
+## Amendment 2 (lead + PI requests during the run; recorded afterwards, 2026-10-08 15:00)
+- ~10:50, before any optimizer result: optimizer arms added at the same data/loss budget, Adam kept as baseline:
+  minSR on the residual net (old and adaptive-tail distribution), energy-metric Gauss-Newton / Levenberg-Marquardt
+  (matrix-free CG on J^T L J; trust ratio judged on an independent batch after the same-batch version overfitted in the
+  smoke run), and minSR fine-tuning of the symmetrised ViT itself (old distribution only, budget).
+- ~11:20: three-iteration "jump" arm: fit b = |psi_P| exp(f) to phi_3 of the ideal exact loop (frozen H_FN[phi_2, s_2]),
+  then a fixed-sign VMC-minSR polish at the Krylov sign of phi_3; report exact <H> and E_FN after fit and polish.
+- Budget raised to 15 GPU-h. The 50% reopen rule is unchanged and applies to every arm.
+- Hyper-parameters chosen on short smoke scans (validation only): minSR eta 0.05, shift 1e-4 tr/B, step cap 0.01 rms;
+  ViT minSR eta 0.002, cap 0.001; GN batch 8192 x 8 edges, 20 CG steps, 25 min wall-clock per arm.

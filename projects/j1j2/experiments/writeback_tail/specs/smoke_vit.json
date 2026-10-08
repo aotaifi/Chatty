@@ -1,0 +1,41 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "tag": "vit-smoke",
+   "model": "vit",
+   "opt": "sr",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "energy",
+   "B": 128,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "eta": 0.02,
+   "lam": 0.0001,
+   "max_df": 0.01,
+   "steps": 40,
+   "val_every": 20,
+   "final": false
+  },
+  {
+   "tag": "gnv-smoke",
+   "opt": "gn",
+   "C": 32,
+   "layers": 4,
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "quad",
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "n_cg": 20,
+   "lam": 0.01,
+   "steps": 60,
+   "val_every": 20,
+   "final": false
+  }
+ ]
+}

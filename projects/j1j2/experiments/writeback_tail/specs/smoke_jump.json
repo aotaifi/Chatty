@@ -1,0 +1,29 @@
+{
+ "check": false,
+ "n_iter": 3,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "final": true,
+   "tag": "j-smoke",
+   "opt": "adam",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "energy",
+   "lr": 0.003,
+   "steps": 300,
+   "val_every": 100,
+   "polish": {
+    "steps": 60,
+    "B": 256,
+    "eta": 0.02,
+    "lam": 0.001
+   }
+  }
+ ]
+}

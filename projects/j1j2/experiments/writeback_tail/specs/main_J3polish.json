@@ -1,0 +1,60 @@
+{
+ "check": false,
+ "n_iter": 3,
+ "arms": [
+  {
+   "opt": "adam",
+   "model": "cnn",
+   "C": 32,
+   "layers": 4,
+   "use_a": true,
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "energy",
+   "lr": 0.0,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 2,
+   "warmup": 1,
+   "val_every": 2,
+   "init_params": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
+   "tag": "J3-polish-eta2e-3",
+   "polish": {
+    "steps": 300,
+    "B": 1024,
+    "eta": 0.002,
+    "lam": 0.0001
+   },
+   "eval_best_only": true
+  },
+  {
+   "opt": "adam",
+   "model": "cnn",
+   "C": 32,
+   "layers": 4,
+   "use_a": true,
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "energy",
+   "lr": 0.0,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 2,
+   "warmup": 1,
+   "val_every": 2,
+   "init_params": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
+   "tag": "J3-polish-eta5e-4",
+   "polish": {
+    "steps": 300,
+    "B": 1024,
+    "eta": 0.0005,
+    "lam": 0.0001
+   },
+   "eval_best_only": true
+  }
+ ]
+}

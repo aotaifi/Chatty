@@ -1,0 +1,46 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 20000,
+   "val_every": 1000,
+   "eval_best_only": true,
+   "max_sec": 1500,
+   "tag": "SR-O-R28",
+   "opt": "sr",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "energy",
+   "eta": 0.05,
+   "lam": 0.0001,
+   "max_df": 0.01
+  },
+  {
+   "C": 32,
+   "layers": 4,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 20000,
+   "val_every": 1000,
+   "eval_best_only": true,
+   "max_sec": 1500,
+   "tag": "SR-TA-R28",
+   "opt": "sr",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "energy",
+   "eta": 0.05,
+   "lam": 0.0001,
+   "max_df": 0.01,
+   "refresh": 1000
+  }
+ ]
+}

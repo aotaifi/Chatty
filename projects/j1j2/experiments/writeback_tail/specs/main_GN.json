@@ -1,0 +1,45 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "B": 8192,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 1000,
+   "val_every": 10,
+   "eval_best_only": true,
+   "max_sec": 1500,
+   "tag": "GN-O-R28",
+   "opt": "gn",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "quad",
+   "n_cg": 20,
+   "lam": 0.01,
+   "refresh": 1000
+  },
+  {
+   "C": 32,
+   "layers": 4,
+   "B": 8192,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 1000,
+   "val_every": 10,
+   "eval_best_only": true,
+   "max_sec": 1500,
+   "tag": "GN-TA-R28",
+   "opt": "gn",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "n_cg": 20,
+   "lam": 0.01,
+   "refresh": 20
+  }
+ ]
+}

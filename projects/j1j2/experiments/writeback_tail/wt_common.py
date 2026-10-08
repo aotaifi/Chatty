@@ -30,18 +30,38 @@ def dump(path, obj):
 
 
 class Setup:
-    def __init__(self):
+    def __init__(self, n_iter=1):
+        """n_iter = 1: target phi = FN Perron vector of the guide (|psi_P|, s_P) (one FN iteration).
+        n_iter > 1: target = phi_n of the ideal exact loop from psi_P (FN solve -> Krylov sign step -> FN solve ...);
+        the frozen FN Hamiltonian is then H_FN[a_{n-1}, s_{n-1}] (its Perron vector is phi_n), sT = Krylov sign of
+        phi_n (the sign the loop would use next).  The trial state is always b = |psi_P| exp(f)."""
         t0 = time.time()
         self.sec = sec = SS.Sector(CSR, TABLE)
         sec.v0 = sec.la0 = sec.s0 = sec.p0 = None
         z = np.load(SYM)
         self.lP = jnp.asarray(z['lP']); self.sP = jnp.asarray(z['sP'].astype(np.float32)); del z
-        self.Efn, self.u, self.fn_info = sec.fn_solve(self.lP, self.sP)
-        u = self.u
+        self.n_iter = n_iter; self.loop = []
+        lg, sg = self.lP, self.sP
+        for k in range(n_iter):
+            Efn, u, info = sec.fn_solve(lg, sg)
+            self.loop.append(dict(it=k + 1, dE_FN_site=info['dE_FN_site']))
+            log(f'[setup] loop it {k + 1}: E_FN {info["dE_FN_site"]:.6e}')
+            if k < n_iter - 1:
+                sn, _, _ = sec.krylov(u, sg)
+                lg = jnp.log(jnp.maximum(u / sec.sqrt_n, 1e-300)); sg = sn; del u
+        self.lg, self.sg = lg, sg                                    # guide of the frozen FN Hamiltonian
+        self.Efn, self.u, self.fn_info = Efn, u, info
         self.lphi = jnp.log(jnp.maximum(u / sec.sqrt_n, 1e-300))
+        if n_iter > 1:
+            self.sT, _, _ = sec.krylov(u, sg)
+            vT = sec.vec(self.lphi, self.sT)
+            self.loop.append(dict(target_H_site=(sec.energy(vT) - sec.E0) / N)); del vT
+            log('[setup] target', self.loop[-1])
+        else:
+            self.sT = self.sP
         self.p = u * u                                               # rep probability under phi^2
         self.lpc = jnp.log(jnp.maximum(self.p, 1e-300)) - jnp.log(sec.n)   # per-configuration log phi^2
-        self.E_f0 = sec.fn_rayleigh(self.lP, self.sP, self.lP)
+        self.E_f0 = sec.fn_rayleigh(self.lg, self.sg, self.lP)
         self.G0 = (self.E_f0 - self.Efn) / N
         self.delta = self.lphi - self.lP
         self.mu = float(jnp.sum(self.p * self.delta))
@@ -59,7 +79,7 @@ class Setup:
         one = X.ndim == 1
         if one: X = X[:, None]
         k = X.shape[1]
-        s = self.sP[:, None].astype(f64)
+        s = self.sg[:, None].astype(f64)
         Y = self.sec.Hm(jnp.concatenate([X, s * X], 1))
         out = 0.5 * (Y[:, :k] - s * Y[:, k:])
         return out[:, 0] if one else out
@@ -72,8 +92,9 @@ class Setup:
 
     def node_c(self, e):
         u = self.u
-        KK = self.Kop(jnp.stack([u * e, u * e * e], 1))
-        return 0.5 * (e * e * u * self.Ku - 2 * e * u * KK[:, 0] + u * KK[:, 1])
+        K1 = self.Kop(u * e)                                   # two single-column calls: lower peak memory
+        out = e * e * u * self.Ku - 2 * e * u * K1; del K1
+        return 0.5 * (out + u * self.Kop(u * e * e))
 
     def decades(self, vals, tot=None):
         tot = float(jnp.sum(vals)) if tot is None else tot

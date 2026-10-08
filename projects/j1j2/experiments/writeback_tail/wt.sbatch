@@ -19,7 +19,7 @@ cp "$B"/code/*.py "$OUT/code/"
 SCRIPT=$1; shift
 ARGS=()
 if [ $# -ge 1 ]; then cp "$1" "$OUT/spec.json"; ARGS=("$OUT/spec.json"); fi
-export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=0.92 OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=${WT_MEMFRAC:-0.92} OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 { echo "job_id=${SLURM_JOB_ID}"; echo "host=$(hostname)"; echo "script=$SCRIPT"; echo "spec=${1:-}"; echo "started=$(date -Is)"; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; } > "$OUT/run_metadata.txt"
 cd "$OUT/code"
 "/home/a/A.Otaifi/chatty_ll6/venv_gpu/bin/python" "$SCRIPT" "$OUT" "${ARGS[@]}"

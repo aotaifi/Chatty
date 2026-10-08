@@ -48,6 +48,7 @@ class ResCNN(nn.Module):
     layers: int = 4
     use_a: bool = False
     hid: int = 64
+    nfeat: int = 1
 
     @nn.compact
     def __call__(self, x, t):
@@ -62,8 +63,10 @@ class ResCNN(nn.Module):
         h = h.sum(axis=1) / 6.0
         if self.use_a:
             om = jnp.asarray([0.25, 0.5, 1.0, 2.0, 4.0], jnp.float32)
-            tt = t[:, None]
-            emb = jnp.concatenate([tt, 0.1 * tt * tt, jnp.sin(om * tt), jnp.cos(om * tt)], 1)
+            tt = t[:, None] if t.ndim == 1 else t
+            B_ = tt.shape[0]
+            emb = jnp.concatenate([tt, 0.1 * tt * tt, jnp.sin(tt[:, :, None] * om).reshape(B_, -1),
+                                   jnp.cos(tt[:, :, None] * om).reshape(B_, -1)], 1)
             h = jnp.concatenate([h, emb], 1)
             h = nn.gelu(nn.Dense(self.hid, **kw)(h))
             h = nn.gelu(nn.Dense(self.hid, **kw)(h))
@@ -71,9 +74,12 @@ class ResCNN(nn.Module):
 
 
 class Corr:
-    def __init__(self, C, layers, use_a=False, seed=0, head_init=0.0):
-        self.net = ResCNN(C, layers, use_a)
-        params = self.net.init(jax.random.PRNGKey(seed), jnp.zeros((1, N), jnp.float32), jnp.zeros(1, jnp.float32))['params']
+    def __init__(self, C, layers, use_a=False, seed=0, head_init=0.0, feat=None):
+        """feat: optional (D, nf) table of guide-local input features; t then carries the rep index (exact in fp32)."""
+        nf = 1 if feat is None else int(feat.shape[1])
+        self.net = ResCNN(C, layers, use_a or feat is not None, nfeat=nf)
+        params = self.net.init(jax.random.PRNGKey(seed), jnp.zeros((1, N), jnp.float32),
+                               jnp.zeros((1,) if feat is None else (1, nf), jnp.float32))['params']
         if head_init:
             last = sorted(params.keys(), key=lambda k: int(k.split('_')[1]) if k.startswith('Dense_') else -1)[-1]
             k = params[last]['kernel']
@@ -81,8 +87,16 @@ class Corr:
         self.flat0, self.unravel = ravel_pytree(params)
         self.npar = int(self.flat0.size)
         inv = jnp.asarray(np.argsort(SS.space_group()[:8], axis=1))
-        net, unravel = self.net, self.unravel
+        net0, unravel = self.net, self.unravel
         sg = jnp.asarray([1.0, -1.0], jnp.float32)
+        if feat is None:
+            net = net0
+        else:
+            class _W:                          # look the guide features up by rep index carried in t
+                @staticmethod
+                def apply(v, X, t):
+                    return net0.apply(v, X, feat[t.astype(jnp.int32)])
+            net = _W
 
         def f(flat, X, t):                    # exactly symmetric (mean over the 16 images; t is invariant)
             p = unravel(flat)
@@ -152,11 +166,49 @@ class VitModel:
         return jnp.concatenate(out)
 
 
+class Expert:
+    """tail expert: f = f_bulk(x) + gate(log a(x)) f_tail(x). f_bulk = a trained residual CNN, frozen (params from file);
+    gate = sigmoid((t_thr - t)/t_w) switches on below the log-amplitude threshold (t = standardised log a);
+    only the tail net is trained (flat = tail parameters)."""
+
+    def __init__(self, bulk_C, bulk_layers, bulk_params, C, layers, t_thr, t_w, seed=0):
+        self.bulk = Corr(bulk_C, bulk_layers, False, seed=0)
+        self.bflat = jnp.asarray(np.load(bulk_params), jnp.float32)
+        self.tail = Corr(C, layers, False, seed=seed)
+        self.flat0 = self.tail.flat0; self.npar = self.tail.npar; self.npar_bulk = self.bulk.npar
+        bulk, tail, bflat = self.bulk, self.tail, self.bflat
+        gate = lambda t: jax.nn.sigmoid((t_thr - t) / t_w)
+        self.gate = gate
+        self.f = lambda flat, X, t: bulk.f(bflat, X, t) + gate(t) * tail.f(flat, X, t)
+        self.f_aug = lambda flat, X, t, G: bulk.f_aug(bflat, X, t, G) + gate(t) * tail.f_aug(flat, X, t, G)
+        f = self.f
+        self._tab = jax.jit(lambda flat, Sx, t: f(flat, bits(Sx), t))
+        self._tab1 = jax.jit(lambda flat, Sx, t: bulk.net.apply({'params': bulk.unravel(bflat)}, bits(Sx), t)
+                             + gate(t) * tail.net.apply({'params': tail.unravel(flat)}, bits(Sx), t))
+
+    table = Corr.table
+
+
 # ============================================================================================ exact setup
 S = Setup(SPEC.get('n_iter', 1)); sec = S.sec
 lP, sP, lphi, u, p, lpc = S.lP, S.sg, S.lphi, S.u, S.p, S.lpc     # sP here = sign of the frozen-FN guide
 res = dict(spec=SPEC, G0=S.G0, Qdelta=S.Qdelta, E_FN_dE_site=(S.Efn - sec.E0) / N, loop=S.loop)
-dl = lP - lphi + S.mu                                         # log g at f = 0: e = f + dl (up to a constant)
+if SPEC.get('target') == 'shuffled':
+    # learnability control: delta permuted within (log a, FN weighted degree) bins, rescaled to the same Q
+    wdeg = jnp.log(jnp.maximum(S.Ku / jnp.maximum(S.u, 1e-300), 1e-300))
+    meas0 = 0.5 * S.p + 0.5 * S.c_delta / jnp.sum(S.c_delta)
+    def _wq(feat, nb):
+        o = jnp.argsort(feat); cm = jnp.cumsum(meas0[o]); cm = cm / cm[-1]
+        return jnp.zeros(feat.shape[0], jnp.int32).at[o].set(jnp.clip(jnp.floor(cm * nb - 1e-12), 0, nb - 1).astype(jnp.int32))
+    binid = np.asarray(_wq(lP, 32) * 32 + _wq(wdeg, 32))
+    rng = np.random.default_rng(12345)
+    o1 = np.lexsort((rng.random(sec.D), binid)); o2 = np.lexsort((rng.random(sec.D), binid))
+    dn = np.asarray(S.delta); ds = np.empty_like(dn); ds[o1] = dn[o2]
+    ds = jnp.asarray(ds); cs = S.node_c(ds); alpha = (S.Qdelta / (float(jnp.sum(cs)) / N)) ** 0.5
+    S.delta = S.mu + alpha * (ds - S.mu); S.c_delta = S.node_c(S.delta); S.Qdelta = float(jnp.sum(S.c_delta)) / N
+    log(f'[shuffled target] alpha {alpha:.4f}  Q {S.Qdelta:.6e}  (frac_gain below is meaningless; use quad metrics)')
+    del wdeg, ds, cs
+dl = -S.delta + S.mu                                          # log g at f = 0: e = f + dl (up to a constant)
 MASKS = jnp.asarray(SS.MASKS); BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB)
 NB = int(MASKS.shape[0])
 # standardised base log-amplitude for the '+a' input (moments under the gain/mass mixture measure)
@@ -165,22 +217,42 @@ ma = float(jnp.sum(meas * lP)); sa = float(jnp.sqrt(jnp.sum(meas * (lP - ma) ** 
 MA, SA = ma, sa
 TA = ((lP - ma) / sa).astype(jnp.float32)
 res['a_standardisation'] = dict(mean=ma, sd=sa)
+TIDX = jnp.arange(sec.D, dtype=jnp.float32)                   # rep index carried as input (exact below 2^24)
+FEAT = None
+if any(a.get('feats') for a in SPEC['arms']):
+    Vg, Wg = S.guide_features()
+    cols = [TA.astype(jnp.float32)]
+    for v_ in (jnp.log(Vg + 1e-6), jnp.log(Wg + 1e-6)):
+        m_ = float(jnp.sum(meas * v_)); s_ = float(jnp.sqrt(jnp.sum(meas * (v_ - m_) ** 2)))
+        cols.append(((v_ - m_) / s_).astype(jnp.float32))
+    FEAT = jnp.stack(cols, 1); del Vg, Wg, cols
+# tail expert support: log-amplitude threshold matching per-config phi^2 = 1e-8, and a hashed held-out tail split
+_off = float(jnp.sum(meas * (lpc - 2 * lP)))                 # lpc ~ 2 log a + const
+def t_of_phi2(c): return ((np.log(c) - _off) / 2 - ma) / sa
+HO = (((jnp.arange(sec.D, dtype=jnp.uint32) * jnp.uint32(2654435761)) >> 7) % 5) == 0     # 20% of the reps held out
+TAIL8 = lpc < np.log(1e-8)
 log_old = lambda beta: beta * (lpc - jnp.max(lpc)) + jnp.log(sec.n)       # rep-level log weight of phi^(2 beta)
 
 
-def make_q(prop, beta, eps, ctail, bulk_only):
+def make_q(prop, beta, eps, ctail, bulk_only, mask=None):
     """rep-level proposal q (normalised) and log importance weights log(p/q)."""
     q = jnp.exp(log_old(beta)); q = q / jnp.sum(q)
     if prop in ('mix', 'amix'):
         q = (1 - eps) * q + eps * ctail / jnp.sum(ctail)
+    elif prop == 'edge':                                       # node marginal of q_xy ~ |H_xy| phi_x phi_y (allowed)
+        ue = S.u * S.Ku
+        q = (1 - eps) * q + eps * ue / jnp.sum(ue)
     if bulk_only:
         q = jnp.where(S.bulk, q, 0.0); q = q / jnp.sum(q)
+    if mask is not None:
+        q = jnp.where(mask, q, 0.0); q = q / jnp.sum(q)
     liw = jnp.log(jnp.maximum(p, 1e-300)) - jnp.log(jnp.maximum(q, 1e-300))
     liw = jnp.where(q > 0, liw, -jnp.inf)
     return jnp.cumsum(q), liw
 
 
-def make_batch(B, K, bonds):
+def make_batch(B, K, bonds, tsrc=None, excl=None):
+    tsrc = TA if tsrc is None else tsrc
     @jax.jit
     def batch(key, cdf, liw):
         k1, k2 = jax.random.split(key)
@@ -210,7 +282,9 @@ def make_batch(B, K, bonds):
             y = x[:, None] ^ MASKS[bsel]
             iy = jnp.take_along_axis(iya, bsel, 1)
             w = jnp.where(Wx[:, None] > 0, Wx[:, None] / K, 0.0) * jnp.ones((B, K))
-        return x, y, dl[idx], dl[iy], w, iw, TA[idx], TA[iy]
+        if excl is not None:                                   # withhold every edge incident to test orbits
+            w = jnp.where(excl[iy], 0.0, w)
+        return x, y, dl[idx], dl[iy], w, iw, tsrc[idx], tsrc[iy]
     return batch
 
 
@@ -232,7 +306,7 @@ def losses(model, flat, x, y, dlx, dly, w, iw, tx, ty, G=None):
 
 
 def exact_eval(model, flat, final=False, fn_final=False):
-    fb = model.table(flat, sec.reps, TA)
+    fb = model.table(flat, sec.reps, getattr(model, 'tsrc', TA))
     la = lP + fb
     ef = sec.fn_rayleigh(S.lg, S.sg, la)
     e = fb - S.delta
@@ -242,7 +316,14 @@ def exact_eval(model, flat, final=False, fn_final=False):
                quad_frac=1 - Qe / S.Qdelta,
                rms_f=float(jnp.sqrt(jnp.sum(p * (fb - jnp.sum(p * fb)) ** 2))),
                rms_err=float(jnp.sqrt(jnp.sum(p * (e - jnp.sum(p * e)) ** 2))))
+    fc = fb - jnp.sum(p * fb)
+    out['f_absmax'] = float(jnp.max(jnp.abs(fc)))
+    out['f_absmax_by_cut'] = {str(cut): float(jnp.max(jnp.where(lpc >= np.log(cut), jnp.abs(fc), 0.0)))
+                              for cut in (1e-8, 1e-10, 1e-12, 1e-14)}
+    out['frac_reps_absf_gt_0.1'] = float(jnp.mean(jnp.abs(fc) > 0.1))
     out['captured_bulk_tail'] = S.bulk_tail(S.c_delta - ce, tot=S.Qdelta * N)
+    for nm, m in (('tail8_train', TAIL8 & ~HO), ('tail8_heldout', TAIL8 & HO), ('bulk8', ~TAIL8)):
+        out[f'capture_within_{nm}'] = float(jnp.sum(jnp.where(m, S.c_delta - ce, 0))) / float(jnp.sum(jnp.where(m, S.c_delta, 0)))
     if final:
         out['captured_decades'] = S.decades(S.c_delta - ce, tot=S.Qdelta * N)
         out['residual_decades'] = S.decades(ce, tot=S.Qdelta * N)
@@ -332,6 +413,15 @@ for arm in SPEC['arms']:
         chk = np.asarray(jax.jit(model.f)(model.flat0, bits(sec.reps[ii]), TA[ii]))
         log(f'  ViT start check: f = log|psi_P,theta0| - log a on 512 reps: mean {chk.mean():.2e} rms {chk.std():.2e} max {np.abs(chk).max():.2e}')
         assert np.abs(chk - chk.mean()).max() < 1e-3, 'ViT does not reproduce the psi_P table'
+    elif arm.get('model') == 'expert':
+        tthr = t_of_phi2(arm.get('gate_phi2', 1e-8))
+        model = Expert(arm.get('bulk_C', 32), arm.get('bulk_layers', 4), arm['bulk_params'], arm['C'], arm['layers'],
+                       tthr, arm.get('gate_w', 0.15), seed=arm.get('seed', 0))
+        log(f'  expert: gate threshold t = {tthr:.3f} (phi^2 = {arm.get("gate_phi2", 1e-8)}), tail params {model.npar}, '
+            f'bulk params {model.npar_bulk} (frozen)')
+    elif arm.get('feats'):
+        model = Corr(arm['C'], arm['layers'], seed=arm.get('seed', 0), feat=FEAT)
+        model.tsrc = TIDX
     else:
         model = Corr(arm['C'], arm['layers'], arm.get('use_a', False), seed=arm.get('seed', 0))
     if arm.get('init_params'):                                 # e.g. polish-only runs from a saved fit
@@ -341,8 +431,10 @@ for arm in SPEC['arms']:
     lossk = arm['loss']
     opt_kind = arm.get('opt', 'adam')
     sec.offload()                                             # H (4.2 GB) is reloaded on demand by exact evaluations
-    bt = make_batch(B, K, arm.get('bonds', 'uniform'))
-    cdf, liw = make_q(prop, beta, eps, S.c_delta, bulk_only)
+    excl = HO if arm.get('withhold_test_edges') else None
+    bt = make_batch(B, K, arm.get('bonds', 'uniform'), getattr(model, 'tsrc', TA), excl)
+    tmask = {'tail_train': TAIL8 & ~HO, 'train': ~HO}.get(arm.get('train_mask'))
+    cdf, liw = make_q(prop, beta, eps, S.c_delta, bulk_only, tmask)
     flat = model.flat0; ost = None
     if opt_kind == 'adam':
         sched = optax.warmup_cosine_decay_schedule(0.0, arm['lr'], arm.get('warmup', 200), steps, arm['lr'] * 0.02)
@@ -441,13 +533,52 @@ for arm in SPEC['arms']:
             k1, k2 = jax.random.split(key)
             bd = bt(k1, cdf, liw); G = jax.random.randint(k2, (B,), 0, 16)
             return N * (losses(model, f0, *bd, G=G)[1] - losses(model, f1, *bd, G=G)[1])
+    elif opt_kind == 'gnacc':
+        # Gauss-Newton with curvature accumulated over n_mb batches per outer step (n_mb x B x K residuals >> P),
+        # fixed strong damping lam = lam_rel x mean eigenvalue of J^T J (Hutchinson), full step, selection by validation.
+        n_cg = arm.get('n_cg', 20); n_mb = arm.get('n_mb', 8); lam_rel = arm.get('lam_rel', 1.0)
+
+        @jax.jit
+        def mk(key, cdf, liw):
+            k1, k2 = jax.random.split(key)
+            x, y, dlx, dly, w, iw, tx, ty = bt(k1, cdf, liw)
+            G = jax.random.randint(k2, (B,), 0, 16)
+            Xa = bits(jnp.concatenate([x, y.reshape(-1)])); Ta = jnp.concatenate([tx, ty.reshape(-1)])
+            GG = jnp.concatenate([G, jnp.repeat(G, K)])
+            c = jnp.sqrt(iw[:, None] / jnp.sum(iw) * w).astype(jnp.float32)
+            return Xa, Ta, GG, c, dlx.astype(jnp.float32), dly.astype(jnp.float32)
+
+        def resid(q, Xa, Ta, GG, c, dx, dy):
+            fa = model.f_aug(q, Xa, Ta, GG)
+            fx, fy = fa[:B], fa[B:].reshape(B, K)
+            return c * ((fx + dx)[:, None] - (fy + dy)) / np.sqrt(n_mb)
+
+        @jax.jit
+        def jtjv(q, bd, v):
+            _, jv = jax.jvp(lambda p: resid(p, *bd), (q,), (v,))
+            _, vjp = jax.vjp(lambda p: resid(p, *bd), q)
+            return vjp(jv)[0]
+
+        @jax.jit
+        def jtr(q, bd):
+            r, vjp = jax.vjp(lambda p: resid(p, *bd), q)
+            return vjp(r)[0]
+        lam_gn = None; n_acc = 0
+        fixed_pool = arm.get('fixed_pool', False); pool = None; LEcur = None
+        vkeys_gn = [jax.random.PRNGKey(55_000 + i) for i in range(arm.get('n_val_gn', 16))]
+
+        @jax.jit
+        def le_b(q, key, cdf, liw):                                # exact-identity frozen-F estimate on a fixed batch
+            k1, k2 = jax.random.split(key)
+            bd = bt(k1, cdf, liw); G = jax.random.randint(k2, (B,), 0, 16)
+            return losses(model, q, *bd, G=G)[0]
     else:
         raise ValueError(opt_kind)
     max_sec = arm.get('max_sec')
 
     # common validation for every arm: static tail mixture, weighted bonds, exact frozen-FN identity (LE)
     vcdf, vliw = make_q('mix', 0.5, 0.5, S.c_delta, False)
-    vb = make_batch(arm.get('val_B', 1024), 8, 'weighted')
+    vb = make_batch(arm.get('val_B', 1024), 8, 'weighted', getattr(model, 'tsrc', TA))
     vkeys = [jax.random.PRNGKey(90_000 + i) for i in range(arm.get('val_n', 32))]
     vl = jax.jit(lambda fl, *a: losses(model, fl, *a))
 
@@ -462,7 +593,33 @@ for arm in SPEC['arms']:
     key = jax.random.PRNGKey(1000 + arm.get('seed', 0))
     for it in range(1, steps + 1):
         key, k = jax.random.split(key)
-        if opt_kind == 'gn':
+        if opt_kind == 'gnacc':
+            if fixed_pool:                                         # one global least-squares problem on a fixed pool
+                if pool is None:
+                    pool = [mk(kk, cdf, liw) for kk in jax.random.split(jax.random.PRNGKey(31337), n_mb)]
+                    LEcur = float(np.mean([float(le_b(flat, kk, cdf, liw)) for kk in vkeys_gn]))
+                bds = pool
+            else:
+                bds = [mk(kk, cdf, liw) for kk in jax.random.split(k, n_mb)]
+            if lam_gn is None:
+                z = jnp.sign(jax.random.normal(jax.random.PRNGKey(77), flat.shape)).astype(flat.dtype)
+                lam_gn = lam_rel * float(sum(z @ jtjv(flat, bd, z) for bd in bds)) / flat.shape[0]
+                log(f'  GN-acc damping lam = {lam_gn:.3e} (lam_rel {lam_rel})')
+            A_ = lambda v: sum(jtjv(flat, bd, v) for bd in bds) + lam_gn * v
+            bvec = -sum(jtr(flat, bd) for bd in bds)
+            d = jnp.zeros_like(bvec); rr = bvec; pp = bvec; rs = float(rr @ rr)
+            for _ in range(n_cg):
+                Ap = A_(pp); al = rs / float(pp @ Ap)
+                d = d + al * pp; rr = rr - al * Ap; rsn = float(rr @ rr)
+                pp = rr + (rsn / rs) * pp; rs = rsn
+            if fixed_pool:                                         # damping validated on independent batches (exact F)
+                LEnew = float(np.mean([float(le_b(flat + d, kk, cdf, liw)) for kk in vkeys_gn]))
+                if LEnew < LEcur: flat = flat + d; n_acc += 1; LEcur = LEnew; lam_gn = lam_gn / 2
+                else: lam_gn = lam_gn * 4
+            else:
+                flat = flat + d; n_acc += 1
+            del bds
+        elif opt_kind == 'gn':
             k_a, k_b = jax.random.split(k)
             d, pred, act, L0 = gn_dir(flat, k_a, cdf, liw, jnp.float32(lam_gn))
             hv = gn_hold(flat, flat + d, k_b, cdf, liw)               # held-out batch: generalisation, not the fit
@@ -472,15 +629,15 @@ for arm in SPEC['arms']:
         else:
             flat, ost, LE, LQ = step(flat, ost, k, cdf, liw)
         if prop == 'amix' and it % arm.get('refresh', 1000) == 0 and it < steps:
-            fb1 = model.table(flat, sec.reps, TA, sym=False)          # one image: proposal only, not an evaluation
+            fb1 = model.table(flat, sec.reps, getattr(model, 'tsrc', TA), sym=False)          # one image: proposal only, not an evaluation
             ce = S.node_c(fb1 - S.delta)
-            cdf, liw = make_q(prop, beta, eps, ce + 1e-3 * S.c_delta, bulk_only)
+            cdf, liw = make_q(prop, beta, eps, ce + 1e-3 * S.c_delta, bulk_only, tmask)
             del fb1, ce
             sec.offload()
         if it % arm.get('val_every', 1000) == 0 or it == steps:
             v = val(flat)
             acc.append(dict(step=it, val_LE=float(v[0]), val_LQ=float(v[1]), sec=time.time() - t0))
-            if opt_kind == 'gn': acc[-1].update(lam=lam_gn, n_acc=n_acc)
+            if opt_kind in ('gn', 'gnacc'): acc[-1].update(lam=lam_gn, n_acc=n_acc)
             log('  val', acc[-1])
             if v[0] < best[0]: best = (v[0], flat, it)
             if not np.isfinite(v[0]): log('  non-finite validation, stopping arm'); break

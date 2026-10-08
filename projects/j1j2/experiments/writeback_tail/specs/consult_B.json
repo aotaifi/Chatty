@@ -1,0 +1,26 @@
+{
+ "check": false,
+ "target": "shuffled",
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "beta": 0.5,
+   "eps": 0.5,
+   "B": 1024,
+   "K": 8,
+   "lr": 0.003,
+   "warmup": 200,
+   "val_every": 1000,
+   "eval_best_only": true,
+   "opt": "adam",
+   "bonds": "weighted",
+   "loss": "quad",
+   "tag": "LRN-shuffled",
+   "prop": "mix",
+   "train_mask": "train",
+   "withhold_test_edges": true,
+   "steps": 12000
+  }
+ ]
+}

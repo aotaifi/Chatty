@@ -1,0 +1,26 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "B": 4096,
+   "n_mb": 8,
+   "n_cg": 20,
+   "steps": 1000,
+   "val_every": 5,
+   "eval_best_only": true,
+   "max_sec": 1500,
+   "opt": "gnacc",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "refresh": 20,
+   "tag": "GNacc-TA-l1",
+   "lam_rel": 1.0
+  }
+ ]
+}

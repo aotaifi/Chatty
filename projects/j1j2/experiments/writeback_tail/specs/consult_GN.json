@@ -1,0 +1,27 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "beta": 0.5,
+   "eps": 0.5,
+   "B": 4096,
+   "K": 8,
+   "warmup": 200,
+   "val_every": 5,
+   "eval_best_only": true,
+   "opt": "gnacc",
+   "bonds": "weighted",
+   "loss": "quad",
+   "tag": "GNglob-T",
+   "prop": "mix",
+   "n_mb": 16,
+   "n_cg": 30,
+   "lam_rel": 1.0,
+   "fixed_pool": true,
+   "steps": 200,
+   "max_sec": 2400
+  }
+ ]
+}

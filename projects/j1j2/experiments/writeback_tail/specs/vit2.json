@@ -1,0 +1,24 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "tag": "SR-T-ViT-small",
+   "model": "vit",
+   "opt": "sr",
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "energy",
+   "B": 128,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "eta": 0.0005,
+   "lam": 0.001,
+   "max_df": 0.00025,
+   "steps": 2000,
+   "val_every": 200,
+   "max_sec": 2700,
+   "eval_best_only": true
+  }
+ ]
+}

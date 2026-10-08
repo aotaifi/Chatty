@@ -1,0 +1,25 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "layers": 4,
+   "B": 1024,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "eval_best_only": true,
+   "lr": 0.001,
+   "opt": "adam",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "refresh": 1000,
+   "tag": "TA-R250",
+   "C": 96,
+   "max_sec": 12000
+  }
+ ]
+}

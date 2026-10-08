@@ -183,3 +183,18 @@ not generalise (synthetic check), so the damping is set by the validation batch.
   zero-hop write-back, which is unchanged.
 - **VMC budget:** the VMC arms get the evaluation count of the ITE-Q arms' first loop iteration, capped at 2.5 GPU-h
   per arm; if the cap binds, the comparison is reported at the VMC's actual (lower) count, which favours the ITE arms.
+
+## Amendment 3 (2026-10-08 14:15, after the inner-optimiser scan, before the main Stage 1 runs)
+- **Inner optimiser = stochastic natural gradient in minSR form** (fresh batch every iteration, fixed step eta, every
+  step taken, symmetrised validation loss every 100 iterations, best-validation parameters kept), as in p-tVMC inner
+  loops. The LM variant with per-step validation acceptance (amendment 1) stalls: with P = 28k > rows the batch
+  signal is below the batch noise, so almost every single step fails a validation check although the average step
+  helps (smokes: 0.1-0.35% of the fit loss in 10-12 iterations, lam driven to the cap).
+- Scan on the first target (Q-fit, distribution iii, B = 1024 x K_b = 4... run with B = 2048, 400 iterations, exact
+  frac of the fitted net, `results/itfit_6x6/scan_inner_q.json`): eta = 0.03 / 0.1 / 0.3 -> frac 0.20% / 0.38% /
+  1.0% (validation fit loss -0.2% / -0.4% / -1.6%). Main runs use **eta = 0.3, lam = 1e-3, B = 1024 (Q, 4096 edge
+  rows) / 4096 (P), n_in = 1500 iterations per ITE step, K = 2**; one sensitivity arm ITE-Q-iii-eta1 (eta = 1,
+  loop iteration 1 only). Progress is roughly linear in eta and in the number of iterations at this budget, i.e. the
+  fits are NOT converged; convergence evidence = the saved validation curves.
+- VMC controls: one loop iteration each (the ITE arms are expected below the 0.10 stop rule), evaluation budget of an
+  ITE-Q arm's first loop iteration (2.47e9 network evaluations) capped at 75 min of GPU time; eta from the VMC scan.

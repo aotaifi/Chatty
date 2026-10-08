@@ -1,0 +1,47 @@
+{
+ "arm": "multi",
+ "scheme": "semi",
+ "tau": 1.0,
+ "K": 2,
+ "n_in": 1500,
+ "B": 1024,
+ "Kb": 4,
+ "Bv": 4096,
+ "inner": "sng",
+ "eta": 0.3,
+ "lam": 0.001,
+ "val_every": 100,
+ "n_loop": 3,
+ "lanczos_m": 40,
+ "stop_frac": 0.1,
+ "arms": [
+  {
+   "tag": "ITE-Q-iii",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "iii"
+  },
+  {
+   "tag": "ITE-Q-iii-eta1",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "iii",
+   "eta": 1.0,
+   "n_loop": 1
+  },
+  {
+   "tag": "ITE-Q-ii",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "ii"
+  },
+  {
+   "tag": "ORACLE",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "iii",
+   "scheme": "oracle",
+   "n_loop": 1
+  }
+ ]
+}

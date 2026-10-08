@@ -1,0 +1,18 @@
+{
+ "arm": "multi",
+ "B": 1024,
+ "lam": 0.001,
+ "refresh": 250,
+ "n_loop": 1,
+ "lanczos_m": 40,
+ "evals_per_loop": 2472960000,
+ "max_sec": 4500,
+ "eta": "ETAV",
+ "arms": [
+  {
+   "tag": "VMC-i",
+   "arm": "vmc",
+   "dist": "i"
+  }
+ ]
+}

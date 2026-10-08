@@ -1,0 +1,28 @@
+{
+ "arm": "multi",
+ "scheme": "semi",
+ "tau": 1.0,
+ "K": 2,
+ "n_in": 1500,
+ "B": 1024,
+ "Kb": 4,
+ "Bv": 4096,
+ "inner": "sng",
+ "eta": 0.3,
+ "lam": 0.001,
+ "val_every": 100,
+ "n_loop": 3,
+ "lanczos_m": 40,
+ "stop_frac": 0.1,
+ "arms": [
+  {
+   "tag": "C-P-i",
+   "arm": "ite",
+   "fit": "P",
+   "dist": "i",
+   "B": 4096,
+   "K": 1,
+   "composite": true
+  }
+ ]
+}

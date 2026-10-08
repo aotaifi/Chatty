@@ -303,7 +303,7 @@ def run_ite(flat, L, k, lrec):
     bq = make_qbatch(B, Kb) if fit == 'Q' else make_pbatch(B)
     bqv = make_qbatch(Bv, Kb) if fit == 'Q' else make_pbatch(Bv)
     lphi = jnp.log(jnp.maximum(u / ex.sqn, 1e-300))
-    lam = lrec.get('lam', SPEC.get('lam', 1.0))
+    lam = lrec.get('lam', SPEC.get('lam', 1e-3 if SPEC.get('inner', 'sng') == 'sng' else 1.0))
     steps = []; cum_fitloss = 0.0
     key = jax.random.PRNGKey(1000 * (k + 1) + SPEC.get('seed', 0))
     E_prev_target = None
@@ -348,7 +348,7 @@ def run_ite(flat, L, k, lrec):
         pts_v = Bv * (1 + Kb) if fit == 'Q' else Bv
         EV['total'] += 2 * pts_v * (1 + nv_mean)                 # targets of the validation batch (two shells)
         L0 = val_loss(flat); Lc = L0; EV['total'] += pts_v
-        n_acc = 0; n_rej_run = 0; vhist = [L0]
+        n_acc = 0; n_rej_run = 0; vhist = [L0]; best_flat = flat
         for it in range(n_in):
             key, kb = jax.random.split(key)
             bd = bq(kb, cdf, liw, s, lt, g)
@@ -376,6 +376,16 @@ def run_ite(flat, L, k, lrec):
                 pts = B
             nb1 = 1 + float(jnp.mean(nval))
             EV['total'] += (2 * pts * nb1 * (nb1 if (SPEC.get('composite') and k > 0) else 1)) + pts
+            if SPEC.get('inner', 'sng') == 'sng':
+                # stochastic natural-gradient (minSR form) iterations with a fixed step eta, as in p-tVMC inner loops:
+                # every step accepted; the symmetrised validation loss is logged every val_every iterations and the
+                # best-validation parameters are kept (selection by the arm's own fit objective).
+                flat = flat + SPEC.get('eta', 0.1) * minsr_dir(J, r, lam); del J
+                if (it + 1) % SPEC.get('val_every', 25) == 0 or it == n_in - 1:
+                    Lt = val_loss(flat); EV['total'] += pts_v; vhist.append(Lt)
+                    if np.isfinite(Lt) and Lt < Lc: best_flat, Lc = flat, Lt; n_acc += 1
+                    if not np.isfinite(Lt): break
+                continue
             sc, Js, M = gn_prep(J)
             del J
             ok = False
@@ -396,6 +406,7 @@ def run_ite(flat, L, k, lrec):
             if n_rej_run >= SPEC.get('max_rej', 3): break
             pw = SPEC.get('plateau_window', 25)
             if len(vhist) > pw + 15 and vhist[-1] > (1 - SPEC.get('plateau_tol', 1e-3)) * vhist[-1 - pw]: break
+        if SPEC.get('inner', 'sng') == 'sng': flat = best_flat
         st = dict(n=n, E_b_dE_site=esite(E_b), frac_b=(L['Eg'] - E_b) / (L['Eg'] - L['Efn']),
                   E_t_dE_site=esite(E_t), frac_t=(L['Eg'] - E_t) / (L['Eg'] - L['Efn']),
                   step_gain_exact_site=(E_b - E_t) / N, val0=L0, val_end=Lc, val_ratio=Lc / max(L0, 1e-300),
@@ -436,15 +447,17 @@ def run_vmc(flat, L, k, lrec, budget):
                                     * jnp.exp(jnp.clip(ly - lx[:, None], -80, 80)), 0.0), 1)
         lr = liw[idx] + 2 * (fx - fref[idx]); rho = jnp.exp(lr - jnp.max(lr)); rho = rho / jnp.sum(rho)
         Eb = jnp.sum(rho * EL)
-        O = jax.vmap(jax.grad(lambda q, xb: model.f(q, xb[None])[0]), in_axes=(None, 0))(fl, bits(x))
+        return x, rho, EL, Eb, valid.sum(1), 1.0 / jnp.sum(rho * rho) / B
+
+    @jax.jit
+    def vupdate(fl, O, rho, EL, Eb):
         r32 = rho.astype(jnp.float32)
         Y = jnp.sqrt(r32)[:, None] * (O - (r32 @ O)[None, :])
         eps = jnp.sqrt(rho) * (EL - Eb)
-        d = minsr_dir(Y, eps, lam)
-        return fl + eta * d, Eb, valid.sum(1), 1.0 / jnp.sum(rho * rho) / B
+        return fl + eta * minsr_dir(Y, eps, lam)
     key = jax.random.PRNGKey(5000 + 17 * k + SPEC.get('seed', 0))
     trace = []; ev0 = EV['total']; it = 0; t0 = time.time()
-    while EV['total'] - ev0 < budget:
+    while EV['total'] - ev0 < budget and time.time() - t0 < SPEC.get('max_sec', 1e9):
         if it % SPEC.get('refresh', 200) == 0:
             fref = model.table(flat, sec.reps); la = lP + fref
             if it > 0 or k > 0:
@@ -457,12 +470,16 @@ def run_vmc(flat, L, k, lrec, budget):
             liw = (2 - 2 * beta) * la; liw = liw - jnp.max(liw)
             sec.offload()
         key, kk = jax.random.split(key)
-        flat, Eb, nval, ess = vstep(flat, kk, cdf, liw, fref)
+        x, rho, EL, Eb, nval, ess = vstep(flat, kk, cdf, liw, fref)
+        flat = vupdate(flat, model.jac(flat, x), rho, EL, Eb)          # symmetrised Jacobian, chunked
         if it % 50 == 0: trace.append(dict(it=it, E_batch_dE_site=esite(float(Eb)), ess=float(ess)))
         EV['total'] += B * (1 + float(jnp.mean(nval))) + B
         it += 1
         if not np.isfinite(float(Eb)): log('  non-finite VMC energy'); break
-    lrec['vmc_trace'] = trace; lrec['vmc_steps'] = it
+    fend = model.table(flat, sec.reps); E_now, _, _ = ef_of_table(fend, D, s)
+    trace.append(dict(it=it, frac=(L['Eg'] - E_now) / (L['Eg'] - L['Efn']), H_dE_site=esite(ex.energy_H(lP + fend, s)),
+                      evals=EV['total'] - ev0, sec=time.time() - t0)); del fend
+    lrec['vmc_trace'] = trace; lrec['vmc_steps'] = it; lrec['vmc_capped'] = EV['total'] - ev0 < budget
     return flat
 
 
@@ -482,36 +499,64 @@ if arm == 'vmc_scan':                                          # step-size scan 
         log('SCAN', {k: v for k, v in rec.items() if k != 'vmc_trace'})
         res['scan'].append(rec); dump(F_OUT, res)
     SPEC['n_loop'] = 0
-for k in range(SPEC.get('n_loop', 3)):
-    lrec = dict(it=k + 1, start=L['info'], evals_start=EV['total'])
-    res['loops'].append(lrec); dump(F_OUT, res)
-    t0 = time.time()
-    if arm == 'ite':
-        flat = run_ite(flat, L, k, lrec)
-    elif arm == 'vmc':
-        flat = run_vmc(flat, L, k, lrec, SPEC['evals_per_loop'])
-    lrec['evals_loop'] = EV['total'] - lrec['evals_start']
-    lrec['train_sec'] = time.time() - t0
-    end, s, la_b, la_c = loop_end(flat, L, k)
-    lrec['end'] = end
-    if arm == 'ite' and lrec.get('E_last_target') is not None:
-        st = lrec['steps']
-        lrec['cum_fitloss_site'] = lrec['cum_fitloss_site_through_step_K-1'] + (end['Ef_end'] - lrec['E_last_target']) / N
-        Eb = [q['_E'] for q in st] + [end['Ef_end']]
-        Et = [(q['E_t_dE_site'] + E0_SITE) * N for q in st]
-        lrec['kept_per_step'] = [(Eb[i] - Eb[i + 1]) / max(Eb[i] - Et[i], 1e-300) for i in range(len(st))]
-        lrec['energy_increase_events'] = int(sum(Eb[i + 1] > Eb[i] + 1e-12 * abs(Eb[i]) for i in range(len(st))))
-    np.save(os.path.join(OUT, f'params_it{k + 1}.npy'), np.asarray(flat))
-    L = loop_start(la_c if SPEC.get('composite') else la_b, s); del la_b, la_c
-    lrec['next_E_FN_dE_site'] = L['info']['E_FN_dE_site']
-    lrec['next'] = L['info']
-    log(f'== loop it {k + 1}: frac {end["frac"]:.4f} (+F_k hop {end["frac_hop_Fk"]:.4f}, composite {end["frac_composite"]:.4f}) '
-        f'<H>(old s) {end["H_oldsign_dE_site"]:.4e}  <H>(Krylov) {end["H_kry_dE_site"]:.4e}  <H>(composite) '
-        f'{end["H_composite_dE_site"]:.4e}  next E_FN {L["info"]["E_FN_dE_site"]:.4e}  evals {lrec["evals_loop"]:.3e}')
+if arm == 'fit_scan':                                          # inner-optimiser scan on the first target (smoke)
+    res['scan'] = []
+    for eta, lam_ in SPEC['combos']:
+        SPEC['eta'] = eta; SPEC['lam'] = lam_; rec = dict(eta=eta, lam=lam_); EV['total'] = 0.0; t0 = time.time()
+        fl = run_ite(model.flat0, L, 0, rec)
+        ftab = model.table(fl, sec.reps)
+        E_end, _, _ = ef_of_table(ftab, L['D'], L['s'])
+        rec.update(frac=(L['Eg'] - E_end) / (L['Eg'] - L['Efn']), evals=EV['total'], sec=time.time() - t0)
+        log('SCAN', {k: v for k, v in rec.items() if k != 'steps'}, rec['steps'][0]['val_hist'])
+        res['scan'].append(rec); dump(F_OUT, res)
+    SPEC['n_loop'] = 0
+L0 = L
+BASE = dict(SPEC)
+res['arms'] = []
+for sub in (BASE.get('arms') or [{}]) if BASE['arm'] in ('ite', 'vmc', 'multi') else []:
+    SPEC.clear(); SPEC.update(BASE); SPEC.pop('arms', None); SPEC.update(sub)
+    arm = SPEC['arm']; tag = SPEC.get('tag', arm)
+    log(f'==== arm {tag}: {json.dumps(sub)}')
+    ares = dict(tag=tag, spec=dict(SPEC), loops=[]); res['arms'].append(ares); res['loops'] = ares['loops']
+    flat = model.flat0; s = sP0; L = L0; EV['total'] = 0.0; ta = time.time()
+    for k in range(SPEC.get('n_loop', 3)):
+        lrec = dict(it=k + 1, start=L['info'], evals_start=EV['total'])
+        ares['loops'].append(lrec); dump(F_OUT, res)
+        t0 = time.time()
+        if arm == 'ite':
+            flat = run_ite(flat, L, k, lrec)
+        elif arm == 'vmc':
+            flat = run_vmc(flat, L, k, lrec, SPEC['evals_per_loop'])
+        lrec['evals_loop'] = EV['total'] - lrec['evals_start']
+        lrec['train_sec'] = time.time() - t0
+        end, s, la_b, la_c = loop_end(flat, L, k)
+        lrec['end'] = end
+        if arm == 'ite' and lrec.get('E_last_target') is not None:
+            st = lrec['steps']
+            lrec['cum_fitloss_site'] = lrec['cum_fitloss_site_through_step_K-1'] + (end['Ef_end'] - lrec['E_last_target']) / N
+            Eb = [q['_E'] for q in st] + [end['Ef_end']]
+            Et = [(q['E_t_dE_site'] + E0_SITE) * N for q in st]
+            lrec['kept_per_step'] = [(Eb[i] - Eb[i + 1]) / max(Eb[i] - Et[i], 1e-300) for i in range(len(st))]
+            lrec['energy_increase_events'] = int(sum(Eb[i + 1] > Eb[i] + 1e-12 * abs(Eb[i]) for i in range(len(st))))
+        np.save(os.path.join(OUT, f'params_{tag}_it{k + 1}.npy'), np.asarray(flat))
+        fr_ = end['frac_composite'] if SPEC.get('composite') else end['frac']
+        stop = arm == 'ite' and k == 0 and fr_ < SPEC.get('stop_frac', 0.10)
+        if k < SPEC.get('n_loop', 3) - 1 and not stop:
+            L = loop_start(la_c if SPEC.get('composite') else la_b, s)
+            lrec['next_E_FN_dE_site'] = L['info']['E_FN_dE_site']; lrec['next'] = L['info']
+        elif SPEC.get('composite'):
+            _, _, ic = sec.fn_solve(la_c, s); lrec['next_E_FN_dE_site'] = ic['dE_FN_site']
+        else:
+            _, _, ib = sec.fn_solve(la_b, s); lrec['next_E_FN_dE_site'] = ib['dE_FN_site']
+        del la_b, la_c
+        log(f'== {tag} loop it {k + 1}: frac {end["frac"]:.4f} (+F_k hop {end["frac_hop_Fk"]:.4f}, composite {end["frac_composite"]:.4f}) '
+            f'<H>(old s) {end["H_oldsign_dE_site"]:.4e}  <H>(Krylov) {end["H_kry_dE_site"]:.4e}  <H>(composite) '
+            f'{end["H_composite_dE_site"]:.4e}  next E_FN {lrec["next_E_FN_dE_site"]:.4e}  evals {lrec["evals_loop"]:.3e}')
+        dump(F_OUT, res)
+        if stop:
+            log('  frac < stop_frac after iteration 1: arm stops (pre-registered)'); break
+    ares['sec'] = time.time() - ta
     dump(F_OUT, res)
-    fr_ = end['frac_composite'] if SPEC.get('composite') else end['frac']
-    if arm == 'ite' and k == 0 and fr_ < SPEC.get('stop_frac', 0.10):
-        log('  frac < stop_frac after iteration 1: arm stops (pre-registered)'); break
 res['sec'] = time.time() - T00
 dump(F_OUT, res)
 log('DONE', res['sec'])

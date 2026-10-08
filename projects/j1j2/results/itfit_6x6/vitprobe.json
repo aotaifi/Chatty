@@ -1,0 +1,10 @@
+{
+ "npar": 154980,
+ "fwd_sec_per_config_B256": 8.970747391382854e-05,
+ "fwd_sec_per_config_B1024": 8.200077960888545e-05,
+ "jac_sec_per_config_B32": 0.0013415627181529999,
+ "jac_sec_per_config_B128": 0.0007305564358830452,
+ "table_sec_est": 1296.0187136841319,
+ "gn_iter_sec_est_shells": 70.07579962412517,
+ "gn_iter_sec_est_tables": 3.7404489517211914
+}

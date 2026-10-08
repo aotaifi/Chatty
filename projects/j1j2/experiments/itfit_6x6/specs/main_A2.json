@@ -1,0 +1,32 @@
+{
+ "arm": "multi",
+ "scheme": "semi",
+ "tau": 1.0,
+ "K": 2,
+ "n_in": 1500,
+ "B": 1024,
+ "Kb": 4,
+ "Bv": 4096,
+ "inner": "sng",
+ "eta": 0.3,
+ "lam": 0.001,
+ "val_every": 100,
+ "n_loop": 3,
+ "lanczos_m": 40,
+ "stop_frac": 0.1,
+ "arms": [
+  {
+   "tag": "ITE-Q-i",
+   "arm": "ite",
+   "fit": "Q",
+   "dist": "i"
+  },
+  {
+   "tag": "ITE-P-iii",
+   "arm": "ite",
+   "fit": "P",
+   "dist": "iii",
+   "B": 4096
+  }
+ ]
+}

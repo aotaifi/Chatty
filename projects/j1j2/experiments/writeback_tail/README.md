@@ -135,3 +135,23 @@ steps, plus exact evaluations at 10k and 20k steps. A phi-based validation estim
 - With K sampled bonds, the edge terms need the inputs at K neighbours, i.e. K x one-hop guide evaluations: 616 at
   6x6, 1080 at 8x8 for K = 8.
 - A full local energy needs all two-hop configurations.
+
+## Amendment 4 (2026-10-08 ~22:45, after the Step-2 smoke, before any Step-2 main result)
+- Smoke (40 steps per arm, validation only) showed:
+  - Adam at lr 3e-3 makes both VMC arms diverge within 20 steps; the frozen-F diagnostic rose 25x.
+  - minSR at eta 0.3 diverges on the SI regression; minSR at eta 0.05 drifts upward on both VMC arms.
+  - The realistic VMC energy estimate has SE ~6e-3 per site per 256-sample batch, 200x the 3e-5 gain.
+- Step sizes for the main runs, set symmetrically for FN and control arms:
+  - VMC arms: Adam lr 3e-4; minSR eta 0.01, shift 1e-3 (the itfit VMC-control setting);
+  - SI regression: Adam lr 3e-3 unchanged; minSR eta 0.05.
+- The step 2 controls are given the most favourable setting; the rule is unchanged.
+- The lead's priority: the same-model fixed-sign VMC control for the itfit realistic-feature loop. That loop is
+  `results/itfit_6x6/runs/itF.json`: 5.1k-parameter MLP on 13 frozen-base one-hop features, LM-GN on semi-implicit
+  targets, captures 0.95 / 0.80 / 0.69 per iteration. Its control is run exactly as the itfit worker pre-registered it
+  (`experiments/itfit_6x6/specs/main_F.json`, arms F-VMC-iii-e01 / -e03):
+  - same model and features, tempered samples;
+  - minSR on <H>(b, s_k), eta 0.01 / 0.03, shift 1e-3;
+  - 6.6e8 network evaluations or 20 min per loop iteration, at least the FN arm's 0.8-2.2e8, so the control gets more;
+  - 3 loop iterations with Krylov signs.
+  - Pass test: the FN loop captures >= 1.5x the control in each iteration, with >= 0.5.
+- Code unchanged (`experiments/itfit_6x6/itfit_run.py` at e8e72c2); specs `specs/itF_F-VMC-iii-e0{1,3}.json`.

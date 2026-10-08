@@ -385,6 +385,73 @@ def polish(model, flat, pol):
     return flat, trace
 
 
+# ============================================================================================ Step 2: guide-only tables
+REAL = any(a.get('real') for a in SPEC['arms'])
+if REAL:
+    # everything here is a function of the frozen guide (|psi_P|, s_P) only: no phi_FN
+    VG, WG = S.guide_features(); D0 = S.diag()
+    EA = S.E_f0                                                  # guide's frozen-FN energy (scalar; VMC in a loop)
+    TSI = jnp.log1p(jnp.maximum(WG, 0.0)) - jnp.log1p(jnp.maximum(D0 + VG - EA, 1e-12))   # semi-implicit FN step
+    _la = lP - jnp.max(lP)
+    UA = jnp.exp(_la) * sec.sqrt_n; UA = UA / jnp.linalg.norm(UA); KUA = S.Kop(UA)
+    PA = UA * UA
+    MUT = float(jnp.sum(PA * TSI))
+    def node_c_a(e):                                            # guide-metric node weight of the FN quadratic form
+        K1 = S.Kop(UA * e); out = e * e * UA * KUA - 2 * e * UA * K1; del K1
+        return 0.5 * (out + UA * S.Kop(UA * e * e))
+    CT = node_c_a(TSI - MUT)
+    qb = jnp.exp(0.5 * 2 * _la) * sec.n; qb = qb / jnp.sum(qb)
+    QR = 0.5 * qb + 0.5 * CT / jnp.sum(CT)
+    CDF_R = jnp.cumsum(QR); LIW_R = jnp.log(jnp.maximum(PA, 1e-300)) - jnp.log(jnp.maximum(QR, 1e-300))
+    DLR = -(TSI - MUT)                                          # e = f - T (+ const)
+    del qb, _la
+    ef_si = sec.fn_rayleigh(S.lg, S.sg, lP + TSI)
+    res['step2_reference'] = dict(SI_target_exact_frac=(S.E_f0 - ef_si) / (S.E_f0 - S.Efn),
+                                  SI_target_quad_frac=1 - S.Q(TSI - S.delta) / S.Qdelta,
+                                  tail_share_proposal=float(jnp.sum(jnp.where(S.bulk, 0, QR))),
+                                  ess_proposal=float(1.0 / jnp.sum(QR * (PA / QR) ** 2)))
+    log('[step2] reference (diagnostic only):', res['step2_reference'])
+
+    def make_rbatch(B, K, kind):
+        @jax.jit
+        def batch(key, cdf=None, liw=None):
+            k1, k2, k3 = jax.random.split(key, 3)
+            idx = jnp.clip(jnp.searchsorted(CDF_R, jax.random.uniform(k1, (B,), f64) * CDF_R[-1]), 0, sec.D - 1)
+            x = sec.reps[idx]
+            valid = (((x[:, None] >> BI[None, :]) ^ (x[:, None] >> BJ[None, :])) & jnp.uint64(1)).astype(bool)
+            nval = valid.sum(1)
+            sc = jnp.where(valid, jax.random.uniform(k2, valid.shape), -1.0)
+            _, bsel = jax.lax.top_k(sc, K)
+            ok = jnp.take_along_axis(valid, bsel, 1)
+            y = x[:, None] ^ MASKS[bsel]
+            iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
+            rP = jnp.exp(jnp.clip(lP[iy] - lP[idx][:, None], -60, 60))
+            sgn = sP[idx][:, None] * sP[iy]
+            wgt = jnp.where(ok, 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
+            lw = LIW_R[idx]; iw = jnp.exp(lw - jnp.max(lw))
+            if kind == 'si':
+                w = jnp.where(sgn < 0, wgt, 0.0)
+                return x, y, DLR[idx], DLR[iy], w, iw, TIDX[idx], TIDX[iy]
+            if kind == 'fn':
+                dfix = D0[idx] + VG[idx]; hv = jnp.where(sgn < 0, -wgt, 0.0)
+            else:
+                dfix = D0[idx]; hv = sgn * wgt
+            return x, y, iw, dfix, hv, TIDX[idx], TIDX[iy]
+        return batch
+
+    def vterms(model, flat, x, y, iw0, dfix, hv, tx, ty, G):
+        B_, K_ = y.shape
+        X = bits(jnp.concatenate([x, y.reshape(-1)])); T_ = jnp.concatenate([tx, ty.reshape(-1)])
+        fa = model.f_aug(flat, X, T_, jnp.concatenate([G, jnp.repeat(G, K_)])).astype(f64)
+        fx, fy = fa[:B_], fa[B_:].reshape(B_, K_)
+        EL = dfix + jnp.sum(hv * jnp.exp(jnp.clip(fy - fx[:, None], -60, 60)), 1)
+        lw = jnp.log(iw0) + 2 * fx
+        w = jnp.exp(lw - jnp.max(lw)); w = w / jnp.sum(w)
+        E = jnp.sum(w * EL)
+        ws, ELs, Es = jax.lax.stop_gradient((w, EL, E))
+        return E, 2.0 * jnp.sum(ws * (ELs - Es) * fx), ELs, ws
+
+
 # ============================================================================================ estimator check
 if SPEC.get('check', False):
     chk = []
@@ -434,6 +501,7 @@ for arm in SPEC['arms']:
     excl = HO if arm.get('withhold_test_edges') else None
     bt = make_batch(B, K, arm.get('bonds', 'uniform'), getattr(model, 'tsrc', TA), excl)
     tmask = {'tail_train': TAIL8 & ~HO, 'train': ~HO}.get(arm.get('train_mask'))
+    if arm.get('real'): prop = 'old'
     cdf, liw = make_q(prop, beta, eps, S.c_delta, bulk_only, tmask)
     flat = model.flat0; ost = None
     if opt_kind == 'adam':
@@ -574,6 +642,76 @@ for arm in SPEC['arms']:
             return losses(model, q, *bd, G=G)[0]
     else:
         raise ValueError(opt_kind)
+    if arm.get('real'):
+        rkind = arm['real']                                    # 'si' | 'fn' | 'h'
+        bt = make_rbatch(B, K, rkind)
+        eta_r = arm.get('eta', 0.05); lam_r = arm.get('lam', 1e-3); maxdf_r = arm.get('max_df', 0.01)
+
+        def fi_(q, xi, ti, gi):
+            return model.f_aug(q, xi[None], ti[None], gi[None])[0]
+        jac_ = jax.vmap(jax.grad(fi_), in_axes=(None, 0, 0, 0))
+
+        if rkind == 'si':
+            def own_loss(fl, bd, G):
+                return losses(model, fl, *bd, G=G)[1]            # guide-metric edge least squares vs T
+        else:
+            def own_loss(fl, bd, G):
+                return vterms(model, fl, *bd, G)[0] / N          # VMC energy estimate (per site, total-energy units)
+
+        if opt_kind == 'adam':
+            sched = optax.warmup_cosine_decay_schedule(0.0, arm['lr'], min(arm.get('warmup', 200), max(1, steps // 2)), steps, arm['lr'] * 0.02)
+            opt = optax.adam(sched); ost = opt.init(flat)
+
+            @jax.jit
+            def step(fl, ost, key, cdf, liw):
+                k1, k2 = jax.random.split(key)
+                bd = bt(k1); G = jax.random.randint(k2, (B,), 0, 16)
+                if rkind == 'si':
+                    l, g = jax.value_and_grad(lambda q: losses(model, q, *bd, G=G)[1])(fl)
+                else:
+                    l, g = jax.value_and_grad(lambda q: vterms(model, q, *bd, G)[1])(fl)
+                upd, ost = opt.update(g, ost, fl)
+                return optax.apply_updates(fl, upd), ost, l, l
+        else:                                                   # minSR (sample space)
+            @jax.jit
+            def step(fl, ost, key, cdf, liw):
+                k1, k2 = jax.random.split(key)
+                bd = bt(k1); G = jax.random.randint(k2, (B,), 0, 16)
+                if rkind == 'si':
+                    x, y, dlx, dly, w, iw, tx, ty = bd
+                    Xa = bits(jnp.concatenate([x, y.reshape(-1)])); Ta = jnp.concatenate([tx, ty.reshape(-1)])
+                    GG = jnp.concatenate([G, jnp.repeat(G, K)])
+                    Ga = jac_(fl, Xa, Ta, GG)                        # (B(1+K), P)
+                    fa = model.f_aug(fl, Xa, Ta, GG).astype(f64)
+                    fx, fy = fa[:B], fa[B:].reshape(B, K)
+                    c = jnp.sqrt(iw[:, None] / jnp.sum(iw) * w)
+                    r = (c * ((fx + dlx)[:, None] - (fy + dly))).reshape(-1)
+                    Jm = (c.astype(jnp.float32)[:, :, None] * (Ga[:B][:, None, :] - Ga[B:].reshape(B, K, -1))).reshape(B * K, -1)
+                    Tm = (Jm @ Jm.T).astype(f64)
+                    alpha = jnp.linalg.solve(Tm + (lam_r * jnp.trace(Tm) / (B * K) + 1e-30) * jnp.eye(B * K), r)
+                    d = Jm.T @ alpha.astype(jnp.float32)
+                    dfr = jnp.sqrt(jnp.mean((Ga[:B] @ d) ** 2)) * eta_r
+                    l = 0.5 * jnp.sum(r * r)
+                else:
+                    x, y, iw0, dfix, hv, tx, ty = bd
+                    E, _, EL, rho = vterms(model, fl, *bd, G)
+                    eps_ = jnp.sqrt(rho) * (EL - E)
+                    O = jac_(fl, bits(x), tx, G)
+                    r32 = rho.astype(jnp.float32)
+                    Y = jnp.sqrt(r32)[:, None] * (O - (r32 @ O)[None, :])
+                    Tm = (Y @ Y.T).astype(f64)
+                    alpha = jnp.linalg.solve(Tm + (lam_r * jnp.trace(Tm) / B + 1e-30) * jnp.eye(B), eps_)
+                    d = Y.T @ alpha.astype(jnp.float32)
+                    dfr = jnp.sqrt(jnp.mean((O @ d) ** 2)) * eta_r
+                    l = E / N
+                sc = jnp.minimum(1.0, maxdf_r / (dfr + 1e-30))
+                return fl - eta_r * sc * d, ost, l, l
+        own_keys = [jax.random.PRNGKey(123_000 + i) for i in range(arm.get('own_val_n', 32))]
+        own_fn = jax.jit(lambda fl, key: own_loss(fl, bt(jax.random.split(key)[0]), jax.random.randint(jax.random.split(key)[1], (B,), 0, 16)))
+
+        def own_val(fl):
+            vals = np.array([float(own_fn(fl, kk)) for kk in own_keys])
+            return float(vals.mean()), float(vals.std() / np.sqrt(len(vals)))
     max_sec = arm.get('max_sec')
 
     # common validation for every arm: static tail mixture, weighted bonds, exact frozen-FN identity (LE)
@@ -588,6 +726,7 @@ for arm in SPEC['arms']:
         f'use_a {arm.get("use_a", False)} bulk_only {bulk_only} npar {model.npar} B {B} K {K} steps {steps}')
     v = val(flat)
     acc = [dict(step=0, val_LE=float(v[0]), val_LQ=float(v[1]), sec=0.0)]
+    if arm.get('real'): acc[-1]['own_val'], acc[-1]['own_se'] = own_val(flat)
     log('  val', acc[-1])
     best = (v[0], flat, 0); hist = []
     key = jax.random.PRNGKey(1000 + arm.get('seed', 0))
@@ -638,8 +777,9 @@ for arm in SPEC['arms']:
             v = val(flat)
             acc.append(dict(step=it, val_LE=float(v[0]), val_LQ=float(v[1]), sec=time.time() - t0))
             if opt_kind in ('gn', 'gnacc'): acc[-1].update(lam=lam_gn, n_acc=n_acc)
+            if arm.get('real'): acc[-1]['own_val'], acc[-1]['own_se'] = own_val(flat)
             log('  val', acc[-1])
-            if v[0] < best[0]: best = (v[0], flat, it)
+            if v[0] < best[0] and not arm.get('real'): best = (v[0], flat, it)   # real arms: no selection
             if not np.isfinite(v[0]): log('  non-finite validation, stopping arm'); break
             if max_sec and time.time() - t0 > max_sec:
                 log('  time limit for arm reached'); break
@@ -647,11 +787,12 @@ for arm in SPEC['arms']:
             ev = exact_eval(model, flat); ev.update(step=it, sec=time.time() - t0)
             hist.append(ev); log('  exact', ev)
     t_train = time.time() - t0
+    if arm.get('real'): best = (None, flat, it)                 # Step 2: final parameters, phi never used to select
     np.save(os.path.join(OUT, f'params_{tag}_last.npy'), np.asarray(flat))
     np.save(os.path.join(OUT, f'params_{tag}_best.npy'), np.asarray(best[1]))
     if not arm.get('final', True):                            # smoke / hyper-parameter scan: validation only
         res['arms'].append(dict(tag=tag, arm=arm, val=acc, best_step=best[2], train_sec=t_train)); dump(F, res)
-        log(f'== done {tag} (no exact eval) best val_LE {best[0]:.6e} at {best[2]}')
+        log(f'== done {tag} (no exact eval) best val_LE {best[0]} at {best[2]}')
         continue
     fnf = bool(arm.get('polish'))
     if arm.get('eval_best_only') and best[2] != it:

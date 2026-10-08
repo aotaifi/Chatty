@@ -1,0 +1,36 @@
+{
+ "arm": "multi",
+ "model": "feat",
+ "hid": 64,
+ "depth": 2,
+ "scheme": "semi",
+ "tau": 1.0,
+ "K": 2,
+ "n_in": 200,
+ "B": 2048,
+ "Kb": 4,
+ "Bv": 4096,
+ "inner": "lm",
+ "lam": 0.01,
+ "eta": 1.0,
+ "max_rej": 4,
+ "plateau_window": 40,
+ "plateau_tol": 0.001,
+ "n_loop": 3,
+ "lanczos_m": 20,
+ "stop_frac": 0.1,
+ "refresh": 250,
+ "arms": [
+  {
+   "tag": "F-VMC-iii-e01",
+   "arm": "vmc",
+   "dist": "iii",
+   "B": 1024,
+   "eta": 0.01,
+   "lam": 0.001,
+   "evals_per_loop": 659456000,
+   "max_sec": 1200
+  }
+ ],
+ "zclip": 1000000000.0
+}

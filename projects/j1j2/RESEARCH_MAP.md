@@ -68,6 +68,10 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Net + one exact semi-implicit hop recovers 82% of iteration 1 (<H> 1.32e-4 -> 8.9e-5, E_FN 1.02e-4 -> 7.10e-5), then stalls (the stored net cannot carry later changes).
 - Next: give the network one-hop inputs from the frozen base (f = g(x, log a_P, W_P, V_P)): same 'net + one hop' cost as the signs, no recursion. Exact pre-test (>= 50% per iteration) approved and running.
 
+## 3h. Learnability of the tail correction (results/writeback_tail/, wtKA1a vs wtKB, 2026-10-08) — POSITIVE
+- 20% of orbits held out with all their edges removed: held-out tail capture 20.7% = training tail 20.9%; shuffled-target control 0.4%. The tail correction is STRUCTURED and the net GENERALISES; no memorisation gap.
+- Limit = representation precision (~a quarter of each weight decade, falling with depth), not generalisation, not noise. Next: one-hop guide inputs (wtKA2, running) and the tail expert (wtEXP, running); itfit predicts the inputs W, V, H_xx are what is missing.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

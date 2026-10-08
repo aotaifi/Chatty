@@ -18,6 +18,7 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 - Concise: lead with the result; 3-line answers by default; full detail only when asked or when it is pedagogically needed.
 - Figures presentable on the first try (few curves, points + thin lines, panel letters, log10-exponent axes, no overlaps); at most two plots when asked for a quick look.
 - Explain plainly when asked; avoid jargon or define it.
+- Never wave a risk through as "one catch" or "works with a minor edit". State each risk rigorously: what could break, how large it is (measured, not guessed), how it is monitored, and the test that settles it, written down before the run.
 
 ## Operations
 - Work in the git worktree ~/Chatty-organize (branch j1j2-organize); never edit ~/Chatty directly (another agent's uncommitted state). Commit, `git fetch && git merge --ff-only origin/main`, `git push origin HEAD:main`, `git -C ~/Chatty merge --ff-only origin/main`. Always push. No files > 5 MB in git.

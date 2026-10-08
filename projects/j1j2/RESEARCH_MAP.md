@@ -57,6 +57,11 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Best remaining route: strong (symmetrised) NQS + Lanczos step(s) + calibrated FN at 8x8+ (3d), pending referee calibration.
 - 2026-10-08 REOPENED (PI + Research Workspace seq100): the loop's novel part is the alternating construction (Krylov sign -> flatten composite sign -> FN amplitude refinement, calibrated referee); NQS+Lanczos and NQS+FN alone are known (Chen et al. NeurIPS 2022; Wang/He/Lu PRB 113, 085120 (2026); NQS->FN-GFMC on Hubbard/t-J). Write-back failed with |psi|^2-type sampling; new test samples the ENERGY METRIC (tail proposal ~ violating/kept-edge weight) and fits edge differences with FN Laplacian weights. Reopen rule: >= 50% of one FN iteration on oracle data (results/writeback_tail/).
 
+## 3f. Tail concentration vs N (results/tail_vs_N/, 2026-10-08)
+- For loop guides the weight fraction carrying half the FN gain is flat in N (12-20%, 16..36 sites); it is NOT a size trend. But the number of configurations to be corrected explodes (82 orbits at 16 -> 1.6e7 orbits at 36), so the 4x4 sampled success was memorisation of the whole support; at 6x6+ the tail must be learned by generalisation.
+- The better the guide, the more tail-heavy the gain (k=1,3,8 at 36: 19.9 -> 11.6 -> 7.1%; the symmetrised ViT 1.0% carries 50%). Write-back is hardest near convergence, easiest from mediocre guides.
+- Decisive next: the learnability test (held-out tail orbits vs shuffled-target control), running in writeback_tail.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

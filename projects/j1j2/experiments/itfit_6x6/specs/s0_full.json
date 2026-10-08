@@ -1,0 +1,8 @@
+{"lanczos_m": 100, "stop": 0.99, "split_taus": [0.3, 1.0],
+ "one_step_explicit": [1e-4, 1e-3, 3e-3, 1e-2, 3e-2, 0.1],
+ "one_step_semi": [0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 100.0, 1e4],
+ "plan": [["semi", 0.03, 100], ["semi", 0.1, 100], ["semi", 0.3, 100], ["semi", 1.0, 100], ["semi", 3.0, 100],
+          ["semi", 10.0, 100], ["semi", 100.0, 100],
+          ["implicit", 0.01, 80], ["implicit", 0.03, 40], ["implicit", 0.3, 15], ["implicit", 3.0, 15],
+          ["opt_explicit", null, 200], ["krylov2", null, 80],
+          ["explicit_stab", null, 1000], ["explicit_pos", null, 300]]}

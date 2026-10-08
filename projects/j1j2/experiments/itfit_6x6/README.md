@@ -125,3 +125,37 @@ lambda_max(F_k), wall summary, frac_k, <H>(a_{k+1}, s_k), <H> and E_FN with the 
 - Budget <= 15 GPU-h (full A40 or RTX 2080 Ti; no V100 / A40 slices), full fp32 networks, float64 exact algebra.
   Planned: Stage 0 <= 1.5, smoke <= 1.5, Stage 1 <= 10, reserve 2.
 - Any change of K, tau, n_in, B or eta after Stage 0 / smoke is recorded as an amendment BEFORE the Stage 1 results.
+
+## Amendment 1 (2026-10-08 12:40, after Stage 0, before any Stage 1 training result)
+**Stage 0 result (exact, `results/itfit_6x6/itfit_exact.json`, job 16902333, 2080 Ti 24 min):**
+- lambda_max(F_0) = **1.61e6** (Lanczos converged by m = 10; = max D, Gershgorin 1.61e6); the H bandwidth is ~35.
+  The largest wall sits on a configuration with phi^2 = 3e-25. tau_stab = 2/(lambda_max - E_FN) = **1.24e-6**;
+  the positivity limit of the explicit target tau_pos = 1.8e-6 is above tau_stab (explicit at tau_pos diverges).
+- Wall W(x) (phi^2-weighted mean 3.0): 93.5% of the phi^2 mass has W > 1, 1.4% has W > 10 and carries 35% of the
+  ideal gain; W > 100 holds 2e-5 of the mass and 0.8% of the gain. The gain sits on walls 1-100; the stiffness is set
+  by walls ~1e6 that carry nothing.
+- Exact steps (captured fraction of G_0 after n steps; n90):
+  explicit at 0.9 tau_stab: 5.6e-5 per step, 4.7% after 1000 steps, n90 ~ 5e4 (extrapolated; the ITE time to 90%
+  from the implicit tau = 0.01 run is beta ~ 0.09, i.e. ~8e4 explicit steps);
+  optimal explicit (Euler with exact line search = 1-hop Rayleigh-Ritz, the Ledinauskas-Anisimovas adaptive dt):
+  23% / 25% / 33% after 1 / 3 / 200 steps (n90 ~ 9e3); Krylov 2-hop RR: 24% / 36% after 1 / 80 restarts;
+  **semi-implicit (diagonal-implicit) Euler: one step 51% (tau 0.03), 73% (0.1), 83% (0.3), 87% (1), 88% (>= 10);
+  two steps 91-97% for tau >= 0.1 (n90 = 2), 99% in 3-5 steps, no energy-increase event**;
+  implicit Euler (global CG solve, 35-47 matvecs per step): tau = 0.3 97% in one step; tau = 0.01: n90 = 9.
+- Unprojected loop with K exact semi-implicit steps per iteration (`itfit_exactloop.json`): tau = 1, K = 2:
+  E_FN of the guides 1.02e-4 -> 6.80e-5 -> 5.13e-5 -> 4.05e-5 (ideal loop 6.52e-5 / 4.87e-5 / 3.81e-5),
+  <H> with the Krylov sign 8.32e-5 / 6.01e-5 / 4.64e-5 (ideal 7.84e-5 / 5.58e-5 / 4.30e-5), frac 0.97 / 0.96 / 0.96.
+**Stiffness decision (pre-registered rule): KEEP.** The explicit step is killed by the wall (n90 ~ 5e4-8e4 >> 15);
+the local semi-implicit step reaches 90% in 2 steps. Stage 1 uses the semi-implicit target with **K = n90 = 2**.
+Tie-break among the tau with n90 = 2 (not specified before; fixed now, before any Stage 1 result): the smallest tau
+whose two-step fraction is within 0.01 of the best (0.975 at tau = 100): **tau = 1** (0.970). It avoids the pure
+Jacobi limit (tau -> infinity), whose bipartite -1 mode is undamped.
+
+**Optimiser detail (fixed after the smoke runs, which had no usable fit result):** the residual net's zero-initialised
+head makes every Jacobian column except the 33 head columns vanish, so a validated GN step can never leave the
+head-only subspace (all steps were rejected in the first smoke). Changes: head initialised with std 1e-4 (f ~ 1e-4,
+exact start energies are measured and reported), Levenberg-Marquardt with Marquardt column scaling (Jacobian columns
+normalised to unit rms) and up to 4 re-solves with x4 damping on the same batch before a step is rejected; lam starts
+at 1 (relative to tr(JJ^T)/R). With P = 28k parameters > R rows the undamped GN step interpolates the batch and does
+not generalise (synthetic check), so the damping is set by the validation batch. The VMC control keeps standard minSR
+(no column scaling) with eta from the scan, as pre-registered.

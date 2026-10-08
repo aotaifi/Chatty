@@ -62,6 +62,12 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - The better the guide, the more tail-heavy the gain (k=1,3,8 at 36: 19.9 -> 11.6 -> 7.1%; the symmetrised ViT 1.0% carries 50%). Write-back is hardest near convergence, easiest from mediocre guides.
 - Decisive next: the learnability test (held-out tail orbits vs shuffled-target control), running in writeback_tail.
 
+## 3g. Imaginary-time fitting with H_FN (results/itfit_6x6/, 2026-10-08) — INCONCLUSIVE, cause identified
+- Stiffness SOLVED: lambda_max(F) = 1.6e6; explicit steps hopeless, but a semi-implicit step (wall implicit, kept hops explicit; local, positive) captures 87% of an FN iteration in one step, 97% in two; the unprojected loop with it tracks the ideal loop within 5%.
+- Fitting a zero-hop residual CNN: <= 3.7% (oracle 8.3%), not converged. Cause: the FN target is an explicit function of ONE-HOP quantities of the guide (kept weight W, wall V, H_xx); a zero-hop net cannot represent it.
+- Net + one exact semi-implicit hop recovers 82% of iteration 1 (<H> 1.32e-4 -> 8.9e-5, E_FN 1.02e-4 -> 7.10e-5), then stalls (the stored net cannot carry later changes).
+- Next: give the network one-hop inputs from the frozen base (f = g(x, log a_P, W_P, V_P)): same 'net + one hop' cost as the signs, no recursion. Exact pre-test (>= 50% per iteration) approved and running.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

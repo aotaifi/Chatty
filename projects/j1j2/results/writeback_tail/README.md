@@ -277,6 +277,45 @@ start by backfill; expected starts 20:45-05:40):
 | wtKGN 16976430 | global Gauss-Newton: one fixed pool of 16 x 4096 x 8 edges, 30 CG steps, damping accepted/rejected on the exact frozen-F identity on independent batches |
 Specs: `experiments/writeback_tail/specs/{cap_C48,cap_C96,expert,consult_A,consult_B,consult_GN}.json`.
 
+## 6b. Step 2: realistic data (pre-registered in amendments 3-4; no phi_FN in training, proposal, loss or selection)
+FEAT net (28k CNN + inputs log a, V, W of the frozen guide; 37k parameters), b = |psi_P| exp(f).
+- Samples: guide-only tail proposal, B = 256 configurations x 8 bonds, 20k steps.
+- Target of the regression arms: the semi-implicit FN step T = log(1 + W) - log(1 + (H_xx + V - E_a)), guide only.
+  As an exact, unprojected step it captures 86.6% of one FN iteration.
+- Exact evaluation at the final parameters (no selection); 10k-step evaluation as convergence evidence.
+- Runs: `runs/wtS2a_17089200.json` (Adam), `runs/wtS2s_17089201.json` (minSR).
+
+| arm | objective | optimizer | exact frac (10k / **20k**) | quadratic | <H>(b, s_P) | held-out / training tail orbits |
+|---|---|---|---|---|---|---|
+| **F-SI-Adam** | FN target: edge least squares vs T | Adam 3e-3 | 51.5% / **73.4%** | 73.7% | **1.032e-4** | 75.4% / 75.4% |
+| F-SI-SR | same | minSR eta 0.05 | -1588% / -1544% | -25044% | 5.9e-4 | 80.9% / 85.7% |
+| F-VMC-Adam | FN target: frozen-FN VMC energy | Adam 3e-4 | -29.9% / -15.1% | -15.0% | 1.361e-4 | -1.2% / -1.3% |
+| F-VMC-SR | same | minSR eta 0.01 | diverged (-1073%) | | 4.1e-4 | |
+| C-VMC-Adam | control: fixed-sign <H> VMC | Adam 3e-4 | -45.1% / -15.2% | -14.7% | 1.360e-4 | -1.6% / -1.6% |
+| C-VMC-SR | control | minSR eta 0.01 | diverged | | 0.24 | |
+| start (psi_P) / exact FN step | | | 0 / 100% | | 1.319e-4 / 0.841e-4 | |
+
+Per decade, F-SI-Adam keeps 62-79% of every tail decade between 1e-8 and 1e-14 (39% at 1e-7).
+
+**Verdict by the pre-registered rule: PASS.**
+- The best FN arm (F-SI-Adam) reaches 73.4% >= 0.5.
+- The best control loses energy (-15.2%), so the FN arm is above 1.5x the control. The 15% loss is the same for both
+  VMC arms (F-VMC and C-VMC, -15%) and sits in the decades phi^2 >= 1e-8.
+- itfit's same-model control fails the same way (`runs/itFV0{1,3}_*.json`). This is the 5.1k MLP on frozen-base
+  features with minSR on <H>(b, s_k), at 6.6e8 evaluations per loop iteration, more than the FN loop's 0.8-2.2e8.
+  At eta 0.01 it reached <H> 3.2e-4 after 250 steps, then stuck at 0.32; at eta 0.03 it stuck at 0.70. It captures
+  < 0 in every iteration, against 0.95 / 0.80 / 0.69 for the FN loop.
+  - So the 1.5x condition also holds for the itfit loop.
+- Why the controls lose: a realistic VMC energy estimate scatters by 6e-3 per site per 256 samples, 200x the 3e-5
+  gain of one FN iteration. Every VMC gradient step is noise at this level, whereas the semi-implicit FN step gives a
+  zero-variance, per-configuration target from one hop of the guide.
+- Caveat: a VMC control at smaller step size would sit near zero rather than below; that still satisfies 1.5x.
+  Smaller-step controls (lr 1e-4, 3e-5) are running (wtS2c).
+- minSR is not usable here at these settings. On the regression it fits the sampled configurations almost exactly
+  (own loss 1.5e-5 -> 1e-8) and keeps 75-90% in the tail decades, but destroys the bulk (exact frac -15). On the VMC
+  objectives it diverges. Adam is the working optimizer; its own-loss curve fell 1.5e-5 -> 2.4e-6 with a transient
+  spike at 4-8k steps, and the exact capture rose 51% -> 73% from 10k to 20k (not saturated).
+
 ## 7. Next step
 1. **Step 2 of the pre-registration with the FEAT net.**
    - Realistic data: samples from the tail proposal built from guide quantities only; local edge terms from the

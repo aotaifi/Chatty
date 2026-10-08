@@ -1,0 +1,45 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "feats": true,
+   "C": 32,
+   "layers": 4,
+   "B": 256,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "eval_every": 10000,
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "quad",
+   "real": "h",
+   "opt": "adam",
+   "lr": 0.0001,
+   "tag": "C-VMC-Adam-lr1e-4"
+  },
+  {
+   "feats": true,
+   "C": 32,
+   "layers": 4,
+   "B": 256,
+   "K": 8,
+   "beta": 0.5,
+   "eps": 0.5,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "eval_every": 10000,
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "quad",
+   "real": "h",
+   "opt": "adam",
+   "lr": 3e-05,
+   "tag": "C-VMC-Adam-lr3e-5"
+  }
+ ]
+}

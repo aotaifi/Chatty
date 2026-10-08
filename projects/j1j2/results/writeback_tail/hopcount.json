@@ -1,0 +1,65 @@
+[
+ {
+  "L": 6,
+  "kind": "4",
+  "n": 60,
+  "one_hop_mean": 77.0,
+  "two_hop_mean": 2833.016666666667
+ },
+ {
+  "L": 6,
+  "kind": "12",
+  "n": 60,
+  "one_hop_mean": 77.9,
+  "two_hop_mean": 2877.4666666666667
+ },
+ {
+  "L": 6,
+  "kind": "random",
+  "n": 60,
+  "one_hop_mean": 72.96666666666667,
+  "two_hop_mean": 2555.9666666666667
+ },
+ {
+  "L": 8,
+  "kind": "4",
+  "n": 60,
+  "one_hop_mean": 133.73333333333332,
+  "two_hop_mean": 8748.2
+ },
+ {
+  "L": 8,
+  "kind": "12",
+  "n": 60,
+  "one_hop_mean": 137.06666666666666,
+  "two_hop_mean": 9149.0
+ },
+ {
+  "L": 8,
+  "kind": "random",
+  "n": 60,
+  "one_hop_mean": 129.43333333333334,
+  "two_hop_mean": 8182.9
+ },
+ {
+  "L": 10,
+  "kind": "4",
+  "n": 20,
+  "one_hop_mean": 206.9,
+  "two_hop_mean": 21123.4
+ },
+ {
+  "L": 10,
+  "kind": "12",
+  "n": 20,
+  "one_hop_mean": 214.4,
+  "two_hop_mean": 22608.0
+ },
+ {
+  "L": 10,
+  "kind": "random",
+  "n": 20,
+  "one_hop_mean": 204.6,
+  "two_hop_mean": 20598.3
+ }
+]

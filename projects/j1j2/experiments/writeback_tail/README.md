@@ -89,3 +89,49 @@ Bases / architectures:
 - Budget raised to 15 GPU-h. The 50% reopen rule is unchanged and applies to every arm.
 - Hyper-parameters chosen on short smoke scans (validation only): minSR eta 0.05, shift 1e-4 tr/B, step cap 0.01 rms;
   ViT minSR eta 0.002, cap 0.001; GN batch 8192 x 8 edges, 20 CG steps, 25 min wall-clock per arm.
+
+## Amendment 3: Step 2 pre-registration (2026-10-08 ~22:30, before any Step-2 run)
+Trigger: Step 1 passed with guide-neighbourhood inputs (FEAT-TA-R28: 88.7% exact, held-out tail 89.7%; job wtKA2).
+Lead GO; merged with the itfit one-hop-feature route (its semi-implicit FN step is used as the realistic FN target).
+
+**Realistic data, no phi_FN anywhere in training, proposal, loss, validation or model selection.**
+- Net: FEAT (28k residual CNN + inputs log a, V, W of the frozen guide; 37k parameters), b = |psi_P| exp(f).
+- Guide-only quantities (exact tables here; in a real loop these are guide evaluations on the one-hop neighbourhood):
+  V, W, H_xx, the FN diagonal D = H_xx + V, the guide's frozen-FN energy E_a (a scalar, exact here, a VMC estimate in a
+  loop), the semi-implicit FN step T(x) = log(1 + W) - log(1 + (D - E_a)) (itfit, tau = 1; 87% of one FN iteration as
+  an exact unprojected step).
+- Proposal (static, guide-only): q = 1/2 a^(2 beta) + 1/2 node weight of the guide-metric quadratic form of T,
+  c_a(x) = 1/2 sum_{y kept} |H_xy| a_x a_y (T_x - T_y)^2, beta = 0.5; exact sampling from this table (stands in for
+  MCMC); self-normalised weights b^2/q (VMC arms) or a^2/q (regression arms).
+- Samples: B = 256 configurations per step, 20k steps, for every arm; K = 8 sampled valid bonds per configuration
+  (weight nvalid/K) for every local term, so all arms use the same samples and the same network evaluations per step.
+
+**Arms** (Adam: lr 3e-3 warm-up + cosine; minSR: sample-space natural gradient, shift 1e-3 tr/n, step cap):
+- FN target, regression: **F-SI-Adam**, **F-SI-SR**. Edge-difference least squares of f + log a against T in the
+  guide metric (weights |H_xy| a_y/a_x on kept bonds). minSR form for least squares (sample space over edges).
+- FN target, energy: **F-VMC-Adam**, **F-VMC-SR**. Frozen-FN energy E_f[b] by VMC: local energy
+  E_L(x) = D(x) - sum_{kept} |H_xy| b_y/b_x from the sampled bonds.
+- Control: **C-VMC-Adam**, **C-VMC-SR**. Fixed-sign <H>(b, s_P) by VMC with the same inputs, samples and bonds.
+
+**Metrics (exact, final parameters; no selection):** frac = exact frozen-FN gain captured (as in Step 1);
+<H>(b, s_P). Convergence evidence: each arm's own realistic objective on fixed validation batches every 1000
+steps, plus exact evaluations at 10k and 20k steps. A phi-based validation estimate is logged as a diagnostic only.
+
+**Rule (lead, pre-registered):**
+- PASS if the best FN arm reaches frac >= 0.5 **and** >= 1.5x the frac of the best control arm (same metric).
+- If PASS: three-iteration loop with the FEAT net (guide_k -> features, T, proposal -> fit -> exact table -> Krylov
+  sign), exact <H> and E_FN per iteration vs RBM+PP (4.5e-5) and the ideal loop (4.30e-5 after 3 iterations).
+- Otherwise: report which part fails (target, estimator noise, optimizer) and stop.
+
+**Cost (counted, `wt_hopcount.py`, `results/writeback_tail/hopcount.json`):**
+
+| lattice | distinct one-hop configurations | distinct two-hop configurations |
+|---|---|---|
+| 6x6 | 77 | ~2.8e3 |
+| 8x8 | 135 | ~8.9e3 |
+| 10x10 | 210 | ~2.2e4 |
+
+- One hop is what V, W and T at a sampled x need.
+- With K sampled bonds, the edge terms need the inputs at K neighbours, i.e. K x one-hop guide evaluations: 616 at
+  6x6, 1080 at 8x8 for K = 8.
+- A full local energy needs all two-hop configurations.

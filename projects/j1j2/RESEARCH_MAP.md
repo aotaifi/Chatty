@@ -66,6 +66,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 
 ## 5. Parked ideas (not dropped)
 - Tail-steered FN walkers (importance function flatter than the guide, e.g. a^beta or a mixture, reweighted): needed at 8x8+ for tail data; queued AFTER the 6x6 oracle tests show the tail is learnable (>= 50%). Risk: weight fluctuations grow with N (ESS 5% at beta=1/2 on 6x6) -> use a mixture importance function.
+  Recipe (Chatty, seq102): freeze F = H_FN[a,s] INCLUDING the violating-edge diagonal sum_bad K_xy a(y)/a(x); introduce a separate positive importance g only for kept-edge rates -F_xy g(y)/g(x) and E_loc^g = F_xx + sum_kept F_xy g(y)/g(x) (branching, adaptive tau). Never put g into the bad-edge diagonal (it changes the FN Hamiltonian). Walkers then sample g*phi_FN; old a*phi_FN samples cannot be reweighted into missing tail support. First test on an exact 4x4 frozen operator vs ED (energies, tail histograms, ESS/diversity), then 8x8. Current K1FNEngine does not support it.
 - Walker-histogram / MLE amplitude fitting (no zero-variance property; ledger).
 - 8x8 sign machinery alone (cheap; useful for the add-on pitch).
 - Separate paper repo for Overleaf; paper rewrite after the angles settle.

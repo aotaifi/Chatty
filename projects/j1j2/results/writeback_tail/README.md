@@ -61,6 +61,7 @@ Loss "edge" = FN-Laplacian least squares of edge differences; "identity" = exact
 | TX-R28 | Adam | CNN 28k | tail | identity | 11.5% | 13.8% | 1.277e-4 |
 | TAX-R28 | Adam | CNN 28k | adaptive tail | identity | 20.9% | 21.8% | 1.241e-4 |
 | O-R111 | Adam | CNN 111k | old | identity | 15.2% | 17.4% | 1.264e-4 |
+| TA-R63 (follow-up) | Adam | CNN 63k | adaptive tail | edge | 22.8% | 28.1% | 1.232e-4 |
 | **TA-R111** | Adam | CNN 111k | adaptive tail | edge | **30.8%** | 35.0% | **1.199e-4** |
 | O-R28a | Adam | CNN 28k + log a input | old | identity | 19.4% | 19.8% | 1.247e-4 |
 | T-R28a | Adam | CNN 28k + log a input | tail | edge | 21.9% | 27.2% | 1.233e-4 |
@@ -125,6 +126,7 @@ Per-decade capture (quadratic form, node split of Q), share of each decade's gai
 | captured fraction (TA-R28, adaptive tail, 28k) | 31% | 29% | 29% | 27% | 23% | 18% | 13% |
 | captured fraction (O-R28, old distribution, 28k) | 24% | 22% | 21% | 20% | 18% | 15% | 11% |
 | captured fraction (O-R111, old distribution, 111k) | 24% | 21% | 20% | 17% | 15% | 12% | 9% |
+| captured fraction (TA-R63, adaptive tail, 63k) | 34% | 31% | 32% | 30% | 25% | 20% | 14% |
 
 - No decade is represented: even in the bulk decades the best net keeps ~40%, and the capture falls with depth to 20-27%
   below 1e-12, where a third of the gain sits. The residual stays configuration-rough (rms error 0.0063 vs rms
@@ -164,6 +166,17 @@ capture was +8% (its per-decade split loses below 1e-14 and above 1e-7, both rar
 to the exact value is beyond second order: large changes of f on few configurations. The ViT update damaged
 configurations the validation never saw (an estimator blind spot, not a
 shift/step-size divergence: the step was capped at 0.001 rms of f and the shift was 1e-4 tr/B).
+
+Global Gauss-Newton (consultation item 4; job wtKGN 16976430): one fixed pool of 16 x 4096 configurations x 8 edges
+(524k residuals, 18x the 28k parameters), 30 CG steps per outer iteration, damping accepted only if the exact-identity
+frozen-F estimate falls on 16 independent batches. 8 steps accepted in 20 min, then every step rejected while the
+damping rose 1000x; validation estimate 0.33% of the gain (no exact evaluation: the job stopped on an exact CG
+convergence, rs = 0, in the 16th outer step). With curvature accumulated globally and damping validated on the true
+objective, the energy-metric GN direction of this net still does not generalise beyond the pool.
+
+Capacity with the adaptive tail proposal (Adam, 20k steps, exact frac): 28k 20.4%, **63k 22.8%**, 111k 30.8%
+(old proposal: 28k 17.9%, 111k 15.2%). The 63k net puts |f| > 0.1 on 32% of the orbits and up to |f| = 2 in the deep
+tail (max |f| 0.07 above phi^2 = 1e-8, 0.32 above 1e-10, 0.55 above 1e-12).
 
 Capacity: a 445k residual CNN (C128) at the 28k/111k learning rate (3e-3) had not started learning after 7000 steps
 (validation frozen-F above the start; the 111k net was at 12% by then). Stopped after 1.4 A40-h; replaced by a 250k net

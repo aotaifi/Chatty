@@ -437,7 +437,7 @@ for arm in SPEC['arms']:
     cdf, liw = make_q(prop, beta, eps, S.c_delta, bulk_only, tmask)
     flat = model.flat0; ost = None
     if opt_kind == 'adam':
-        sched = optax.warmup_cosine_decay_schedule(0.0, arm['lr'], arm.get('warmup', 200), steps, arm['lr'] * 0.02)
+        sched = optax.warmup_cosine_decay_schedule(0.0, arm['lr'], min(arm.get('warmup', 200), max(1, steps // 2)), steps, arm['lr'] * 0.02)
         opt = optax.adam(sched)
         ost = opt.init(flat)
 

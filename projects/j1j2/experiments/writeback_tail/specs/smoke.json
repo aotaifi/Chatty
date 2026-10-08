@@ -1,0 +1,5 @@
+{"check": true, "arms": [
+ {"tag": "s-old", "prop": "old", "bonds": "uniform", "loss": "energy", "C": 32, "layers": 4, "lr": 3e-3, "steps": 300, "val_every": 100, "eval_every": 150},
+ {"tag": "s-amix-a", "prop": "amix", "bonds": "weighted", "loss": "quad", "C": 32, "layers": 4, "use_a": true, "lr": 3e-3, "steps": 300, "val_every": 100, "refresh": 100},
+ {"tag": "s-bulk", "prop": "mix", "bonds": "weighted", "loss": "quad", "bulk_only": true, "C": 32, "layers": 4, "lr": 3e-3, "steps": 200, "val_every": 100}
+]}

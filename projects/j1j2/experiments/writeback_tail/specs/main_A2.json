@@ -1,0 +1,38 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "TX-R28",
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "energy"
+  },
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "TAX-R28",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "energy",
+   "refresh": 1000
+  }
+ ]
+}

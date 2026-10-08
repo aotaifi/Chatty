@@ -1,0 +1,40 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 64,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "O-R111",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "energy",
+   "max_sec": 4200
+  },
+  {
+   "C": 64,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "TA-R111",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "refresh": 1000,
+   "max_sec": 4200
+  }
+ ]
+}

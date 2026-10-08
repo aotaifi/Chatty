@@ -1,0 +1,54 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "O-R28",
+   "prop": "old",
+   "bonds": "uniform",
+   "loss": "energy"
+  },
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "T-R28",
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "quad"
+  },
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "TA-R28",
+   "prop": "amix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "refresh": 1000
+  }
+ ]
+}

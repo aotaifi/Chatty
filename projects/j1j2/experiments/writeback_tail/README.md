@@ -63,3 +63,18 @@ Bases / architectures:
   bottleneck (> 1.5x would support the hypothesis even if the 50% bar is missed); the bulk-restricted bound says
   whether capturing the gain requires the tail at all.
 - Budget: <= 10 GPU-h (RTX 2080 Ti or full A40; no V100 / A40 slices). Full fp32 networks, float64 exact algebra.
+
+## Amendment 1 (2026-10-08 10:35, after the smoke run and the exact projections, before any main training result)
+- **Correction of a parenthetical.** The bulk cut stays per-configuration phi^2 >= 1e-10 as defined (98.2% of the phi^2
+  mass, 41% of the quadratic gain). The numbers quoted next to it (92.3% mass / 19% gain) belong to the 1e-9 cut.
+  Both cuts are reported.
+- Estimator check (smoke, 64 x 1024 samples, f = 0 and a perturbed head): all proposal / bond combinations reproduce
+  the exact frozen-FN and quadratic values within 1.2 SE. Their SE at f = 0 is similar (4.2-4.9e-7 per 1024 samples).
+- Exact projections already in (`wt_exact.py`, no training; they do not change the rule): arbitrary f on the bulk
+  only captures 21% (cut 1e-10) / 6% (cut 1e-9); tail-only f captures 72% / 91%. The old beta = 0.5 proposal already
+  puts 39% of its samples below 1e-10 (phi^2 itself: 1.8%; the tail mixture: 49%).
+- The quadratic edge loss and the exact frozen-FN identity differ at third order (Q(delta) = 3.08e-5 vs G0 = 3.01e-5),
+  so a second cross arm is added: TAX-R28 = adaptive tail proposal + exact identity loss. Intermediate exact table
+  evaluations are dropped (4.5 min each); training curves come from the common validation estimator (SE ~1e-7).
+  The 111k arms are capped at 70 min each (the old E-L cap was 1 h); one tail arm (TA) for the wide net.
+- Rule unchanged: Step 1 PASS iff the best (ii)/(ii-a) arm reaches exact frac >= 0.50.

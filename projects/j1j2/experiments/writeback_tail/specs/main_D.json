@@ -1,0 +1,22 @@
+{
+ "check": false,
+ "arms": [
+  {
+   "C": 32,
+   "layers": 4,
+   "lr": 0.003,
+   "B": 1024,
+   "K": 8,
+   "steps": 20000,
+   "warmup": 200,
+   "val_every": 1000,
+   "beta": 0.5,
+   "eps": 0.5,
+   "tag": "TB-R28",
+   "prop": "mix",
+   "bonds": "weighted",
+   "loss": "quad",
+   "bulk_only": true
+  }
+ ]
+}

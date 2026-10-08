@@ -205,3 +205,29 @@ captures 3.7% of FN iteration 1 (ORACLE 8.3%, walkers 0.45%); stiffness solved b
 (87% / 97% of an iteration in 1 / 2 exact steps vs ~5e4 explicit steps); one exact hop on the net gives 82% but the
 composite loop stalls after iteration 1. Long VMC control runs cancelled unstarted (see results README). Details,
 tables, figure: `results/itfit_6x6/README.md`.
+
+## Amendment 4 (2026-10-08 19:00, coordinator-approved follow-up; written before any run of it)
+**Exact pre-test: can one-hop features of the FROZEN base hold the FN updates?** (`itfit_feat.py`, no training.)
+Features per configuration x, all from one hop of the base |psi_P| with the base sign s_P (r_y = a_P(y)/a_P(x)),
+computable with matrix-vector products: log a_P; Ising/sector diagonal H_xx; kept weight W = sum_kept |H_xy| r_y;
+wall V = sum_viol |H_xy| r_y; kept/violating bond weights nK = sum_kept |H_xy|, nV = sum_viol |H_xy|; second
+moments W2 = sum_kept |H_xy| r_y^2, V2; log-ratio sums LK = sum_kept |H_xy| log r_y, LV. Justification: the
+semi-implicit target is the function log(1 + tau W) - log(1 + tau (H_xx + V - E)) of (W, V, H_xx); the moments and
+counts describe the spread of the neighbour ratios that a single sum hides.
+Targets: the ideal loop from psi_P, iteration k = 1, 2, 3: delta_k = log phi_k - log a_k on F_k = H_FN[a_k, s_k]
+(a_1 = |psi_P|, a_{k+1} = phi_k, s_{k+1} = Krylov(phi_k, s_k)). Families (Galerkin = exact energy-metric
+least squares, f minimises Q_k(delta_k - f), Q_k = the FN Laplacian at phi_k):
+- (a) binned: piecewise constant on quantile bins of (log a_P, log W, log V, H_xx) (8^4 groups), of the
+  semi-implicit function T(tau = 1) (256 bins), and of (T, log a_P) (64 x 64);
+- (b) smooth basis: linear, squares and pairwise products of the standardised features, plus T(tau) for
+  tau in {0.1, 0.3, 1, 3, 10, 100} (about 50 functions).
+Reference families with the CURRENT guide's one-hop features (a_k, s_k) instead of the base (needs recursion in a
+real loop; shows what a fresh hop per iteration would give). Primary metric: exact frac_k of the projected update
+(E_f,k[a_k exp(f)] vs G_k). Also a projected loop: a'_{k+1} = a'_k exp(f_k) with f_k from family (b) on the base
+features, Krylov sign between iterations, frac and E_FN per iteration (what a perfectly trained base-feature residual
+would give in the loop).
+**Go criterion (pre-registered):** train f = g(x, log a_P, W_P, V_P, ...) with minSR for loop iterations 1-3 only if
+the best base-feature family captures **frac >= 0.50 in each of iterations 1, 2, 3** of the ideal loop. Otherwise
+report which part of the update (phi^2 decade, wall decade) the features miss. Budget for the follow-up <= 5 GPU-h.
+The sibling arm wtKA (writeback_tail, CNN with (log a, log V, log W) inputs, iteration 1, oracle target) is not
+duplicated: this test is exact, covers iterations 2-3 and adds H_xx and the moments.

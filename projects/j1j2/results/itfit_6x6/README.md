@@ -133,3 +133,16 @@ on the 2080 Ti, a zero-head GN degeneracy), inner-optimiser scan 0.9, VMC scan 1
 itA1 2.8, itA2 1.7, itC 1.3), ViT throughput probe 0.14. Files: `itfit_exact.json`, `itfit_exactloop.json`,
 `scan_inner_q.json`, `scan_vmc.json`, `vitprobe.json`, `runs/itA1.json` (Q-iii, Q-ii, ORACLE, eta = 1),
 `runs/itA2.json` (Q-i, P-iii), `runs/itC.json` (composite), `summary_rows.json`; network parameters stay on ws1.
+
+## Follow-up: residual on one-hop features of the frozen base (amendments 4-5, 2026-10-08 evening; stopped when merged into writeback_tail)
+- **Exact pre-test (`itfit_feat.json`): GO.** Best frozen-base one-hop family per ideal iteration captures 0.97 / 0.82 / 0.66
+  (smooth basis; 256 bins of T(tau=1)); the current guide's one-hop features hold 0.975 / 0.98. A perfectly fitted
+  linear base-feature residual in the loop: frac 0.97 / 0.77 / 0.52, E_FN 1.02e-4 -> 6.61e-5 -> 5.46e-5 -> 4.90e-5.
+- **Trained (`runs/itF.json`; MLP 5.1k parameters on 13 base features, energy-metric LM-GN, semi-implicit targets,
+  realistic samples, exact table clamped to the fitted range on validation configurations):**
+  F-Q-iii (tempered): frac **0.951 / 0.801 / 0.686**, <H>(Krylov) 8.42e-5 / 6.50e-5 / 5.48e-5, E_FN 6.85e-5 / 5.54e-5 /
+  4.74e-5 (ideal 6.52e-5 / 4.87e-5 / 3.81e-5); with one exact hop on top <H> 6.52e-5 / 5.29e-5 / 4.53e-5 (RBM+PP 4.47e-5).
+  F-Q-ii (FN-walker samples): 0.949 / 0.798 / 0.614, E_FN 6.85e-5 / 5.57e-5 / 4.93e-5. Fit validation loss fell
+  1.5e-5 -> 3.5e-10 per step (converged). First run without the clamp blew up (`runs/itF_unclamped.json`).
+- The capture criterion (>= 0.5 per iteration) is met in all three iterations; the same-model VMC control did not run
+  (stopped by the coordinator: route merged into `writeback_tail` Step 2), so the 1.5x VMC condition is untested here.

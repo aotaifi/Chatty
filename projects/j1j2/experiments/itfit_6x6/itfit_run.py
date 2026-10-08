@@ -408,7 +408,6 @@ def run_ite(flat, L, k, lrec):
             key, kb = jax.random.split(key)
             bd = bq(kb, cdf, liw, s, lt, g)
             key, kg = jax.random.split(key)
-            if hasattr(model, 'see'): model.see(bd[2]); model.see(bd[3])
             if fit == 'Q':
                 x, y, gx, gy, c, iw, nval = bd
                 S = jnp.concatenate([x, y.reshape(-1)])
@@ -463,6 +462,8 @@ def run_ite(flat, L, k, lrec):
             pw = SPEC.get('plateau_window', 25)
             if len(vhist) > pw + 15 and vhist[-1] > (1 - SPEC.get('plateau_tol', 1e-3)) * vhist[-1 - pw]: break
         if SPEC.get('inner', 'sng') == 'sng': flat = best_flat
+        if hasattr(model, 'see'):                          # range of the fitted f on the step's validation configurations
+            model.see(model.fS(flat, jnp.concatenate([vb[0], vb[1].reshape(-1)]) if fit == 'Q' else vb[0]))
         st = dict(n=n, E_b_dE_site=esite(E_b), frac_b=(L['Eg'] - E_b) / (L['Eg'] - L['Efn']),
                   E_t_dE_site=esite(E_t), frac_t=(L['Eg'] - E_t) / (L['Eg'] - L['Efn']),
                   step_gain_exact_site=(E_b - E_t) / N, val0=L0, val_end=Lc, val_ratio=Lc / max(L0, 1e-300),

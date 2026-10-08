@@ -1,0 +1,2 @@
+{"arm": "ite", "scheme": "semi", "tau": 1.0, "fit": "Q", "dist": "iii", "K": 2, "n_in": 60, "B": 2048, "Kb": 4,
+ "Bv": 2048, "eta": 1.0, "lam": 1.0, "n_loop": 1, "lanczos_m": 0, "stop_frac": 0.0}

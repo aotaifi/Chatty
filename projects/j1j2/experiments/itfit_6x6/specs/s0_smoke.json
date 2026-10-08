@@ -1,0 +1,3 @@
+{"lanczos_m": 20, "split_taus": [0.3],
+ "one_step_explicit": [1e-2], "one_step_semi": [0.3, 1.0],
+ "plan": [["semi", 0.3, 4], ["opt_explicit", null, 3], ["krylov2", null, 2], ["implicit", 0.3, 2], ["explicit_stab", null, 5]]}

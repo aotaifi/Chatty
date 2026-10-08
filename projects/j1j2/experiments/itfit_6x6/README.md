@@ -159,3 +159,27 @@ normalised to unit rms) and up to 4 re-solves with x4 damping on the same batch 
 at 1 (relative to tr(JJ^T)/R). With P = 28k parameters > R rows the undamped GN step interpolates the batch and does
 not generalise (synthetic check), so the damping is set by the validation batch. The VMC control keeps standard minSR
 (no column scaling) with eta from the scan, as pre-registered.
+
+## Amendment 2 (2026-10-08 13:25, after smoke runs whose fits were broken or only 12 iterations long; before any Stage 1 result)
+- **Training:** one random D4 x flip image per configuration (shared with its sampled bonds) in the GN Jacobian and
+  residuals (16x cheaper; the fit losses are quadratic in f, so by convexity the symmetrised f does at least as
+  well); validation, acceptance and every exact evaluation use the exactly symmetrised f. B = 2048 (Q-fit, 8192 edge
+  rows), 4096 (P-fit); up to n_in = 150 GN iterations per ITE step, stopped earlier when 3 consecutive iterations fail
+  all 4 LM re-solves or the validation loss improves by < 0.1% over 25 iterations (convergence evidence = these
+  curves, saved per step).
+- **Diagnostics added to every loop iteration (all arms, exact):** (a) frac of T_{F_k}[b], one exact semi-implicit
+  step of the current F_k applied to the fitted network (how much of the remaining error one exact hop repairs);
+  (b) the **one-hop composite guide** c = T_{F[b, s']}[b] (semi-implicit step of the network's own FN Hamiltonian with
+  the new Krylov sign s'): frac on F_k, <H>(c, s'), E_FN(c, s'). c is computable with one hop of the network, like
+  the composite sign + one exact hop of the sign work.
+- **New exploratory arm C-P-i (composite amplitude + one hop)**, motivated by Stage 0 (the semi-implicit step is an
+  explicit one-hop function of the guide and captures 87% of an FN iteration): guide of iteration k is
+  c_k = T_{F[n_k, s_k]}[n_k] (c_0 = |psi_P|); target t_k = T_{F_k}[c_k] (K = 1); the zero-hop net n_{k+1} is
+  fitted to t_k by the pointwise natural-gradient fit under b^2 samples (the hop is expected to re-equilibrate the
+  wall configurations from their neighbours, so the stored net mainly needs the bulk); 3 loop iterations. Its targets
+  need two hops of n_k in a real loop (counted as (1 + n_valid)^2 per target point). **Reading, decided now:** the
+  composite route is viable at 6x6 if the guide's frac_k >= 0.5 in each of 3 loop iterations AND its loop E_FN gain
+  is >= 1.5x that of the better VMC control. It is a separate question from the pre-registered PASS rule for the
+  zero-hop write-back, which is unchanged.
+- **VMC budget:** the VMC arms get the evaluation count of the ITE-Q arms' first loop iteration, capped at 2.5 GPU-h
+  per arm; if the cap binds, the comparison is reported at the VMC's actual (lower) count, which favours the ITE arms.

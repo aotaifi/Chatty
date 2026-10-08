@@ -1,0 +1,2 @@
+{"arm": "ite", "scheme": "semi", "tau": 1.0, "fit": "P", "dist": "i", "K": 1, "n_in": 60, "B": 4096,
+ "Bv": 4096, "eta": 1.0, "lam": 1.0, "n_loop": 2, "lanczos_m": 0, "stop_frac": 0.0, "composite": true}

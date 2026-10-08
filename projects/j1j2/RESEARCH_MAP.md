@@ -72,6 +72,11 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - 20% of orbits held out with all their edges removed: held-out tail capture 20.7% = training tail 20.9%; shuffled-target control 0.4%. The tail correction is STRUCTURED and the net GENERALISES; no memorisation gap.
 - Limit = representation precision (~a quarter of each weight decade, falling with depth), not generalisation, not noise. Next: one-hop guide inputs (wtKA2, running) and the tail expert (wtEXP, running); itfit predicts the inputs W, V, H_xx are what is missing.
 
+## 3i. WRITE-BACK SOLVED on oracle data (results/writeback_tail/, wtKA2, 2026-10-08)
+- A 37k net with three guide-local one-hop inputs (log a, V = FN wall term, W = kept-edge weight) captures 88.7% of one exact FN iteration (quadratic 89.2%), 93% of the <H> gain (1.319e-4 -> 8.86e-5; exact FN step 8.41e-5), ~90% in every weight decade down to 1e-14, held-out tail 89.7% = training 89.8%. Copy error 0.0027 rms (< 0.004). Spin-only nets: 20-31%; tail expert and edge sampling did not help.
+- Cause of all earlier failures: the FN correction is a function of one-hop guide quantities; spin-only nets cannot compute them. Same 'net + one hop' structure as the stored signs.
+- Next: pre-registered Step 2 (realistic samples, no phi_FN; same-input fixed-sign VMC control; pass >= 0.5 and >= 1.5x control; guide-evaluation cost per sample -> 8x8), then 3-iteration jump and the 6x6 loop vs RBM+PP. itfit route merged into this.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

@@ -20,7 +20,8 @@ Adam) captures **30.8%** of one exact FN iteration with oracle data; the same ne
 - **Optimizers (lead/PI request):** Adam > minSR (needs tail; 18%) >> energy-metric Gauss-Newton (0.3%, overfits each
   batch). minSR on the symmetrised ViT itself makes the frozen-FN energy *worse* (-22%; <H> -7e-6).
 - **Three-iteration "jump" (PI):** the fit keeps 18.5% of the 3-iteration frozen-FN gain (2.4e-5/site); <H> with the target
-  sign 1.161e-4 vs psi_P 1.29e-4, target 4.3e-5, RBM+PP 4.5e-5. It is a partial jump, far from RBM+PP. Polish: section 3.
+  sign 1.161e-4 vs psi_P 1.29e-4, target 4.3e-5, RBM+PP 4.5e-5: a partial jump, far from RBM+PP. Every VMC-SR
+  polish made it worse (best 1.187e-4).
 
 ## 1. Exact projections (no training): does the gain need the tail?
 | projection (exact, quadratic optimum in the FN metric Q) | phi^2 mass | orbits | captured (exact frac) |
@@ -96,6 +97,8 @@ while the exact frozen-FN energy rose (smoke run, 1000 steps), so the exact iden
 | psi_P (start) | 0 | 1.319e-4 | 1.290e-4 (*) | 9.30e-5 (*) |
 | **fit to phi_3** | **18.5%** (2.4e-5/site) | 1.205e-4 | **1.161e-4** | **8.67e-5** |
 | fit + VMC-minSR polish (1000 steps x 256 samples, eta 0.01) | -0.8% | 1.325e-4 | 1.296e-4 | 9.30e-5 |
+| fit + VMC-minSR polish (300 x 1024, eta 2e-3) | 2.9% | 1.313e-4 | 1.277e-4 | 9.23e-5 |
+| fit + VMC-minSR polish (300 x 1024, eta 5e-4) | 14.8% | 1.229e-4 | 1.187e-4 | 8.80e-5 |
 | exact phi_3 (target) | 100% | | 4.30e-5 | 4.87e-5 (E_FN of its own guide) |
 | RBM+PP (reference) | | | 4.5e-5 | |
 
@@ -104,9 +107,10 @@ while the exact frozen-FN energy rose (smoke run, 1000 steps), so the exact iden
 - The jump is partial: the fit keeps 18.5% of the three-iteration frozen-FN gain (about the same fraction as for one
   iteration, but 4x the absolute gain: 2.4e-5 vs 0.6e-5/site). <H> with the target sign falls 1.29e-4 -> 1.16e-4,
   far from the target (4.3e-5) and from RBM+PP (4.5e-5).
-- The fixed-sign VMC polish (realistic: samples from b^2, full local energies, no phi_FN) undid the fit: its per-step
-  energy noise (VMC estimates scatter by ~1e-4/site at 256 samples) is far above the 1e-6-1e-5 effects. A gentler
-  polish (300 steps x 1024 samples, eta 2e-3 and 5e-4) is queued (ws1 job 16903904); its result will be appended here.
+- Every fixed-sign VMC polish (realistic: samples from b^2, full local energies, no phi_FN) made the fit worse, in
+  proportion to its step size (<H>(s_T) 1.161e-4 -> 1.296 / 1.277 / 1.187e-4): the per-step VMC noise (estimates scatter
+  by ~1e-4/site at 256-1024 samples) is far above the 1e-6-1e-5 effects. Polishing at this level would need ~1e6+
+  samples per step. Polish-only runs from the saved fit: `runs/wtJ3pol_16903904.json` (they reproduce the fit to 1e-15).
 - The majorisation argument does not forbid a jump, but the representation limit of section 4 applies to the far
   target as well: the network keeps the same ~20% share.
 
@@ -141,6 +145,6 @@ Per-decade capture (quadratic form, node split of Q), share of each decade's gai
 3. Do not pursue energy-metric Gauss-Newton on minibatches or minSR fine-tuning of the converged ViT for this purpose.
 
 ## Compute
-About 11 GPU-h in total (A40 and RTX 2080 Ti on ws1; within the 15 GPU-h ceiling set for the optimizer arms):
+About 11.5 GPU-h in total (A40 and RTX 2080 Ti on ws1; within the 15 GPU-h ceiling set for the optimizer arms):
 exact projections 0.1, smoke/debug 1.6 (mostly 2080 Ti memory failures), 28k Adam arms 3.3, 111k arms 2.6, minSR 1.0,
-Gauss-Newton 1.0, ViT minSR 0.55, three-iteration fit 0.7. Runs on ws1 `/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/`.
+Gauss-Newton 1.0, ViT minSR 0.55, three-iteration fit and polish 1.3. Runs on ws1 `/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/`.

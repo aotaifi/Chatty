@@ -78,6 +78,11 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - itfit route (results/itfit_6x6/, e8e72c2): realistic tempered samples, 5k net on frozen-base one-hop features, semi-implicit FN target: 95% / 80% / 69% per iteration; E_FN 1.02e-4 -> 4.74e-5 in 3 iterations (ideal 3.81e-5); with one exact hop <H> 4.53e-5 vs RBM+PP 4.47e-5. Same-model VMC control NOT yet run (open condition).
 - Next: pre-registered Step 2 (realistic samples, no phi_FN; same-input fixed-sign VMC control; pass >= 0.5 and >= 1.5x control; guide-evaluation cost per sample -> 8x8), then 3-iteration jump and the 6x6 loop vs RBM+PP. itfit route merged into this.
 
+## 3j. Step 2 PASSED (realistic data, results/writeback_tail/ section 6b, 284e623, 2026-10-09)
+- No phi_FN anywhere: semi-implicit FN target T = log(1+W) - log(1+(H_xx+V-E_a)) from the guide only, edge least squares, Adam: 73.4% of one FN iteration (<H> 1.319e-4 -> 1.032e-4), held-out tail = training tail (75.4%).
+- Same-input VMC controls (frozen-FN VMC and fixed-sign <H> VMC, Adam and minSR) LOSE energy (-15%) or diverge; itfit's same-model VMC control also fails. Cause: a realistic VMC energy estimate scatters ~200x the per-iteration gain, while the FN step gives a zero-variance per-configuration target. This is the loop's genuine edge over VMC.
+- Open caveats (monitored): smaller-step VMC controls (wtS2c) running; minSR destroys the bulk on the regression (Adam works); itfit loop vs RBM+PP: 4.53e-5 vs 4.47e-5. Next: multi-iteration loop with the FEAT net (queued), then 8x8 cost/feasibility.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

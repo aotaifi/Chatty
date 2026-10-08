@@ -65,6 +65,7 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - "Beat the ViT" is not a result by itself; 6x6 is a lab with exact references.
 
 ## 5. Parked ideas (not dropped)
+- Tail-steered FN walkers (importance function flatter than the guide, e.g. a^beta or a mixture, reweighted): needed at 8x8+ for tail data; queued AFTER the 6x6 oracle tests show the tail is learnable (>= 50%). Risk: weight fluctuations grow with N (ESS 5% at beta=1/2 on 6x6) -> use a mixture importance function.
 - Walker-histogram / MLE amplitude fitting (no zero-variance property; ledger).
 - 8x8 sign machinery alone (cheap; useful for the add-on pitch).
 - Separate paper repo for Overleaf; paper rewrite after the angles settle.

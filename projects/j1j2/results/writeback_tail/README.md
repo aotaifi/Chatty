@@ -373,6 +373,50 @@ not bit-reproducible, so iterations 1-5 differ from the 5-iteration run by the t
 - Amortising the guide (distilling the stack into one net with features of the base) is the open engineering step.
   itfit's frozen-base-feature variant avoids the recursion at a cost of 0.95 / 0.80 / 0.69 per iteration.
 
+## 6d. Pre-tests for 8x8 (amendment 5; `runs/wt_pre_a_17090258.json`, `runs/wt_pre_b_edge_17090259.json`, `runs/wt_pre_b_point_17090260.json`)
+**(a) Distillation of the loop's guide stack into one net (option C).**
+- The 8-iteration loop is replayed exactly from its stored nets (iteration 1 reproduces 74.57%).
+- After iterations 3 and 6 the accumulated correction is distilled; "kept" is the share of the accumulated <H> gain
+  that survives.
+
+| distilled into | after iteration 3 (stack <H> 6.29e-5) | after iteration 6 (stack <H> 4.03e-5) |
+|---|---|---|
+| spin-only residual CNN, 28k | **10.6%** (<H> 1.246e-4) | **-318%** (<H> 4.23e-4) |
+| spin-only residual CNN, 111k | | **2.6%** (<H> 1.295e-4) |
+| residual on frozen-base one-hop features, 28k | 83.8% (<H> 7.41e-5) | 68.0% (<H> 6.97e-5) |
+
+**Option C fails the pre-registered 0.70 bar.** Re-basing the stack into a spin-only net loses almost everything: it
+is the original write-back failure, now for the accumulated correction. A base-feature net holds 68-84%, but its
+features again cost two hops of the base.
+
+**(b) Frozen-base features (option B), 5 iterations, 12k Adam steps each.**
+
+| iteration | 1 | 2 | 3 | 4 | 5 | <H> (Krylov) after 5 | E_FN after 5 |
+|---|---|---|---|---|---|---|---|
+| B, edge loss | 49.7% | 71.1% | 59.4% | 44.1% | 24.3% | 6.20e-5 | 5.27e-5 |
+| B, pointwise loss | **-339%** (unstable) | 86.1% | 73.0% | 46.7% | 39.9% | 5.58e-5 | 4.75e-5 |
+| current-guide features (wtLOOP8, 20k steps) | 74.6% | 65.9% | 76.2% | 72.2% | 41.8% | 4.79e-5 | 4.08e-5 |
+
+- Neither variant keeps >= 0.5 through iteration 5. Pointwise B fails the pre-registered bar outright: iteration 1
+  blew up, and iterations 4-5 fall below 0.5.
+- By the rule, the fallback is edge-loss B. Its capture decays from iteration 3, as itfit found
+  (0.95 / 0.80 / 0.69, then lower). After 5 iterations it is at <H> 6.2e-5, against 4.8e-5 for current-guide
+  features and 4.47e-5 for RBM+PP.
+- The base cannot see how the neighbours changed in earlier iterations, which is two-hop information.
+- Measured 6x6 cost: 6.6 min per edge-B iteration (12k steps + exact evaluation) on an A40.
+- 8x8 per sample in base evaluations: edge B ~8e4 (targets at the 8 sampled neighbours); pointwise B ~9e3; current
+  guide 135^k.
+
+**Decision for 8x8 (from the pre-registered rule and these numbers):**
+- The affordable option is B. On the 6x6 evidence it does not reach RBM+PP-level quality in 5 iterations; it plateaus
+  near 5.5-6e-5.
+- The loop that passes RBM+PP needs current-guide features, i.e. one more hop of guide evaluations per iteration.
+  Spin-only re-basing does not remove that.
+- So at 8x8 we expect B to deliver 2-3 iterations' worth of gain (about 60% of the ideal first two iterations) at
+  ~4.5 H100-h per iteration with the edge loss.
+- Going beyond that needs either a cheaper guide (a smaller base net) to afford two-hop features (~9e3 x cost per
+  sample), or a representation for the re-based stack that is cheaper than base features. Neither is tested.
+
 ## 7. Next step
 0. Done: Step 2 and the 6x6 loop (sections 6b, 6c). Next: amortise the guide recursion (distil the stack into one net
    with base features) and test cost at 8x8 against a converged NQS + Lanczos step, with the calibrated FN referee.

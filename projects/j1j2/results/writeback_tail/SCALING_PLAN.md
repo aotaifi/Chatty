@@ -67,3 +67,16 @@ Base = translation-only ViT; symmetrisation is applied in the referee only.
   ViT is closer to converged, and the gain may be smaller. Step 3 measures it.
 - Sign: Krylov sign steps need one hop of the guide; their cost is in the referee budget.
 - The input-standardisation detail of section 6c (guide-only constants) is already built into `wt_loop.py`.
+
+## Update 2026-10-09 05:15: step 1 (6x6 pre-tests) done, README section 6d
+- **C (spin-only re-basing): fails.** It keeps 10.6% (after 3 iterations) and -318% / 2.6% (after 6; 28k / 111k).
+- **B (frozen-base features): affordable but decays below 0.5 from iteration 4.**
+  - Edge loss: 0.50 / 0.71 / 0.59 / 0.44 / 0.24; <H> 6.2e-5 after 5.
+  - Pointwise: unstable in iteration 1, then 0.86 / 0.73 / 0.47 / 0.40; <H> 5.6e-5 after 5.
+  - Current-guide loop for comparison: 4.8e-5 after 5.
+- Re-basing into a base-feature net keeps 68-84% but costs two hops of the base, like B.
+- Recommendation:
+  - The 8x8 one-iteration test (step 3) with edge-loss B is the only affordable next step; it can show the first two
+    iterations' gain.
+  - The full loop beyond RBM+PP at 8x8 needs two-hop features of a cheaper guide; this is not yet tested.
+- Paderborn GPUs (checked 2026-10-09 03:29): all H100 and A40 partitions still drained.

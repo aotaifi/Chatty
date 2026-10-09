@@ -8,8 +8,12 @@ All numbers per site, J2/J1 = 0.5, exact symmetric sector, guide (a, s) = symmet
 G0 = 3.01e-5; b = |psi_P| exp(f) (residual nets) or b = |psi_P,theta| (ViT itself). Best-validation parameters.
 
 ## Verdict
-**UPDATE 2026-10-08 evening: Step 1 PASSES with guide-neighbourhood inputs. The write-back route reopens; next is the
-pre-registered Step 2.** The arm FEAT-TA-R28 is the same 28k residual CNN (37k parameters with the input head). It
+**UPDATE 2026-10-09: Step 2 (realistic data, no phi_FN) PASSES. Realistic FEAT write-back 73.4% vs every same-sample
+VMC control < 0. The written-back FN/Krylov loop reaches E_FN 3.96e-5 (below RBM+PP 4.47e-5) and <H> 4.64e-5 after 5
+iterations (sections 6b, 6c).**
+
+UPDATE 2026-10-08 evening: Step 1 PASSES with guide-neighbourhood inputs. The write-back route reopens; next is the
+pre-registered Step 2. The arm FEAT-TA-R28 is the same 28k residual CNN (37k parameters with the input head). It
 uses the adaptive tail proposal and Adam 20k steps, and is given three guide-local scalars per configuration:
 log a, the FN wall term V (sign-violating weight) and the kept-edge weight W. Each is one hop of the frozen guide; no
 phi_FN enters. It captures:
@@ -293,6 +297,8 @@ FEAT net (28k CNN + inputs log a, V, W of the frozen guide; 37k parameters), b =
 | F-VMC-SR | same | minSR eta 0.01 | diverged (-1073%) | | 4.1e-4 | |
 | C-VMC-Adam | control: fixed-sign <H> VMC | Adam 3e-4 | -45.1% / -15.2% | -14.7% | 1.360e-4 | -1.6% / -1.6% |
 | C-VMC-SR | control | minSR eta 0.01 | diverged | | 0.24 | |
+| C-VMC-Adam, lr 1e-4 | control | Adam 1e-4 | -25.6% / -13.5% | -12.9% | | |
+| C-VMC-Adam, lr 3e-5 | control | Adam 3e-5 | -3.5% / -6.9% | -7.5% | | |
 | start (psi_P) / exact FN step | | | 0 / 100% | | 1.319e-4 / 0.841e-4 | |
 
 Per decade, F-SI-Adam keeps 62-79% of every tail decade between 1e-8 and 1e-14 (39% at 1e-7).
@@ -309,15 +315,55 @@ Per decade, F-SI-Adam keeps 62-79% of every tail decade between 1e-8 and 1e-14 (
 - Why the controls lose: a realistic VMC energy estimate scatters by 6e-3 per site per 256 samples, 200x the 3e-5
   gain of one FN iteration. Every VMC gradient step is noise at this level, whereas the semi-implicit FN step gives a
   zero-variance, per-configuration target from one hop of the guide.
-- Caveat: a VMC control at smaller step size would sit near zero rather than below; that still satisfies 1.5x.
-  Smaller-step controls (lr 1e-4, 3e-5) are running (wtS2c).
+- Smaller-step controls (wtS2c, `runs/wtS2c_17089587.json`) still lose energy: -13.5% at lr 1e-4 and -6.9% at lr 3e-5.
+  As the step shrinks they approach zero from below. At equal samples no VMC control gains.
 - minSR is not usable here at these settings. On the regression it fits the sampled configurations almost exactly
   (own loss 1.5e-5 -> 1e-8) and keeps 75-90% in the tail decades, but destroys the bulk (exact frac -15). On the VMC
   objectives it diverges. Adam is the working optimizer; its own-loss curve fell 1.5e-5 -> 2.4e-6 with a transient
   spike at 4-8k steps, and the exact capture rose 51% -> 73% from 10k to 20k (not saturated).
 
+## 6c. Step 2 loop: FN/Krylov loop with realistic FEAT write-back (`experiments/writeback_tail/wt_loop.py`, `runs/wtLOOP_17090003.json`)
+Each iteration k:
+- Guide-only quantities of the CURRENT guide (log a_k, V_k, W_k, semi-implicit target T_k, guide-metric tail proposal).
+- Fresh FEAT CNN fit by Adam: 20k steps x 256 configurations x 8 bonds, i.e. arm F-SI-Adam, with no phi_FN.
+- Written back as an exact table la_{k+1} = la_k + f, then a Krylov sign step.
+- Exact referee: <H> and the FN energy of the new guide.
+
+| iteration | frac of the ideal FN iteration from guide k | <H> (Krylov sign) | E_FN of the next guide | ideal loop <H> / E_FN |
+|---|---|---|---|---|
+| start (psi_P) | | 1.319e-4 | 1.018e-4 | |
+| 1 | 65.2% | 1.017e-4 | 7.95e-5 | 7.84e-5 / 6.52e-5 |
+| 2 | 75.3% | 7.85e-5 | 6.39e-5 | 5.58e-5 / 4.87e-5 |
+| 3 | 55.7% | 6.79e-5 | 5.64e-5 | 4.30e-5 / 3.81e-5 |
+| 4 | 75.9% | 5.49e-5 | 4.64e-5 | |
+| 5 | 68.5% | **4.64e-5** | **3.96e-5** | |
+| RBM+PP (reference) | | 4.47e-5 | | |
+
+- **The loop no longer stalls.** Every iteration writes back 56-76% of the ideal FN iteration from realistic data, and
+  the energy falls monotonically.
+  - After 5 iterations the FN energy of the guide is 3.96e-5, below RBM+PP's 4.47e-5. This is the FN upper bound of a
+    stored guide.
+  - <H> with the Krylov sign is 4.64e-5, within 4% of RBM+PP.
+  - The ideal loop needs about 3 iterations for the same; the written-back loop needs about 5.
+- The semi-implicit target alone (exact, unprojected) holds 85-87% of each ideal iteration; the fit keeps 65-89% of that.
+- Iteration 1 here is 65.2%, against 73.4% for F-SI-Adam in section 6b. The differences:
+  - network seed (k = 1 vs 0);
+  - input standardisation: here mean and sd under a guide-only measure. In wt_run the FEAT inputs were standardised
+    with a measure containing phi_FN (affine constants only, no per-configuration information). The loop removes this.
+- An 8-iteration run (wtLOOP8 17090119) tests whether <H> passes RBM+PP at iteration 6.
+
+**Cost and the caveat for 8x8.**
+- Every iteration uses the CURRENT guide's one-hop features. In this 6x6 lab the guide is an exact table. In a real
+  loop the guide is the stack of stored nets, and its features at x need the guide at the 135 one-hop neighbours
+  (8x8), each of which is a net of the previous guide's features (recursion: k iterations -> k hops).
+- With K = 8 sampled bonds per training configuration this is ~1e3 guide evaluations per sample at 8x8 for one level.
+- Amortising the guide (distilling the stack into one net with features of the base) is the open engineering step.
+  itfit's frozen-base-feature variant avoids the recursion at a cost of 0.95 / 0.80 / 0.69 per iteration.
+
 ## 7. Next step
-1. **Step 2 of the pre-registration with the FEAT net.**
+0. Done: Step 2 and the 6x6 loop (sections 6b, 6c). Next: amortise the guide recursion (distil the stack into one net
+   with base features) and test cost at 8x8 against a converged NQS + Lanczos step, with the calibrated FN referee.
+1. **(done) Step 2 of the pre-registration with the FEAT net.**
    - Realistic data: samples from the tail proposal built from guide quantities only; local edge terms from the
      network and the guide; no phi_FN beyond what the FN step provides.
    - Same-capacity fixed-sign VMC control, using the same (log a, V, W) inputs and equal samples.

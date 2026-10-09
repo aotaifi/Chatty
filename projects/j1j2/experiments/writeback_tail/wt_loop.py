@@ -177,7 +177,7 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     sec.offload()
     B, K, steps = SPEC.get('B', 256), SPEC.get('K', 8), SPEC.get('steps', 20000)
     model = Corr(32, 4, seed=k, feat=FEAT); flat = model.flat0
-    sched = optax.warmup_cosine_decay_schedule(0.0, SPEC.get('lr', 3e-3), 200, steps, SPEC.get('lr', 3e-3) * 0.02)
+    sched = optax.warmup_cosine_decay_schedule(0.0, SPEC.get('lr', 3e-3), min(200, max(1, steps // 2)), steps, SPEC.get('lr', 3e-3) * 0.02)
     opt = optax.adam(sched); ost = opt.init(flat)
 
     @jax.jit

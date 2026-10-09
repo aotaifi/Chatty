@@ -160,3 +160,52 @@ Consequences (decided now, before any evaluation):
 - Fidelity decades now include 1e-6 and 1e-5 (the replay's psi_P fidelity reference covers 1e-7 .. <= 1e-15 only).
 - New jobs run with the jax 0.8.2 venv on full A40s too (measured faster: 0.33 vs 0.5 s/step; fp32 differences at
   rms 1e-4).
+
+# Round 2 (lead/PI decision 2026-10-09: attack the recursion, do not cap the loop). Pre-registered 15:10, before any run.
+Budget <= 8 GPU-h (A40 slices preferred). Exact 6x6, same lab, same references. Negative = "inconclusive (cause)".
+
+## Test 1: constant-hop loop (`cx_chop.py`) - main
+Each iteration k, starting from G_0 = log|psi_P|, s_0 = s_P:
+- (w) write-back from the CALLABLE guide G_k exactly as wt_loop / F-SI-Adam: FEAT net on G_k's own (log a, V, W),
+  semi-implicit target, guide-metric tail proposal, edge loss, Adam 20k x 256 x 8 -> la_w = G_k + f_k; Krylov sign
+  s_{k+1} of la_w (exact, as in the table loop).
+- (r) re-base: distil la_w into a FRESH base-feature net G_{k+1} = log|psi_P| + g(x; spins, log a_P, V_P, W_P of the
+  frozen psi_P): the pre-test (a) 'featbase' arm (68-84% of the accumulated gain), edge (Dirichlet) loss in the metric
+  of (la_w, s_{k+1}), proposal 1/2 n a_w + 1/2 Dirichlet node weight of la_w - log|psi_P|, Adam 20k x 256 x 8.
+- Cost, independent of k: G_k(x) = one hop of psi_P (78 base evaluations at 6x6, ~135 at 8x8); V_k, W_k(x) = two hops
+  (2.8e3 / 8.9e3); an edge-loss training sample needs features at the 8 sampled neighbours too, i.e. three hops of the
+  base (~1e5 / ~4e5; measured hop counts `writeback_tail/hopcount.json`, measured psi_P throughput 1.9e4 / s per A40).
+- Runs: seed 0 for 8 iterations, seed 1 for 6 iterations (budget).
+- Reported per iteration: capture frac of the write-back, <H> of la_w (before re-base) and of G_{k+1}, re-base
+  retention (step: share of this iteration's <H> gain kept; accumulated: share of the gain since psi_P kept), E_FN of
+  G_{k+1}, G_{k+1} + 1 and + 2 exact Lanczos steps; against the table loop wtLOOP8 and psi_P + Lanczos p1 / p2
+  (2.55e-5 / 8.6e-6).
+- **Pass:** after 6 iterations G_6 keeps >= 70% of the table loop's accumulated <H> gain (<H>(G_6) <= 6.78e-5; table
+  4.03e-5 from 1.319e-4), mean over the two seeds, neither seed below 60%, and <H> falls in at least 5 of the 6
+  iterations. Reported in addition: whether G_k + 1 Lanczos step goes below 1.27e-5 (2x below psi_P + Lanczos).
+
+## Test 2: structured tolerance (`cx_struct.py`)
+- Replay of one write-back step from the exact table guide la_k with the stored wtLOOP8 net k+1 (k = 3 -> iteration 4,
+  frac 0.722; k = 6 -> iteration 7, 0.511), with the guide replaced by la_k + c e for the ACTUAL error fields e of
+  candidate predictors:
+  - the P2 students: A' Adam (k = 3, 6), A from scratch (k = 6);
+  - the base-feature re-base of la_k (the test-1 distillation, fit here);
+  - B's actual log V, log W errors (k = 3, interpolated in log space);
+  - white noise as the reference.
+  Scales c chosen to span kept 0.1-1.
+- Size measures (exact): |H_xy| a_x a_y-weighted rms bond difference of c e; a^2-weighted rms of log V, log W.
+- Reported: kept share (frac / unperturbed frac) vs size, structured vs white.
+- **Reading (pre-registered):** structured errors are "more tolerable" if, at equal weighted bond rms, their loss of
+  capture is <= half the white-noise loss. eta\*_struct = the bond rms at which kept = 0.9, interpolated log-linearly
+  between tested scales.
+
+## Test 3: amortised V/W (`cx_vw.py`)
+- For the table guides la_3, la_6: a 2-output FEAT-type CNN (spins + log a_P, V_P, W_P, i.e. one hop of the base)
+  predicts u_V = log(V_k + 1e-6), u_W = log(W_k + 1e-6) (the FEAT input transform). Loss: standardised squared error,
+  weighted by the FEAT measure, tail proposal of T_k, 20% held-out orbits, Adam 3e-3, 20k x 512.
+- The predictions replace V_k, W_k in the next write-back step (stored net k+1, net input and target). Zero-training
+  baseline: V_P, W_P themselves.
+- **Pass:** capture with the amortised V, W >= 0.9 x the exact-V/W capture at both k. Also reported: rms log V,
+  log W errors (held-out vs training), the baseline.
+- If test 3 passes, the guide's V/W cost drops from two hops of the base to one, so the whole loop costs one hop of
+  psi_P per evaluation (training samples two).

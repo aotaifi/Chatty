@@ -321,3 +321,133 @@ def fidelity(lab, la_t, s_t, samples, ratio_fn, la_s=None, chunk=2048):
             pe = np.concatenate(acc['pe']); rec['point_rms'] = float(np.sqrt(np.mean(pe ** 2)))
         out.append(rec)
     return out
+
+
+# ============================================================================================ shared tools (tests 1-3)
+class FrozenOp:
+    """H_FN[a_g, s] with its diagonal precomputed: energy(la_b) = <b|H_FN|b>/<b|b> in two sector matvecs."""
+
+    def __init__(self, lab, la_g, s):
+        sec = lab.sec; self.sec = sec; self.s = s
+        la_g = la_g - jnp.max(la_g)
+        a = jnp.exp(la_g); a = a / jnp.sqrt(jnp.sum(sec.n * a * a)); a = jnp.maximum(a, 1e-15)
+        w = a * sec.sqrt_n; del a
+        h1, h2 = sec.H2(w, s * w)
+        self.Dg = 0.5 * (h1 + s * h2) / w
+
+    def energy(self, la_b):
+        sec, s = self.sec, self.s
+        b = sec.vec(la_b, jnp.ones_like(la_b))
+        h1, h2 = sec.H2(b, s * b)
+        return float(b @ (self.Dg * b - 0.5 * (h1 - s * h2)))
+
+
+def bond_rms(lab, la, e):
+    """exact |H_xy| a_x a_y-weighted rms of the bond differences e_x - e_y of a log-amplitude error field e (all
+    off-diagonal bonds of H, sector-weighted) for guide amplitude a = exp(la)."""
+    u = lab.UA(la)
+    A = lambda x: lab.sec.Hm(x) - lab.D0 * x                    # |H_off| (Heisenberg off-diagonals are J/2 > 0)
+    Au = A(u); den = float(u @ Au)
+    num = 2 * float(jnp.sum(e * e * u * Au)) - 2 * float((u * e) @ A(u * e))
+    return float(np.sqrt(max(num, 0.0) / den))
+
+
+class GuideCtx:
+    """one write-back step from a fixed guide (la, s) with a stored FEAT net: everything that does not depend on the
+    perturbed features is computed once.  step(feats) -> (frac, SI_target_frac)."""
+
+    def __init__(self, lab, la, s, params, Efn):
+        self.lab, self.la, self.s, self.params, self.Efn = lab, la, s, params, Efn
+        self.lan, self.V, self.W = lab.VW(la, s)
+        self.op = FrozenOp(lab, la, s)
+        self.Eg = self.op.energy(la)
+        T = lab.T_of(self.V, self.W, self.Eg)
+        _, self.PA, self.meas = lab.proposal_q(T, la, s); del T
+
+    def step(self, feats=None):
+        lab = self.lab
+        lan_f, V_f, W_f = (self.lan, self.V, self.W) if feats is None else feats
+        T_f = lab.T_of(V_f, W_f, self.Eg)
+        si = (self.Eg - self.op.energy(self.la + T_f)) / (self.Eg - self.Efn); del T_f
+        FEAT = lab.feat_table(lan_f, V_f, W_f, self.meas)
+        fb = FeatNet(FEAT, 0).table(self.params, lab.sec.reps, lab.TIDX); del FEAT
+        frac = (self.Eg - self.op.energy(self.la + fb)) / (self.Eg - self.Efn)
+        return frac, si
+
+    def vw_err(self, V_f, W_f):
+        okv = self.V > 1e-12
+        lv = jnp.log(jnp.maximum(V_f, 1e-300) / jnp.maximum(self.V, 1e-300))
+        lw = jnp.log(jnp.maximum(W_f, 1e-300) / jnp.maximum(self.W, 1e-300))
+        rv = float(jnp.sqrt(jnp.sum(jnp.where(okv, self.PA * lv * lv, 0)) / jnp.sum(jnp.where(okv, self.PA, 0))))
+        rw = float(jnp.sqrt(jnp.sum(self.PA * lw * lw)))
+        return rv, rw
+
+
+def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None):
+    """wt_loop.fit, edge loss (kept bonds of (la, s), weight |H_xy| a_y/a_x): sum w ((f_x + DLR_x) - (f_y + DLR_y))^2.
+    excl: optional bool mask of orbits whose incident edges get weight 0 (held-out orbits)."""
+    import optax
+    sec = lab.sec
+    sched = optax.warmup_cosine_decay_schedule(0.0, lr, min(200, max(1, steps // 2)), steps, lr * 0.02)
+    opt = optax.adam(sched); flat = model.flat0; ost = opt.init(flat)
+
+    @jax.jit
+    def batch(key):
+        k1, k2 = jax.random.split(key)
+        idx = jnp.clip(jnp.searchsorted(CDF, jax.random.uniform(k1, (B,), f64) * CDF[-1]), 0, sec.D - 1)
+        x = sec.reps[idx]
+        valid = valid_bonds(x); nval = valid.sum(1)
+        sc = jnp.where(valid, jax.random.uniform(k2, valid.shape), -1.0)
+        _, bsel = jax.lax.top_k(sc, K)
+        ok = jnp.take_along_axis(valid, bsel, 1)
+        y = x[:, None] ^ MASKS[bsel]
+        iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
+        rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
+        wgt = jnp.where(ok & (s[idx][:, None] * s[iy] < 0), 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
+        if excl is not None: wgt = jnp.where(excl[iy], 0.0, wgt)
+        lw = LIW[idx]; iw = jnp.exp(lw - jnp.max(lw))
+        return x, y, DLR[idx], DLR[iy], wgt, iw, lab.TIDX[idx], lab.TIDX[iy]
+
+    def loss(q, x, y, dlx, dly, wgt, iw, tx, ty, G):
+        iw = iw / jnp.mean(iw)
+        X = bits(jnp.concatenate([x, y.reshape(-1)])); Tt = jnp.concatenate([tx, ty.reshape(-1)])
+        fa = model.f_aug(q, X, Tt, jnp.concatenate([G, jnp.repeat(G, K)])).astype(f64)
+        fx, fy = fa[:B], fa[B:].reshape(B, K)
+        return 0.5 * jnp.mean(iw * jnp.sum(wgt * ((fx + dlx)[:, None] - (fy + dly)) ** 2, 1)) / N
+
+    @jax.jit
+    def step(fl, ost, key):
+        k1, k2 = jax.random.split(key)
+        bd = batch(k1); G = jax.random.randint(k2, (B,), 0, 16)
+        l, g = jax.value_and_grad(loss)(fl, *bd, G)
+        upd, ost = opt.update(g, ost, fl)
+        return optax.apply_updates(fl, upd), ost, l
+    vk = [jax.random.PRNGKey(777 + i) for i in range(16)]
+    vfn = jax.jit(lambda fl, key: loss(fl, *batch(key), jax.random.randint(key, (B,), 0, 16)))
+    curve = []; key = jax.random.PRNGKey(100 + seed)
+    for it in range(1, steps + 1):
+        key, kk = jax.random.split(key)
+        flat, ost, l = step(flat, ost, kk)
+        if it % 2000 == 0 or it == 1:
+            curve.append((it, float(np.mean([float(vfn(flat, q)) for q in vk]))))
+            log(f'  [{tag}] step {it} own val {curve[-1][1]:.4e}')
+    return flat, curve
+
+
+def tail_proposal(lab, target, la, s, mask_out=None):
+    """CDF, log importance weights (to a^2) and DLR = -(target - mean) for fitting `target` in the metric of (la, s)."""
+    Q, PA, meas = lab.proposal_q(target, la, s)
+    if mask_out is not None:
+        Q = jnp.where(mask_out, 0.0, Q); Q = Q / jnp.sum(Q)
+    mu = float(jnp.sum(PA * target))
+    LIW = jnp.where(Q > 0, jnp.log(jnp.maximum(PA, 1e-300)) - jnp.log(jnp.maximum(Q, 1e-300)), -jnp.inf)
+    return jnp.cumsum(Q), LIW, -(target - mu), meas
+
+
+def base_features(lab):
+    """FEAT_BASE exactly as wt_loop.py: (log a, log V, log W) of psi_P standardised under its guide-only measure."""
+    lan0, V0, W0 = lab.VW(lab.lP0, lab.sP0)
+    Eg0 = FrozenOp(lab, lab.lP0, lab.sP0).energy(lab.lP0)
+    T0 = lab.T_of(V0, W0, Eg0)
+    _, _, meas0 = lab.proposal_q(T0, lab.lP0, lab.sP0)
+    return lab.feat_table(lan0, V0, W0, meas0)

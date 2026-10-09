@@ -17,6 +17,8 @@ import jax
 import jax.numpy as jnp
 import flax.linen as nn
 import optax
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'lanczos_baseline_6x6'))
+from lanczos_lib import lanczos_ritz
 from jax.flatten_util import ravel_pytree
 jax.config.update('jax_default_matmul_precision', 'highest')
 
@@ -115,7 +117,8 @@ class Corr:
 
 
 
-sec = SS.Sector(CSR, TABLE); sec.v0 = sec.la0 = sec.s0 = sec.p0 = None
+sec = SS.Sector(CSR, TABLE)
+if not SPEC.get('ws'): sec.v0 = sec.la0 = sec.s0 = sec.p0 = None   # psi0 kept only for the wrong-sign weight
 z = np.load(SYM); lP0 = jnp.asarray(z['lP']); sP0 = jnp.asarray(z['sP'].astype(np.float32)); del z
 BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB); MASKS = jnp.asarray(SS.MASKS)
 TIDX = jnp.arange(sec.D, dtype=jnp.float32)
@@ -246,27 +249,60 @@ distill_at = set(SPEC.get('distill_at', []))
 la, s = lP0, sP0
 for k in range(1, SPEC.get('n_loop', 4) + 1):
     t0 = time.time(); rec = dict(it=k)
-    Efn, u, info = sec.fn_solve(la, s); rec['guide_E_FN'] = info['dE_FN_site']; rec['guide_H'] = H_site(la, s); del u
+    light = SPEC.get('light', False)                          # replay for sign diagnostics: no FN solves
+    if light:
+        Efn = float('nan'); rec['guide_H'] = H_site(la, s); rec['guide_E_FN'] = float('nan')
+        if k == 1 and SPEC.get('ws'): rec['w_s_guide'] = sec.score(la, s)['w_s']
+    else:
+        Efn, u, info = sec.fn_solve(la, s); rec['guide_E_FN'] = info['dE_FN_site']; rec['guide_H'] = H_site(la, s); del u
     lan, V, W, Eg, T, UA = guide_quantities(la, s)
     rec['ideal_gain_site'] = (Eg - Efn) / N
     CDF, LIW, DLR, meas = proposal(T, la, s, UA)
-    ef_t = sec.fn_rayleigh(la, s, la + T); rec['SI_target_frac'] = (Eg - ef_t) / (Eg - Efn)
+    if SPEC.get('target', 'si') == 'lanczos':                  # supervised one-hop Lanczos control: L = log|1 + alpha E_L|
+        vg = sec.vec(la, s); Hv = sec.H(vg)
+        alpha = lanczos_ritz(lambda x: sec.Hm(x), vg, 1)[1]['alpha']
+        EL = Hv / jnp.where(jnp.abs(vg) > 1e-300, vg, 1e-300); del vg, Hv
+        Ltg = jnp.log(jnp.maximum(jnp.abs(1.0 + alpha * EL), 1e-6)); del EL
+        PA_ = UA * UA; DLR = -(Ltg - float(jnp.sum(PA_ * Ltg)))     # same samples (proposal built from T), target L
+        rec['lanczos_alpha'] = alpha
+        if not SPEC.get('light'):
+            ef_l = sec.fn_rayleigh(la, s, la + Ltg); rec['L_target_frac'] = (Eg - ef_l) / (Eg - Efn)
+        rec['L_target_H_samesign'] = H_site(la + Ltg, s); del Ltg, PA_
+    if not light:
+        ef_t = sec.fn_rayleigh(la, s, la + T); rec['SI_target_frac'] = (Eg - ef_t) / (Eg - Efn)
+    else:
+        rec['SI_target_frac'] = float('nan')
     FEAT = feat_table(lan, V, W, meas) if features == 'current' else FEAT_BASE
     del V, W, meas
     log(f'[it {k}] guide <H> {rec["guide_H"]:.4e} E_FN {rec["guide_E_FN"]:.4e} SI-target frac {rec["SI_target_frac"]:.4f}')
-    model = Corr(32, 4, seed=k, feat=FEAT)
+    sd_ = SPEC.get('seed', 0)
+    model = Corr(32, 4, seed=k + 1000 * sd_, feat=FEAT)
     if pdir:
         flat = jnp.asarray(np.load(os.path.join(pdir, f'params_it{k}.npy')), jnp.float32); rec['fit_curve'] = 'loaded'
     else:
-        flat, rec['fit_curve'] = fit(model, la, s, CDF, LIW, DLR, SPEC.get('steps', 20000), loss_kind, k, f'it {k}')
+        flat, rec['fit_curve'] = fit(model, la, s, CDF, LIW, DLR, SPEC.get('steps', 20000), loss_kind, k + 1000 * sd_, f'it {k}')
         np.save(os.path.join(OUT, f'params_it{k}.npy'), np.asarray(flat))
     fb = model.table(flat, sec.reps, TIDX)
     la_new = la + fb; del fb
     ef = sec.fn_rayleigh(la, s, la_new)
     rec['frac'] = (Eg - ef) / (Eg - Efn)
     rec['H_oldsign'] = H_site(la_new, s)
-    s_new, _, _ = sec.krylov(sec.vec(la_new, jnp.ones_like(la_new)), s)
+    if SPEC.get('krylov', True):
+        s_new, _, _ = sec.krylov(sec.vec(la_new, jnp.ones_like(la_new)), s)
+    else:
+        s_new = s                                               # amplitude steps only
     rec['H_kry'] = H_site(la_new, s_new)
+    if SPEC.get('lanczos_eval'):                               # one exact Lanczos step on top of the new guide
+        vg = sec.vec(la_new, s_new)
+        rl = lanczos_ritz(lambda x: sec.Hm(x), vg, 1)[1]; del vg
+        rec['lanczos_H'] = (rl['E'] - sec.E0) / N
+        psi = rl['psi']; la_l = jnp.log(jnp.maximum(jnp.abs(psi) / sec.sqrt_n, 1e-300))
+        s_l = jnp.where(psi >= 0, 1.0, -1.0).astype(jnp.float32); del psi, rl
+        _, _, il = sec.fn_solve(la_l, s_l); rec['lanczos_E_FN'] = il['dE_FN_site']; del la_l, s_l
+        log(f'   + Lanczos p1: <H> {rec["lanczos_H"]:.4e}  E_FN {rec["lanczos_E_FN"]:.4e}')
+    if SPEC.get('ws'):
+        rec['w_s_oldsign'] = sec.score(la_new, s)['w_s']; rec['w_s_kry'] = sec.score(la_new, s_new)['w_s']
+        log(f'   w_s: old sign {rec["w_s_oldsign"]:.3e}  Krylov {rec["w_s_kry"]:.3e}')
     if not pdir or k in distill_at:
         _, _, i2 = sec.fn_solve(la_new, s_new); rec['E_FN_next'] = i2['dE_FN_site']
     rec['sec'] = time.time() - t0

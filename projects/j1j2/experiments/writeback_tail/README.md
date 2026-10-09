@@ -174,3 +174,21 @@ steps, plus exact evaluations at 10k and 20k steps. A phi-based validation estim
 - Option B goes to 8x8 if its pointwise variant keeps >= 0.5 per iteration through iteration 5. Pointwise needs
   targets at x only: ~9e3 base evaluations per sample at 8x8 instead of ~8e4.
 - If neither C nor pointwise B qualifies: report edge-loss B with its cost.
+
+## Amendment 6: reviewer validation tests (REVIEW_2026-10-07 section E), pre-registered 2026-10-09 before running
+- **(a) Lanczos on top.** Replay the wtLOOP8 guides (stored nets, exact). After each iteration k = 1..8, apply one
+  exact Lanczos step (optimal alpha, `lanczos_baseline_6x6/lanczos_lib.py`) to the guide; report <H> and E_FN.
+  - Reference: Lanczos p1 on psi_P, 2.55e-5 / 1.89e-5.
+  - Reading: the loop adds value only if "loop guide k + Lanczos" is below "psi_P + Lanczos" (2.55e-5) for some k.
+    At equal hop count the comparison is loop k (k hops) vs Lanczos p_k on psi_P; p1 and p2 are known
+    (2.55e-5, 8.6e-6).
+- **(b) Supervised-Lanczos control.** The same FEAT net, samples (proposal built from T), loss and steps, regressed on
+  the one-hop Lanczos target L = log|1 + alpha E_L| (E_L the guide's own local energy, alpha the optimal Lanczos
+  coefficient) instead of the semi-implicit FN target T.
+  - 3-iteration loop, seeds 1 and 2; compared with the T loop (c) at equal seeds and iterations.
+  - Rule: if the L loop reaches <H> within the T loop's seed spread after 3 iterations, the loop's write-back is a
+    supervised Lanczos step and the FN target adds nothing over Lanczos. This will be stated as such.
+- **(c) Seeds.** The T loop for iterations 1-3 with seeds 1, 2, 3, plus the two existing trajectories (wtLOOP, wtLOOP8);
+  report the mean and spread of capture, <H> and E_FN.
+- **(d) Amplitude only.** The T loop for iterations 1-3 without the Krylov sign step (seed 1).
+- Budget <= 4 GPU-h. Code: `wt_loop.py` options `target`, `krylov`, `seed`, `lanczos_eval`.

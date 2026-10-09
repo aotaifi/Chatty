@@ -1,0 +1,10 @@
+{
+ "B": 256,
+ "K": 8,
+ "lr": 0.003,
+ "steps": 20000,
+ "features": "current",
+ "n_loop": 3,
+ "seed": 1,
+ "lanczos_eval": true
+}

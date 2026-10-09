@@ -1,0 +1,10 @@
+{
+ "n_loop": 8,
+ "B": 256,
+ "K": 8,
+ "lr": 0.003,
+ "features": "current",
+ "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+ "ws": true,
+ "light": true
+}

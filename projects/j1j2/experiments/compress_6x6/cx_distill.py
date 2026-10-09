@@ -24,15 +24,29 @@ from lanczos_lib import lanczos_ritz
 
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 F = os.path.join(OUT, 'cx_distill.json'); T00 = time.time()
+REMAT = SPEC.get('remat', 1)                 # 4 on 24 GB A40 slices (training memory / 4, ~1.3x compute)
 ARM = SPEC['arm']; K_IT = SPEC['k']; SEED = SPEC.get('seed', 0)
 SMOKE = SPEC.get('smoke', False)
 lab = Lab(); sec = lab.sec
 if SMOKE:                                    # throughput / code-path check only: target = psi_P itself
     REFS = {}; la_k, s_k = lab.lP0, lab.sP0
 else:
-    REFS = json.load(open(SPEC.get('refs', os.path.join(TABDIR, 'cx_replay.json'))))['refs'][str(K_IT)]
+    REFS = None                              # loaded at evaluation time (the replay job may still be running)
     la_k, s_k = load_guide(K_IT)
-res = dict(spec=SPEC, refs={q: v for q, v in REFS.items() if q != 'base_fidelity'})
+res = dict(spec=SPEC)
+
+
+def load_refs(wait=5400):
+    path = SPEC.get('refs', os.path.join(TABDIR, 'cx_replay.json'))
+    t0 = time.time()
+    while True:
+        try:
+            r = json.load(open(path))['refs'][str(K_IT)]
+            if 'base_fidelity' in r: return r
+        except Exception:
+            pass
+        if time.time() - t0 > wait: raise RuntimeError('replay references not available: ' + path)
+        time.sleep(60)
 
 
 # ============================================================================================ students
@@ -53,8 +67,12 @@ class VitStudent:
         def f(flat, X):                                        # X (B, N) +-1 -> (B,) log A, exactly symmetric
             p = {'params': unravel(flat)}
             B_ = X.shape[0]
-            Xg = jnp.stack([X[:, INV8[k // 2]] * SG2[k % 2] for k in range(16)], 0).reshape(16 * B_, N)
-            zs = vit_dt.logpsi_transl_2d(vit.apply, 2, p, Xg).reshape(16, B_)
+            Xg = jnp.stack([X[:, INV8[k // 2]] * SG2[k % 2] for k in range(16)], 0)
+            if REMAT > 1:                                      # image groups evaluated sequentially, rematerialised
+                body = jax.checkpoint(lambda Xi: vit_dt.logpsi_transl_2d(vit.apply, 2, p, Xi))
+                zs = jax.lax.map(body, Xg.reshape(REMAT, (16 // REMAT) * B_, N)).reshape(16, B_)
+            else:
+                zs = vit_dt.logpsi_transl_2d(vit.apply, 2, p, Xg.reshape(16 * B_, N)).reshape(16, B_)
             if mode == 'warm':
                 m = jnp.max(jnp.real(zs), 0)
                 return m + jnp.log(jnp.abs(jnp.sum(jnp.exp(zs - m[None, :]), 0)))
@@ -201,7 +219,7 @@ batch_tr = mb(CDF_TR, LIW_TR, True)
 batch_va = mb(CDF_TR, LIW_TR, True)
 batch_te = mb(CDF_TE, LIW_TE, False)                                   # held-out x, all bonds
 steps = SPEC.get('steps', 8000); lr = SPEC.get('lr', 1e-4)
-sched = optax.warmup_cosine_decay_schedule(0.0, lr, SPEC.get('warmup', 300), steps, lr * 0.02)
+sched = optax.warmup_cosine_decay_schedule(0.0, lr, min(SPEC.get('warmup', 300), max(1, steps // 4)), steps, lr * 0.02)
 opt = optax.adam(sched)
 flat = model.flat0; ost = opt.init(flat)
 
@@ -261,7 +279,12 @@ res['cost'] = dict(sec_per_4096_base=t_base, sec_per_4096_student=t_st, base_equ
 log(f'[cost] base {t_base:.4f}s student {t_st:.4f}s per 4096 -> {t_st / t_base:.3f} base passes')
 dump(F, res)
 
+if not SPEC.get('eval', True):                                     # lr scan: own loss only
+    res['sec'] = time.time() - T00; dump(F, res); log('DONE (no eval)', res['sec']); sys.exit(0)
+
 # ============================================================================================ exact evaluation
+if not SMOKE:
+    REFS = load_refs(); res['refs'] = {q: v for q, v in REFS.items() if q != 'base_fidelity'}
 dec, _ = lab.decade_of(la_k)
 smp = sample_by_decade(lab, dec, SPEC.get('fid_M', 2048), seed=7)
 te = time.time()

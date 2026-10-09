@@ -117,8 +117,11 @@ class Lab:
         K1 = self.Kop(UA * e, s); CT = e * e * UA * KUA - 2 * e * UA * K1; del K1
         CT = jnp.maximum(0.5 * (CT + UA * self.Kop(UA * e * e, s)), 0.0)
         qb = jnp.exp(la - jnp.max(la)) * sec.n; qb = qb / jnp.sum(qb)
-        Q = 0.5 * qb + 0.5 * CT / jnp.sum(CT)
-        meas = 0.5 * PA + 0.5 * CT / jnp.sum(CT)
+        sct = float(jnp.sum(CT))
+        if sct > 0:
+            Q = 0.5 * qb + 0.5 * CT / sct; meas = 0.5 * PA + 0.5 * CT / sct
+        else:                                                  # zero target (smoke): no tail component
+            Q = qb; meas = PA
         return Q, PA, meas
 
     @staticmethod

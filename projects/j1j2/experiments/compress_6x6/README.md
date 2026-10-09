@@ -107,3 +107,22 @@ conceptual limit (e.g. capacity: loss flat at a floor with held-out = training; 
 ## Budget
 <= 8 A40-h on ws1 (full A40, cip,inter): replay + P1 ~0.8, smoke 0.3, six ViT runs ~4.5, four B runs ~1.2, P3 ~1.
 Runs: `/project/theorie/a/A.Otaifi/chatty_compress6/runs/`. Code and specs in this directory.
+
+## Amendment 1 (2026-10-09 11:00, after smoke tests and the first P1 points, before any P2 run)
+- **P1 extension.** At iteration 1 every pre-registered eta already loses far more than 10% of the step (VW model:
+  eta 0.01 -> frac 0.19 vs 0.75; bond model: eta 0.01 -> 0.54). So eta\* < 0.01 for both models. To locate it,
+  eta = 0.001 and 0.003 are added (`cx_p1ext.py`, same models; guides from the replay tables). The eta\* rule is
+  unchanged (largest tested eta with frac >= 0.9 x unperturbed in all three iterations).
+- **A' learning rate.** Smoke (`cxSMsl_17092262`, target = psi_P itself, so the gradient is fp32 noise): Adam at
+  peak lr 1e-4 moved the warm ViT from loss 4.5e-11 to 5e-2 in 20 steps (stiff landscape, stall_6x6 test 1). The
+  pre-registered 1e-4 is therefore replaced by a short scan on k = 3, seed 0: 600 steps at lr in {1e-6, 3e-6, 1e-5,
+  3e-5}, choose the largest lr whose training-orbit own loss at step 600 is lowest (own loss only; no energy, no
+  held-out data). A from scratch: scan {3e-4, 1e-3} the same way. The chosen lr is used for both k and both seeds.
+- **Steps (from measured throughput).** ViT students: 0.33 s/step (B = 128 x 8 bonds, 16 images x 4 translations,
+  fp32) on a 24 GB A40 slice with the jax 0.8.2 venv; the full-sector ViT table takes ~14 min. A and A' get 4000 Adam
+  steps (~22 min) each. B: 20k steps (12 ms/step).
+- **Hardware.** Runs may use the A40 vGPU slices (`cx_slice.sbatch`, cluster/A40_SLICES_HOWTO.md, jax 0.8.2 venv;
+  fp32 ViT outputs differ from jax 0.10.2 at rms 1e-4, below the 3e-3 target). On slices the ViT training forward
+  is evaluated in 4 sequential image groups with rematerialisation (`remat: 4`; same function, less memory).
+- Warm-start check (smoke): log A' - log|psi_P| on 4096 orbits: rms 1.0e-4, max 3.4e-3 (fp32 floor of the coherent
+  16-image sum).

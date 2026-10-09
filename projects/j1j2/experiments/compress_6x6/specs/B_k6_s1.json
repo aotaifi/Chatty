@@ -1,0 +1,1 @@
+{"arm": "bond", "k": 6, "seed": 1, "steps": 20000, "lr": 1e-3, "B": 256, "val_every": 2000, "refs": "/project/theorie/a/A.Otaifi/chatty_compress6/tables/cx_replay.json"}

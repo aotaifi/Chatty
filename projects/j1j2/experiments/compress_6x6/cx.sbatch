@@ -21,5 +21,5 @@ if [ $# -ge 1 ]; then cp "$1" "$OUT/spec.json"; ARGS=("$OUT/spec.json"); fi
 export XLA_FLAGS="${CX_XLA:---xla_gpu_autotune_level=0}" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=${CX_MEMFRAC:-0.92} OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 { echo "job_id=${SLURM_JOB_ID}"; echo "host=$(hostname)"; echo "script=$SCRIPT"; echo "spec=${1:-}"; echo "started=$(date -Is)"; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; } > "$OUT/run_metadata.txt"
 cd "$OUT/code"
-"/home/a/A.Otaifi/chatty_ll6/venv_gpu/bin/python" "$SCRIPT" "$OUT" "${ARGS[@]}"
+"${CX_PY:-/project/theorie/a/A.Otaifi/a40slice/venv_jax_0.8.2/bin/python}" "$SCRIPT" "$OUT" "${ARGS[@]}"
 echo "finished=$(date -Is)" >> "$OUT/run_metadata.txt"

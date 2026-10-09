@@ -1,0 +1,1 @@
+{"arm": "vit_warm", "k": 3, "seed": 0, "opt": "gn", "gn_steps": 30, "gn_log": 5, "val_every": 10, "B": 128, "K": 8, "lam0": 1e-2, "eval": false, "remat": 4}

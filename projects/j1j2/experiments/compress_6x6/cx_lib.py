@@ -259,7 +259,7 @@ def loop_step(lab, la, s, params, Efn=None, seed=1, feats=None, T_override=None,
 
 
 # ============================================================================================ fidelity (sampled)
-def sample_by_decade(lab, dec, M, seed, decs=range(-7, -16, -1)):
+def sample_by_decade(lab, dec, M, seed, decs=range(-5, -16, -1)):
     """up to M reps per decade from the training and the held-out reps; decade -15 collects everything <= 1e-15."""
     rng = np.random.default_rng(seed)
     dec_h = np.asarray(dec); ho = np.asarray(lab.HO)

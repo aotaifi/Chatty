@@ -248,6 +248,72 @@ curve = [dict(step=0, sec=0.0, **val(flat))]
 log(f'[{ARM} k={K_IT} seed {SEED}] npar {model.npar}  step 0 val {curve[-1]}')
 key = jax.random.PRNGKey(100 + SEED); tt = time.time(); run_loss = []
 every = SPEC.get('val_every', 500)
+OPT = SPEC.get('opt', 'adam')
+if OPT == 'gn':
+    # damped Gauss-Newton on the residuals of the same loss (minSR form: (J J^T + lam) a = r, d = -J^T a), sample space.
+    # Residuals: value sqrt(LAM iw/B)(e_x - m) and edge sqrt(iw w / (B N))(e_x - e_y), so sum r^2 = L_ratio + LAM L_value.
+    # A step is accepted only if the loss falls on n_acc FRESH training-orbit batches (paired old/new); lam adapts.
+    assert ARM in ('vit_warm', 'vit_scratch')
+    JCH = SPEC.get('jac_chunk', 256)
+    s_one = lambda fl, X1: model.f(fl, X1[None])[0]
+    jac_rows = jax.jit(jax.vmap(jax.grad(s_one), in_axes=(None, 0)))
+    fwd = jax.jit(lambda fl, X: model.f(fl, X).astype(f64))
+
+    def residual_parts(Sv, x, y, tx, ty, w, iw):
+        ex = Sv[:B_] - tx; ey = Sv[B_:].reshape(B_, K_) - ty
+        iwn = iw / jnp.mean(iw)
+        m = jnp.sum(iwn * ex) / B_
+        rv = jnp.sqrt(LAM * iwn / B_) * (ex - m)
+        ce = jnp.sqrt(iwn[:, None] * w / (B_ * N))
+        re = ce * (ex[:, None] - ey)
+        return jnp.concatenate([rv, re.reshape(-1)]), iwn, ce
+
+    def gn_direction(fl, bd, lam_rel):
+        x, y, tx, ty, w, iw = bd
+        X = bits(jnp.concatenate([x, y.reshape(-1)]))
+        Sv = fwd(fl, X)
+        r, iwn, ce = residual_parts(Sv, x, y, tx, ty, w, iw)
+        G = jnp.concatenate([jac_rows(fl, X[i:i + JCH]) for i in range(0, X.shape[0], JCH)])   # (B(1+K), P)
+        Gx = G[:B_]; Gy = G[B_:].reshape(B_, K_, -1)
+        gbar = jnp.sum(iwn[:, None] * Gx, 0) / B_
+        Jv = jnp.sqrt(LAM * iwn / B_)[:, None] * (Gx - gbar[None])
+        Je = (ce[:, :, None] * (Gx[:, None, :] - Gy)).reshape(B_ * K_, -1)
+        del G, Gx, Gy
+        Jm = jnp.concatenate([Jv, Je]); del Jv, Je
+        Tm = (Jm @ Jm.T).astype(f64)
+        lam = lam_rel * jnp.trace(Tm) / Tm.shape[0]
+        a = jnp.linalg.solve(Tm + lam * jnp.eye(Tm.shape[0]), r)
+        d = -(Jm.T @ a.astype(jnp.float32))
+        return d, float(jnp.sum(r * r))
+
+    lam_rel = SPEC.get('lam0', 1e-2); n_acc = SPEC.get('n_acc', 3); acc_hist = []
+    for it in range(1, SPEC.get('gn_steps', 400) + 1):
+        key, kk = jax.random.split(key)
+        ks = jax.random.split(kk, n_acc + 1)
+        d, l = gn_direction(flat, batch_tr(ks[0]), lam_rel)
+        accb = [batch_tr(q) for q in ks[1:]]
+        l_old = np.mean([float(lval(flat, bd)[0]) for bd in accb])
+        cand = flat + d
+        l_new = np.mean([float(lval(cand, bd)[0]) for bd in accb])
+        ok = bool(np.isfinite(l_new) and l_new < l_old)
+        if ok:
+            flat = cand; lam_rel = max(lam_rel / 2, 1e-6)
+        else:
+            lam_rel = min(lam_rel * 4, 1e3)
+        acc_hist.append(dict(it=it, ok=ok, lam_rel=lam_rel, l_batch=l, l_old=l_old, l_new=l_new,
+                             dnorm=float(jnp.linalg.norm(d))))
+        run_loss.append(l_old)
+        if it % SPEC.get('gn_log', 20) == 0:
+            log(f'  gn {it}: acc {np.mean([q["ok"] for q in acc_hist[-20:]]):.2f} lam_rel {lam_rel:.2e} '
+                f'loss {l_old:.4e}->{l_new:.4e} |d| {acc_hist[-1]["dnorm"]:.2e}')
+        if it % every == 0:
+            curve.append(dict(step=it, sec=time.time() - tt, run_loss=float(np.mean(run_loss[-20:])), **val(flat)))
+            log(f'  step {it} {curve[-1]}')
+            res['curve'] = curve; res['gn_hist'] = acc_hist; dump(F, res)
+    if curve[-1]['step'] != it:
+        curve.append(dict(step=it, sec=time.time() - tt, run_loss=float(np.mean(run_loss[-20:])), **val(flat)))
+    res['curve'] = curve; res['gn_hist'] = acc_hist
+    steps = 0                                                  # skip the Adam loop
 for it in range(1, steps + 1):
     key, kk = jax.random.split(key)
     flat, ost, l, aux = step(flat, ost, kk)

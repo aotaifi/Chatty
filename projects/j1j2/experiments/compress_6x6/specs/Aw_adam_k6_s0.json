@@ -1,0 +1,1 @@
+{"arm": "vit_warm", "k": 6, "seed": 0, "steps": 4000, "lr": 1e-6, "val_every": 500, "refs": "/project/theorie/a/A.Otaifi/chatty_compress6/tables/cx_replay.json", "save_table": true}

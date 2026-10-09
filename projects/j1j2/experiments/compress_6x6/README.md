@@ -126,3 +126,37 @@ Runs: `/project/theorie/a/A.Otaifi/chatty_compress6/runs/`. Code and specs in th
   is evaluated in 4 sequential image groups with rematerialisation (`remat: 4`; same function, less memory).
 - Warm-start check (smoke): log A' - log|psi_P| on 4096 orbits: rms 1.0e-4, max 3.4e-3 (fp32 floor of the coherent
   16-image sum).
+
+## Amendment 2 (2026-10-09 12:50, after the lr scans, before any P2 evaluation)
+**Replay** (`cxREP_17091969`, 2.0 A40-h): every iteration reproduces wtLOOP8 (frac and <H> to all printed digits).
+References (same sign s_k): k = 3: <H> stack 6.289e-5, psi_P amplitude 1.273e-4; E_FN stack 5.252e-5, psi_P
+9.294e-5; table continuation (iteration 4) frac 0.722. k = 6: <H> 4.030e-5 vs 1.297e-4; E_FN 3.468e-5 vs 9.309e-5;
+continuation (iteration 7) 0.511. Stack + one exact Lanczos step: 2.17e-5 (k = 3), 1.55e-5 (k = 6).
+
+**lr scans (k = 3, seed 0, 600 steps, own training-orbit loss; start 2.24e-4 for the warm ViT):**
+
+| arm | lr | loss at 200 / 400 / 600 |
+|---|---|---|
+| A' | 1e-6 | 2.24e-4 / 2.51e-4 / **2.20e-4** |
+| A' | 3e-6 | 5.34e-4 / 3.85e-4 / 2.73e-4 |
+| A' | 1e-5 | 4.57e-4 / 4.21e-4 / 3.26e-4 |
+| A' | 3e-5 | 8.79e-4 / 4.61e-4 / (n/a) |
+| A | 3e-4 | 0.271 / - / 0.156 |
+| A | 1e-3 | - / - / **0.113** |
+
+By the amendment-1 rule A' uses lr 1e-6 and A lr 1e-3. Every A' lr first RAISES the loss (Adam's per-parameter steps
+hit the stiff directions of the converged ViT); at 1e-6 the loss is flat (-2% in 600 steps). A from scratch is three
+orders of magnitude above the warm start's loss after 600 steps.
+
+Consequences (decided now, before any evaluation):
+- **New arm A'-GN (the state-of-the-art optimizer for this least-squares problem):** same student, same loss, written
+  as residuals (value sqrt(lam iw/B)(e_x - m), edge sqrt(iw w/(B N))(e_x - e_y)); damped Gauss-Newton in sample space
+  (minSR form: (J J^T + lam I) a = r, step -J^T a), B = 128 x 8 bonds (1152 residuals), lam relative to tr(JJ^T)/M,
+  starting at 1e-2, halved on acceptance, x4 on rejection; a step is accepted only if the loss falls on 3 FRESH
+  training-orbit batches (paired old/new). It is evaluated exactly like A'. k = 3 and k = 6, seed 0; seed 1 if
+  share_H >= 0.4. Step count set from its smoke throughput (amendment 3 if changed).
+- A' with Adam: seed 0 only at both k (the scan shows a flat loss; a second seed cannot move the verdict).
+- A from scratch: k = 6, seed 0 only (k = 3 adds nothing at a loss 500x the warm start's).
+- Fidelity decades now include 1e-6 and 1e-5 (the replay's psi_P fidelity reference covers 1e-7 .. <= 1e-15 only).
+- New jobs run with the jax 0.8.2 venv on full A40s too (measured faster: 0.33 vs 0.5 s/step; fp32 differences at
+  rms 1e-4).

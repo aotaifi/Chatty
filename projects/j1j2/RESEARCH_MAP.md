@@ -109,12 +109,12 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 ## 5b. Compute note
 - When Paderborn is back from maintenance (expected ~Oct 9-12), move GPU-heavy work there (H100s; ws1 A40s are slow and the queue is congested). Access via ws1 VPN; if login2 is down use `ssh -o HostName=login1 -o HostKeyAlias=login2 paderborn` (same host key). Check `sinfo` there first.
 
-## 6. Running now (2026-10-08)
+## 6. Running now (2026-10-09)
 | Work | Owner | Budget |
 |---|---|---|
-| Write-back re-test: tail sampling + energy loss; optimizer arms SR/minSR and Gauss-Newton in Q (Adam = baseline); minSR fine-tuning the ViT itself; 'jump' fit of the ViT to the 3-iteration FN state + VMC polish (results/writeback_tail/) | Opus | <= 15 GPU-h |
-| Imaginary-time fitting with H_FN (SR/Gauss-Newton fits, explicit vs implicit steps, stiffness pre-registered; sampling from |a|^2 vs FN mixed a*phi_FN (walker idea) vs tail; VMC control) (results/itfit_6x6/) | Opus | <= 15 GPU-h |
-| Research Workspace: review request seq99; Chatty replied seq100; awaiting Tim | - | - |
+| Validations from review E: Lanczos on top of loop guides, supervised-Lanczos control, 3 seeds, amplitude-only loop, w_s along the loop (results/writeback_tail/) | Opus | <= 4.5 GPU-h |
+| Compression pre-tests: V/W sensitivity; distil wtLOOP8 stack into ViT (fresh/warm), bond-ratio net, one-layer edge aggregation (results/compress_6x6/) | Opus | <= 8 GPU-h |
+| 8x8 one-iteration route-B test with same-sample VMC control, calibrated referee (results/loop_8x8/) — PI go 2026-10-09 | Opus | <= 20 GPU-h |
 
 ## 7. Pending at 2026-10-08 evening (usage limit hit)
 - Queued on ws1 (writeback_tail, results land in /project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/<job>_<id>/wt.json; expected starts 20:45 -> 05:40): wtC48 16948146 (63k), wtC96 16998622 (250k), wtEXP 16961949 (tail expert), wtKA 16976428 (learnability, real target, neighbourhood inputs, edge sampling), wtKB 17009145 (shuffled control), wtKGN 16976430 (global Gauss-Newton). Nobody folds them in: resume the writeback_tail worker or read the wt.json files directly. Low fair share because other campaigns hold ~730 running jobs; move to Paderborn when back.

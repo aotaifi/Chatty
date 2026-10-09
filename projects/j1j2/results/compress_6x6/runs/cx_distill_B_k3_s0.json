@@ -1,0 +1,282 @@
+{
+ "spec": {
+  "arm": "bond",
+  "k": 3,
+  "seed": 0,
+  "B": 256,
+  "refs": "/project/theorie/a/A.Otaifi/chatty_compress6/tables/cx_replay.json",
+  "load_params": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cxB_k3_s0_17092988/params_final.npy"
+ },
+ "npar": 252356,
+ "loaded_from": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cxB_k3_s0_17092988/params_final.npy",
+ "train_sec": 0.006047964096069336,
+ "cost": {
+  "sec_per_1024_base": 0.0526885986328125,
+  "sec_per_1024_student": 0.003389596939086914,
+  "base_equiv": 0.06433264552562988,
+  "note": "base = symmetrised ViT psi_P (16 images x 4 patch translations), fp32, same batch"
+ },
+ "refs": {
+  "k": 3,
+  "H_stack": 6.289017712300825e-05,
+  "E_FN_stack": 5.252146819343137e-05,
+  "H_base_sk": 0.00012725877342864876,
+  "E_FN_base_sk": 9.293855121919294e-05,
+  "frozen_stack": 6.289017712310694e-05,
+  "frozen_base": 0.00017052366716866865,
+  "lanczos_H_stack": 2.1746453410366308e-05,
+  "continuation_frac_table": 0.7220969567012843,
+  "continuation_H_table": 5.195484220601701e-05,
+  "decade_mass": {
+   "-16": 4.5469230147859626e-07,
+   "-15": 5.775863002998143e-06,
+   "-14": 5.9820830874531916e-05,
+   "-13": 0.00048812193544672827,
+   "-12": 0.0030351777957991826,
+   "-11": 0.014919860308368279,
+   "-10": 0.05809220609346767,
+   "-9": 0.15884017874401946,
+   "-8": 0.2875079953123439,
+   "-7": 0.281916546250987,
+   "-6": 0.15350851624104525
+  },
+  "sec": 54.35673213005066
+ },
+ "eval": {
+  "fidelity": [
+   {
+    "decade": -5,
+    "split": "train",
+    "n_reps": 9,
+    "n_bonds": 728,
+    "ratio_rms_w": 0.020260774708616286,
+    "ratio_rms": 0.15784363913699073,
+    "logV_rms": 0.041495168900830624,
+    "logW_rms": 0.003928618841000106
+   },
+   {
+    "decade": -5,
+    "split": "test",
+    "n_reps": 4,
+    "n_bonds": 324,
+    "ratio_rms_w": 0.02250384396380738,
+    "ratio_rms": 0.1899140656075532,
+    "logV_rms": 0.017501709101201118,
+    "logW_rms": 0.0020742591448019458
+   },
+   {
+    "decade": -6,
+    "split": "train",
+    "n_reps": 161,
+    "n_bonds": 13154,
+    "ratio_rms_w": 0.030488245871663402,
+    "ratio_rms": 0.2763186438497292,
+    "logV_rms": 0.04078504834714248,
+    "logW_rms": 0.004934466226084598
+   },
+   {
+    "decade": -6,
+    "split": "test",
+    "n_reps": 42,
+    "n_bonds": 3384,
+    "ratio_rms_w": 0.03009341420261512,
+    "ratio_rms": 0.2647029471255589,
+    "logV_rms": 0.01562722950263085,
+    "logW_rms": 0.0033183050591482906
+   },
+   {
+    "decade": -7,
+    "split": "train",
+    "n_reps": 1890,
+    "n_bonds": 155218,
+    "ratio_rms_w": 0.047269996012386066,
+    "ratio_rms": 0.33818562587016715,
+    "logV_rms": 0.024022202799178348,
+    "logW_rms": 0.005336432933389516
+   },
+   {
+    "decade": -7,
+    "split": "test",
+    "n_reps": 451,
+    "n_bonds": 37142,
+    "ratio_rms_w": 0.04919581516898584,
+    "ratio_rms": 0.3271248181039449,
+    "logV_rms": 0.024869839451269783,
+    "logW_rms": 0.0053237574763551065
+   },
+   {
+    "decade": -8,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 168222,
+    "ratio_rms_w": 0.07408490772848846,
+    "ratio_rms": 0.42067351566295685,
+    "logV_rms": 0.032835577364156016,
+    "logW_rms": 0.009820015963540778
+   },
+   {
+    "decade": -8,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 168272,
+    "ratio_rms_w": 0.07346658804095324,
+    "ratio_rms": 0.41605659296926134,
+    "logV_rms": 0.035071094624175785,
+    "logW_rms": 0.010287906304236098
+   },
+   {
+    "decade": -9,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 167380,
+    "ratio_rms_w": 0.11785913370323989,
+    "ratio_rms": 0.5173855636754662,
+    "logV_rms": 0.057328870847438686,
+    "logW_rms": 0.022327186458683167
+   },
+   {
+    "decade": -9,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 167174,
+    "ratio_rms_w": 0.11971195614875245,
+    "ratio_rms": 0.5248027823605442,
+    "logV_rms": 0.05848201958350233,
+    "logW_rms": 0.023314427899873133
+   },
+   {
+    "decade": -10,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 165190,
+    "ratio_rms_w": 0.19029668149858361,
+    "ratio_rms": 0.6557406655163042,
+    "logV_rms": 0.11334250214957191,
+    "logW_rms": 0.05532617696671121
+   },
+   {
+    "decade": -10,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 165436,
+    "ratio_rms_w": 0.19773604878550124,
+    "ratio_rms": 0.6576833624137907,
+    "logV_rms": 0.12635393658739838,
+    "logW_rms": 0.060395352429206815
+   },
+   {
+    "decade": -11,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 163166,
+    "ratio_rms_w": 0.31137757061649834,
+    "ratio_rms": 0.8107872046923833,
+    "logV_rms": 0.2196172560541919,
+    "logW_rms": 0.12143744106074215
+   },
+   {
+    "decade": -11,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 163108,
+    "ratio_rms_w": 0.31631408034759567,
+    "ratio_rms": 0.8065174912025407,
+    "logV_rms": 0.2164323961712696,
+    "logW_rms": 0.12822773106789478
+   },
+   {
+    "decade": -12,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 160882,
+    "ratio_rms_w": 0.4630987118801044,
+    "ratio_rms": 0.960960011262861,
+    "logV_rms": 0.34873774142698166,
+    "logW_rms": 0.21617453543042287
+   },
+   {
+    "decade": -12,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 161008,
+    "ratio_rms_w": 0.5084187861467275,
+    "ratio_rms": 0.9653602438305898,
+    "logV_rms": 0.35224837566884865,
+    "logW_rms": 0.226731768762327
+   },
+   {
+    "decade": -13,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 158004,
+    "ratio_rms_w": 0.7415906631651698,
+    "ratio_rms": 1.0850303964998005,
+    "logV_rms": 0.46928793616852144,
+    "logW_rms": 0.3306084983304571
+   },
+   {
+    "decade": -13,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 157864,
+    "ratio_rms_w": 0.7065405565728825,
+    "ratio_rms": 1.0809400214836784,
+    "logV_rms": 0.46694076254243083,
+    "logW_rms": 0.3319841679411397
+   },
+   {
+    "decade": -14,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 154570,
+    "ratio_rms_w": 1.089252263819314,
+    "ratio_rms": 1.18043434417986,
+    "logV_rms": 0.5938649039110947,
+    "logW_rms": 0.4776092965837844
+   },
+   {
+    "decade": -14,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 154400,
+    "ratio_rms_w": 1.1453427533752296,
+    "ratio_rms": 1.1812314414412544,
+    "logV_rms": 0.5933231886885467,
+    "logW_rms": 0.4802695695549446
+   },
+   {
+    "decade": -15,
+    "split": "train",
+    "n_reps": 2048,
+    "n_bonds": 145686,
+    "ratio_rms_w": 2.8796016311871235,
+    "ratio_rms": 1.4514789018937282,
+    "logV_rms": 1.1617993172139318,
+    "logW_rms": 1.1447191823036733
+   },
+   {
+    "decade": -15,
+    "split": "test",
+    "n_reps": 2048,
+    "n_bonds": 145138,
+    "ratio_rms_w": 2.9839574428859206,
+    "ratio_rms": 1.5087600972102695,
+    "logV_rms": 1.2200991433368045,
+    "logW_rms": 1.207167681845964
+   }
+  ],
+  "vw_sec": 99.41606879234314,
+  "logV_rms_pa": 0.04977307114756522,
+  "logW_rms_pa": 0.024112925214975288,
+  "continuation": {
+   "SI_target_frac": -6.739622082432973,
+   "rms_f_pa": 0.032442412316157826,
+   "frac": -35.96919915514482,
+   "ideal_gain_site": 1.0368708929675563e-05,
+   "H_kry": 0.0002145846733080011,
+   "frac_rel_table": -49.81214616865432
+  },
+  "eval_sec": 326.90892243385315
+ },
+ "sec": 370.08084177970886
+}

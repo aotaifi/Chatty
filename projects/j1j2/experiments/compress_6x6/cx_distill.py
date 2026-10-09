@@ -249,6 +249,9 @@ log(f'[{ARM} k={K_IT} seed {SEED}] npar {model.npar}  step 0 val {curve[-1]}')
 key = jax.random.PRNGKey(100 + SEED); tt = time.time(); run_loss = []
 every = SPEC.get('val_every', 500)
 OPT = SPEC.get('opt', 'adam')
+if SPEC.get('load_params'):                                            # evaluation only, from a finished run
+    flat = jnp.asarray(np.load(SPEC['load_params']), jnp.float32); steps = 0; OPT = 'loaded'
+    res['loaded_from'] = SPEC['load_params']
 if OPT == 'gn':
     # damped Gauss-Newton on the residuals of the same loss (minSR form: (J J^T + lam) a = r, d = -J^T a), sample space.
     # Residuals: value sqrt(LAM iw/B)(e_x - m) and edge sqrt(iw w / (B N))(e_x - e_y), so sum r^2 = L_ratio + LAM L_value.
@@ -324,8 +327,8 @@ for it in range(1, steps + 1):
         log(f'  step {it} {curve[-1]}')
         res['curve'] = curve; dump(F, res)
 res['train_sec'] = time.time() - tt
+del CDF_TR, CDF_TE, LIW_TR, LIW_TE, VB, TB                            # free device memory for the evaluation
 np.save(os.path.join(OUT, 'params_final.npy'), np.asarray(flat))
-sec.reload()
 
 
 # ============================================================================================ cost
@@ -336,14 +339,16 @@ def timeit(fn, *a, n=5):
     return float(np.median(ts))
 
 
-xs = sec.reps[:4096]
+xs = sec.reps[:1024]                                               # H still offloaded here (memory)
 base = VitStudent('warm', 0)
 t_base = timeit(base._tab, base.flat0, xs)
 t_st = timeit(model._tab, flat, xs) if hasattr(model, '_tab') else timeit(model._R, flat, xs)
-res['cost'] = dict(sec_per_4096_base=t_base, sec_per_4096_student=t_st, base_equiv=t_st / t_base,
+res['cost'] = dict(sec_per_1024_base=t_base, sec_per_1024_student=t_st, base_equiv=t_st / t_base,
                    note='base = symmetrised ViT psi_P (16 images x 4 patch translations), fp32, same batch')
-log(f'[cost] base {t_base:.4f}s student {t_st:.4f}s per 4096 -> {t_st / t_base:.3f} base passes')
+log(f'[cost] base {t_base:.4f}s student {t_st:.4f}s per 1024 -> {t_st / t_base:.3f} base passes')
+del base
 dump(F, res)
+sec.reload()
 
 if not SPEC.get('eval', True):                                     # lr scan: own loss only
     res['sec'] = time.time() - T00; dump(F, res); log('DONE (no eval)', res['sec']); sys.exit(0)
@@ -405,7 +410,7 @@ else:
     res['eval'] = ev; dump(F, res)
     if SPEC.get('continuation', True):
         # V_B, W_B on every orbit from one forward pass of R (neighbour signs from the table s_k)
-        Vb = []; Wb = []; ch = SPEC.get('vw_chunk', 16384)
+        Vb = []; Wb = []; ch = SPEC.get('vw_chunk', 8192)
 
         @jax.jit
         def vw_chunk(fl, ii):

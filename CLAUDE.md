@@ -22,7 +22,7 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 
 ## Operations
 - Work in the git worktree ~/Chatty-organize (branch j1j2-organize); never edit ~/Chatty directly (another agent's uncommitted state). Commit, `git fetch && git merge --ff-only origin/main`, `git push origin HEAD:main`, `git -C ~/Chatty merge --ff-only origin/main`. Always push. No files > 5 MB in git.
-- Cluster ws1 (LMU theorie): full A40 `--gres=gpu:a40:1` (cip,inter) or RTX 2080 Ti `--partition=inter --gres=gpu:rtx2080ti:1`; V100 and a40-NNgb slices fail with our JAX build; ViT at full fp32. Large files on /project, not /home. Prefer Paderborn H100s when available (login1 if login2 is down).
+- Cluster ws1 (LMU theorie): full A40 `--gres=gpu:a40:1` (cip,inter) or RTX 2080 Ti `--partition=inter --gres=gpu:rtx2080ti:1`; V100 fails; a40-NNgb vGPU slices work only with the jax 0.8.2 venv (projects/j1j2/cluster/A40_SLICES_HOWTO.md; often idle); ViT at full fp32. Large files on /project, not /home. Prefer Paderborn H100s when available (login1 if login2 is down).
 - Never run chatty-slurm-watch or tools/local_loop watchers; workers poll their own jobs. Never print credentials.
 - Workers: Sonnet for routine jobs, Opus for design-heavy ones; brief them with the state-of-the-art method and ask for convergence evidence.
 - Delete run data on ws1 only if the quota is critical; other campaigns' data: ask their owner session (e.g. ruby_runs).

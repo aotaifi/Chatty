@@ -1,0 +1,30 @@
+{
+ "n_loop": 6,
+ "B": 256,
+ "K": 8,
+ "lr": 0.003,
+ "features": "current",
+ "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+ "distill_at": [
+  3,
+  6
+ ],
+ "distill_arms": [
+  {
+   "tag": "spin-R28",
+   "net": "spin",
+   "C": 32
+  },
+  {
+   "tag": "featbase-R28",
+   "net": "featbase",
+   "C": 32
+  },
+  {
+   "tag": "spin-R111",
+   "net": "spin",
+   "C": 64,
+   "only_k": 6
+  }
+ ]
+}

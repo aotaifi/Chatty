@@ -1,0 +1,9 @@
+{
+ "n_loop": 5,
+ "steps": 12000,
+ "B": 256,
+ "K": 8,
+ "lr": 0.003,
+ "features": "base",
+ "loss": "edge"
+}

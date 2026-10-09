@@ -155,3 +155,22 @@ steps, plus exact evaluations at 10k and 20k steps. A phi-based validation estim
   - 3 loop iterations with Krylov signs.
   - Pass test: the FN loop captures >= 1.5x the control in each iteration, with >= 0.5.
 - Code unchanged (`experiments/itfit_6x6/itfit_run.py` at e8e72c2); specs `specs/itF_F-VMC-iii-e0{1,3}.json`.
+
+## Amendment 5: 8x8 pre-tests at 6x6 (SCALING_PLAN step 1), pre-registered 2026-10-09 03:40 before running
+(a) **Distillation fidelity (option C).**
+- The `wtLOOP8` guide stack is replayed exactly from its stored parameters.
+- After iterations 3 and 6, the accumulated correction D_k = la_k - log|psi_P| is distilled into one net:
+  - b = |psi_P| exp(g), g a spin-only symmetric residual CNN (28k; and 111k after iteration 6);
+  - Adam 20k steps x 256 x 8 bonds; edge-difference loss in the metric of guide k; guide-k tail proposal.
+- Reference arm: g as a frozen-base-feature net (option B form).
+- Metric: kept = (<H>(psi_P, s_0) - <H>(b, s_k)) / (<H>(psi_P, s_0) - <H>(guide_k, s_k)), exact.
+- **Option C is viable only if the best spin-only distillation keeps >= 0.70 at both k = 3 and k = 6.**
+
+(b) **Option B (frozen-base features).**
+- The same loop as `wt_loop.py`, but every net sees only the one-hop features of psi_P (log a, V, W of the base,
+  standardised once). The target is the semi-implicit step of the current guide.
+- Two losses: edge-difference vs pointwise (weighted variance). 5 iterations, 12k Adam steps each.
+- Metrics: frac per iteration (decay) and <H>, E_FN.
+- Option B goes to 8x8 if its pointwise variant keeps >= 0.5 per iteration through iteration 5. Pointwise needs
+  targets at x only: ~9e3 base evaluations per sample at 8x8 instead of ~8e4.
+- If neither C nor pointwise B qualifies: report edge-loss B with its cost.

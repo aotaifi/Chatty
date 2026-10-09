@@ -1,0 +1,1 @@
+{"arm": "bond", "k": 0, "smoke": true, "steps": 60, "val_every": 20, "B": 256, "lr": 1e-3}

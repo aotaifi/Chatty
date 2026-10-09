@@ -91,6 +91,12 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Scaling: distillation not ruled out in principle (target is a function of x alone; the obstacle is log-ratio precision ~3e-3 on ~135 bonds). Avoid message passing on the spin-swap graph and the warm ViT; prefer a bond-output ratio net or input-gradient features. Pre-tests: V/W sensitivity, ratio fidelity per decade, end-to-end callable 3/6 iterations with 3 seeds (pass: >= 70% of table gain, <= 3 base passes per configuration, callable + Lanczos >= 2x below 2.55e-5).
 - Running now: Lanczos-on-top, supervised-Lanczos control, seeds, w_s along the loop.
 
+## 3l. Compression pre-tests (results/compress_6x6/, 8e72a04, 2026-10-09) — INCONCLUSIVE (cause: optimisation + precision)
+- P1 precision target: one write-back step keeps >= 90% only if bond log-ratios are accurate to 0.003 rms (V, W inputs to 0.001). psi_P itself is 2-100x outside this tolerance against la_3 (0.005 at 1e-7, 0.3 at 1e-14).
+- P2: no student (warm ViT with Adam or damped Gauss-Newton, scratch ViT, bond-ratio net) moved toward la_k: <= 10% kept; held-out = train (generalisation fine), precision is the limit.
+- Lanczos context (6x6): table stack k=6 + 1 Lanczos 1.55e-5 vs psi_P + 1 Lanczos 2.55e-5, but psi_P + 2 Lanczos 8.6e-6. At equal hop count Lanczos still wins on 6x6; the scaling case rests on Lanczos gains shrinking at larger N (untested <= 36 sites) and on the 8x8 test.
+- Options: (a) cap depth (2 route-B iterations + Lanczos + calibrated FN, reviewer E6); (b) accept k=2-3 hops with caching on H100s; (c) input-gradient features (reviewer E4) — first check cheaply whether linearised log-ratios can reach the 0.003 tolerance at all.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

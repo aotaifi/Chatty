@@ -9,8 +9,8 @@ G0 = 3.01e-5; b = |psi_P| exp(f) (residual nets) or b = |psi_P,theta| (ViT itsel
 
 ## Verdict
 **UPDATE 2026-10-09: Step 2 (realistic data, no phi_FN) PASSES. Realistic FEAT write-back 73.4% vs every same-sample
-VMC control < 0. The written-back FN/Krylov loop reaches E_FN 3.96e-5 (below RBM+PP 4.47e-5) and <H> 4.64e-5 after 5
-iterations (sections 6b, 6c).**
+VMC control < 0. The written-back FN/Krylov loop passes RBM+PP (4.47e-5) in <H> at iteration 6 (4.03e-5) and reaches
+<H> 3.16e-5, E_FN 2.75e-5 after 8 iterations (sections 6b, 6c). 8x8 plan: `SCALING_PLAN.md`.**
 
 UPDATE 2026-10-08 evening: Step 1 PASSES with guide-neighbourhood inputs. The write-back route reopens; next is the
 pre-registered Step 2. The arm FEAT-TA-R28 is the same 28k residual CNN (37k parameters with the input head). It
@@ -350,7 +350,20 @@ Each iteration k:
   - network seed (k = 1 vs 0);
   - input standardisation: here mean and sd under a guide-only measure. In wt_run the FEAT inputs were standardised
     with a measure containing phi_FN (affine constants only, no per-configuration information). The loop removes this.
-- An 8-iteration run (wtLOOP8 17090119) tests whether <H> passes RBM+PP at iteration 6.
+**8-iteration repeat (wtLOOP8 17090119, `runs/wtLOOP8_17090119.json`; same code and spec except n_loop; GPU runs are
+not bit-reproducible, so iterations 1-5 differ from the 5-iteration run by the training noise):**
+
+| iteration | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| frac | 74.6% | 65.9% | 76.2% | 72.2% | 41.8% | 71.8% | 51.1% | 65.5% |
+| <H> (Krylov) | 9.67e-5 | 7.87e-5 | 6.29e-5 | 5.20e-5 | 4.79e-5 | **4.03e-5** | 3.64e-5 | **3.16e-5** |
+| E_FN of the next guide | 7.62e-5 | 6.44e-5 | 5.25e-5 | 4.40e-5 | 4.08e-5 | 3.47e-5 | 3.15e-5 | **2.75e-5** |
+
+- **<H> passes RBM+PP (4.47e-5) at iteration 6** (4.03e-5), and the FN energy of the guide at iteration 4 (4.40e-5).
+- After 8 iterations <H> = 3.16e-5 and E_FN = 2.75e-5.
+- The ideal loop reaches <H> 4.30e-5 / E_FN 3.81e-5 after 3 iterations and 8.2e-6 after 12, so the written-back loop
+  runs at about half the ideal speed per iteration.
+- Every iteration kept 42-76% of the ideal FN iteration and the energy fell in every iteration.
 
 **Cost and the caveat for 8x8.**
 - Every iteration uses the CURRENT guide's one-hop features. In this 6x6 lab the guide is an exact table. In a real

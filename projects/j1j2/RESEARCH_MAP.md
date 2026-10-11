@@ -110,6 +110,13 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Cost 12.2 GPU-h on A40 slices; calibrated FN-DMC unaffordable here (~6 GPU-h per population on the written-back guide).
 - Next (running): confirm the Lanczos lead by direct VMC; loop guide + Lanczos vs ViT + Lanczos (paired); resolve the control.
 
+## 3o. Review-E validations on 6x6 (results/writeback_tail/ 6c/6e, b03d683, 2026-10-11)
+- Sign error along the loop: w_s 1.11e-4 -> 1.98e-5 (it 1) -> 4.50e-6 (it 8), 1.2-2.6x above the ideal loop.
+- Lanczos on top: loop guide k + 1 Lanczos step: 3.03e-5 (k=1) -> 1.26e-5 (k=8); beats psi_P + 1 Lanczos (2.55e-5) from k=3. At EQUAL hops Lanczos on psi_P still wins (table result).
+- Seeds (5): <H_ph> after 3 iterations 6.54(30)e-5; capture spread up to 13 points.
+- Amplitude-only (no Krylov sign step): 7.34e-5 vs 6.15e-5 after 3 iterations -> the sign step is worth ~17% of the gain.
+- Supervised-Lanczos control diverges: the one-hop Lanczos factor |1 + alpha E_L| is unbounded on deep-tail configurations, so it is unusable as a write-back target; the bounded semi-implicit FN step works (structural advantage of the FN target; bounded resolvent-form control not run).
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

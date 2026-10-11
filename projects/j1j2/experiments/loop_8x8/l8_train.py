@@ -44,6 +44,12 @@ rg = np.random.default_rng(SPEC.get('split_seed', 3))
 # held-out split by chain (no chain in both sets)
 chains = Z['chain']; uc = np.unique(chains); ho_c = rg.choice(uc, int(round(SPEC.get('holdout', 0.2) * len(uc))), replace=False)
 HO = np.isin(chains, ho_c); TR = ~HO
+if SPEC.get('clamp', True):                                          # amendment 2: training-range clamp
+    cx = [U['la'], np.log(np.maximum(U['V'], 0) + 1e-6), np.log(np.maximum(U['W'], 0) + 1e-6)]
+    used = np.unique(np.concatenate([ix[TR], iy[TR].reshape(-1)]))
+    stats = [(m_, s_, float(((c[used] - m_) / s_).min()), float(((c[used] - m_) / s_).max())) for (m_, s_), c in zip(stats, cx)]
+    FX = feats(U['la'][ix], U['V'][ix], U['W'][ix], stats)
+    FY = feats(U['la'][iy], U['V'][iy], U['W'][iy], stats)
 res = dict(spec=SPEC, P=P, K=K, n_train=int(TR.sum()), n_hold=int(HO.sum()), stats=stats,
            pool_meta=dict(Ea=float(Z['Ea']), phi=float(Z['phi'])), arms=[])
 C.log('pool', P, 'train', TR.sum(), 'held-out', HO.sum())

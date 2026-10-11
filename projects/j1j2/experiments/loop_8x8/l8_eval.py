@@ -78,15 +78,12 @@ EL2 = D * ELa + np.bincount(own, weights=hxy * ELy, minlength=R)      # (H^2 psi
 
 
 def lanczos(idx):
-    h1 = ELa[idx].mean(); h2 = (ELa[idx] ** 2).mean(); h3 = (ELa[idx] * EL2[idx]).mean()
-    # E(al) = (h1 + 2 al h2 + al^2 h3) / (1 + 2 al h1 + al^2 h2); stationary points: quadratic in al
-    # dE/dal = 0  <=>  (h2 + al h3)(1 + 2 al h1 + al^2 h2) - (h1 + 2 al h2 + al^2 h3)(h1 + al h2) = 0
-    #         <=>  al^2 (h3 h1 - h2^2) + al (h3 - h1 h2) + (h2 - h1^2) = 0
-    A = h3 * h1 - h2 * h2; Bq = h3 - h1 * h2; Cq = h2 - h1 * h1
-    roots = np.roots([A, Bq, Cq]); roots = roots[np.isreal(roots)].real
-    E = lambda al: (h1 + 2 * al * h2 + al * al * h3) / (1 + 2 * al * h1 + al * al * h2)
-    al = min(roots, key=E) if len(roots) else 0.0
-    return E(al), al, h2 - h1 * h1
+    """lowest Ritz value in span{psi, (H - h1) psi}: centred moments m2 = <(H-h1)^2>, m3 = <(H-h1)^3>
+    estimated as mean((E_L - h1)(E_L2 - 2 h1 E_L + h1^2)) (E_L2 = (H^2 psi)/psi, exact from the two-hop data)."""
+    el = ELa[idx]; e2 = EL2[idx]
+    h1 = el.mean(); m2 = np.mean((el - h1) ** 2); m3 = np.mean((el - h1) * (e2 - 2 * h1 * el + h1 * h1))
+    c = m3 / (2 * m2)
+    return h1 + c - np.sqrt(c * c + m2), c, m2
 
 
 El, al, var = lanczos(np.arange(R))
@@ -97,7 +94,7 @@ jk = np.array(jk); se_l = float(np.sqrt((len(jk) - 1) * np.mean((jk - jk.mean())
 # paired: Lanczos minus guide, jackknife
 jk_g = np.array([ELa[~np.isin(ch, blk)].mean() for blk in np.array_split(ids, 32)])
 dj = jk - jk_g; se_dl = float(np.sqrt((len(dj) - 1) * np.mean((dj - dj.mean()) ** 2)))
-res['lanczos1'] = dict(E_site=El / N, se=se_l / N, alpha=float(al), Delta_site=(El - Ea) / N, Delta_se_site=se_dl / N,
+res['lanczos1'] = dict(E_site=El / N, se=se_l / N, m3_over_2m2=float(al), Delta_site=(El - Ea) / N, Delta_se_site=se_dl / N,
                        var_site2=var / N ** 2, cost_note='free given the two-hop referee data (same 2-hop evaluations)')
 C.log('LANCZOS', res['lanczos1'])
 C.dump(F, res)

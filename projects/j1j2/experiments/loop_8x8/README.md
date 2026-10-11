@@ -165,3 +165,23 @@ Also reported: ViT evaluations per sample for each stage. Budget <= 20 GPU-h.
   - 4 independent jobs x 768 chains x 4 samples (burn 20 sweeps, thin 1 sweep; seeds 5000, 6000, 7000, 8000):
     R = 12288;
   - extension by further independent jobs only if SE(Delta_FN) > 7e-6/site, within the 20 GPU-h budget.
+
+## Amendment 2 (2026-10-11, after a first training pass, before any referee evaluation of a write-back): feature clamp
+- The first training pass (jobs 17133944/6/7, cancelled) showed an FN-Adam held-out edge loss of 8e-4, against 6.5e-6
+  at f = 0, while the training loss fell 2.6e-6 -> 1.7e-7. `l8_diag.py` traced this to one held-out configuration:
+  - its log a = 7.63 lies above the training range;
+  - the network output f = -4.9 there;
+  - it holds 99.96% of the held-out loss.
+  - Without it, the held-out loss falls like the training loss: 2.3e-6 -> 1.9e-7, corr(f, T) = 0.99.
+  - The network extrapolates in its feature inputs (Fourier and quadratic embedding of log a). These high-amplitude
+    configurations are bulk under a^2, so the referee would have been dominated by them.
+- **Fix:** the standardised features are clamped to the range seen in the training split (x and y_k of the training
+  chains), for every arm and in the referee. This is the same fix as itfit_6x6, whose unclamped run blew up.
+- Found from the held-out own objective only; no referee data of any write-back had been computed.
+- Everything else is unchanged. All arms are retrained from scratch.
+- Referee status at this point: 2 of 4 batches done (6144 samples). Guide-only by-products, computed before any arm
+  evaluation:
+  - projected ViT -0.498868(33);
+  - unprojected target exp(T) Delta = -2.23(0.73)e-5;
+  - one Lanczos step -0.498943(33). The first Lanczos estimator, in the alpha parametrisation, was numerically
+    singular; it was replaced by the 2x2 Ritz value in centred moments.

@@ -56,7 +56,14 @@ class Corr:
 
 
 def feats(la, V, W, stats):
+    """standardised guide features; stats rows (mean, sd[, lo, hi]): with lo/hi the standardised values are clamped to
+    the training-pool range (amendment 2: no extrapolation of the network in its feature inputs)."""
     cols = [la, np.log(np.maximum(V, 0) + 1e-6), np.log(np.maximum(W, 0) + 1e-6)]
-    return np.stack([(c - m) / s for c, (m, s) in zip(cols, stats)], -1).astype(np.float32)
+    out = []
+    for c, st in zip(cols, stats):
+        t = (c - st[0]) / st[1]
+        if len(st) > 2: t = np.clip(t, st[2], st[3])
+        out.append(t)
+    return np.stack(out, -1).astype(np.float32)
 
 

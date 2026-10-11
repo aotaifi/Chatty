@@ -1,0 +1,5 @@
+{"pool": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8pool_17092718/pool.npz", "holdout": 0.2, "split_seed": 3, "arms": [
+ {"tag": "FN-Adam", "kind": "fn", "opt": "adam", "lr": 3e-3, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0},
+ {"tag": "VMC-Adam-3e-4", "kind": "vmc", "opt": "adam", "lr": 3e-4, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0},
+ {"tag": "VMC-Adam-1e-4", "kind": "vmc", "opt": "adam", "lr": 1e-4, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0},
+ {"tag": "VMC-Adam-3e-5", "kind": "vmc", "opt": "adam", "lr": 3e-5, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0}]}

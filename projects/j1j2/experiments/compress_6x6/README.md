@@ -273,3 +273,18 @@ IMMEDIATELY previous guide's one-hop information.
   stored iteration-5 re-base; its V, W are taken under s_6, since s_5 was not saved.
 - If it keeps >= 0.7, the hypothesis holds: a fixed-hop base cannot hold the loop's increments, and every iteration
   needs one more hop.
+
+## Amendment 6 (2026-10-11 23:10, after the G_5 diagnostic, before this run)
+- **The missing-hop hypothesis is refuted.** With psi_P's scalars + the one-hop scalars of the immediately previous
+  guide G_5 (the very inputs from which the increment f_6 was made), the re-base keeps only 0.21.
+- So the re-base is limited by the FIT itself. Across every input set, size and step count the loss floors at ~5e-6.
+- Suspect: the distillation targets the whole accumulated correction la_w - log|psi_P|, and samples by ITS Dirichlet
+  weight. The new increment is ~4% of that in the Dirichlet metric and is under-sampled and under-resolved.
+- **Test: residual re-base.** G_6 = G_5 + h, with h fit to the increment la_w - G_5 alone and sampling targeted at
+  the increment's own node weight. Two input sets for h:
+  - (i) psi_P's one-hop scalars only. This gives a constant-hop guide: one hop of psi_P plus a stack of k small nets
+    on the same features, cost linear in k but tiny;
+  - (ii) + G_5's one-hop scalars, as an upper bound.
+- FeatNet, edge loss, Adam lr 1e-3, 20k steps.
+- **Pass (i): retention >= 0.7.** If it passes, the constant-hop loop is rerun with residual re-bases (seed 0,
+  8 iterations) within the remaining budget.

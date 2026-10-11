@@ -32,6 +32,20 @@ if MODE == 'rebase':
             sec.offload()
             fl, curve = fit_edge_bond(lab, m, la_w, s, CDF, LIW, DLR, arm['steps'], 50 + IT, lr=arm.get('lr', 1e-3), tag=tag)
             sec.reload(); g = m.table(fl)[:, 0]
+        elif arm['net'] == 'inc':                               # residual re-base: G = G_ref + h, h fit to la_w - G_ref
+            G_ref = lab.lP0 + FeatNet(FEAT_BASE, 0).table(jnp.asarray(np.load(arm['G_ref_params']), jnp.float32), sec.reps, lab.TIDX)
+            TF = FEAT_BASE
+            if arm.get('with_ref_feats'):
+                lanr, Vr, Wr = lab.VW(G_ref, s)
+                Egr = FrozenOp(lab, G_ref, s).energy(G_ref)
+                _, _, measr = lab.proposal_q(lab.T_of(Vr, Wr, Egr), G_ref, s)
+                TF = jnp.concatenate([FEAT_BASE, lab.feat_table(lanr, Vr, Wr, measr)], 1); del lanr, Vr, Wr, measr
+            inc = la_w - G_ref
+            CDFi, LIWi, DLRi, _ = tail_proposal(lab, inc, la_w, s); del inc   # sampling targeted at the increment
+            m = FeatNet(TF, seed=50 + IT)
+            sec.offload()
+            fl, curve = fit_edge(lab, m, la_w, s, CDFi, LIWi, DLRi, arm['steps'], 50 + IT, lr=arm.get('lr', 1e-3), tag=tag)
+            sec.reload(); g = G_ref - lab.lP0 + m.table(fl, sec.reps, lab.TIDX); del TF, CDFi, LIWi, DLRi, G_ref
         else:                                                   # 'roll': scalar features of psi_P and of G_ref
             if arm.get('G_ref_params'):                       # rebuild a re-based guide from its stored params
                 G_ref = lab.lP0 + FeatNet(FEAT_BASE, 0).table(jnp.asarray(np.load(arm['G_ref_params']), jnp.float32), sec.reps, lab.TIDX)

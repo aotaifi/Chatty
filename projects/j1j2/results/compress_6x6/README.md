@@ -235,3 +235,104 @@ information about how the neighbours' amplitudes changed. Fixes in order of cost
   0.79 h.
 - Total 3.8 A40-h + 4.6 slice-h = 8.4 GPU-h counted naively, ~6.1 A40-equivalent if a 24 GB slice counts as half an
   A40.
+
+# Round 3 (2026-10-11/12): per-bond inputs, rolling base, residual re-base
+Pre-registration 2dc074b, amendments 5-7 (in `experiments/compress_6x6/README.md`), each before its run.
+Figure `fig_round3_6x6.png/.pdf`. Raw: `runs/cx_pt3_*.json`, `runs/cx_chop_inc_s*.json`, `runs/cx_struct_Bfix.json`.
+
+## Verdict
+**The constant-hop loop PASSES with residual re-bases: 82% / 85% of the table loop's gain at iteration 6 (bar 70%;
+round 2: 67%).** The remaining gap to the table grows after iteration 6. At equal hop count the loop still does not
+beat psi_P + Lanczos.
+- **The round-2 plateau was a distillation-target problem, not missing information.**
+  - Re-distilling the WHOLE correction la_w - log|psi_P| into a fresh net hits a loss floor of ~5e-6 whatever the
+    inputs: psi_P scalars, per-bond ratios, or even the previous guide G_5's own features (from which the increment
+    was made).
+  - Fitting only the new increment la_w - G_k, sampled by its own Dirichlet weight, keeps 0.78 with psi_P's scalars
+    alone and 0.995 with G_5's features.
+  - The new increment is ~4% of the accumulated correction in the Dirichlet metric. A fresh full fit under-samples it
+    and cannot resolve it.
+- The pre-registered per-bond (BondNet) and rolling-base arms fail. They are superseded by the residual re-base, which
+  keeps the cost constant without them.
+
+## Pre-tests (re-base of the iteration-6 write-back, seed 0; share of the iteration's gain kept)
+
+| re-base | inputs | kept | own loss end |
+|---|---|---|---|
+| full, fresh (round 2) | spins + psi_P scalars | -0.06 | 8.7e-6 |
+| full, best optimizer / size variant (round 2) | same | 0.22 | 4.9e-6 |
+| **(1a) full, BondNet** | + psi_P's 144 bond log-ratios + kept flags | **0.10** (fail) | 6.1e-6 |
+| **(3) full, rolling base** | + one-hop scalars of G_3 (two hops of psi_P) | **0.08** (fail) | 9.5e-6 |
+| full, diagnostic | + one-hop scalars of G_5 (previous guide) | 0.21 | 7.5e-6 |
+| **residual (amendment 6)** | spins + psi_P scalars | **0.78** (pass) | 1.3e-6 |
+| residual, upper bound | + G_5 scalars | 0.995 | 4e-8 |
+
+**(1b) BondNet V/W predictor.** k = 6: -0.06 of the exact capture (fail; scalar predictor 0.48). k = 3: 0.92
+(scalar 0.89). The extra per-bond input did not help the V/W prediction either.
+
+## Constant-hop loop with residual re-bases (8 iterations, 2 seeds)
+G_{k+1} = G_k + h_k(x; spins, log a_P, V_P, W_P). h_k is a fresh 37k FEAT net fit to la_w - G_k (edge loss, sampling
+by the increment's node weight, Adam 1e-3, 20k steps). The write-back is unchanged (FEAT net on G_k's own log a, V, W).
+
+| it | frac s0 / s1 | <H>(G) s0 / s1 | E_FN s0 / s1 | re-base kept s0 / s1 | G + 1 Lanczos s0 / s1 | G + 2 Lanczos s0 / s1 | table <H> / E_FN |
+|---|---|---|---|---|---|---|---|
+| 1 | 0.72 / 0.75 | 9.90e-5 / 9.65e-5 | 7.79e-5 / 7.60e-5 | 0.98 / 1.00 | 3.09e-5 / 3.02e-5 | 1.16e-5 / 1.14e-5 | 9.67e-5 / 7.62e-5 |
+| 2 | 0.69 / 0.78 | 8.03e-5 / 7.90e-5 | 6.55e-5 / 6.44e-5 | 0.95 / 0.78 | 2.69e-5 / 2.71e-5 | 1.00e-5 / 1.00e-5 | 7.87e-5 / 6.44e-5 |
+| 3 | 0.75 / 0.00* | 6.98e-5 / 7.89e-5 | 5.82e-5 / 6.44e-5 | 0.66 / - | 2.56e-5 / 2.69e-5 | 9.44e-6 / 9.96e-6 | 6.29e-5 / 5.25e-5 |
+| 4 | 0.61 / 0.71 | 6.50e-5 / 6.76e-5 | 5.47e-5 / 5.68e-5 | 0.50 / 0.81 | 2.44e-5 / 2.49e-5 | 9.13e-6 / 9.22e-6 | 5.20e-5 / 4.40e-5 |
+| 5 | 0.73 / 0.76 | 5.93e-5 / 5.73e-5 | 5.05e-5 / 4.86e-5 | 0.51 / 0.85 | 2.31e-5 / 2.21e-5 | 8.81e-6 / 8.21e-6 | 4.79e-5 / 4.08e-5 |
+| 6 | 0.66 / 0.69 | **5.68e-5 / 5.45e-5** | 4.83e-5 / 4.64e-5 | 0.29 / 0.32 | 2.22e-5 / 2.17e-5 | 8.67e-6 / 8.20e-6 | 4.03e-5 / 3.47e-5 |
+| 7 | 0.73 / 0.59 | 5.06e-5 / 5.34e-5 | 4.33e-5 / 4.54e-5 | 0.68 / 0.17 | 2.04e-5 / 2.12e-5 | 8.21e-6 / 8.19e-6 | 3.64e-5 / 3.15e-5 |
+| 8 | 0.68 / 0.67 | 5.53e-5 / 5.04e-5 | 3.97e-5 / 4.28e-5 | -0.63 / 0.39 | 2.65e-5 / 2.02e-5 | 1.18e-5 / 8.02e-6 | 3.16e-5 / 2.75e-5 |
+
+\* Seed 1, iteration 3: the write-back fit died again (f = 0, own loss flat; the same initialisation seed 1003 as in
+round 2). This is an Adam/initialisation failure, worth a restart rule (re-seed when the own loss does not move).
+- **Pre-registered rule: PASS.**
+  - Share of the table loop's gain at iteration 6: 0.819 (seed 0) and 0.845 (seed 1), mean 0.83 >= 0.70, both
+    >= 0.60.
+  - <H> falls in 6 of 6 iterations for both seeds (seed 1 iteration 3 by 6e-8, the dead fit).
+  - At iteration 8: 0.76 / 0.81. Seed 0's last re-base lost 63% of that iteration's gain, a single bad fit.
+- E_FN of the callable guide at iteration 8: 3.97e-5 / 4.28e-5 (table 2.75e-5). That is below the RBM+PP <H>
+  (4.47e-5). <H> itself is still 5.0-5.5e-5.
+- **The re-base is still the bottleneck.** Its retention drops from ~0.9 (iterations 1-2) to 0.3-0.7 later, with
+  single bad fits. The write-back keeps 0.59-0.78 every time.
+- **Against Lanczos at equal hop count:** guide + 1 Lanczos step reaches 2.0e-5 at iteration 8, below psi_P + 1
+  Lanczos (2.55e-5) but above psi_P + 2 Lanczos (8.6e-6). The guide costs one hop of psi_P, so the fair comparison
+  for "guide + 1 step" is psi_P + 2 steps: the loop still loses. Guide + 2 Lanczos is 8.0e-6 at three hops.
+- **Cost per sample, independent of k:**
+  - guide: one hop of psi_P (78 / ~135 evaluations at 6x6 / 8x8) plus k small nets on the same features
+    (37k-parameter CNNs; negligible next to the ViT);
+  - its V, W: two hops (2.8e3 / 8.9e3);
+  - an edge-loss write-back sample: three hops.
+  At 1.9e4 psi_P/s per A40 that is ~4 ms / 0.15 s / ~5 s per sample at 6x6.
+
+## B's V/W replay (bug fixed: V can be -1e-17 by round-off)
+
+| scale c | log V / log W rms | kept |
+|---|---|---|
+| 0.03 | 0.0015 / 0.0007 | 1.01 |
+| 0.1 | 0.0050 / 0.0024 | 0.76 |
+| 0.3 | 0.015 / 0.0072 | -2.3 |
+| 1 | 0.050 / 0.024 | -50 |
+
+- White V/W noise at log V 0.001 / 0.003 / 0.010 keeps 0.98 / 0.83 / -0.79, so B's structured error is somewhat more
+  tolerable than white.
+- At full size (c = 1) B is 15-50x off.
+
+## Next step (proposal)
+1. Make the residual re-base robust:
+   - restart rule for dead fits (re-seed if the own loss has not fallen 10% by 2k steps);
+   - accept a re-base only if its exact-identity frozen-FN estimate on held-out batches improves; otherwise keep the
+     previous h, which costs nothing;
+   - 40k steps when the increment is small.
+   This attacks the 0.3-0.7 late retention and the single bad fits (iteration 8, seed 0).
+2. Then the 8x8 one-iteration test with the residual-re-base guide, against the projected ViT + Lanczos p1/p2 at
+   equal hops. On 6x6 the loop does not yet beat psi_P + Lanczos at equal hops, so 8x8 should be framed as the loop's
+   add-on value (G + Lanczos vs psi_P + Lanczos at the same hops), not as a standalone win.
+
+## Compute (round 3)
+24 GB slices only:
+- pre-tests: BondNet re-base 0.25 h, BondNet V/W 0.6 h, G_3 0.15 h, G_5 0.15 h, residual 0.3 h;
+- B fix 0.25 h;
+- loops 2 x 1.47 h.
+About 4.6 slice-h, ~2.3 A40-equivalent.

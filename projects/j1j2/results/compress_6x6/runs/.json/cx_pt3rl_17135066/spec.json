@@ -1,0 +1,1 @@
+{"mode": "rebase", "run_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977", "it": 6, "arms": [{"tag": "roll_G3_20k", "net": "roll", "steps": 20000, "lr": 1e-3, "G_ref": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/G_3.npy", "s_ref": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/s_3.npy"}]}

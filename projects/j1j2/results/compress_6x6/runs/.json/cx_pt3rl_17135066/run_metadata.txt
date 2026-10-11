@@ -1,0 +1,7 @@
+job_id=17135066
+host=cip-cl-h01g06n2.hpc.physik.uni-muenchen.de
+script=cx_pt3.py
+spec=specs/pt3_rebase_roll.json
+started=2026-10-11T20:27:40+02:00
+NVIDIA A40-24Q, 24576 MiB
+finished=2026-10-11T20:33:19+02:00

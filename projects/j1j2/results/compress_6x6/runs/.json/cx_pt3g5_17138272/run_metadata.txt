@@ -1,0 +1,7 @@
+job_id=17138272
+host=cip-cl-h01g08n1.hpc.physik.uni-muenchen.de
+script=cx_pt3.py
+spec=specs/pt3_rebase_rollG5.json
+started=2026-10-11T22:49:01+02:00
+NVIDIA A40-24Q, 24576 MiB
+finished=2026-10-11T22:57:37+02:00

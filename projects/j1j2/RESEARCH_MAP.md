@@ -117,6 +117,13 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Amplitude-only (no Krylov sign step): 7.34e-5 vs 6.15e-5 after 3 iterations -> the sign step is worth ~17% of the gain.
 - Supervised-Lanczos control diverges: the one-hop Lanczos factor |1 + alpha E_L| is unbounded on deep-tail configurations, so it is unusable as a write-back target; the bounded semi-implicit FN step works (structural advantage of the FN target; bounded resolvent-form control not run).
 
+## 3p. Compression round 3 (results/compress_6x6/, 60a9bbe, 2026-10-12) — CONSTANT-HOP LOOP PASSES
+- Residual re-base G_{k+1} = G_k + h_k (fit only the new increment, psi_P one-hop scalars, increment-weighted sampling): at iteration 6 the callable guide keeps 82% / 85% of the table loop's gain (2 seeds; bar 70%). <H_ph> 5.68e-5 / 5.45e-5 at it 6, 5.53e-5 / 5.04e-5 at it 8 (table 3.16e-5); gap grows late (bad re-base fits).
+- Cost per sample independent of k for hops (1 hop of psi_P for the guide, 2 for V/W, 3 per training sample), plus k small nets.
+- Guide + 1 Lanczos = 2.0e-5 at it 8 (< psi_P + 1 Lanczos 2.55e-5); at equal hops psi_P + 2 Lanczos (8.6e-6) still wins on 6x6.
+- Approved per-bond and rolling-base arms failed their pre-tests (0.08-0.21): the limit was the fit of the whole accumulated correction, not missing information.
+- Next: robust residual re-base (re-seed dead fits, held-out acceptance, 40k steps), 3 seeds; then 8x8 with the residual-re-base loop + Lanczos comparison.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

@@ -1,0 +1,143 @@
+{
+ "spec": {
+  "B": 256,
+  "K": 8,
+  "lr": 0.003,
+  "steps": 20000,
+  "features": "current",
+  "n_loop": 8,
+  "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+  "light": true,
+  "lanczos_eval": true
+ },
+ "iters": [
+  {
+   "it": 1,
+   "guide_H": 0.00013193875041276706,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 0.00010250302566393465,
+   "H_kry": 9.669521791651665e-05,
+   "lanczos_H": 3.0344300487921634e-05,
+   "lanczos_E_FN": 2.3749486918313147e-05,
+   "sec": 326.02106380462646
+  },
+  {
+   "it": 2,
+   "guide_H": 9.669521791651665e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 7.897741169868609e-05,
+   "H_kry": 7.870527110911653e-05,
+   "lanczos_H": 2.561282005824555e-05,
+   "lanczos_E_FN": 1.9917987982706916e-05,
+   "sec": 315.4540984630585
+  },
+  {
+   "it": 3,
+   "guide_H": 7.870527110911653e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 6.309692300485479e-05,
+   "H_kry": 6.289017712300825e-05,
+   "lanczos_H": 2.1746453410366308e-05,
+   "lanczos_E_FN": 1.700636117046233e-05,
+   "sec": 316.00775027275085
+  },
+  {
+   "it": 4,
+   "guide_H": 6.289017712300825e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 5.2075487604182534e-05,
+   "H_kry": 5.195484220601701e-05,
+   "lanczos_H": 1.8878839836015498e-05,
+   "lanczos_E_FN": 1.4799406526242206e-05,
+   "sec": 315.7287805080414
+  },
+  {
+   "it": 5,
+   "guide_H": 5.195484220601701e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 4.7905036561897894e-05,
+   "H_kry": 4.7867859741757e-05,
+   "lanczos_H": 1.7651881490523794e-05,
+   "lanczos_E_FN": 1.3863217005077249e-05,
+   "sec": 315.4826772212982
+  },
+  {
+   "it": 6,
+   "guide_H": 4.7867859741757e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 4.039192157989646e-05,
+   "H_kry": 4.0299825828920494e-05,
+   "lanczos_H": 1.5511307768297417e-05,
+   "lanczos_E_FN": 1.2295919400489513e-05,
+   "sec": 314.99889397621155
+  },
+  {
+   "it": 7,
+   "guide_H": 4.0299825828920494e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 3.64717473701543e-05,
+   "H_kry": 3.644113046065279e-05,
+   "lanczos_H": 1.4165355398887414e-05,
+   "lanczos_E_FN": 1.1257078568959065e-05,
+   "sec": 314.71942114830017
+  },
+  {
+   "it": 8,
+   "guide_H": 3.644113046065279e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 3.168399550792758e-05,
+   "H_kry": 3.1631171186417996e-05,
+   "lanczos_H": 1.2575242760585562e-05,
+   "lanczos_E_FN": 1.007269223703607e-05,
+   "sec": 314.5940878391266
+  }
+ ],
+ "distill": [],
+ "ideal": {
+  "E_FN": [
+   0.0001018,
+   6.52e-05,
+   4.87e-05,
+   3.81e-05
+  ],
+  "H_kry": [
+   7.84e-05,
+   5.58e-05,
+   4.3e-05
+  ]
+ },
+ "rbm_pp": 4.47e-05,
+ "sec": 2549.372129201889
+}

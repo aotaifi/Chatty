@@ -262,7 +262,10 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
         vg = sec.vec(la, s); Hv = sec.H(vg)
         alpha = lanczos_ritz(lambda x: sec.Hm(x), vg, 1)[1]['alpha']
         EL = Hv / jnp.where(jnp.abs(vg) > 1e-300, vg, 1e-300); del vg, Hv
-        Ltg = jnp.log(jnp.maximum(jnp.abs(1.0 + alpha * EL), 1e-6)); del EL
+        fac = jnp.abs(1.0 + alpha * EL)
+        ref = abs(1.0 + alpha * float(jnp.sum(UA * UA * EL)))
+        Ltg = jnp.log(jnp.maximum(fac, SPEC.get('L_floor_rel', 1e-6) * ref)); del EL, fac
+        rec['L_floor_rel'] = SPEC.get('L_floor_rel', 1e-6)
         PA_ = UA * UA; DLR = -(Ltg - float(jnp.sum(PA_ * Ltg)))     # same samples (proposal built from T), target L
         rec['lanczos_alpha'] = alpha
         if not SPEC.get('light'):

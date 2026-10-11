@@ -192,3 +192,9 @@ steps, plus exact evaluations at 10k and 20k steps. A phi-based validation estim
   report the mean and spread of capture, <H> and E_FN.
 - **(d) Amplitude only.** The T loop for iterations 1-3 without the Krylov sign step (seed 1).
 - Budget <= 4 GPU-h. Code: `wt_loop.py` options `target`, `krylov`, `seed`, `lanczos_eval`.
+- **Amendment 6b (2026-10-11, after the (b) runs failed, before the rerun).** The Lanczos factor 1 + alpha E_L
+  crosses zero on configurations with large local energy. The pre-registered target log|.| (floor 1e-6) then has
+  -13.8 spikes there. Its exact unprojected frozen-FN frac is -42, while its same-sign <H> is 8.3e-5. Both seeds of the
+  fitted loop blew up (frac -2.6e4 / -3.6e5 in iteration 1).
+  - Rerun: the factor clipped at 0.1 x its weighted mean (L_floor_rel = 0.1), seed 1, 3 iterations, otherwise identical.
+  - This is a repair of the control, not a new arm; the rule of amendment 6 applies.

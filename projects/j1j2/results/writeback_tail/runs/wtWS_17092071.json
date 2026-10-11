@@ -1,0 +1,143 @@
+{
+ "spec": {
+  "n_loop": 8,
+  "B": 256,
+  "K": 8,
+  "lr": 0.003,
+  "features": "current",
+  "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+  "ws": true,
+  "light": true
+ },
+ "iters": [
+  {
+   "it": 1,
+   "guide_H": 0.00013193875041276706,
+   "guide_E_FN": NaN,
+   "w_s_guide": 0.00011138658514120436,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 0.00010250302566393465,
+   "H_kry": 9.669521791651665e-05,
+   "w_s_oldsign": 0.00011138658514120436,
+   "w_s_kry": 1.9818363804602335e-05,
+   "sec": 292.07158064842224
+  },
+  {
+   "it": 2,
+   "guide_H": 9.669521791661534e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 7.897741169868609e-05,
+   "H_kry": 7.870527110911653e-05,
+   "w_s_oldsign": 1.9818363804602335e-05,
+   "w_s_kry": 1.6132507126842555e-05,
+   "sec": 281.665766954422
+  },
+  {
+   "it": 3,
+   "guide_H": 7.870527110911653e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 6.309692300485479e-05,
+   "H_kry": 6.289017712300825e-05,
+   "w_s_oldsign": 1.6132507126842555e-05,
+   "w_s_kry": 1.2081553402043532e-05,
+   "sec": 282.31494975090027
+  },
+  {
+   "it": 4,
+   "guide_H": 6.289017712300825e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 5.2075487604182534e-05,
+   "H_kry": 5.195484220601701e-05,
+   "w_s_oldsign": 1.2081553402043532e-05,
+   "w_s_kry": 9.393430243531675e-06,
+   "sec": 281.9416229724884
+  },
+  {
+   "it": 5,
+   "guide_H": 5.195484220601701e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 4.7905036561897894e-05,
+   "H_kry": 4.7867859741757e-05,
+   "w_s_oldsign": 9.393430243531675e-06,
+   "w_s_kry": 8.687656889661e-06,
+   "sec": 282.47552466392517
+  },
+  {
+   "it": 6,
+   "guide_H": 4.7867859741757e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 4.039192157989646e-05,
+   "H_kry": 4.0299825828920494e-05,
+   "w_s_oldsign": 8.687656889661e-06,
+   "w_s_kry": 6.554831445959586e-06,
+   "sec": 282.4509518146515
+  },
+  {
+   "it": 7,
+   "guide_H": 4.0299825828920494e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 3.64717473701543e-05,
+   "H_kry": 3.644113046065279e-05,
+   "w_s_oldsign": 6.554831445959586e-06,
+   "w_s_kry": 5.772746181076371e-06,
+   "sec": 281.91801738739014
+  },
+  {
+   "it": 8,
+   "guide_H": 3.644113046065279e-05,
+   "guide_E_FN": NaN,
+   "ideal_gain_site": NaN,
+   "SI_target_frac": NaN,
+   "fit_curve": "loaded",
+   "frac": NaN,
+   "H_oldsign": 3.168399550792758e-05,
+   "H_kry": 3.1631171186417996e-05,
+   "w_s_oldsign": 5.772746181076371e-06,
+   "w_s_kry": 4.497750336174278e-06,
+   "sec": 281.8153450489044
+  }
+ ],
+ "distill": [],
+ "ideal": {
+  "E_FN": [
+   0.0001018,
+   6.52e-05,
+   4.87e-05,
+   3.81e-05
+  ],
+  "H_kry": [
+   7.84e-05,
+   5.58e-05,
+   4.3e-05
+  ]
+ },
+ "rbm_pp": 4.47e-05,
+ "sec": 2284.2748308181763
+}

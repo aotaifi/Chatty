@@ -365,6 +365,20 @@ not bit-reproducible, so iterations 1-5 differ from the 5-iteration run by the t
   runs at about half the ideal speed per iteration.
 - Every iteration kept 42-76% of the ideal FN iteration and the energy fell in every iteration.
 
+**Wrong-sign weight along wtLOOP8** (exact replay from the stored nets, `runs/wtWS_17092071.json`; the replayed <H>
+matches the recorded values to all printed digits). w_s = psi0^2 weight of configurations whose sign differs from
+psi0's (global sign removed). Figure: `fig_loop_energy_6x6.png` panel (b).
+
+| iteration | 0 (psi_P) | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|---|
+| w_s, Krylov sign | 1.11e-4 | 1.98e-5 | 1.61e-5 | 1.21e-5 | 9.39e-6 | 8.69e-6 | 6.55e-6 | 5.77e-6 | 4.50e-6 |
+| w_s, before the Krylov step (new amplitude, old sign) | | 1.11e-4 | 1.98e-5 | 1.61e-5 | 1.21e-5 | 9.39e-6 | 8.69e-6 | 6.55e-6 | 5.77e-6 |
+| ideal loop, Krylov sign | 1.11e-4 | 1.62e-5 | 1.13e-5 | 7.69e-6 | 5.62e-6 | 3.91e-6 | 2.95e-6 | 2.34e-6 | 1.73e-6 |
+
+- The Krylov step removes 82% of the ViT's wrong-sign weight in iteration 1 (the unprojected ViT has 1.3e-4); the
+  later steps remove 8-25% each.
+- Our loop runs 1.2-2.6x above the ideal loop's w_s. The gap grows with the iteration, like the energy gap.
+
 **Cost and the caveat for 8x8.**
 - Every iteration uses the CURRENT guide's one-hop features. In this 6x6 lab the guide is an exact table. In a real
   loop the guide is the stack of stored nets, and its features at x need the guide at the 135 one-hop neighbours
@@ -372,6 +386,51 @@ not bit-reproducible, so iterations 1-5 differ from the 5-iteration run by the t
 - With K = 8 sampled bonds per training configuration this is ~1e3 guide evaluations per sample at 8x8 for one level.
 - Amortising the guide (distilling the stack into one net with features of the base) is the open engineering step.
   itfit's frozen-base-feature variant avoids the recursion at a cost of 0.95 / 0.80 / 0.69 per iteration.
+
+## 6e. Reviewer validation tests (REVIEW section E; amendment 6)
+**(a) Lanczos on top** (`runs/wt_val_a_17092072.json`; one exact Lanczos step on each replayed wtLOOP8 guide):
+
+| guide | psi_P | it 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|---|
+| <H> of the guide | 1.319e-4 | 9.67e-5 | 7.87e-5 | 6.29e-5 | 5.20e-5 | 4.79e-5 | 4.03e-5 | 3.64e-5 | 3.16e-5 |
+| + one Lanczos step: <H> | **2.55e-5** | 3.03e-5 | 2.56e-5 | 2.17e-5 | 1.89e-5 | 1.77e-5 | 1.55e-5 | 1.42e-5 | **1.26e-5** |
+| + one Lanczos step: E_FN | 1.89e-5 | 2.37e-5 | 1.99e-5 | 1.70e-5 | 1.48e-5 | 1.39e-5 | 1.23e-5 | 1.13e-5 | 1.01e-5 |
+
+The compress worker's independent replay gives 1.55e-5 at k = 6, matching.
+- "Loop guide + Lanczos" beats "psi_P + Lanczos" from iteration 3 on (2.17e-5 vs 2.55e-5). After 8 iterations it is
+  2x lower (1.26e-5 / E_FN 1.01e-5): the loop and a Lanczos step are complementary.
+- **At equal hop count, Lanczos wins decisively.** Loop k stored as a table is a k-hop object, yet:
+  - one Lanczos step on psi_P (1 hop, 2.55e-5) beats the loop until iteration 8 (3.16e-5);
+  - two Lanczos steps (8.6e-6) beat every loop guide plus a Lanczos step.
+- A loop guide only pays off if it can be stored as a zero-hop callable net. Whether it can is the compression
+  question (`compress_6x6`; spin-only re-basing failed in 6d(a)).
+
+**(c) Seeds** (iterations 1-3; wtLOOP, wtLOOP8, seeds 1-3; `runs/wt_val_c_s*.json`):
+
+| trajectory | frac it 1 / 2 / 3 | <H> after 3 | E_FN after 3 |
+|---|---|---|---|
+| wtLOOP | 65.2 / 75.3 / 55.7% | 6.79e-5 | 5.64e-5 |
+| wtLOOP8 | 74.6 / 65.9 / 76.2% | 6.29e-5 | 5.25e-5 |
+| seed 1 | 74.2 / 78.5 / 67.1% | 6.15e-5 | 5.15e-5 |
+| seed 2 | 67.9 / 78.2 / 51.2% | 6.67e-5 | 5.53e-5 |
+| seed 3 | 74.6 / 74.7 / 42.3% | 6.82e-5 | 5.68e-5 |
+| **mean +- sd (5)** | **71.3 +- 4.4 / 74.5 +- 5.1 / 58.5 +- 13.3%** | **6.54e-5 +- 0.30e-5** | **5.45e-5 +- 0.23e-5** |
+
+The energy after 3 iterations is reproducible to ~5%, but the per-iteration capture scatters by up to 13 points.
+Single-trajectory capture numbers should be read with that spread.
+
+**(d) Amplitude steps only, no Krylov sign step** (seed 1, `runs/wt_val_d_17092078.json`): frac 75.1 / 71.6 / 63.5%;
+<H> (sign s_P) 1.022e-4 / 8.43e-5 / 7.34e-5; E_FN 8.35e-5 / 7.17e-5 / 6.41e-5. With the Krylov step (seed 1):
+<H> 9.69e-5 / 7.40e-5 / 6.15e-5. The exact global Krylov sign contributes about 1.2e-5 of the 7.0e-5 gained in three
+iterations (17%); the amplitude write-back carries the rest.
+
+**(b) Supervised-Lanczos control** (`runs/wt_val_b_s{1,2}_*.json`): the pre-registered target log|1 + alpha E_L|
+blew up in both seeds (iteration 1: frac -2.6e4 / -3.6e5, <H> 7.3e-4 / 2.8e-3).
+- The Lanczos factor crosses zero on high-local-energy configurations, and the log has -13.8 spikes there.
+- Exactly applied with the old sign, the target gives <H> 8.3e-5, about as good as the FN step, but a frozen-FN frac
+  of -42.
+- A clipped rerun (amendment 6b, wt_val_b2 17134356) is running; until it is in, (b) is **untested**. Whether the
+  loop's write-back is a supervised Lanczos step stays open.
 
 ## 6d. Pre-tests for 8x8 (amendment 5; `runs/wt_pre_a_17090258.json`, `runs/wt_pre_b_edge_17090259.json`, `runs/wt_pre_b_point_17090260.json`)
 **(a) Distillation of the loop's guide stack into one net (option C).**

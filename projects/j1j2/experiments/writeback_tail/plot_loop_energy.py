@@ -32,7 +32,7 @@ wk = [W["iters"][0]["w_s_guide"]] + [r["w_s_kry"] for r in W["iters"]]
 wo = [r["w_s_oldsign"] for r in W["iters"]]
 bx.plot(iti, wi, "--", color="0.55", lw=1, marker="o", ms=4, mfc="white", label="ideal loop (exact FN amplitude, Krylov sign)")
 bx.plot(itw, wk, "-", color="#0072B2", lw=1, marker="o", ms=6, label="our loop, Krylov sign")
-bx.plot(itw[1:], wo, "none", color="#0072B2", marker="x", ms=6, label="our loop, before the Krylov step")
+bx.plot(itw[1:], wo, ls="none", color="#0072B2", marker="x", ms=7, label="our loop, before the Krylov step")
 bx.axhline(1.3e-4, color="#CC79A7", lw=1.2, ls=":")
 bx.text(12.2, 1.3e-4 * 1.12, "ViT (unprojected)", color="#CC79A7", ha="right", fontsize=9)
 bx.set_yscale("log"); bx.set_xlim(-0.4, 12.4)

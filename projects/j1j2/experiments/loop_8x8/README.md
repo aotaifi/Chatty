@@ -185,3 +185,19 @@ Also reported: ViT evaluations per sample for each stage. Budget <= 20 GPU-h.
   - unprojected target exp(T) Delta = -2.23(0.73)e-5;
   - one Lanczos step -0.498943(33). The first Lanczos estimator, in the alpha parametrisation, was numerically
     singular; it was replaced by the 2x2 Ritz value in centred moments.
+
+## Amendment 3 (2026-10-11, after training, before any referee evaluation of any arm): extra control arms
+- All five pre-registered VMC controls collapse on the fixed pool:
+  - within about 2000 steps the training estimate falls to -0.6 ... -11 per site;
+  - the held-out reweighted energy swings between -0.52 and -0.13.
+  - Cause: minimising a fixed-sample, reweighted energy. The weights exp(2 f) concentrate, and f can be raised at
+    unsampled neighbours. The 6x6 controls used fresh exact samples every step and did not meet this.
+- To give the control its best chance, these arms are ADDED (conservative for the pass test, because the best control
+  is used):
+  - single-pass VMC on the same pool (102 steps x 256 = one epoch): minSR eta 0.01 / 0.03 / 0.1, Adam lr 1e-3 / 3e-4;
+  - five-pass VMC (512 steps): minSR eta 0.01, Adam lr 1e-4.
+  - Checkpoints every 10 (25) steps; same held-out selection rule.
+- The FN arms and the pre-registered criteria are unchanged.
+- The held-out reweighted-energy selection is noisy for the VMC arms: it picked step 20000 of VMC-Adam-3e-4 at a
+  held-out -0.517, below any E0 estimate. The referee, which is independent, decides; the best control by the
+  referee is used, as pre-registered.

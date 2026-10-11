@@ -97,6 +97,13 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Lanczos context (6x6): table stack k=6 + 1 Lanczos 1.55e-5 vs psi_P + 1 Lanczos 2.55e-5, but psi_P + 2 Lanczos 8.6e-6. At equal hop count Lanczos still wins on 6x6; the scaling case rests on Lanczos gains shrinking at larger N (untested <= 36 sites) and on the 8x8 test.
 - Options: (a) cap depth (2 route-B iterations + Lanczos + calibrated FN, reviewer E6); (b) accept k=2-3 hops with caching on H100s; (c) input-gradient features (reviewer E4) — first check cheaply whether linearised log-ratios can reach the 0.003 tolerance at all.
 
+## 3m. Compression round 2 (results/compress_6x6/, ad75e84, 2026-10-11) — INCONCLUSIVE, close to the bar
+- Constant-hop loop (re-base every iteration into a frozen-base-feature net; cost per sample independent of k): <H_ph> 7.0e-5 after 6 iterations (2 seeds), 67% of the table loop's gain (bar 70%), then plateau. Write-back fine (0.62-0.78 per iteration); the re-base loses the new gain (0.95 -> ~0 per iteration) while keeping 80-84% of the total. Loss floors at ~5e-6 independent of size/steps -> limit = information in the base features (sums V_P, W_P).
+- Structured errors are 1.5-2x more tolerable than white noise (students); re-base errors less tolerable (rare large errors).
+- Amortised V/W from base: 0.894 at k=3, 0.48 at k=6.
+- Equal-hop Lanczos on 6x6 still not beaten (guide + 1 Lanczos 2.5e-5 = psi_P + 1 Lanczos).
+- Next (approved): per-bond log-ratio inputs (144 bonds, bond-equivariant layer) at unchanged one-hop cost; rolling base as fallback.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

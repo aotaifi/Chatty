@@ -288,3 +288,10 @@ IMMEDIATELY previous guide's one-hop information.
 - FeatNet, edge loss, Adam lr 1e-3, 20k steps.
 - **Pass (i): retention >= 0.7.** If it passes, the constant-hop loop is rerun with residual re-bases (seed 0,
   8 iterations) within the remaining budget.
+
+## Amendment 7 (2026-10-11 23:25): residual re-base PASSES its pre-test; loop launched
+- Residual re-base with psi_P's one-hop scalars only, sampling targeted at the increment: **retention 0.784** of
+  iteration 6's gain (pass >= 0.7), 0.961 since psi_P. Own loss 6.4e-6 -> 1.3e-6.
+- As pre-registered in amendment 6, the constant-hop loop is now run with residual re-bases (`rebase_net: inc`),
+  8 iterations, seeds 0 and 1 (`specs/chop_inc_s*.json`). Pass rule as in round 2.
+- Cost of the guide: one hop of psi_P plus k small nets on the same features (the base dominates).

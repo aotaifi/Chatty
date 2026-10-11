@@ -55,9 +55,17 @@ for k in range(1, SPEC.get('n_loop', 8) + 1):
     rec['H_w'] = lab.H_site(la_w, s_new)                        # write-back table, before re-basing
     rec['H_G_newsign'] = lab.H_site(G, s_new)
     # ---------------- (r) re-base into a base-feature net (fresh)
-    D = la_w - lab.lP0
+    INC_MODE = SPEC.get('rebase_net', 'feat') == 'inc'          # round 3: residual re-base G_{k+1} = G_k + h_k(psi_P feats)
+    D = (la_w - G) if INC_MODE else (la_w - lab.lP0)
     CDF, LIW, DLR, _ = tail_proposal(lab, D, la_w, s_new); del D
-    if SPEC.get('rebase_net', 'feat') == 'bond':               # round 3: per-bond base log-ratios as inputs
+    if INC_MODE:
+        mF = FeatNet(FEAT_BASE, seed=50 + k + 1000 * SEED)
+        sec.offload()
+        flF, rec['curve_r'] = fit_edge(lab, mF, la_w, s_new, CDF, LIW, DLR, SR, 50 + k + 1000 * SEED,
+                                       lr=SPEC.get('lr_r', 1e-3), tag=f'r{k}')
+        sec.reload()
+        g = G - lab.lP0 + mF.table(flF, sec.reps, lab.TIDX); del mF, CDF, LIW, DLR
+    elif SPEC.get('rebase_net', 'feat') == 'bond':               # round 3: per-bond base log-ratios as inputs
         from cx_bond import BondFeatNet, fit_edge_bond
         mF = BondFeatNet(lab, FEAT_BASE, s_new, seed=50 + k + 1000 * SEED)
         sec.offload()

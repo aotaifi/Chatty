@@ -1,0 +1,1 @@
+{"n_loop": 8, "seed": 0, "steps_w": 20000, "steps_r": 20000, "rebase_net": "inc", "lr_r": 1e-3, "save_at": [3, 6]}

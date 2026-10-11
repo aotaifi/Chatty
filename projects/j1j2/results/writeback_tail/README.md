@@ -429,8 +429,19 @@ blew up in both seeds (iteration 1: frac -2.6e4 / -3.6e5, <H> 7.3e-4 / 2.8e-3).
 - The Lanczos factor crosses zero on high-local-energy configurations, and the log has -13.8 spikes there.
 - Exactly applied with the old sign, the target gives <H> 8.3e-5, about as good as the FN step, but a frozen-FN frac
   of -42.
-- A clipped rerun (amendment 6b, wt_val_b2 17134356) is running; until it is in, (b) is **untested**. Whether the
-  loop's write-back is a supervised Lanczos step stays open.
+- The clipped rerun (amendment 6b, factor floored at 0.1 x its mean; `runs/wt_val_b2_17134356.json`) also blew up:
+  iteration 1 frac -7.0e4, <H> 1.6e-3.
+  - Clipping does not change the exact table's frozen-FN frac (-41.7).
+  - So the cause is not the zero crossing. In the deep tail the local energy E_L is huge (FN walls up to 1e6), so
+    |1 + alpha E_L| multiplies tiny amplitudes by large factors. That costs little in <H> (8.3e-5 exact, same sign)
+    but is catastrophic in the FN metric that the fit uses, and the fitted net extrapolates it.
+- By contrast the semi-implicit target T = log(1 + W) - log(1 + D - E) is bounded and positivity-preserving. It is a
+  diagonal-implicit (resolvent-like) step, not a Lanczos factor.
+- **Verdict on (b): the supervised-Lanczos control, as specified, cannot be trained in this pipeline.**
+  - So the reviewer's question (is the write-back a supervised Lanczos step?) is answered only in this sense: the
+    plain one-hop Lanczos factor is not a usable write-back target, and the FN semi-implicit step is.
+  - A fair Lanczos-family control would be a bounded resolvent form, e.g. the implicit Lanczos/ITE step
+    log 1/(1 + tau (E_L - E)) clipped at E_L < E + 1/tau, or a fit in the H metric. This is not run (budget).
 
 ## 6d. Pre-tests for 8x8 (amendment 5; `runs/wt_pre_a_17090258.json`, `runs/wt_pre_b_edge_17090259.json`, `runs/wt_pre_b_point_17090260.json`)
 **(a) Distillation of the loop's guide stack into one net (option C).**

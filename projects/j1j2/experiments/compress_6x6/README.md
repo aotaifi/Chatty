@@ -264,3 +264,12 @@ Follow-ups, conditional:
   with max(V, 0); the B points are re-run.
 
 Budget <= 8 GPU-h, slices preferred.
+
+## Amendment 5 (2026-10-11 22:20, after the three round-3 pre-tests, before this run)
+All three round-3 pre-tests fail (results section below): BondNet re-base 0.10, BondNet V/W at k = 6 -0.06,
+rolling base with G_3 0.08. One more decisive diagnostic, for the hypothesis that each new increment f_k needs the
+IMMEDIATELY previous guide's one-hop information.
+- Re-base iteration 6 with features = psi_P's one-hop scalars + the one-hop scalars of G_5. G_5 is rebuilt from the
+  stored iteration-5 re-base; its V, W are taken under s_6, since s_5 was not saved.
+- If it keeps >= 0.7, the hypothesis holds: a fixed-hop base cannot hold the loop's increments, and every iteration
+  needs one more hop.

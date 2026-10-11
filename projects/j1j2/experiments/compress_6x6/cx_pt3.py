@@ -33,7 +33,11 @@ if MODE == 'rebase':
             fl, curve = fit_edge_bond(lab, m, la_w, s, CDF, LIW, DLR, arm['steps'], 50 + IT, lr=arm.get('lr', 1e-3), tag=tag)
             sec.reload(); g = m.table(fl)[:, 0]
         else:                                                   # 'roll': scalar features of psi_P and of G_ref
-            G_ref = jnp.asarray(np.load(arm['G_ref'])); s_ref = jnp.asarray(np.load(arm['s_ref']).astype(np.float32))
+            if arm.get('G_ref_params'):                       # rebuild a re-based guide from its stored params
+                G_ref = lab.lP0 + FeatNet(FEAT_BASE, 0).table(jnp.asarray(np.load(arm['G_ref_params']), jnp.float32), sec.reps, lab.TIDX)
+            else:
+                G_ref = jnp.asarray(np.load(arm['G_ref']))
+            s_ref = jnp.asarray(np.load(arm['s_ref']).astype(np.float32))
             lanr, Vr, Wr = lab.VW(G_ref, s_ref)
             Egr = FrozenOp(lab, G_ref, s_ref).energy(G_ref)
             _, _, measr = lab.proposal_q(lab.T_of(Vr, Wr, Egr), G_ref, s_ref)

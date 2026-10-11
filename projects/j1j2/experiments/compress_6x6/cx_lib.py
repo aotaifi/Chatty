@@ -177,9 +177,9 @@ class ResCNN(nn.Module):
 class FeatNet:
     """the wt_loop FEAT net (C=32, 4 layers, inputs log a, V, W looked up by rep index), exactly D4 x flip symmetric."""
 
-    def __init__(self, feat, seed=0):
+    def __init__(self, feat, seed=0, C=32):
         nf = int(feat.shape[1])
-        self.net = ResCNN(32, 4, True, nfeat=nf)
+        self.net = ResCNN(C, 4, True, nfeat=nf)
         params = self.net.init(jax.random.PRNGKey(seed), jnp.zeros((1, N), jnp.float32), jnp.zeros((1, nf), jnp.float32))['params']
         self.flat0, self.unravel = ravel_pytree(params)
         self.npar = int(self.flat0.size)

@@ -209,3 +209,20 @@ Each iteration k, starting from G_0 = log|psi_P|, s_0 = s_P:
   log W errors (held-out vs training), the baseline.
 - If test 3 passes, the guide's V/W cost drops from two hops of the base to one, so the whole loop costs one hop of
   psi_P per evaluation (training samples two).
+
+## Amendment 4 (2026-10-11, after tests 1-3 finished, before the diagnostic run)
+Test 1 plateaus near <H> 7.0e-5. The write-back capture from the callable guide stays at 0.62-0.78. The re-base
+step retention, however, falls 0.95 -> 0.86 -> 0.56 -> 0.21 -> 0.17 -> ~0.
+The re-base own-loss curves are still falling at 20k steps and spike up to 10x (Adam at 3e-3), and their final loss
+grows from 0.2e-6 (iteration 1) to 9e-6 (iteration 7). So the next question is whether the optimizer, the capacity or
+the base features limit the re-base. Diagnostic (`cx_rebase_diag.py`), on the saved write-back table la_w of seed 0,
+iteration 6 (chop re-base kept -6% of that iteration's gain):
+- (a) warm start from the iteration-5 re-base, 20k steps at lr 1e-3;
+- (b) fresh, 60k steps at lr 1e-3;
+- (c) fresh, C = 64 (~111k parameters), 40k steps at lr 1e-3.
+Reading:
+- If (a) or (b) keeps >= 0.7 of the iteration's gain, the plateau is optimizer-limited, and the fix is warm-started,
+  longer, lower-lr re-bases.
+- If only (c) does, it is capacity.
+- If none does, the frozen base's one-hop features are the limit, and the fix is richer base information (two-hop or
+  input-gradient features).

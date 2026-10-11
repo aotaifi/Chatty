@@ -54,7 +54,7 @@ class BondCNN(nn.Module):                                    # copy of cx_distil
 
 
 ctx = {}
-for k in (3, 6):
+for k in SPEC.get('ks', [3, 6]):
     la, s = load_guide(k)
     ctx[k] = GuideCtx(lab, la, s, load_loop_params(k + 1), sec.E0 + N * REFS[str(k)]['E_FN_stack'])
     f0, si0 = ctx[k].step()
@@ -80,7 +80,7 @@ def run_la(name, k, e, scales):
 
 
 # ---------------- white noise reference (pointwise sigma = bond rms / sqrt 2)
-for k in (3, 6):
+for k in ctx:
     for sb in SPEC.get('white', [0.001, 0.003, 0.01, 0.03]):
         xi = jax.random.normal(jax.random.PRNGKey(4242 + k + int(sb * 1e4)), (sec.D,), f64)
         run_la('white', k, xi, [sb / np.sqrt(2.0)]); del xi
@@ -92,7 +92,7 @@ for name, k, path, scales in SPEC.get('students', []):
 # ---------------- base-feature distillation of la_k (the re-base of test 1)
 if SPEC.get('featbase', True):
     FEAT_BASE = base_features(lab)
-    for k in (3, 6):
+    for k in ctx:
         c_ = ctx[k]
         D = c_.la - lab.lP0
         CDF, LIW, DLR, _ = tail_proposal(lab, D, c_.la, c_.s); del D
@@ -130,7 +130,7 @@ if SPEC.get('B_params'):
         a_, b_ = vw_chunk(jnp.minimum(jnp.arange(i, i + 8192), sec.D - 1)); m_ = min(8192, sec.D - i)
         Vb.append(a_[:m_]); Wb.append(b_[:m_])
     Vb = jnp.concatenate(Vb); Wb = jnp.concatenate(Wb)
-    lV, lW = jnp.log(c_.V + 1e-12), jnp.log(c_.W + 1e-12)
+    lV, lW = jnp.log(jnp.maximum(c_.V, 0) + 1e-12), jnp.log(jnp.maximum(c_.W, 0) + 1e-12)   # V can be -1e-17 (round-off): was NaN
     dV, dW = jnp.log(Vb + 1e-12) - lV, jnp.log(Wb + 1e-12) - lW; del Vb, Wb
     for c in SPEC.get('B_scales', [0.03, 0.1, 0.3, 1.0]):
         t0 = time.time()

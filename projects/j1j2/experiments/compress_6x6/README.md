@@ -226,3 +226,41 @@ Reading:
 - If only (c) does, it is capacity.
 - If none does, the frozen base's one-hop features are the limit, and the fix is richer base information (two-hop or
   input-gradient features).
+
+# Round 3 (lead/PI 2026-10-11): per-bond base information. Pre-registered before any run.
+Cause found in round 2: the frozen base's one-hop SUMS (log a_P, V_P, W_P) cannot carry the accumulated correction
+beyond ~85% (re-base loss floor ~5e-6 at any size or step count). Fix tested here, at the same cost (one hop of psi_P):
+**BondNet** (`cx_bond.py`).
+- Inputs: the spins, psi_P's 144 per-bond log-ratios r_b(x) = log a_P(x^b) - log a_P(x), each bond's kept/violating
+  flag under the current sign, the bond type, and the one-hop scalars (log a_P, V_P, W_P).
+- Layers: site CNN (3 conv layers) -> bond messages from (h_i + h_j, h_i h_j, r_b, tanh r_b, kept_b, valid_b, type)
+  -> summed onto the two sites -> site layer -> pooled readout.
+- Translation-equivariant; exactly D4 x flip symmetric at evaluation (16 images, bond features permuted with the
+  sites); one random image per training sample.
+
+Pre-tests:
+- **(1a) Re-base, iteration 6** (seed 0, the case where the scalar-feature re-base kept -0.06 of the iteration's gain
+  and at most 0.22 with any optimizer or size).
+  - Setup: BondNet, edge loss in the metric of (la_w, s_6), the same proposal, Adam lr 1e-3, 30k steps.
+  - **Pass: retention of the iteration's gain >= 0.7.**
+- **(1b) Amortised V/W at k = 6** (scalar-feature predictor: 0.48), and k = 3 (0.89).
+  - Setup: BondNet with 2 outputs, residual on (log V_P, log W_P), the same loss, sampling and held-out split as
+    test 3.
+  - **Pass: capture >= 0.9 x exact at k = 6.**
+- **(3) Rolling-base arm, iteration 6.**
+  - Setup: re-base features = psi_P's one-hop scalars + the one-hop scalars of the iteration-3 re-based guide G_3. G_3
+    is itself a psi_P-one-hop net, so its features cost two hops of psi_P at every k. FeatNet with 6 features, lr 1e-3,
+    20k steps.
+  - **Pass: retention >= 0.7.**
+
+Follow-ups, conditional:
+- **(2)** If (1a) passes: the constant-hop loop with the BondNet re-base, 8 iterations, seeds 0 and 1, Adam lr 1e-3,
+  30k steps per re-base; everything else as round 2. Compared with the table loop, and at equal hops with psi_P + 1/2
+  Lanczos steps.
+  - Pass as round 2: >= 70% of the table loop's accumulated gain at iteration 6, mean of the seeds, neither seed below
+    60%.
+- If (3) passes and budget remains: the same loop with the rolling-base re-base, one seed.
+- Bug fix: B's V/W replay (round 2, test 2) was NaN because V can be -1e-17 by round-off and its log was taken. Fixed
+  with max(V, 0); the B points are re-run.
+
+Budget <= 8 GPU-h, slices preferred.

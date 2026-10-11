@@ -57,11 +57,21 @@ for k in range(1, SPEC.get('n_loop', 8) + 1):
     # ---------------- (r) re-base into a base-feature net (fresh)
     D = la_w - lab.lP0
     CDF, LIW, DLR, _ = tail_proposal(lab, D, la_w, s_new); del D
-    mF = FeatNet(FEAT_BASE, seed=50 + k + 1000 * SEED)
-    sec.offload()
-    flF, rec['curve_r'] = fit_edge(lab, mF, la_w, s_new, CDF, LIW, DLR, SR, 50 + k + 1000 * SEED, tag=f'r{k}')
-    sec.reload()
-    g = mF.table(flF, sec.reps, lab.TIDX); del mF, CDF, LIW, DLR
+    if SPEC.get('rebase_net', 'feat') == 'bond':               # round 3: per-bond base log-ratios as inputs
+        from cx_bond import BondFeatNet, fit_edge_bond
+        mF = BondFeatNet(lab, FEAT_BASE, s_new, seed=50 + k + 1000 * SEED)
+        sec.offload()
+        flF, rec['curve_r'] = fit_edge_bond(lab, mF, la_w, s_new, CDF, LIW, DLR, SR, 50 + k + 1000 * SEED,
+                                            lr=SPEC.get('lr_r', 1e-3), tag=f'r{k}')
+        sec.reload()
+        g = mF.table(flF)[:, 0]; del mF, CDF, LIW, DLR
+    else:
+        mF = FeatNet(FEAT_BASE, seed=50 + k + 1000 * SEED)
+        sec.offload()
+        flF, rec['curve_r'] = fit_edge(lab, mF, la_w, s_new, CDF, LIW, DLR, SR, 50 + k + 1000 * SEED,
+                                       lr=SPEC.get('lr_r', 3e-3), tag=f'r{k}')
+        sec.reload()
+        g = mF.table(flF, sec.reps, lab.TIDX); del mF, CDF, LIW, DLR
     G_new = lab.lP0 + g; del g
     np.save(os.path.join(OUT, f'params_w{k}.npy'), np.asarray(flat)); np.save(os.path.join(OUT, f'params_r{k}.npy'), np.asarray(flF))
     rec['H'] = lab.H_site(G_new, s_new)

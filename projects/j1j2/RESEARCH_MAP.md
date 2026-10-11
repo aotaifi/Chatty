@@ -104,6 +104,12 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Equal-hop Lanczos on 6x6 still not beaten (guide + 1 Lanczos 2.5e-5 = psi_P + 1 Lanczos).
 - Next (approved): per-bond log-ratio inputs (144 bonds, bond-equivariant layer) at unchanged one-hop cost; rolling base as fallback.
 
+## 3n. First 8x8 test (results/loop_8x8/, f030824, 2026-10-11) — INCONCLUSIVE (control unresolved)
+- Projected (D4 x flip) 8x8 ViT guide -0.498856(29) (paper ViT -0.498823(35)). One FN write-back (route B, realistic): -0.498884(24), Delta -2.84(0.59)e-5 (4.8 sigma) = RBM+PP -0.498886(1) within errors. Best same-sample VMC control (single-pass minSR) -3.87(2.21)e-5: not separable; Adam VMC controls gain ~0.
+- One Lanczos step on the projected ViT: -0.498962(29), 2.6 sigma BELOW RBM+PP (sampled-moment estimate; confirming by direct VMC). Lanczos gains 3.7x more than one write-back at equal hop cost.
+- Cost 12.2 GPU-h on A40 slices; calibrated FN-DMC unaffordable here (~6 GPU-h per population on the written-back guide).
+- Next (running): confirm the Lanczos lead by direct VMC; loop guide + Lanczos vs ViT + Lanczos (paired); resolve the control.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

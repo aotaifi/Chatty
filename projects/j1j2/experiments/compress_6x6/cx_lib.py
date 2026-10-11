@@ -383,13 +383,13 @@ class GuideCtx:
         return rv, rw
 
 
-def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None):
+def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None, clip=None):
     """wt_loop.fit, edge loss (kept bonds of (la, s), weight |H_xy| a_y/a_x): sum w ((f_x + DLR_x) - (f_y + DLR_y))^2.
     excl: optional bool mask of orbits whose incident edges get weight 0 (held-out orbits)."""
     import optax
     sec = lab.sec
     sched = optax.warmup_cosine_decay_schedule(0.0, lr, min(200, max(1, steps // 2)), steps, lr * 0.02)
-    opt = optax.adam(sched); flat = model.flat0; ost = opt.init(flat)
+    opt = optax.adam(sched) if not clip else optax.chain(optax.clip_by_global_norm(clip), optax.adam(sched)); flat = model.flat0; ost = opt.init(flat)
 
     @jax.jit
     def batch(key):
@@ -451,3 +451,69 @@ def base_features(lab):
     T0 = lab.T_of(V0, W0, Eg0)
     _, _, meas0 = lab.proposal_q(T0, lab.lP0, lab.sP0)
     return lab.feat_table(lan0, V0, W0, meas0)
+
+
+
+def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=4321):
+    """held-out evaluator: the same edge loss as fit_edge on nb fixed batches drawn from CDF (all edges kept)."""
+    sec = lab.sec
+
+    @jax.jit
+    def batch(key):
+        k1, k2 = jax.random.split(key)
+        idx = jnp.clip(jnp.searchsorted(CDF, jax.random.uniform(k1, (B,), f64) * CDF[-1]), 0, sec.D - 1)
+        x = sec.reps[idx]
+        valid = valid_bonds(x); nval = valid.sum(1)
+        sc = jnp.where(valid, jax.random.uniform(k2, valid.shape), -1.0)
+        _, bsel = jax.lax.top_k(sc, K)
+        ok = jnp.take_along_axis(valid, bsel, 1)
+        y = x[:, None] ^ MASKS[bsel]
+        iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
+        rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
+        wgt = jnp.where(ok & (s[idx][:, None] * s[iy] < 0), 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
+        lw = LIW[idx]; iw = jnp.exp(lw - jnp.max(lw))
+        return x, y, DLR[idx], DLR[iy], wgt, iw, lab.TIDX[idx], lab.TIDX[iy]
+
+    def loss(q, x, y, dlx, dly, wgt, iw, tx, ty):
+        iw = iw / jnp.mean(iw)
+        X = bits(jnp.concatenate([x, y.reshape(-1)])); Tt = jnp.concatenate([tx, ty.reshape(-1)])
+        fa = model.f(q, X, Tt).astype(f64)                       # exactly symmetric evaluation
+        fx, fy = fa[:B], fa[B:].reshape(B, K)
+        return 0.5 * jnp.mean(iw * jnp.sum(wgt * ((fx + dlx)[:, None] - (fy + dly)) ** 2, 1)) / N
+    bds = [batch(jax.random.PRNGKey(key0 + i)) for i in range(nb)]
+    lj = jax.jit(loss)
+    return lambda q: float(np.mean([float(lj(q, *b)) for b in bds]))
+
+
+def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0):
+    """fit_edge with (i) the 20% held-out orbits excluded from training (never sampled, incident edges weight 0),
+    (ii) global-norm gradient clipping (the seed-1003 'dead fit' was a collapse to a constant output after an early
+    large update: the edge loss returned exactly to its f = 0 value), (iii) collapse/stall detection and re-seeding,
+    (iv) acceptance only if the held-out edge loss beats f = 0 (keep the best accepted try; else return None).
+    Returns (model, flat or None, record)."""
+    CDF, LIW, DLR, _ = tail_proposal(lab, target, la, s, mask_out=lab.HO)
+    Qh, PA, _ = lab.proposal_q(target, la, s)
+    Qh = jnp.where(lab.HO, Qh, 0.0); Qh = Qh / jnp.sum(Qh)
+    LIWh = jnp.where(Qh > 0, jnp.log(jnp.maximum(PA, 1e-300)) - jnp.log(jnp.maximum(Qh, 1e-300)), -jnp.inf)
+    CDFh = jnp.cumsum(Qh); del Qh, PA
+    tries = []; best = None
+    for t in range(max_tries):
+        sd = seed + 7919 * t; lr_t = lr / (2 ** t)
+        model = model_fn(sd)
+        ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR)
+        L0 = ev(model.flat0)
+        lab.sec.offload()
+        flat, curve = fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, sd, lr=lr_t, tag=f'{tag}.{t}', excl=lab.HO, clip=clip)
+        lab.sec.reload()
+        Lh = ev(flat)
+        stalled = len(curve) > 1 and curve[1][1] > 0.995 * curve[0][1] and abs(curve[-1][1] - curve[0][1]) < 1e-3 * curve[0][1]
+        ok = (Lh < L0) and not stalled
+        tries.append(dict(seed=sd, lr=lr_t, L0_heldout=L0, L_heldout=Lh, stalled=bool(stalled), accepted=bool(ok), curve=curve))
+        log(f'  [{tag}] try {t}: held-out {L0:.4e} -> {Lh:.4e}  stalled {stalled}  accepted {ok}')
+        if ok and (best is None or Lh < best[2]):
+            best = (model, flat, Lh)
+        if ok: break                                            # retry only on rejection (stall or no held-out gain)
+    del CDF, LIW, DLR, CDFh, LIWh
+    if best is None:
+        return model, None, dict(tries=tries)
+    return best[0], best[1], dict(tries=tries)

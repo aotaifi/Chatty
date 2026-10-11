@@ -295,3 +295,29 @@ IMMEDIATELY previous guide's one-hop information.
 - As pre-registered in amendment 6, the constant-hop loop is now run with residual re-bases (`rebase_net: inc`),
   8 iterations, seeds 0 and 1 (`specs/chop_inc_s*.json`). Pass rule as in round 2.
 - Cost of the guide: one hop of psi_P plus k small nets on the same features (the base dominates).
+
+# Round 4 (lead/PI 2026-10-12): robust residual re-base, 3 seeds. Pre-registered before any run.
+Code `cx_chop2.py` (loop) and `robust_fit` in `cx_lib.py`; cost `cx_cost.py`. Budget <= 6 GPU-h on slices.
+- **Dead-fit bug.** In round 2 and round 3 the seed-1 write-back at iteration 3 (init seed 1003) returned exactly its
+  f = 0 loss after moving early. The net had collapsed to a constant output: the edge loss ignores constants, and the
+  GELU hidden layer was dead after an early large Adam update. Fixes:
+  - global-norm gradient clipping 1.0;
+  - stall/collapse detection (own loss at 2k steps >= 99.5% of the start and the final loss within 0.1% of the start)
+    triggers a re-seed, with lr halved per retry and <= 3 tries.
+- **Held-out acceptance.** 20% of orbits (the usual hash) are excluded from training: never sampled, incident edges
+  weight 0. A fit is accepted only if its exactly symmetric edge loss on 16 held-out batches beats f = 0.
+  - A rejected fit is retried.
+  - If no try is accepted, the write-back contributes f = 0 or the re-base h = 0, and this is recorded.
+  - Applied to both the write-back and the re-base.
+- **Re-base steps.** 20k for k <= 2 and 40k for k >= 3 (the increments are small from iteration 3 on in rounds 2-3);
+  Adam lr 1e-3.
+- **Runs.** 8 iterations, seeds 0, 1, 2.
+- **Reported per iteration:** capture frac, re-base retention, <H>, E_FN, guide + 1 / 2 Lanczos steps (equal-hop
+  comparison: guide + 1 step against psi_P + 2 steps), and number of small nets. Measured cost per configuration of
+  the guide value, its V, W and an edge-loss sample vs k at 6x6 and 8x8 (psi_P and small-net throughput measured on
+  the same GPU; expected linear in k for the small-net part).
+- **Pass:**
+  - >= 70% of the table loop's accumulated <H> gain at iteration 6 for the mean over 3 seeds, no seed below 60%;
+  - in addition the 3-seed mean at iteration 8 >= 70% of the table loop's gain there.
+  - Reported: whether robustness removed the bad re-bases (number of rejected/retried fits; worst single-iteration
+    retention).

@@ -97,6 +97,64 @@ dj = jk - jk_g; se_dl = float(np.sqrt((len(dj) - 1) * np.mean((dj - dj.mean()) *
 res['lanczos1'] = dict(E_site=El / N, se=se_l / N, m3_over_2m2=float(al), Delta_site=(El - Ea) / N, Delta_se_site=se_dl / N,
                        var_site2=var / N ** 2, cost_note='free given the two-hop referee data (same 2-hop evaluations)')
 C.log('LANCZOS', res['lanczos1'])
+
+# ---------------------------------------------------------------- FU1b: alpha scan of psi_1 = psi_P (1 + a (E_L - E_ref)) by reweighting
+Eref = SPEC.get('Eref', Ea); a_star = SPEC.get('alpha_star')
+if a_star is not None:
+    scan = []
+    for cc in SPEC.get('alpha_scan', [0.5, 0.75, 1.0, 1.25, 1.5]):
+        a_ = cc * a_star; ep_ = ELa - Eref; w_ = (1 + a_ * ep_) ** 2
+        EL1 = ((1 - a_ * Eref) * ELa + a_ * EL2) / (1 + a_ * ep_)
+        E1 = np.sum(w_ * EL1) / np.sum(w_); wt_ = w_ / w_.mean()
+        _, se1 = chain_mean_se(wt_ * (EL1 - E1) - (ELa - Ea))
+        _, sea = chain_mean_se(wt_ * (EL1 - E1))
+        scan.append(dict(c=cc, alpha=a_, E_site=E1 / N, E_se_site=sea / N, Delta_site=(E1 - Ea) / N, Delta_se_site=se1 / N,
+                         ess=float(w_.sum() ** 2 / (w_ * w_).sum() / R), min_factor=float((1 + a_ * ep_).min())))
+        C.log('ALPHA', scan[-1])
+    res['alpha_scan'] = scan
+
+
+def ritz(G, HG, idx):
+    """lowest Ritz value (shifted by Ea) in span{g_k psi}: S = <g_i g_j>, M = sym <g_i (H - Ea) g_j psi / psi>."""
+    Gi = [g[idx] for g in G]; Hi = [h[idx] for h in HG]
+    k = len(G); S_ = np.empty((k, k)); M_ = np.empty((k, k))
+    for i in range(k):
+        for j in range(k):
+            S_[i, j] = np.mean(Gi[i] * Gi[j]); M_[i, j] = np.mean(Gi[i] * Hi[j])
+    M_ = 0.5 * (M_ + M_.T)
+    ev = np.linalg.eigvals(np.linalg.solve(S_, M_)).real
+    return float(ev.min())
+
+
+BLK = np.array_split(np.unique(ch), 32)
+JKI = [np.nonzero(~np.isin(ch, b_))[0] for b_ in BLK]
+ALLI = np.arange(R)
+G2 = [np.ones(R), ELa - Ea]
+HG2 = [ELa - Ea, (EL2 - Ea * ELa) - Ea * (ELa - Ea)]
+
+
+def jk(fun):
+    full = fun(ALLI); v = np.array([fun(i_) for i_ in JKI])
+    return full, float(np.sqrt((len(v) - 1) * np.mean((v - v.mean()) ** 2)))
+
+
+def ritz3(u, uy, tag):
+    """span{psi, (H - Ea) psi, u psi} vs span{psi, (H - Ea) psi}; paired by jackknife over chain blocks."""
+    if np.std(u) < 1e-10:
+        return dict(tag=tag, skipped='u = 0')
+    Hu = D * u + np.bincount(own, weights=hxy * uy, minlength=R) - Ea * u
+    G3 = G2 + [u]; HG3 = HG2 + [Hu]
+    e2, se2 = jk(lambda i_: ritz(G2, HG2, i_))
+    e3, se3 = jk(lambda i_: ritz(G3, HG3, i_))
+    d, sed = jk(lambda i_: ritz(G3, HG3, i_) - ritz(G2, HG2, i_))
+    Gm = np.stack(G3); Sm = Gm @ Gm.T / R; dg = np.sqrt(np.diag(Sm))
+    out = dict(tag=tag, cond_S=float(np.linalg.cond(Sm / np.outer(dg, dg))),
+               corr_u_eps=float(np.corrcoef(u, ELa)[0, 1]), E2_site=(Ea + e2) / N, E2_se=se2 / N, E3_site=(Ea + e3) / N, E3_se=se3 / N,
+               extra_gain_site=d / N, extra_gain_se=sed / N)
+    C.log('RITZ3', json.dumps(out)); return out
+
+
+res['ritz3'] = [ritz3(np.expm1(tx - tx.mean()), np.expm1(ty - tx.mean()), 'exp(T) target')]
 C.dump(F, res)
 
 # ---------------------------------------------------------------- arms
@@ -129,6 +187,8 @@ for run in SPEC.get('runs', []):
             out, d = score(fx, fy, f'{arm["tag"]}@{lab}({st})')
             out.update(arm=arm['tag'], kind=arm['kind'], opt=arm['opt'], step=st, label=lab, run=run['dir'], sec=time.time() - t0)
             res['arms'].append(out); infl[(arm['tag'], lab)] = (out['Delta_site'], d)
+            if lab == 'best':
+                res['ritz3'].append(ritz3(np.expm1(fx), np.expm1(fy), f'{arm["tag"]}@best'))
             C.dump(F, res)
 # paired FN vs control differences at the pre-registered checkpoint ('best')
 pairs = []
@@ -138,5 +198,29 @@ for kf in fn_tags:
     for kv in vm_tags:
         _, se = chain_mean_se(infl[kf][1] - infl[kv][1])
         pairs.append(dict(fn=kf[0], vmc=kv[0], diff_site=infl[kf][0] - infl[kv][0], se_site=se / N))
-res['pairs'] = pairs; res['sec'] = time.time() - T00
+res['pairs'] = pairs
+import re
+groups = {}
+for (tag, lab), (dl, dv) in infl.items():
+    if lab != 'best': continue
+    groups.setdefault(re.sub(r'-s\d+$', '', tag), []).append((tag, dl, dv))
+gsum = {}
+for gname, lst in groups.items():
+    dm = float(np.mean([x[1] for x in lst])); iv = np.mean([x[2] for x in lst], 0)
+    _, se = chain_mean_se(iv)
+    gsum[gname] = dict(n_seeds=len(lst), Delta_mean_site=dm, Delta_mean_se_site=se / N,
+                       seed_sd_site=float(np.std([x[1] for x in lst], ddof=1)) if len(lst) > 1 else None,
+                       members={x[0]: x[1] for x in lst}, _iv=iv)
+gpairs = []
+fn_g = [k for k in gsum if k.startswith('FN-')]
+for kf in fn_g:
+    for kv in gsum:
+        if kv.startswith('FN-'): continue
+        _, se = chain_mean_se(gsum[kf]['_iv'] - gsum[kv]['_iv'])
+        gpairs.append(dict(fn=kf, vmc=kv, diff_site=gsum[kf]['Delta_mean_site'] - gsum[kv]['Delta_mean_site'], se_site=se / N,
+                           n_fn=gsum[kf]['n_seeds'], n_vmc=gsum[kv]['n_seeds']))
+for v in gsum.values(): v.pop('_iv')
+res['seed_groups'] = gsum; res['seed_group_pairs'] = gpairs
+for p in gpairs: C.log('GPAIR', p)
+res['sec'] = time.time() - T00
 C.dump(F, res); C.log('DONE', res['sec'])

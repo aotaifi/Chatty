@@ -1,0 +1,45 @@
+{
+ "ref": [
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref5000_17092719/ref.npz",
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref6000_17093575/ref.npz",
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref7000_17135002/ref.npz",
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref8000_17135003/ref.npz",
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/REF9000/ref.npz",
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/REF10000/ref.npz"
+ ],
+ "runs": [
+  {
+   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "steps": [
+    "best"
+   ]
+  },
+  {
+   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trF_17134891",
+   "steps": [
+    "best"
+   ]
+  },
+  {
+   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "steps": [
+    "best"
+   ]
+  },
+  {
+   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/TRSEEDS",
+   "steps": [
+    "best"
+   ]
+  }
+ ],
+ "alpha_star": -0.160951,
+ "Eref": -31.92677568,
+ "alpha_scan": [
+  0.5,
+  0.75,
+  1.0,
+  1.25,
+  1.5
+ ]
+}

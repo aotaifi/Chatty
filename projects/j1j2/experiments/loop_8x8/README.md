@@ -201,3 +201,39 @@ Also reported: ViT evaluations per sample for each stage. Budget <= 20 GPU-h.
 - The held-out reweighted-energy selection is noisy for the VMC arms: it picked step 20000 of VMC-Adam-3e-4 at a
   held-out -0.517, below any E0 estimate. The referee, which is independent, decides; the best control by the
   referee is used, as pre-registered.
+
+## Follow-up pre-registration FU (2026-10-11, after the main verdict; budget <= 14 GPU-h on slices; Paderborn still drained)
+**FU1: confirm the Lanczos lead.**
+- psi_1 = psi_P (1 + alpha (E_L - E_ref)), with fixed numbers alpha = -0.160951 and E_ref = -31.92677568. Both are the
+  Ritz optimum from the 12288 referee samples; that reweighted estimate is -0.4989665, the Ritz value -0.4989623.
+- (a) A one-hop VMC of psi_P with ~1e5 samples (2048 chains x 48, seed 11000) for the absolute <H>_P, SE about 1e-5.
+- (b) An alpha scan c x alpha*, c = 0.5 ... 1.5, by reweighting on the referee samples.
+- (c) Direct VMC of psi_1:
+  - Metropolis on |psi_1|^2; each amplitude is one hop of psi_P;
+  - 2 jobs x 512 chains started from referee samples, burn 4 sweeps, 4 samples 1 sweep apart: 4096 samples;
+  - exact E_L1 from the two-hop set;
+  - plus the mirror paired Delta, with weights back to psi_P.
+- **Confirmed if** two agreements hold, each within 2 combined sigma:
+  - the direct E1 agrees with the reweighted E1;
+  - the mirror Delta agrees with the forward Delta.
+- Headline: E1 = <H>_P (a) + Delta_forward (referee). "Below RBM+PP" is claimed only if E1 + 2 sigma < -0.498886.
+
+**FU2: the fair test of review E, in its affordable form.**
+- One exact Lanczos step on the written-back guide b needs <H^3>_b, i.e. b on two hops, i.e. psi_P on three hops:
+  ~4e5 projected evaluations, ~80 s per sample on a slice. Out of budget; not run.
+- Instead, with the same samples and estimator (paired, jackknife over 32 chain blocks), compare:
+  - the lowest Ritz value in span{psi_P, (H - E)psi_P, (b/psi_P - 1)psi_P};
+  - against span{psi_P, (H - E)psi_P}, the Lanczos step.
+- Reported for FN-Adam, the best VMC controls and exp(T).
+- **The write-back adds value on top of Lanczos only if** the extra gain is negative by > 2 sigma and >= 1e-5 per
+  site. Otherwise it adds nothing beyond a Lanczos step.
+- The condition number of the overlap matrix and corr(u, E_L) are reported. The semi-implicit target satisfies
+  T ~ -(E_L - E)/(1 + W), i.e. it is nearly a Lanczos direction.
+
+**FU3: resolve the control.**
+- Seeds 1 and 2 (in addition to seed 0) for FN-Adam and for the four minSR VMC controls (1ep-0.01, 1ep-0.03, 1ep-0.1,
+  5ep-0.01). Same pool, same settings, same held-out selection.
+- The referee is extended by 2 independent batches (seeds 9000, 10000): R = 18432.
+- Per family: the seed-mean Delta, with the SE from the chain-blocked mean influence, and the seed scatter.
+- Criterion (ii) re-evaluated on seed means: |Delta_FN| >= 1.5 x the best control family's seed-mean gain.
+  The paired family difference and its SE are reported; the target SE is <= 1e-5.

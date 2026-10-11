@@ -1,0 +1,123 @@
+{
+ "pool": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8pool_17092718/pool.npz",
+ "holdout": 0.2,
+ "split_seed": 3,
+ "arms": [
+  {
+   "tag": "FN-Adam-s1",
+   "kind": "fn",
+   "opt": "adam",
+   "lr": 0.003,
+   "steps": 20000,
+   "B": 256,
+   "ckpt_every": 1000,
+   "seed": 1
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.01-s1",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.01,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 1
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.03-s1",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.03,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 1
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.1-s1",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.1,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 1
+  },
+  {
+   "tag": "VMC-minSR-5ep-0.01-s1",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.01,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 512,
+   "B": 256,
+   "ckpt_every": 25,
+   "seed": 1
+  },
+  {
+   "tag": "FN-Adam-s2",
+   "kind": "fn",
+   "opt": "adam",
+   "lr": 0.003,
+   "steps": 20000,
+   "B": 256,
+   "ckpt_every": 1000,
+   "seed": 2
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.01-s2",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.01,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 2
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.03-s2",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.03,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 2
+  },
+  {
+   "tag": "VMC-minSR-1ep-0.1-s2",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.1,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 102,
+   "B": 256,
+   "ckpt_every": 10,
+   "seed": 2
+  },
+  {
+   "tag": "VMC-minSR-5ep-0.01-s2",
+   "kind": "vmc",
+   "opt": "sr",
+   "eta": 0.01,
+   "lam": 0.001,
+   "max_df": 0.01,
+   "steps": 512,
+   "B": 256,
+   "ckpt_every": 25,
+   "seed": 2
+  }
+ ]
+}

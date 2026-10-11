@@ -1,0 +1,1 @@
+{"sym": true, "phi": 0.056006, "nchains": 2048, "burn": 20, "nsamp": 48, "thin": 1, "seed": 11000, "chunk": 8192, "batch": 1024}

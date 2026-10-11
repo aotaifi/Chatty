@@ -1,0 +1,1 @@
+{"sym": true, "phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "init_ref": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref5000_17092719/ref.npz", "nchains": 512, "burn": 4, "nsamp": 4, "thin": 1, "seed": 12001, "chunk": 64, "batch": 1024}

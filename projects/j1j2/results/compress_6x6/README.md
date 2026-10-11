@@ -116,3 +116,122 @@ Held-out |H| a_y/a_x-weighted rms bond log-ratio error per decade of a_k^2 (k = 
 - A40 24 GB slices: lr scans 0.55 h, smoke 0.04 h.
 - 2080 Ti: 0.15 h (two failed B attempts, out of memory).
 - Total ~7.4 GPU-h, of which ~0.6 on slices (<= 8 budget).
+
+# Round 2 (2026-10-09/11): attacking the recursion
+Pre-registration b33c794, amendment 4 before the diagnostic run. Figure `fig_round2_6x6.png/.pdf`; raw:
+`runs/cx_chop_s0.json`, `cx_chop_s1.json`, `cx_struct.json`, `cx_vw.json`, `cx_rebase_diag.json`.
+
+## Verdict
+**Test 1 (constant-hop loop) narrowly fails: 67% of the table loop's gain at iteration 6 (bar 70%), then a plateau at
+<H> ~7.0e-5. Test 3 (amortised V/W) narrowly fails at k = 3 (0.89, bar 0.90) and clearly at k = 6 (0.48). Test 2:
+student errors are 1.5-2x more tolerable than white noise; re-base errors are LESS tolerable (outliers).**
+- Cause of the plateau (amendment-4 diagnostic): neither the optimizer nor the capacity limits the re-base. Its own
+  loss floors at ~5e-6 with 37k parameters at 60k steps and with 111k parameters alike. The one-hop features of the
+  frozen psi_P are the limit: they hold ~84% of the accumulated correction and no more.
+- Not a conceptual limit. The fix is to give the re-base more information about the guide's neighbourhood than
+  psi_P's own one-hop sums (next step below).
+
+## Test 1: constant-hop loop (re-base every iteration into a frozen-base-feature net)
+
+| it | frac s0 / s1 | <H> before re-base (s0) | <H> re-based guide s0 / s1 | retention (this iteration's gain) s0 / s1 | retention since psi_P s0 / s1 | E_FN s0 | G + 1 / 2 Lanczos (s0) | table loop <H> / E_FN |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 0.71 / 0.67 | 9.94e-5 | 1.007e-4 / 1.005e-4 | 0.95 / 1.00 | 0.96 / 1.00 | 7.89e-5 | 3.13e-5 / 1.17e-5 | 9.67e-5 / 7.62e-5 |
+| 2 | 0.62 / 0.78 | 8.26e-5 | 8.51e-5 / 8.28e-5 | 0.86 / 0.74 | 0.95 / 0.89 | 6.91e-5 | 2.83e-5 / 1.05e-5 | 7.87e-5 / 6.44e-5 |
+| 3 | 0.78 / 0.00* | 6.67e-5 | 7.48e-5 / 8.40e-5 | 0.56 / - | 0.88 / 0.97 | 6.18e-5 | 2.70e-5 / 1.00e-5 | 6.29e-5 / 5.25e-5 |
+| 4 | 0.76 / 0.64 | 6.04e-5 | 7.18e-5 / 7.68e-5 | 0.21 / 0.53 | 0.84 / 0.90 | 5.91e-5 | 2.64e-5 / 9.96e-6 | 5.20e-5 / 4.40e-5 |
+| 5 | 0.76 / 0.71 | 5.74e-5 | 6.94e-5 / 7.26e-5 | 0.17 / 0.30 | 0.84 / 0.86 | 5.65e-5 | 2.56e-5 / 9.95e-6 | 4.79e-5 / 4.08e-5 |
+| 6 | 0.74 / 0.77 | 5.56e-5 | **7.02e-5 / 7.03e-5** | -0.06 / 0.16 | 0.81 / 0.83 | 5.68e-5 | 2.54e-5 / 1.00e-5 | 4.03e-5 / 3.47e-5 |
+| 7 | 0.76 | 5.51e-5 | 6.91e-5 | 0.07 | 0.82 | 5.56e-5 | 2.50e-5 / 9.97e-6 | 3.64e-5 / 3.15e-5 |
+| 8 | 0.75 | 5.44e-5 | 7.03e-5 | -0.08 | 0.80 | 5.58e-5 | 2.50e-5 / 1.01e-5 | 3.16e-5 / 2.75e-5 |
+
+\* Seed 1, iteration 3: the write-back fit returned f = 0 (own loss flat at its initial value for all 20k steps, a dead
+Adam run), so that iteration did nothing; the loop continued.
+- **Pre-registered rule: FAIL, narrowly.** Share of the table loop's accumulated <H> gain at iteration 6 is 0.674
+  (seed 0) and 0.673 (seed 1); the bar is 0.70 (<H> <= 6.78e-5). <H> falls in 5 of 6 iterations for both seeds.
+- **The write-back is not the problem.** Capture from the callable guide stays at 0.62-0.78 in every iteration, as in
+  the table loop (0.42-0.76), and the semi-implicit target from the guide's own V, W stays at 0.87-0.89.
+- **The re-base is the problem.** Its retention of each new iteration's gain falls 0.95 -> 0.86 -> 0.56 -> 0.21 ->
+  0.17 -> ~0. Its accumulated retention stays at 0.80-0.84. The |H|-weighted rms bond error of the re-base grows
+  0.001 -> 0.007, above the P1 tolerance 0.003 from iteration 3.
+- **Against Lanczos at equal hop count:**
+  - The callable guide + 1 Lanczos step reaches 2.5e-5, the same as psi_P + 1 Lanczos (2.55e-5).
+  - + 2 steps reaches 1.0e-5 vs 8.6e-6 for psi_P + 2 Lanczos steps. This is no gain over Lanczos.
+- **Cost per sample, measured hop counts, independent of k:**
+  - guide value: one hop of psi_P (78 evaluations at 6x6, ~135 at 8x8);
+  - guide V, W: two hops (2.8e3 / 8.9e3);
+  - edge-loss training sample: three hops (~1e5 / ~4e5).
+  At the measured 1.9e4 psi_P evaluations/s per A40 that is 4 ms / 0.15 s / ~5 s per sample at 6x6.
+
+**Diagnostic of the plateau (amendment 4; same write-back table, iteration 6, seed 0; chop re-base: -0.06):**
+
+| re-base variant | own loss end | retention of iteration 6's gain | retention since psi_P |
+|---|---|---|---|
+| chop (fresh, 37k, 20k steps, lr 3e-3) | 8.7e-6 | -0.06 | 0.81 |
+| warm start from the iteration-5 re-base, 20k, lr 1e-3 | 4.9e-6 | 0.17 | 0.85 |
+| fresh, 60k steps, lr 1e-3 | 4.9e-6 (5.4e-6 at 40k) | 0.22 | 0.86 |
+| fresh, C = 64 (111k parameters), 40k, lr 1e-3 | 5.8e-6 | 0.09 | 0.84 |
+
+- **Reading (pre-registered): none reaches 0.7, so neither optimizer nor capacity.** A lower lr and longer training
+  help a little (-0.06 -> 0.22), but the loss floors at ~5e-6 whatever the size. The frozen base's one-hop
+  features (log a_P, V_P, W_P) cannot carry the accumulated correction beyond ~85%. This is the same finding as
+  option B (6d(b)): the base cannot see how the neighbours changed.
+
+## Test 2: structured vs white tolerance (one write-back step from la_k with the actual error fields)
+kept = frac / unperturbed frac; size = exact |H| a_x a_y-weighted rms bond error of c e.
+
+| field | k | bond rms -> kept |
+|---|---|---|
+| white | 3 | 0.0010 -> 0.99, 0.0030 -> 0.94, 0.0099 -> 0.36, 0.030 -> -5.1 |
+| white | 6 | 0.0010 -> 0.99, 0.0030 -> 0.91, 0.0098 -> 0.01, 0.030 -> -8.2 |
+| A' student | 3 | 0.0020 -> 1.01, 0.0059 -> 0.95, 0.020 -> -0.40 |
+| A' student | 6 | 0.0031 -> 1.02, 0.0092 -> 0.68, 0.031 -> -8.7 |
+| A scratch student | 6 | 0.0023 -> 0.97, 0.0069 -> 0.62, 0.023 -> -3.5, 0.069 -> -29 |
+| base-feature re-base of la_k | 3 | 0.0020 -> 0.88, 0.0066 -> -0.37, 0.013 -> -5.3 |
+| base-feature re-base of la_k | 6 | 0.0051 -> 0.46, 0.017 -> -2e5 |
+| white log V, log W | 3 | logV 0.001 -> 0.98, 0.003 -> 0.83, 0.010 -> -0.79 |
+
+- eta\*_struct (kept = 0.9, log-linear interpolation): white 0.0033 (k = 3) / 0.0031 (k = 6); A' student 0.0062 /
+  0.0045; A scratch 0.0029. **By the pre-registered rule the student errors are "more tolerable":** at 0.006 the A'
+  error costs 0.05 against ~0.4 for white noise at k = 3.
+- **The re-base errors are LESS tolerable than white.** At c = 1 (the actual re-base) the semi-implicit target from
+  the perturbed V, W diverges (SI 'kept' -8e4 / -2e5). So the global rms hides a few configurations with very large
+  errors (rare orbits the re-base never sampled). In the constant-hop loop the write-back uses the re-based guide's
+  own V, W, so these outliers do not wreck the capture (0.62-0.78). They are part of the guide's energy error.
+- B's V/W fields: every point is NaN (a bug in the log-space interpolation with V = 0 orbits). B's errors (log V 0.05)
+  are 50x the white V/W tolerance (0.001-0.003), so this does not change any reading.
+- Caveat: the replay applies the step computed from the perturbed guide to the exact guide. For log-amplitude errors
+  this is an upper bound on the damage; test 1 measures the real thing.
+
+## Test 3: amortised V/W from one hop of the base
+
+| k | exact-V/W capture | V_P, W_P instead (no training) | amortised capture (rel.) | rms log V / log W error, held-out | training |
+|---|---|---|---|---|---|
+| 3 | 0.722 | -0.386 | 0.645 (**0.894**) | 0.0046 / 0.0018 | 0.0042 / 0.0017 |
+| 6 | 0.511 | -9.30 | 0.243 (**0.476**) | 0.0103 / 0.0054 | 0.0096 / 0.0050 |
+
+- **Pre-registered rule: FAIL** (bar 0.9 at both k).
+  - At k = 3 the amortised V, W nearly suffice (0.894). The error (log V 0.0043) is 4x the white V/W tolerance but
+    costs only 11%: structured again.
+  - At k = 6 the base's one-hop information is not enough (log V error 0.018).
+- Held-out = training, and the loss was flat over the last 10k steps. Same cause as test 1: with psi_P's one-hop
+  quantities as the only guide information, the later guides' V, W are out of reach.
+
+## Next step (proposal)
+All three results point at one cause. The frozen base's one-hop sums (V_P, W_P, log a_P) do not carry enough
+information about how the neighbours' amplitudes changed. Fixes in order of cost:
+1. **Per-bond base information instead of sums.** Feed the re-base (and the V/W predictor) psi_P's per-bond
+   log-ratios r_b(x) (all 144 bonds, one hop of the base, the same evaluations as V_P, W_P) through a bond-equivariant
+   layer, instead of only their two sums. The cost is unchanged (one hop of the base) and the information is
+   strictly richer. Pre-test: the iteration-6 re-base diagnostic and test 3 at k = 6 with these inputs, pass = 0.7 /
+   0.9.
+2. **Re-base onto the previous re-based guide's features** (a rolling base: base_{k+1} = G_k, re-base every 2-3
+   iterations), so that the features see the changed neighbours. Cost per sample: one hop of G_k = two hops of psi_P,
+   still independent of k.
+3. Only if both fail: two-hop base features (8.9e3 base evaluations per sample at 8x8).
+
+## Compute (round 2)
+- Full A40: chop seed 0 1.50 h, struct 1.85 h, vw 0.43 h.
+- 24 GB slices: chop seed 1 2.51 h, smokes 1.3 h (one hit its time limit, one failed on a schedule bug), diagnostic
+  0.79 h.
+- Total 3.8 A40-h + 4.6 slice-h = 8.4 GPU-h counted naively, ~6.1 A40-equivalent if a 24 GB slice counts as half an
+  A40.

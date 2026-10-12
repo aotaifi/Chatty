@@ -69,3 +69,10 @@ RA 1.7 h, RB 3.4 h, training 2 x ~1 h, net evaluation on the two-hop sets ~1 h.
 - `s8_q.py`: numpy helpers (Marshall, r_b, local energies, E(T) curves).  `s8_net.py`: sign net.
 - `s8_train.py`: training.  `s8_energy.py`: thresholds, energies, disagreement, table.  `s8_figure.py`: figure.
 - `s8.sbatch`: job script. Run data: ws1 `/project/theorie/a/A.Otaifi/chatty_signs8/runs/`.
+
+## Amendment 1 (2026-10-12 22:05, before any label, threshold or energy from the new data was computed)
+- Measured throughput: a40-16gb slices give 2.1e3 projected evaluations/s (half the a40-24gb rate); the cip QOS allows
+  two GPUs per user, so RB1/RB2 were moved to `inter` (RTX 2080 Ti 4.5e3/s; full A40).
+- To stay within 12 GPU-h: TR is truncated to its first 16 chunks (2048 samples = the first two time rows of all 1024
+  chains; held-out rule unchanged) and RA to its first 12 chunks (1536 samples). The jobs are stopped at these caps;
+  post-processing uses the saved chunks. RB stays 2 x 3072.

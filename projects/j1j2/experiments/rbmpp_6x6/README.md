@@ -110,3 +110,18 @@ Readings (pre-registered):
 ## Budget and hardware
 <= 15 GPU-h (lead). The cip partition allows 3 GPUs per user and is fully used by other sessions; this work runs on
 inter RTX 2080 Ti (fp64 1/32 of fp32, comparable to an A40 in fp64) or A40 when free.
+
+## Amendment 1 (2026-10-13 00:00, during T1/T3, before any decisive result)
+- **Bug found and fixed (no design change).** The first T1 (job 17160329) stalled at E/N = -0.157. Cause: the
+  PP-only parameter mask assumed f comes first in the flattened parameter vector, but `ravel_pytree` orders the keys
+  alphabetically (Wim, Wre, bim, bre, f), so 1184 of the 1296 f entries were frozen. Found with an exact
+  (enumerated) SR run on 4x4 that converged and a sampled 4x4 run that showed |F| = 0. The mask is now built on the
+  pytree. RBM+PP runs were not affected (mask all true). T1 and T3 were restarted (17163493, 17163494).
+- **Sampler/estimator bias check (4x4, PP, unprojected, SR to -0.5230):** VMC -0.522956(69) vs exact enumeration
+  -0.522964: agreement within 0.13 sigma.
+- **First exact 6x6 table (check of `rbmpp_table.py`):** T1 checkpoint at step 250 (PP alone), full projection:
+  exact dE/site = 8.35e-5 (E/N = -0.5037262), w_s = 3.8e-5, table time 21 min on an RTX 2080 Ti. The VMC running
+  mean of the same run with the published (simple) projection is -0.50365 (dE 1.6e-4) at that point: the full
+  point-group projection is worth ~8e-5/site. Both numbers will be reported; the published comparison uses 'simple'.
+- Table script: a numerically real state (PP alone) now uses Re v directly (the 2x2 combination problem is singular
+  when Im v = 0).

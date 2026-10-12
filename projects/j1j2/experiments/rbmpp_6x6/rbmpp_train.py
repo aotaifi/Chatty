@@ -45,14 +45,15 @@ if not use_rbm:
     for k in ('bre', 'bim', 'Wre', 'Wim'): p[k] = jnp.zeros_like(p[k])
 flat, unravel = ravel_pytree(p)
 P = flat.size
-mask = np.ones(P, bool)
-if not use_rbm:                                         # RBM parameters frozen at zero
-    nf = N * N; mask[nf:] = False
-mask = jnp.asarray(mask)
+# active-parameter mask built on the pytree (ravel_pytree orders keys alphabetically: Wim, Wre, bim, bre, f)
+mask = ravel_pytree({k: jnp.full(v.shape, (k == 'f') or use_rbm) for k, v in p.items()})[0] > 0.5
+assert int(mask.sum()) == (P if use_rbm else N * N)
 log(f'lattice {lat.L}x{lat.L} proj {lat.proj} ({lat.nI} images) rbm {use_rbm} params {P} (active {int(mask.sum())})')
 
 fns = make_fns(lat, jnp.float64, use_rbm)
-sweep = make_sampler(lat, make_fns(lat, jnp.float32, use_rbm))
+SDT = jnp.float64 if g('sampler_dtype', 'float32') == 'float64' else jnp.float32
+sweep = make_sampler(lat, make_fns(lat, SDT, use_rbm))
+cast = (lambda q: q) if SDT == jnp.float64 else to32
 CH = g('chunk', 256)
 eloc_v = jax.jit(jax.vmap(fns['eloc'], in_axes=(None, 0)))
 jac_v = jax.jit(jax.vmap(jax.jacrev(lambda fl, s: fns['logpsi_ri'](unravel(fl), s)), in_axes=(None, 0)))
@@ -96,7 +97,7 @@ nsw = g('sweep', N)
 t0 = time.time()
 for t in range(g('therm', 20)):
     key, k = jax.random.split(key)
-    S, acc = sweep(to32(unravel(flat)), S, k, nsw)
+    S, acc = sweep(cast(unravel(flat)), S, k, nsw)
 log(f'thermalised ({time.time() - t0:.0f}s), acc {float(acc):.3f}')
 
 steps = g('steps', 2000)
@@ -111,7 +112,7 @@ for it in range(1, steps + 1):
     c = 0.5 * (1 - np.cos(np.pi * (it - 1) / max(1, steps - 1)))
     lr = lr0 + (lr1 - lr0) * c; sh = np.exp(np.log(sh0) + (np.log(sh1) - np.log(sh0)) * c)
     key, k = jax.random.split(key)
-    S, acc = sweep(to32(unravel(flat)), S, k, nsw)
+    S, acc = sweep(cast(unravel(flat)), S, k, nsw)
     tsm = time.time() - ts
     El, lP = chunks(eloc_v, unravel(flat), S=S)
     Elr = jnp.real(El)

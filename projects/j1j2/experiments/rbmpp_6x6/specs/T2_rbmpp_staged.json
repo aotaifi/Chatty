@@ -1,0 +1,1 @@
+{"rbm": true, "seed": 2, "init": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpT1_pp_17163493/params_final.npz", "rbm_from_pp": true, "steps": 6000, "chains": 2048, "lr": 0.05, "lr_end": 0.005, "shift": 1e-3, "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 50, "eval_samples": 400000, "eval_proj": ["simple", "full"]}

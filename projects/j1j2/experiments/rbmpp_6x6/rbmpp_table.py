@@ -67,8 +67,11 @@ E0 = sec.E0
 res['E_complex'] = ((A[0, 0] + A[1, 1]) / (Bm[0, 0] + Bm[1, 1]) - E0) / N
 res['E_re'] = (A[0, 0] / Bm[0, 0] - E0) / N
 res['im_weight'] = Bm[1, 1] / (Bm[0, 0] + Bm[1, 1])
-ev, ec = scipy.linalg.eigh(A, Bm)
-c = ec[:, 0]
+if Bm[1, 1] <= 1e-10 * Bm[0, 0]:                 # (numerically) real state: use Re v (2x2 problem is singular)
+    c = np.array([1.0, 0.0])
+else:
+    ev, ec = scipy.linalg.eigh(A, Bm)
+    c = ec[:, 0]
 g = c[0] * R + c[1] * I
 del R, I, HR, HI
 g = g / jnp.linalg.norm(g)

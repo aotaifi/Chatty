@@ -9,7 +9,7 @@ Variants of one iteration (new log-amplitude la + d, new sign s'):
 Each variant is iterated k = 1..4 times on its own tables (step parameter re-optimised every iteration).
 Recorded per iteration: <H> - E0 per site, chosen parameter, bond-rms roughness of d (how hard d is to learn; the
 SI_1 value is the current loop's), fraction of sign flips.  Reference: psi_P + p Lanczos steps (cx_lanczos_ref).
-  python cx_step.py OUT
+  python cx_step.py OUT          (env CX_K = iterations, CX_VARIANTS = comma list, e.g. L,Lc_0.3,SI_1)
 """
 import os, sys
 import numpy as np
@@ -18,7 +18,7 @@ from cx_lib import *
 
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True); F = os.path.join(OUT, 'cx_step.json')
 lab = Lab(); sec = lab.sec
-K = 4
+K = int(os.environ.get('CX_K', 4))
 EPS = [0.3, 0.1, 0.03]
 LAMS = [0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0]
 
@@ -53,7 +53,7 @@ def si_state(la, s, V, W, E, lam):
 
 
 res = dict(start=err(lab.lP0, lab.sP0), lanczos_ref=[2.55e-5, 8.59e-6, 3.82e-6, 1.95e-6], runs={})
-variants = ['L'] + [f'Lc_{e}' for e in EPS] + ['SI_1', 'SI_opt']
+variants = os.environ['CX_VARIANTS'].split(',') if os.environ.get('CX_VARIANTS') else ['L'] + [f'Lc_{e}' for e in EPS] + ['SI_1', 'SI_opt']
 for name in variants:
     la, s = lab.lP0, lab.sP0; rows = []
     for k in range(1, K + 1):

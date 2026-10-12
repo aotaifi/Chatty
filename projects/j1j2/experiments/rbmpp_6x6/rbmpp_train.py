@@ -132,6 +132,8 @@ for it in range(1, steps + 1):
         save(f'{it:05d}', flat); json.dump(res, open(F, 'w'), default=float)
     if not np.isfinite(E):
         log('non-finite energy, stop'); break
+    if g('stop_at') and it >= g('stop_at'):                # same schedule as a 'steps' run, stopped early
+        save(f'{it:05d}', flat); log('stop_at reached'); break
 save('final', flat)
 res['train_sec'] = time.time() - T00
 json.dump(res, open(F, 'w'), default=float)

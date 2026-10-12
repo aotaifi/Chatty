@@ -125,3 +125,13 @@ inter RTX 2080 Ti (fp64 1/32 of fp32, comparable to an A40 in fp64) or A40 when 
   point-group projection is worth ~8e-5/site. Both numbers will be reported; the published comparison uses 'simple'.
 - Table script: a numerically real state (PP alone) now uses Re v directly (the 2x2 combination problem is singular
   when Im v = 0).
+
+## Amendment 2 (2026-10-13 00:10, before any moderate guide is selected)
+- The checkpoints every 50 steps are too coarse early on: T3 passes dE/site 5e-4 between steps 50 (5.8e-3) and
+  100 (2.3e-4, VMC with the published projection). And the full projection lowers the exact energy by ~8e-5, so a
+  VMC-based selection would not hit the intended exact energies.
+- New rule: moderate guides come from **T3d**, a replica of the first 200 steps of T3 (same spec, same seed, same
+  6000-step lr schedule, stopped at step 200, checkpoints every 5 steps; T3 = the published from-scratch recipe,
+  chosen now so the moderate guides do not depend on which run ends lower). Selection by EXACT full-projection table
+  energy: **B1** = the checkpoint with exact dE/site closest to 5e-4 (relative error ~1e-3); **B2** = closest to
+  the ViT start 1.32e-4. Candidates are pre-filtered by the VMC running mean; every evaluated table is reported.

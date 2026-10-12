@@ -1,0 +1,1 @@
+{"phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "init_refs": ["/project/theorie/a/A.Otaifi/chatty_loop8/runs//ref.npz"], "nchains": 1024, "burn": 8, "nsamp": 2, "thin": 2, "seed": 13001, "chunk": 64, "batch": 1024}

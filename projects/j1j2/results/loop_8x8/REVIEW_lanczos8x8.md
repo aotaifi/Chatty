@@ -73,5 +73,17 @@ T5 (L1, decisive). A new direct VMC of psi_1 with the same fixed alpha, E_ref (s
    the only estimator that is variational on finite samples; the combined moment estimate is quoted as a cross-check.
 Budget: T2 ~0.1 GPU-h, T5 ~6-7 GPU-h on A40 slices (<= 10 GPU-h total).
 
+### Amendment 1 (2026-10-12, after T1-T4 on existing data, before the T5 jobs were submitted)
+- T4 found that the local energies are heavy-tailed: for psi_P the robust width (interquartile range / 1.349) is
+  3.7e-4 per site against a standard deviation of 3.3e-3; the top 1 % of referee samples carry 81 % of m2 and 83 % of m3;
+  in direct run a the Hill index (top 2 %) of |E_L1 - E1| is 1.8. Criterion (d) stays as registered and will be reported.
+- Added (d'): the error bar must survive (i) a chi^2 test of 16 chain-group means per new job (plus run a) against
+  their SEs, p > 0.01, and (ii) confirmation (a) evaluated with SE = max(chain SE, SE from the spread of the 4
+  independent batch means).
+- T2 tolerance: the independent symmetrisation sums fp32 network outputs outside the jitted graph, so its log|psi_P|
+  differs from l8_core by up to 1e-5 (rounding). The registered 1e-6 tolerance on E_L / E_L2 is therefore replaced by:
+  differences must be random in sign and below 1e-6 per site on E_L1 (the quantity that enters the energy).
+- The delayed-acceptance sampler passed its 4x4 check (T1, below) before use.
+
 ## Results
 (to be filled after the runs)

@@ -145,3 +145,108 @@ Figure (b): absolute E/N against the references. The grey band is the extrapolat
      projected ViT, ~0.03 s; 3e4 samples ~ 3-5 GPU-h).
    - Then test 'loop guide + Lanczos' vs 'ViT + Lanczos' (the fair test of review E). This is the only place where the
      write-back could still add value.
+
+## Follow-up FU1-FU3 (pre-registered in d4f5936; 2026-10-11/12; ws1 A40 slices, Paderborn still drained)
+Definitions:
+- psi_P is the D4 x spin-flip projected ViT with its own binarised sign.
+- psi_1 = psi_P (1 + alpha (E_L - E_ref)) is one Lanczos step. E_L(x) = (H psi_P)(x)/psi_P(x) is the local energy;
+  alpha = -0.160951 and E_ref = -31.92677568 are fixed numbers.
+- "Referee" is the paired estimator on 15360 independent samples of psi_P^2 (5 batches; 3840 chains), with exact
+  local energies from the two-hop data.
+
+**FU1: the Lanczos lead holds; it is below RBM+PP.** Steps:
+- (a) Ran plain VMC of psi_P with 98304 samples (2048 chains): <H>_P = -0.4988474(106).
+- (b) Computed one Lanczos step from the referee moments: Delta = -1.056(0.125)e-4.
+  - The alpha scan by reweighting has its minimum at c = 1.0-1.25 x alpha*, with Delta = -1.21(0.28)e-4 at alpha*.
+- (c) Sampled psi_1 directly (Metropolis on |psi_1|^2, each amplitude = one hop of psi_P; 512 chains, 2048 samples)
+  and computed its exact local energies: E1 = -0.4989476(231).
+  - Mirror paired Delta: -4.8(4.8)e-5.
+  - The second direct job (b) and referee batch 9000 hit their time limits on a slow shared slice. Their output was
+    lost; they were not rerun (budget).
+- Pre-registered checks:
+  - direct vs combined estimate: -0.4989476(231) vs -0.4989530(164), difference 0.2 sigma;
+  - mirror vs forward Delta: 1.2 sigma.
+  - Both agree within 2 sigma, so the result is **confirmed**.
+- **Result: one Lanczos step on the projected ViT gives E/N = -0.4989530(164)**, that is <H>_P (a) + Delta (b).
+  - This is 6.7e-5 (4.1 sigma) below RBM+PP -0.498886(1), and also below Hu VMC p=2 -0.49886(1).
+  - The independent direct VMC alone, -0.4989476(231), is 2.7 sigma below RBM+PP.
+  - By the pre-registered rule (E1 + 2 sigma < -0.498886) this is a new lowest variational 8x8 energy among the
+    published values in our survey. It still needs an independent review (rule 7) before any claim.
+  - The method (NQS + Lanczos step) is known (Chen et al. 2022); the number at 8x8 is new.
+
+**FU2: the written-back guide adds nothing measurable on top of a Lanczos step.** Steps:
+- An exact Lanczos step on the written-back guide b = psi_P exp(f) needs psi_P on three hops (~4e5 evaluations,
+  ~80 s per sample), which is out of budget.
+- Instead, on the same referee samples: the lowest Ritz value in span{psi_P, (H - E)psi_P, (b - psi_P)} against the
+  Lanczos span{psi_P, (H - E)psi_P}. Paired, jackknife over 32 chain blocks.
+- Extra gain from adding the write-back direction:
+  - FN-Adam -0.7(3.4)e-6 / -0.5(3.2)e-6 / -0.8(3.4)e-6 per seed;
+  - FN-minSR -2.9(2.6)e-5;
+  - exp(T) -2.7(2.5)e-5;
+  - VMC controls between 0 and -0.7(1.1)e-5.
+- All are < 2 sigma: **the FN write-back adds no resolvable gain beyond one Lanczos step.**
+- Cause: the FN direction is 97% collinear with the Lanczos direction (corr(f, E_L) = -0.97). The semi-implicit target
+  T = log(1 + W) - log(1 + W + E_L - E) ~ -(E_L - E)/(1 + W) is a Lanczos step with a configuration-dependent step
+  size 1/(1 + W). The uniform optimal step gains about 3.6x more.
+- Caveat on the estimator: this symmetrised 2-state estimate gives -0.4989648 against -0.4989487 from the
+  centred-moment Ritz value on the same samples. That 1.6e-5 spread, about 1 sigma, is the estimator systematic.
+
+**FU3: the control is still not resolved.** Steps:
+- Retrained FN-Adam and the four minSR VMC controls with 2 more seeds (3 seeds each).
+- Scored each on the 15360-sample referee at its pre-registered checkpoint, then averaged the paired influences over
+  seeds.
+- Seed means (seed-to-seed sd):
+
+  | arm | seed-mean Delta | seed sd |
+  |---|---|---|
+  | FN-Adam | **-2.92(0.51)e-5** | 0.03e-5 |
+  | FN-minSR (1 seed) | -2.85(0.53)e-5 | |
+  | VMC-minSR-5ep-0.01 | -3.81(1.78)e-5 | 1.15e-5 |
+  | VMC-minSR-1ep-0.03 | -3.12(1.59)e-5 | 0.81e-5 |
+  | VMC-minSR-1ep-0.01 | -1.98(1.56)e-5 | 0.44e-5 |
+  | VMC-minSR-1ep-0.1 | -1.95(1.64)e-5 | 1.13e-5 |
+  | VMC-Adam (all) | >= -0.3e-5 | |
+
+- Paired FN-Adam minus control family:
+  - +0.89(1.50)e-5 vs 5ep-0.01;
+  - +0.20(1.37) vs 1ep-0.03;
+  - -0.94(1.31) vs 1ep-0.01;
+  - -0.97(1.42)e-5 vs 1ep-0.1.
+- **Result:**
+  - Criterion (ii) still fails on point estimates: the best control family gives -3.8e-5 > |FN| / 1.5.
+  - The FN-minus-control SE is 1.3-1.5e-5, short of the 1e-5 target, because referee batch 9000 was lost.
+  - What is resolved: FN and the best minSR VMC controls give the same gain within 1.5e-5. The FN write-back is 40x more
+    reproducible across seeds (sd 3e-7 vs 1.1e-5) and does not need a well-chosen stopping point. The VMC controls
+    collapse beyond about 1-5 passes over the pool.
+
+**Absolute E/N summary** (each = <H>_P from (a) + a paired Delta):
+
+| state | E/N |
+|---|---|
+| projected ViT | -0.4988474(106) |
+| + FN write-back (3 seeds) | -0.4988766(117) |
+| + one Lanczos step | **-0.4989530(164)** |
+| direct VMC of the Lanczos state | -0.4989476(231) |
+| RBM+PP | -0.498886(1) |
+
+**FU cost: 13.2 GPU-h** (A40 slices):
+
+| item | GPU-h |
+|---|---|
+| seeds | 0.17 |
+| VMC of psi_P | 1.25 |
+| direct psi_1 job a | 2.26 |
+| direct psi_1 job b (timed out, lost) | 4.0 |
+| referee batch 9000 (timed out, lost) | 3.5 |
+| referee batch 10000 | 1.72 |
+| evaluation | 0.28 |
+
+- Of the 13.2 GPU-h, 7.5 were lost to slice contention (2.1e3 instead of 5.2e3 evaluations/s).
+- Project total 25.4 GPU-h.
+
+**Next.**
+- An independent review of the Lanczos number. Check direct VMC with more chains, the sampling of the
+  near-node region (min factor 0.07 in the reweighted set vs 0.86 in direct samples), and the literature.
+- Then decide whether 'NQS + Lanczos (+ calibrated FN)' at 8x8/10x10 is the paper's scale result.
+- The write-back from a converged ViT is equivalent to a partial Lanczos step and adds nothing on top of one.
+  It stays relevant only for unconverged or sign-poor guides.

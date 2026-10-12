@@ -4,8 +4,7 @@
   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref6000_17093575/ref.npz",
   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref7000_17135002/ref.npz",
   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref8000_17135003/ref.npz",
-  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/REF9000/ref.npz",
-  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/REF10000/ref.npz"
+  "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref10000_17138729/ref.npz"
  ],
  "runs": [
   {
@@ -27,7 +26,7 @@
    ]
   },
   {
-   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/TRSEEDS",
+   "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trSeed_17138724",
    "steps": [
     "best"
    ]

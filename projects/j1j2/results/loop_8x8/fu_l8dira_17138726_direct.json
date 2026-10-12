@@ -1,0 +1,28 @@
+{
+ "spec": {
+  "sym": true,
+  "phi": 0.056006,
+  "alpha": -0.160951,
+  "Eref": -31.92677568,
+  "init_ref": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref5000_17092719/ref.npz",
+  "nchains": 512,
+  "burn": 4,
+  "nsamp": 4,
+  "thin": 1,
+  "seed": 12001,
+  "chunk": 64,
+  "batch": 1024
+ },
+ "R": 2048,
+ "accept": 0.1465606689453125,
+ "sample_sec": 4140.71816778183,
+ "twohop_sec": 3963.8918194770813,
+ "E1_direct_site": -0.49894759818838347,
+ "E1_direct_se": 2.3060551843218653e-05,
+ "EP_mirror_site": -0.4988998736715639,
+ "Delta_mirror_site": -4.772451681955836e-05,
+ "Delta_mirror_se": 4.770763624617691e-05,
+ "mirror_ess": 0.9982816301000594,
+ "min_factor": 0.8621544463144543,
+ "sec": 8125.995920658112
+}

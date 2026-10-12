@@ -1,0 +1,1 @@
+{"rbm": true, "seed": 3, "steps": 6000, "chains": 2048, "lr": 0.05, "lr_end": 0.005, "shift": 1e-3, "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 50, "eval_samples": 400000, "eval_proj": ["simple", "full"]}

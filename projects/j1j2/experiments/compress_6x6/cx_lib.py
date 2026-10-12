@@ -30,11 +30,15 @@ ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr')
 TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 SYM = os.environ.get('ST6_SYM', ROOT + '/data/sym_tables.npz')
-LOOP8 = '/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119'     # read-only
+SYM_DEFAULT = SYM == ROOT + '/data/sym_tables.npz'                   # True: the symmetrised-ViT guide psi_P
+# table-loop reference run of the SAME guide (read-only); must be given (CX_LOOP8) when ST6_SYM points elsewhere
+LOOP8 = os.environ.get('CX_LOOP8', '/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119')
+if not SYM_DEFAULT and 'CX_LOOP8' not in os.environ:
+    raise RuntimeError('ST6_SYM is not the ViT guide: set CX_LOOP8 to the table-loop run of this guide')
 TABDIR = os.environ.get('CX_TABDIR', '/project/theorie/a/A.Otaifi/chatty_compress6/tables')
 VIT_CKPT = '/project/theorie/a/A.Otaifi/chatty_stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'
-H_START = 1.3193875041276706e-4                                        # <H>(psi_P, s_P) per site, exact
-LANCZOS_P1_PSIP = 2.55e-5                                              # lanczos_baseline_6x6
+H_START = 1.3193875041276706e-4                                        # <H>(psi_P, s_P) per site, exact (ViT guide only)
+LANCZOS_P1_PSIP = 2.55e-5                                              # lanczos_baseline_6x6 (ViT guide only)
 RBM_PP = 4.47e-5
 
 AR = jnp.arange(N, dtype=jnp.uint64)

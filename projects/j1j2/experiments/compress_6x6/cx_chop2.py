@@ -19,9 +19,6 @@ SEED = SPEC.get('seed', 0)
 lab = Lab(); sec = lab.sec
 FEAT_BASE = base_features(lab)
 J8 = json.load(open(os.path.join(LOOP8, 'wt_loop.json')))
-res = dict(spec=SPEC, iters=[], table_loop=[dict(it=i + 1, H=it['H_kry'], E_FN=it['E_FN_next'], frac=it['frac'])
-                                            for i, it in enumerate(J8['iters'])],
-           refs=dict(H_start=H_START, lanczos_p1_psiP=2.55e-5, lanczos_p2_psiP=8.6e-6, rbm_pp=RBM_PP))
 
 
 def lanczos(la, s):
@@ -30,6 +27,15 @@ def lanczos(la, s):
 
 
 G, s = lab.lP0, lab.sP0
+if SYM_DEFAULT:                                                  # ViT guide: published constants (unchanged)
+    refs = dict(H_start=H_START, lanczos_p1_psiP=2.55e-5, lanczos_p2_psiP=8.6e-6, rbm_pp=RBM_PP)
+else:                                                            # other guide (ST6_SYM): exact references of THIS guide
+    H_START = lab.H_site(G, s)
+    l1, l2 = lanczos(G, s)
+    refs = dict(H_start=H_START, lanczos_p1_guide=l1, lanczos_p2_guide=l2, rbm_pp=RBM_PP, guide=SYM, loop8=LOOP8)
+log('refs', refs)
+res = dict(spec=SPEC, iters=[], table_loop=[dict(it=i + 1, H=it['H_kry'], E_FN=it['E_FN_next'], frac=it['frac'])
+                                            for i, it in enumerate(J8['iters'])], refs=refs)
 Efn, u, info = sec.fn_solve(G, s); del u
 E_FN_G = info['dE_FN_site']; n_nets = 0
 for k in range(1, SPEC.get('n_loop', 8) + 1):

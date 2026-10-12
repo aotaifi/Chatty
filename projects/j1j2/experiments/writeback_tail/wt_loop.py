@@ -145,8 +145,13 @@ def H_site(la, s):
 
 
 res = dict(spec=SPEC, iters=[], distill=[], ideal=dict(E_FN=[1.018e-4, 6.52e-5, 4.87e-5, 3.81e-5],
-           H_kry=[7.84e-5, 5.58e-5, 4.30e-5]), rbm_pp=4.47e-5)
+           H_kry=[7.84e-5, 5.58e-5, 4.30e-5]), rbm_pp=4.47e-5, guide_table=SYM)   # 'ideal': ViT-guide numbers
 H_START = H_site(lP0, sP0)
+res['guide_H'] = H_START
+if SPEC.get('lanczos_eval'):                                    # guide + 1, 2, 3 exact Lanczos steps (reference)
+    _rl = lanczos_ritz(lambda x: sec.Hm(x), sec.vec(lP0, sP0), SPEC.get('lanczos_ref_p', 3))
+    res['guide_lanczos'] = [(r_['E'] - sec.E0) / N for r_ in _rl]; del _rl
+    log('guide + Lanczos p = 0..:', res['guide_lanczos'])
 
 
 def guide_quantities(la, s):
@@ -297,8 +302,11 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     rec['H_kry'] = H_site(la_new, s_new)
     if SPEC.get('lanczos_eval'):                               # one exact Lanczos step on top of the new guide
         vg = sec.vec(la_new, s_new)
-        rl = lanczos_ritz(lambda x: sec.Hm(x), vg, 1)[1]; del vg
+        rls = lanczos_ritz(lambda x: sec.Hm(x), vg, SPEC.get('lanczos_p', 1)); del vg
+        rl = rls[1]
         rec['lanczos_H'] = (rl['E'] - sec.E0) / N
+        if len(rls) > 2: rec['lanczos_H_p2'] = (rls[2]['E'] - sec.E0) / N
+        del rls
         psi = rl['psi']; la_l = jnp.log(jnp.maximum(jnp.abs(psi) / sec.sqrt_n, 1e-300))
         s_l = jnp.where(psi >= 0, 1.0, -1.0).astype(jnp.float32); del psi, rl
         _, _, il = sec.fn_solve(la_l, s_l); rec['lanczos_E_FN'] = il['dE_FN_site']; del la_l, s_l

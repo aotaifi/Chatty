@@ -363,3 +363,61 @@ Diagnosis of the current target: T = log(1+W) - log(1+H_xx+V-E) is a difference 
 its per-configuration change is ~ (E_L - E)/N while the Lanczos change alpha (E_L - E) has alpha ~ fixed (-0.157 at
 6x6, -0.161 at 8x8): the semi-implicit target is over-damped by a factor that grows with N (8x8: 3.6x). Even
 optimally scaled it reaches only 5.5e-5 at k = 1. Decision: stage 2 with the clipped-Lanczos target (eps = 0.3).
+
+### Step size: stage 2 pre-registration (2026-10-12, before any stage-2 run; code `cx_chop3.py`)
+Question: does the callable network loop (round-4 machinery) keep the per-iteration gain of the clipped-Lanczos step?
+
+Iteration k from the callable guide G_k (sign s_k kept as a table, as before):
+- **(t) Target, exact on the tables.** One-hop quantities of (G_k, s_k): V, W, local energy E_L = D0 + V - W, E = <H>.
+  f = 1 + alpha (E_L - E), d = log max(|f|, 0.3), s_{k+1} = s_k sgn f. alpha is energy-optimal for (G_k + d,
+  s_{k+1}), chosen on the exact tables before any fit (as `cx_step.lanczos_state`).
+- **(w) Write-back.** FEAT net (37k, round 4) on G_k's own (log a, V, W), fit to d with `robust_fit`: edge loss, tail
+  proposal of d, 20k Adam steps, lr 3e-3, clipping, held-out acceptance. The edge loss is taken in the metric of the
+  TARGET state (G_k + d, s_{k+1}). Reason: the energy error of the fitted state is, to second order, the Dirichlet form of
+  (d_fit - d) in the metric of the state it approximates; round 4's re-base already uses its target's metric. The sign
+  change is part of the target, so the old guide's kept bonds are the wrong metric near the new nodes.
+- **(r) Residual re-base**, exactly round 4: h_k on psi_P's one-hop features, fit to la_w - G_k in the metric of
+  (la_w, s_{k+1}), 20k (k <= 2) / 40k (k >= 3) Adam steps, lr 1e-3; G_{k+1} = G_k + h_k.
+
+Feature pre-test (k = 1, seed 0, one iteration each): round-4 features (log a, V, W) vs the same + a standardised E_L
+column. Reason for the extra column: d is an explicit function of E_L = D0 + V - W, which is linear in V and W, while
+the net sees log V and log W. **Rule:** the E_L arm is used for the main runs if its k = 1 capture exceeds the
+3-feature arm's by >= 0.05; otherwise the round-4 features are kept.
+
+**Main runs:** 2 seeds x 4 iterations.
+
+Measured per iteration (exact):
+- alpha, flips (share of configurations whose sign changes), bond-rms roughness of d;
+- <H> of the guide, of the exact target state, of the write-back la_w and of G_{k+1};
+- capture = (<H>(G_k) - <H>(la_w)) / (<H>(G_k) - <H>(exact target));
+- retention = (<H>(G_k) - <H>(G_{k+1})) / (<H>(G_k) - <H>(la_w));
+- iteration share = capture x retention = (<H>(G_k) - <H>(G_{k+1})) / (<H>(G_k) - <H>(exact target));
+- bond-rms of the write-back error d_fit - d (target metric) and of the re-base error;
+- E_FN of G_{k+1}, G_{k+1} + 1 and + 2 exact Lanczos steps, sign error w_s, wall time;
+- training-batch and held-out loss curves of every fit (every 2000 steps).
+
+**Pass (primary; this is the README bar "keep >= 70% of the stage-1 gain per iteration"):** iteration share >= 0.70 at
+every k = 1..4, mean over the 2 seeds, no seed below 0.60.
+
+Secondary, reported (they decide the scaling reading, not the pass):
+- trajectory share (H_start - <H>(G_k)) / (H_start - Lc_0.3(k)), with stage-1 Lc_0.3 = 2.62e-5, 1.16e-5, 7.06e-6,
+  4.91e-6;
+- comparison at equal k with round 4 and the table loop;
+- comparison at equal hops with psi_P + p Lanczos (2.55e-5, 8.59e-6, 3.82e-6, 1.95e-6).
+  Hop count: G_k costs one hop of psi_P at every k; + p Lanczos steps make 1 + p hops.
+
+Known risk (stage 1): the k = 1 target is 5.5x rougher (bond-rms 0.052) than the SI target, because 24% of the
+configurations flip sign. If k = 1 misses 0.70, the cause is first located (capture or retention). Then remedies are
+tried in this order, each on k = 1 only, before any conclusion:
+1. 3x more steps;
+2. width C = 64;
+3. the "direct" arm (below);
+4. a smaller first-step alpha (0.5 alpha*).
+
+**Direct arm** (seed 0, 4 iterations; reported, not part of the pass):
+- No write-back net: the re-base fits the exact d (la_w = G_k + d).
+- d is an explicit one-hop function of G_k, so the write-back net costs the same hop as the exact formula and adds
+  only fit error.
+- This arm tells whether the write-back net is needed at all.
+
+Budget: <= 8 slice-h (pre-test 2 x ~0.4, main 2 x ~1.2, direct ~1).

@@ -387,7 +387,8 @@ class GuideCtx:
         return rv, rw
 
 
-def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None, clip=None):
+def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None, clip=None,
+             ev=None, hcurve=None):
     """wt_loop.fit, edge loss (kept bonds of (la, s), weight |H_xy| a_y/a_x): sum w ((f_x + DLR_x) - (f_y + DLR_y))^2.
     excl: optional bool mask of orbits whose incident edges get weight 0 (held-out orbits)."""
     import optax
@@ -434,7 +435,9 @@ def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3,
         flat, ost, l = step(flat, ost, kk)
         if it % 2000 == 0 or it == 1:
             curve.append((it, float(np.mean([float(vfn(flat, q)) for q in vk]))))
-            log(f'  [{tag}] step {it} own val {curve[-1][1]:.4e}')
+            if ev is not None and hcurve is not None:              # optional held-out curve (exactly symmetric eval)
+                hcurve.append((it, ev(flat)))
+            log(f'  [{tag}] step {it} own val {curve[-1][1]:.4e}' + (f'  held-out {hcurve[-1][1]:.4e}' if hcurve else ''))
     return flat, curve
 
 
@@ -489,7 +492,7 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
     return lambda q: float(np.mean([float(lj(q, *b)) for b in bds]))
 
 
-def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0):
+def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0, heldout_curve=False):
     """fit_edge with (i) the 20% held-out orbits excluded from training (never sampled, incident edges weight 0),
     (ii) global-norm gradient clipping (the seed-1003 'dead fit' was a collapse to a constant output after an early
     large update: the edge loss returned exactly to its f = 0 value), (iii) collapse/stall detection and re-seeding,
@@ -507,12 +510,15 @@ def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, 
         ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR)
         L0 = ev(model.flat0)
         lab.sec.offload()
-        flat, curve = fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, sd, lr=lr_t, tag=f'{tag}.{t}', excl=lab.HO, clip=clip)
+        hc = [] if heldout_curve else None
+        flat, curve = fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, sd, lr=lr_t, tag=f'{tag}.{t}', excl=lab.HO, clip=clip,
+                               ev=ev if heldout_curve else None, hcurve=hc)
         lab.sec.reload()
         Lh = ev(flat)
         stalled = len(curve) > 1 and curve[1][1] > 0.995 * curve[0][1] and abs(curve[-1][1] - curve[0][1]) < 1e-3 * curve[0][1]
         ok = (Lh < L0) and not stalled
         tries.append(dict(seed=sd, lr=lr_t, L0_heldout=L0, L_heldout=Lh, stalled=bool(stalled), accepted=bool(ok), curve=curve))
+        if heldout_curve: tries[-1]['heldout_curve'] = hc
         log(f'  [{tag}] try {t}: held-out {L0:.4e} -> {Lh:.4e}  stalled {stalled}  accepted {ok}')
         if ok and (best is None or Lh < best[2]):
             best = (model, flat, Lh)

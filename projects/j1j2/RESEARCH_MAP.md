@@ -122,7 +122,10 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Cost per sample independent of k for hops (1 hop of psi_P for the guide, 2 for V/W, 3 per training sample), plus k small nets.
 - Guide + 1 Lanczos = 2.0e-5 at it 8 (< psi_P + 1 Lanczos 2.55e-5); at equal hops psi_P + 2 Lanczos (8.6e-6) still wins on 6x6.
 - Approved per-bond and rolling-base arms failed their pre-tests (0.08-0.21): the limit was the fit of the whole accumulated correction, not missing information.
-- Next: robust residual re-base (re-seed dead fits, held-out acceptance, 40k steps), 3 seeds; then 8x8 with the residual-re-base loop + Lanczos comparison.
+- (done) robust residual re-base (re-seed dead fits, held-out acceptance, 40k steps), 3 seeds; then 8x8 with the residual-re-base loop + Lanczos comparison.
+- Round 4 (2026-10-12, robust residual re-base, 3 seeds, PASS): 85% / 86% of the table loop's gain at it 6 / it 8. <H_ph> at it 8: 5.10 / 4.23 / 4.40e-5 (seeds 1-2 below RBM+PP 4.47e-5). Robustness: clipping removed dead fits; 2 stalls re-seeded; worst re-base retention 0.18 (round 3: -0.63). Open weakness: acceptance only requires 'better than nothing' (one accepted write-back captured 0.01).
+- Equal-hop comparison (guide = 1 hop of psi_P; each Lanczos step +1 hop): 2 hops: guide+1L 1.8-2.0e-5 vs psi_P+2L 8.6e-6; 3 hops: 7.0-8.1e-6 vs 3.8e-6 -> at 6x6 plain Lanczos wins ~2x at equal hops. Limit of the loop: late re-bases keep only 0.2-0.7 of their iteration's gain.
+- Next: (a) raise re-base retention (the bottleneck), tighten acceptance to a fraction of the ideal step; (b) 8x8 with the loop + Lanczos at equal hops, where the hop count, not k, sets the cost.
 
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).

@@ -343,3 +343,23 @@ Sanity: L at k = 1 reproduces 2.55e-5.
 **Then stage 2:** network fit (round-4 machinery) of the passing variant; the network loop must keep >= 70% of the
 stage-1 gain per iteration. **Fail (energy):** no bounded variant reaches the k = 1 bar -> the per-iteration gap is a
 property of bounded targets; cause to be pinned before any conclusion. **Fail (roughness only):** stage 2 decides.
+
+### Step size: stage-1 result (job 17160258, results/compress_6x6/runs/cx_step.json)
+Error per site after k iterations (exact tables, no networks):
+
+| k | exact Lanczos, iterated | clipped Lanczos eps=0.3 | current target SI_1 | SI, optimal scale | psi_P + k Lanczos (joint) |
+|---|---|---|---|---|---|
+| 1 | 2.55e-5 | 2.62e-5 | 9.17e-5 | 5.50e-5 | 2.55e-5 |
+| 2 | 1.09e-5 | 1.16e-5 | 6.91e-5 | 4.11e-5 | 8.59e-6 |
+| 3 | 6.39e-6 | 7.06e-6 | 5.46e-5 | 2.81e-5 | 3.82e-6 |
+| 4 | 4.33e-6 | 4.91e-6 | 4.42e-5 | 2.03e-5 | 1.95e-6 |
+
+Against the pre-registered bars: k = 1 PASS (Lc_0.3 2.62e-5 <= 3.06e-5); k = 2 PASS (1.16e-5 <= 1.29e-5); k = 3 FAIL
+(7.06e-6 > 5.7e-6). Cause of the k = 3 fail: the bar was set against the JOINT 3-step Lanczos polynomial; one step at a
+time (greedy) is worse even for exact Lanczos (6.39e-6), so no iterate-one-step method can pass it — a bar error, not a
+target error. Roughness proxy: FAIL at k = 1 (Lc_0.3 0.052 vs 3 x SI_1 = 0.029; the first step flips 24% of
+configurations), PASS at k >= 2 (0.020, 0.011, 0.008). Clipping at eps = 0.3 costs only 3-13% of the energy.
+Diagnosis of the current target: T = log(1+W) - log(1+H_xx+V-E) is a difference of logs of extensive quantities, so
+its per-configuration change is ~ (E_L - E)/N while the Lanczos change alpha (E_L - E) has alpha ~ fixed (-0.157 at
+6x6, -0.161 at 8x8): the semi-implicit target is over-damped by a factor that grows with N (8x8: 3.6x). Even
+optimally scaled it reaches only 5.5e-5 at k = 1. Decision: stage 2 with the clipped-Lanczos target (eps = 0.3).

@@ -1,4 +1,7 @@
-"""6x6 J2/J1=0.5: FN/Krylov loop vs continued ViT training vs GPU-hours, with Lanczos polish. (a) E - E0 per site, (b) relative error."""
+"""6x6 J2/J1=0.5: FN/Krylov loop vs continued ViT training vs GPU-hours, with Lanczos polish.
+(a) relative energy error, (b) wrong-sign weight w_s. GPU-hours = wall-clock of the single GPU job (4 CPU cores attached,
+no separate CPU jobs); loop times include the exact measurements. Network loop = round 4 (cx_chop2, 3 seeds averaged,
+run on A40-24GB slices, slice-hours counted 1:1 as GPU-hours)."""
 import json
 import numpy as np
 import matplotlib
@@ -12,7 +15,7 @@ LA = json.load(open(R / "writeback_tail/runs/wt_val_a_17092072.json"))
 tx = np.cumsum([0] + [r["sec"] / 3600 for r in L["iters"]])
 ty = np.array([L["iters"][0]["guide_H"]] + [r["H_kry"] for r in L["iters"]])
 tly = np.array([2.55e-5] + [r["lanczos_H"] for r in LA["iters"]])
-C = [json.load(open(R / f"compress_6x6/runs/cx_chop_inc_{s}.json")) for s in ("s0", "s1")]
+C = [json.load(open(R / f"compress_6x6/runs/cx_chop2_{s}.json")) for s in ("s0", "s1", "s2")]
 cx = np.mean([np.cumsum([0] + [r["sec"] / 3600 for r in c["iters"]]) for c in C], 0)
 cy = np.mean([[c["iters"][0]["guide_H"]] + [r["H"] for r in c["iters"]] for c in C], 0)
 cly = np.mean([[2.55e-5] + [r["lanczos_p1"] for r in c["iters"]] for c in C], 0)
@@ -21,6 +24,8 @@ vx = np.array([v["train_gpu_h"] for v in V]); vy = np.array([v["E_site"] - E0 fo
 RBM, VL1 = 4.47e-5, 2.55e-5
 WS = json.load(open(R / "writeback_tail/runs/wtWS_17092071.json"))
 wy = np.array([WS["iters"][0]["w_s_guide"]] + [r["w_s_kry"] for r in WS["iters"]])
+CW = json.load(open(R / "compress_6x6/runs/cx_chop2_ws.json"))
+cwy = np.mean([[CW["psiP"]] + CW[k] for k in ("s0", "s1", "s2")], 0)
 plt.rcParams.update({"font.size": 11, "axes.spines.top": False, "axes.spines.right": False})
 fig, (a, b) = plt.subplots(1, 2, figsize=(11.5, 4.3))
 s = 1.0 / abs(E0)
@@ -37,12 +42,14 @@ a.set_ylabel(r"$\epsilon = (E - E_{\rm exact})/|E_{\rm exact}|$")
 a.text(0.97, 0.6, r"$E_{\rm exact}/N = -0.503810$", transform=a.transAxes, ha="right", fontsize=10)
 a.legend(frameon=False, fontsize=7.8, loc="lower right", ncol=2, handlelength=1.6, columnspacing=0.8, bbox_to_anchor=(1.02, -0.01))
 b.plot(tx, wy, "o-", color="#0072B2", lw=1, ms=6, label="loop (tables)")
-b.axhline(1.3e-4, color="#CC79A7", lw=1.2, ls="--", label="ViT")
-b.set_yscale("log"); b.set_ylim(2e-6, 3e-4)
+b.plot(cx, cwy, "D-", color="#D55E00", lw=1, ms=5, label="loop (networks)")
+b.set_yscale("log"); b.set_ylim(3e-6, 2e-4)
+b.set_yticks([5e-6, 1e-5, 2e-5, 5e-5, 1e-4]); b.set_yticklabels([r"$5\times10^{-6}$", r"$10^{-5}$", r"$2\times10^{-5}$", r"$5\times10^{-5}$", r"$10^{-4}$"]); b.minorticks_off()
+b.text(0.05, 0.93, "start: symmetrised ViT", transform=b.transAxes, fontsize=9, color="0.3")
 b.set_ylabel(r"wrong-sign weight $w_s$")
 b.legend(frameon=False, fontsize=9, loc="upper right")
 for ax, t in ((a, "(a)"), (b, "(b)")):
-    ax.set_xlabel("GPU-hours"); ax.set_xlim(-0.1, 4.6 if ax is a else 1.5)
+    ax.set_xlabel("GPU-hours"); ax.set_xlim(-0.1, 3.0)
     ax.text(-0.13, 1.02, t, transform=ax.transAxes, fontsize=12, fontweight="bold")
 fig.tight_layout(); fig.savefig(R / "writeback_tail/fig_loop_vs_gpuh_6x6.png", dpi=200); fig.savefig(R / "writeback_tail/fig_loop_vs_gpuh_6x6.pdf")
 print("ok")

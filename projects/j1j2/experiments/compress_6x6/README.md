@@ -321,3 +321,25 @@ Code `cx_chop2.py` (loop) and `robust_fit` in `cx_lib.py`; cost `cx_cost.py`. Bu
   - in addition the 3-seed mean at iteration 8 >= 70% of the table loop's gain there.
   - Reported: whether robustness removed the bad re-bases (number of rejected/retried fits; worst single-iteration
     retention).
+
+## Step size (pre-registered 2026-10-12, before the run)
+
+**Why.** 8x8 follow-up: the semi-implicit FN target is 97% collinear with a Lanczos step, T ~ -(E_L - E)/(1+W), i.e. a
+Lanczos step with a per-configuration step 1/(1+W) that is too damped (the uniform optimal step gains 3.6x more).
+On 6x6, 8 table-loop iterations (3.16e-5) do not reach one Lanczos step (2.55e-5). The loop's scaling edge exists only
+if one iteration (constant hop cost) can gain about as much as one Lanczos step and iterations compound.
+Note: the Krylov sign step is the sign of a Lanczos factor 1 + alpha(E_L - E); the full Lanczos amplitude |f| goes to
+zero at the flipped configurations (the "damped flip" of cx_l1bump).
+
+**Stage 1 (cx_step.py, exact tables, no networks).** From psi_P, iterate k = 1..4 times each variant: exact Lanczos (L),
+clipped Lanczos amplitude log max(|f|, eps) with eps = 0.3, 0.1, 0.03 (bounded, learnable), the current target (SI_1),
+and the energy-optimally scaled target lam*T (SI_opt). Step parameter energy-optimal per iteration.
+
+**Pass (stage 1):** a bounded variant (Lc_eps or SI_opt) reaches
+- k = 1: error <= 1.2 x psi_P + 1 Lanczos (<= 3.06e-5 per site),
+- k = 2, 3: <= 1.5 x psi_P + 2 / 3 Lanczos steps (<= 1.29e-5, <= 5.7e-6),
+- with bond-rms roughness of its increment <= 3 x that of SI_1 at k = 1 (learnability proxy).
+Sanity: L at k = 1 reproduces 2.55e-5.
+**Then stage 2:** network fit (round-4 machinery) of the passing variant; the network loop must keep >= 70% of the
+stage-1 gain per iteration. **Fail (energy):** no bounded variant reaches the k = 1 bar -> the per-iteration gap is a
+property of bounded targets; cause to be pinned before any conclusion. **Fail (roughness only):** stage 2 decides.

@@ -18,6 +18,7 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 - Concise: lead with the result; 3-line answers by default; full detail only when asked or when it is pedagogically needed.
 - Figures presentable on the first try (few curves, points + thin lines, panel letters, log10-exponent axes, no overlaps); at most two plots when asked for a quick look.
 - Explain plainly when asked; avoid jargon or define it.
+- Status/results: for each run, describe the steps actually done in plain words (guide, what was computed, trained, measured), then the result in one line. Define every technical term in the same message the first time it appears; never rely on earlier explanations.
 - Never wave a risk through as "one catch" or "works with a minor edit". State each risk rigorously: what could break, how large it is (measured, not guessed), how it is monitored, and the test that settles it, written down before the run.
 
 ## Operations

@@ -336,3 +336,100 @@ round 2). This is an Adam/initialisation failure, worth a restart rule (re-seed 
 - B fix 0.25 h;
 - loops 2 x 1.47 h.
 About 4.6 slice-h, ~2.3 A40-equivalent.
+
+# Round 4 (2026-10-12): robust residual re-base, 3 seeds
+Pre-registration ce63e83 (`experiments/compress_6x6/README.md`, round 4). Figure `fig_round4_6x6.png/.pdf`. Raw:
+`runs/cx_chop2_s{0,1,2}.json`, `runs/cx_cost.json`, `runs/cx_lanczos_ref.json`.
+
+## What was run, step by step
+1. **Start.** The guide is the symmetrised ViT psi_P (exact 6x6 tables). Its sign comes from an exact Krylov sign step
+   after every iteration, as in the table loop.
+2. **Write-back, each iteration.**
+   - From the current callable guide G_k, compute its own one-hop quantities log a, V and W. V is the weight of the
+     guide's sign-violating neighbours; W is that of its sign-allowed neighbours.
+   - Compute the semi-implicit FN target T from them.
+   - Train a fresh 37k-parameter FEAT net (a CNN with log a, V, W as inputs) to T: edge (Dirichlet) loss, 20k Adam
+     steps, lr 3e-3.
+3. **Residual re-base.**
+   - Train a second fresh 37k net h_k, seeing only the spins and psi_P's own log a, V, W (one hop of psi_P), on the
+     increment just added.
+   - The new callable guide is G_{k+1} = G_k + h_k. Settings: 20k steps (k <= 2) or 40k (k >= 3), lr 1e-3.
+4. **Robustness, applied to both fits.**
+   - 20% of the configurations are held out of training.
+   - Gradient clipping (norm 1).
+   - A fit whose loss does not move is re-seeded (up to 3 tries, lr halved each time).
+   - A fit is accepted only if its loss on the held-out configurations beats "no change".
+5. **Measurements, exact, per iteration:**
+   - capture (share of the ideal FN iteration the write-back keeps);
+   - re-base retention (share of that iteration's <H> gain kept by G_{k+1});
+   - <H> and E_FN (the fixed-node energy, a variational bound, with G_{k+1} as guide);
+   - G_{k+1} + 1 and + 2 exact Lanczos steps (one Lanczos step = one application of H, i.e. one more hop).
+6. **References.** psi_P + p exact Lanczos steps, p = 0..4: 1.319e-4 / 2.551e-5 / 8.59e-6 / 3.82e-6 / 1.95e-6.
+   Measured evaluation cost vs k.
+
+## Result
+**One line: PASS. The callable constant-hop guide keeps 85% of the table loop's gain at iteration 6 and 86% at
+iteration 8 (3-seed means), but at equal hop count it is ~2x worse than psi_P + Lanczos.**
+
+| it | capture s0/s1/s2 | re-base retention s0/s1/s2 | <H> s0/s1/s2 | E_FN s0/s1/s2 | table <H> / E_FN |
+|---|---|---|---|---|---|
+| 1 | 0.68/0.67/0.64 | 0.98/0.99/0.98 | 1.004/1.006/1.024e-4 | 7.89/7.89/8.01e-5 | 9.67e-5 / 7.62e-5 |
+| 2 | 0.66/0.72/0.70 | 0.85/0.83/0.84 | 8.42/8.31/8.47e-5 | 6.86/6.78/6.89e-5 | 7.87e-5 / 6.44e-5 |
+| 3 | 0.74/0.75/0.76 | 0.68/0.67/0.67 | 7.29/7.20/7.32e-5 | 6.07/5.98/6.07e-5 | 6.29e-5 / 5.25e-5 |
+| 4 | 0.69/0.72/0.60 | 0.64/0.87/0.62 | 6.52/6.12/6.71e-5 | 5.52/5.18/5.65e-5 | 5.20e-5 / 4.40e-5 |
+| 5 | 0.74/0.74/0.75 | 0.81/0.42/0.46 | 5.65/5.68/6.17e-5 | 4.83/4.85/5.23e-5 | 4.79e-5 / 4.08e-5 |
+| 6 | 0.58/0.65/0.54 | 0.30/0.68/0.73 | **5.44/5.15/5.66e-5** | 4.65/4.41/4.83e-5 | 4.03e-5 / 3.47e-5 |
+| 7 | 0.66/0.88*/0.01 | 0.18/0.73/- | 5.30/4.46/4.84e-5 | 4.51/3.84/4.19e-5 | 3.64e-5 / 3.15e-5 |
+| 8 | 0.69/0.64/0.71* | 0.25/0.39/0.64 | **5.10/4.23/4.40e-5** | 4.34/3.62/3.78e-5 | 3.16e-5 / 2.75e-5 |
+
+\* the first write-back try stalled (dead fit: own loss did not move); it was detected and re-seeded, and the second
+try was accepted.
+- **Pass rule.**
+  - Share of the table loop's <H> gain at iteration 6: 0.846 / 0.878 / 0.822, mean 0.849 (bar 0.70, no seed below
+    0.60).
+  - At iteration 8: 0.807 / 0.893 / 0.877, mean 0.859 (bar 0.70). **PASS.**
+- **Robustness.**
+  - The dead-initialisation failure (round 2/3: seed 1, iteration 3) did not recur with gradient clipping. Two other
+    stalls (seed 1 iteration 7, seed 2 iteration 8) were caught and re-seeded.
+  - No re-base was rejected, and no retention is negative any more; the worst is 0.18 (round 3: -0.63).
+  - Remaining weakness: seed 2 iteration 7, an accepted write-back that captured only 0.01. The held-out acceptance
+    only tests "better than nothing".
+- Seeds 1 and 2 reach <H> 4.2-4.4e-5 at iteration 8, below RBM+PP (4.47e-5). E_FN is 3.6-4.3e-5.
+- **Equal-hop comparison.** The callable guide costs one hop of psi_P; + p Lanczos steps make 1 + p hops.
+
+| hops of psi_P | guide (it 8) + Lanczos, s0/s1/s2 | psi_P + Lanczos |
+|---|---|---|
+| 1 | 5.10 / 4.23 / 4.40e-5 (guide alone) | 2.55e-5 (p = 1) |
+| 2 | 2.02 / 1.76 / 1.80e-5 (+1 step) | 8.59e-6 (p = 2) |
+| 3 | 8.10 / 6.98 / 7.06e-6 (+2 steps) | 3.82e-6 (p = 3) |
+
+  psi_P + Lanczos wins by ~2x at every hop count. The guide's own sign uses an exact global Krylov step, an advantage
+  the Lanczos column does not get.
+- **Cost per configuration vs k** (measured on a 24 GB A40 slice: one symmetrised psi_P evaluation 5.4e-5 s, one
+  small net 1.1e-5 s):
+
+| | k = 0 | k = 4 | k = 8 | small-net share at k = 8 |
+|---|---|---|---|---|
+| 6x6 guide value (78 psi_P + k small nets) | 4.19e-3 s | 4.23e-3 s | 4.28e-3 s | 2.1% |
+| 6x6 guide V, W (2.8e3 psi_P + 78 k small nets) | 0.152 s | 0.156 s | 0.159 s | 4.3% |
+| 8x8 guide value (135 psi_P + k) | 7.25e-3 s | 7.29e-3 s | 7.34e-3 s | 1.2% |
+| 8x8 guide V, W (8.7e3 psi_P + 135 k) | 0.470 s | 0.476 s | 0.482 s | 2.5% |
+
+  The cost is linear in k with a small slope; psi_P's hops dominate. An edge-loss training sample costs <= 9x the
+  V, W cost (an upper bound; shared neighbours reduce it).
+  - 8x8 rows: measured 6x6 throughputs x 8x8 hop counts. The 8x8 ViT is larger, so these are lower bounds for the
+    psi_P part.
+- **Convergence.** Every fit was trained to its step budget; the held-out losses are in `fit_w` / `fit_r` of each
+  iteration's record. The late re-bases still keep only 0.2-0.7 of their iteration's gain. That, not the write-back
+  (0.54-0.76 apart from the one stalled fit), is what separates the callable guide from the table loop.
+
+## Compute (round 4)
+24 GB slices: three loops 1.71 / 2.64 / 1.75 h, cost 0.01 h, Lanczos reference 0.01 h. One duplicate Lanczos
+reference ran on a full A40 (0.01 h). Total 6.1 slice-h (~3 A40-equivalent).
+
+## Next step (proposal)
+- The constant-hop guide now works on 6x6 (85% of the table loop at bounded cost). Its value is as a starting point,
+  not against Lanczos: at equal hops Lanczos on psi_P is 2x better.
+- The fair add-on comparison at 8x8 is "guide after k iterations + p Lanczos" vs "psi_P + (p+1) Lanczos", with the
+  calibrated FN referee.
+- Code for the 8x8 worker: `cx_chop2.py` + `robust_fit` / `fit_edge` / `tail_proposal` / `FeatNet` in `cx_lib.py`.

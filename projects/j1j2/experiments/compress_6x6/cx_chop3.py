@@ -14,7 +14,10 @@ bond-rms of the write-back error and of the re-base error, E_FN, + 1 / + 2 Lancz
   python cx_chop3.py OUT SPEC.json
 SPEC: n_loop (4), seed (0), eps (0.3), feat_EL (false), metric ('target'), mode ('net'), steps_w (20000),
       steps_r (20000, k <= 2), steps_r_small (40000, k >= 3), alpha_scale ({}: per-k multiplier of alpha*, diagnosis),
-      C_w (32: write-back net width), base_EL (false: + psi_P's local energy as a re-base feature, amendment S2-1)
+      C_w (32: write-back net width), base_EL (false: + psi_P's local energy as a re-base feature, amendment S2-1),
+      base_sign ('psiP' | 'current' | 'prev': re-base features of psi_P's amplitude with the neighbours split by psi_P's
+      sign / the sign after the iteration / the guide's sign s_k at the start of the iteration, amendment S2-2),
+      blowup_guard (false: reject re-bases that move > 1e-3 of the weight onto +1 log-amplitude errors, amendment S2-2)
 """
 import os, sys, time
 import numpy as np
@@ -40,6 +43,24 @@ if SPEC.get('base_EL', False):
     _m = float(jnp.sum(_meas0 * _u)); _s = float(jnp.sqrt(jnp.sum(_meas0 * (_u - _m) ** 2))) + 1e-30
     FEAT_BASE = jnp.concatenate([FEAT_BASE, ((_u - _m) / _s).astype(jnp.float32)[:, None]], 1)
     del _lan0, _V0, _W0, _EL0, _T0, _meas0, _u
+BASE_SIGN = SPEC.get('base_sign', 'psiP')
+
+
+def base_feats_sign(sg):
+    """amendment S2-2: psi_P's one-hop features (log a_P, log V, log W, asinh E_L) with the neighbours split by the
+    sign sg (the current loop sign) instead of psi_P's own sign: same hop of psi_P, sign looked up at the neighbours.
+    Standardised under psi_P's base measure (as base_features)."""
+    lan0, V0, W0 = lab.VW(lab.lP0, sg); EL0 = lab.D0 + V0 - W0
+    v = sec.vec(lab.lP0, sg); E0 = float(v @ sec.H(v)); sd0 = float(jnp.sqrt(jnp.sum(v ** 2 * (EL0 - E0) ** 2))); del v
+    lanP, VP, WP = lab.VW(lab.lP0, lab.sP0)
+    _, _, meas0 = lab.proposal_q(lab.T_of(VP, WP, FrozenOp(lab, lab.lP0, lab.sP0).energy(lab.lP0)), lab.lP0, lab.sP0)
+    del lanP, VP, WP
+    F_ = lab.feat_table(lan0, V0, W0, meas0)
+    u = jnp.arcsinh((EL0 - E0) / sd0)
+    m_ = float(jnp.sum(meas0 * u)); s_ = float(jnp.sqrt(jnp.sum(meas0 * (u - m_) ** 2))) + 1e-30
+    return jnp.concatenate([F_, ((u - m_) / s_).astype(jnp.float32)[:, None]], 1)
+
+
 J8 = json.load(open(os.path.join(LOOP8, 'wt_loop.json')))
 # exact ground state, kept on the host as q = p0 * s0 (sign error w_s = (1 - |sum q s|) / 2, as Sector.score)
 _z = np.load(TABLE); _v0 = np.asarray(_z['amp'], np.float64) * np.sqrt(np.asarray(sec.n)); del _z
@@ -126,15 +147,26 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     del d_fit, d
     # ---------------- (r) residual re-base onto psi_P's one-hop features (round 4)
     SR = SPEC.get('steps_r_small', 40000) if k >= 3 else SPEC.get('steps_r', 20000)
-    mr, flr, rec['fit_r'] = robust_fit(lab, lambda sd_: FeatNet(FEAT_BASE, seed=sd_), la_w, s_t, la_w - G, SR,
-                                       50 + k + 1000 * SEED, 1e-3, f'r{k}', heldout_curve=True)
+    FB = {'psiP': lambda: FEAT_BASE, 'current': lambda: base_feats_sign(s_t), 'prev': lambda: base_feats_sign(s)}[BASE_SIGN]()
+    GUARD = SPEC.get('blowup_guard', False); rec['guard_rejects'] = []
+    for att in range(3 if GUARD else 1):
+        mr, flr, rec['fit_r'] = robust_fit(lab, lambda sd_: FeatNet(FB, seed=sd_), la_w, s_t, la_w - G, SR,
+                                           50 + k + 1000 * SEED + 104729 * att, 1e-3, f'r{k}', heldout_curve=True)
+        G_new = G + mr.table(flr, sec.reps, lab.TIDX) if flr is not None else G
+        if not GUARD or flr is None: break
+        # blow-up guard (amendment S2-2): reject if the new guide puts > 1e-3 of its weight where the re-base error
+        # (offset removed in the metric of la_w) exceeds +1 in log-amplitude
+        pw_ = sec.vec(la_w, s_t) ** 2; ex_ = G_new - la_w; ex_ = ex_ - jnp.sum(pw_ * ex_)
+        bw = float(jnp.sum(jnp.where(ex_ > 1.0, sec.vec(G_new, s_t) ** 2, 0.0))); del pw_, ex_
+        if bw <= 1e-3: break
+        rec['guard_rejects'].append(dict(attempt=att, weight_excess_gt1=bw, fit=rec['fit_r']))
+        log(f'  [r{k}] blow-up guard: weight {bw:.3g} on excess > 1 -> rejected (attempt {att})')
+        flr = None; G_new = G
     rec['steps_r'] = SR
     if flr is not None:
-        G_new = G + mr.table(flr, sec.reps, lab.TIDX); n_nets += 1
+        n_nets += 1
         np.save(os.path.join(OUT, f'params_h{k}.npy'), np.asarray(flr))
-    else:
-        G_new = G
-    del mr
+    del mr, FB
     rec['n_small_nets'] = n_nets
     rec['H'] = lab.H_site(G_new, s_t)
     rec['retention'] = (H_G - rec['H']) / (H_G - rec['H_w'])          # share of the write-back's gain kept

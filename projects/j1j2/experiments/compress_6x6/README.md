@@ -447,3 +447,39 @@ Feature pre-test, k = 1, seed 0 (runs `c3PTf3_17164046`, `c3PTf4_17164047`; exac
   - Else the diagnosis continues with remedies (2)-(4) before any conclusion.
 - The direct arm uses the same re-base features.
 - The pass rule is unchanged.
+
+#### Amendment S2-2 (2026-10-13 08:40, after both main seeds, before this run)
+Main arm (E_L in both nets), seeds 0 / 1, iteration share = capture x retention:
+
+| k | capture | re-base retention | share | re-base held-out loss, final / start |
+|---|---|---|---|---|
+| 1 | 0.84 / 0.84 | 1.00 / 1.00 | 0.84 / 0.84 | 2e-4 / 2e-4 |
+| 2 | 0.97 / 0.96 | 0.69 / 0.67 | 0.67 / 0.65 | 0.35 / 0.36 |
+| 3 | 1.00 / 1.00 | 0.33 / 0.29 | 0.33 / 0.29 | 0.73 / 0.75 |
+| 4 | 1.01 / 1.02 | 0.09 / 0.08 | 0.09 / 0.08 | 0.92 / 0.98 |
+
+- The pre-registered main arm FAILS at k = 2, 3, 4.
+- The write-back is not the problem from k = 2 on: capture 0.96-1.02.
+- The loss is in the re-base: its held-out loss floors (k = 3, 4: flat over the last half of 40k steps). That is an
+  information or representation limit, not an optimiser limit.
+- Hypothesis H1: the increment d_k is a function of G_k's one-hop quantities, whose neighbours are split into kept and
+  violating by the guide's CURRENT sign s_k. The re-base features split psi_P's neighbours by psi_P's own sign s_P.
+  By k = 2, 24% + 9% of the configurations have flipped sign, so the features no longer carry the split the target
+  was computed with.
+
+Test (seed 0, 4 iterations, `chop3_prev_s0`):
+- Re-base features = psi_P's (log a, log V, log W, asinh E_L) with the neighbours split by s_k, the guide's sign at the
+  start of iteration k (for k = 1 this is s_P, i.e. the main arm).
+- Cost at 6x6: one hop of psi_P plus sign look-ups at the neighbours, which any energy evaluation of the guide needs
+  anyway. At scale, each stored increment h_j needs its own sign s_j at the neighbours (cost linear in k, open).
+- Blow-up guard: reject a re-base whose new guide puts > 1e-3 of its weight on configurations where the re-base error
+  exceeds +1 in log-amplitude; retry with a new seed, at most 2 retries.
+  - Reason: the k = 1 control without E_L at 60k steps (`c3PTr60`) reached held-out loss 2.1e-5. Its guide still
+    blew up to <H> 0.61 per site, an error of +20.7 on configurations that carry 80% of the new guide's weight.
+
+Reading:
+- H1 is supported if the re-base retention at k = 2..4 reaches >= 0.7 (main arm: 0.69 / 0.33 / 0.09).
+- A rise that stays below 0.7 points to the remaining missing information: the amplitude change at the neighbours,
+  i.e. two hops of psi_P.
+- No rise refutes H1.
+- The pass bar is unchanged. A pass of this arm would need seed 1 before any claim.

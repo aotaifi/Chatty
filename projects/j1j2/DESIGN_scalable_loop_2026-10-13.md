@@ -354,3 +354,25 @@ Two refinements:
   2. (a0)/(a8) sign checks (CPU), in parallel;
   3. check (b) with re-anchored amplitudes instead of F1/F2 increments;
   4. 8x8.
+
+**5.5 Re-anchor test result (2026-10-13, results/compress_6x6 "Rolling re-anchor test"; 2.55 slice-h).**
+- FAIL at k = 1. All arms worsen the energy: minSR -0.14 / -0.12, Adam -0.10.
+  - The fits halve the held-out edge loss and match the increment to 0.003-0.006 where a^2 >= 1e-8.
+  - The errors grow to 0.1-0.9 below a^2 ~ 1e-10.
+  - Splicing the fit with the exact target below a^2 = 1e-9 (7.7% of the weight) recovers 0.91 of the gain.
+- So the gain of the step lives in the tail around the new nodes, and a spin-only network cannot follow it there.
+  The hop-feature nets could (they compute E_L), but they carry the one-shell gap of 5.1.
+- Both representations fail on opposite sides:
+  - spin-only networks lack tail precision (here, writeback_tail, P2);
+  - one-hop-feature nets lack the outer shell (D1/D2).
+- **Pre-registered fallback, now in force:** cap the loop depth.
+  - The guide stays at <= 2 hops + Lanczos polish.
+  - At 6x6 the stage-2 k = 4 guide gives 2.0e-5 at one hop (vs psi_P + 1 Lanczos 2.55e-5). At two hops it gives
+    0.92e-5 (vs psi_P + 2 Lanczos 0.86e-5).
+- **The one design not yet tested, combining both sides:** re-anchor the ViT on the bulk every iteration, plus ONE
+  small tail head on one-hop features of the CURRENT ViT. The head is refit each iteration, not stacked, so the hop
+  cost stays constant.
+  - It needs only the tail part of the increment from one-hop information. Its one-shell gap is limited to 7.7% of
+    the weight.
+  - Exact 6x6 test: share >= 0.7 at k = 1..3 with the same machinery. About 3 slice-h.
+  - This needs a PI decision; it was not part of the approved test.

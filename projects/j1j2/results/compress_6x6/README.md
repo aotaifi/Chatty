@@ -633,3 +633,67 @@ Pre-registered readings:
   2%.
 - So no base network can make the light cone local at 6x6. Whether the interactions decay at 8x8 and beyond, at the
   near-critical J2 = 0.5, is open and needs a sampled 8x8 measurement.
+
+# Rolling re-anchor test (2026-10-13)
+Pre-registration and amendments RA-1, RA-2: `experiments/compress_6x6/README.md`. Code: `cx_reanchor.py`,
+`cx_reanchor_diag.py`. Raw files: `runs/cx_reanchor_ra_{ms_s0,ms_s1,ad_s0}_k1.json`, `runs/cx_reanchor_diag.json`.
+Compute: 2.55 slice-h (budget 4). This covers the two minSR jobs cancelled at 6 min by amendment RA-1.
+The k = 3 seed-1 job crashed reading the k = 2 "stopped" record; it would not have run anyway.
+
+## What was run, step by step
+1. **Start.** The stage-2 start: psi_P with its sign, <H> 1.319e-4.
+2. **Target.** The exact clipped-Lanczos target: alpha -0.156, 24% of configurations flip sign, target <H> 2.62e-5.
+3. **Fine-tune.** The whole symmetrised ViT (155k parameters), warm-started, was fine-tuned for 12 min to the
+   target log-amplitude with the stage-2 edge loss.
+   - Sampling: increment-weighted, 20% of orbits held out.
+   - minSR (damped Gauss-Newton with value rows, trust region, acceptance on a fixed validation set): seeds 0 and 1.
+   - Adam at lr 1e-6: seed 0.
+4. **Exact evaluation.** The network was tabulated on all 15.8M orbits and its energy computed exactly with the
+   target sign.
+5. **Splice diagnostic.** Each fitted table was spliced with the exact target by probability decade, and the exact
+   energy of each splice computed.
+
+## Result
+**One line: FAIL. Every arm makes the energy worse at k = 1 (share -0.14 / -0.12 minSR, -0.10 Adam; pre-registered
+fallback triggered). The cause is located: the fit is good in the bulk and wrong in the tail (configurations
+with a^2 < 1e-9, 7.7% of the weight), where the step's gain lives.**
+
+| arm | held-out edge loss end / start | share | <H> | bond-rms error | E_FN | + 1 Lanczos |
+|---|---|---|---|---|---|---|
+| start (psi_P, old sign) | | 0 | 1.319e-4 | 0.052 | 1.02e-4 | 2.55e-5 |
+| old amplitude, new sign | | -0.03 | 1.347e-4 | | | |
+| minSR seed 0 (60 steps, acceptance 0.27) | 0.50 | **-0.139** | 1.467e-4 | 0.047 | 9.26e-5 | 4.11e-5 |
+| minSR seed 1 (160 steps, acceptance 0.14) | 0.52 | **-0.119** | 1.446e-4 | 0.048 | 9.24e-5 | 4.20e-5 |
+| Adam lr 1e-6 (1108 steps) | 0.67 | **-0.097** | 1.422e-4 | 0.055 | 9.74e-5 | 4.39e-5 |
+| exact target | | 1 | 2.62e-5 | 0 | | |
+
+Pointwise error by probability decade (minSR seed 1; the target's own size is 0.031 overall):
+
+| decade of a_t^2 | 1e-5 | 1e-6 | 1e-7 | 1e-8 | 1e-9 | 1e-10 | 1e-11 | 1e-12 | 1e-13 | 1e-14 | 1e-15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| error | 0.006 | 0.003 | 0.003 | 0.006 | 0.013 | 0.034 | 0.090 | 0.21 | 0.39 | 0.64 | 0.91 |
+
+Splices (share; identical pattern for all three arms, minSR seed 1 shown):
+
+| cut: a_t^2 below the cut is the tail | 1e-7 | 1e-8 | 1e-9 | 1e-10 | 1e-11 | 1e-12 |
+|---|---|---|---|---|---|---|
+| tail weight | 52% | 24% | 7.7% | 1.9% | 0.37% | 0.06% |
+| fit in the bulk + exact target in the tail | 0.99 | 0.97 | 0.91 | 0.76 | 0.52 | 0.29 |
+| exact target in the bulk + fit in the tail | -0.12 | -0.11 | -0.09 | -0.02 | 0.16 | 0.43 |
+| fit in the bulk + start in the tail | -0.04 | -0.05 | -0.06 | -0.06 | -0.02 | +0.02 |
+
+- **What this means.**
+  - The ViT fine-tune reproduces the increment well where a_t^2 >= 1e-9. With the tail exact, 0.91-0.99 of the
+    gain would be kept.
+  - The step's gain needs the amplitude to drop near the new nodes (24% sign flips). That happens in the tail, and
+    the network does not follow it there: its errors grow to 0.1-0.9.
+  - The tail cannot simply be left alone either: bulk fit + old tail gives about -0.05, because the new sign needs
+    the new tail amplitudes.
+- This is the same barrier as writeback_tail (spin-only nets 20-31%) and P2 (psi_P itself is off by 0.05-0.5 in
+  these decades).
+- Not shown to be a conceptual limit: no tail-steered sampling or extra capacity was tried. But it is consistent
+  across optimisers, seeds and three earlier campaigns.
+- Method checks:
+  - fp32 floor: edge rms 7e-6 against an increment of 0.042 (ratio 2e-4), so the test was meaningful;
+  - blow-up guard not triggered (weight 1.3-1.7e-4);
+  - all fits accepted on held-out data.

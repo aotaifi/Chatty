@@ -421,3 +421,29 @@ tried in this order, each on k = 1 only, before any conclusion:
 - This arm tells whether the write-back net is needed at all.
 
 Budget: <= 8 slice-h (pre-test 2 x ~0.4, main 2 x ~1.2, direct ~1).
+
+#### Amendment S2-1 (2026-10-13 02:50, after the feature pre-test, before the main runs)
+Feature pre-test, k = 1, seed 0 (runs `c3PTf3_17164046`, `c3PTf4_17164047`; exact target 2.62e-5 from 1.319e-4):
+
+| arm | write-back held-out loss (f = 0: 7.31e-4) | capture | re-base retention | iteration share | <H> after re-base |
+|---|---|---|---|---|---|
+| (log a, V, W) | 2.61e-4 (flat from 12k steps) | 0.25 | 0.995 | 0.25 | 1.053e-4 |
+| + E_L column | 4.59e-5 | 0.84 | 0.57 | 0.48 | 8.15e-5 |
+
+- By the rule, the E_L column is used (capture +0.59).
+- k = 1 still fails (share 0.48). Cause located: the re-base. It fits the write-back output on psi_P's
+  (log a, log V, log W) WITHOUT the local energy. That is the coordinate whose absence capped the 3-feature write-back
+  at 0.25 with a loss floor (flat from 12k steps, i.e. a representation limit, not an optimiser limit). Consistent with
+  this, the 3-feature write-back output, itself a smooth function of those features, was re-based with retention 0.995.
+- Remedy, deviating from the pre-registered order (justified by the located cause): add psi_P's asinh-compressed local
+  energy to the re-base features (`base_EL`). It costs nothing extra: E_L,P = D0 + V_P - W_P comes from the same hop of
+  psi_P.
+- Remedy (1) of the pre-registered order (3x steps, 60k, no E_L) runs in parallel at k = 1 as the control
+  (`chop3_pt_r60k`).
+- Rule:
+  - If the seed-0 main run (E_L in both nets) reaches k = 1 share >= 0.70, it continues to 4 iterations and seed 1
+    follows with the same settings.
+  - Else, if the 60k control reaches >= 0.70, the main runs switch to it.
+  - Else the diagnosis continues with remedies (2)-(4) before any conclusion.
+- The direct arm uses the same re-base features.
+- The pass rule is unchanged.

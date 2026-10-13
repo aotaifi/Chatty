@@ -14,7 +14,7 @@ bond-rms of the write-back error and of the re-base error, E_FN, + 1 / + 2 Lancz
   python cx_chop3.py OUT SPEC.json
 SPEC: n_loop (4), seed (0), eps (0.3), feat_EL (false), metric ('target'), mode ('net'), steps_w (20000),
       steps_r (20000, k <= 2), steps_r_small (40000, k >= 3), alpha_scale ({}: per-k multiplier of alpha*, diagnosis),
-      C_w (32: write-back net width)
+      C_w (32: write-back net width), base_EL (false: + psi_P's local energy as a re-base feature, amendment S2-1)
 """
 import os, sys, time
 import numpy as np
@@ -29,6 +29,17 @@ METRIC = SPEC.get('metric', 'target'); MODE = SPEC.get('mode', 'net'); C_W = SPE
 ASCALE = {int(k): float(v) for k, v in SPEC.get('alpha_scale', {}).items()}
 lab = Lab(); sec = lab.sec
 FEAT_BASE = base_features(lab)
+if SPEC.get('base_EL', False):
+    # + psi_P's asinh-compressed local energy (amendment S2-1): same one hop of psi_P, a coordinate the base net lacks
+    _lan0, _V0, _W0 = lab.VW(lab.lP0, lab.sP0); _EL0 = lab.D0 + _V0 - _W0
+    _v = sec.vec(lab.lP0, lab.sP0); _E0 = float(_v @ sec.H(_v))
+    _sd0 = float(jnp.sqrt(jnp.sum(_v ** 2 * (_EL0 - _E0) ** 2))); del _v
+    _T0 = lab.T_of(_V0, _W0, FrozenOp(lab, lab.lP0, lab.sP0).energy(lab.lP0))
+    _, _, _meas0 = lab.proposal_q(_T0, lab.lP0, lab.sP0)                 # the base_features measure
+    _u = jnp.arcsinh((_EL0 - _E0) / _sd0)
+    _m = float(jnp.sum(_meas0 * _u)); _s = float(jnp.sqrt(jnp.sum(_meas0 * (_u - _m) ** 2))) + 1e-30
+    FEAT_BASE = jnp.concatenate([FEAT_BASE, ((_u - _m) / _s).astype(jnp.float32)[:, None]], 1)
+    del _lan0, _V0, _W0, _EL0, _T0, _meas0, _u
 J8 = json.load(open(os.path.join(LOOP8, 'wt_loop.json')))
 # exact ground state, kept on the host as q = p0 * s0 (sign error w_s = (1 - |sum q s|) / 2, as Sector.score)
 _z = np.load(TABLE); _v0 = np.asarray(_z['amp'], np.float64) * np.sqrt(np.asarray(sec.n)); del _z
@@ -89,9 +100,10 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
         la_m, s_m = (la_t, s_t) if METRIC == 'target' else (G, s)
         _, _, meas = lab.proposal_q(d, la_m, s_m)
         FEAT = lab.feat_table(lan, V, W, meas)
-        if FEAT_EL:
-            m_ = float(jnp.sum(meas * EL)); s_ = float(jnp.sqrt(jnp.sum(meas * (EL - m_) ** 2))) + 1e-30
-            FEAT = jnp.concatenate([FEAT, ((EL - m_) / s_).astype(jnp.float32)[:, None]], 1)
+        if FEAT_EL:      # asinh-compressed local energy (raw E_L is heavy-tailed: |E_L - E| reaches ~1e2 sd in the tail)
+            u_ = jnp.arcsinh((EL - E) / sdE)
+            m_ = float(jnp.sum(meas * u_)); s_ = float(jnp.sqrt(jnp.sum(meas * (u_ - m_) ** 2))) + 1e-30
+            FEAT = jnp.concatenate([FEAT, ((u_ - m_) / s_).astype(jnp.float32)[:, None]], 1); del u_
         del meas
         mw, flw, rec['fit_w'] = robust_fit(lab, lambda sd_: FeatNet(FEAT, seed=sd_, C=C_W), la_m, s_m, d,
                                            SPEC.get('steps_w', 20000), k + 1000 * SEED, 3e-3, f'w{k}',
@@ -104,6 +116,13 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     rec['H_w'] = lab.H_site(la_w, s_t)
     rec['capture'] = (H_G - rec['H_w']) / rec['exact_gain']
     rec['w_err_bond_rms'] = bond_rms(lab, la_t, d_fit - d)          # write-back error in the target metric
+    # blow-up diagnostics: pointwise excess of the fit over the target and the weight it carries in the write-back state
+    pt = sec.vec(la_t, s_t) ** 2; ex = d_fit - d; ex = ex - jnp.sum(pt * ex); pw = sec.vec(la_w, s_t) ** 2   # offset removed
+    rec['w_excess_max'] = float(jnp.max(ex)); rec['w_excess_min'] = float(jnp.min(ex))
+    rec['w_weight_excess_gt1'] = float(jnp.sum(jnp.where(ex > 1.0, pw, 0.0)))
+    rec['w_weight_excess_gt0.3'] = float(jnp.sum(jnp.where(ex > 0.3, pw, 0.0)))
+    rec['w_ptwise_rms_target'] = float(jnp.sqrt(jnp.sum(pt * ex ** 2)))
+    del ex, pw, pt
     del d_fit, d
     # ---------------- (r) residual re-base onto psi_P's one-hop features (round 4)
     SR = SPEC.get('steps_r_small', 40000) if k >= 3 else SPEC.get('steps_r', 20000)
@@ -122,6 +141,9 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     rec['iter_share'] = (H_G - rec['H']) / rec['exact_gain']          # share of the exact clipped-Lanczos step
     rec['rebase_bond_rms'] = bond_rms(lab, la_w, G_new - la_w)
     rec['total_err_bond_rms'] = bond_rms(lab, la_t, G_new - la_t)
+    pw = sec.vec(la_w, s_t) ** 2; ex = G_new - la_w; ex = ex - jnp.sum(pw * ex); pw = sec.vec(G_new, s_t) ** 2
+    rec['r_excess_max'] = float(jnp.max(ex)); rec['r_weight_excess_gt1'] = float(jnp.sum(jnp.where(ex > 1.0, pw, 0.0)))
+    del ex, pw
     del la_w, la_t
     Efn, u, info = sec.fn_solve(G_new, s_t); del u
     rec['E_FN'] = info['dE_FN_site']

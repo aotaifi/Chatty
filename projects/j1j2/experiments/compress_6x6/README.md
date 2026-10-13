@@ -664,3 +664,45 @@ For the small-net fits, normalisation is now the default in `robust_fit` (D1: 0.
   - if "fit in the bulk + exact target in the tail" recovers >= 0.7, the loss sits in the tail decades the ViT
     cannot follow;
   - if not, the bulk fit itself is energetically wrong (e.g. the edge errors are correlated in an energy-costly way).
+
+## Sign-channel check (pre-registered 2026-10-13, lead request; before any run; code `cx_signchan.py`; <= 1 slice-h)
+**Lead's premise and a correction.** The premise: the reported energy is E_FN of the loop's sign, so amplitude
+errors on rare configurations matter only through the next sign decision.
+- On the lattice this holds only in part. The fixed-node Hamiltonian H_FN[a, s] has the diagonal wall term
+  sum_violating |H_xy| a(y)/a(x), so E_FN depends on the guide amplitude, and most strongly on the ratios across
+  violating bonds, i.e. at the nodes, in the rare region.
+- Measured already (P2 replay, same sign s_3): E_FN = 9.29e-5 with psi_P's amplitude vs 5.25e-5 with the stack's
+  amplitude.
+- So two quantities are reported:
+  - (i) the sign channel: E_FN of the new sign with a COMMON amplitude;
+  - (ii) the guide's own E_FN.
+- An amplitude-free score would be the self-consistent E_FN* of a sign (iterate a <- phi_FN[a, s]). It is not
+  computed here (budget).
+
+**Pairs (fitted guide, exact reference with the same current sign):**
+- RA-s0, RA-s1, RA-adam: the three k = 1 re-anchored ViT tables vs the exact target la_P + d_1, sign s_1.
+- S2-G2: stage-2 seed 0, G_2 = la_P + h_1 vs la_P + d_1, sign s_1.
+- S2-G3: G_3 = G_2 + h_2 vs G_2 + d_2, sign s_2.
+
+**Next sign step from each amplitude (both rules):**
+- (C) clipped-Lanczos sign: s' = s sgn(1 + alpha (E_L - E)), alpha energy-optimal for the clipped state (as stage 2);
+- (K) global Krylov step: the same form, with alpha chosen to minimise <H>(a, s') at FIXED amplitude.
+
+**Metric.**
+- Gain = E_FN[la_ref, s] - E_FN[la_ref, s'], i.e. the fixed-node energy with the reference amplitude as the common
+  guide.
+- Computed for s' from the fitted amplitude (Gain_f) and from the reference amplitude (Gain_r).
+- Also reported: E_FN[la_f, s'_f] (the guide's own amplitude), E_FN[la_ref, s] and E_FN[la_f, s].
+
+**Iteration (rule C, pairs RA-s1 and S2-G3, as the time cap allows).** Steps 2-3 use the exact FN amplitude of
+each chain's own sign between steps (a <- phi_FN[a, s']), then the next sign step.
+- This isolates how a first-step sign difference propagates.
+
+**Pass** ("rare-region amplitude errors are irrelevant to the FN-reported sign channel"): Gain_f >= 0.8 Gain_r at
+every step, for both rules and all pairs. Otherwise report by how much and where.
+
+Two jobs (RA pairs; stage-2 pairs), each capped at 28 min of work after setup, items in this priority order:
+1. rule C, step 1;
+2. rule K, step 1;
+3. the iteration.
+Also tabulated without computation: <H> and E_FN side by side for all stage-2 (both seeds) and re-anchor guides.

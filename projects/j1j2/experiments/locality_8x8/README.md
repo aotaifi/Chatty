@@ -45,3 +45,24 @@ Code `s8_pairint.py` (CPU, numpy). Budget: CPU only, < 0.2 h on the `small` part
   - exact for b' within rho of b, additive beyond, for rho = 0, 1, 2, 3, 4, 5;
   - reported as rms over (x, valid b), unweighted and edge-weighted (J_b/2) a(x^b)/a(x), in units of the sample sd
     of E_L(x).
+
+## Locality vs J2 (pre-registered 2026-10-13, PI request; before any run; code `ed_pairint.py`; CPU <= 1 h)
+**Question.** Is the large double-swap interaction I(b, b') a property of the near-critical point J2 = 0.5? Does
+locality return away from it?
+- A new 6x6 sector Hamiltonian at another J2 would need a CSR rebuild, so this uses a smaller cluster with full
+  exact diagonalisation: the 4x6 torus (24 sites, Sz = 0, 2.7e6 states, scipy eigsh), at J2 = 0, 0.3, 0.4, 0.5,
+  0.6.
+- For each ground state: 2000 samples of |psi0|^2, all valid site-disjoint bond pairs, rms I and sign
+  non-additivity by bond distance (up to the cluster maximum of about 3).
+- Calibration: 4x6 at J2 = 0.5 against the 6x6 exact numbers at equal distance.
+- Expectation written down now: at J2 = 0 the Marshall sign makes the sign exactly additive (non-additivity 0).
+  Amplitude interactions may still be sizeable (long-range Neel order).
+
+**Readings (pre-registered):**
+- **"Locality returns at J2 <= J2*":** for all J2 <= J2*, rms I at distance >= 2.8 is <= 0.10 and sign
+  non-additivity <= 0.3%. Same bar X as at 8x8.
+- **"Locality is J2-dependent, but not to the bar":** the J2 = 0 values at distance >= 2 are >= 3x below the
+  J2 = 0.5 values, without reaching 0.10.
+- **"Not J2-driven":** within a factor 1.5 at every J2.
+- Caveat stated in advance: on 4x6 a distance of ~3 is half the cluster, so this compares J2 at equal distance; it
+  is not an asymptotic decay measurement.

@@ -648,3 +648,19 @@ For the small-net fits, normalisation is now the default in `robust_fit` (D1: 0.
   set. The trust radius is measured on the x samples.
 - The two minSR jobs were cancelled at 6 min; the Adam control (unaffected) continues.
 - Held-out acceptance, pass rule and budget are unchanged.
+
+#### Amendment RA-2 (2026-10-13 11:40, after the three k = 1 jobs, before this diagnostic)
+- **k = 1 result.** Every arm is NEGATIVE:
+  - minSR seed 0: share -0.14; seed 1: -0.12;
+  - Adam: -0.10;
+  - for reference, the new sign with the old amplitude gives <H> 1.347e-4, a share of -0.03.
+- The fits nevertheless halve the held-out edge loss (minSR 0.50-0.52, Adam 0.67). The pointwise error is
+  0.003-0.006 in the bulk decades (a_t^2 >= 1e-8), but 0.09 / 0.21 / 0.39 / 0.64 / 0.91 at 1e-11 ... 1e-15.
+- **The pre-registered fallback is triggered:** both optimisers < 0.30 at k = 1. So the k = 2, 3 jobs stop by the
+  continuation rule.
+- Before the cause is written down (rule 1), `cx_reanchor_diag.py` splices each fitted table with the exact target
+  (and with the start) by probability decade of the target state, and computes exact <H>. No fits; ~0.2 slice-h.
+- Reading:
+  - if "fit in the bulk + exact target in the tail" recovers >= 0.7, the loss sits in the tail decades the ViT
+    cannot follow;
+  - if not, the bulk fit itself is energetically wrong (e.g. the edge errors are correlated in an energy-costly way).

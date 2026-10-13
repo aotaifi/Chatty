@@ -139,3 +139,9 @@ first-pass Lc numbers are superseded.
 grid bin are aggregated (bin value = mean of its members), at the same resolution h as the grid of the other copies'
 sum. Checked before use: M = 2 vs brute force 4e-6 (P48s) and 2.3e-5 (MAR) relative; F4 at M = 4 equal to the
 non-aggregated value to 3e-5. Lc rerun for all six guides with A1 + A2; the checks script is rerun as well.
+
+**F1-A3 (after the Lc h-halving check failed for P48s at M = 2896: 0.466 vs 0.500):** cause found: rounding each
+copy's energy to the grid shifts the mean of the sum coherently by (M-1) x (per-copy rounding shift), which matters
+for spiky single-copy distributions at large M. Fix: the grid of the other copies' sum is offset by the exact
+per-copy shift (K and Lc). P48s at M = 2896 then varies by 0.7% over h, h/2, h/4. K and Lc rerun for all six guides;
+checks rerun.

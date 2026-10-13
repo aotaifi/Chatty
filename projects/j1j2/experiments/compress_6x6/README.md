@@ -493,3 +493,67 @@ Reading:
 - Amendment S2-2 (sign-matched re-base features) is refuted: retention 0.55 at k = 2.
 - Remaining cause: the increments need two-hop information of psi_P, i.e. the guide's own neighbours.
 - At 1 hop the k = 4 guide (2.0e-5) beats psi_P + 1 Lanczos step (2.55e-5). At 2 hops it ties psi_P + 2 Lanczos steps.
+
+## Fold-back diagnostics D1 / D2 (pre-registered 2026-10-13, before any run; code `cx_lightcone.py`)
+**Question.** Why does the residual re-base keep 1.00 / 0.68 / 0.31 / 0.09 at k = 1..4 (stage 2), with a fixed
+absolute error of ~0.013 bond-rms? There are three candidate causes:
+- (I) **information / light cone.** d_k is a sharp function of E_L of G_k. That quantity needs G_k at the neighbours,
+  i.e. the earlier increments h_j at the neighbours, i.e. psi_P's one-hop features at the neighbours (a second hop).
+- (F) **fit floor.** An Adam noise or scale floor of the 37k net, independent of the inputs.
+- (S) **target scale.** The increments shrink, so a fixed absolute error looks like falling retention.
+
+Already on file:
+- At k = 1 the same net, optimiser and steps reached a held-out loss of 1.7e-7 from 8.6e-4 (5000x). There the target
+  is a function of E_L,P, which is an input.
+- At k >= 2 the held-out loss floors at 2e-5 to 3e-5 (ratio 0.35-0.92).
+- This already argues against a generic optimiser floor. D1 tests it directly.
+
+**State.** Seed-0 main arm (run `c3s0_17165794`), iteration k = 3:
+- G_3 = log|psi_P| + h_1 + h_2 (stored params), sign s_3 = s_2.npy;
+- exact clipped-Lanczos target d_3, recomputed exactly as cx_chop3.
+Sanity checks (abort if they fail):
+- <H>(G_3, s_3) = 2.4951e-5 within 1e-9;
+- <H> of the exact target = 1.1876e-5 within 1e-8.
+
+**D1 (fits; re-base of the EXACT d_3 in the metric of the target state; robust_fit, Adam lr 1e-3, same init seed 53
+in all arms, 40k steps unless stated).**
+Arms:
+- R0 = round-4/S2 features (psi_P one hop: log a, log V, log W, asinh E_L,P);
+- RA = R0 + asinh E_L of G_3 itself (the information test);
+- RB = R0 with the target divided by its rms and the output multiplied back (the scale test);
+- RC = R0 with 120k steps (the optimiser test).
+Measured: retention r = (<H>(G_3) - <H>(G_3 + h)) / (<H>(G_3) - <H>(target)); re-base bond-rms error; held-out loss
+final / start.
+Readings:
+- (I) confirmed if RA >= 0.85 and R0, RB, RC <= 0.5.
+- (S) if RB >= 0.7. (F) if RC >= 0.7.
+- If RA < 0.7, the fit is limited even with the information: (I) is not confirmed and the cause is open.
+
+**D2 (exact, no fits).** The light-cone construction.
+- y = x^b is a neighbour of x. psi_P's one-hop features of y need psi_P at x^{b b'}.
+- Level rho: exact psi_P (amplitude and sign) at x^{b b'} if the bond distance d(b, b') <= rho (minimum periodic site
+  distance; 0 = shared site, always exact because the validity changes; b' = b gives x itself).
+- Otherwise use the additive approximation:
+  - la(x^{bb'}) ~ la(x^b) + la(x^{b'}) - la(x);
+  - s(x^{bb'}) ~ s(x^b) s(x^{b'}) s(x).
+  This needs only the first hop.
+- Levels: '0th' (u_3(x^b) := u_3(x), i.e. no neighbour information), 'Fx' (h_j at the spins of x^b but with x's
+  features), rho = 0, 1, sqrt2, 2, and exact (sanity: must reproduce the G_3 table to 1e-5).
+- For each level:
+  - the approximate E_L,3(x) = D0 + sum_b (J_b/2) s_3(x) s_3(x^b) exp(G^_3(x^b) - G_3(x)), with
+    G^_3(x^b) = la_P(x^b) + h_1 + h_2 evaluated on the level's features of x^b;
+  - the induced error of the target, d(E^) - d(E) (offset removed; alpha and E as in d_3);
+  - the weight on which the clipped sign sgn(1 + alpha(E - E)) disagrees.
+- Samples: 2048 x from |psi_target|^2 and 2048 from the fit proposal Q.
+- Cost reported: exact second-hop evaluations per bond, n_rho.
+- Reference: pointwise error of the main-arm re-base h_3 against d_3 on the same samples.
+- D2a: ratio interaction I(b, b') = la(x^{bb'}) + la(x) - la(x^b) - la(x^{b'}) and sign interaction
+  s(x^{bb'}) s(x) s(x^b) s(x^{b'}), by bond distance, on 1024 samples of |psi_P|^2. Also the rms error of the four
+  standardised features of x^b at each level (edge-weighted and unweighted).
+Readings:
+- Information explains the floor quantitatively if the '0th' d-error is >= 0.5 x the main-arm re-base error.
+- **The light-cone re-base is viable at 6x6** if some level with rho <= sqrt2 reduces the d-error to <= 0.25 x the
+  '0th' error AND the flip-disagreement weight to <= 1e-3.
+- If it needs rho = 2 or exact, locality is not demonstrated at 6x6 (6x6 is too small to see a decay beyond d = 2;
+  then 8x8 sampled data decide).
+Budget: D1 ~1.1 slice-h, D2 ~0.4 slice-h (total <= 2 GPU-h).

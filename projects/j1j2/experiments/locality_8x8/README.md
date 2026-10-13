@@ -36,3 +36,12 @@ At 6x6 (FB-1) the exact ground state and psi_P both have rms I = 1.69 / 1.02 / 0
 - Otherwise MARGINAL: a quantitative extrapolation, no verdict.
 
 Code `s8_pairint.py` (CPU, numpy). Budget: CPU only, < 0.2 h on the `small` partition.
+
+## Amendment L-1 (2026-10-13 17:00, after the pair statistics, before this addition; descriptive, no verdict change)
+- **Pair statistics:** NOT LOCAL by the pre-registered rule. At distance >= 3: rms I = 0.25-0.72 and sign
+  non-additivity 0.6-4.8%.
+- **Addition.** The error this causes in the quantity the light cone needs, E_L of psi_P at the neighbour x^b, from
+  the same data:
+  - exact for b' within rho of b, additive beyond, for rho = 0, 1, 2, 3, 4, 5;
+  - reported as rms over (x, valid b), unweighted and edge-weighted (J_b/2) a(x^b)/a(x), in units of the sample sd
+    of E_L(x).

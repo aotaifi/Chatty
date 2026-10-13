@@ -135,3 +135,21 @@ inter RTX 2080 Ti (fp64 1/32 of fp32, comparable to an A40 in fp64) or A40 when 
   chosen now so the moderate guides do not depend on which run ends lower). Selection by EXACT full-projection table
   energy: **B1** = the checkpoint with exact dE/site closest to 5e-4 (relative error ~1e-3); **B2** = closest to
   the ViT start 1.32e-4. Candidates are pre-filtered by the VMC running mean; every evaluated table is reported.
+
+## Amendment 3 (2026-10-13 02:15, after T1 and 3800 steps of T3; before any loop result)
+Status: T1 (PP alone, 3000 steps, 1.62 h RTX 2080 Ti): VMC -0.5036901(61) (simple), -0.5037496(40) (full).
+**Exact table (full projection): dE/site 6.30e-5, w_s 2.4e-5, E_FN 4.77e-5; guide + 1/2/3 Lanczos 1.46e-5 /
+5.9e-6 / 2.6e-6. Table check: exact -0.5037466 vs VMC -0.5037496(40), 0.75 sigma: PASS.**
+T3 (RBM+PP from scratch) plateaued: 250-step means -0.503674 .. -0.503686 from step 500 to 3800 while lr fell from
+0.049 to 0.019 (no drift beyond 1e-5); T2 (staged) at -0.503697 after 750 steps. Target -0.503745 not reached.
+Diagnosis (not yet a failure): the plateau does not move when lr halves, so it is not the lr noise floor; T3 lands
+on the PP-only energy, so the RBM barely contributes. Candidate causes: (i) gradient noise with 2048 samples hides
+the small RBM gradient (|F| ~ 0.05, step norm 0.006); (ii) the small relative SR shift (1e-3) lets noisy
+small-eigenvalue directions take the step budget (mVMC's default stabiliser is 0.02 relative).
+Changes:
+- T3 cancelled at step 3800 (plateau; its GPU is needed). Its checkpoints stay available.
+- **T4:** continuation from T2 step 900 with chains 8192 (4x samples), relative shift 0.02, lr 0.03 -> 0.005,
+  1500 steps. T2 continues meanwhile with the old settings as the control (same start, compared at equal steps
+  and at equal wall-clock). If T4 does not move below T2 by > 1e-5, cause (i)/(ii) is refuted and the next
+  candidate is a local minimum of the f-landscape (then: other seeds of the PP stage).
+- Pre-filter of moderate candidates (amendment 2) runs as job rpSel; PP-guide table loop queued (rpLoopPP).

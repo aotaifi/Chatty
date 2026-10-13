@@ -94,7 +94,7 @@ if pl:
     res['lanczos'] = [dict(p=r['p'], dE_site=(r['E'] - E0) / N, var_site=r['var'] / N) for r in rl]
     log('lanczos', res['lanczos']); dump()
     if SPEC.get('fn', True):
-        psi = rl[1]['psi']
+        psi = rl[1]['psi']; del rl, vg                    # free the other Ritz vectors (11 GB cards)
         la1 = jnp.log(jnp.maximum(jnp.abs(psi) / sec.sqrt_n, 1e-300)); s1 = jnp.where(psi >= 0, 1.0, -1.0).astype(jnp.float32)
         _, _, i1 = sec.fn_solve(la1, s1); res['lanczos'][1]['dE_FN_site'] = i1['dE_FN_site']
         log('FN of Lanczos p1', i1['dE_FN_site'])

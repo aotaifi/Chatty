@@ -300,6 +300,8 @@ for k in range(1, SPEC.get('n_loop', 4) + 1):
     else:
         s_new = s                                               # amplitude steps only
     rec['H_kry'] = H_site(la_new, s_new)
+    if SPEC.get('save_signs'):                                  # for w_s afterwards (rbmpp_6x6/rbmpp_ws.py)
+        np.save(os.path.join(OUT, f's_{k}.npy'), np.asarray(s_new, np.int8))
     if SPEC.get('lanczos_eval'):                               # one exact Lanczos step on top of the new guide
         vg = sec.vec(la_new, s_new)
         rls = lanczos_ritz(lambda x: sec.Hm(x), vg, SPEC.get('lanczos_p', 1)); del vg

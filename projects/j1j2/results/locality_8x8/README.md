@@ -85,3 +85,41 @@ Readings, per the pre-registration:
     (J2 = 0 is Marshall-exact, sign-problem-free and solvable by QMC).
   - It is not plausible in the frustrated regime J2 ~ 0.4-0.6, where the method would be needed.
   - The non-locality is a physical property of the frustrated ground state, not a network artefact.
+
+# Locality of the residual relative to a pair-product base (exact 6x6, 2026-10-13)
+Pre-registration: `experiments/locality_8x8/README.md` ("Locality of the RESIDUAL"). Code
+`compress_6x6/cx_pairint.py` (residual guides). Raw file: `cx_pairint_residuals_6x6.json`. GPU 1 min.
+
+## What was run
+- The same 1024 samples of |psi0|^2 for every case.
+- Pair interaction I and sign non-additivity by bond distance for:
+  - log|psi0|;
+  - the residual log|psi0| - log|base| with relative sign s0 s_base, for three bases: PP alone, converged RBM+PP
+    (A), and the symmetrised ViT.
+- All bases are the fully projected exact tables.
+
+## Result
+**One line: NOT LOCAL. The bases remove most of the short-range non-additivity (rms I at distance 1: 1.69 -> 0.47-0.56),
+but the residual keeps a distance-independent part: rms I about 0.5, sign non-additivity 1-3% from distance 1 out to
+3.6. The pre-registered bar (rms <= 0.10, sign <= 0.3% at distance >= 2.8) fails for every base.**
+
+| bond distance | 1 | 1.41 | 2 | 2.24 | 2.83 | 3 | 3.16 | 3.61 |
+|---|---|---|---|---|---|---|---|---|
+| log|psi0|: rms I / sign % | 1.69 / 19 | 1.29 / 13 | 1.02 / 9.8 | 0.94 / 8.5 | 0.80 / 6.3 | 0.61 / 2.6 | 0.42 / 1.6 | 0.72 / 5.4 |
+| residual to PP | 0.54 / 3.0 | 0.58 / 3.4 | 0.51 / 2.6 | 0.56 / 3.2 | **0.55 / 3.1** | **0.29 / 0.9** | **0.30 / 1.0** | **0.49 / 2.6** |
+| residual to RBM+PP (A) | 0.47 / 2.4 | 0.52 / 2.8 | 0.45 / 2.2 | 0.52 / 2.7 | **0.51 / 2.7** | **0.26 / 0.7** | **0.28 / 0.8** | **0.46 / 2.1** |
+| residual to ViT | 0.56 / 3.4 | 0.63 / 4.5 | 0.55 / 3.3 | 0.62 / 4.4 | **0.63 / 4.5** | **0.31 / 1.0** | **0.34 / 1.1** | **0.59 / 3.7** |
+
+- Mean |I| of the residuals is 0.05-0.25, so the rms is driven by a heavy tail.
+- The residual's non-additivity does not decay with distance. A large I occurs whenever one of x^b, x^{b'}, x^{bb'}
+  lands where the base is wrong (near its nodes, or where its sign differs from psi0), wherever b and b' are.
+
+**Design consequence (as asked).**
+- If the residual had been local, the architecture would have been: a PP base (exact, cheap multi-swap ratios via
+  fast Pfaffian/determinant updates, no network hops) plus a local correction network, folded back through a
+  light cone of fixed radius.
+- With this result that architecture does not work as it stands. The correction relative to the best available
+  bases (PP 6.3e-5, RBM+PP 4.7e-5, ViT 1.3e-4) is as non-local as psi0 itself at distance >= 2.8.
+- Only the short-range part is removed (3x at distance 1).
+- What would be needed: a base whose errors are themselves local. These residual errors are concentrated near
+  the base's nodes, i.e. the same rare-configuration / sign problem as before.

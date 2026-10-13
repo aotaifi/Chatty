@@ -483,3 +483,9 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
 - A light-cone loop could be viable in the weakly frustrated Neel regime (J2 <~ 0.3). That regime is of limited
   interest (weak sign problem), but it is a clean scientific statement: the fold-back locality tracks the
   frustration.
+- **Residual relative to a pair-product base (exact 6x6).**
+  - PP, RBM+PP and the ViT remove the short-range non-additivity (rms I at distance 1: 1.69 -> 0.47-0.56).
+  - But the residual log(psi0 / base) keeps a distance-independent part (rms about 0.5, sign non-additivity 1-3%
+    out to distance 3.6). NOT LOCAL.
+  - So "PP base + local correction via a light cone" is not viable as it stands. The residual errors sit near the
+    base's nodes, at any distance.

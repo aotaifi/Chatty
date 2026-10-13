@@ -10,9 +10,17 @@ OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_o
 F = os.path.join(OUT, 'cx_pairint.json'); T00 = time.time()
 lab = Lab(); sec = lab.sec
 z = np.load(TABLE); amp = np.asarray(z['amp'], np.float64); del z
-G = {'psi0': (jnp.log(jnp.maximum(jnp.abs(jnp.asarray(amp)), 1e-300)), jnp.where(jnp.asarray(amp) >= 0, 1.0, -1.0)),
-     'psiP': (lab.lP0, lab.sP0)}
+la0 = jnp.log(jnp.maximum(jnp.abs(jnp.asarray(amp)), 1e-300)); s0 = jnp.where(jnp.asarray(amp) >= 0, 1.0, -1.0)
+G = {'psi0': (la0, s0), 'psiP': (lab.lP0, lab.sP0)}
 del amp
+# residual guides (amendment: locality of the correction relative to a base): name -> (la, s, sampling la)
+SAMPLE_LA = {}
+for nm, path in SPEC.get('residuals', {}).items():
+    if path == 'psiP':
+        lb, sb = lab.lP0, lab.sP0
+    else:
+        z = np.load(path); lb = jnp.asarray(z['lP'], jnp.float64); sb = jnp.asarray(z['sP'].astype(np.float32)); del z
+    G[nm] = (la0 - lb, s0 * sb); SAMPLE_LA[nm] = la0
 sec.offload()
 canon_j = jax.jit(SS.canon)
 BIn = np.asarray(SS.BI).astype(int); BJn = np.asarray(SS.BJ).astype(int)
@@ -38,7 +46,8 @@ res = dict(spec=SPEC, guides={})
 n = SPEC.get('n', 1024); CH = 64
 for gname in SPEC.get('guides', ['psi0', 'psiP']):
     la, s = G[gname]
-    p = np.array(sec.n * jnp.exp(2 * (la - jnp.max(la))), np.float64); p = p / p.sum()
+    las = SAMPLE_LA.get(gname, la)                               # residuals are sampled from |psi0|^2
+    p = np.array(sec.n * jnp.exp(2 * (las - jnp.max(las))), np.float64); p = p / p.sum()
     idx = np.random.default_rng(11).choice(sec.D, size=n, p=p)
     acc = {k_: np.zeros(7) for k_ in dkeys}
     for c0 in range(0, n, CH):

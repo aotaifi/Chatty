@@ -66,3 +66,21 @@ locality return away from it?
 - **"Not J2-driven":** within a factor 1.5 at every J2.
 - Caveat stated in advance: on 4x6 a distance of ~3 is half the cluster, so this compares J2 at equal distance; it
   is not an asymptotic decay measurement.
+
+## Locality of the RESIDUAL relative to a pair-product base (pre-registered 2026-10-13, lead idea; before any run)
+**Hypothesis.** The fold-back needs additivity of the CORRECTION relative to the base, not of psi itself. If a PP
+(RVB-like) base carries the non-local amplitude and sign structure, then log(psi0 / psi_PP) and the relative sign
+s0 s_PP may be local.
+
+**Test** (exact 6x6 tables, `compress_6x6/cx_pairint.py` extended to residual guides). Pair interaction I(b, b') and
+sign non-additivity vs bond distance on 1024 samples of |psi0|^2 (the measure of the target) for:
+- (i) log|psi0| (reference);
+- (ii) log|psi0| - log|psi_PP| with sign s0 s_PP, for PP alone (rbmpp_6x6 `sym_tables_PP.npz`) and for converged
+  RBM+PP A (`sym_tables_A.npz`);
+- (iii) log|psi0| - log|psi_P| with sign s0 s_P (the ViT, for contrast).
+
+**Bar (as before):** the residual is LOCAL if rms I <= 0.10 and sign non-additivity <= 0.3% at every distance >= 2.8.
+
+**Caveat stated now.** The tables are fully projected (space group x spin flip). The projected PP is a sum over 576
+images, each with cheap determinant/Pfaffian updates. A projected PP hop therefore costs up to 576 fast updates,
+still cheap compared with a ViT evaluation.

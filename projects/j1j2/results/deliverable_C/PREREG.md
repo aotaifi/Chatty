@@ -99,3 +99,20 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
 | E3 pilot P2-0 | 3 |
 | E4 10x10 reproduction (only after download approval) | 3 |
 | reserve (reruns, slice contention) | 9.5 |
+
+## Amendment 1 (2026-10-13, after the first V1 gate run, before any 8x8 FN-DMC run)
+- First V1 run (4096 populations, window [0.8, 2.4]): DMC - exact E_FN = +2.1(0.4)e-4 (G1) and +3.8(0.5)e-4 (G2) per site,
+  FAIL by the letter. Cause found before any change of code: the toy guides are far from the ground state
+  (E_T - E_FN = 0.029 / 0.072 per site at beta = 0), so the mixed estimator still relaxes inside the window. The exact
+  continuous-time transient (e^{-beta H_FN} from the psi_T^2 start, `dc_fn_gate4x4.py`) averaged over [0.8, 2.4] is
+  +1.24e-4 / +3.16e-4, the same size as the measured offsets. The gate was mis-specified, not (yet) the code.
+- New V1 (replaces the old one): DMC to beta = 8; (a) window [4, 8] must agree with the exact transient-corrected value
+  (E_FN plus <= 1e-5 of residual transient) within 3 SE, SE <= 2e-5 per site (1e-5 at 4x4 would need ~6e4 populations;
+  4x4 per-population sd is 2.5e-3, 10x the 8x8 expectation); (b) window [0.8, 2.4] must agree with the exact transient
+  average within 3 SE + 15% of the transient (time-step propagator vs e^{-beta H}). Both guides must pass.
+- Consequence for 8x8 (E2): the same transient can bias the [0.8, 2.4] window if psi_P's excess over E_FN does not
+  decay by beta = 0.8. The 6x6 calibration saw a plateau from beta ~ 0.4 for ViT-quality guides, but the 8x8 gap is
+  smaller. Therefore the 8x8 run goes to beta = 3.2 and stores every step. Primary value: window [0.8, 2.4]
+  (calibrated protocol). Transient check: late window [2.4, 3.2] minus [0.8, 2.4], paired per population. If it is
+  below -2 SE, the late window [1.6, 3.2] becomes the quoted value (with its SE) and the protocol value is reported as
+  biased.

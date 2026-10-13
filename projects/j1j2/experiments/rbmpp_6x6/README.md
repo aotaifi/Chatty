@@ -166,3 +166,14 @@ Changes:
 - PP-guide table loop (rpLoopPP, A40 24 GB slice; the RTX 2080 Ti ran out of memory in the write-back fit): running.
   Iteration 4 hit the known dead-fit failure of the unchanged wt_loop (frac 0, own loss frozen; round 4 fixed this
   only in cx_lib.robust_fit).
+
+## Amendment 5 (2026-10-13 08:30, coordinator, before any loop run on the RBM+PP guides)
+The loop target changed after this pre-registration: the step-size stage 1 (compress_6x6 README "Step size") showed
+that the clipped-Lanczos target Lc_0.3 gives about one Lanczos step per iteration, the old SI target 4-10x less.
+Primary measurement for every guide: the exact-table version of the iteration, `cx_step.py` with ST6_SYM = the guide
+table, CX_VARIANTS = Lc_0.3,SI_1, CX_K = 16. `cx_step.py` gained (backward compatible) CX_EXTRAS = 1 (per iteration
+E_FN, w_s, + 1 and + 2 exact Lanczos steps) and, for a non-ViT guide, exact guide + 1..4 Lanczos references (the ViT
+constants stay for the ViT). The network loop (`cx_chop2.py`, old SI target) was not run on the RBM+PP guides.
+
+# Results (2026-10-13). Numbers: results/rbmpp_6x6/ (README.md, runs/*.json, fig_rbmpp_loop_6x6.png)
+See results/rbmpp_6x6/README.md.

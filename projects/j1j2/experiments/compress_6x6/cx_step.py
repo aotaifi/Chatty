@@ -9,7 +9,8 @@ Variants of one iteration (new log-amplitude la + d, new sign s'):
 Each variant is iterated k = 1..4 times on its own tables (step parameter re-optimised every iteration).
 Recorded per iteration: <H> - E0 per site, chosen parameter, bond-rms roughness of d (how hard d is to learn; the
 SI_1 value is the current loop's), fraction of sign flips.  Reference: psi_P + p Lanczos steps (cx_lanczos_ref).
-  python cx_step.py OUT          (env CX_K = iterations, CX_VARIANTS = comma list, e.g. L,Lc_0.3,SI_1)
+  python cx_step.py OUT          (env CX_K = iterations, CX_VARIANTS = comma list, e.g. L,Lc_0.3,SI_1;
+                                 CX_EXTRAS=1 adds E_FN, w_s, +1/+2 Lanczos per iteration; ST6_SYM = other guide)
 """
 import os, sys
 import numpy as np
@@ -52,7 +53,31 @@ def si_state(la, s, V, W, E, lam):
     return la2, s2, lam * T
 
 
-res = dict(start=err(lab.lP0, lab.sP0), lanczos_ref=[2.55e-5, 8.59e-6, 3.82e-6, 1.95e-6], runs={})
+from lanczos_lib import lanczos_ritz
+EXTRAS = os.environ.get('CX_EXTRAS', '0') == '1'      # per iteration: E_FN, w_s, + 1 / + 2 exact Lanczos steps
+
+
+def lanczos_errs(la, s, p):
+    rl = lanczos_ritz(lambda x: sec.Hm(x), sec.vec(la, s), p)
+    return [(r['E'] - sec.E0) / N for r in rl]
+
+
+if SYM_DEFAULT:                                        # ViT guide psi_P: published constants (unchanged)
+    res = dict(start=err(lab.lP0, lab.sP0), lanczos_ref=[2.55e-5, 8.59e-6, 3.82e-6, 1.95e-6], runs={})
+else:                                                  # other guide (ST6_SYM): exact guide + p Lanczos, p = 1..4
+    res = dict(start=err(lab.lP0, lab.sP0), lanczos_ref=lanczos_errs(lab.lP0, lab.sP0, 4)[1:], runs={}, guide=SYM)
+    log('guide', res['start'], 'guide + p Lanczos', res['lanczos_ref'])
+if EXTRAS:
+    _z = np.load(TABLE)
+    _v0 = _z['amp'] * np.sqrt(_z['orbit'].astype(np.float64)); _v0 /= np.linalg.norm(_v0); del _z
+    P0 = jnp.asarray(_v0 ** 2); S0 = jnp.asarray(np.where(_v0 >= 0, 1.0, -1.0)); del _v0
+
+    def extras(la, s):
+        ov = float(jnp.sum(P0 * s * S0))
+        _, _, info = sec.fn_solve(la, s)
+        l = lanczos_errs(la, s, 2)
+        return dict(E_FN=info['dE_FN_site'], w_s=max(0.0, (1 - abs(ov)) / 2), L1=l[1], L2=l[2])
+    res['guide_extras'] = extras(lab.lP0, lab.sP0); log('guide extras', res['guide_extras'])
 variants = os.environ['CX_VARIANTS'].split(',') if os.environ.get('CX_VARIANTS') else ['L'] + [f'Lc_{e}' for e in EPS] + ['SI_1', 'SI_opt']
 for name in variants:
     la, s = lab.lP0, lab.sP0; rows = []
@@ -74,6 +99,7 @@ for name in variants:
         row = dict(k=k, err=err(la2, s2), param=p, rough=bond_rms(lab, la, dfin),
                    flips=float(jnp.sum(sec.n * (s2 != s)) / jnp.sum(sec.n)),
                    flip_weight=float(jnp.sum(sec.vec(la, s) ** 2 * (s2 != s))))
+        if EXTRAS: row.update(extras(la2, s2))
         rows.append(row); log(name, row)
         la, s = la2 - jnp.max(la2), s2
         res['runs'][name] = rows; dump(F, res)

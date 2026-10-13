@@ -145,6 +145,15 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Lanczos-polish bump after loop iteration 1 (cx_l1bump, exact, table-loop it 1): the hard Krylov sign flip (18% of orbit reps flipped) raises the energy variance and makes the 1-step polish WORSE (ViT amp + Krylov sign: <H> 1.27e-4, +L1 3.6e-5 vs ViT+L1 2.55e-5), while the written-back amplitude alone helps (new amp + old sign: +L1 2.22e-5). Combined (it 1): +L1 3.03e-5. Later write-backs shrink amplitudes near the new nodes and recover. Idea to test: damped flip (scale down the amplitude of flipped configurations).
 - Next: (a) raise re-base retention (the bottleneck), tighten acceptance to a fraction of the ideal step; (b) 8x8 with the loop + Lanczos at equal hops, where the hop count, not k, sets the cost.
 
+## 3q. RBM+PP as the guide (results/rbmpp_6x6/, 2026-10-13)
+- Own JAX RBM+PP (published ansatz, SR). Exact tables (full projection): converged RBM+PP dE 4.74e-5 (= published
+  level; with the published simple projection only -0.503727 VMC, target -0.503745 missed by 1.8e-5, optimiser-limited);
+  PP alone 6.3e-5 (2x better than our ViT, ~0.2-1.3 GPU-h on a 2080 Ti); early checkpoints B2 1.54e-4, B1 3.87e-4.
+- Lc_0.3 table loop (cx_step, 16 it): one iteration = one Lanczos step from every guide. From RBM+PP: 4.74e-5 ->
+  2.98e-7 (rel 5.9e-7) after 16; ViT 6.1e-7; PP 8.7e-7; B2 2.9e-6 (same start as the ViT, 5x slower: guide-dependent
+  rate, cause open). Equal hops: joint Lanczos still 3-5x better at 4 hops. Network loop on these guides not run.
+- Cost 25.4 GPU-h (brief 15): 6.5 h on two plateaued RBM+PP runs that located the optimiser cause.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

@@ -84,3 +84,45 @@ with the reason. Code: `projects/j1j2/experiments/local_krylov/`. Results: this 
 
 ## Budget
 CPU only (Mac + ws1 file transfer), about one day of work.
+
+## Follow-up F1 (lead request 2026-10-13, after the a0/a8 report): when does dilution set in for the amplitude engine and for good guides?
+Written BEFORE any of the gains below was computed. Same decoupled-4x4-copies machinery (exact per-copy structure).
+
+**Steps (one step from the guide psi = s a on M copies, E = <H>, f(X) = 1 + alpha (E_L(X) - E)):**
+- K: global Krylov sign step (as in (a0)), best T.
+- L: one global Lanczos step psi' = psi f, energy-optimal alpha. Exact closed form from the per-copy moments
+  c2 = <(H-e)^2>, c3 = <(H-e)^3> (additive over copies): Delta E = (2 alpha m2 + alpha^2 m3)/(1 + alpha^2 m2),
+  m_k = M c_k.
+- Lc: clipped Lanczos psi' = psi sgn(f) max(|f|, 0.3) (repo definition, compress_6x6), energy-optimal alpha. Computed
+  with the per-copy structure: f-f terms in closed form, the clipped remainder (non-zero only where |f| < 0.3) as sums
+  over the distribution of the other copies' energy sum (grid).
+- Gain ratio = gain per site at M / gain per site at M = 1, for the same guide and step.
+
+**Guides per copy (amplitude |psi0| of J2 = 0.5 unless stated):**
+- MAR: Marshall sign (w_s = 1.3e-2, energy error 1.16e-2 per site), as in (a0).
+- P45s / P48s: sign of the exact ground state at J2' = 0.45 / 0.48 (natural defects; w_s 9.1e-4 / 2.3e-4; error
+  1.23e-3 / 3.9e-4 per site). P48s is at the 8x8 ViT's energy-error level (~4e-4 per site).
+- P48f: the full exact state at J2' = 0.48 (amplitude and sign errors; error 3.3e-4 per site), the closest analogue of
+  a converged NQS.
+- F3 / F4: exact sign s0 with random configurations flipped (uniform random order, kept while the flipped a^2 weight
+  stays <= target) to w_s = 1e-3 / 1e-4 (isolated defects; seed 0).
+(These per-guide setup numbers were computed before this section; no gain was.)
+
+**Grid:** M = round(2^(k/2)), k = 0..24 (N up to 65536). N_1/2 = 16 M at the first ratio <= 1/2, log-linear
+interpolation between grid points; "> 65536" if never reached. Also reported: ratio at N = 64 (8x8) and N = 192
+(about 14x14).
+
+**Pre-registered readings (for the 8x8-14x14 decision):**
+- Amplitude engine: if for P48s and P48f the global Lanczos ratio (L and Lc) at N = 192 is < 0.5, the global engine is
+  already diluted by 14x14, so the size-consistent engine is needed in 8x8-14x14. If >= 0.8, global Lanczos is adequate
+  through 14x14. In between, "partially diluted" (report the numbers).
+- Sign step: the same bars for K on the low-defect guides (P45s, P48s, F3, F4).
+- Rule of thumb: per step type, fit log N_1/2 = log C - p log x over the guides with x = energy error per site, and
+  separately with x = w_s per site (w_s/16). Report the fit with the smaller max deviation as one line, with that
+  deviation.
+
+**Checks (must hold before use):**
+- L closed form vs brute force on the explicit M = 1 and M = 2 states: <= 1e-10 per site.
+- Lc machinery with the clip set to 1e-12 equals the L closed form to 1e-6 relative (M = 1, 16).
+- Lc vs brute force: M = 1 exact (<= 1e-10), M = 2 explicit state (<= 1e-3 relative in the gain; grid).
+- Grid h halved at the M grid point nearest N_1/2: ratio changes by < 0.01 (K and Lc).

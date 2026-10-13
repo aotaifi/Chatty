@@ -833,3 +833,33 @@ against E^_L.
   re-anchor + new tail net), pass >= 0.70, within the budget.
 - Otherwise: "inconclusive (cause: rare-configuration precision of spin-only inputs)", or a concrete cause if the
   diagnostics locate one.
+
+## Adaptive-depth guide (pre-registered 2026-10-13, lead idea; before any run; code `cx_adaptive.py`; <= 1 slice-h)
+**Idea.** The hard structure is localised in CONFIGURATION space (near the base's nodes), not in real space.
+- Evaluate with one hop by default. Descend one more hop only for configurations flagged as near-node by a cheap
+  one-hop criterion.
+- Over iterations this is a branching process. The cost stays bounded iff the branching ratio r (mean number of
+  flagged neighbours of a flagged configuration) is < 1.
+
+**Test** (hybrid iteration 2, exact tables; reuses HY-1). The correction c_2 (one hop of ViT_2) gets one extra input:
+- E_mix(x) = exact E_L of the guide G_2 (two hops) if x is flagged;
+- otherwise the zeroth-order one-hop value E_L^0 = E_L of (ViT_1, s_2), i.e. the earlier correction's differences
+  at the neighbours dropped.
+- References: HY-1 with the exact E_L everywhere (p = 1): share 0.925; no extra column: 0.230.
+
+**Flag criteria** (all one-hop or zero-hop, thresholds set as quantiles of |psi(G_2)|^2):
+- F1: |asinh((E_L^0 - E)/sd)| (large local energy);
+- F2: V^0/(1 + W^0) (wall-to-kept ratio of ViT_1 with sign s_2);
+- F3: |c_1(x) - mean| (the size of the earlier correction at x; zero hop).
+
+**Measured for each criterion at p_flag = 1%, 2%, 5%:**
+- (a) p_flag under |psi(G_2)|^2 and under the tail measure Q;
+- (b) branching ratio r: mean number of flagged neighbours of flagged configurations, from 2000 flagged samples;
+- the rms error of the asinh-standardised E_mix against the exact column;
+- (d) cost per guide value in hop units: 1 + p_flag n_nb / (1 - r), with n_nb the mean number of valid bonds (about
+  72 at 6x6, 145 at 8x8). Extrapolated to 8x8 with the same p_flag.
+- (c) **fits:** c_2 refit (robust_fit, 30k Adam, seed as HY-1) for p = 0 (E_L^0 everywhere) and for F1, F2, F3 at
+  p_flag = 2%. Share of the iteration-2 step, own E_FN.
+
+**Pass:** some criterion reaches share >= 0.70 with cost <= 3 hops at 6x6 AND r < 0.5.
+- Also reported: whether the same p_flag keeps the cost <= 3 hops at 8x8. That needs p_flag <~ 1.4% (1 - r).

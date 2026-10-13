@@ -433,3 +433,20 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
 - Spin-only re-anchoring is tail-limited (share -0.10 to -0.14; 0.91 recoverable with the tail exact).
 - A guide's own lattice E_FN is amplitude-dominated at the nodes (sign-channel check).
 - The approved next test is the hybrid: re-anchored ViT plus one non-stacked one-hop correction net.
+
+**5.6 Hybrid test result (2026-10-13; results/compress_6x6 "Hybrid re-anchor test"; 1.0 slice-h).**
+- k = 1 passes (share 0.96; own E_FN 2.17e-5 vs stage-2 2.94e-5). k = 2 fails (0.23). Pre-registered verdict: FAIL.
+- The cause is pinned (HY-1): with the guide's own local energy as one extra input (a second hop), the same
+  correction reaches 0.92 at k = 2.
+- So every constant-hop variant tested at 6x6 meets the same one-shell gap from iteration 2 on:
+  - psi_P one-hop re-base (D1: 0.02 -> 0.99 with the information);
+  - spin-only ViT (RA: tail-limited);
+  - ViT + one-hop correction (HY-1: 0.23 -> 0.92).
+- The k-th update needs E_L of the k-th guide, which needs one more hop than the guide uses. At 6x6 that outer shell
+  is neither local (D2) nor predictable from the inner ones.
+- **Consequence.** A loop iteration costs one extra hop, as a Lanczos step does. The constant-hop claim does not
+  hold at 6x6.
+- **What survives.** At equal hops the hybrid k = 1 guide is the best one-hop guide we have:
+  - <H> 3.01e-5 and E_FN 2.17e-5, against psi_P + 1 Lanczos at 2.55e-5 (<H>) and 1.89e-5 (E_FN);
+  - at two hops it gives 1.40e-5 vs psi_P + 2 Lanczos 8.6e-6.
+- So the fallback (cap the depth, Lanczos polish) remains in force.

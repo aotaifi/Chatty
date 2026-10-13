@@ -768,3 +768,54 @@ start:
   from an amplitude that is itself the FN solution (self-consistent FN).
 - With exact FN amplitudes the sign chain reaches 7.45e-6 after three steps from the k = 2 state. That is a table
   result (it needs phi_FN as the next guide).
+
+# Hybrid re-anchor test (2026-10-13)
+Pre-registration and amendment HY-1: `experiments/compress_6x6/README.md`. Code: `cx_hybrid.py`, `cx_reanchor.py`
+(state / fit_only), `cx_hybrid_diag.py`. Raw files: `runs/cx_hybrid_k1.json`, `runs/cx_hybrid_k2.json`,
+`runs/cx_hybrid_diag.json`. Compute: about 1.0 slice-h (budget 3).
+
+## What was run, step by step
+1. **The guide.** It is the re-anchored ViT plus one correction net (37k parameters). The net reads one hop of the
+   current ViT (log A, log V, log W, asinh E_L), is fit to the whole residual between the exact target and the ViT,
+   and is refit each iteration, not stacked.
+2. **k = 1.** I reused the re-anchored ViT of the earlier test (same target), then fit the correction.
+3. **k = 2.** The ViT was fine-tuned again to the new exact target (warm, minSR, 12 min), tabulated, and a new
+   correction fit. Everything was evaluated exactly: <H> and the guide's own E_FN.
+4. **k = 3.** Not run: the continuation rule needs share >= 0.3 at k = 2.
+5. **Diagnostic (HY-1).**
+   - Decade splices of the k = 2 guide with the exact target.
+   - The same correction refit with ONE extra input, asinh E_L of the current guide G_2. That input costs a second
+     hop.
+
+## Result
+**One line: k = 1 PASSES (share 0.96), k = 2 FAILS (0.23). The k = 2 shortfall is the one-shell information gap:
+with the guide's own local energy as one extra input the same net reaches 0.92.**
+
+| | share | <H> | own E_FN | ViT alone <H> / E_FN | + 1 Lanczos |
+|---|---|---|---|---|---|
+| hybrid k = 1 | **0.963** | 3.01e-5 | 2.17e-5 | 1.45e-4 / 9.24e-5 | 1.40e-5 |
+| stage-2 k = 1 (same hop cost) | 0.84 | 4.34e-5 | 2.94e-5 | | |
+| exact target k = 1 | 1 | 2.62e-5 | 1.95e-5 | | |
+| hybrid k = 2 | **0.230** | 2.64e-5 | 1.71e-5 | 1.30e-4 / 8.17e-5 | 1.42e-5 |
+| stage-2 k = 2 (same hop cost) | 0.66 | 2.50e-5 | 1.89e-5 | | |
+| exact target k = 2 (from hybrid G_2) | 1 | 1.40e-5 | 1.08e-5 | | |
+| HY-1 upper bound k = 2 (+ E_L of G_2, 2 hops) | **0.925** | 1.52e-5 | 1.11e-5 | | |
+
+HY-1 splices at k = 2 (share), cut by decade of the target state:
+
+| cut | 1e-8 | 1e-9 | 1e-10 | 1e-11 | 1e-12 |
+|---|---|---|---|---|---|
+| tail weight | 24% | 7.7% | 1.9% | 0.37% | 0.06% |
+| fit in the bulk + target in the tail | 0.98 | 0.78 | 0.71 | 0.60 | 0.45 |
+
+**Readings.**
+- **The hybrid fixes iteration 1.** The ViT carries the bulk and the one-hop correction the tail: 0.96, against 0.84
+  for stage 2 and -0.12 for the ViT alone.
+- **From k = 2 on, the same one-shell gap as D1 returns, now in the tail.**
+  - The k-th increment is a function of E_L of the full guide (ViT + correction).
+  - That needs the correction at the neighbours, i.e. one hop of the ViT at the neighbours: two hops.
+  - With it the fit reaches 0.92; without it, 0.23.
+- **The ViT absorbs the bulk but not the previous correction's tail.** On its own, the ViT is far off at k = 2
+  (1.30e-4).
+- **On E_FN the hybrid beats stage 2 at the same hop cost** (2.17e-5 vs 2.94e-5 at k = 1; 1.71e-5 vs 1.89e-5 at
+  k = 2). It still misses the exact targets (1.95e-5, 1.08e-5).

@@ -85,5 +85,23 @@ Budget: T2 ~0.1 GPU-h, T5 ~6-7 GPU-h on A40 slices (<= 10 GPU-h total).
   differences must be random in sign and below 1e-6 per site on E_L1 (the quantity that enters the energy).
 - The delayed-acceptance sampler passed its 4x4 check (T1, below) before use.
 
+### Amendment 2 (2026-10-13 02:15, after T5, before T6 was submitted)
+- T5 passes (a), (b), (c) by the letter (pooled direct E1 = -0.4989764(159)), fails (d) (Hill index 1.90) and passes (d').
+- But in all four direct runs the first measurement time is lower than the later ones: run a t0 - mean(t1..t3) =
+  -4.7(5.0)e-5; new runs, sweep 10 - sweep 12: -3.2(7.0)e-5, -6.9(6.1)e-5, -8.3(4.8)e-5. Pooled new-run drift
+  +6.1(3.5)e-5 (1.8 sigma, below the 2-sigma threshold of (c)). Four same-sign results are suggestive of slow upward
+  relaxation of E1, i.e. the estimate could be biased low. The psi_P VMC shows a slow downward drift of its mean over
+  sweeps 20-68 (quarters -0.498821 / -0.498842 / -0.498862 / -0.498864), driven by tail samples (medians flat).
+- T6 (closes this): continue the 2 x 1024 chains of T5 jobs D2 and D3 from their final states (about 35 sweeps after
+  the random start of the referee chains) by 40 sweeps of Metropolis on |psi_P|^2 (|psi_1|^2 differs from it by f^2,
+  f ~ 1; stage-2 acceptance in T5 was 0.988) and 4 sweeps of delayed-acceptance Metropolis on |psi_1|^2, then measure
+  E_L1 on all 2048 chains (about 80 sweeps after the random start). Record the psi_P local energy every 4 sweeps.
+  Criteria:
+  - relaxation present if E1_late - E1(T5, sweep 12, D1-D3 pooled) > +2 sigma. Then the only number to publish is
+    E1_late, and the claim is CONFIRMED only if E1_late + 2 SE < -0.498886.
+  - otherwise no relaxation beyond sweep 12 is resolved; publish the pooled direct estimate (runs a, D1-D3, T6) with
+    the chain-level SE, and also quote the late-time-only estimate (sweep-12 samples + T6).
+- Budget: T6 ~2.4 GPU-h; total review ~9 GPU-h.
+
 ## Results
 (to be filled after the runs)

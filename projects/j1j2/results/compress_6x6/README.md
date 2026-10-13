@@ -556,3 +556,80 @@ Total 4.1 slice-h (budget 8).
 4. **Scaling claim.** At 6x6 a single clipped-Lanczos iteration gives a 1-hop callable guide better than psi_P + 1
    Lanczos. Whether this survives at 8x8 (where the SI target was 3.6x over-damped) is the decisive next test, and
    it needs only k = 1.
+
+# Fold-back diagnostics D1 / D2 (2026-10-13)
+Pre-registration and amendment FB-1: `experiments/compress_6x6/README.md` ("Fold-back diagnostics D1 / D2"). Code:
+`cx_lightcone.py`, `cx_pairint.py`. Raw files: `runs/cx_lightcone_D1.json`, `runs/cx_lightcone_D2.json`,
+`runs/cx_pairint.json`. Compute: 0.80 + 0.41 + 0.01 slice-h.
+
+## What was run, step by step
+1. **Rebuild the stage-2 state at iteration k = 3** (seed 0). The guide is G_3 = log|psi_P| + h_1 + h_2 (stored nets),
+   with sign s_3.
+   - The exact clipped-Lanczos target d_3 was recomputed.
+   - Sanity checks passed: <H> 2.4951e-5 and target 1.1876e-5 reproduce the run to all printed digits.
+2. **D1: four re-base fits of the exact d_3.** Same 37k net, same initialisation, Adam lr 1e-3, held-out acceptance.
+   - R0: psi_P's one-hop features (round 4 / stage 2).
+   - RA: R0 plus G_3's own local energy as an extra input.
+   - RB: R0 with the target scaled to unit size.
+   - RC: R0 with 3x the steps (120k).
+3. **D2: exact light-cone test, no fits.** On 2048 samples of the target state I rebuilt G_3's local energy at x from
+   G_3 at every neighbour x^b.
+   - The neighbours' psi_P features were computed with psi_P at the second-hop configurations x^{bb'}, taken exact
+     only when bond b' lies within distance rho of b. Beyond rho they come from the additive (first-hop-only)
+     approximation.
+   - From each rebuilt local energy, the induced error of the target d_3 was computed.
+4. **D2a / FB-1: pair interaction I(b, b').** This is the departure from additivity, la(x^{bb'}) + la(x) - la(x^b) -
+   la(x^{b'}), together with the analogous sign product, by bond distance.
+   - Measured for psi_P and for the exact ground state psi0, on 1024 samples each.
+
+## Result
+**One line: the fold-back is information-limited; the missing information is the guide's own local energy (two
+hops of psi_P). At 6x6 it is not local: the exact ground state itself has O(1) pair interactions at every distance
+on the lattice, and the light-cone approximation is worse than no neighbour information.**
+
+| D1 arm | retention (exact-target share) | <H> | re-base bond-rms error | held-out loss final / start |
+|---|---|---|---|---|
+| main stage-2 arm (write-back output as target) | 0.33 | 2.06e-5 | 0.0149 | 0.74 |
+| R0: psi_P one hop | 0.018 | 2.47e-5 | 0.0169 | 0.98 |
+| **RA: + G_3's own E_L** | **0.989** | **1.20e-5** | **0.0057** | **0.11** |
+| RB: R0, target scaled to unit rms | 0.331 | 2.06e-5 | 0.0147 | 0.75 |
+| RC: R0, 120k steps | 0.024 | 2.46e-5 | 0.0169 | 0.98 |
+
+Pre-registered readings:
+- **(I) information: CONFIRMED.** RA = 0.99 >= 0.85, while R0, RB and RC are all <= 0.5. With the right input, the
+  same net, optimiser and step count fit the target to a tenth of its held-out loss.
+- **(F) optimiser floor: refuted.** RC: 3x the steps changes nothing (0.024).
+- **(S) target scale: a real but secondary effect.**
+  - The exact target is small (pointwise rms 0.0065). At its raw scale the Adam fit does not move.
+  - Normalising it lifts retention from 0.02 to 0.33, the main-arm value, but not to 0.7.
+  - Normalising targets costs nothing and should be the default in every fit.
+
+| D2 level (target-state samples) | exact psi_P evaluations per bond | error of E_L,3 | induced error of d_3 (rms) |
+|---|---|---|---|
+| no neighbour information (u(x^b) := u(x)) | 0 | 0.16 | 0.017 |
+| h_j at x^b with x's features | 0 | 0.16 | 0.018 |
+| rho = 0 (shared-site pairs exact) | 6.7 | 1.23 | 0.112 |
+| rho = 1 | 25 | 0.41 | 0.039 |
+| rho = sqrt2 | 38 | 0.31 | 0.037 |
+| rho = 2 | 52 | 0.27 | 0.027 |
+| exact (all 80) | 80 | 1e-7 | 1e-8 (sanity) |
+
+- **Light cone at 6x6: NOT viable** (pre-registered: some level with rho <= sqrt2 at <= 0.25 x the no-information
+  error).
+  - Every partial level is worse than using no neighbour information.
+  - Reason: the additive approximation corrupts the asinh E_L feature of x^b by 0.7-1.5 standard deviations even at
+    rho = 2.
+- For scale:
+  - the main re-base's pointwise error is 0.0041 and the target's own rms is 0.0065;
+  - on the fit proposal (tail) samples all levels are far off (d error 0.55-1.1).
+
+| bond distance | 1 | sqrt2 | 2 | sqrt5 | 2.83 | 3 | 3.16 | 3.61 |
+|---|---|---|---|---|---|---|---|---|
+| rms I, psi_P | 1.68 | 1.28 | 1.02 | 0.95 | 0.82 | 0.61 | 0.43 | 0.75 |
+| rms I, exact psi0 | 1.69 | 1.29 | 1.02 | 0.94 | 0.80 | 0.61 | 0.42 | 0.72 |
+| sign non-additivity, psi0 | 19% | 13% | 10% | 9% | 6% | 2.6% | 1.6% | 5.4% |
+
+- **FB-1 reading: the non-additivity belongs to the 6x6 ground state, not to the network.** psi0 and psi_P agree to
+  2%.
+- So no base network can make the light cone local at 6x6. Whether the interactions decay at 8x8 and beyond, at the
+  near-critical J2 = 0.5, is open and needs a sampled 8x8 measurement.

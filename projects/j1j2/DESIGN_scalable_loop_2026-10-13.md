@@ -275,3 +275,82 @@ Re-base:
 - (a0) says at which N the global rule stops working.
 - (a8) says whether the local rule already beats it at 8x8.
 - (a) and (b) on 6x6 follow on ws1 (<= 6 GPU-h). (c) waits for all of them.
+
+## 5. The fold-back (residual re-base) failure: diagnosis and redesign (added 2026-10-13, after D1/D2)
+
+**Terms.**
+- *Re-base*: storing each iteration's increment h_k as a small net whose inputs are psi_P's one-hop scalars, so that
+  the guide costs one hop of psi_P at every k.
+- *Retention*: the share of the iteration's exact gain that survives this step.
+- *Light cone*: the set of configurations whose psi_P values the exact k-th iterate depends on.
+
+**5.1 The lead's reading, and what it misses.** The dependence chain is right:
+- d_k = F(E_L of G_k);
+- E_L of G_k needs G_k at all neighbours x^b, hence h_j(x^b), hence psi_P's one-hop features at x^b, i.e. a second
+  hop.
+
+Two refinements:
+- **A fixed-radius representation never closes.** If the stored guide uses psi_P within R hops, its local energy, and
+  so the next target, needs R + 1. Any fixed-R re-base must predict the outer shell from the inner ones. The light
+  cone can only make that shell cheap if it is predictable (local); it cannot remove it.
+- **The exact light cone is not area-law.** k iterations need psi_P on connected clusters of k swapped bonds, about
+  N_b c^(k-1) configurations, with c ~ 7-15 nearby valid bonds. That is constant in N but exponential in k. It becomes
+  area-like only if multi-bond log-ratios are pair-additive beyond a radius, which D2a tests.
+
+**5.2 Measured (results/compress_6x6, "Fold-back diagnostics"; 1.2 slice-h).**
+- **Information limit confirmed.**
+  - Re-base of the exact k = 3 target on psi_P's one hop: retention 0.02. With 3x the steps: 0.02.
+  - With the target normalised to unit rms: 0.33. This is a real scale effect (Adam does not move on a target of
+    rms 0.0065); normalising should be the default from now on.
+  - Same net plus G_3's own local energy as one extra input: **0.99**.
+- **Light cone not viable at 6x6.**
+  - Every partial light-cone level gives a worse target than ignoring the neighbours: d error 0.027-0.11 against
+    0.017.
+- **The cause is physical, not the network.**
+  - The exact 6x6 ground state has pair interactions rms I = 1.69 / 1.02 / 0.80 at bond distance 1 / 2 / 2.8, with
+    5-19% sign non-additivity.
+  - psi_P agrees to 2%.
+- So at 6x6 the outer shell is neither cheap nor predictable. Whether I(b, b') decays at 8x8+ near J2 = 0.5 is open.
+  Measuring it needs about 0.5 GPU-h of new 8x8 two-hop amplitudes; the stored referee data hold local energies, not
+  x^{bb'} amplitudes.
+
+**5.3 Redesign: rolling re-anchor into the base network.**
+- A network that reads the configuration directly has no hop radius. A fixed-radius increment stack always has the
+  one-shell gap.
+- So the fold-back should end in the base network's weights. Each iteration fine-tunes the base NQS, warm-started,
+  on the normalised increment only:
+  - edge loss in the target metric;
+  - sampling by the increment's Dirichlet weight (the round-3 lesson);
+  - minSR/natural gradient with a trust region, Adam as the control (rule 2);
+  - held-out acceptance and the blow-up guard.
+- The next target is then computed from one hop of the fine-tuned network itself. There is no stack and no
+  recursion.
+- Cost per iteration at 8x8 is constant in k: the guide value costs 0 hops, E_L 1 hop, and an edge-loss training
+  sample 2 hops (as in loop_8x8).
+- **Known risk (P2, 2026-10-09):** re-distilling the whole accumulated correction into the warm ViT failed on
+  precision (<= 10% kept; tolerance 0.003 bond-rms). That attempt used Adam / damped Gauss-Newton on the whole
+  correction, with plain sampling.
+  - What is untested is the increment-only fine-tune with increment-weighted sampling, a normalised target and
+    natural gradient. These are the three fixes that rescued the small-net re-base.
+- **Decisive test, to be pre-registered (6x6 exact tables, symmetrised ViT, k = 1..3, 2 seeds):**
+  - **Pass:** iteration share >= 0.70 at each k (the stage-2 bar). Reference: the stage-2 re-base gives
+    0.84 / 0.66 / 0.31, and the k = 1 target is exact (2.62e-5).
+  - **Fail with a diagnosed cause:** share < 0.3 at k = 1 under both optimisers, after normalisation and increment
+    sampling, means the ViT cannot hold 0.003-precision updates. Then cap the depth (guide <= 2 hops + Lanczos
+    polish; at 6x6 this ties psi_P + 2 Lanczos steps), and test a local base architecture where the 8x8 I(b, b')
+    allows it.
+- Budget: <= 4 slice-h.
+
+**5.4 How this fits sections 1-2.**
+- The FN-walker residual fit (2.1) has the same one-shell gap if it is stored as increments on psi_P features: the FN
+  solution depends on the guide beyond any fixed radius.
+- Re-anchoring removes the gap. The residual is fit directly by fine-tuning the base network (fixed-sign, on walkers
+  and their edges). The F1/F2 feature question (2.3) disappears.
+- The FN-DMC guide becomes the network itself, at 1 hop per walker-step. That also removes risk R1 (170-800 A40-h
+  per iteration for hop-feature guides).
+- The local Krylov sign step is unchanged: a stored sign net + one hop. Its hop is a final-evaluation cost only.
+- **Ordering:**
+  1. re-anchor test (5.3);
+  2. (a0)/(a8) sign checks (CPU), in parallel;
+  3. check (b) with re-anchored amplitudes instead of F1/F2 increments;
+  4. 8x8.

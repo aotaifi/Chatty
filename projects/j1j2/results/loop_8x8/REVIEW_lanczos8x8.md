@@ -103,5 +103,62 @@ Budget: T2 ~0.1 GPU-h, T5 ~6-7 GPU-h on A40 slices (<= 10 GPU-h total).
     the chain-level SE, and also quote the late-time-only estimate (sweep-12 samples + T6).
 - Budget: T6 ~2.4 GPU-h; total review ~9 GPU-h.
 
-## Results
-(to be filled after the runs)
+## Results (2026-10-13; raw summaries in `review/`, scripts in `experiments/loop_8x8/review/`)
+
+### Verdict: CONFIRMED WITH CORRECTED ERROR BAR (one pre-registered criterion, (d), formally failed; see below)
+- **Number to publish: E/N = -0.498969(14)**, direct VMC of psi_1 (fixed alpha = -0.160951, E_ref = -31.92677568):
+  10240 samples, 3584 independent chains, four independent jobs plus a late-time continuation.
+  This is 5.9 sigma below RBM+PP -0.498886(1) and 7.7 sigma below Hu VMC p=2 -0.49886(1).
+- **Conservative value** (only samples taken 12 or more sweeps after the start of the psi_1 chains):
+  -0.498948(23), 2.8 sigma below RBM+PP. The latest samples alone (T6, about 80 sweeps after the random start):
+  -0.498938(22), 2.3 sigma below RBM+PP. Every subset lies below RBM+PP and below Hu p=2.
+- **Corrected combined (moment) estimate:** -0.498953(22), not (16). The jackknife SE of the moment gain (1.25e-5)
+  is too small; the spread of the 5 independent referee batches gives 1.9e-5.
+- The original direct number -0.4989476(231) is consistent with all of this (run a is one of the pooled batches).
+- **Formal status.** Criterion (d) (Hill tail index > 2.5) failed: it is 1.87 on the pooled samples.
+  - By the letter of the pre-registration this makes the verdict NOT CONFIRMED.
+  - I judge (d) mis-specified. The distribution of E_L1 has a narrow core (robust width 2.5e-4 per site) and broad,
+    non-power-law shoulders: the Hill index is 2.3 / 1.9 / 1.4 at the top 1 / 2 / 5 %, so it does not measure an
+    asymptotic tail.
+  - What (d) was meant to protect, the reliability of the SE, is checked directly by (d') and passes:
+    - chi^2 of 56 chain-group means: p = 0.52;
+    - chi^2 of the 4 batch means: p = 0.57;
+    - the between-batch SE (1.0e-5) is below the chain SE (1.6e-5);
+    - removing the 10 or 30 most extreme samples at each end moves E1 by +0.2e-5 and +0.6e-5.
+  - The PI should decide whether to accept (d') in place of (d). If (d) is kept, quote the conservative late-time
+    value.
+
+### Loopholes and how each was closed
+| # | loophole | test | result |
+|---|---|---|---|
+| L2 | wrong E_L, (H^2 psi)/psi, E_L1 formulas, sign convention | T1: 4x4 exact enumeration with the l8_core functions rebuilt at L = 4, formula lines copied verbatim | E0/N(4x4) = -0.528620 (known value); E_L, E_L2 exact to 1e-11; E_L1 and fixed-alpha energy exact to 5e-16 relative; Ritz moments exact to 3e-15. PASS |
+| L2 | bonds, J2 diagonals, PBC, Sz on the real 8x8 lattice | own bond list from coordinates, own diagonal term, applied to the stored referee amplitudes | 256 bonds (128 J1 + 128 J2); E_L recomputed to 4e-14 on all 15360 samples; all configurations have 32 up spins. PASS |
+| L2 | symmetrisation of psi_P, two-hop data | T2: own D4 x flip images from coordinates, unprojected net summed, own H applied twice, 16 samples (8 of them the most extreme E_L), 165002 two-hop states | log a agrees to 1.1e-5 (fp32 rounding); 0 sign mismatches; E_L1 differs by at most 4e-7 per site, random sign (amended tolerance 1e-6). Invariance under random translation x D4 x flip: 1e-5, 0 sign mismatches. PASS |
+| L4 | psi_P not single-valued (batch-dependent sign) | T3: 1783 configurations evaluated twice in different batches; re-evaluation in permuted order | identical log a and sign (difference 0.0). PASS |
+| L1 | non-equilibrated psi_1 chains (started from psi_P samples, 4 sweeps burn-in) | zero-equilibration bound; T5 with 8-10 sweeps burn-in; T6 continuation by 44 sweeps | <E_L1> over psi_P samples (no equilibration at all) differs from the psi_1 value by only 0.7e-5. The first measurement time was lower in all 4 jobs (pooled +4.1(3.1)e-5, 1.3 sigma). T6, late minus sweep 12: +1.8(3.4)e-5, so no relaxation is resolved. The ordering early < mid < late (-0.498989 / -0.498955 / -0.498938) is not significant but is why the conservative value is quoted. |
+| L1 | heavy tails, near-node sampling | T4/T5 tail statistics | E_L of psi_P: robust width 3.7e-4 against sd 3.3e-3; the top 1 % of samples carry 81 % of m2 and 83 % of m3. Direct sampling does visit psi_P-node configurations (factor f down to -17.8, up to 48.7) and E_L1 is regular there. The SE is validated by (d'); the formal (d) failed (see above). |
+| L1 | sampler correctness | delayed-acceptance sampler vs exact |psi_1|^2 and plain Metropolis on 4x4 | TV distance 0.034 vs 0.033 (plain) vs 0.033 (iid reference); E1 within 0.9 sigma of exact. PASS |
+| L3 | alpha chosen on the same samples (optimisation bias) | split-half: alpha from half A, fixed-alpha energy on half B | out-of-sample gain -1.21e-4 vs same-sample Ritz -1.06e-4: no low bias of the Ritz value. The direct VMC uses a fixed alpha, so it is variational regardless. |
+| L3 | the two Ritz estimators differ by 1.6e-5 | moments | They differ only in how <H^2> is estimated: <E_L^2> - h1^2 = 0.04177 vs <(H^2 psi)/psi> - h1^2 = 0.04790 (15 % apart on the same samples, a heavy-tail effect). Both are consistent and neither is unbiased on finite samples. The fixed-alpha direct VMC replaces both. |
+| L3 | SE of the combined estimate | 5 independent referee batches | Ritz gain per batch -1.02 / -0.80 / -0.68 / -1.76 / -1.04 e-4, SE of the mean 1.9e-5 (jackknife said 1.25e-5); bootstrap 1.4e-5. Corrected combined -0.498953(22). |
+| L4 | psi_P energy | plain VMC by quarters; referee batches; T6 traces | -0.4988474(106) overall. The quarters drift down by 4e-5 (tail-driven, medians flat); the second half gives -0.498863(15). Referee batches -0.498843(26). The T6 traces (40 sweeps) show no trend. Consistent with the earlier unprojected ViT -0.498823(35). psi_P is a fixed real function (binarised sign, exact projector sum), so it is a legitimate variational state. |
+| L5 | literature | web search 2022-2026 plus the project survey | No published NQS + Lanczos energy at 8x8. Chen et al. 2022 (arXiv:2206.14307) covers 6x6 and 10x10; Wang, He, Lu 2025 (arXiv:2502.01264) covers L = 4, 6, 10; Chen-Heyl give 8x8 only as zero-variance extrapolations in figures. HQT (arXiv:2607.00398) claims -0.5001 at 8x8, below both extrapolated E0, so it is not credible as a variational number, but a paper must mention it. The method (NQS + Lanczos step) is known; the 8x8 number is new. |
+
+### Direct VMC batches (E/N, chain SE)
+| batch | samples | E1 |
+|---|---|---|
+| run a (FU1c, plain Metropolis, sweeps 5-8) | 2048 | -0.4989476(231) |
+| D1 sweep 10 / 12 | 1024 / 1024 | -0.4989970(376) / -0.4989651(592) |
+| D2 sweep 10 / 12 | 1024 / 1024 | -0.4990309(488) / -0.4989620(373) |
+| D3 sweep 10 / 12 | 1024 / 1024 | -0.4990222(351) / -0.4989389(324) |
+| L2 / L3 (T6, +44 sweeps) | 1024 / 1024 | -0.4989187(324) / -0.4989569(306) |
+| **pooled** | 10240 | **-0.4989687(141)** |
+
+Physics note: the Lanczos gain comes mostly from removing rare high-energy configurations of psi_P (the E_L
+variance drops from 3.3e-3^2 to 1.3e-3^2 per site^2, while the robust width changes only from 3.7e-4 to 2.5e-4).
+So the gain estimate is dominated by rare samples. This is why moment-based estimates have under-stated SEs and why
+direct sampling of psi_1 is the trustworthy referee.
+
+### Cost
+T2 0.03, T5 6.5 (D1 2.33, D2 2.06, D3 2.07), T6 3.7 (L2 2.61 on a contended slice, L3 1.11): **10.2 GPU-h**
+(A40 slices). This is 0.2 GPU-h over the 10 GPU-h budget, because of slice contention.

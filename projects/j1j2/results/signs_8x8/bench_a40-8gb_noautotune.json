@@ -1,0 +1,1 @@
+{"flax_fwd_per_s": 23596.961358514054, "flax_grad_step_ms_b1024": 133.88299942016602, "gather_fwd_per_s": 138756.0256676372, "gather_grad_step_ms_b1024": 21.341991424560547, "max_abs_diff": 5.7220458984375e-06}

@@ -12,15 +12,14 @@ rb = E['RB']
 plt.rcParams.update({'font.size': 9, 'axes.linewidth': 0.8})
 fig, ax = plt.subplots(1, 3, figsize=(11, 3.3), gridspec_kw=dict(width_ratios=[1, 1.15, 1]))
 
-# (a) arm V: Delta <H> vs ViT sign, units 1e-6 per site
-names = [('K1V', 'exact one-hop\nKrylov K1'), ('nV', 'stored net'), ('nV+hop', 'stored net\n+ one hop')]
-y = [rb['vs_V'][k][0] * 1e6 for k, _ in names]; e = [rb['vs_V'][k][1] * 1e6 for k, _ in names]
-xs = np.arange(len(names))
-ax[0].errorbar(xs, y, yerr=e, fmt='o', color='C0', ms=5, capsize=3, lw=1)
-ax[0].axhline(0, color='0.5', lw=0.8, ls='--')
-ax[0].set_xticks(xs); ax[0].set_xticklabels([n for _, n in names], fontsize=8)
-ax[0].set_xlim(-0.5, len(names) - 0.5)
-ax[0].set_ylabel(r'$\langle H\rangle - \langle H\rangle_{\rm ViT\ sign}$  [$10^{-6}$ per site]')
+# (a) arm V: paired differences, units 1e-6 per site; pass line +1e-5 for (net + hop) - K1
+vals = [(rb['vs_V']['K1V'], 'K1 $-$ ViT sign'), (rb['vs_K1V']['nV'], 'net $-$ K1'), (rb['vs_K1V']['nV+hop'], 'net+hop $-$ K1')]
+xs = np.arange(len(vals))
+ax[0].errorbar(xs, [v[0][0] * 1e6 for v in vals], yerr=[v[0][1] * 1e6 for v in vals], fmt='o', color='C0', ms=5, capsize=3, lw=1)
+ax[0].axhline(0, color='0.5', lw=0.8, ls='--'); ax[0].axhline(10, color='C3', lw=0.8, ls=':')
+ax[0].text(2.45, 11, 'pass bound', color='C3', fontsize=7, ha='right', va='bottom')
+ax[0].set_xticks(xs); ax[0].set_xticklabels([v[1] for v in vals], fontsize=8); ax[0].set_xlim(-0.5, len(vals) - 0.5)
+ax[0].set_ylabel(r'paired $\Delta\langle H\rangle$  [$10^{-6}$ per site]')
 ax[0].set_title('(a) from the ViT sign (arm V)', loc='left', fontsize=9)
 
 # (b) arm M: <H> - <H>(ViT sign), log scale
@@ -39,9 +38,9 @@ ax[1].set_title('(b) from the Marshall sign (arm M)', loc='left', fontsize=9)
 
 # (c) held-out disagreement with K1 vs training step
 for T, lab, c in ((TV, 'arm V', 'C0'), (TM, 'arm M', 'C3')):
-    h = T['hist']; ax[2].plot([q['step'] for q in h], [q['held_err'] for q in h], 'o-', ms=3, lw=0.8, color=c, label=lab)
-    ax[2].axhline(T['label_flip_frac_held_nbr'] * 0 + (T['triv_held_x'] * 0.2 + T['triv_held_nbr'] * 0.8), color=c, lw=0.6, ls=':')
-ax[2].set_yscale('log'); ax[2].set_xlabel('training step'); ax[2].set_ylabel('held-out disagreement with K1')
+    h = T['hist']; ax[2].plot([q['step'] / 1e4 for q in h], [q['held_err'] for q in h], 'o-', ms=3, lw=0.8, color=c, label=lab)
+    ax[2].axhline(T['triv_held_nbr'], color=c, lw=0.8, ls=':')     # no-flip predictor (held-out set is ~99% neighbours)
+ax[2].set_yscale('log'); ax[2].set_xlabel(r'training step [$10^4$]'); ax[2].set_ylabel('held-out disagreement with K1')
 ax[2].set_title('(c) training (dotted: no-flip predictor)', loc='left', fontsize=9)
 ax[2].legend(frameon=False, fontsize=8)
 fig.tight_layout()

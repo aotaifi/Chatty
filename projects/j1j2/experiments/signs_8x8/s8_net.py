@@ -58,6 +58,33 @@ def marshall_np(S):
     return marshall(S)
 
 
+# gather (im2col) + matmul forward, the same function as SignCNN.apply (checked: max |logit diff| 7e-6 at init,
+# s8_bench.py); kept as a reference. With XLA autotuning ON, flax nn.Conv is faster (3e5 vs 1.4e5 states/s on an
+# a40-8gb slice) and is used everywhere (all jobs after s8trV run with autotuning on).
+_NBR = np.zeros((N, 9), np.int32)
+for _y in range(L):
+    for _x in range(L):
+        for _ky in range(3):
+            for _kx in range(3):
+                _NBR[_x + L * _y, _ky * 3 + _kx] = ((_x + _kx - 1) % L) + L * ((_y + _ky - 1) % L)
+NBRj = jnp.asarray(_NBR)
+
+
+def fast_apply(params, X, depth):
+    h = X[:, :, None]
+    def conv(h, p):
+        k = p['kernel']; ci, co = k.shape[2], k.shape[3]
+        return h[:, NBRj, :].reshape(h.shape[0], N, 9 * ci) @ k.reshape(9 * ci, co) + p['bias']
+    def ln(h, p):
+        m = h.mean(-1, keepdims=True); v = ((h - m) ** 2).mean(-1, keepdims=True)
+        return (h - m) / jnp.sqrt(v + 1e-6) * p['scale'] + p['bias']
+    h = jax.nn.gelu(conv(h, params['c0']))
+    for d in range(1, depth):
+        h = h + jax.nn.gelu(conv(ln(h, params[f'ln{d}']), params[f'c{d}']))
+    o = h @ params['head']['kernel'] + params['head']['bias']
+    return o.sum(axis=(1, 2)) / 8.0
+
+
 class SignNet:
     def __init__(self, ch=64, depth=6, seed=0):
         self.cfg = dict(ch=ch, depth=depth)
@@ -73,15 +100,13 @@ class SignNet:
         self._lo = jax.jit(lambda p, S: sym_logit(p, bits_to_f32(S)))
         self.nevals = 0
 
-    def logit(self, S, B=8192):
+    def logit(self, S, B=1024):
+        """synchronous per batch (bounded device memory; autotuned convs need large workspaces on 11 GB GPUs)."""
         S = np.asarray(S, np.uint64); out = np.empty(len(S), np.float32)
-        if len(S) == 0: return out
-        res = []
         for i in range(0, len(S), B):
             s = S[i:i + B]; m = len(s)
             if m < B: s = np.concatenate([s, np.repeat(s[:1], B - m)])
-            res.append((i, m, self._lo(self.params, jnp.asarray(s))))
-        for i, m, r in res: out[i:i + m] = np.asarray(r)[:m]
+            out[i:i + m] = np.asarray(self._lo(self.params, jnp.asarray(s)))[:m]
         self.nevals += len(S)
         return out
 

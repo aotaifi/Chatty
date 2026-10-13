@@ -76,3 +76,9 @@ RA 1.7 h, RB 3.4 h, training 2 x ~1 h, net evaluation on the two-hop sets ~1 h.
 - To stay within 12 GPU-h: TR is truncated to its first 16 chunks (2048 samples = the first two time rows of all 1024
   chains; held-out rule unchanged) and RA to its first 12 chunks (1536 samples). The jobs are stopped at these caps;
   post-processing uses the saved chunks. RB stays 2 x 3072.
+
+## Amendment 2 (2026-10-13, operational only; no criterion changed)
+- XLA autotuning is switched on (`S8_XLA=""`) for every job after s8trV (9x faster convolutions; same function).
+- Arm M training and the net evaluation on the two-hop sets ran on RTX 2080 Ti (`inter`), because sibling sessions
+  held the cip GPU quota. Evaluation batches are synchronous (1024 configurations x 16 images) to fit 11 GB.
+- Results and verdict: `results/signs_8x8/README.md`.

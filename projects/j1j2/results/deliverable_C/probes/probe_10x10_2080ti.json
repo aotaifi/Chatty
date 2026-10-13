@@ -1,0 +1,22 @@
+{
+ "mode": "probe",
+ "images": 64,
+ "batch": 256,
+ "evals_per_s": 2236.0176487952226,
+ "device": "[CudaDevice(id=0)]",
+ "sec": 13.68603777885437,
+ "args": {
+  "out": "/project/theorie/a/A.Otaifi/chatty_delC/runs/pr10_17184242",
+  "mode": "probe",
+  "ckpt": null,
+  "symm": null,
+  "flip": true,
+  "nperm": 32,
+  "batch": 256,
+  "nchains": 1024,
+  "burn": 20,
+  "nsamp": 4,
+  "thin": 1,
+  "seed": 0
+ }
+}

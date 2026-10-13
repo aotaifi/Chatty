@@ -146,3 +146,11 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
 - Production size: paired SE 5e-6 needs ~1.9e4 samples (>= 1.1e10 projected evaluations, ~590 A40-slice-h); SE 1e-5
   needs ~4.8e3 samples. Not affordable on ws1 this round; Paderborn draft p2_prod_h100.sbatch with b1 = -0.321902,
   b2 = 0.025905.
+
+### Gate V1 outcome (2026-10-13 20:25): PASS under amendment 2
+- G1, window [4, 8], bias vs M: +3.20(0.42) / +1.12(0.21) / +0.42(0.21) e-4 at M = 128 / 512 / 2048; a + b/M fit
+  a = +3.0(1.9)e-5, b = 0.038(6), chi^2 = 0.27.
+- G2: +1.07(0.25) / +0.45(0.25) e-4 at M = 512 / 2048; two-point a = +2.4(3.4)e-5, b = 0.042, same law as G1.
+- The DMC code reproduces the exact FN energy after the population-control extrapolation; the bias follows b/M with
+  b proportional to the guide's variance. For the 8x8 psi_P guide (variance 74x smaller than G1) the predicted bias at
+  M = 512 is ~2.5e-7 per site.

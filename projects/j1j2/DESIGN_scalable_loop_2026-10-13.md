@@ -1,0 +1,277 @@
+# Design: the size-consistent FN/Krylov loop (local sign step + FN amplitude), 2026-10-13
+
+Opus design partner, after the DECISION 2026-10-13 (RESEARCH_MAP 3p). Nothing in this file has been run. The
+pass/fail numbers in section 3 are proposals: they become binding once the PI approves them and they are copied into the
+experiment READMEs before the runs.
+Inputs read: RESEARCH_MAP 3a-3p; compress_6x6 round 4 and step size (S2-1, S2-2); loop_8x8 FU1-FU3; signs_8x8;
+fn_calibration_6x6; STATUS.md 2026-09-28..10-01 (earlier walker density-ratio and walker-MLE routes).
+Codex consult: `ws1:~/chatty_admin/consult_2026-10-13_codex_answer.md` holds only a CLI error ("Not inside a trusted
+directory"), so there is no consultant answer to weigh.
+
+Notation:
+- psi(x) = s(x) a(x). Bonds b = (i, j) have J_b = 1 (NN) or 0.5 (NNN). x^b is x with the spins on b swapped
+  (valid only if they are antiparallel).
+- E_L(x) = (H psi)(x)/psi(x). Global energy-optimal Lanczos step: alpha_g = -0.157 at 6x6, -0.161 at 8x8.
+
+## 1. Local Krylov sign step
+
+**1.1 Bond energies.** For each bond b,
+
+    e_b(x) = (H_b psi)(x)/psi(x) = J_b z_i z_j / 4 + [x_i != x_j] (J_b/2) s(x) s(x^b) a(x^b)/a(x),
+
+so that sum_b e_b(x) = E_L(x) exactly. It needs the same hop as E_L.
+- Kept (FN-allowed) bond: s(x)s(x^b) = -1, which gives a negative contribution.
+- Violating bond: s(x)s(x^b) = +1. These sum to the wall term V.
+- Reference: e_bar_b = <e_b> under a^2. Only two values exist (NN, NNN) by symmetry; they are estimated once per guide.
+- Region excess: dE_R(x) = sum_{b in R} (e_b(x) - e_bar_b), where "b in R" means both ends of b lie in R.
+
+**1.2 Derivation on decoupled blocks (the definition of "correct").**
+Take H = sum_m H_m and psi = prod_m psi_m. The size-consistent Krylov step is the tensor product of the block steps:
+
+    psi'(x) = prod_m [(1 + alpha (H_m - E_m)) psi_m](x_m) = psi(x) prod_m f_m(x),   f_m = 1 + alpha dE_m(x_m).
+
+- Its sign is s'(x) = s(x) (-1)^{#marked blocks}, where a block is marked if f_m < 0, i.e. if dE_m > theta = 1/|alpha|.
+- So **"flip if an odd number of regions is marked" is exactly the sign of the product of local Lanczos factors on a
+  partition.** The PI's two candidate combiners are the same object on a partition.
+- The energy per site after the step equals the single-block value for every M. The energy-optimal alpha does not depend
+  on M, because E(alpha) = sum_m E_m(alpha).
+- The global rule s' = s sgn(T - E_L), with T = E + 1/|alpha_g|, decides block m's flip from
+  dE_m + sum_{m' != m} dE_m'. The second term has spread sqrt(M) sigma_block.
+  - The global rule therefore keeps only defects whose excess exceeds about sqrt(M) sigma_block.
+  - Its per-site gain goes to zero with M.
+  - This matches the 8x8 data: energy-optimal T - E = +11.9, no a^2 sample flips, null gain +2.1(2.6)e-6/site.
+  - The same mechanism makes p fixed Lanczos steps non-size-consistent (Becca, Hu, Iqbal, Parola, Poilblanc, Sorella,
+    arXiv:1412.2656).
+- The closest prior art for a size-consistent step that changes signs is Sorella's generalized Lanczos with r > 0
+  (PRB 64, 024512 (2001)). It modifies the reference Green function in a fixed-node-like way, and it is global and per
+  configuration. Our step is local (region-factorised); we must cite it and position against it.
+
+**1.3 Combining regions on a coupled lattice.** There are three options.
+
+- **Fixed tiling + parity.** Exact on blocks.
+  - It is not translation-invariant, so it cannot be used on the 6x6 orbit tables.
+  - A defect on a tile boundary splits its excess over two tiles. That gives 0 or 2 marks (no flip), or 1 mark if only
+    one half passes theta.
+- **Overlapping windows (all N translates of a w x w window) + parity, or the product over all windows.** Wrong.
+  - One local defect marks every window that contains it, about w^2 windows, so the parity becomes arbitrary.
+  - A partition-of-unity weighting fixes the double counting but dilutes each defect by the overlap factor.
+- **Recommended: connected components of marked windows (C_w).**
+  - Compute dE_W for all N translates of a w x w window. Mark W if dE_W > theta_w. Two marked windows are adjacent if
+    they share a bond.
+  - Flip x iff the number of components is odd. One defect gives one component, whatever its position.
+  - The rule is invariant under translations, D4 and spin flip, so it is a function on orbit representatives (needed
+    for the exact 6x6 lab).
+  - On decoupled blocks with windows inside blocks it reduces to 1.2 as long as defects are isolated.
+  - It is the same "syndrome counting" as decoding local errors. Linked-cluster expansions (e.g. Lanczos-boosted NLCE,
+    arXiv:1810.06202) get size consistency the same way.
+- **Amplitude (optional).** prod_{partition} |f_R|, clipped as in Lc_0.3, is the size-consistent version of the
+  clipped-Lanczos target. It is one hop, explicit, and fits the existing write-back machinery. Keep it as the DMC-free
+  fallback arm (section 3a).
+
+**1.4 Threshold.** Choose one theta_w per window size (square windows give a single region type).
+- A sign-only step leaves a^2 unchanged. So E(theta) is evaluated on fixed samples with no reweighting: exactly at 6x6,
+  and at 8x8 by cross-fitting (select on some batches, evaluate on the others).
+- The family contains theta -> infinity (no flip), so the selected step can only lower the in-sample energy.
+- Amplitudes come from the FN step that follows, which shrinks the amplitude near new nodes. That is the "damped flip"
+  that cx_l1bump asked for: a hard flip with the old amplitude makes the Lanczos polish worse
+  (3.6e-5 vs 2.55e-5).
+
+**1.5 Where the rule can fail on a correlated lattice.** Each failure mode has the quantity that monitors it.
+
+- (i) **The exact ground state is not a fixed point.** dE_R fluctuates in the exact GS (var H_R > 0, boundary law), so
+  rare configurations with dE_R > theta get flipped. Monitor: flipped a^2 weight and energy rise on (|psi0|, s0).
+- (ii) **Merging.** Two defects closer than w form one component, so the parity is wrong. Monitor: distribution of the
+  component count per configuration, and agreement of the flip decision between w and w+1.
+- (iii) **Extended or non-local sign errors** (strings longer than w, wrong symmetry sector). A long string still gives
+  one component, which is fine. A sector error gives no local syndrome; the global rule also traps there (bad_start).
+  Monitor: the spatial extent of the excess in high-E_L samples (8x8 data).
+- (iv) **Amplitude errors create false excess.** This is the same for global and local. Monitor: false flips from
+  (|psi_P|, s0).
+- (v) **Threshold noise at 8x8.** The energy curve is flat: the global T varied from -3.9 to -66.7 across half-sample
+  splits. Report cross-fitted gains only.
+- **w_s is not a size-consistent figure of merit.** With any fixed per-region error rate, the configuration-level
+  wrong-sign weight goes to 1/2 at large N, while the energy per site stays fine. Report the intensive edge version
+  w_e = a^2-weighted fraction of edges with a wrong relative sign, alongside w_s.
+
+## 2. FN-walker amplitude
+
+**2.1 What the walkers carry.** Lattice FN-DMC with guide (a_k, s) samples f = a_k phi, with phi = phi_FN[a_k, s].
+There is no time-step bias in the distribution: 1 - tau(H_FN - E) has the eigenvectors of H_FN. To turn this into a
+network there are three routes.
+- **Density ratio (classifier).** The logit is log(phi/a_k), which is extensive.
+  - The two distributions separate as N grows, so the logits are overconfident.
+  - Tested 2026-09-30 at 8x8: it worsened E_FN by +4.5 total and the replicas disagreed. Not size-consistent as a
+    learning signal.
+- **Walker MLE.** It fits a_new^2 to f, so its optimum is sqrt(a_k phi), a geometric half-step that is 2x slower.
+  - Tested 2026-10-01 at 8x8: iteration 1 was positive, iteration 2 worsened E_FN by +0.073 total.
+  - Cause pinned: only 0.78% of the one-hop edge targets used by FN/K1 are in the sampled support. The unseen
+    neighbour ratios moved 7-20x more than the seen ones.
+- **Conditional NCE** (Ceylan & Gutmann, ICML 2018; noise = one-hop neighbour). It is consistent and local, and it
+  constrains every edge incident to a walker.
+  - But the labels are Bernoulli: an edge log-ratio to delta = 0.003 needs about 4/delta^2 = 4.4e5 pairs per effective
+    degree of freedom.
+  - Affordable at 6x6, not at 8x8.
+
+**Proposal: the walkers supply the sampling distribution and E_FN. The labels come from the FN eigen-equation itself.**
+Rao-Blackwellising the walker balance over the known propagator gives back exactly that equation. So it is the
+zero-noise limit of "fitting to walkers". For a_{k+1} = a_k e^u define
+
+    D(x) = d_FN(x) - E_FN     (d_FN = H_xx + V(x), the FN diagonal including the wall term of guide a_k)
+    S_u(x) = sum_{kept y} |H_xy| (a_k(y)/a_k(x)) e^{u(y) - u(x)}
+    r_u(x) = 1 - S_u(x)/D(x)  (or the log form log D - log S_u)
+
+and minimise the sum of r_u(x)^2 over walker snapshots x (with all their kept edges), using robust_fit.
+
+Properties:
+- **Exact target.** r = 0 everywhere iff a_k e^u = phi, by Perron-Frobenius on the connected allowed graph
+  (fncal_pockets: connected at 6x6). D > 0 holds on the support, because D(x) = S_phi(x) > 0.
+- **Size-consistent.** Residuals add over decoupled blocks, so the centred loss decouples.
+- **Zero label noise.** Only generalisation error remains.
+- **Constrains every edge the next FN/K1 step uses**, which removes the walker-MLE failure mechanism.
+- **The SI target is one Jacobi sweep of this same equation** (fixed neighbours, E_g instead of E_FN, the 1+
+  regularisers). Its relative step is O(1/N), which is the non-size-consistent 1/(1+W). Solving the equation fully is
+  size-consistent.
+- **Monotone if exact** (ten Haaf 1995 plus the AM-GM identity). On every violating pair,
+  <psi|H_FN - H|psi> = |H_xy| (sqrt(t) psi_x - psi_y/sqrt(t))^2 >= 0 with t = a(y)/a(x). Hence
+  VMC(phi_FN[a_k]) <= E_FN[a_k] <= VMC(a_k), and so E_FN[a_{k+1}] <= VMC(a_{k+1}) <= E_FN[a_k].
+  Any rise along the loop is therefore fit error, and an acceptance gate catches it.
+
+**2.2 Noise, bias, sizes.**
+- **Population control.** The energy bias is <= 0.2e-6/site at M = 512 (b/M fit). A distortion of the snapshot
+  distribution enters only the sample weights, not the labels.
+- **Snapshots must be weighted by beta-duration.** The step average biased energies by -11..+25e-6.
+- **Decorrelation.** Thin by Delta beta >= the autocorrelation time, measured at 6x6.
+- **E_FN error.** It is about 3e-5/site from the harvest run at 8x8. The sensitivity is measured in check (b). If it
+  matters, treat E as a free parameter (centred residual = fixed-sign variance minimisation).
+- **Size.** About 3e4 decorrelated snapshots x ~145 edges = 4e6 residual terms. The SI fits used 1e4-6e4 samples with
+  their neighbours.
+
+**2.3 Cost, and how this composes with the re-base.** The residual at x needs a_k on the one hop of x. Every DMC step
+computes that already, so it is free if stored. It also needs u at the neighbours.
+
+Feature sets for u:
+- **F2 = round-4/S2 features** (one exact hop of psi_P, sign-split). u(y) then costs 2 psi_P hops, and the DMC guide
+  costs 2 hops per walker-step: about 1e4 projected-ViT evaluations, or 2 s at 5e3/s.
+  - With 3e4 snapshots x 10-50 steps that is 170-800 A40-h per iteration. **Infeasible at 8x8.**
+- **F1 = hop-free features:**
+  - spins and log a_P(x) (free);
+  - a bond-output surrogate net that gives all ~145 log a_P ratios in one pass, from which V-hat, W-hat and
+    E_L-hat follow;
+  - the relative signs per bond from the sign net (cheap CNN).
+  - DMC then costs 1 ViT hop per walker-step (~0.03 s), i.e. 2.5-12 A40-h per iteration.
+  - The surrogate's error enters only as an input feature, not as the target. Its precision failed in P2 when it was
+    used as the target.
+
+Re-base:
+- **u is fitted directly in the stacked parametrisation**, G_{k+1} = G_k + h_k, against the residual of the stacked
+  state. There is no separate write-back.
+- This removes the S2-2 failure (re-base retention 0.69 / 0.33 / 0.09, caused by write-back/re-base feature mismatch),
+  because there is only one fit.
+- Reused from round 4: clipping, re-seed on collapse, held-out acceptance, blow-up guard.
+- Each h_j uses its own sign split s_{j+1}. The small-net cost is linear in k; the hop cost is constant.
+
+**Literature check** (quick web search, to be extended before any claim):
+- Neural-network trial functions inside FN-DMC are known (Ren et al., Nat. Commun. 2023).
+- So are NQS learned from samples by MLE (Torlai et al. 2018; data-enhanced VMC) and supervised fits of (1 - tau H)psi
+  (Kochkov & Clark 2018).
+- I found no work that fits an NQS to the lattice FN eigen-residual on DMC walkers, and none with a local
+  (region-parity) sign step.
+
+## 3. Minimal decisive checks (exact where possible; numbers to be pre-registered)
+
+**(a0) Decoupled 4x4 copies (CPU, minutes).** Use exact single-copy tables with the guide (|psi0^4x4|, Marshall).
+- For M = 1..64 copies (N up to 1024), compute the global rule's exact per-site gain, scanning T.
+- It needs only the CDF of the sum of the other M-1 copies' E_L (FFT convolution): a pair (x_m, y_m) keeps its relative
+  sign with probability 1 - 2[F(T - min E) - F(T - max E)].
+- Unit test: the local rule (regions = blocks) must reproduce the M = 1 gain to 1e-12 at every M.
+- Output: M_1/2, the M at which the global gain halves. This is a calibration, not a pass/fail.
+  - If N_1/2 = 16 M_1/2 > 64, a null at 8x8 in (a8) is expected. The local advantage would then first show at
+    12x12 and beyond.
+
+**(a) 6x6 exact, sign-only, amplitude fixed (cx_lib Lab, orbit tables).**
+- Starts:
+  - S1 = (|psi_P|, s_P);
+  - S2 = (|psi_P|, Marshall);
+  - S3 = (|psi0|, Marshall);
+  - S0 = (|psi0|, s0), the false-flip test.
+- Rules: G (global, T scan) and C_w for w = 2, 3, 4 (theta scan). Each is applied once, and also iterated 3 times
+  (S2, S3).
+- Report: <H>, w_s, w_e, flipped weight, component-count histogram.
+- **Pass (no harm at the size where G still works):**
+  - the best C_w reaches >= 0.80 of G's one-step energy gain and >= 0.80 of its w_e reduction, on both S2 and S3;
+  - after 3 steps, error <= 1.25 x G's;
+  - on S0, at the theta chosen on S3: flipped a^2 weight <= 1e-4 and energy rise <= 1e-6/site.
+- Fallback arm (secondary): C_w sign + clipped |prod f| amplitude vs global clipped Lanczos from S1 (2.62e-5). Bar:
+  <= 4.7e-5, which is 0.8 of that gain.
+
+**(a8) 8x8, existing two-hop referee batches (loop_8x8 / s8_thresh data, CPU only).** These hold the guide on
+{x} u N1 u N2, so s' at x and at all neighbours and the exact new E_L are available.
+- Starts: s_V and Marshall. Rules G vs C_3 and C_4. Thresholds by leave-one-batch-out. SE from paired per-chain means.
+- **Pass (local advantage visible at 8x8):**
+  - from Marshall, C_w gain >= 1.5 x G gain, with the paired difference at > 2 SE;
+  - from s_V, the cross-fitted C_w gain is < 0 at > 2 SE (G: +2.1(2.6)e-6).
+- If (a0) predicts N_1/2 > 64, a null is reported as "expected at this N", not as a failure.
+- Also report what fraction of the high-E_L excess lies in one 4x4 window. This tests the "local defect" premise.
+
+**(b) 6x6 amplitude from FN walkers vs the exact phi (sec.fn_solve).**
+- Guides: S1 (exact: E_FN 1.02e-4, <H>(phi, s_P) 8.41e-5 from 1.319e-4) and (|psi_P|, s from C_w), i.e. realistic
+  iteration 1.
+- Walkers: fncal engine, M = 512, beta-time-weighted snapshots after beta = 0.8. Two independent walker sets.
+- Arms:
+  - RES-W (residual on walkers);
+  - RES-V (same loss on a^2 VMC samples; tells whether the walkers matter);
+  - CNCE (noise reference);
+  - ORACLE (edge regression on the exact log(phi/a); representation ceiling);
+  - SI (current target; realistic reference 0.734).
+- Feature sets F2 and F1. n = 1e4, 3e4 and 1e5 snapshots. E_FN fixed vs free, and with an injected +-1e-3 total
+  error.
+- Metric: exact frozen-FN capture C = (E_f[a] - E_f[a e^u]) / (E_f[a] - E_FN), plus <H>.
+- **Pass:**
+  - RES-W/F2 at n = 3e4: C >= 0.85;
+  - RES-W/F1: C >= 0.75 (then 8x8 uses F1);
+  - two walker sets agree to held-out edge rms <= 0.003.
+- **Readings:**
+  - RES-V within 0.03 of RES-W: drop the walker harvest and keep DMC as the E_FN referee only (a cost win).
+  - F1 < 0.75: 8x8 DMC must use a cheaper guide (the unprojected ViT is 16x cheaper), or the fallback arm.
+
+**(c) 8x8 loop (after (a), (a8), (b) and a throughput gate).**
+- **Gate.** Measured walker-step cost with the F1 guide must project to <= 10 H100-h per iteration; otherwise the run
+  is "inconclusive (cause: cost)" before any start.
+- **Iterations k = 0..3, starting from (|psi_P|, s_V):**
+  1. C_w labels from one hop of (a_k, s_k) on tempered samples and their neighbours, trained into a sign net
+     (signs_8x8 machinery). This gives s_{k+1}.
+  2. FN-DMC with (a_k, s_{k+1}), harvesting 3e4 snapshots and their one-hop guide values.
+  3. Fit h_k by RES-W/F1 with acceptance. This gives a_{k+1}.
+  4. Paired VMC referee (1 hop, ~1.5e4 samples, SE ~5e-6).
+- **Final:** + 1 Lanczos step, and calibrated FN-DMC (~50-100 populations, SE ~1e-5).
+- **Budget:** <= 60 H100-h.
+- **Pass:**
+  - (i) VMC <H> is non-increasing within 2 sigma at every k;
+  - (ii) loop guide (no hop) < RBM+PP -0.498886(1) at 2 sigma;
+  - (iii) loop + 1 Lanczos < projected ViT + 1 Lanczos (-0.498953(16) combined; conservative -0.498948(23)), paired on
+    the same batches, at 2 sigma;
+  - (iv) it beats the same F1 net trained by fixed-sign minSR VMC with the same signs at equal GPU-h, by >= 1.5x in gain
+    or at 2 sigma (rule 5).
+  - If (iii) fails while (i) and (ii) pass, the loop is a guide improver but not yet better than the polish: report
+    that, and do not drop it.
+
+## 4. Risks
+
+| # | What breaks | Size (measured or estimated) | Monitor | Test that settles it |
+|---|---|---|---|---|
+| R1 | DMC cost with hop-feature guides | F2: ~2 s per walker-step, 170-800 A40-h per iteration; F1: 2.5-12 | evaluations/s, steps per decorrelated snapshot | throughput gate before (c); (b) F1 vs F2 |
+| R2 | Unseen neighbour ratios drift (walker-MLE failure, 0.78% support) | iteration 2: +0.073 total E_FN | held-out edge residual; edge-ratio change seen vs unseen | (b) RES-W vs CNCE; (c) acceptance gate |
+| R3 | Stiff residual fit / slow long-wavelength modes | lambda_max(F) 1.6e6 (itfit) | capture vs steps; gap to ORACLE | (b) ORACLE vs RES-W; log-form residual; Adam vs Gauss-Newton |
+| R4 | Exact GS not a fixed point (false flips) | unknown; bar 1e-4 weight, 1e-6/site | flipped weight per iteration | (a) S0 |
+| R5 | Component merging/splitting | unknown | component-count histogram; w vs w+1 agreement | (a), (a8) |
+| R6 | 8x8 threshold noise | global T varied -3.9 to -66.7 over splits | cross-fitted vs in-sample gain | (a8) leave-one-batch-out |
+| R7 | Walker distribution bias / beta weighting | energy <= 0.2e-6 at M = 512; step average -11..+25e-6 | two walker sets; beta-weighted harvest | (b) replica agreement |
+| R8 | Fit error breaks FN monotonicity | iteration 2 of walker-MLE | VMC <H> per iteration | (c)(i); exact chain is monotone (2.1) |
+| R9 | C_w labels not learnable by the sign net at 8x8 | signs_8x8 pending | held-out label error, disagreement on neighbours | signs_8x8 arm, then C_w labels |
+| R10 | E_FN error in the residual | ~3e-5/site per harvest at 8x8 | fixed- vs free-E fit | (b) injected +-1e-3 |
+| R11 | Global rule not yet diluted at 8x8, so no visible local gain | alpha_g flat 36 -> 64 | M_1/2 | (a0) |
+
+**Recommended first check:** (a0) together with (a8). Both are CPU-only on existing data, about one day of work.
+- (a0) says at which N the global rule stops working.
+- (a8) says whether the local rule already beats it at 8x8.
+- (a) and (b) on 6x6 follow on ws1 (<= 6 GPU-h). (c) waits for all of them.

@@ -557,3 +557,17 @@ Readings:
 - If it needs rho = 2 or exact, locality is not demonstrated at 6x6 (6x6 is too small to see a decay beyond d = 2;
   then 8x8 sampled data decide).
 Budget: D1 ~1.1 slice-h, D2 ~0.4 slice-h (total <= 2 GPU-h).
+
+#### Amendment FB-1 (2026-10-13 10:20, after D2 and D1 arms R0/RA, before this run)
+- D2a found O(1) ratio interactions of psi_P out to the largest bond distance on 6x6:
+  - rms I = 1.68 at distance 1, 1.02 at 2, 0.82 at 2.83;
+  - sign non-additivity 19% at distance 1 and 7% at 2.83.
+- D2b: every light-cone level is WORSE than ignoring the neighbours' information.
+- The question is whether this is a property of the network guide (symmetrisation = log of a sum, global attention)
+  or of the 6x6 ground state itself (finite size, near-critical J2 = 0.5).
+- `cx_pairint.py` repeats D2a on the exact ground state |psi0| (and on psi_P as a reproduction check). It also adds
+  the mean contribution error r_b' |sigma e^I - 1| of the additive approximation per bond distance.
+- This is descriptive, with no pass/fail. Reading:
+  - if psi0 shows the same O(1) interactions, 6x6 cannot test locality and only a larger lattice can;
+  - if psi0 is markedly more additive (rms I at distance >= 2 below 0.3), the non-locality is the guide's, and the
+    light cone would need a local base network.

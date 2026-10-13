@@ -153,3 +153,16 @@ Changes:
   and at equal wall-clock). If T4 does not move below T2 by > 1e-5, cause (i)/(ii) is refuted and the next
   candidate is a local minimum of the f-landscape (then: other seeds of the PP stage).
 - Pre-filter of moderate candidates (amendment 2) runs as job rpSel; PP-guide table loop queued (rpLoopPP).
+
+## Amendment 4 (2026-10-13 04:40)
+- **T4 vs T2 (same start, T2 step 900):** after 500 more steps T4 (8192 samples, shift 0.02) is at -0.503728
+  (100-step mean, SE 4e-6); T2 (2048 samples, shift 1e-3) over its steps 900-1400 is at -0.503680 .. -0.503720
+  and at its step 3600 still -0.50369 .. -0.50372. At equal wall-clock (T4 1.8 h vs T2 3.0 h) T4 is lower by
+  ~2e-5. So the plateau was caused by the optimiser settings (gradient noise / weak SR stabilisation), not by the
+  ansatz. T2 cancelled at step 3650 (control served its purpose); T4 continues (1500 steps).
+- Moderate guides (amendment 2): full-projection VMC pre-filter of the T3d checkpoints (1e5 samples each), dE/site:
+  step 60 1.01e-3, 65 6.3e-4, 70 4.0e-4, 75 2.95e-4, 80 2.13e-4, 85 1.77e-4, 90 1.66e-4, 95 1.46e-4, 100 1.52e-4
+  (SE 1-2e-5). Candidates: B1 = step 70 (closest to 5e-4), B2 = step 95 (closest to 1.32e-4); exact tables running.
+- PP-guide table loop (rpLoopPP, A40 24 GB slice; the RTX 2080 Ti ran out of memory in the write-back fit): running.
+  Iteration 4 hit the known dead-fit failure of the unchanged wt_loop (frac 0, own loss frozen; round 4 fixed this
+  only in cx_lib.robust_fit).

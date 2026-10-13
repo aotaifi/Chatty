@@ -1,7 +1,7 @@
 """Gate V1 (PREREG E2): dc_fn.py with a 4x4 lattice and table guides must reproduce the exact lattice FN energy.
 Guides (Sz = 0 sector, 12870 states): G1 = |psi0| exp(0.3 xi) with the exact sign (FN energy above E0: the violating-edge terms use the noisy amplitude);
 G2 = same amplitude, sign of 10% of the configurations flipped (FN energy > E0).  Exact FN: lowest eigenvalue of H_FN.
-  python dc_fn_gate4x4.py OUT.json [npop] [beta_target]
+  python dc_fn_gate4x4.py OUT.json [npop] [beta_target] [M] [G1|G2]
 Amendment 1 (2026-10-13, after the first gate run, see PREREG): these toy guides are far from the ground state, so the
 mixed estimator still carries a projection transient in the [0.8, 2.4] window (exact: +1.2e-4 / +3.2e-4 per site). The
 gate therefore compares (a) the late window [4, 8] with E_FN + the exact transient over that window and (b) the [0.8, 2.4]
@@ -54,18 +54,23 @@ def exact_fn(la, s):
 
 npop = int(sys.argv[2]) if len(sys.argv) > 2 else 128
 BT = float(sys.argv[3]) if len(sys.argv) > 3 else 8.0
+MW = int(sys.argv[4]) if len(sys.argv) > 4 else 512
+ONLY = sys.argv[5] if len(sys.argv) > 5 else ''
 res = dict(E0_site=E0 / N)
 for name, s in (('G1_exact_sign', s1), ('G2_10pct_flips', s2)):
+    if ONLY and not name.startswith(ONLY): continue
+    Hf_ = hfn(la, s); pT = s * np.exp(la); res[name + '_var_EL_total'] = float(pT @ (Hf_ @ (Hf_ @ pT)) / (pT @ pT) - (pT @ (Hf_ @ pT) / (pT @ pT)) ** 2)
     Efn = exact_fn(la, s)
     guide = lambda S, s=s: (la[np.searchsorted(states, S)], s[np.searchsorted(states, S)])
     pool = states[rg.choice(D, 4096, p=np.exp(2 * la) / np.exp(2 * la).sum())]
     t = time.time(); Es, Ts = [], []
-    for b in range(npop // 32):
-        E, T, Nd, nev = F.run_batch(lat, guide, pool, 32, 512, np.random.default_rng([11, b]), beta_target=BT)
+    PB = max(1, 16384 // MW)
+    for b in range(npop // PB):
+        E, T, Nd, nev = F.run_batch(lat, guide, pool, PB, MW, np.random.default_rng([11, b]), beta_target=BT)
         Es.append(E); Ts.append(T)
     S = max(e.shape[1] for e in Es)
     E = np.concatenate([np.pad(e, ((0, 0), (0, S - e.shape[1]))) for e in Es]); T = np.concatenate([np.pad(e, ((0, 0), (0, S - e.shape[1]))) for e in Ts])
-    out = dict(E_FN_exact_site=Efn / N, npop=len(E), sec=time.time() - t)
+    out = dict(M=MW, E_FN_exact_site=Efn / N, npop=len(E), sec=time.time() - t)
     for (w0, w1) in ((0.8, 2.4), (4.0, 8.0)):
         if w1 > BT: continue
         pm = F.pop_means(E, T, w0, w1, N); se = pm.std(ddof=1) / np.sqrt(len(pm)); ref = transient(la, s, w0, w1)

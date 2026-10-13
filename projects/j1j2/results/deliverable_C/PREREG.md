@@ -116,3 +116,19 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
   (calibrated protocol). Transient check: late window [2.4, 3.2] minus [0.8, 2.4], paired per population. If it is
   below -2 SE, the late window [1.6, 3.2] becomes the quoted value (with its SE) and the protocol value is reported as
   biased.
+
+## Amendment 2 (2026-10-13 19:45, after the amended V1 run, before the 8x8 FN-DMC run)
+- Amended V1 at M = 512, window [4, 8]: DMC - (E_FN + exact transient) = +1.12(0.21)e-4 (G1), +1.07(0.25)e-4 (G2):
+  FAIL by the letter. Diagnosis run (G1, same code, M = 128 and 2048): +3.20(0.42)e-4, +1.12(0.21)e-4, +0.42(0.21)e-4.
+  Fit a + b/M: a = +3.0(1.9)e-5 (1.6 sigma from 0), b = 0.038(6) per site x M, chi^2 = 0.27 (1 dof).
+- Cause: population-control bias ~ 1/M, as in the 6x6 calibration (which fitted a + b/M too). It is large here because
+  the toy guides are bad: variance of H in the 4x4 guide G1 = 3.34 (total units), 74x the 8x8 psi_P (0.045) and
+  ~140x the 6x6 ViT guides (~0.024). In total-energy units b_total / var = 0.18 (4x4 G1) vs ~0.1 (6x6 calibration):
+  the same law. Predicted 8x8 psi_P bias at M = 512: 0.18 x 0.045 / 512 / 64 ~ 2.5e-7 per site, negligible against the
+  1e-5 target.
+- Gate decision (fixed now): the implementation is validated by the 1/M extrapolation of G1 (a consistent with 0).
+  G2 at M = 2048 is running in parallel; if its bias is not consistent with the G1 law (|bias_2048 - b_G2/2048| test
+  using its M = 512 value, > 3 sigma from a = 0), the 8x8 FN result is withheld until the cause is found.
+- The 8x8 run starts now: two jobs on A40-16gb slices (seeds 1, 2), M = 512, beta to 3.2, populations in batches of 4,
+  each job stops at SE <= 1.4e-5 (combined ~1e-5) with >= 8 populations, or at its 4.5 GPU-h cap (total cap 9 GPU-h as
+  registered). Analysis: dc_fn_analyze.py on the merged populations.

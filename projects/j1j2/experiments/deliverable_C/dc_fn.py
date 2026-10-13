@@ -10,7 +10,8 @@ Algorithm = the calibrated referee of experiments/fn_calibration_6x6/fncal_dmc.p
 Difference to fncal_dmc.py: the guide is a callable (projected ViT, or a table for the 4x4 gate); every walker carries its
 one-hop data (d_FN, E_L, kept rates) and only walkers that hopped are re-evaluated (stay / resampled copies reuse it).
 
-  8x8:  python dc_fn.py vit OUT --npop_max 64 --batch_pops 4 --se_target 1e-5 --min_pop 16 --hours 8.5 --pool a.npz,b.npz
+  8x8:  python dc_fn.py OUT vit ...   (guide 'vit' = psi_P, 'psi1' = one Lanczos step on psi_P, Paderborn)
+        python dc_fn.py OUT vit --npop_max 64 --batch_pops 4 --se_target 1e-5 --min_pop 16 --hours 8.5 --pool a.npz,b.npz
   4x4 gate: dc_fn_gate4x4.py (imports this module)
 """
 import os, sys, time, json, argparse
@@ -122,7 +123,7 @@ def pop_means(Eref, tau, burn, beta, N):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('guide'); ap.add_argument('out')
+    ap.add_argument('out'); ap.add_argument('guide')
     ap.add_argument('--M', type=int, default=512); ap.add_argument('--batch_pops', type=int, default=4)
     ap.add_argument('--npop_max', type=int, default=64); ap.add_argument('--min_pop', type=int, default=16)
     ap.add_argument('--se_target', type=float, default=1e-5); ap.add_argument('--hours', type=float, default=8.5)
@@ -130,11 +131,19 @@ def main():
     ap.add_argument('--tau_max', type=float, default=0.025); ap.add_argument('--seed', type=int, default=1)
     ap.add_argument('--pool', required=True); ap.add_argument('--phi', type=float, default=0.056006)
     ap.add_argument('--ckpt', default='vit_J2=0.50_N=8x8_k=0.mpack'); ap.add_argument('--evbatch', type=int, default=1024)
+    ap.add_argument('--alpha', type=float, default=-0.160951); ap.add_argument('--Eref', type=float, default=-31.92677568)
     a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); T0 = time.time()
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'loop_8x8'))
     import l8_core as C
     g = C.Guide(a.ckpt, sym=True, batch=a.evbatch, phi=a.phi)
-    guide = lambda S: (lambda la, ph: (la, g.sign(ph)))(*g.eval(S))
+    if a.guide == 'vit':
+        guide = lambda S: (lambda la, ph: (la, g.sign(ph)))(*g.eval(S))
+    elif a.guide == 'psi1':                     # one Lanczos step psi_1 = psi_P (1 + alpha (E_L - E_ref)): one hop per amplitude
+        def guide(S):
+            d = C.onehop(g, S); f = 1 + a.alpha * (d['ELa'] - a.Eref)
+            return d['la'] + np.log(np.maximum(np.abs(f), 1e-300)), d['s'] * np.where(f >= 0, 1.0, -1.0)
+    else:
+        raise ValueError(a.guide)
     lat = Lattice(8)
     assert np.allclose(lat.JB, C.JB) and np.all(lat.MASKS == C.MASKS)
     pool = np.unique(np.concatenate([np.load(p)['X'] for p in a.pool.split(',')]).astype(np.uint64))

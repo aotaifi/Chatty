@@ -697,3 +697,74 @@ Splices (share; identical pattern for all three arms, minSR seed 1 shown):
   - fp32 floor: edge rms 7e-6 against an increment of 0.042 (ratio 2e-4), so the test was meaningful;
   - blow-up guard not triggered (weight 1.3-1.7e-4);
   - all fits accepted on held-out data.
+
+# Sign-channel check (2026-10-13, lead request)
+Pre-registration: `experiments/compress_6x6/README.md` ("Sign-channel check"). Code `cx_signchan.py`. Raw files:
+`runs/cx_signchan_RA.json`, `runs/cx_signchan_S2.json`. Compute: 0.70 slice-h.
+
+## What was run, step by step
+1. **Pairs.** Each pair has a fitted guide and the exact amplitude it was meant to store, with the same current sign:
+   - the three k = 1 re-anchored ViTs vs the exact k = 1 target;
+   - stage-2 G_2 vs the exact k = 1 target;
+   - stage-2 G_3 vs the exact k = 2 target.
+2. **Next sign step from each amplitude.** Rule C: clipped-Lanczos sign. Rule K: Krylov sign, threshold optimal at
+   fixed amplitude.
+3. **Scoring.** The exact fixed-node energy (E_FN) of each new sign, computed with the exact reference amplitude as
+   the common guide. Also each guide's own E_FN.
+4. **Iteration.** For one re-anchored ViT and for G_3: two more sign steps, with the exact FN amplitude of each
+   chain's own sign between steps.
+
+## Result
+**One line: formally FAIL at step 1, where the absolute sign gains are tiny; PASS once an FN amplitude step
+follows (step 2-3 ratios 0.92-1.02). The guide's OWN E_FN is dominated by its amplitude (4-5x), so the premise
+"E_FN depends only on the sign" does not hold for lattice FN.**
+
+| pair | rule | E_FN start (common amp.) | fitted-amp. sign | exact-amp. sign | ratio of gains | disagreeing weight | own E_FN of fitted guide + its new sign |
+|---|---|---|---|---|---|---|---|
+| re-anchor minSR s1 | C | 1.951e-5 | 2.291e-5 | 1.929e-5 | -15.6 | 4.4e-6 | 9.28e-5 |
+| re-anchor Adam | C | 1.951e-5 | 2.369e-5 | 1.929e-5 | -19.2 | 4.9e-6 | 9.73e-5 |
+| re-anchor minSR s0 | C | 1.951e-5 | 2.244e-5 | 1.929e-5 | -13.4 | 4.1e-6 | 9.32e-5 |
+| re-anchor minSR s1 / Adam / s0 | K | 1.951e-5 | 2.108 / 2.181 / 2.077e-5 | 1.900e-5 | -3.1 / -4.5 / -2.5 | 2.0-2.8e-6 | 9.1-9.6e-5 |
+| stage-2 G_2 | C | 1.951e-5 | 1.933e-5 | 1.929e-5 | **0.83** | 1.6e-6 | 2.89e-5 |
+| stage-2 G_2 | K | 1.951e-5 | 1.925e-5 | 1.900e-5 | 0.50 | 5.6e-7 | 2.87e-5 |
+| stage-2 G_3 | C | 1.258e-5 | 1.247e-5 | 1.222e-5 | 0.29 | 4.5e-7 | 1.90e-5 |
+| stage-2 G_3 | K | 1.258e-5 | 1.230e-5 | 1.219e-5 | 0.71 | 2.4e-7 | 1.86e-5 |
+
+Iterated with exact FN amplitudes between steps (rule C), E_FN after each step; gains are measured from the common
+start:
+
+| chain | step 1 | step 2 | step 3 | ratio of gains at steps 2 / 3 |
+|---|---|---|---|---|
+| re-anchor minSR s1: fitted-amp. first sign | 2.291e-5 | 1.378e-5 | 1.126e-5 | **0.95 / 0.92** |
+| same, exact-amp. first sign | 1.929e-5 | 1.347e-5 | 1.055e-5 | |
+| stage-2 G_3: fitted-amp. first sign | 1.247e-5 | 9.27e-6 | 7.52e-6 | **1.02 / 0.98** |
+| same, exact-amp. first sign | 1.222e-5 | 9.32e-6 | 7.45e-6 | |
+
+<H> and E_FN side by side. Every E_FN here is the guide's own fixed-node energy, per site, minus E0.
+
+| guide | <H> | E_FN |
+|---|---|---|
+| psi_P (start) | 1.319e-4 | 1.02e-4 |
+| exact k = 1 target (one hop of psi_P) | 2.62e-5 | 1.95e-5 |
+| exact k = 2 target from G_2 | 1.58e-5 | 1.26e-5 |
+| stage-2 seed 0, it 1..4 | 4.34 / 2.50 / 2.06 / 1.96e-5 | 2.94 / 1.89 / 1.58 / 1.49e-5 |
+| stage-2 seed 1, it 1..4 | 4.27 / 2.53 / 2.14 / 2.05e-5 | 2.92 / 1.90 / 1.64 / 1.57e-5 |
+| re-anchor minSR s0 / s1 / Adam (k = 1) | 1.467 / 1.446 / 1.422e-4 | 9.26 / 9.24 / 9.74e-5 |
+| RBM+PP | 4.47e-5 | |
+
+## Readings
+- **Step 1 fails by the pre-registered bar, but the absolute numbers are small.**
+  - With the exact amplitude as FN guide, the next sign step gains only 2-5e-7 from the k = 1 target and 3.5-3.9e-7
+    from the k = 2 target.
+  - The fitted amplitude costs 1.3-4.2e-6 for the re-anchored ViTs, but only 0.4-2.6e-7 for the stage-2 guides.
+- **Sign errors from imperfect amplitudes do not accumulate if an exact FN amplitude step follows.** At steps 2-3
+  both chains agree within 2-8%.
+- **The lattice E_FN of a guide depends strongly on its amplitude.** Same sign s_1:
+  - 1.95e-5 with the exact target amplitude;
+  - 2.94e-5 with stage-2 G_2;
+  - 9.2-9.7e-5 with the re-anchored ViTs.
+  - Cause: the wall term sum_violating |H| a(y)/a(x) uses the amplitude at the nodes, i.e. on rare configurations.
+- So the rare-region amplitude problem is NOT irrelevant for an FN-reported energy, unless the reported E_FN comes
+  from an amplitude that is itself the FN solution (self-consistent FN).
+- With exact FN amplitudes the sign chain reaches 7.45e-6 after three steps from the k = 2 state. That is a table
+  result (it needs phi_FN as the next guide).

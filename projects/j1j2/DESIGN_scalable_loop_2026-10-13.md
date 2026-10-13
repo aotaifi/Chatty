@@ -118,7 +118,8 @@ zero-noise limit of "fitting to walkers". For a_{k+1} = a_k e^u define
 
     D(x) = d_FN(x) - E_FN     (d_FN = H_xx + V(x), the FN diagonal including the wall term of guide a_k)
     S_u(x) = sum_{kept y} |H_xy| (a_k(y)/a_k(x)) e^{u(y) - u(x)}
-    r_u(x) = 1 - S_u(x)/D(x)  (or the log form log D - log S_u)
+    r_u(x) = D(x) - S_u(x)    (additive form; corrected per the consultant, section 6: the normalised forms
+                               1 - S_u/D and log D - log S_u do not add over independent blocks)
 
 and minimise the sum of r_u(x)^2 over walker snapshots x (with all their kept edges), using robust_fit.
 
@@ -143,7 +144,8 @@ Properties:
 - **Decorrelation.** Thin by Delta beta >= the autocorrelation time, measured at 6x6.
 - **E_FN error.** It is about 3e-5/site from the harvest run at 8x8. The sensitivity is measured in check (b). If it
   matters, treat E as a free parameter (centred residual = fixed-sign variance minimisation).
-- **Size.** About 3e4 decorrelated snapshots x ~145 edges = 4e6 residual terms. The SI fits used 1e4-6e4 samples with
+- **Size.** About 3e4 decorrelated snapshots, i.e. 3e4 summed equations (one per snapshot, each a sum over ~145
+  edges; not 4e6 independent constraints, errors on edges can compensate). The SI fits used 1e4-6e4 samples with
   their neighbours.
 
 **2.3 Cost, and how this composes with the re-base.** The residual at x needs a_k on the one hop of x. Every DMC step
@@ -210,7 +212,8 @@ Re-base:
 - **Pass (local advantage visible at 8x8):**
   - from Marshall, C_w gain >= 1.5 x G gain, with the paired difference at > 2 SE;
   - from s_V, the cross-fitted C_w gain is < 0 at > 2 SE (G: +2.1(2.6)e-6).
-- If (a0) predicts N_1/2 > 64, a null is reported as "expected at this N", not as a failure.
+- (Withdrawn after the consultant's critique, section 6: a product-block N_1/2 does not predict the coupled crossover,
+  so an 8x8 null is not 'expected'.)
 - Also report what fraction of the high-E_L excess lies in one 4x4 window. This tests the "local defect" premise.
 
 **(b) 6x6 amplitude from FN walkers vs the exact phi (sec.fn_solve).**
@@ -376,3 +379,57 @@ Two refinements:
     the weight.
   - Exact 6x6 test: share >= 0.7 at k = 1..3 with the same machinery. About 3 slice-h.
   - This needs a PI decision; it was not part of the approved test.
+
+
+## 6. Consultant critique and response (Codex, results/consult/codex_2026-10-13_answer.md)
+
+**(1) Lanczos dilution is M^(-1/2), not 1/M.** For M independent blocks, the optimised one-step Lanczos gain per
+site falls as M^(-1/2); a fixed alpha gives M^(-1).
+- Accepted. Section 1.2 only claims that the gain goes to zero. The "~1/M" in the consult post is corrected to
+  M^(-1/2) for optimised Lanczos.
+- The slow M^(-1/2) fits the measured fixed fraction from 16 to 64 sites. It makes Lanczos a stronger control at
+  accessible sizes.
+- The scaling of the sign-only threshold is not known; (a0) measures it.
+
+**(2) Component parity is not derived.** Two negative factors whose marked windows merge give one component, which
+reverses the parity. Also, e_b depends on distant spins through the amplitude ratios.
+- Accepted. Only partition parity is derived (1.2). C_w is a heuristic.
+- D2a/FB-1 support the second point: at 6x6 the exact ground state's pair interactions are O(1) out to the largest
+  distance, so geometric windows do not localise the information.
+- Added tests:
+  - deliberately inserted one- and two-defect sign patterns (on |psi0|, in 4x4 copies and in 6x6), with the
+    separation swept through the merging distance, scored by energy-weighted relative-sign errors;
+  - fixed-tiling partition parity kept as the controlled baseline on unreduced configurations (4x4 full space and
+    copies), not dropped for orbit-table convenience;
+  - agreement between w and w+1 removed as evidence.
+
+**(3) FN residual loss.**
+- (a) D - S_u is additive over blocks; the normalised forms are not, and they hide a local defect at O(1/M).
+  Accepted and corrected in 2.1: use D - S_u.
+- (b) One snapshot gives one summed equation, not one per edge. Accepted and corrected in 2.2. Mitigations: also
+  impose the equation at sampled neighbours (two hops), and keep a per-edge anchor (CNCE) as a diagnostic.
+- (c) Deterministic residuals still carry sampling, E_FN, approximation and optimisation errors. Accepted.
+- (d) The walker-weighted centred residual is not the quantum variance. Accepted; it is renamed "residual least
+  squares under the walker measure".
+
+**(4) Decoupled copies are an algebraic test, not a crossover predictor.** Accepted.
+- The "8x8 null expected" reading is withdrawn.
+- Added: couple two 4x4 blocks continuously into a 4x8 with inter-block coupling lambda in [0, 1]. The exact
+  symmetric sector is about 1e7 orbits, the same scale as 6x6.
+- Re-optimise every method at each lambda and M. Report global sign-only, full Lanczos and compressed updates
+  separately.
+
+**(5) Other points, all accepted.**
+- "Non-increasing within 2 sigma" allows cumulative drift: use an untouched final evaluation set, and select
+  thresholds only on separate data.
+- Calibrate injected E_FN errors to each harvest's actual SE.
+- Validate the sign net separately from its labels.
+- Report structure factors and dimer correlations alongside energies.
+- Run sign-only / amplitude-only / full-loop ablations.
+
+**Where the evidence now stands (6x6, this session).**
+- Compression is the central problem; the consultant agrees.
+- Fixed-radius hop-feature increments are information-limited (D1: 0.02 vs 0.99).
+- Spin-only re-anchoring is tail-limited (share -0.10 to -0.14; 0.91 recoverable with the tail exact).
+- A guide's own lattice E_FN is amplitude-dominated at the nodes (sign-channel check).
+- The approved next test is the hybrid: re-anchored ViT plus one non-stacked one-hop correction net.

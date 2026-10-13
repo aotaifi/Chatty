@@ -154,3 +154,16 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
 - The DMC code reproduces the exact FN energy after the population-control extrapolation; the bias follows b/M with
   b proportional to the guide's variance. For the 8x8 psi_P guide (variance 74x smaller than G1) the predicted bias at
   M = 512 is ~2.5e-7 per site.
+
+## Amendment 4 (2026-10-13 20:45, before the run): late-time psi_1 samples for the extrapolation
+- Observation (from existing data, `README.md` step 2): the extrapolated E0 depends on which psi_1 samples are used:
+  all 10240 -0.498988, sweep >= 12 (5120) -0.498966, latest 2048 -0.498947. The review found no resolved relaxation of
+  E_1 (T6: +1.8(3.4)e-5), but the extrapolation also uses sigma^2_1, and the trend is in the direction that would
+  increase the tension with Hu.
+- Run (cost ~1.2 GPU-h on an RTX 2080 Ti, reviewed code rv_late.py unchanged): continue the 1024 chains of review job
+  D1 (not continued so far) by 40 psi_P sweeps + 4 delayed-acceptance sweeps on |psi_1|^2, then exact E_L1 for all
+  chains. Same protocol as the review's T6 (L2, L3).
+- Reporting rule (fixed now): quote the extrapolation with (i) all samples and (ii) late samples only (L2, L3 and the
+  new L1; ~3072 samples, >= 80 sweeps after the random start). If (ii) - (i) > 2 sigma (bootstrap of the difference by
+  chains), (ii) is the primary value; otherwise (i) is primary and (ii) is quoted as the conservative value. The Hu
+  tension rule of E1 is applied to the primary value.

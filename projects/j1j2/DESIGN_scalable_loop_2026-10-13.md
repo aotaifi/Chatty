@@ -446,7 +446,8 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
   is neither local (D2) nor predictable from the inner ones.
 - **Consequence.** A loop iteration costs one extra hop, as a Lanczos step does. The constant-hop claim does not
   hold at 6x6.
-- **What survives.** At equal hops the hybrid k = 1 guide is the best one-hop guide we have:
-  - <H> 3.01e-5 and E_FN 2.17e-5, against psi_P + 1 Lanczos at 2.55e-5 (<H>) and 1.89e-5 (E_FN);
-  - at two hops it gives 1.40e-5 vs psi_P + 2 Lanczos 8.6e-6.
+- **What survives. Correction:** the hybrid k = 1 guide is NOT the best one-hop guide.
+  - psi_P + 1 Lanczos is better at one hop (<H> 2.55e-5, E_FN 1.89e-5 vs 3.01e-5 / 2.17e-5).
+  - So is the stage-2 k = 4 guide (<H> 2.0e-5).
+  - At two hops: hybrid + 1 Lanczos 1.40e-5 vs psi_P + 2 Lanczos 8.6e-6.
 - So the fallback (cap the depth, Lanczos polish) remains in force.

@@ -637,3 +637,14 @@ For the small-net fits, normalisation is now the default in `robust_fit` (D1: 0.
   - the fp32 floor.
 
 **Budget:** <= 4 slice-h (7 jobs x ~0.55 h).
+
+#### Amendment RA-1 (2026-10-13 10:52, after the first 20 minSR steps of jobs 17174449/50, before any evaluation)
+- **Observation.** The minSR direction predicted rms changes of log A of 2.7-20 on its own batch, against a trust
+  radius of 0.016. So every step was cut to 0-1% (own loss 6.34e-4 -> 5.80e-4 in 20 steps), while lam fell.
+- **Cause.** The edge loss leaves the common mode of each sampled star (x and its 8 neighbours) free. The
+  minimum-norm sample-space solution uses it.
+- **Fix.** P2's value rows: sqrt(0.1 iw/B)(e_x - mean), with residual e = log A - la_t. This is a Tikhonov term in
+  function space, in the target metric. Steps are accepted on the same combined objective, on the fixed validation
+  set. The trust radius is measured on the x samples.
+- The two minSR jobs were cancelled at 6 min; the Adam control (unaffected) continues.
+- Held-out acceptance, pass rule and budget are unchanged.

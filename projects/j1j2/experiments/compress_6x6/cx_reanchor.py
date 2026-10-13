@@ -161,7 +161,19 @@ def loss_of(flat, bd, B_):
     return edge_loss(S, tx, ty, w, iw, B_)
 
 
+LAMV = SPEC.get('lam_v', 0.1)                    # amendment RA-1: value rows (P2 form) for the minSR arm
+
+
+def loss_full(flat, bd, B_):
+    """edge loss + LAMV * iw-weighted variance of e = log A - la_t on the x samples (the minSR objective)."""
+    x, y, tx, ty, w, iw = bd
+    S = logA(flat, bits(jnp.concatenate([x, y.reshape(-1)]))).astype(f64)
+    ex = S[:B_] - tx; iwn = iw / jnp.mean(iw); m = jnp.mean(iwn * ex)
+    return edge_loss(S, tx, ty, w, iw, B_) + LAMV * (jnp.mean(iwn * ex * ex) - m * m)
+
+
 lval_j = jax.jit(lambda fl, bd: loss_of(fl, bd, B_VAL))
+lfull_j = jax.jit(lambda fl, bd: loss_full(fl, bd, B_VAL))
 bv_tr = make_batch(CDF_TR, LIW_TR, True, B_VAL); bv_te = make_batch(CDF_TE, LIW_TE, False, B_VAL)
 VB_TR = [bv_tr(jax.random.PRNGKey(9000 + i)) for i in range(NVAL)]
 VB_TE = [bv_te(jax.random.PRNGKey(9500 + i)) for i in range(NVAL)]
@@ -169,6 +181,10 @@ VB_TE = [bv_te(jax.random.PRNGKey(9500 + i)) for i in range(NVAL)]
 
 def lval(fl, VB):
     return float(np.mean([float(lval_j(fl, bd)) for bd in VB]))
+
+
+def lfull(fl, VB):
+    return float(np.mean([float(lfull_j(fl, bd)) for bd in VB]))
 
 
 # ---------------------------------------------------------------- fp32 precision floor (lead's request)
@@ -225,24 +241,29 @@ if OPT == 'minsr':
         ex = S[:B_FIT] - tx; ey = S[B_FIT:].reshape(B_FIT, KB) - ty
         iwn = iw / jnp.mean(iw)
         ce = jnp.sqrt(0.5 * iwn[:, None] * w / (B_FIT * N))
-        r = (ce * (ex[:, None] - ey)).reshape(-1)
+        m = jnp.mean(iwn * ex); cv = jnp.sqrt(LAMV * iwn / B_FIT)
+        r = jnp.concatenate([cv * (ex - m), (ce * (ex[:, None] - ey)).reshape(-1)])
         G = jnp.concatenate([jac_rows(fl, X[i:i + JCH]) for i in range(0, X.shape[0], JCH)])
-        Je = (ce[:, :, None].astype(jnp.float32) * (G[:B_FIT][:, None, :] - G[B_FIT:].reshape(B_FIT, KB, -1))).reshape(B_FIT * KB, -1)
-        Tm = (Je @ Je.T).astype(f64)
+        Gx = G[:B_FIT]; gbar = jnp.mean(iwn[:, None].astype(jnp.float32) * Gx, 0)
+        Jv = cv[:, None].astype(jnp.float32) * (Gx - gbar[None])
+        Je = (ce[:, :, None].astype(jnp.float32) * (Gx[:, None, :] - G[B_FIT:].reshape(B_FIT, KB, -1))).reshape(B_FIT * KB, -1)
+        del G
+        Jm = jnp.concatenate([Jv, Je]); del Jv, Je
+        Tm = (Jm @ Jm.T).astype(f64)
         lam = lam_rel * jnp.trace(Tm) / Tm.shape[0]
         a = jnp.linalg.solve(Tm + lam * jnp.eye(Tm.shape[0]), r)
-        dlt = -(Je.T @ a.astype(jnp.float32)); del Je, Tm
-        pc = (G @ dlt).astype(f64); pc = pc - jnp.mean(pc)
-        prms = float(jnp.sqrt(jnp.mean(pc ** 2))); del G
+        dlt = -(Jm.T @ a.astype(jnp.float32)); del Jm, Tm
+        pc = (Gx @ dlt).astype(f64); pc = pc - jnp.sum(iwn * pc) / B_FIT          # change of log A on the x samples
+        prms = float(jnp.sqrt(jnp.sum(iwn * pc ** 2) / B_FIT)); del Gx
         sc_ = min(1.0, tau / max(prms, 1e-30))
         return dlt * sc_, float(jnp.sum(r * r)), prms, sc_
 
-    lam_rel = SPEC.get('lam0', 1e-2); L_cur = L0_tr; n = 0
+    lam_rel = SPEC.get('lam0', 1e-2); L_cur = lfull(flat0, VB_TR); n = 0
     while time.time() - t0 < FIT_SEC:
         n += 1; key, kk = jax.random.split(key)
         dlt, rr, prms, sc_ = gn_direction(flat, bfit(kk), lam_rel)
         cand = flat + dlt
-        L_new = lval(cand, VB_TR)
+        L_new = lfull(cand, VB_TR)
         ok = bool(np.isfinite(L_new) and L_new < L_cur)
         if ok:
             flat = cand; L_cur = L_new; lam_rel = max(lam_rel / 2, 1e-6)
@@ -251,8 +272,8 @@ if OPT == 'minsr':
         hist.append(dict(step=n, ok=ok, lam_rel=lam_rel, L=L_cur, L_try=L_new, pred_rms=prms, trust_scale=sc_,
                          dnorm=float(jnp.linalg.norm(dlt))))
         if n % 10 == 0:
-            curve.append(dict(t=time.time() - t0, step=n, own=L_cur, heldout=lval(flat, VB_TE)))
-            log(f'  minsr {n}: acc {np.mean([q["ok"] for q in hist[-10:]]):.1f} lam_rel {lam_rel:.1e} own {L_cur:.4e} '
+            curve.append(dict(t=time.time() - t0, step=n, own=lval(flat, VB_TR), own_full=L_cur, heldout=lval(flat, VB_TE)))
+            log(f'  minsr {n}: acc {np.mean([q["ok"] for q in hist[-10:]]):.1f} lam_rel {lam_rel:.1e} own {curve[-1]["own"]:.4e} '
                 f'held-out {curve[-1]["heldout"]:.4e} pred-rms {prms:.2e} trust {sc_:.2f}')
             res['fit'] = dict(curve=curve, hist=hist); dump(F, res)
 else:

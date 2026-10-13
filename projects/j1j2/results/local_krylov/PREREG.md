@@ -134,3 +134,8 @@ single-copy energy distribution (sd 0.24). Fix: h <= sd_e/64 as well (P48s M = 2
 8e-6). Lc is rerun for P45s, P48s, P48f, F3, F4 with the fixed grid (MAR's grid is unchanged by the fix); the
 alpha search uses a 13-point scan (0.2-5 x the L optimum) plus 16 golden steps. All Lc checks are redone. The
 first-pass Lc numbers are superseded.
+
+**F1-A2 (speed, no change of target):** in the Lc band sums, edges and configurations whose energies fall in the same
+grid bin are aggregated (bin value = mean of its members), at the same resolution h as the grid of the other copies'
+sum. Checked before use: M = 2 vs brute force 4e-6 (P48s) and 2.3e-5 (MAR) relative; F4 at M = 4 equal to the
+non-aggregated value to 3e-5. Lc rerun for all six guides with A1 + A2; the checks script is rerun as well.

@@ -129,6 +129,18 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - Step-size test stage 1 (2026-10-12, cx_step, exact tables): a clipped-Lanczos target d = log max(|1+alpha(E_L-E)|, 0.3), sign sgn(f), gives per iteration what a Lanczos step gives: 2.62e-5, 1.16e-5, 7.06e-6, 4.91e-6 after k = 1..4 (vs current SI target 9.2e-5 ... 4.4e-5; table loop 8 its 3.16e-5). Pre-registered bars: k=1,2 pass, k=3 fails because the bar used the joint 3-step polynomial (exact iterated Lanczos also fails it). Roughness proxy fails only at k=1 (first step flips 24% of configs). The SI target is over-damped by a factor that grows with N (log difference of extensive quantities). Next: stage 2, network loop with the clipped-Lanczos target.
 - Long table run (cx_steplong, 16 exact iterations, no networks): new target (clipped Lanczos) eps = 1.2e-6 relative after 16 iterations (6.1e-7/site), still falling ~12%/iteration, no stall; exact one-step Lanczos 1.17e-6; old target 1.5e-5. For scale: DMRG(8192) 1e-5, RBM+PP 9e-5. This is the ideal (exact tables); the network loop must follow it (stage 2 running).
 - DECISION 2026-10-13 (PI + lead, conceptual, size consistency): the loop's engine must act block by block (product over independent blocks), else its per-site gain fades with N. Global-alpha Lanczos / clipped Lanczos: fails -> final polish only, not the engine (6x6/8x8 results with it are diagnostics of the write-back machinery, not the method). Local log step e^{-tau(E_L-E)} + fit = SR-VMC, no edge. Real FN projection: size-consistent and reaches tau -> infinity for the given signs in one shot = the loop's edge; the one-hop SI target is a non-size-consistent stand-in (1/(1+W)) -> replace by fitting the network to FN walkers. Krylov sign step with one global threshold on E_L fails (local sign signal O(1) buried under O(sqrt N) fluctuations). Open design problem: a local (patch-wise) sign update. Next: design with Opus partner + consultants before any run.
+- Step-size stage 2 (2026-10-13, cx_chop3, 2 seeds x 4 its, results/compress_6x6 'Step size, stage 2') - FAIL at the
+  pre-registered bar (share of the exact clipped-Lanczos step kept >= 0.7 every iteration): 0.84 / 0.66 / 0.31 / 0.09.
+  - k = 1 works: the callable guide reaches <H> 4.3e-5 in ONE iteration (round 4 needed 8). This needs asinh(E_L) as
+    a feature in both nets (write-back capture 0.25 -> 0.84).
+  - Plateau ~2.0e-5 at k = 4. At 1 hop it beats psi_P + 1 Lanczos step (2.55e-5); at 2-3 hops it ties or is 1.25x worse
+    than psi_P + 2-3 Lanczos steps.
+  - Cause: the write-back is near-exact from k = 2 (capture ~1.0). The one-hop-of-psi_P re-base has a fixed absolute
+    error (~0.013 bond-rms) while the increments shrink, so retention falls to 0.09.
+  - Sign-matched re-base features: refuted (0.55 at k = 2). The increments need two-hop information of psi_P (the
+    guide's own neighbour ratios).
+  - Next: two-hop fixed anchor (G_1's V, W, E_L) for the re-base, or k <= 2 hop guides; the decisive scaling test is
+    k = 1 at 8x8.
 - Lanczos-polish bump after loop iteration 1 (cx_l1bump, exact, table-loop it 1): the hard Krylov sign flip (18% of orbit reps flipped) raises the energy variance and makes the 1-step polish WORSE (ViT amp + Krylov sign: <H> 1.27e-4, +L1 3.6e-5 vs ViT+L1 2.55e-5), while the written-back amplitude alone helps (new amp + old sign: +L1 2.22e-5). Combined (it 1): +L1 3.03e-5. Later write-backs shrink amplitudes near the new nodes and recover. Idea to test: damped flip (scale down the amplitude of flipped configurations).
 - Next: (a) raise re-base retention (the bottleneck), tighten acceptance to a fraction of the ideal step; (b) 8x8 with the loop + Lanczos at equal hops, where the hop count, not k, sets the cost.
 

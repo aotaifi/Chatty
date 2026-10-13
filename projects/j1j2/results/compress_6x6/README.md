@@ -433,3 +433,126 @@ reference ran on a full A40 (0.01 h). Total 6.1 slice-h (~3 A40-equivalent).
 - The fair add-on comparison at 8x8 is "guide after k iterations + p Lanczos" vs "psi_P + (p+1) Lanczos", with the
   calibrated FN referee.
 - Code for the 8x8 worker: `cx_chop2.py` + `robust_fit` / `fit_edge` / `tail_proposal` / `FeatNet` in `cx_lib.py`.
+
+# Step size, stage 2 (2026-10-13): callable loop with the clipped-Lanczos target
+Pre-registration and amendments S2-1 and S2-2: `experiments/compress_6x6/README.md` ("Step size"). Code `cx_chop3.py`.
+Figure `fig_step2_6x6.png/.pdf` (`cx_figure5.py`).
+Raw files:
+- `runs/cx_chop3_s{0,1}.json`: main arm;
+- `runs/cx_chop3_pt_{f3,f4,r60k}.json`: k = 1 pre-tests;
+- `runs/cx_chop3_prev_s0.json`: sign-matched re-base test.
+
+## What was run, step by step (exact 6x6 tables, J2/J1 = 0.5)
+1. **Start.** The guide is psi_P, the symmetrised ViT: <H> - E0 = 1.319e-4 per site.
+2. **Target, each iteration k.** From the current callable guide G_k, with the sign s_k kept as a table:
+   - the exact one-hop quantities V, W and the local energy E_L = H_xx + V - W;
+   - the clipped-Lanczos factor f = 1 + alpha (E_L - E). Its step alpha is energy-optimal, found exactly on the tables
+     before any fit;
+   - the target log-amplitude change d = log max(|f|, 0.3) and the new sign s_k sgn(f).
+3. **Write-back.**
+   - A 37k-parameter FEAT CNN sees the spins and G_k's own log a, V, W and asinh-compressed E_L (amendment S2-1).
+   - It is trained to d with the edge (Dirichlet) loss in the metric of the target state. Adam, 20k steps, lr 3e-3,
+     gradient clipping, 20% of configurations held out. A fit is accepted only if its held-out loss beats "no change".
+   - Result: la_w = G_k + d_fit.
+4. **Residual re-base.**
+   - A second 37k net h_k sees only one hop of psi_P: log a_P, V_P, W_P and asinh E_L,P.
+   - It is fit to the increment la_w - G_k in the metric of la_w. Adam, lr 1e-3, 20k steps (k <= 2) or 40k (k >= 3).
+   - The new callable guide is G_{k+1} = G_k + h_k. It costs one hop of psi_P plus k small nets.
+5. **Exact measurements, every iteration:**
+   - <H> of the exact target, of la_w and of G_{k+1};
+   - capture = (write-back gain) / (exact gain);
+   - retention = (gain after re-base) / (write-back gain);
+   - share = capture x retention;
+   - E_FN (fixed-node energy, a variational bound);
+   - G_{k+1} + 1 and + 2 exact Lanczos steps;
+   - sign error w_s (ground-state weight on wrong signs);
+   - held-out loss curves.
+6. Two seeds x 4 iterations.
+
+## Result
+**One line: FAIL at the pre-registered bar (share >= 0.70 at every k). k = 1 passes (0.84), k = 2-4 do not (0.66, 0.31,
+0.09). The write-back is near-exact from k = 2 on; the gain is lost in the re-base, whose error stays at a fixed absolute
+size (~0.013 bond-rms) while the increments shrink.**
+
+| k | alpha | flips | capture s0/s1 | retention s0/s1 | share s0/s1 (mean) | <H> s0/s1 | stage-1 exact | E_FN s0/s1 | w_s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | -0.156 | 0.24 | 0.84/0.84 | 1.00/1.00 | 0.84/0.84 (**0.84**) | 4.34/4.27e-5 | 2.62e-5 | 2.94/2.92e-5 | 7.2e-6 |
+| 2 | -0.075 | 0.09 | 0.97/0.96 | 0.69/0.67 | 0.67/0.65 (**0.66**) | 2.50/2.53e-5 | 1.16e-5 | 1.89/1.91e-5 | 4.7e-6 |
+| 3 | -0.104 | 0.11 | 1.00/1.00 | 0.33/0.29 | 0.33/0.29 (**0.31**) | 2.06/2.14e-5 | 7.06e-6 | 1.58/1.64e-5 | 3.3e-6 |
+| 4 | -0.099 | 0.13 | 1.01/1.02 | 0.09/0.08 | 0.09/0.08 (**0.09**) | 1.96/2.05e-5 | 4.91e-6 | 1.49/1.57e-5 | 2.4e-6 |
+
+- **Secondary measures.** Trajectory share (start - <H>) / (start - stage 1): 0.84 / 0.89 / 0.89 / 0.88. Error ratio
+  to stage 1: 1.6 / 2.2 / 3.0 / 4.1, growing.
+- **Comparison.** Against round 4 (same machinery, semi-implicit target), one iteration now does what 8 iterations did
+  there: <H> 4.3e-5 after k = 1, against 4.2-5.1e-5 after k = 8. Iterations 2-4 add little: the loop plateaus at
+  ~2.0e-5.
+- **Equal hop count.** The guide costs 1 hop of psi_P; each Lanczos step adds 1.
+
+| hops | guide k = 4 (+0 / +1 / +2 Lanczos), s0 / s1 | psi_P + p Lanczos |
+|---|---|---|
+| 1 | 1.96 / 2.05e-5 | 2.55e-5 |
+| 2 | 0.92 / 0.98e-5 | 0.86e-5 |
+| 3 | 4.64 / 4.94e-6 | 3.82e-6 |
+
+  At 1 hop the callable guide beats psi_P + one Lanczos step by 1.2-1.3x. This is the first callable guide to do
+  so (round 4: 4.2-5.1e-5). At 2 hops it ties. At 3 hops Lanczos is 1.2-1.3x better.
+
+### Where the gain is lost (diagnosis)
+- **k = 1, write-back.**
+  - With (log a, V, W) only: capture 0.25. The held-out loss floors at 2.6e-4 from 12k steps, a representation limit:
+    d is a sharp function of E_L = D0 + V - W, and the net sees only log V and log W.
+  - Adding asinh(E_L) as a column: capture 0.84 (loss 4.6e-5).
+  - In the 60k control run the same arm reached held-out loss 7e-8 and capture 1.000. The remaining 0.16 at k = 1 is
+    therefore optimisation variance between runs, not a limit.
+- **k = 1, re-base.**
+  - Without E_L,P: retention 0.57.
+  - With E_L,P: retention 1.00 (loss 2e-4 of its start).
+  - The 60k-step control without E_L lowered the loss 8x, but the guide blew up to <H> 0.61 per site: an error of
+    +20.7 in log-amplitude on configurations that the target almost never samples, which carry 80% of the new guide's
+    weight. A guard against this was added for later runs.
+- **k >= 2, re-base (the plateau).**
+  - The write-back is near-exact (capture 0.96-1.02, error bond-rms 0.006).
+  - The re-base's held-out loss floors: final / start 0.35, 0.74, 0.95 at k = 2, 3, 4, flat over the last half of
+    training.
+  - Its error has a FIXED absolute size: bond-rms 0.012-0.014 at every k >= 2, while the increment itself shrinks
+    (bond-rms roughness 0.028, 0.020, 0.018). So retention falls toward 0.
+  - The error is spread over the bulk, not tail blow-ups: < 3e-7 of the weight sits on configurations with error > 1.
+- **Which information is missing.**
+  - Hypothesis H1 (amendment S2-2): the re-base features split psi_P's neighbours by psi_P's own sign. 24% + 9% of
+    configurations have flipped by k = 2.
+  - Test: the same features with the neighbours split by the guide's current sign. Retention at k = 2 fell to
+    0.55 (main 0.69). **H1 refuted.** The run was stopped after k = 2, because the pre-registered reading was
+    already decided.
+  - Remaining cause, consistent with round 3's loss floor (~5e-6 there):
+    - d_k depends on the guide's own amplitude ratios at the neighbours, G_k(y) - G_k(x). These include the earlier
+      increments h_j(y).
+    - The h_j are functions of psi_P's one-hop features at y, i.e. two-hop information of psi_P that a
+      one-hop-of-psi_P re-base cannot see.
+  - The 4-feature write-back on G_k's own one-hop quantities captures ~1.0. So the information IS in one hop of
+    G_k, i.e. two hops of psi_P.
+
+### Convergence evidence
+- Write-back losses flatten by 12-16k of 20k steps. Held-out / training loss ratio 1.0-1.3: no overfitting.
+- Re-base losses at k >= 3 are flat for the last 20k of 40k steps.
+- Every fit was accepted on the first try. No stalls and no blow-ups in the main arm; the guard never fired in S2-2.
+
+## Compute
+24 GB A40 slices:
+- smoke 0.20 h;
+- pre-tests 0.47 + 0.44 + 0.28 h;
+- main arm 0.87 + 0.94 h;
+- S2-2 test 0.93 h.
+
+Total 4.1 slice-h (budget 8).
+
+## Open problems / next
+1. **Two-hop re-base.** Give h_k the one-hop quantities of a FIXED two-hop anchor, e.g. G_1 (V_1, W_1, E_L,1). The
+   cost is constant in k (two hops of psi_P) and would test the remaining cause directly. Alternatively, stop re-basing
+   and accept k-hop guides for small k (k <= 2: guide + 1 Lanczos already ties psi_P + 2 Lanczos).
+2. **k = 1 write-back optimisation variance** (capture 0.84 vs 1.00 at identical settings): lower lr or several
+   restarts selected by held-out loss.
+3. **The blow-up failure mode** of edge-loss fits on unsampled configurations (seen once at 60k steps) needs a sampled
+   guard at scale; the exact-table guard used here is not available there.
+4. **Scaling claim.** At 6x6 a single clipped-Lanczos iteration gives a 1-hop callable guide better than psi_P + 1
+   Lanczos. Whether this survives at 8x8 (where the SI target was 3.6x over-damped) is the decisive next test, and
+   it needs only k = 1.

@@ -483,3 +483,13 @@ Reading:
   i.e. two hops of psi_P.
 - No rise refutes H1.
 - The pass bar is unchanged. A pass of this arm would need seed 1 before any claim.
+
+### Step size: stage-2 result (2026-10-13; details in `results/compress_6x6/README.md`)
+- **FAIL** against the pre-registered bar. Mean share per iteration 0.84 / 0.66 / 0.31 / 0.09 (bar 0.70 at every k).
+- k = 1 passes. One iteration gives <H> 4.3e-5, against 4.2-5.1e-5 after 8 round-4 iterations.
+- The write-back is near-exact from k = 2 on (capture 0.96-1.02).
+- The re-base on one hop of psi_P has a fixed absolute error (~0.013 bond-rms), so retention falls to 0.09 and the
+  loop plateaus at ~2.0e-5.
+- Amendment S2-2 (sign-matched re-base features) is refuted: retention 0.55 at k = 2.
+- Remaining cause: the increments need two-hop information of psi_P, i.e. the guide's own neighbours.
+- At 1 hop the k = 4 guide (2.0e-5) beats psi_P + 1 Lanczos step (2.55e-5). At 2 hops it ties psi_P + 2 Lanczos steps.

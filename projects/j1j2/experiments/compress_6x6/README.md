@@ -793,3 +793,43 @@ Measured:
 - In between: report, and decide the training test with the lead.
 
 Budget ~0.3 slice-h.
+
+## Route B: a spin-only tail representation (pre-registered 2026-10-13, PI decision; before any run; code `cx_tailnet.py`; <= 3 slice-h)
+**Why spin-only nets fail on a^2 < 1e-9 (design reason, before compute).**
+1. **The precision required there (0.003 in bond log-ratio) is below the base's own error.** The ViT is off by
+   0.05-0.5 in those decades (P2). The residual to learn is therefore the increment plus the base's tail error.
+2. **The tail target has an inherited structure.** For a rare x the step gives la_new(x) ~ log sum_y |H_xy| a(y), a
+   log-sum-exp over the ~70 neighbours' amplitudes. A spin-only net must emulate the base at all neighbours
+   implicitly, which is a different and harder function class than the base itself. This is why one-hop inputs
+   reached 89% while spin-only students stayed at 20-31% (writeback_tail).
+3. **The data per orbit is tiny.** 7.7% of the weight is spread over ~1e7 orbits, so generalisation must come from
+   structure.
+   - Learnability is shown with one-hop inputs (held-out = train), not with spins alone.
+   - fp32 is not the limit (floor 7e-6 edge rms).
+4. **What could make it work.**
+   - Give the tail net the neighbours' information at ZERO hop cost: the base's input gradient. One backward pass
+     gives a linearised log-ratio r^_b = sum_{i in b} (d la / d x_i)(-2 x_i) for every bond, and from it V^, W^, E^_L.
+   - Add capacity (C = 64).
+   - Use energy-matched sampling (1/2 |psi_t|^2 + 1/2 Dirichlet weight of the residual, i.e. the tail proposal).
+   - Literature: |psi|^alpha / overdispersed sampling for NQS gradients (arXiv:2507.05352) addresses sampling, not
+     tail representation. I found nothing on input-gradient features for NQS.
+
+**G0 (pre-test, about 10 min).** On 2048 samples of the target state and 2048 of the tail proposal: exact one-hop
+log-ratios of ViT_1 (the k = 1 re-anchored ViT, ra_ms_s1_k1) against the linearised r^_b; exact E_L of (ViT_1, s_1)
+against E^_L.
+- Gradient features are useful if corr(asinh E^_L, asinh E_L) >= 0.9 on the tail-proposal samples.
+- Otherwise arm TG is dropped.
+
+**T1 (iteration 1, exact tables).**
+- Additive tail net T on top of ViT_1: G = la_A + T, fit to the residual la_t1 - la_A (robust_fit: normalised,
+  energy-matched tail proposal, held-out acceptance, guard).
+- Arms:
+  - TS: spins + la_A, C = 64, 40k steps;
+  - TS32: same with C = 32, the capacity control;
+  - TG (only if G0 passes): + linearised (log V^, log W^, asinh E^_L), C = 32. This needs the input gradient on
+    all 15.8M orbits, about 50 min.
+- References: ViT alone -0.12; hybrid with exact one-hop inputs 0.963.
+- **Pass:** share >= 0.70 at iteration 1. Then iteration 2 of the full loop for the best passing arm (ViT
+  re-anchor + new tail net), pass >= 0.70, within the budget.
+- Otherwise: "inconclusive (cause: rare-configuration precision of spin-only inputs)", or a concrete cause if the
+  diagnostics locate one.

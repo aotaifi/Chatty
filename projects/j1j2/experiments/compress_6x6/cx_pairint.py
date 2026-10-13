@@ -38,7 +38,7 @@ res = dict(spec=SPEC, guides={})
 n = SPEC.get('n', 1024); CH = 64
 for gname in SPEC.get('guides', ['psi0', 'psiP']):
     la, s = G[gname]
-    p = np.asarray(sec.n * jnp.exp(2 * (la - jnp.max(la))), np.float64); p /= p.sum()
+    p = np.array(sec.n * jnp.exp(2 * (la - jnp.max(la))), np.float64); p = p / p.sum()
     idx = np.random.default_rng(11).choice(sec.D, size=n, p=p)
     acc = {k_: np.zeros(7) for k_ in dkeys}
     for c0 in range(0, n, CH):

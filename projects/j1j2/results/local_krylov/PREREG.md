@@ -126,3 +126,11 @@ interpolation between grid points; "> 65536" if never reached. Also reported: ra
 - Lc machinery with the clip set to 1e-12 equals the L closed form to 1e-6 relative (M = 1, 16).
 - Lc vs brute force: M = 1 exact (<= 1e-10), M = 2 explicit state (<= 1e-3 relative in the gain; grid).
 - Grid h halved at the M grid point nearest N_1/2: ratio changes by < 0.01 (K and Lc).
+
+**F1-A1 (amendment after a failed check; the first-pass Lc numbers had been seen):** the Lc grid failed two
+pre-registered checks for the low-variance guide P48s: M = 2 vs brute force 4.0e-3 relative (bar 1e-3), and the
+h-halving check at N_1/2 0.023 (bar 0.01). Cause: the band-sum grid (band width / 400) was coarse compared with the
+single-copy energy distribution (sd 0.24). Fix: h <= sd_e/64 as well (P48s M = 2 then agrees with brute force to
+8e-6). Lc is rerun for P45s, P48s, P48f, F3, F4 with the fixed grid (MAR's grid is unchanged by the fix); the
+alpha search uses a 13-point scan (0.2-5 x the L optimum) plus 16 golden steps. All Lc checks are redone. The
+first-pass Lc numbers are superseded.

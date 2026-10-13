@@ -464,3 +464,22 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
     through them.
 - The wrapper's linear inverse is well conditioned in the spectrum (1 + beta (eps - E) > 0 for beta = 0.108). The
   ill-conditioning is only in log space, at the new nodes.
+
+**5.8 Route B (spin-only tail representation) and locality vs J2 (2026-10-13).**
+- **Tail net: inconclusive, cause located.**
+  - Spin-only tail nets on top of the re-anchored ViT reduce their held-out loss by 4-5% (one-hop inputs: 88%) and
+    worsen the guide (share -0.23 / -0.25 at C = 64 / 32).
+  - The tail residual has an inherited, one-hop structure (log-sum over the neighbours' amplitudes) that spins alone
+    do not express.
+  - Input-gradient features are useless: a single exchange move is non-perturbative for the ViT (linearised
+    log-ratio error 3.2 rms, correlation with the exact E_L about 0).
+  - The only representation that works is one that includes the hop.
+- **Locality vs J2 (4x6 exact).** The double-swap interaction meets the locality bar at J2 = 0, is close at 0.3, and
+  fails at 0.4-0.6 (worst at 0.5).
+  - At 8x8, J2 = 0.5 (results/locality_8x8) it is NOT local either.
+- **Consequence for the loop.** At J2 ~ 0.5 every constant-cost fold-back tested fails for one physical reason: the
+  ground state's log-amplitude is non-additive at all accessible distances. So each loop iteration costs one extra
+  hop, as a Lanczos step does.
+- A light-cone loop could be viable in the weakly frustrated Neel regime (J2 <~ 0.3). That regime is of limited
+  interest (weak sign problem), but it is a clean scientific statement: the fold-back locality tracks the
+  frustration.

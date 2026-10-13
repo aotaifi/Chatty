@@ -860,3 +860,47 @@ Inheritance in the wrapped N*: share of each decade's weight where |beta (E_L - 
   factor and does not regenerate them.
 - So the wrapper cannot supply the tail that N failed to learn, and training N through it cannot down-weight N's
   tail. No training run (per the pre-registration).
+
+# Route B: spin-only tail representation (2026-10-13)
+Pre-registration: `experiments/compress_6x6/README.md` ("Route B"). Code `cx_tailnet.py`. Raw files:
+`runs/cx_tailnet_G0.json`, `runs/cx_tailnet_T1.json`. Compute: 1.0 slice-h (budget 3).
+
+## What was run
+1. **G0.** On 2048 target-state and 2048 tail-proposal samples, I compared the exact one-hop log-ratios of the
+   re-anchored ViT_1 with the input-gradient (linearised) ratios, and the exact local energy with the linearised
+   one.
+2. **T1.** An additive spin-only tail net on top of ViT_1, fit to the residual la_t1 - la_A:
+   - inputs: spins + the ViT's own log-amplitude, no hop;
+   - energy-matched tail sampling, normalised target, held-out acceptance, guard;
+   - C = 64 (TS) and C = 32 (TS32), 40k Adam steps each;
+   - exact evaluation of <H> and own E_FN.
+
+## Result
+**One line: inconclusive (cause: spin-only inputs cannot represent the one-hop structure of the tail residual).
+The tail nets reduce their held-out loss by only 4-5% (one-hop inputs: 88%) and make the guide worse (share -0.23 /
+-0.25). Input-gradient features carry no usable one-hop information (linearised log-ratios off by about 3.2 rms in
+every decade, correlation with the exact E_L about 0).**
+
+| arm | held-out loss start -> end (normalised) | share | <H> | own E_FN |
+|---|---|---|---|---|
+| ViT_1 alone | | -0.12 | 1.446e-4 | 9.24e-5 |
+| TS (spin-only tail net, C = 64) | 0.782 -> 0.751 | **-0.233** | 1.566e-4 | 9.61e-5 |
+| TS32 (C = 32) | 0.782 -> 0.741 | **-0.254** | 1.588e-4 | 9.56e-5 |
+| hybrid (same net, one exact hop of ViT_1 as inputs) | 0.782 -> 0.090 | 0.963 | 3.01e-5 | 2.17e-5 |
+
+| G0 | target-state samples | tail-proposal samples |
+|---|---|---|
+| rms (linearised - exact) bond log-ratio | 3.21 | 3.40 |
+| corr(asinh E^_L, asinh E_L) | -0.04 | 0.09 |
+| same, configurations with a^2 < 1e-9 | -0.10 | 0.11 |
+
+**Readings.**
+- **The cause is located.** Same machinery, same sampling, same target: with one-hop inputs the residual is learned
+  to a tenth of its loss; with spins alone it is barely touched, whatever the capacity.
+- The tail residual is a one-hop function (inheritance: a log-sum over the neighbours' amplitudes). A spin-only net
+  would have to emulate the base at all ~70 neighbours.
+- A single exchange move is far outside the linear regime of the ViT (log-ratio error 3.2), so input gradients do
+  not supply that information.
+- The tail errors per decade are unchanged from the ViT alone (0.09 at 1e-11, 0.2 at 1e-12, 0.9 at 1e-15).
+- Not proven conceptual: an architecture with an explicit neighbour-sum layer would represent the structure, but
+  such a layer IS a hop of the network.

@@ -49,3 +49,39 @@ target needs E_L to about 0.03 (alpha ~ 0.1 maps it to the 0.003 log-amplitude t
   psi_P.
 - So the constant-hop fold-back via a light cone is not viable at these sizes. The pre-registered fallback stays:
   cap the depth (<= 2 hops + Lanczos polish), and pay one hop per loop iteration where more depth is wanted.
+
+# Locality vs J2 (4x6 exact ground states, 2026-10-13)
+Pre-registration: `experiments/locality_8x8/README.md` ("Locality vs J2"). Code `ed_pairint.py`. Raw file:
+`ed_pairint_4x6.json`. CPU 2 min.
+
+## What was run
+- Exact ground state of the 4x6 torus (Sz = 0, 2.7e6 states) at J2 = 0, 0.3, 0.4, 0.5, 0.6.
+- For each: 2000 samples of |psi0|^2, all valid site-disjoint bond pairs, rms I and sign non-additivity by bond
+  distance.
+
+## Result
+**One line: the double-swap interaction is strongly J2-driven. Locality (pre-registered bar: rms I <= 0.10 and sign
+non-additivity <= 0.3% at distance >= 2.8) holds at J2 = 0 only. At J2 = 0.3 it is close (0.21 at distance 2.83,
+0.07-0.10 beyond), and it fails at J2 = 0.4-0.6, worst at 0.5.**
+
+| J2 | E0/N | d = 1 | 1.41 | 2 | 2.24 | 2.83 | 3 | 3.16 | sign non-additivity at d >= 2.8 |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | -0.6897 | 0.61 | 0.17 | 0.13 | 0.11 | **0.089** | **0.072** | **0.041** | 0 (Marshall) |
+| 0.3 | -0.5741 | 0.96 | 0.43 | 0.26 | 0.22 | 0.21 | 0.095 | 0.069 | 0.02% |
+| 0.4 | -0.5435 | 1.79 | 1.13 | 0.65 | 0.70 | 0.73 | 0.22 | 0.21 | 0.3-4.9% |
+| 0.5 | -0.5225 | 2.19 | 1.64 | 0.79 | 0.94 | 1.15 | 0.32 | 0.29 | 0.7-8.8% |
+| 0.6 | -0.5221 | 1.54 | 0.90 | 0.58 | 0.47 | 0.54 | 0.061 | 0.077 | 0.01-1.6% |
+| 6x6 exact, J2 = 0.5 (reference) | | 1.69 | 1.29 | 1.02 | 0.94 | 0.80 | 0.61 | 0.42 | 2.6-6.3% |
+
+Readings, per the pre-registration:
+- **"Locality returns at J2 <= 0":** J2 = 0 passes the bar. J2 = 0.3 misses at distance 2.83 (0.21).
+- **"Locality is J2-dependent":** at distance >= 2, J2 = 0 is 6-13x below J2 = 0.5.
+- The interaction peaks in the frustrated window 0.4-0.5 and falls again at 0.6.
+- Caveats:
+  - 4x6 is small and anisotropic; a distance of 3 is antipodal along the 6-direction.
+  - This compares J2 at equal distance; it is not an asymptotic decay.
+- **Implication.**
+  - A light-cone fold-back is plausible only deep in the Neel phase (J2 <~ 0.3). There the sign problem is weak
+    (J2 = 0 is Marshall-exact, sign-problem-free and solvable by QMC).
+  - It is not plausible in the frustrated regime J2 ~ 0.4-0.6, where the method would be needed.
+  - The non-locality is a physical property of the frustrated ground state, not a network artefact.

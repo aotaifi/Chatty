@@ -27,14 +27,19 @@ res = dict(spec=SPEC)
 
 # ---------------------------------------------------------------- previous state / continuation rule
 flat_prev = None
-if K_IT >= 2:
+STATE = SPEC.get('state')                        # hybrid test: start state (G_table, s_next, vit_params, vit_table)
+if K_IT >= 2 and not STATE:
     P = SPEC['prev']; rp = json.load(open(os.path.join(P, 'cx_reanchor.json')))
     res['prev_share'] = rp['iter']['share']
     if not (rp['iter']['share'] >= 0.30):
         res['stopped'] = f'continuation rule: previous share {rp["iter"]["share"]:.3f} < 0.30'
         dump(F, res); log(res['stopped']); sys.exit(0)
 lab = Lab(); sec = lab.sec
-if K_IT == 1:
+if STATE:
+    la_G = jnp.asarray(np.load(os.path.join(STATE, 'G_table.npy')))
+    s_G = jnp.asarray(np.load(os.path.join(STATE, 's_next.npy')).astype(np.float32))
+    flat_prev = np.load(os.path.join(STATE, 'vit_params.npy'))
+elif K_IT == 1:
     la_G, s_G = lab.lP0, lab.sP0
 else:
     la_G = jnp.asarray(np.load(os.path.join(P, 'la_table.npy')))
@@ -309,7 +314,9 @@ del CDF_TR, CDF_TE, LIW_TR, LIW_TE, VB_TR, VB_TE
 
 # ---------------------------------------------------------------- exact evaluation
 t1 = time.time()
-la_new = table(flat) if accepted else la_G                      # la_G is the table of flat0 (k >= 2) / psi_P (k = 1)
+if accepted: la_new = table(flat)
+elif STATE: la_new = jnp.asarray(np.load(os.path.join(STATE, 'vit_table.npy')))   # the unchanged ViT's own table
+else: la_new = la_G                                               # la_G is the table of flat0 (k >= 2) / psi_P (k = 1)
 it['table_sec'] = time.time() - t1
 sec.reload()
 PTn = sec.vec(la_new, s_t) ** 2
@@ -317,7 +324,7 @@ ex = la_new - la_t; ex = ex - jnp.sum(PT * ex)
 it['guard_weight_excess_gt1'] = float(jnp.sum(jnp.where(ex > 1.0, PTn, 0.0)))
 it['guard_rejected'] = bool(it['guard_weight_excess_gt1'] > 1e-3)
 if it['guard_rejected']:
-    la_new = la_G; flat = flat0
+    la_new = jnp.asarray(np.load(os.path.join(STATE, 'vit_table.npy'))) if STATE else la_G; flat = flat0
 it['ptwise_rms_err'] = float(jnp.sqrt(jnp.sum(PT * ex ** 2)))
 dec, _ = lab.decade_of(la_t)
 it['ptwise_rms_err_by_decade'] = {int(q): float(jnp.sqrt(jnp.sum(jnp.where(dec == q, PT * ex ** 2, 0)) /
@@ -327,6 +334,11 @@ del ex, PTn
 it['H'] = lab.H_site(la_new, s_t)
 it['share'] = (H_G - it['H']) / (H_G - H_t)
 it['bond_rms_err'] = bond_rms(lab, la_t, la_new - la_t)
+if SPEC.get('fit_only'):                         # hybrid test: the parent job evaluates the full guide
+    np.save(os.path.join(OUT, 'params.npy'), np.asarray(flat))
+    np.save(os.path.join(OUT, 'la_table.npy'), np.asarray(la_new, np.float64))
+    np.save(os.path.join(OUT, 's_next.npy'), np.asarray(s_t, np.int8))
+    res['sec'] = time.time() - T00; dump(F, res); log('DONE (fit_only)', res['sec']); sys.exit(0)
 Efn, u, info = sec.fn_solve(la_new, s_t); del u
 it['E_FN'] = info['dE_FN_site']
 rl = lanczos_ritz(lambda x: sec.Hm(x), sec.vec(la_new, s_t), 2)

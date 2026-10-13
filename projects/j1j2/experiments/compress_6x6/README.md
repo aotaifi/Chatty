@@ -706,3 +706,43 @@ Two jobs (RA pairs; stage-2 pairs), each capped at 28 min of work after setup, i
 2. rule K, step 1;
 3. the iteration.
 Also tabulated without computation: <H> and E_FN side by side for all stage-2 (both seeds) and re-anchor guides.
+
+## Hybrid re-anchor test (pre-registered 2026-10-13, lead/PI approved; before any run; code `cx_hybrid.py`; <= 3 slice-h)
+**Idea (design 5.5).** The guide is G_k = log A_theta_k + c_k, with two parts:
+- the re-anchored ViT, which carries the common configurations (0 hops);
+- one correction net c_k (FEAT net, 37k parameters). Its inputs are ONE hop of the current ViT: log A, log V, log W
+  and asinh E_L of (A_theta_k, s_k).
+- c_k is refit every iteration to the whole residual, not stacked. So the hop cost is constant: the guide value
+  costs 1 ViT hop, its local energy 2.
+
+**Iteration k (exact 6x6 tables; sign kept as a table, as stage 2):**
+1. Exact clipped-Lanczos target from (G_k, s_k): la_t = G_k + d_k, s_{k+1}. Start: G_1 = log|psi_P|.
+2. **Re-anchor.** minSR fine-tune of the ViT (warm from theta_k) to la_t, exactly as the re-anchor test (amendment
+   RA-1 settings, 12 min, held-out acceptance). Then the full table la_A.
+   - k = 1 reuses the already-run minSR seed-1 fit to the identical target (`ra_ms_s1_k1_17174477`, table and
+     parameters) to save budget.
+3. **Correction.** c_{k+1} is fit by robust_fit to the residual la_t - la_A:
+   - normalised target (now the default), metric of the target state;
+   - features: one hop of the new ViT (la_A, s_{k+1}), standardised in the target metric;
+   - Adam lr 3e-3, 30k steps, held-out acceptance;
+   - blow-up guard: reject if > 1e-3 of the new guide's weight sits on +1 excess, then c = 0.
+4. G_{k+1} = la_A + c_{k+1}. Exact evaluation:
+   - <H>(G_{k+1}, s_{k+1}) and iteration share = (<H>(G_k) - <H>_new) / (<H>(G_k) - <H>_target);
+   - the guide's own E_FN (fn_solve);
+   - the same two quantities for the ViT alone (la_A);
+   - + 1 Lanczos step; bond-rms error.
+
+**Runs.** One seed (budget), k = 1, 2, 3, one job per iteration. The next iteration runs only if share >= 0.30.
+
+**Pass:** iteration share >= 0.70 at every k = 1, 2, 3, scored on <H>.
+
+**Also scored on the guide's own E_FN.** The baseline to beat is stage-2 seed 0 at the same k:
+- <H> 4.34 / 2.50 / 2.06e-5;
+- E_FN 2.94 / 1.89 / 1.58e-5;
+- that guide costs 1 hop of psi_P and the same 2 hops for E_L.
+
+**Readings:**
+- Pass on <H> together with E_FN <= the stage-2 value at each k: the hybrid is the constant-cost fold-back.
+- Pass on <H> but not on E_FN: report it; that is the amplitude-at-the-nodes issue of the sign-channel check.
+- Share < 0.7: locate the shortfall (the correction's held-out loss and capture of the residual, splices by
+  decade as in RA-2), with no conclusion before the cause is known.

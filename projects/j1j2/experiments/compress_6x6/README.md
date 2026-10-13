@@ -571,3 +571,69 @@ Budget: D1 ~1.1 slice-h, D2 ~0.4 slice-h (total <= 2 GPU-h).
   - if psi0 shows the same O(1) interactions, 6x6 cannot test locality and only a larger lattice can;
   - if psi0 is markedly more additive (rms I at distance >= 2 below 0.3), the non-locality is the guide's, and the
     light cone would need a local base network.
+
+## Rolling re-anchor test (pre-registered 2026-10-13, lead/PI approved; before any run; code `cx_reanchor.py`)
+**Question.** Can the base network itself absorb each loop increment, so that the fold-back has no hop radius
+(design file section 5.3)?
+- The guide is the fine-tuned symmetrised ViT at every k (0 hops). The next target comes from one exact hop of it.
+- There is no stack and no re-base.
+
+**Iteration k (exact 6x6 tables, J2/J1 = 0.5; sign kept as a table, as in stage 2):**
+1. **State (la_k, s_k).** For k = 1 it is the stage-2 start (log|psi_P|, s_P): <H> 1.319e-4, exact target 2.62e-5.
+   For k >= 2, la_k is the full-sector table of the previous iteration's fine-tuned network.
+2. **Target.** Exact clipped-Lanczos target from (la_k, s_k), exactly as stage 2: f = 1 + alpha (E_L - E),
+   d = log max(|f|, 0.3), s_{k+1} = s_k sgn f, alpha energy-optimal. Target state la_t = la_k + d.
+3. **Fine-tune** of the symmetrised ViT (warm: the checkpoint for k = 1, the previous iteration's parameters after
+   that) to log A = la_t.
+   - Loss: the stage-2 edge loss on the kept bonds of the target state (la_t, s_{k+1}), weight (J/2) a_t(y)/a_t(x).
+   - Sampling: increment-weighted, i.e. 1/2 a_t^2 + 1/2 Dirichlet weight of d (lab.proposal_q). 20% of orbits held
+     out (never sampled, their edges weight 0).
+   - **minSR arm (main):** damped Gauss-Newton in sample space.
+     - Batch 384 configurations x 8 kept bonds; the update is -J^T (J J^T + lam I)^{-1} r.
+     - Trust region: the predicted rms change of log A on the batch is <= 0.5 x the target's pointwise rms.
+     - Acceptance on a FIXED set of 16 training-orbit validation batches (256 x 8), old and new compared on the same
+       samples. lam is halved on acceptance and multiplied by 4 on rejection (bounds 1e-6 to 1e2, relative to
+       tr(JJ^T)/M).
+     - Change vs P2's GN, with the reason: P2 accepted steps on 3 fresh 128 x 8 batches. Its batch-to-batch loss
+       spread (+-40%) exceeded any real per-step gain (~1%), so acceptance was a coin flip (rate 0.41), lam rose to
+       1e3 and the steps shrank to |d| ~ 1e-6. The fixed paired validation set removes that noise.
+   - **Adam arm (control):** lr 1e-6 (the P2 scan value), warmup-cosine, batch 256 x 8.
+   - Both arms: 12 min of fine-tuning per iteration on a 24 GB A40 slice.
+   - Held-out acceptance: keep the fine-tuned parameters only if the edge loss on 16 fixed held-out batches is
+     below its value at the start. Otherwise revert.
+4. **Exact evaluation.** Full-sector table of the network (~14 min).
+   - Blow-up guard as in S2-2: reject if > 1e-3 of the new state's weight sits where la_new - la_t (offset removed)
+     exceeds +1.
+   - Measured: <H>(la_new, s_{k+1}); iteration share = (<H>_k - <H>_new) / (<H>_k - <H>_target); bond-rms error in
+     the target metric; E_FN; + 1 / + 2 exact Lanczos steps; w_s; own and held-out loss curves.
+5. **fp32 precision floor (lead's request).** At the start of every iteration, on 1024 target-metric samples and
+   their kept edges: log A in fp32 vs fp64 (same parameters). Floor = edge-weighted rms of the bond differences of
+   (fp32 - fp64), compared with the same estimator for the increment d.
+   - The test is meaningful only if floor <= 0.1 x the increment's edge rms. Otherwise that iteration is
+     "inconclusive (cause: fp32 floor)".
+   - P2 smoke: pointwise 1.0e-4 rms, max 3e-3. Stage-2 increment bond-rms at k = 1, 2, 3: 0.052, 0.028, 0.020.
+   - So the expected ratio is about 1e-2, well clear.
+
+**Target normalisation.** For the ViT it is not a separate option:
+- the GN solution is linear in the residual, and Adam is invariant to the gradient scale;
+- the trust region above is set relative to the target's size.
+For the small-net fits, normalisation is now the default in `robust_fit` (D1: 0.02 -> 0.33). Runs before 2026-10-13
+11:00 used the unnormalised fit.
+
+**Runs.**
+- minSR: seeds 0 and 1, k = 1, 2, 3, one job per iteration.
+- Adam: seed 0, k = 1.
+- Continuation rule: an arm goes on to k + 1 only if its share at k >= 0.30.
+
+**Pass / fail:**
+- **PASS:** minSR iteration share >= 0.70 at every k = 1, 2, 3 (mean over the 2 seeds, no seed below 0.60).
+- **Fallback (lead's rule):** both optimisers < 0.30 at k = 1 means the warm ViT cannot hold increments at the
+  required precision. Then cap the loop at <= 2 hops + Lanczos polish, and test a local base architecture only if
+  8x8 pair interactions allow it.
+- **Otherwise inconclusive (cause: X),** diagnosed from:
+  - the acceptance rate and lam history;
+  - own vs held-out loss;
+  - the per-decade bond error (tail vs bulk);
+  - the fp32 floor.
+
+**Budget:** <= 4 slice-h (7 jobs x ~0.55 h).

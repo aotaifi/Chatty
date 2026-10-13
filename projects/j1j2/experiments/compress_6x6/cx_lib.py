@@ -208,7 +208,7 @@ class FeatNet:
             if m < batch:
                 s = jnp.concatenate([s, jnp.repeat(s[:1], batch - m)]); t = jnp.concatenate([t, jnp.repeat(t[:1], batch - m)])
             out.append(self._tab(flat, s, t)[:m].astype(f64))
-        return jnp.concatenate(out)
+        return jnp.concatenate(out) * getattr(self, 'out_scale', 1.0)     # robust_fit target normalisation
 
 
 def load_loop_params(k):
@@ -492,12 +492,22 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
     return lambda q: float(np.mean([float(lj(q, *b)) for b in bds]))
 
 
-def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0, heldout_curve=False):
+def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0, heldout_curve=False,
+               normalize=True):
     """fit_edge with (i) the 20% held-out orbits excluded from training (never sampled, incident edges weight 0),
     (ii) global-norm gradient clipping (the seed-1003 'dead fit' was a collapse to a constant output after an early
     large update: the edge loss returned exactly to its f = 0 value), (iii) collapse/stall detection and re-seeding,
     (iv) acceptance only if the held-out edge loss beats f = 0 (keep the best accepted try; else return None).
+    (v) target normalisation (default since 2026-10-13, fold-back diagnostic D1: an unnormalised small target is not
+    moved by Adam): the net is fit to target / c, c = rms of the target (offset removed) under |psi(la, s)|^2, and the
+    returned model's table() multiplies by c (model.out_scale). Losses in the record are in normalised units.
     Returns (model, flat or None, record)."""
+    scale = 1.0
+    if normalize:
+        PA_ = lab.UA(la) ** 2; mu_ = jnp.sum(PA_ * target)
+        scale = float(jnp.sqrt(jnp.sum(PA_ * (target - mu_) ** 2))); del PA_
+        if not np.isfinite(scale) or scale <= 0: scale = 1.0
+        target = target / scale
     CDF, LIW, DLR, _ = tail_proposal(lab, target, la, s, mask_out=lab.HO)
     Qh, PA, _ = lab.proposal_q(target, la, s)
     Qh = jnp.where(lab.HO, Qh, 0.0); Qh = Qh / jnp.sum(Qh)
@@ -506,7 +516,7 @@ def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, 
     tries = []; best = None
     for t in range(max_tries):
         sd = seed + 7919 * t; lr_t = lr / (2 ** t)
-        model = model_fn(sd)
+        model = model_fn(sd); model.out_scale = scale
         ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR)
         L0 = ev(model.flat0)
         lab.sec.offload()
@@ -525,5 +535,5 @@ def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, 
         if ok: break                                            # retry only on rejection (stall or no held-out gain)
     del CDF, LIW, DLR, CDFh, LIWh
     if best is None:
-        return model, None, dict(tries=tries)
-    return best[0], best[1], dict(tries=tries)
+        return model, None, dict(tries=tries, scale=scale)
+    return best[0], best[1], dict(tries=tries, scale=scale)

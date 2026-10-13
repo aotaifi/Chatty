@@ -97,7 +97,7 @@ if MODE == 'D1':
         if arm == 'RC':
             steps = 120000
         mr, flr, fit = robust_fit(lab, lambda sd_: FeatNet(FB, seed=sd_), la_t, s_t, target, steps, 50 + K, 1e-3, arm,
-                                  heldout_curve=True)
+                                  heldout_curve=True, normalize=False)      # as run (before the default changed)
         h = scale * mr.table(flr, sec.reps, lab.TIDX) if flr is not None else jnp.zeros_like(G3)
         if flr is not None: np.save(os.path.join(OUT, f'params_{arm}.npy'), np.asarray(flr))
         Hn = lab.H_site(G3 + h, s_t)

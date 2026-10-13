@@ -489,3 +489,8 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
     out to distance 3.6). NOT LOCAL.
   - So "PP base + local correction via a light cone" is not viable as it stands. The residual errors sit near the
     base's nodes, at any distance.
+- **Adaptive-depth guide (exact 6x6): FAIL on cost.**
+  - Supplying the second hop only at 2% of the weight (near-node flags) recovers share 0.76-0.80 at iteration 2.
+  - But a flagged configuration has about 50 flagged neighbours (of ~80), so the depth recursion branches with
+    r ~ 50, not < 1.
+  - The near-node region is sparse in weight but dense and connected in configuration count.

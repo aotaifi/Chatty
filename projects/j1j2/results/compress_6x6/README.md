@@ -904,3 +904,45 @@ every decade, correlation with the exact E_L about 0).**
 - The tail errors per decade are unchanged from the ViT alone (0.09 at 1e-11, 0.2 at 1e-12, 0.9 at 1e-15).
 - Not proven conceptual: an architecture with an explicit neighbour-sum layer would represent the structure, but
   such a layer IS a hop of the network.
+
+# Adaptive-depth guide (2026-10-13)
+Pre-registration: `experiments/compress_6x6/README.md` ("Adaptive-depth guide"). Code `cx_adaptive.py`. Raw file
+`runs/cx_adaptive.json`. Compute: 1.07 slice-h.
+
+## What was run
+- **Setting.** Hybrid iteration 2. The correction net (one hop of ViT_2) got one extra input:
+  - the exact two-hop local energy of the guide G_2, but only at configurations flagged as near-node;
+  - the zeroth-order one-hop value E_L^0 elsewhere.
+- **Flags** (one-hop or zero-hop; thresholds set so that 1%, 2% or 5% of the |psi(G_2)|^2 weight is flagged):
+  - F1 large |E_L^0 - E|;
+  - F2 large V^0/(1 + W^0);
+  - F3 large |c_1(x)|.
+- **Branching ratio r.** From 2000 flagged configurations: how many of their neighbours are flagged too. Every
+  flagged neighbour needs the deeper hop at the next iteration.
+- **Fits.** c_2 refit for p = 0 and for each flag at 2%. Exact <H> and own E_FN.
+
+## Result
+**One line: FAIL on cost. Flagging 2% of the weight recovers most of the information (share 0.76-0.80 vs 0.925 with
+the exact column everywhere), but the flagged region is not sparse in configuration COUNT. A flagged configuration
+has r = 47-58 flagged neighbours out of ~80, so the recursion explodes (cost grows like r^k).**
+
+| flag (2% of the weight) | share | <H> | own E_FN | p_flag under the tail measure | branching r (of ~80 neighbours) |
+|---|---|---|---|---|---|
+| none (E_L^0 everywhere) | 0.405 | 2.36e-5 | 1.71e-5 | - | - |
+| F1 large local energy | **0.796** | 1.73e-5 | 1.22e-5 | 49% | 53.8 |
+| F2 wall / kept | **0.760** | 1.79e-5 | 1.24e-5 | 40% | 52.3 |
+| F3 large earlier correction | **0.790** | 1.74e-5 | 1.23e-5 | 48% | 52.1 |
+| exact column everywhere (HY-1) | 0.925 | 1.52e-5 | 1.11e-5 | | |
+| no extra column (hybrid k = 2) | 0.230 | 2.64e-5 | 1.71e-5 | | |
+
+At 1% and 5% the picture is the same: r = 47-59, p_flag under the tail measure 31-60%.
+
+**Readings.**
+- **The information is localised in weight.** 2% of |psi|^2 carries most of the missing information.
+- **It is not localised in count, and that is what the cost depends on.** The near-node region is a connected bulk
+  of configuration space: the neighbours of a rare configuration are mostly rare.
+- **Cost.**
+  - For iteration 2 alone the average cost of a guide value is 1 + 0.02 x 80 ~ 2.6 hops (<H> 1.73e-5). That is
+    still above psi_P + 2 Lanczos steps (8.6e-6 at 2 hops).
+  - From iteration 3 on, the flagged neighbours of flagged configurations need their own deeper hop, about 50 per
+    level. The pre-registered bar r < 0.5 fails by a factor of about 100.

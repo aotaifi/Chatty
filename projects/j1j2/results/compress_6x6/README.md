@@ -819,3 +819,44 @@ HY-1 splices at k = 2 (share), cut by decade of the target state:
   (1.30e-4).
 - **On E_FN the hybrid beats stage 2 at the same hop cost** (2.17e-5 vs 2.94e-5 at k = 1; 1.71e-5 vs 1.89e-5 at
   k = 2). It still misses the exact targets (1.95e-5, 1.08e-5).
+
+# Lanczos-wrapped network, pre-test W0 (2026-10-13)
+Pre-registration: `experiments/compress_6x6/README.md` ("Lanczos-wrapped network"). Code `cx_wrap_pretest.py`.
+Raw file: `runs/cx_wrap_pretest.json`. Compute: 0.1 slice-h. No fits.
+
+## What was run
+- The guide is G = (1 + beta (H - E)) N, with optimal beta (one exact Lanczos step on the table).
+- N is either the exact k = 1 clipped-Lanczos target N* or the stored re-anchored ViT fit to it (N_fit).
+- The two were spliced by probability decade, to see whether N's tail errors still matter once the wrapper is
+  applied.
+
+## Result
+**One line: NOT SOUND (pre-registered). Wrapping does not make N's tail errors irrelevant: with N exact in the bulk
+and the fit in the tail (cut 1e-9), the wrapped state keeps only 4-7% of the gain. In the wrapped exact state the
+inherited term dominates almost nowhere (< 1e-4 of the weight down to a^2 = 1e-12).**
+
+| N | wrapped <H> | wrapped own E_FN |
+|---|---|---|
+| exact target N* | 1.15e-5 | 9.15e-6 |
+| ViT fit, minSR s1 / Adam | 4.20e-5 / 4.39e-5 | 3.15e-5 / 3.38e-5 |
+| psi_P (= psi_P + 1 Lanczos) | 2.55e-5 | 1.89e-5 |
+
+| cut | tail weight | fit bulk + exact tail (share_w, s1 / Adam) | exact bulk + fit tail (share_w, s1 / Adam) |
+|---|---|---|---|
+| 1e-8 | 24% | 0.97 / 0.97 | 0.02 / 0.01 |
+| 1e-9 | 7.7% | 0.91 / 0.92 | **0.07 / 0.04** |
+| 1e-10 | 1.9% | 0.77 / 0.78 | 0.20 / 0.17 |
+
+Inheritance in the wrapped N*: share of each decade's weight where |beta (E_L - D)| > |1 + beta (D - E)|.
+
+| decade | 1e-8 | 1e-10 | 1e-11 | 1e-12 | 1e-13 | 1e-14 | 1e-15 |
+|---|---|---|---|---|---|---|---|
+| weight | 29% | 5.8% | 1.5% | 0.31% | 0.05% | 0.006% | 0.0006% |
+| inherited-dominant fraction | 0 | 1.5e-7 | 2e-6 | 1.1e-4 | 1.8e-3 | 0.018 | 0.071 |
+
+**Reading.**
+- Inheritance dominates only where a step CREATES new nodes, i.e. the configurations flipped by that step.
+- Once a step is absorbed into N, those configurations are N's own tail. The next wrapper multiplies them by an O(1)
+  factor and does not regenerate them.
+- So the wrapper cannot supply the tail that N failed to learn, and training N through it cannot down-weight N's
+  tail. No training run (per the pre-registration).

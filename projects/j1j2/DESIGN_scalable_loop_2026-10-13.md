@@ -451,3 +451,16 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
   - So is the stage-2 k = 4 guide (<H> 2.0e-5).
   - At two hops: hybrid + 1 Lanczos 1.40e-5 vs psi_P + 2 Lanczos 8.6e-6.
 - So the fallback (cap the depth, Lanczos polish) remains in force.
+
+**5.7 Lanczos-wrapped network (lead proposal), pre-test W0: NOT SOUND, no training run.**
+- Proposal: G = (1 + beta (H - E)) N with N a spin-only network, evaluated at one hop.
+- Exactly on the k = 1 tables: with N exact on common configurations and the ViT fit in the tail (a^2 < 1e-9), the
+  wrapped state keeps 4-7% of the gain. The reverse splice keeps 91%.
+- In the wrapped exact state the inherited term beta sum_y H_xy N(y) dominates < 1e-4 of the weight down to 1e-12.
+  It only matters where a step creates new nodes; afterwards those configurations belong to N's own tail.
+- Prior art for optimising through Lanczos factors (by energy, not by regression):
+  - Sorella's generalized Lanczos (PRB 64, 024512, 2001);
+  - Hu, Becca, Parola, Sorella 2013 and Chen et al. 2022 apply Lanczos steps to an optimised state without training
+    through them.
+- The wrapper's linear inverse is well conditioned in the spectrum (1 + beta (eps - E) > 0 for beta = 0.108). The
+  ill-conditioning is only in log space, at the new nodes.

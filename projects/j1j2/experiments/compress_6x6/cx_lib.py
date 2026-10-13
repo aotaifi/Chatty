@@ -388,7 +388,7 @@ class GuideCtx:
 
 
 def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None, clip=None,
-             ev=None, hcurve=None):
+             ev=None, hcurve=None, which='kept'):
     """wt_loop.fit, edge loss (kept bonds of (la, s), weight |H_xy| a_y/a_x): sum w ((f_x + DLR_x) - (f_y + DLR_y))^2.
     excl: optional bool mask of orbits whose incident edges get weight 0 (held-out orbits)."""
     import optax
@@ -408,7 +408,8 @@ def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3,
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
         rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
-        wgt = jnp.where(ok & (s[idx][:, None] * s[iy] < 0), 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
+        sel = (s[idx][:, None] * s[iy] < 0) if which == 'kept' else (s[idx][:, None] * s[iy] > 0)
+        wgt = jnp.where(ok & sel, 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
         if excl is not None: wgt = jnp.where(excl[iy], 0.0, wgt)
         lw = LIW[idx]; iw = jnp.exp(lw - jnp.max(lw))
         return x, y, DLR[idx], DLR[iy], wgt, iw, lab.TIDX[idx], lab.TIDX[iy]
@@ -461,7 +462,7 @@ def base_features(lab):
 
 
 
-def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=4321):
+def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=4321, which='kept'):
     """held-out evaluator: the same edge loss as fit_edge on nb fixed batches drawn from CDF (all edges kept)."""
     sec = lab.sec
 
@@ -477,7 +478,8 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
         rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
-        wgt = jnp.where(ok & (s[idx][:, None] * s[iy] < 0), 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
+        sel = (s[idx][:, None] * s[iy] < 0) if which == 'kept' else (s[idx][:, None] * s[iy] > 0)
+        wgt = jnp.where(ok & sel, 0.5 * JB[bsel] * rP, 0.0) * (nval[:, None] / K)
         lw = LIW[idx]; iw = jnp.exp(lw - jnp.max(lw))
         return x, y, DLR[idx], DLR[iy], wgt, iw, lab.TIDX[idx], lab.TIDX[iy]
 
@@ -493,7 +495,7 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
 
 
 def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0, heldout_curve=False,
-               normalize=True):
+               normalize=True, which='kept'):
     """fit_edge with (i) the 20% held-out orbits excluded from training (never sampled, incident edges weight 0),
     (ii) global-norm gradient clipping (the seed-1003 'dead fit' was a collapse to a constant output after an early
     large update: the edge loss returned exactly to its f = 0 value), (iii) collapse/stall detection and re-seeding,
@@ -517,12 +519,12 @@ def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, 
     for t in range(max_tries):
         sd = seed + 7919 * t; lr_t = lr / (2 ** t)
         model = model_fn(sd); model.out_scale = scale
-        ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR)
+        ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR, which=which)
         L0 = ev(model.flat0)
         lab.sec.offload()
         hc = [] if heldout_curve else None
         flat, curve = fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, sd, lr=lr_t, tag=f'{tag}.{t}', excl=lab.HO, clip=clip,
-                               ev=ev if heldout_curve else None, hcurve=hc)
+                               ev=ev if heldout_curve else None, hcurve=hc, which=which)
         lab.sec.reload()
         Lh = ev(flat)
         stalled = len(curve) > 1 and curve[1][1] > 0.995 * curve[0][1] and abs(curve[-1][1] - curve[0][1]) < 1e-3 * curve[0][1]

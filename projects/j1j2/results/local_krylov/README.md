@@ -101,3 +101,88 @@ Files:
 Reproduce: `python a0_copies.py a0_copies.json 2e-3`; `python a8_run.py OUT RA RB1 RB2` (signs_8x8 run dirs);
 `python a8_analyze.py OUT/a8_delta.npz OUT/a8_run_meta.json a8_analysis.json`; `python a8_noise.py a8_noise.json RA RB1 RB2`;
 `python lk_figure.py a0_copies.json a8_analysis.json fig_local_krylov`.
+
+## Follow-up F1: when does a global step dilute, for the amplitude engine and for good guides? (2026-10-13)
+Pre-registered in `PREREG.md`, section F1 (commit 658a9b1). Amendments A1-A3 were all grid fixes after failed
+checks; each is recorded before the rerun.
+Steps: same decoupled-4x4-copies machinery as (a0), one global step from the guide on M copies, exact per-copy
+structure.
+- **K** is the Krylov sign step.
+- **L** is one Lanczos step psi (1 + alpha (E_L - E)) with the best alpha, in closed form from the per-copy energy
+  moments.
+- **Lc** is the clipped Lanczos step psi sgn(f) max(|f|, 0.3) with the best alpha.
+
+Guides per copy, from sign-poor to NQS-like:
+
+| guide | built from | energy error / site | wrong-sign weight w_s (per copy) |
+|---|---|---|---|
+| MAR | Marshall sign on \|psi0\| | 1.2e-2 | 1.3e-2 |
+| P45s | sign of the exact GS at J2' = 0.45, on \|psi0\| | 1.2e-3 | 9e-4 |
+| P48s | sign of the exact GS at J2' = 0.48, on \|psi0\| (ViT-level error) | 3.9e-4 | 2.3e-4 |
+| P48f | full exact GS at J2' = 0.48 (amplitude and sign errors) | 3.3e-4 | 2.6e-4 |
+| F3 / F4 | random isolated flips of the exact sign | 1.6e-3 / 1.9e-4 | 1e-3 / 1e-4 |
+
+Checks:
+- L vs brute force (explicit M = 1, 2 states): within 9e-12 per site.
+- Lc vs brute force: M = 2 within 7e-5 relative.
+- M = 1 Lc: 1e-6 relative. This misses the 1e-10 bar, because of the A2 bin aggregation; it is negligible for ratios.
+- Lc with the clip -> 0 equals L: within 3e-10.
+- h-halving at N_1/2: all within 0.003.
+
+N_1/2 is the size at which the gain per site has halved relative to one 4x4 copy. r(N) is that gain ratio at N.
+
+| guide | K: N_1/2 | L: N_1/2 | Lc: N_1/2 | r(192) K / L / Lc |
+|---|---|---|---|---|
+| MAR | 364 | 1310 | 1053 | 0.78 / 0.82 / 0.74 |
+| P45s | 1339 | 17964 | 10407 | 0.98 / 0.98 / 0.95 |
+| P48s | 6263 | > 65536 | 34886 | 1.00 / 1.00 / 0.98 |
+| P48f | 25076 | 10280 | 4374 | 1.00 / 0.97 / 0.95 |
+| F3 | 5854 | 11499 | 10351 | 0.98 / 0.97 / 0.97 |
+| F4 | 57531 | > 65536 | > 65536 | 1.00 / 1.00 / 1.00 |
+
+**Pre-registered readings:**
+- **Amplitude engine:** for P48s and P48f, r(192) for L and Lc is 0.95-1.00, at or above 0.8. So global Lanczos is
+  adequate through 14x14; it is not diluted there.
+- **Sign step:** for the low-defect guides r(192) for K is 0.98-1.00, also adequate.
+- Dilution sets in at the 8x8-14x14 scale only for a Marshall-like guide (K r(192) = 0.78, Lc 0.74).
+
+**Rules of thumb:**
+- **Krylov sign step (pre-registered fit):** N_1/2 ≈ 0.24 / (wrong-sign weight per site), slope 0.99, within a
+  factor 2.9 over the six guides. Fitting energy error instead gives the same spread: N_1/2 ≈ 1.9 / eps^1.14.
+- **Lanczos step (post hoc, analytic, beats both pre-registered fits):** N_1/2(L) ≈ 2 kappa3^2 / kappa2^3, with
+  kappa_k the per-site energy cumulants of the guide. Equivalently: the step is half-diluted once the skewness of the
+  guide's energy over the whole system falls to 1/sqrt(2).
+  - Predicted vs measured: 1212 / 1310, 17842 / 17964, 10169 / 10280, 11402 / 11499; P48s and F4 are predicted
+    beyond the grid, as measured.
+  - The rule follows from E(alpha) depending only on m2 = N kappa2 and m3 = N kappa3. It therefore holds for any
+    short-range-correlated state, not only for products.
+  - Lc halves at 0.4-1x the L value.
+- **8x8 application (secondary, `a8_skew.json`, two-hop data, 7680 samples):**
+  - ViT guide: N_1/2(L) ≈ 6e4 sites (3e5 with the top 0.1% of |E_L - E| removed). The third moment is heavy-tailed:
+    m2 SE 43%, m3 SE 41%, so this is an order of magnitude only.
+  - Marshall on the ViT amplitude: ~3000 sites.
+
+**Meaning for the loop:**
+- Between 8x8 and 14x14, neither the global Krylov sign step nor one global (clipped) Lanczos step is size-diluted
+  for guides of ViT quality.
+- The size-consistency problem of the 2026-10-13 decision becomes binding only at N ~ 10^3-10^4 for good guides, or
+  at ~400 for sign-poor ones.
+- So within 14x14, the advantage of a size-consistent engine has to come from somewhere other than dilution of one
+  global step: for example, from repeated steps, or from the cost of each hop.
+
+Files:
+- `a0f_dilution.json`: curves.
+- `a0f_checks.json`: brute-force checks.
+- `a0f_summary.json`: table, fits and the skewness rule.
+- `a8_skew.json`: 8x8 energy cumulants.
+- `fig_dilution_guides.{png,pdf}`: (a) K and (b) Lc, gain ratio vs N for four guides; grey band = 8x8-14x14.
+  L is close to Lc and is in the json.
+
+Code:
+- `experiments/local_krylov/a0f_dilution.py` (K, L, Lc).
+- `a0f_checks.py` (brute force).
+- `a0f_summary.py` (fits).
+- `a8_skew.py` (8x8 cumulants).
+- `a0f_figure.py` (figure).
+
+![fig](fig_dilution_guides.png)

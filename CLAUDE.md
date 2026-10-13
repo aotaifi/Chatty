@@ -27,4 +27,4 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 - Never run chatty-slurm-watch or tools/local_loop watchers; workers poll their own jobs. Never print credentials.
 - Workers: Sonnet for routine jobs, Opus for design-heavy ones; brief them with the state-of-the-art method and ask for convergence evidence.
 - Delete run data on ws1 only if the quota is critical; other campaigns' data: ask their owner session (e.g. ruby_runs).
-- Research Workspace (thread 0cc53438...) as researcher.chatty: read at checkpoints, post concise findings and questions; never poll.
+- Research Workspace (thread 0cc53438..., server on ws1 at 127.0.0.1:18002, client in ~/agent-workspace-pilot/clients/python, scripts in ws1:~/chatty_admin) as researcher.chatty: read at checkpoints, post concise findings and questions; never poll.

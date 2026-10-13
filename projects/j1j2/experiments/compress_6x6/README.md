@@ -746,3 +746,19 @@ Also tabulated without computation: <H> and E_FN side by side for all stage-2 (b
 - Pass on <H> but not on E_FN: report it; that is the amplitude-at-the-nodes issue of the sign-channel check.
 - Share < 0.7: locate the shortfall (the correction's held-out loss and capture of the residual, splices by
   decade as in RA-2), with no conclusion before the cause is known.
+
+#### Amendment HY-1 (2026-10-13 16:20, after hybrid k = 1 and k = 2, before this diagnostic)
+- **Result so far.**
+  - k = 1: share **0.963**. <H> 3.01e-5 (target 2.62e-5; stage-2 4.34e-5); own E_FN 2.17e-5 (stage-2 2.94e-5).
+  - k = 2: share **0.230**. <H> 2.64e-5 (target 1.40e-5; stage-2 2.50e-5); own E_FN 1.71e-5 (stage-2 1.89e-5).
+  - k = 3 stops by the continuation rule.
+- **Hypothesis.** The same one-shell gap as D1, now in the tail.
+  - d_2 is a function of E_L of the GUIDE G_2 = ViT_1 + c_1. That needs c_1 at the neighbours, i.e. one-hop
+    features of ViT_1 at the neighbours: two hops.
+  - The correction c_2 sees only one hop of ViT_2.
+- **Test** (`cx_hybrid_diag.py`, about 0.3 slice-h, no new ViT fit; uses the k = 2 ViT table):
+  - (a) splices of the k = 2 hybrid guide with the exact target by probability decade (as RA-2);
+  - (b) the same correction fit with ONE extra input, asinh E_L of G_2 (exact table), the information upper bound.
+- Reading:
+  - (b) >= 0.85 confirms that the k >= 2 shortfall is the one-shell information gap;
+  - (b) < 0.7 points to the fit or the ViT part; (a) locates it.

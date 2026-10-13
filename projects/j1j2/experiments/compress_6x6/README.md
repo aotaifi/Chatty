@@ -762,3 +762,34 @@ Also tabulated without computation: <H> and E_FN side by side for all stage-2 (b
 - Reading:
   - (b) >= 0.85 confirms that the k >= 2 shortfall is the one-shell information gap;
   - (b) < 0.7 points to the fit or the ViT part; (a) locates it.
+
+## Lanczos-wrapped network: exact pre-test W0 (pre-registered 2026-10-13, before any run; code `cx_wrap_pretest.py`)
+**Proposal (lead).** Store the guide as G = (1 + beta (H - E)) N, with N a spin-only network (the re-anchored ViT).
+- Evaluating G costs one hop of N.
+- Rationale: in the tail the wrapped amplitude is inherited from N on common neighbours, beta sum_y H_xy N(y). So
+  N would need to be precise only on common configurations.
+
+**Question before any training.** Does wrapping make N's tail errors irrelevant? This is decided exactly, with no
+fits, using the stored k = 1 tables:
+- N* = the exact clipped-Lanczos target of psi_P (what the re-anchor fits aimed at);
+- N_fit = the re-anchored ViT tables (minSR seed 1, Adam). Both have sign s_1.
+- W(X) = exact energy of the wrapped state (1 + beta (H - E)) X, with the optimal beta (one exact Lanczos step on
+  the table).
+
+Measured:
+- W(N*), W(N_fit);
+- splices by decade of N* (cuts 1e-8, 1e-9, 1e-10): (a) fit in the bulk + N* in the tail; (b) N* in the bulk + fit
+  in the tail;
+- share_w(X) = (W(N_fit) - W(X)) / (W(N_fit) - W(N*));
+- own E_FN of the wrapped N* and the wrapped N_fit;
+- an inheritance statistic for the wrapped N*: by decade, the weight where the inherited term |beta (E_L - D)|
+  exceeds the own term |1 + beta (D - E)|.
+
+**Reading:**
+- **SOUND** (go to the training test): (b) at the 1e-9 cut gives share_w >= 0.8, i.e. N's tail errors below 1e-9
+  cost <= 20% of the wrapped gain.
+- **NOT SOUND**: (b) < 0.5. The wrapper inherits, but N's own tail errors still dominate the wrapped energy.
+  No training run; report.
+- In between: report, and decide the training test with the lead.
+
+Budget ~0.3 slice-h.

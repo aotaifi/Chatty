@@ -13,7 +13,7 @@
 source /pc2/users/h/hpcalot/chatty/j1j2/src/delC/dc_common.sh
 I=$BASE/inputs/delC
 cat > spec.json <<J
-{"phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "b1": B1_FROM_PILOT, "b2": B2_FROM_PILOT,
+{"phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "b1": -0.321902, "b2": 0.025905224401,
  "init": ["$I/rvD1_samples.npz", "$I/rvD2_samples.npz", "$I/rvD3_samples.npz"],
  "nchains": 512, "burn": 4, "nsamp": 2, "thin": 2, "seed": ${SLURM_ARRAY_TASK_ID}, "batch": 4096}
 J

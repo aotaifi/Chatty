@@ -132,3 +132,17 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
 - The 8x8 run starts now: two jobs on A40-16gb slices (seeds 1, 2), M = 512, beta to 3.2, populations in batches of 4,
   each job stops at SE <= 1.4e-5 (combined ~1e-5) with >= 8 populations, or at its 4.5 GPU-h cap (total cap 9 GPU-h as
   registered). Analysis: dc_fn_analyze.py on the merged populations.
+
+## Amendment 3 (2026-10-13 20:00, after pilot P2-0, before any p = 2 production run)
+- Pilot P2-0 (job 17182266, 64 psi_1 samples, 1.53 GPU-h on an A40-16gb slice): 85.9 s per sample, 4.44e5 projected
+  evaluations per three-hop ball (5.2e3 evaluations/s).
+- The pre-registered coefficient rule fails: the 3x3 Ritz problem is not estimable from 64 samples (the "unbalanced"
+  moment estimator gives a non-positive-definite overlap matrix; the "balanced" one gives b1 = -390, b2 = 48, i.e. noise).
+  The optimal p = 2 polynomial is set by rare tail configurations, which 64 typical samples do not contain.
+- Replacement (fixed now): psi_2 = psi_P f^2 (b1 = 2 alpha, b2 = alpha^2), the repeated first step. It needs no sampled
+  moments and is variational. On the pilot samples g/f lies in [0.987, 1.030]; sd per site of E_L[psi_2] 7.5e-4,
+  of E_L[psi_1] 6.3e-4, of the paired difference 6.9e-4 (tail-free samples, so a lower bound on the true sd).
+  Exact 6x6 check of how much of the optimal p = 2 gain the repeated step keeps: job 17184225 (dc_p2rep_6x6.py).
+- Production size: paired SE 5e-6 needs ~1.9e4 samples (>= 1.1e10 projected evaluations, ~590 A40-slice-h); SE 1e-5
+  needs ~4.8e3 samples. Not affordable on ws1 this round; Paderborn draft p2_prod_h100.sbatch with b1 = -0.321902,
+  b2 = 0.025905.

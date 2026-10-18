@@ -1,0 +1,92 @@
+{
+  "protocol": "FN power projector mixed walkers vs Jastrow squared baseline, no exact FN amplitude labels",
+  "projector": {
+    "seed": 53,
+    "nwalk": 128,
+    "burn": 450,
+    "steps": 450,
+    "thin": 4,
+    "raw_samples": 14464,
+    "unique_samples": 4796,
+    "unique_projector_rows": 10755,
+    "hamiltonian_neighbor_probes": 860400,
+    "moves_fraction": 0.11072916666666667,
+    "history": [
+      {
+        "step": 1,
+        "distinct_walkers": 128,
+        "mean_diag": -0.828125,
+        "mean_branch": 0.9408491735841196
+      },
+      {
+        "step": 101,
+        "distinct_walkers": 119,
+        "mean_diag": -2.6796875,
+        "mean_branch": 1.0002267947512582
+      },
+      {
+        "step": 450,
+        "distinct_walkers": 117,
+        "mean_diag": -2.6015625,
+        "mean_branch": 0.9936185778933753
+      },
+      {
+        "step": 900,
+        "distinct_walkers": 112,
+        "mean_diag": -2.765625,
+        "mean_branch": 1.0024979058324965
+      }
+    ]
+  },
+  "reference": {
+    "raw_samples": 14464,
+    "unique_samples": 11936,
+    "nchains": 128,
+    "acceptance": 0.42313078703703705,
+    "burn": 900,
+    "steps": 450
+  },
+  "training": {
+    "method": "mixed-walker versus Jastrow-squared noise-contrastive estimation",
+    "steps": 1200,
+    "training_positive": 13229,
+    "training_negative": 13102,
+    "heldout_positive": 1235,
+    "heldout_negative": 1362,
+    "unique_sampled_orbits": 3903,
+    "trace": [
+      {
+        "step": 300,
+        "train_bce": 0.6346085071563721,
+        "heldout_bce": 0.6224772930145264
+      },
+      {
+        "step": 600,
+        "train_bce": 0.6369903087615967,
+        "heldout_bce": 0.6276587843894958
+      },
+      {
+        "step": 900,
+        "train_bce": 0.5579299330711365,
+        "heldout_bce": 0.6406762003898621
+      },
+      {
+        "step": 1200,
+        "train_bce": 0.6055827140808105,
+        "heldout_bce": 0.6397886872291565
+      }
+    ],
+    "elapsed_s": 50.05
+  },
+  "sign_trials": [],
+  "limitations": [
+    "Sampler uses explicit 20-site state-to-index lookup for computational speed; a scaled version needs callable sign and direct bit operations.",
+    "FN sampler uses exact frozen signs from previous 20-site study; not a trained sign network.",
+    "Amplitudes for fixed-node sampling are analytic Jastrow guide, not true exact FN solutions.",
+    "The sampled FN operator differs from the previous FN-amplitude-oracle experiment.",
+    "Model energy gains computed in own amplitude; not sufficient to establish true FN or self-consistent energy gain.",
+    "GFMC population control/resampling introduces finite-walker bias.",
+    "A second trial on a different sample/cluster is needed to establish generalization."
+  ],
+  "elapsed_s": 51.69261948700023
+}

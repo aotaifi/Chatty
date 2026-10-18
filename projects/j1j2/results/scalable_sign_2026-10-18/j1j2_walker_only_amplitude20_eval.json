@@ -1,0 +1,219 @@
+{
+  "exact_FN_evaluation": {
+    "fn_energy": -9.524577481807206,
+    "fn_residual": 8.679774420433697e-09,
+    "n_bonds": 4507,
+    "nn_rmse": 0.1825639199534944,
+    "jastrow_rmse": 0.9950454852874953,
+    "nn_mae": 0.14507392092321192,
+    "jastrow_mae": 0.8746608010612159,
+    "nn_overlap": 0.98752999814764,
+    "jastrow_overlap": 0.6085292807689328,
+    "nn_logratio_p95": 0.3474824155289511
+  },
+  "sign_trials": [
+    {
+      "seed": 301,
+      "pool_orbits": 2316,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1836,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 8,
+          "n_selected_states": 320,
+          "selected_keys": [
+            87661,
+            92597,
+            92634,
+            93782,
+            107957,
+            108437,
+            108451,
+            108981
+          ],
+          "guide_predicted_gain": 1442.8506246371958,
+          "ED_weight_improvement": 1.5252686327456357e-06,
+          "unique_guide_queries": 14139,
+          "true_fn_amplitude_gain": -0.001358877636874613
+        },
+        "jastrow": {
+          "n_selected_orbits": 11,
+          "n_selected_states": 440,
+          "selected_keys": [
+            16045,
+            31465,
+            87661,
+            92634,
+            96595,
+            96611,
+            96675,
+            96707,
+            107373,
+            108437,
+            108451
+          ],
+          "guide_predicted_gain": 3477.102822346889,
+          "ED_weight_improvement": 3.424193762931307e-05,
+          "unique_guide_queries": 8928,
+          "true_fn_amplitude_gain": -0.002836627026234758
+        }
+      }
+    },
+    {
+      "seed": 302,
+      "pool_orbits": 2392,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1914,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 10,
+          "n_selected_states": 400,
+          "selected_keys": [
+            75719,
+            77165,
+            81242,
+            87645,
+            88806,
+            92597,
+            95405,
+            108435,
+            108437,
+            108451
+          ],
+          "guide_predicted_gain": 1680.3194264642952,
+          "ED_weight_improvement": -5.755925740622308e-05,
+          "unique_guide_queries": 14322,
+          "true_fn_amplitude_gain": -1.2800440677844923e-05
+        },
+        "jastrow": {
+          "n_selected_orbits": 11,
+          "n_selected_states": 440,
+          "selected_keys": [
+            30909,
+            31799,
+            76651,
+            85422,
+            87957,
+            88806,
+            108317,
+            108435,
+            108437,
+            108451,
+            110109
+          ],
+          "guide_predicted_gain": 4492.2179065601085,
+          "ED_weight_improvement": -1.5621983254358072e-05,
+          "unique_guide_queries": 8997,
+          "true_fn_amplitude_gain": -0.0018598925794765283
+        }
+      }
+    },
+    {
+      "seed": 303,
+      "pool_orbits": 2421,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1871,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 8,
+          "n_selected_states": 320,
+          "selected_keys": [
+            84829,
+            87405,
+            87645,
+            88669,
+            88809,
+            91485,
+            91580,
+            92597
+          ],
+          "guide_predicted_gain": 7929.7415071191535,
+          "ED_weight_improvement": -0.0004358028486369028,
+          "unique_guide_queries": 14307,
+          "true_fn_amplitude_gain": 0.005145458279102057
+        },
+        "jastrow": {
+          "n_selected_orbits": 12,
+          "n_selected_states": 480,
+          "selected_keys": [
+            30359,
+            84829,
+            87357,
+            87405,
+            88669,
+            88809,
+            91485,
+            91513,
+            91580,
+            92477,
+            92845,
+            113834
+          ],
+          "guide_predicted_gain": 8297.175214957677,
+          "ED_weight_improvement": -0.000623519753512867,
+          "unique_guide_queries": 9030,
+          "true_fn_amplitude_gain": 0.0034191696727859347
+        }
+      }
+    },
+    {
+      "seed": 304,
+      "pool_orbits": 2206,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1820,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 18,
+          "n_selected_states": 720,
+          "selected_keys": [
+            15787,
+            23163,
+            23403,
+            29983,
+            31578,
+            81077,
+            87405,
+            87645,
+            87955,
+            88413,
+            88669,
+            89181,
+            91485,
+            92597,
+            107957,
+            108437,
+            108451,
+            108981
+          ],
+          "guide_predicted_gain": 9687.120280236295,
+          "ED_weight_improvement": -0.0004889690834156569,
+          "unique_guide_queries": 14393,
+          "true_fn_amplitude_gain": 0.004208243916856348
+        },
+        "jastrow": {
+          "n_selected_orbits": 12,
+          "n_selected_states": 480,
+          "selected_keys": [
+            85422,
+            87405,
+            88413,
+            88669,
+            91325,
+            91485,
+            96595,
+            96611,
+            96675,
+            96714,
+            108451,
+            113830
+          ],
+          "guide_predicted_gain": 6924.602409102616,
+          "ED_weight_improvement": -0.00038558588700674526,
+          "unique_guide_queries": 9236,
+          "true_fn_amplitude_gain": 0.0018283902656013509
+        }
+      }
+    }
+  ],
+  "warning": "All exact FN amplitudes are evaluation-only; FN operator depends on analytic reference g0; fixed-amplitude corrections, not self-consistent FN energy."
+}

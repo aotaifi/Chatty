@@ -27,6 +27,9 @@ FILES = [
     "j1j2_robust_gate20.py",
     "j1j2_real_fn_drift20.py", "j1j2_real_fn_drift_validation20.py",
     "j1j2_orbit_priority20.py", "train_sign20_corrected.py",
+    "j1j2_neural_guide20.py", "j1j2_walker_only_amplitude20.py",
+    "j1j2_walker_only_eval20.py", "j1j2_walker_focus20.py",
+    "j1j2_walker_focus20_eval.py",
 ]
 STAGES = {
     "data": ["prepare_sign20.py", "audit_sign20_targets.py", "measure_suppression20_fast.py"],
@@ -38,12 +41,13 @@ STAGES = {
         "j1j2_real_fn_drift_validation20.py",
     ],
     "cnn": ["train_sign20_corrected.py"],
+    "walker": ["j1j2_walker_only_amplitude20.py", "j1j2_walker_only_eval20.py", "j1j2_walker_focus20.py", "j1j2_walker_focus20_eval.py"],
 }
 
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--workdir",type=Path,required=True)
-    ap.add_argument("--stage",choices=("data","diagnostics","cnn","all","stage-only"),default="stage-only")
+    ap.add_argument("--stage",choices=("data","diagnostics","cnn","walker","all","stage-only"),default="stage-only")
     ap.add_argument("--overwrite-copied-code",action="store_true")
     args=ap.parse_args()
     src=Path(__file__).resolve().parent
@@ -63,8 +67,8 @@ def main():
         print("Staged scripts at",wd)
         print("Now run --stage data, then --stage diagnostics, and optionally --stage cnn.")
         return
-    steps=sum((STAGES[k] for k in ("data","diagnostics","cnn")),[]) if args.stage=="all" else STAGES[args.stage]
-    if args.stage in ("diagnostics","cnn") and not (wd/"sign20_training_data.npz").exists():
+    steps=sum((STAGES[k] for k in ("data","diagnostics","cnn","walker")),[]) if args.stage=="all" else STAGES[args.stage]
+    if args.stage in ("diagnostics","cnn","walker") and not (wd/"sign20_training_data.npz").exists():
         raise FileNotFoundError(f"Run --stage data first to create {wd/'sign20_training_data.npz'}")
     env=os.environ.copy()
     env.update(OPENBLAS_NUM_THREADS="1",OMP_NUM_THREADS="1")

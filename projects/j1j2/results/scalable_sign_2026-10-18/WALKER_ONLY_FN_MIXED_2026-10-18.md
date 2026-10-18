@@ -19,7 +19,7 @@ J1-J2 on the tilted 20-site torus, J2/J1=0.5, S^z=0, dimension 184,756. Signs ar
 - Average ED wrong-sign probability improvement was negative for **both** schemes, so optimized energy and ground-truth sign accuracy disagree.
 - 700-walker ablation (otherwise same settings): 79,100 raw positive samples, 42,672 unique projector rows, 3,413,760 local bond probes; physical RMS log ratio **0.2672**, FN amplitude overlap **0.9682**. Reduced cost still helps vs g0, but accuracy degrades.
 - Loss-focused NCE with 4x positive local frustration weighting applied to **both** positive/negative classes (same target density ratio) **failed to help**: ordinary versus focused physical RMS 0.18256 vs 0.18472; selected-correction-bond RMS 0.33092 vs 0.33259. Do not promote this heuristic.
-- An additional 128-walker ablation is underway; append only after results are verified.
+- **128-walker production-sized ablation** (same 450+450 projection / 1,200 training steps): 14,464 raw positive samples (4,796 unique), 10,755 unique FN projector rows and 860,400 local bond probes. Bulk RMS log-ratio error **0.5568**; correction-bond error **0.6383**; exact FN overlap **0.8519**. In four post-hoc local sign-correction trials, **only 1/4 improved** exact frozen-FN-amplitude energy, and the mean true energy gain was **-0.0003464**. The simple Jastrow comparator averaged **-0.0015545** on those same model-discovered pools. This is **not a reliable acceptance rule** at realistic walker budget.
 
 ## Important limitations
 1. The 20-site basis-to-index and frozen sign table are still globally stored. They are **not exact FN amplitude labels**, but the sign table must ultimately become a callable learned sign model.

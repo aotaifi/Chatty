@@ -52,3 +52,11 @@ python avsl_policy4_budget_check.py --checkpoint policy4_results.pt --out policy
 ```
 
 Requires `avsl_probe4.py` and `avsl_probe4_validation.py` from the same experiment folder. Some script defaults target `/mnt/data`; redirect output arguments when running elsewhere. All promotion criteria should be re-evaluated in a truly unseen guide family and with actual FN walker sampling before calling this an AVSL scaling success.
+
+## Additional frozen-policy second-chamber stress test (separate, NOT clean held-out generalization)
+Starting from the first run's accepted learned orbit corrections, change the Marshall sign chamber while keeping analytic amplitudes fixed; then re-evaluate the *unmodified* learned policy on locally available candidates. This is not an FN refresh or a retrained iterative sign net.
+
+- With candidate selection restricted to the **original held-out orbit partition**, all selection methods found zero beneficial orbits at B=22: the first step had already exhausted almost all profitable corrections inside that narrow partition. This test is inconclusive.
+- Allowing **all discovered candidate orbits** after the sign update, the learned model found 10.28 positive single-orbit actions per B=22 vs signed-edge heuristic 0.31 and random 0.75 across 36 seed/κ tests. Mean normalized frozen-guide energy improvement was about +0.001963 vs +0.000162 and +0.000112, respectively. Direct full-H energy verification of representative second-round choices agreed at ~1e-13.
+- **Critical caveat:** The reopened candidate pool contains orbit identities encountered during the original training, although their sign labels and surrounding environment have changed. Hence the apparent dramatic advantage does **not** establish out-of-support generalization, scalable active learning, or valid FN self-consistent progress. It is a stress-test observation, not a claim of a working iterative RL loop.
+- Exact reproduction: `experiments/active_verifier_guided_sign_learning/avsl_policy4_second_round_all.py` and `avsl_policy4_second_round_all_results.json` on GitHub, plus the original trained `.pt` checkpoint kept in the local artifacts. Re-training the network deterministically from the committed script reproduces that checkpoint under matching Python/PyTorch versions.

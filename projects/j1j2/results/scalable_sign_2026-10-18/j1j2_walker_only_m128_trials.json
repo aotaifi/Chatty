@@ -1,0 +1,254 @@
+{
+  "trials": [
+    {
+      "seed": 301,
+      "pool_orbits": 2312,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1845,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 20,
+          "n_selected_states": 800,
+          "selected_keys": [
+            31413,
+            31459,
+            73325,
+            79573,
+            80726,
+            87405,
+            87529,
+            88794,
+            88806,
+            88809,
+            88934,
+            89197,
+            89671,
+            91625,
+            92829,
+            92845,
+            93357,
+            94669,
+            104124,
+            113836
+          ],
+          "guide_predicted_gain": 5633.7122757045845,
+          "ED_weight_improvement": -0.0003203289698147003,
+          "unique_guide_queries": 14158,
+          "true_fn_amplitude_gain": -0.0025608070499132355
+        },
+        "jastrow": {
+          "n_selected_orbits": 20,
+          "n_selected_states": 800,
+          "selected_keys": [
+            31413,
+            71095,
+            73325,
+            79213,
+            79573,
+            87405,
+            88806,
+            88809,
+            88922,
+            88934,
+            89671,
+            92829,
+            92845,
+            93357,
+            94669,
+            101739,
+            104124,
+            108435,
+            108437,
+            108451
+          ],
+          "guide_predicted_gain": 8410.419786689074,
+          "ED_weight_improvement": -0.00027252413670098973,
+          "unique_guide_queries": 9027,
+          "true_fn_amplitude_gain": -0.0019145089931782168
+        }
+      }
+    },
+    {
+      "seed": 302,
+      "pool_orbits": 2417,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1793,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 11,
+          "n_selected_states": 440,
+          "selected_keys": [
+            23469,
+            31413,
+            72647,
+            73309,
+            87529,
+            88669,
+            88806,
+            88809,
+            92477,
+            94782,
+            113830
+          ],
+          "guide_predicted_gain": 7139.423358262136,
+          "ED_weight_improvement": -0.00037622181372675047,
+          "unique_guide_queries": 14588,
+          "true_fn_amplitude_gain": 0.003989599862140953
+        },
+        "jastrow": {
+          "n_selected_orbits": 17,
+          "n_selected_states": 680,
+          "selected_keys": [
+            23469,
+            31413,
+            31503,
+            87529,
+            87957,
+            87971,
+            88669,
+            88806,
+            88809,
+            88862,
+            88922,
+            92477,
+            93387,
+            94782,
+            96474,
+            108437,
+            108451
+          ],
+          "guide_predicted_gain": 7878.838647846691,
+          "ED_weight_improvement": -0.00037931149021886877,
+          "unique_guide_queries": 9436,
+          "true_fn_amplitude_gain": 0.0014004941586806762
+        }
+      }
+    },
+    {
+      "seed": 303,
+      "pool_orbits": 2437,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1788,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 14,
+          "n_selected_states": 560,
+          "selected_keys": [
+            23403,
+            29163,
+            30074,
+            72375,
+            79573,
+            79705,
+            86717,
+            88764,
+            91513,
+            92829,
+            108093,
+            108317,
+            109514,
+            113830
+          ],
+          "guide_predicted_gain": 3263.670958916291,
+          "ED_weight_improvement": -0.000123860570405175,
+          "unique_guide_queries": 14384,
+          "true_fn_amplitude_gain": -0.001243122975141176
+        },
+        "jastrow": {
+          "n_selected_orbits": 12,
+          "n_selected_states": 480,
+          "selected_keys": [
+            79573,
+            79705,
+            81287,
+            85342,
+            87957,
+            88550,
+            89514,
+            91513,
+            108093,
+            108317,
+            110109,
+            113830
+          ],
+          "guide_predicted_gain": 3544.592656231585,
+          "ED_weight_improvement": -7.935778781151186e-05,
+          "unique_guide_queries": 9149,
+          "true_fn_amplitude_gain": -0.0028843664932589955
+        }
+      }
+    },
+    {
+      "seed": 304,
+      "pool_orbits": 2217,
+      "eligible_orbits": 300,
+      "explore_amplitude_queries": 1797,
+      "arms": {
+        "fitted": {
+          "n_selected_orbits": 14,
+          "n_selected_states": 560,
+          "selected_keys": [
+            15965,
+            23469,
+            76155,
+            79573,
+            79779,
+            81005,
+            84829,
+            87955,
+            91625,
+            91821,
+            92845,
+            93357,
+            94645,
+            108444
+          ],
+          "guide_predicted_gain": 3226.654268490464,
+          "ED_weight_improvement": -0.00016468394594517622,
+          "unique_guide_queries": 14397,
+          "true_fn_amplitude_gain": -0.001571125654411264
+        },
+        "jastrow": {
+          "n_selected_orbits": 17,
+          "n_selected_states": 680,
+          "selected_keys": [
+            23469,
+            76155,
+            77259,
+            79322,
+            79573,
+            79779,
+            81005,
+            84829,
+            85451,
+            86942,
+            87482,
+            91821,
+            92845,
+            93357,
+            94645,
+            96595,
+            110109
+          ],
+          "guide_predicted_gain": 4935.908039984063,
+          "ED_weight_improvement": -0.00014243861400041924,
+          "unique_guide_queries": 9271,
+          "true_fn_amplitude_gain": -0.002819665881017341
+        }
+      }
+    }
+  ],
+  "summary": {
+    "fitted": {
+      "n_positive": 1,
+      "mean_true_gain": -0.00034636395433118057,
+      "mean_ed_weight_change": -0.0002462738249729505
+    },
+    "jastrow": {
+      "n_positive": 1,
+      "mean_true_gain": -0.0015545118021934694,
+      "mean_ed_weight_change": -0.0002184080071829474
+    }
+  },
+  "scope": "128-walker guide trained without FN labels; post-hoc exact FN evaluation; sampled candidate pool differs from 3500-walker guide, so not a paired cross-population ranking test"
+}

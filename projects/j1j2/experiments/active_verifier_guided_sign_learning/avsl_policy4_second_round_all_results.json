@@ -1,0 +1,2479 @@
+{
+  "scope": "4x4 frozen amplitude, modified signs from first learned correction; initial network frozen; no FN refresh",
+  "summary": {
+    "learned": {
+      "mean_positive_tested": 10.277777777777779,
+      "mean_gain_numerator": 700.1281116741625,
+      "mean_queries": 4350.972222222223,
+      "mean_selected_orbits": 9.61111111111111
+    },
+    "signed": {
+      "mean_positive_tested": 0.3055555555555556,
+      "mean_gain_numerator": 42.10532641827917,
+      "mean_queries": 4383.25,
+      "mean_selected_orbits": 0.3055555555555556
+    },
+    "random": {
+      "mean_positive_tested": 0.75,
+      "mean_gain_numerator": 43.38675815026039,
+      "mean_queries": 4394.611111111111,
+      "mean_selected_orbits": 0.75
+    },
+    "max_violation": {
+      "mean_positive_tested": 0.0,
+      "mean_gain_numerator": 0.0,
+      "mean_queries": 4342.833333333333,
+      "mean_selected_orbits": 0.0
+    }
+  },
+  "per_eval": [
+    {
+      "seed": 2100,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 429,
+      "common_queries": 3946,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 8,
+          "negative_tested": 14,
+          "gain_numerator": 644.4148211244203,
+          "selected_orbits": 9,
+          "total_guide_queries": 4220,
+          "extra_verifier_queries": 274,
+          "query_per_gain": 6.548576881947946,
+          "selected_orbit_keys": [
+            6066,
+            4731,
+            4541,
+            1910,
+            4535,
+            4791,
+            951,
+            955,
+            1907
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4256,
+          "extra_verifier_queries": 310,
+          "query_per_gain": 37.533808814876004,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 47.00162066496273,
+          "selected_orbits": 2,
+          "total_guide_queries": 4255,
+          "extra_verifier_queries": 309,
+          "query_per_gain": 90.52879325865207,
+          "selected_orbit_keys": [
+            1907,
+            951
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4212,
+          "extra_verifier_queries": 266,
+          "query_per_gain": 421200000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2100,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 434,
+      "common_queries": 4136,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 709.6070135131993,
+          "selected_orbits": 9,
+          "total_guide_queries": 4397,
+          "extra_verifier_queries": 261,
+          "query_per_gain": 6.1963874599137005,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            2022,
+            951,
+            891,
+            887,
+            955,
+            1011,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4467,
+          "extra_verifier_queries": 331,
+          "query_per_gain": 446700000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 140.09261271739632,
+          "selected_orbits": 2,
+          "total_guide_queries": 4452,
+          "extra_verifier_queries": 316,
+          "query_per_gain": 31.77897758949543,
+          "selected_orbit_keys": [
+            2022,
+            955
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4405,
+          "extra_verifier_queries": 269,
+          "query_per_gain": 440500000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2100,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 423,
+      "common_queries": 4030,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 13,
+          "negative_tested": 9,
+          "gain_numerator": 1105.4129461712675,
+          "selected_orbits": 11,
+          "total_guide_queries": 4287,
+          "extra_verifier_queries": 257,
+          "query_per_gain": 3.878188703007819,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            951,
+            2022,
+            4541,
+            891,
+            887,
+            1907,
+            1910,
+            955,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4305,
+          "extra_verifier_queries": 275,
+          "query_per_gain": 430500000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 2.9249485289891863,
+          "selected_orbits": 1,
+          "total_guide_queries": 4364,
+          "extra_verifier_queries": 334,
+          "query_per_gain": 1491.9920664409524,
+          "selected_orbit_keys": [
+            5043
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4309,
+          "extra_verifier_queries": 279,
+          "query_per_gain": 430900000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4471
+      ]
+    },
+    {
+      "seed": 2101,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 423,
+      "common_queries": 4162,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 8,
+          "negative_tested": 14,
+          "gain_numerator": 382.85585507261703,
+          "selected_orbits": 9,
+          "total_guide_queries": 4453,
+          "extra_verifier_queries": 291,
+          "query_per_gain": 11.631009271506088,
+          "selected_orbit_keys": [
+            4731,
+            4541,
+            4571,
+            887,
+            4535,
+            1910,
+            891,
+            2022,
+            4471
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 55.87699609094902,
+          "selected_orbits": 1,
+          "total_guide_queries": 4491,
+          "extra_verifier_queries": 329,
+          "query_per_gain": 80.37296766437045,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4463,
+          "extra_verifier_queries": 301,
+          "query_per_gain": 446300000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4411,
+          "extra_verifier_queries": 249,
+          "query_per_gain": 441100000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475
+      ]
+    },
+    {
+      "seed": 2101,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 429,
+      "common_queries": 3978,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 14,
+          "negative_tested": 8,
+          "gain_numerator": 909.3812057711677,
+          "selected_orbits": 11,
+          "total_guide_queries": 4255,
+          "extra_verifier_queries": 277,
+          "query_per_gain": 4.679005870141886,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            4535,
+            2022,
+            1910,
+            4541,
+            1907,
+            891,
+            955,
+            887,
+            1011
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4325,
+          "extra_verifier_queries": 347,
+          "query_per_gain": 432500000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4277,
+          "extra_verifier_queries": 299,
+          "query_per_gain": 427700000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4297,
+          "extra_verifier_queries": 319,
+          "query_per_gain": 429700000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2101,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 424,
+      "common_queries": 3797,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 1019.486727552317,
+          "selected_orbits": 9,
+          "total_guide_queries": 4090,
+          "extra_verifier_queries": 293,
+          "query_per_gain": 4.011822703979354,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            4535,
+            951,
+            4541,
+            891,
+            887,
+            1907,
+            1910
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4119,
+          "extra_verifier_queries": 322,
+          "query_per_gain": 411900000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4104,
+          "extra_verifier_queries": 307,
+          "query_per_gain": 410400000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4053,
+          "extra_verifier_queries": 256,
+          "query_per_gain": 405300000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2102,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 434,
+      "common_queries": 4228,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 8,
+          "negative_tested": 14,
+          "gain_numerator": 409.22546378495485,
+          "selected_orbits": 8,
+          "total_guide_queries": 4511,
+          "extra_verifier_queries": 283,
+          "query_per_gain": 11.023263211134141,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            2022,
+            1907,
+            4541,
+            951,
+            887,
+            891
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4587,
+          "extra_verifier_queries": 359,
+          "query_per_gain": 458700000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4568,
+          "extra_verifier_queries": 340,
+          "query_per_gain": 456800000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4532,
+          "extra_verifier_queries": 304,
+          "query_per_gain": 453200000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2102,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 430,
+      "common_queries": 3979,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 7,
+          "negative_tested": 15,
+          "gain_numerator": 543.6630656997198,
+          "selected_orbits": 8,
+          "total_guide_queries": 4270,
+          "extra_verifier_queries": 291,
+          "query_per_gain": 7.8541292749109415,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            2022,
+            891,
+            887,
+            1011,
+            831,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4308,
+          "extra_verifier_queries": 329,
+          "query_per_gain": 430800000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 174.62070332405384,
+          "selected_orbits": 2,
+          "total_guide_queries": 4360,
+          "extra_verifier_queries": 381,
+          "query_per_gain": 24.968402468915116,
+          "selected_orbit_keys": [
+            4731,
+            891
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4273,
+          "extra_verifier_queries": 294,
+          "query_per_gain": 427300000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4979
+      ]
+    },
+    {
+      "seed": 2102,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 433,
+      "common_queries": 4129,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 669.8053221324949,
+          "selected_orbits": 9,
+          "total_guide_queries": 4360,
+          "extra_verifier_queries": 231,
+          "query_per_gain": 6.509354070401883,
+          "selected_orbit_keys": [
+            4535,
+            4731,
+            951,
+            4541,
+            955,
+            1011,
+            6585,
+            447,
+            507
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4441,
+          "extra_verifier_queries": 312,
+          "query_per_gain": 444100000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 2.9249485289891863,
+          "selected_orbits": 1,
+          "total_guide_queries": 4471,
+          "extra_verifier_queries": 342,
+          "query_per_gain": 1528.573906750114,
+          "selected_orbit_keys": [
+            2034
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4413,
+          "extra_verifier_queries": 284,
+          "query_per_gain": 441300000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2103,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 436,
+      "common_queries": 4311,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 6,
+          "negative_tested": 16,
+          "gain_numerator": 301.52690599491916,
+          "selected_orbits": 6,
+          "total_guide_queries": 4583,
+          "extra_verifier_queries": 272,
+          "query_per_gain": 15.199306956962657,
+          "selected_orbit_keys": [
+            4731,
+            951,
+            2022,
+            1011,
+            891,
+            887
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4625,
+          "extra_verifier_queries": 314,
+          "query_per_gain": 40.78803237048908,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4597,
+          "extra_verifier_queries": 286,
+          "query_per_gain": 459700000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4558,
+          "extra_verifier_queries": 247,
+          "query_per_gain": 455800000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2103,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 437,
+      "common_queries": 4121,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 13,
+          "negative_tested": 9,
+          "gain_numerator": 869.3833834922337,
+          "selected_orbits": 12,
+          "total_guide_queries": 4387,
+          "extra_verifier_queries": 266,
+          "query_per_gain": 5.04610518592824,
+          "selected_orbit_keys": [
+            4731,
+            4535,
+            4571,
+            951,
+            4541,
+            955,
+            1910,
+            887,
+            1907,
+            4539,
+            4471,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 194.8920334948452,
+          "selected_orbits": 1,
+          "total_guide_queries": 4481,
+          "extra_verifier_queries": 360,
+          "query_per_gain": 22.992217381314973,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4465,
+          "extra_verifier_queries": 344,
+          "query_per_gain": 446500000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4492,
+          "extra_verifier_queries": 371,
+          "query_per_gain": 449200000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2103,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 427,
+      "common_queries": 3948,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 15,
+          "negative_tested": 7,
+          "gain_numerator": 948.5313316489533,
+          "selected_orbits": 12,
+          "total_guide_queries": 4224,
+          "extra_verifier_queries": 276,
+          "query_per_gain": 4.453200288763135,
+          "selected_orbit_keys": [
+            6066,
+            4571,
+            4535,
+            4731,
+            955,
+            1910,
+            887,
+            1907,
+            4539,
+            1011,
+            447,
+            6585
+          ]        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4236,
+          "extra_verifier_queries": 288,
+          "query_per_gain": 423600000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 58.408158765485155,
+          "selected_orbits": 2,
+          "total_guide_queries": 4250,
+          "extra_verifier_queries": 302,
+          "query_per_gain": 72.76380714318,
+          "selected_orbit_keys": [
+            1910,
+            4539
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4159,
+          "extra_verifier_queries": 211,
+          "query_per_gain": 415900000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2104,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 434,
+      "common_queries": 4173,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 412.31245081866444,
+          "selected_orbits": 10,
+          "total_guide_queries": 4445,
+          "extra_verifier_queries": 272,
+          "query_per_gain": 10.780659160726914,
+          "selected_orbit_keys": [
+            4731,
+            951,
+            2022,
+            1011,
+            4541,
+            887,
+            4571,
+            4539,
+            4535,
+            831
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4525,
+          "extra_verifier_queries": 352,
+          "query_per_gain": 452500000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4515,
+          "extra_verifier_queries": 342,
+          "query_per_gain": 451500000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4448,
+          "extra_verifier_queries": 275,
+          "query_per_gain": 444800000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2104,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 435,
+      "common_queries": 4144,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 13,
+          "negative_tested": 9,
+          "gain_numerator": 744.062353123712,
+          "selected_orbits": 11,
+          "total_guide_queries": 4414,
+          "extra_verifier_queries": 270,
+          "query_per_gain": 5.932298525075496,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            2022,
+            4541,
+            1907,
+            1910,
+            887,
+            891,
+            1011,
+            4539,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4452,
+          "extra_verifier_queries": 308,
+          "query_per_gain": 445200000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 1.6842843532304705,
+          "selected_orbits": 1,
+          "total_guide_queries": 4503,
+          "extra_verifier_queries": 359,
+          "query_per_gain": 2673.5390561357476,
+          "selected_orbit_keys": [
+            2034
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4483,
+          "extra_verifier_queries": 339,
+          "query_per_gain": 448300000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4979
+      ]
+    },
+    {
+      "seed": 2104,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 431,
+      "common_queries": 4036,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 835.081622765461,
+          "selected_orbits": 11,
+          "total_guide_queries": 4315,
+          "extra_verifier_queries": 279,
+          "query_per_gain": 5.167159571432577,
+          "selected_orbit_keys": [
+            4535,
+            4731,
+            2022,
+            4541,
+            1910,
+            1907,
+            955,
+            887,
+            831,
+            447,
+            2034
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4325,
+          "extra_verifier_queries": 289,
+          "query_per_gain": 432500000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 143.30806514769924,
+          "selected_orbits": 1,
+          "total_guide_queries": 4356,
+          "extra_verifier_queries": 320,
+          "query_per_gain": 30.396056185048103,
+          "selected_orbit_keys": [
+            4731
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4318,
+          "extra_verifier_queries": 282,
+          "query_per_gain": 431800000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2105,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 433,
+      "common_queries": 4258,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 8,
+          "negative_tested": 14,
+          "gain_numerator": 381.85814468659913,
+          "selected_orbits": 8,
+          "total_guide_queries": 4522,
+          "extra_verifier_queries": 264,
+          "query_per_gain": 11.842093884657933,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            4535,
+            955,
+            891,
+            1907,
+            4541,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4519,
+          "extra_verifier_queries": 261,
+          "query_per_gain": 39.8532147637276,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 10.81604075317502,
+          "selected_orbits": 1,
+          "total_guide_queries": 4543,
+          "extra_verifier_queries": 285,
+          "query_per_gain": 420.0243049811378,
+          "selected_orbit_keys": [
+            887
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4531,
+          "extra_verifier_queries": 273,
+          "query_per_gain": 453100000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2105,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 426,
+      "common_queries": 3954,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 1038.9329509281713,
+          "selected_orbits": 12,
+          "total_guide_queries": 4226,
+          "extra_verifier_queries": 272,
+          "query_per_gain": 4.067634967419734,
+          "selected_orbit_keys": [
+            4731,
+            4535,
+            4571,
+            951,
+            2022,
+            1910,
+            4541,
+            1907,
+            887,
+            955,
+            891,
+            4471
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4212,
+          "extra_verifier_queries": 258,
+          "query_per_gain": 421200000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 140.09261271739632,
+          "selected_orbits": 2,
+          "total_guide_queries": 4264,
+          "extra_verifier_queries": 310,
+          "query_per_gain": 30.437008185446654,
+          "selected_orbit_keys": [
+            951,
+            887
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4180,
+          "extra_verifier_queries": 226,
+          "query_per_gain": 418000000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2105,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 422,
+      "common_queries": 3857,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 887.4243000171505,
+          "selected_orbits": 10,
+          "total_guide_queries": 4145,
+          "extra_verifier_queries": 288,
+          "query_per_gain": 4.670820936411019,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            2022,
+            951,
+            891,
+            887,
+            955,
+            1910,
+            447,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4183,
+          "extra_verifier_queries": 326,
+          "query_per_gain": 418300000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 5.269350306747162,
+          "selected_orbits": 1,
+          "total_guide_queries": 4157,
+          "extra_verifier_queries": 300,
+          "query_per_gain": 788.9018110405664,
+          "selected_orbit_keys": [
+            5043
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4097,
+          "extra_verifier_queries": 240,
+          "query_per_gain": 409700000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2106,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 426,
+      "common_queries": 4040,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 7,
+          "negative_tested": 15,
+          "gain_numerator": 512.831658365779,
+          "selected_orbits": 7,
+          "total_guide_queries": 4291,
+          "extra_verifier_queries": 251,
+          "query_per_gain": 8.367268147356512,
+          "selected_orbit_keys": [
+            6066,
+            4731,
+            4541,
+            891,
+            1907,
+            887,
+            951
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4350,
+          "extra_verifier_queries": 310,
+          "query_per_gain": 435000000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4319,
+          "extra_verifier_queries": 279,
+          "query_per_gain": 431900000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4286,
+          "extra_verifier_queries": 246,
+          "query_per_gain": 428600000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2106,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 421,
+      "common_queries": 3820,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 776.2421811735065,
+          "selected_orbits": 10,
+          "total_guide_queries": 4131,
+          "extra_verifier_queries": 311,
+          "query_per_gain": 5.321792734523704,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            2022,
+            951,
+            4541,
+            1907,
+            1910,
+            887,
+            4539,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 194.8920334948452,
+          "selected_orbits": 1,
+          "total_guide_queries": 4140,
+          "extra_verifier_queries": 320,
+          "query_per_gain": 21.24253067588574,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4187,
+          "extra_verifier_queries": 367,
+          "query_per_gain": 418700000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4061,
+          "extra_verifier_queries": 241,
+          "query_per_gain": 406100000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2106,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 432,
+      "common_queries": 4069,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 14,
+          "negative_tested": 8,
+          "gain_numerator": 828.1865058206191,
+          "selected_orbits": 12,
+          "total_guide_queries": 4347,
+          "extra_verifier_queries": 278,
+          "query_per_gain": 5.248817711286807,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            2022,
+            891,
+            1907,
+            1910,
+            887,
+            955,
+            1011,
+            4539,
+            447,
+            6585
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4318,
+          "extra_verifier_queries": 249,
+          "query_per_gain": 431800000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 19.680436074882618,
+          "selected_orbits": 1,
+          "total_guide_queries": 4392,
+          "extra_verifier_queries": 323,
+          "query_per_gain": 223.16578673809676,
+          "selected_orbit_keys": [
+            4539
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4296,
+          "extra_verifier_queries": 227,
+          "query_per_gain": 429600000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2107,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 428,
+      "common_queries": 4073,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 10,
+          "negative_tested": 12,
+          "gain_numerator": 491.6839568345353,
+          "selected_orbits": 10,
+          "total_guide_queries": 4366,
+          "extra_verifier_queries": 293,
+          "query_per_gain": 8.879687732966392,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            4535,
+            2022,
+            955,
+            891,
+            4571,
+            887,
+            4541,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4341,
+          "extra_verifier_queries": 268,
+          "query_per_gain": 38.2834267070904,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4401,
+          "extra_verifier_queries": 328,
+          "query_per_gain": 440100000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4342,
+          "extra_verifier_queries": 269,
+          "query_per_gain": 434200000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2107,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 429,
+      "common_queries": 4088,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 824.4974529766647,
+          "selected_orbits": 11,
+          "total_guide_queries": 4387,
+          "extra_verifier_queries": 299,
+          "query_per_gain": 5.320816922067754,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            4535,
+            2022,
+            1910,
+            1907,
+            891,
+            955,
+            887,
+            1011,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 194.8920334948452,
+          "selected_orbits": 1,
+          "total_guide_queries": 4372,
+          "extra_verifier_queries": 284,
+          "query_per_gain": 22.432933361104457,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4414,
+          "extra_verifier_queries": 326,
+          "query_per_gain": 441400000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4306,
+          "extra_verifier_queries": 218,
+          "query_per_gain": 430600000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4979
+      ]
+    },
+    {
+      "seed": 2107,
+      "kappa": 1.0,      "mode": "new_seeds",
+      "candidate_pool": 422,
+      "common_queries": 4004,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 7,
+          "negative_tested": 15,
+          "gain_numerator": 524.0202613192783,
+          "selected_orbits": 7,
+          "total_guide_queries": 4295,
+          "extra_verifier_queries": 291,
+          "query_per_gain": 8.19624796412808,
+          "selected_orbit_keys": [
+            4571,
+            951,
+            891,
+            955,
+            1907,
+            1910,
+            447
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4308,
+          "extra_verifier_queries": 304,
+          "query_per_gain": 430800000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4366,
+          "extra_verifier_queries": 362,
+          "query_per_gain": 436600000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4270,
+          "extra_verifier_queries": 266,
+          "query_per_gain": 427000000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4471
+      ]
+    },
+    {
+      "seed": 2108,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 433,
+      "common_queries": 4189,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 6,
+          "negative_tested": 16,
+          "gain_numerator": 311.6394633307892,
+          "selected_orbits": 6,
+          "total_guide_queries": 4450,
+          "extra_verifier_queries": 261,
+          "query_per_gain": 14.279321214452724,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            4535,
+            2022,
+            891,
+            1011
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4478,
+          "extra_verifier_queries": 289,
+          "query_per_gain": 39.49163436865948,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4509,
+          "extra_verifier_queries": 320,
+          "query_per_gain": 450900000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4407,
+          "extra_verifier_queries": 218,
+          "query_per_gain": 440700000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2108,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 423,
+      "common_queries": 3830,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 10,
+          "negative_tested": 12,
+          "gain_numerator": 772.4428220558503,
+          "selected_orbits": 10,
+          "total_guide_queries": 4142,
+          "extra_verifier_queries": 312,
+          "query_per_gain": 5.362209191064913,
+          "selected_orbit_keys": [
+            4731,
+            4571,
+            951,
+            2022,
+            4541,
+            1910,
+            955,
+            891,
+            831,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 194.8920334948452,
+          "selected_orbits": 1,
+          "total_guide_queries": 4218,
+          "extra_verifier_queries": 388,
+          "query_per_gain": 21.64275226832996,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4141,
+          "extra_verifier_queries": 311,
+          "query_per_gain": 414100000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4109,
+          "extra_verifier_queries": 279,
+          "query_per_gain": 410900000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2108,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 430,
+      "common_queries": 4013,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 836.1009564289405,
+          "selected_orbits": 10,
+          "total_guide_queries": 4287,
+          "extra_verifier_queries": 274,
+          "query_per_gain": 5.127371242714693,
+          "selected_orbit_keys": [
+            4731,
+            951,
+            2022,
+            891,
+            831,
+            955,
+            1910,
+            1907,
+            887,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4272,
+          "extra_verifier_queries": 259,
+          "query_per_gain": 427200000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 3,
+          "negative_tested": 19,
+          "gain_numerator": 179.45735868413863,
+          "selected_orbits": 3,
+          "total_guide_queries": 4284,
+          "extra_verifier_queries": 271,
+          "query_per_gain": 23.871966195268882,
+          "selected_orbit_keys": [
+            4571,
+            1011,
+            5043
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4260,
+          "extra_verifier_queries": 247,
+          "query_per_gain": 426000000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2109,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 435,
+      "common_queries": 4210,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 413.42709983133176,
+          "selected_orbits": 9,
+          "total_guide_queries": 4465,
+          "extra_verifier_queries": 255,
+          "query_per_gain": 10.799969333944514,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            2022,
+            1907,
+            951,
+            1011,
+            891,
+            887,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4521,
+          "extra_verifier_queries": 311,
+          "query_per_gain": 452100000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 2,
+          "negative_tested": 20,
+          "gain_numerator": 125.51897280937425,
+          "selected_orbits": 2,
+          "total_guide_queries": 4498,
+          "extra_verifier_queries": 288,
+          "query_per_gain": 35.835219961775145,
+          "selected_orbit_keys": [
+            4731,
+            4571
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4474,
+          "extra_verifier_queries": 264,
+          "query_per_gain": 447400000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2109,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 431,
+      "common_queries": 4207,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 687.5136071385928,
+          "selected_orbits": 9,
+          "total_guide_queries": 4475,
+          "extra_verifier_queries": 268,
+          "query_per_gain": 6.508962082401236,
+          "selected_orbit_keys": [
+            4731,
+            4535,
+            951,
+            2022,
+            4541,
+            955,
+            887,
+            4539,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4551,
+          "extra_verifier_queries": 344,
+          "query_per_gain": 455100000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4541,
+          "extra_verifier_queries": 334,
+          "query_per_gain": 454100000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4474,
+          "extra_verifier_queries": 267,
+          "query_per_gain": 447400000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4979
+      ]
+    },
+    {
+      "seed": 2109,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 428,
+      "common_queries": 4151,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 779.0521686958725,
+          "selected_orbits": 8,
+          "total_guide_queries": 4427,
+          "extra_verifier_queries": 276,
+          "query_per_gain": 5.682546275958342,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            2022,
+            891,
+            1907,
+            1910,
+            887,
+            955
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4456,
+          "extra_verifier_queries": 305,
+          "query_per_gain": 445600000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4496,
+          "extra_verifier_queries": 345,
+          "query_per_gain": 449600000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4421,
+          "extra_verifier_queries": 270,
+          "query_per_gain": 442100000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2110,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 428,
+      "common_queries": 4367,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 556.2879205757972,
+          "selected_orbits": 11,
+          "total_guide_queries": 4627,
+          "extra_verifier_queries": 260,
+          "query_per_gain": 8.317635218846256,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            4535,
+            2022,
+            1907,
+            4541,
+            955,
+            951,
+            887,
+            891,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4649,
+          "extra_verifier_queries": 282,
+          "query_per_gain": 464900000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 28.13895700746144,
+          "selected_orbits": 1,
+          "total_guide_queries": 4688,
+          "extra_verifier_queries": 321,
+          "query_per_gain": 166.60176845776164,
+          "selected_orbit_keys": [
+            955
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4659,
+          "extra_verifier_queries": 292,
+          "query_per_gain": 465900000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4475,
+        1971
+      ]
+    },
+    {
+      "seed": 2110,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 430,
+      "common_queries": 4179,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 689.6953437921434,
+          "selected_orbits": 9,
+          "total_guide_queries": 4442,
+          "extra_verifier_queries": 263,
+          "query_per_gain": 6.440524849097293,
+          "selected_orbit_keys": [
+            4731,
+            2022,
+            4535,
+            891,
+            955,
+            4541,
+            1907,
+            887,
+            4539
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4423,
+          "extra_verifier_queries": 244,
+          "query_per_gain": 442300000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 50.997807922648654,
+          "selected_orbits": 1,
+          "total_guide_queries": 4459,
+          "extra_verifier_queries": 280,
+          "query_per_gain": 87.43513067783668,
+          "selected_orbit_keys": [
+            1910
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4420,
+          "extra_verifier_queries": 241,
+          "query_per_gain": 442000000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2110,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 413,
+      "common_queries": 3824,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 1058.4354110912998,
+          "selected_orbits": 11,
+          "total_guide_queries": 4125,
+          "extra_verifier_queries": 301,
+          "query_per_gain": 3.897261898812436,
+          "selected_orbit_keys": [
+            4535,
+            4731,
+            4571,
+            2022,
+            4541,
+            891,
+            1907,
+            831,
+            887,
+            4539,
+            5043
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4151,
+          "extra_verifier_queries": 327,
+          "query_per_gain": 415100000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 309.11611829862267,
+          "selected_orbits": 1,
+          "total_guide_queries": 4174,
+          "extra_verifier_queries": 350,
+          "query_per_gain": 13.503016351828322,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4107,
+          "extra_verifier_queries": 283,
+          "query_per_gain": 410700000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        4475,
+        1971,
+        4471,
+        4979
+      ]
+    },
+    {
+      "seed": 2111,
+      "kappa": 0.8,
+      "mode": "new_seeds",
+      "candidate_pool": 430,
+      "common_queries": 4168,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 9,
+          "negative_tested": 13,
+          "gain_numerator": 397.93323910703714,
+          "selected_orbits": 10,
+          "total_guide_queries": 4441,
+          "extra_verifier_queries": 273,
+          "query_per_gain": 11.160163473565595,
+          "selected_orbit_keys": [
+            4731,
+            1910,
+            951,
+            955,
+            891,
+            1011,
+            4571,
+            4539,
+            4541,
+            831
+          ]
+        },
+        "signed": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 113.39110349795338,
+          "selected_orbits": 1,
+          "total_guide_queries": 4459,
+          "extra_verifier_queries": 291,
+          "query_per_gain": 39.3240727221645,
+          "selected_orbit_keys": [
+            6066
+          ]
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 23.112751098700166,
+          "selected_orbits": 1,
+          "total_guide_queries": 4451,
+          "extra_verifier_queries": 283,
+          "query_per_gain": 192.5776806487705,
+          "selected_orbit_keys": [
+            4539
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4421,
+          "extra_verifier_queries": 253,
+          "query_per_gain": 442100000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        1971,
+        4475
+      ]
+    },
+    {
+      "seed": 2111,
+      "kappa": 0.9,
+      "mode": "new_seeds",
+      "candidate_pool": 423,
+      "common_queries": 4167,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 11,
+          "negative_tested": 11,
+          "gain_numerator": 772.0558409811205,
+          "selected_orbits": 11,
+          "total_guide_queries": 4447,
+          "extra_verifier_queries": 280,
+          "query_per_gain": 5.759946060830003,
+          "selected_orbit_keys": [
+            4571,
+            4731,
+            2022,
+            951,
+            891,
+            887,
+            955,
+            1907,
+            1910,
+            1011,
+            4979
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4502,
+          "extra_verifier_queries": 335,
+          "query_per_gain": 450200000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4501,
+          "extra_verifier_queries": 334,
+          "query_per_gain": 450100000000.0,
+          "selected_orbit_keys": []
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4462,
+          "extra_verifier_queries": 295,
+          "query_per_gain": 446200000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [        4791,
+        4475,
+        4979
+      ]
+    },
+    {
+      "seed": 2111,
+      "kappa": 1.0,
+      "mode": "new_seeds",
+      "candidate_pool": 429,
+      "common_queries": 4103,
+      "n_seeds": 160,
+      "methods": {
+        "learned": {
+          "positive_tested": 12,
+          "negative_tested": 10,
+          "gain_numerator": 1159.6002664526695,
+          "selected_orbits": 10,
+          "total_guide_queries": 4386,
+          "extra_verifier_queries": 283,
+          "query_per_gain": 3.7823378683908055,
+          "selected_orbit_keys": [
+            6066,
+            4535,
+            4731,
+            4571,
+            4541,
+            1910,
+            887,
+            955,
+            4539,
+            6585
+          ]
+        },
+        "signed": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4431,
+          "extra_verifier_queries": 328,
+          "query_per_gain": 443100000000.0,
+          "selected_orbit_keys": []
+        },
+        "random": {
+          "positive_tested": 1,
+          "negative_tested": 21,
+          "gain_numerator": 98.75754570542102,
+          "selected_orbits": 1,
+          "total_guide_queries": 4421,
+          "extra_verifier_queries": 318,
+          "query_per_gain": 44.76619956906565,
+          "selected_orbit_keys": [
+            4541
+          ]
+        },
+        "max_violation": {
+          "positive_tested": 0,
+          "negative_tested": 22,
+          "gain_numerator": 0.0,
+          "selected_orbits": 0,
+          "total_guide_queries": 4396,
+          "extra_verifier_queries": 293,
+          "query_per_gain": 439600000000.0,
+          "selected_orbit_keys": []
+        }
+      },
+      "previously_flipped_orbits": [
+        4791,
+        1971,
+        4475,
+        4471,
+        4979
+      ]
+    }
+  ],
+  "limitations": [
+    "Not a full self-consistent FN\u2013Krylov loop",
+    "Sign chambers built from same models first accepted orbit flips; geometry shifts only through current signs",
+    "The reward is exact with respect to frozen analytic guide but not exact ground state"
+  ]
+}

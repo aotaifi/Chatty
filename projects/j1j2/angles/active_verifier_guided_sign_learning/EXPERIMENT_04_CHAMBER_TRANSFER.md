@@ -58,3 +58,24 @@ Source and archived raw results:
 Evaluation audits were generated as `avsl_transfer20_opportunity_audit.py`, `avsl_transfer20_oracle_ceiling.py` and their JSON outputs; attach/commit alongside this report for exact reproduction. Both enumerations are strictly **post-hoc oracle audits**.
 
 **Decision:** Do not scale this static learned ranker to 6x6. Separate rare-candidate support, reward signal quality, and policy transfer; evaluate actual on-policy acquisition next.
+
+## Follow-up: direct post-Krylov training and label-budget ablation (2026-10-19)
+
+Keeping held-out pools, 22 candidate verification budget, 20 test seeds, 1,000 optimizer steps and the same architecture fixed, train the policy *in the post-Krylov chamber* instead of relying on a Marshall-trained model. All results below are mean **fixed-a energy gain**; values are positive when helpful.
+
+| Training labels / 4,654 orbits | Positive labels | Seed 19 bond policy | Seed 19 geometry+amp | Seed 29 bond policy | Seed 29 geometry+amp |
+|---|---:|---:|---:|---:|---:|
+| 270 (5.8%) | 6 | 0.000019288 | 0.000024361 | 0.000016778 | 0.000024598 |
+| 630 (13.5%) | 12 | 0.000018219 | 0.000020916 | 0.000019984 | 0.000029137 |
+| 1,980 (42.5%) | 49 | 0.000021734 | 0.000028558 | 0.000022735 | 0.000025306 |
+| **Marshall-trained, zero-shot** | 408 Marshall positives | 0.000001036 | 0.000001774 | 0.000002283 | 0.000001035 |
+
+For comparison, post-Krylov hindsight exact oracle top-22 gain = **0.000032524** and observed signed-bond heuristic = 0, random = 0.000000320. The direct in-chamber training gain is about **10–22x** the frozen-policy transfer gain at the same label budget/seed; the improvement is visible even with 270 labels, although those 270 include only **six positive corrections**. Geometry+amplitude features (no observed-bond information) typically do **better** than the bond-feature policy. Thus there is no evidence yet that the policy learns *from observed bonds* rather than from the small-system spin geometry and oracle-queried amplitude.
+
+Independent full Hamiltonian checks for all 160 seed-19 in-chamber actions agreed with the crossing-edge evaluator to within **3.9e-14**. Seed-29 direct-H check has not yet been separately rerun; it uses the same validated scoring implementation.
+
+**Interpretation:** This is strong evidence for *sign-chamber adaptation* as the reason static zero-shot transfer failed, but does not establish a scalable training method. The label-budget experiment reduces the number of **energy labels**, not the extensive per-episode cost of proposing frontiers, querying all pool representative amplitudes, and using a globally known exact FN guide. This remains a frozen-amplitude, single-orbit correction-ranker test, not a learned exploration policy or full FN self-consistent loop.
+
+Repro: `avsl_transfer20_chamber_controls.py --train-chamber post_krylov --train-budget 15/35/110 --seed 19/29` with `avsl_transfer20.py`, generated 20-site data and the original train/eval defaults. The label budgets per episode are 15/35/110 across 18 episodes. Post-hoc opportunity and hindsight ceiling are independently reproducible with `avsl_transfer20_opportunity_audit.py` and `avsl_transfer20_oracle_ceiling.py`.
+
+**Next priority:** learn or adapt a *discovery proposal* from genuinely sparse walker roots, not only rank a 50%-of-sector one-hop frontier; test transfer and energy per end-to-end query cost while excluding oracle FN amplitudes from action selection.

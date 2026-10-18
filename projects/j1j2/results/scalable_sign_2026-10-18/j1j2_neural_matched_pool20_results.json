@@ -1,0 +1,179 @@
+{
+  "in_progress": false,
+  "summary": {
+    "actual_gain": {
+      "point": 0.00018831291906028135,
+      "edge": 0.0002611245389937045
+    },
+    "predicted_gain": {
+      "point": 0.0003927262183684509,
+      "edge": 0.00034370374126550704
+    },
+    "n_selected": {
+      "point": 6.166666666666667,
+      "edge": 7.166666666666667
+    },
+    "n_model_orbit_queries": {
+      "point": 3553.6666666666665,
+      "edge": 3555.5
+    }
+  },
+  "per_trial": [
+    {
+      "seed": 0,
+      "trial": 0,
+      "explorer": "point",
+      "n_seed_visited": 118,
+      "n_orbit_pool": 2329,
+      "exploration_model_calls": 1031,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.00012543980061125964,
+          "predicted_gain": 0.00026269346088683395,
+          "n_selected": 4,
+          "n_model_orbit_queries": 3554
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00023448362488664944,
+          "predicted_gain": 0.00014276063697786888,
+          "n_selected": 4,
+          "n_model_orbit_queries": 3551
+        }
+      ],
+      "elapsed": 5.17
+    },
+    {
+      "seed": 0,
+      "trial": 1,
+      "explorer": "point",
+      "n_seed_visited": 109,
+      "n_orbit_pool": 2070,
+      "exploration_model_calls": 986,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 8.163085364220463e-06,
+          "predicted_gain": 0.0001372429418294638,
+          "n_selected": 3,
+          "n_model_orbit_queries": 3605
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.0001263776396408439,
+          "predicted_gain": 0.00013729465225998093,
+          "n_selected": 5,
+          "n_model_orbit_queries": 3612
+        }
+      ],
+      "elapsed": 4.79
+    },
+    {
+      "seed": 0,
+      "trial": 2,
+      "explorer": "point",
+      "n_seed_visited": 114,
+      "n_orbit_pool": 2015,
+      "exploration_model_calls": 954,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 7.224322324552851e-05,
+          "predicted_gain": 0.00010655053225630659,
+          "n_selected": 5,
+          "n_model_orbit_queries": 3617
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.0002773196036314436,
+          "predicted_gain": 0.00025156572446458704,
+          "n_selected": 8,
+          "n_model_orbit_queries": 3631
+        }
+      ],
+      "elapsed": 4.75
+    },
+    {
+      "seed": 1,
+      "trial": 0,
+      "explorer": "point",
+      "n_seed_visited": 114,
+      "n_orbit_pool": 2301,
+      "exploration_model_calls": 996,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.0002268679705075515,
+          "predicted_gain": 0.0005507515878115149,
+          "n_selected": 5,
+          "n_model_orbit_queries": 3486
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.0002268679705075515,
+          "predicted_gain": 0.0004781378037060421,
+          "n_selected": 5,
+          "n_model_orbit_queries": 3499
+        }
+      ],
+      "elapsed": 4.59
+    },
+    {
+      "seed": 1,
+      "trial": 1,
+      "explorer": "point",
+      "n_seed_visited": 112,
+      "n_orbit_pool": 1981,
+      "exploration_model_calls": 933,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.00034155263179999666,
+          "predicted_gain": 0.0007024475913063751,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3476
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00034509609935708596,
+          "predicted_gain": 0.0006098036810547548,
+          "n_selected": 11,
+          "n_model_orbit_queries": 3475
+        }
+      ],
+      "elapsed": 4.76
+    },
+    {
+      "seed": 1,
+      "trial": 2,
+      "explorer": "point",
+      "n_seed_visited": 111,
+      "n_orbit_pool": 2145,
+      "exploration_model_calls": 1018,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.0003556108028331312,
+          "predicted_gain": 0.0005966711961202112,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3584
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00035660229593865257,
+          "predicted_gain": 0.00044265994912980863,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3565
+        }
+      ],
+      "elapsed": 5.27
+    }
+  ],
+  "limitations": [
+    "Pointwise CNN defines the independent learned-guide walker candidate pool; both scoring models see identical seed configurations and neighbor candidates.",
+    "Training used exact FN amplitude labels from the finite-size oracle.",
+    "FN table is used for post-decision evaluation only, and exact sign guide still comes from stored finite-size table.",
+    "Sign-update energy is fixed-amplitude; neural output generalization or subsequent FN solve not measured."
+  ]
+}

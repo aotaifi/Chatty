@@ -1,0 +1,82 @@
+{
+  "kappa": 0.9,
+  "seeds": 12,
+  "n_candidate_orbits_queried": 40,
+  "max_accepted_orbit_flips": 12,
+  "exact_positive_single_orbit_count": 23,
+  "total_orbits": 441,
+  "baseline_guide_energy": -7.397203060091296,
+  "squared_norm": 343068.13918690314,
+  "scope": "4x4 analytic callable guide; all energy gains frozen-guide, no FN/ED training oracle, no policy network",
+  "methods": {
+    "random": {
+      "mean_raw_energy_numerator_gain": 70.07402862096728,
+      "mean_unique_guide_queries": 4804.916666666667,
+      "positive_trials": 11
+    },
+    "observed_signed": {
+      "mean_raw_energy_numerator_gain": 136.21530090187773,
+      "mean_unique_guide_queries": 4775.166666666667,
+      "positive_trials": 12,
+      "wins_vs_random": 10
+    },
+    "max_violation": {
+      "mean_raw_energy_numerator_gain": 0,
+      "mean_unique_guide_queries": 4613.166666666667,
+      "positive_trials": 0
+    }
+  },
+  "per_seed_unnormalized_gains": {
+    "seed": [
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112
+    ],
+    "random": [
+      55.387775,
+      67.707051,
+      78.861748,
+      171.214597,
+      54.846142,
+      98.166763,
+      48.031213,
+      0,
+      54.846142,
+      70.76246,
+      31.372169,
+      109.692284
+    ],
+    "observed_signed": [
+      90.810201,
+      181.620401,
+      90.810201,
+      90.810201,
+      181.620401,
+      181.620401,
+      90.810201,
+      181.620401,
+      90.810201,
+      181.620401,
+      181.620401,
+      90.810201
+    ]
+  },
+  "independent_full_H_check": {
+    "verified": true,
+    "discrepancy_raw_energy_numerator_less_than": 5e-7
+  },
+  "limitations": [
+    "guide chosen to have useful individual flips; no evidence of size scaling",
+    "large common frontier query cost",
+    "do not compare without normalization across different analytic kappa"
+  ]
+}

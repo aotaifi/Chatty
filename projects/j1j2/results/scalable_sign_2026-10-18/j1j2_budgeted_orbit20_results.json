@@ -1,0 +1,2982 @@
+{
+  "scope": "20-site guide with global FN amplitudes exposed only as on-demand oracle; sampler-discovered candidates and orbit-exact local-neighbor scores; exploratory 4-chain test",
+  "summary": {
+    "100": {
+      "random": {
+        "deltaE": -1.703892385890756e-05,
+        "n_orbits": 2.9166666666666665,
+        "n_states": 116.66666666666667,
+        "extra_amp_queries": 2846.6666666666665,
+        "total_amp_queries": 11365.333333333334,
+        "wrong_ed_weight_change": -1.6709476774489736e-05
+      },
+      "large_amplitude": {
+        "deltaE": 0.0,
+        "n_orbits": 0.0,
+        "n_states": 0.0,
+        "extra_amp_queries": 2114.9166666666665,
+        "total_amp_queries": 10633.583333333334,
+        "wrong_ed_weight_change": 0.0
+      },
+      "small_amplitude": {
+        "deltaE": -3.7504913967627905e-06,
+        "n_orbits": 12.583333333333334,
+        "n_states": 503.3333333333333,
+        "extra_amp_queries": 2815.1666666666665,
+        "total_amp_queries": 11333.833333333334,
+        "wrong_ed_weight_change": -4.885225173443245e-06
+      },
+      "sign_only_field": {
+        "deltaE": -2.3775437745213645e-05,
+        "n_orbits": 10.666666666666666,
+        "n_states": 426.6666666666667,
+        "extra_amp_queries": 2806.8333333333335,
+        "total_amp_queries": 11325.5,
+        "wrong_ed_weight_change": -1.5469880569946164e-05
+      },
+      "max_frustrated": {
+        "deltaE": 0.0,
+        "n_orbits": 0.0,
+        "n_states": 0.0,
+        "extra_amp_queries": 2069.6666666666665,
+        "total_amp_queries": 10588.333333333334,
+        "wrong_ed_weight_change": 0.0
+      },
+      "observed_signed": {
+        "deltaE": -4.655066176076175e-05,
+        "n_orbits": 0.75,
+        "n_states": 30.0,
+        "extra_amp_queries": 2425.25,
+        "total_amp_queries": 10943.916666666666,
+        "wrong_ed_weight_change": -4.149474863630968e-05
+      }
+    },
+    "300": {
+      "random": {
+        "deltaE": -0.00012459166702592862,
+        "n_orbits": 8.666666666666666,
+        "n_states": 346.6666666666667,
+        "extra_amp_queries": 7512.416666666667,
+        "total_amp_queries": 16031.083333333334,
+        "wrong_ed_weight_change": -0.00010401267412752377
+      },
+      "large_amplitude": {
+        "deltaE": 0.0,
+        "n_orbits": 0.0,
+        "n_states": 0.0,
+        "extra_amp_queries": 5353.083333333333,
+        "total_amp_queries": 13871.75,
+        "wrong_ed_weight_change": 0.0
+      },
+      "small_amplitude": {
+        "deltaE": -4.728627942228894e-05,
+        "n_orbits": 30.166666666666668,
+        "n_states": 1206.6666666666667,
+        "extra_amp_queries": 7199.166666666667,
+        "total_amp_queries": 15717.833333333334,
+        "wrong_ed_weight_change": -3.9067095265812895e-05
+      },
+      "sign_only_field": {
+        "deltaE": -9.699625529419519e-05,
+        "n_orbits": 23.416666666666668,
+        "n_states": 936.6666666666666,
+        "extra_amp_queries": 7392.0,
+        "total_amp_queries": 15910.666666666666,
+        "wrong_ed_weight_change": -7.733842632588591e-05
+      },
+      "max_frustrated": {
+        "deltaE": 0.0,
+        "n_orbits": 0.0,
+        "n_states": 0.0,
+        "extra_amp_queries": 5580.25,
+        "total_amp_queries": 14098.916666666666,
+        "wrong_ed_weight_change": 0.0
+      },
+      "observed_signed": {
+        "deltaE": -0.0003944932062950074,
+        "n_orbits": 7.333333333333333,
+        "n_states": 293.3333333333333,
+        "extra_amp_queries": 6698.25,
+        "total_amp_queries": 15216.916666666666,
+        "wrong_ed_weight_change": -0.00030274113386941494
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "seed": 201,
+      "n_seed": 120,
+      "accepted_fraction": 0.26465116279069767,
+      "unique_seed_states": 115,
+      "seen_states": 4933,
+      "candidate_orbits": 2112,
+      "preselection_amplitude_queries": 8437,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2148,
+            "total_amp_queries": 10585,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637
+            ],
+            "deltaE": -0.00010478425416071085,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2504,
+            "total_amp_queries": 10941,
+            "wrong_ed_weight_change": -7.745318082761774e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108451,
+              88550,
+              92058,
+              96444,
+              81182,
+              105898,
+              30479,
+              22359,
+              79674,
+              76654,
+              87862,
+              73145,
+              72155
+            ],
+            "deltaE": -2.975988953878175e-05,
+            "n_orbits": 13,
+            "n_states": 520,
+            "extra_amp_queries": 2811,
+            "total_amp_queries": 11248,
+            "wrong_ed_weight_change": -2.0905562014586444e-05,
+            "n_krylov_flip": 520
+          },
+          "random": {
+            "selected_keys": [
+              87765,
+              113770,
+              96444,
+              92787,
+              15479,
+              81293
+            ],
+            "deltaE": -2.0682447168040666e-05,
+            "n_orbits": 6,
+            "n_states": 240,
+            "extra_amp_queries": 2892,
+            "total_amp_queries": 11329,
+            "wrong_ed_weight_change": -1.8799266689616894e-05,
+            "n_krylov_flip": 240
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2151,
+            "total_amp_queries": 10588,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              15479,
+              91836,
+              105898,
+              30479,
+              22359,
+              79674,
+              84349,
+              109965,
+              87862,
+              14062,
+              81293,
+              105900,
+              72621,
+              78269,
+              73145,
+              72155
+            ],
+            "deltaE": -4.718251349598836e-06,
+            "n_orbits": 16,
+            "n_states": 640,
+            "extra_amp_queries": 2822,
+            "total_amp_queries": 11259,
+            "wrong_ed_weight_change": -7.325509323512428e-06,
+            "n_krylov_flip": 640
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5659,
+            "total_amp_queries": 14096,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              113754,
+              88685,
+              88429,
+              96349
+            ],
+            "deltaE": -0.00034670134131274476,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 6941,
+            "total_amp_queries": 15378,
+            "wrong_ed_weight_change": -0.00025914493695695527,
+            "n_krylov_flip": 200
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              92509,
+              88429,
+              108451,
+              88550,
+              92058,
+              94871,
+              96444,
+              81077,
+              81557,
+              92597,
+              93782,
+              81182,
+              92902,
+              81555,
+              93750,
+              75191,
+              92787,
+              108921,
+              15479,
+              105898,
+              30479,
+              103898,
+              22359,
+              81238,
+              79674,
+              76654,
+              14062,
+              87837,
+              73145,
+              72155
+            ],
+            "deltaE": -0.0001701322744815993,
+            "n_orbits": 30,
+            "n_states": 1200,
+            "extra_amp_queries": 7288,
+            "total_amp_queries": 15725,
+            "wrong_ed_weight_change": -0.00012914239289304823,
+            "n_krylov_flip": 1200
+          },
+          "random": {
+            "selected_keys": [
+              113722,
+              92509,
+              87770,
+              96444,
+              81557,
+              108921,
+              89030,
+              89029,
+              72621,
+              78269,
+              73145,
+              72155
+            ],
+            "deltaE": -0.0001275480818402835,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 7557,
+            "total_amp_queries": 15994,
+            "wrong_ed_weight_change": -0.00011547831011925422,
+            "n_krylov_flip": 480
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5408,
+            "total_amp_queries": 13845,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87765,
+              91610,
+              87770,
+              88938,
+              75719,
+              88550,
+              92058,
+              96444,
+              81182,
+              108220,
+              81557,
+              92902,
+              81253,
+              93782,
+              81555,
+              106029,
+              93750,
+              91836,
+              95405,
+              92787,
+              108921,
+              15479,
+              105898,
+              30479,
+              103898,
+              22359,
+              81238,
+              79674,
+              76654,
+              84349,
+              109965,
+              14062,
+              81293,
+              87837,
+              72621,
+              78269,
+              73145,
+              72155
+            ],
+            "deltaE": -8.907144471000438e-05,
+            "n_orbits": 38,
+            "n_states": 1520,
+            "extra_amp_queries": 7148,
+            "total_amp_queries": 15585,
+            "wrong_ed_weight_change": -6.684002597466958e-05,
+            "n_krylov_flip": 1520
+          }
+        }
+      }
+    },
+    {
+      "seed": 202,
+      "n_seed": 120,
+      "accepted_fraction": 0.2583720930232558,
+      "unique_seed_states": 116,
+      "seen_states": 4992,
+      "candidate_orbits": 2218,
+      "preselection_amplitude_queries": 8587,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2036,
+            "total_amp_queries": 10623,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2337,
+            "total_amp_queries": 10924,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              96444,
+              31037,
+              105898,
+              83671,
+              76654,
+              77515,
+              105657,
+              21371
+            ],
+            "deltaE": -2.336282483643279e-05,
+            "n_orbits": 10,
+            "n_states": 400,
+            "extra_amp_queries": 2779,
+            "total_amp_queries": 11366,
+            "wrong_ed_weight_change": -1.3326201500836727e-05,
+            "n_krylov_flip": 400
+          },
+          "random": {
+            "selected_keys": [
+              91610,
+              92951,
+              77286,
+              105897
+            ],
+            "deltaE": -1.3199234159727892e-05,
+            "n_orbits": 4,
+            "n_states": 160,
+            "extra_amp_queries": 2795,
+            "total_amp_queries": 11382,
+            "wrong_ed_weight_change": -1.1067457663930495e-05,
+            "n_krylov_flip": 160
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2092,
+            "total_amp_queries": 10679,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              105898,
+              31452,
+              77286,
+              77031,
+              13551,
+              105897,
+              90557,
+              101741,
+              105657,
+              31515,
+              21371,
+              75708,
+              22387,
+              32370
+            ],
+            "deltaE": -2.5911701350120982e-06,
+            "n_orbits": 14,
+            "n_states": 560,
+            "extra_amp_queries": 2788,
+            "total_amp_queries": 11375,
+            "wrong_ed_weight_change": -3.0725348263472853e-06,
+            "n_krylov_flip": 560
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5634,
+            "total_amp_queries": 14221,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              113754,
+              113722,
+              92765,
+              93277
+            ],
+            "deltaE": -0.00023624935505955715,
+            "n_orbits": 4,
+            "n_states": 160,
+            "extra_amp_queries": 6555,
+            "total_amp_queries": 15142,
+            "wrong_ed_weight_change": -0.0001851989856556232,
+            "n_krylov_flip": 160
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              88550,
+              92058,
+              96444,
+              93782,
+              31037,
+              92787,
+              108921,
+              103898,
+              105898,
+              92860,
+              76654,
+              77515,
+              83671,
+              105657,
+              87837,
+              87851,
+              21371
+            ],
+            "deltaE": -4.0792803476271646e-05,
+            "n_orbits": 19,
+            "n_states": 760,
+            "extra_amp_queries": 7352,
+            "total_amp_queries": 15939,
+            "wrong_ed_weight_change": -2.960318165315051e-05,
+            "n_krylov_flip": 760
+          },
+          "random": {
+            "selected_keys": [
+              92733,
+              96444,
+              81077,
+              105898,
+              77286
+            ],
+            "deltaE": -3.873734979155169e-05,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 7481,
+            "total_amp_queries": 16068,
+            "wrong_ed_weight_change": -3.4449465031818386e-05,
+            "n_krylov_flip": 200
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5338,
+            "total_amp_queries": 13925,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              88550,
+              92058,
+              96444,
+              31037,
+              111737,
+              92787,
+              108921,
+              23403,
+              103898,
+              105898,
+              31452,
+              77286,
+              77031,
+              13551,
+              76654,
+              77515,
+              105897,
+              83671,
+              90557,
+              101741,
+              21371,
+              105657,
+              87837,
+              87851,
+              31515,
+              75708,
+              22387,
+              32370
+            ],
+            "deltaE": -2.8193726052250707e-05,
+            "n_orbits": 28,
+            "n_states": 1120,
+            "extra_amp_queries": 7221,
+            "total_amp_queries": 15808,
+            "wrong_ed_weight_change": -2.3907963164824752e-05,
+            "n_krylov_flip": 1120
+          }
+        }
+      }
+    },
+    {
+      "seed": 203,
+      "n_seed": 120,
+      "accepted_fraction": 0.26069767441860464,
+      "unique_seed_states": 118,
+      "seen_states": 5065,
+      "candidate_orbits": 2085,
+      "preselection_amplitude_queries": 8575,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2026,
+            "total_amp_queries": 10601,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2491,
+            "total_amp_queries": 11066,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              92058,
+              96444,
+              81182,
+              31037,
+              87481,
+              83671,
+              76654,
+              80243,
+              88009,
+              84439
+            ],
+            "deltaE": -2.6630238617423632e-05,
+            "n_orbits": 11,
+            "n_states": 440,
+            "extra_amp_queries": 2842,
+            "total_amp_queries": 11417,
+            "wrong_ed_weight_change": -1.8957767216404836e-05,
+            "n_krylov_flip": 440
+          },
+          "random": {
+            "selected_keys": [
+              113770,
+              79705
+            ],
+            "deltaE": -6.525176797215004e-06,
+            "n_orbits": 2,
+            "n_states": 80,
+            "extra_amp_queries": 2865,
+            "total_amp_queries": 11440,
+            "wrong_ed_weight_change": -8.342859316996123e-06,
+            "n_krylov_flip": 80
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2074,
+            "total_amp_queries": 10649,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87481,
+              31452,
+              77031,
+              79705,
+              79674,
+              80243,
+              75613
+            ],
+            "deltaE": -2.4934325280065217e-06,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 2866,
+            "total_amp_queries": 11441,
+            "wrong_ed_weight_change": -1.8833668087361516e-06,
+            "n_krylov_flip": 280
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5542,
+            "total_amp_queries": 14117,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              113754,
+              89149,
+              113722,
+              88685,
+              88429,
+              87613,
+              113715,
+              113859
+            ],
+            "deltaE": -0.0004914321113202533,
+            "n_orbits": 9,
+            "n_states": 360,
+            "extra_amp_queries": 6780,
+            "total_amp_queries": 15355,
+            "wrong_ed_weight_change": -0.0003650659251549941,
+            "n_krylov_flip": 360
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              88429,
+              108437,
+              92058,
+              92951,
+              94871,
+              92597,
+              93782,
+              96444,
+              81182,
+              79322,
+              89004,
+              87017,
+              31037,
+              92902,
+              92787,
+              108921,
+              87481,
+              88533,
+              77031,
+              92860,
+              79705,
+              79674,
+              76654,
+              80243,
+              81561,
+              83671
+            ],
+            "deltaE": -0.00011433212879006638,
+            "n_orbits": 26,
+            "n_states": 1040,
+            "extra_amp_queries": 7547,
+            "total_amp_queries": 16122,
+            "wrong_ed_weight_change": -9.765242631526246e-05,
+            "n_krylov_flip": 1040
+          },
+          "random": {
+            "selected_keys": [
+              88637,
+              113754,
+              89149,
+              113722,
+              88685,
+              113750,
+              107482,
+              77165,
+              92597,
+              111737,
+              77031,
+              79705,
+              80243,
+              75613
+            ],
+            "deltaE": -0.00046843029330589665,
+            "n_orbits": 14,
+            "n_states": 560,
+            "extra_amp_queries": 7320,
+            "total_amp_queries": 15895,
+            "wrong_ed_weight_change": -0.0003531392766901098,
+            "n_krylov_flip": 560
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5378,
+            "total_amp_queries": 13953,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              77165,
+              92058,
+              96444,
+              81182,
+              79322,
+              89004,
+              81253,
+              93782,
+              87017,
+              31037,
+              111737,
+              106029,
+              92902,
+              95405,
+              94814,
+              92787,
+              108921,
+              23403,
+              87481,
+              31452,
+              88533,
+              77031,
+              79705,
+              79674,
+              76654,
+              80243,
+              75613,
+              81561,
+              83671
+            ],
+            "deltaE": -5.95955522688325e-05,
+            "n_orbits": 29,
+            "n_states": 1160,
+            "extra_amp_queries": 7323,
+            "total_amp_queries": 15898,
+            "wrong_ed_weight_change": -4.7634115371387064e-05,
+            "n_krylov_flip": 1160
+          }
+        }
+      }
+    },
+    {
+      "seed": 204,
+      "n_seed": 120,
+      "accepted_fraction": 0.26232558139534884,
+      "unique_seed_states": 116,
+      "seen_states": 5005,
+      "candidate_orbits": 2270,
+      "preselection_amplitude_queries": 8648,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2114,
+            "total_amp_queries": 10762,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2309,
+            "total_amp_queries": 10957,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              88550,
+              92058,
+              31413,
+              105898,
+              30479,
+              22359,
+              71582,
+              88009,
+              84439,
+              105657,
+              13239
+            ],
+            "deltaE": -2.8237438071464335e-05,
+            "n_orbits": 13,
+            "n_states": 520,
+            "extra_amp_queries": 2809,
+            "total_amp_queries": 11457,
+            "wrong_ed_weight_change": -1.7825324910295127e-05,
+            "n_krylov_flip": 520
+          },
+          "random": {
+            "selected_keys": [
+              108451
+            ],
+            "deltaE": -7.05740528396881e-06,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2833,
+            "total_amp_queries": 11481,
+            "wrong_ed_weight_change": -2.669719190926352e-06,
+            "n_krylov_flip": 40
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2151,
+            "total_amp_queries": 10799,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              105898,
+              105897,
+              105657,
+              85613,
+              85661,
+              13239,
+              81561,
+              72661
+            ],
+            "deltaE": -1.017001991591163e-06,
+            "n_orbits": 8,
+            "n_states": 320,
+            "extra_amp_queries": 2722,
+            "total_amp_queries": 11370,
+            "wrong_ed_weight_change": -6.885503858605501e-07,
+            "n_krylov_flip": 320
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5551,
+            "total_amp_queries": 14199,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              89149,
+              113722,
+              88685,
+              88429,
+              92509,
+              86893
+            ],
+            "deltaE": -0.0004123407438738218,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 6466,
+            "total_amp_queries": 15114,
+            "wrong_ed_weight_change": -0.00031121119621340223,
+            "n_krylov_flip": 280
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              92509,
+              88429,
+              108437,
+              108451,
+              88550,
+              92058,
+              94871,
+              81077,
+              92597,
+              108435,
+              93750,
+              15479,
+              31413,
+              105898,
+              30479,
+              92860,
+              22359,
+              71582,
+              88009,
+              84439,
+              81561,
+              105657,
+              87837,
+              87851,
+              13239
+            ],
+            "deltaE": -0.0001529733137665134,
+            "n_orbits": 25,
+            "n_states": 1000,
+            "extra_amp_queries": 7303,
+            "total_amp_queries": 15951,
+            "wrong_ed_weight_change": -0.00011860946333032745,
+            "n_krylov_flip": 1000
+          },
+          "random": {
+            "selected_keys": [
+              92765,
+              88909,
+              108451,
+              92058,
+              92597,
+              81253,
+              94814,
+              91098,
+              30479,
+              89030,
+              105897,
+              87837
+            ],
+            "deltaE": -9.482946325452381e-05,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 7608,
+            "total_amp_queries": 16256,
+            "wrong_ed_weight_change": -8.932501151549666e-05,
+            "n_krylov_flip": 480
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5304,
+            "total_amp_queries": 13952,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              88550,
+              92058,
+              106029,
+              93750,
+              15479,
+              31413,
+              31098,
+              105898,
+              30479,
+              22359,
+              71582,
+              88009,
+              105897,
+              84439,
+              105657,
+              81561,
+              85613,
+              85661,
+              23529,
+              13239,
+              72661
+            ],
+            "deltaE": -2.0496807305574948e-05,
+            "n_orbits": 21,
+            "n_states": 840,
+            "extra_amp_queries": 6929,
+            "total_amp_queries": 15577,
+            "wrong_ed_weight_change": -1.635438126592374e-05,
+            "n_krylov_flip": 840
+          }
+        }
+      }
+    },
+    {
+      "seed": 205,
+      "n_seed": 120,
+      "accepted_fraction": 0.26790697674418606,
+      "unique_seed_states": 114,
+      "seen_states": 4917,
+      "candidate_orbits": 2291,
+      "preselection_amplitude_queries": 8597,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2039,
+            "total_amp_queries": 10636,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              92765
+            ],
+            "deltaE": -5.519695358774343e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2416,
+            "total_amp_queries": 11013,
+            "wrong_ed_weight_change": -5.444943074896141e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              96444,
+              31037,
+              30069,
+              83671,
+              76654,
+              88009,
+              87862,
+              79673,
+              79763,
+              32355,
+              21371,
+              13239,
+              16120
+            ],
+            "deltaE": -2.3014824090252276e-05,
+            "n_orbits": 15,
+            "n_states": 600,
+            "extra_amp_queries": 2797,
+            "total_amp_queries": 11394,
+            "wrong_ed_weight_change": -1.318118889459408e-05,
+            "n_krylov_flip": 600
+          },
+          "random": {
+            "selected_keys": [
+              87613,
+              96444,
+              103898
+            ],
+            "deltaE": -1.1782494089444712e-05,
+            "n_orbits": 3,
+            "n_states": 120,
+            "extra_amp_queries": 2875,
+            "total_amp_queries": 11472,
+            "wrong_ed_weight_change": -1.3535787035527409e-05,
+            "n_krylov_flip": 120
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2122,
+            "total_amp_queries": 10719,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              15198,
+              30169,
+              79673,
+              85613,
+              79763,
+              32355,
+              21371,
+              13239,
+              16120,
+              73145,
+              32370,
+              14259
+            ],
+            "deltaE": -8.226424080743151e-07,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 2597,
+            "total_amp_queries": 11194,
+            "wrong_ed_weight_change": -7.869557038583466e-07,
+            "n_krylov_flip": 480
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5675,
+            "total_amp_queries": 14272,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              113754,
+              89149,
+              88685,
+              92765,
+              86893
+            ],
+            "deltaE": -0.00027960471795358496,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 6633,
+            "total_amp_queries": 15230,
+            "wrong_ed_weight_change": -0.00023964841640458463,
+            "n_krylov_flip": 200
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              96444,
+              79322,
+              81557,
+              108435,
+              93782,
+              87017,
+              31037,
+              105893,
+              108921,
+              31413,
+              103898,
+              30069,
+              92860,
+              83671,
+              76654,
+              87862,
+              30169,
+              79673,
+              32355,
+              21371,
+              13239,
+              16120,
+              73145
+            ],
+            "deltaE": -4.4569977974458794e-05,
+            "n_orbits": 25,
+            "n_states": 1000,
+            "extra_amp_queries": 7366,
+            "total_amp_queries": 15963,
+            "wrong_ed_weight_change": -3.438492007161162e-05,
+            "n_krylov_flip": 1000
+          },
+          "random": {
+            "selected_keys": [
+              88429,
+              87770,
+              87613,
+              31037,
+              106029,
+              95405,
+              31413,
+              83671,
+              85613,
+              32355,
+              13239,
+              73145
+            ],
+            "deltaE": -7.35791464600485e-05,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 7539,
+            "total_amp_queries": 16136,
+            "wrong_ed_weight_change": -5.833602812811387e-05,
+            "n_krylov_flip": 480
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5413,
+            "total_amp_queries": 14010,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              96444,
+              79322,
+              31037,
+              106029,
+              93750,
+              105893,
+              31413,
+              15198,
+              103898,
+              77286,
+              30069,
+              83671,
+              76654,
+              88009,
+              87862,
+              30169,
+              79673,
+              85613,
+              32355,
+              21371,
+              13239,
+              16120,
+              73145,
+              32370,
+              14259
+            ],
+            "deltaE": -2.0835602513643916e-05,
+            "n_orbits": 25,
+            "n_states": 1000,
+            "extra_amp_queries": 7072,
+            "total_amp_queries": 15669,
+            "wrong_ed_weight_change": -1.9597181252818587e-05,
+            "n_krylov_flip": 1000
+          }
+        }
+      }
+    },
+    {
+      "seed": 206,
+      "n_seed": 120,
+      "accepted_fraction": 0.25906976744186044,
+      "unique_seed_states": 118,
+      "seen_states": 5092,
+      "candidate_orbits": 2285,
+      "preselection_amplitude_queries": 8779,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2144,
+            "total_amp_queries": 10923,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88685,
+              88429
+            ],
+            "deltaE": -0.00012264196544196947,
+            "n_orbits": 2,
+            "n_states": 80,
+            "extra_amp_queries": 2459,
+            "total_amp_queries": 11238,
+            "wrong_ed_weight_change": -9.37872183143301e-05,
+            "n_krylov_flip": 80
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              96444,
+              81182,
+              31037,
+              30069,
+              84439,
+              77515,
+              87862,
+              79763,
+              21371
+            ],
+            "deltaE": -2.751036678354555e-05,
+            "n_orbits": 11,
+            "n_states": 440,
+            "extra_amp_queries": 2772,
+            "total_amp_queries": 11551,
+            "wrong_ed_weight_change": -1.692667910809004e-05,
+            "n_krylov_flip": 440
+          },
+          "random": {
+            "selected_keys": [
+              87770,
+              31037,
+              103898
+            ],
+            "deltaE": -1.0470965588377589e-05,
+            "n_orbits": 3,
+            "n_states": 120,
+            "extra_amp_queries": 2826,
+            "total_amp_queries": 11605,
+            "wrong_ed_weight_change": -8.49357847136147e-06,
+            "n_krylov_flip": 120
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2147,
+            "total_amp_queries": 10926,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              31452,
+              77286,
+              77031,
+              31980,
+              90557,
+              81293,
+              79763,
+              75581,
+              75738,
+              21371,
+              74733,
+              78269
+            ],
+            "deltaE": -1.513967497146135e-06,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 2785,
+            "total_amp_queries": 11564,
+            "wrong_ed_weight_change": -2.4454598970292402e-06,
+            "n_krylov_flip": 480
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5598,
+            "total_amp_queries": 14377,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              113722,
+              88685,
+              88429,
+              92509,
+              86893
+            ],
+            "deltaE": -0.0003439141945815971,
+            "n_orbits": 6,
+            "n_states": 240,
+            "extra_amp_queries": 6555,
+            "total_amp_queries": 15334,
+            "wrong_ed_weight_change": -0.0002638745607863607,
+            "n_krylov_flip": 240
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              96444,
+              81182,
+              79322,
+              81557,
+              92902,
+              108435,
+              93782,
+              87017,
+              31037,
+              105893,
+              108921,
+              15479,
+              31413,
+              30069,
+              92860,
+              77515,
+              103898,
+              31980,
+              84439,
+              21371
+            ],
+            "deltaE": -5.300688873758743e-05,
+            "n_orbits": 22,
+            "n_states": 880,
+            "extra_amp_queries": 7341,
+            "total_amp_queries": 16120,
+            "wrong_ed_weight_change": -4.1996734969509693e-05,
+            "n_krylov_flip": 880
+          },
+          "random": {
+            "selected_keys": [
+              89149,
+              88429,
+              85309,
+              92860,
+              78269
+            ],
+            "deltaE": -0.00011013066742546364,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 7362,
+            "total_amp_queries": 16141,
+            "wrong_ed_weight_change": -8.990304460792328e-05,
+            "n_krylov_flip": 160
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5343,
+            "total_amp_queries": 14122,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              96444,
+              81182,
+              79322,
+              31037,
+              111737,
+              81555,
+              93750,
+              105893,
+              15479,
+              23403,
+              91836,
+              31413,
+              81254,
+              31452,
+              103898,
+              77286,
+              77031,
+              30069,
+              84439,
+              77515,
+              87862,
+              31980,
+              90557,
+              16053,
+              21371,
+              79289,
+              81293,
+              75738,
+              75581,
+              74679,
+              74733,
+              78269
+            ],
+            "deltaE": -3.109794421549637e-05,
+            "n_orbits": 32,
+            "n_states": 1280,
+            "extra_amp_queries": 7112,
+            "total_amp_queries": 15891,
+            "wrong_ed_weight_change": -2.9350595608643018e-05,
+            "n_krylov_flip": 1280
+          }
+        }
+      }
+    },
+    {
+      "seed": 207,
+      "n_seed": 120,
+      "accepted_fraction": 0.2518604651162791,
+      "unique_seed_states": 118,
+      "seen_states": 5055,
+      "candidate_orbits": 2137,
+      "preselection_amplitude_queries": 8499,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2059,
+            "total_amp_queries": 10558,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              92765
+            ],
+            "deltaE": -5.519695358774343e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2394,
+            "total_amp_queries": 10893,
+            "wrong_ed_weight_change": -5.444943074896141e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              96444,
+              81182,
+              31037,
+              105898,
+              84439,
+              77515,
+              80243,
+              88009,
+              87862,
+              79763
+            ],
+            "deltaE": -1.4276169827194239e-05,
+            "n_orbits": 10,
+            "n_states": 400,
+            "extra_amp_queries": 2774,
+            "total_amp_queries": 11273,
+            "wrong_ed_weight_change": -1.1819539346530727e-05,
+            "n_krylov_flip": 400
+          },
+          "random": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2819,
+            "total_amp_queries": 11318,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2135,
+            "total_amp_queries": 10634,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              89004,
+              105893,
+              105898,
+              91981,
+              13551,
+              80243,
+              84349,
+              88009,
+              87862,
+              101741,
+              79763
+            ],
+            "deltaE": -7.805155223580733e-06,
+            "n_orbits": 11,
+            "n_states": 440,
+            "extra_amp_queries": 2863,
+            "total_amp_queries": 11362,
+            "wrong_ed_weight_change": -7.220697859100281e-06,
+            "n_krylov_flip": 440
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5544,
+            "total_amp_queries": 14043,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              113754,
+              89149,
+              92765,
+              88429,
+              93277,
+              87613,
+              113859
+            ],
+            "deltaE": -0.0002872733899087126,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 6596,
+            "total_amp_queries": 15095,
+            "wrong_ed_weight_change": -0.00023951364563948467,
+            "n_krylov_flip": 280
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              88429,
+              96444,
+              81182,
+              81077,
+              89004,
+              31037,
+              87017,
+              81555,
+              105893,
+              108921,
+              105898,
+              81238,
+              77515,
+              80243,
+              87862,
+              84439,
+              87851
+            ],
+            "deltaE": -8.103462902247546e-05,
+            "n_orbits": 17,
+            "n_states": 680,
+            "extra_amp_queries": 7176,
+            "total_amp_queries": 15675,
+            "wrong_ed_weight_change": -6.829346758137205e-05,
+            "n_krylov_flip": 680
+          },
+          "random": {
+            "selected_keys": [
+              87770,
+              92597,
+              95405,
+              113811,
+              101741,
+              89029
+            ],
+            "deltaE": -1.2930684911665608e-05,
+            "n_orbits": 6,
+            "n_states": 240,
+            "extra_amp_queries": 7398,
+            "total_amp_queries": 15897,
+            "wrong_ed_weight_change": -2.455214263532157e-05,
+            "n_krylov_flip": 240
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5323,
+            "total_amp_queries": 13822,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87770,
+              88938,
+              75719,
+              96444,
+              81182,
+              89004,
+              108220,
+              31037,
+              87017,
+              95405,
+              81555,
+              93750,
+              105893,
+              94814,
+              91981,
+              108921,
+              105898,
+              23403,
+              14279,
+              13551,
+              77515,
+              80243,
+              84349,
+              87862,
+              113811,
+              84439,
+              101741,
+              87851
+            ],
+            "deltaE": -5.484860049846694e-05,
+            "n_orbits": 28,
+            "n_states": 1120,
+            "extra_amp_queries": 7248,
+            "total_amp_queries": 15747,
+            "wrong_ed_weight_change": -4.1809441171901195e-05,
+            "n_krylov_flip": 1080
+          }
+        }
+      }
+    },
+    {
+      "seed": 208,
+      "n_seed": 120,
+      "accepted_fraction": 0.2644186046511628,
+      "unique_seed_states": 116,
+      "seen_states": 5056,
+      "candidate_orbits": 2180,
+      "preselection_amplitude_queries": 8665,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2104,
+            "total_amp_queries": 10769,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2432,
+            "total_amp_queries": 11097,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              88550,
+              96444,
+              31037,
+              31413,
+              105898,
+              30479,
+              30069,
+              22359,
+              88009,
+              31193,
+              32355
+            ],
+            "deltaE": -3.05245685028589e-05,
+            "n_orbits": 13,
+            "n_states": 520,
+            "extra_amp_queries": 2843,
+            "total_amp_queries": 11508,
+            "wrong_ed_weight_change": -2.027410608383475e-05,
+            "n_krylov_flip": 520
+          },
+          "random": {
+            "selected_keys": [
+              92765,
+              113770,
+              108220
+            ],
+            "deltaE": -6.51517232357728e-05,
+            "n_orbits": 3,
+            "n_states": 120,
+            "extra_amp_queries": 2801,
+            "total_amp_queries": 11466,
+            "wrong_ed_weight_change": -6.631518218897853e-05,
+            "n_krylov_flip": 120
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2099,
+            "total_amp_queries": 10764,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              105898,
+              30479,
+              7023,
+              109965,
+              75693,
+              14062,
+              101805,
+              31193,
+              32355,
+              72566,
+              31545,
+              72653
+            ],
+            "deltaE": -2.217707118162668e-06,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 2819,
+            "total_amp_queries": 11484,
+            "wrong_ed_weight_change": -7.725191181997e-06,
+            "n_krylov_flip": 480
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5446,
+            "total_amp_queries": 14111,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              113754,
+              89149,
+              88685,
+              92765,
+              92509
+            ],
+            "deltaE": -0.00045583397664335906,
+            "n_orbits": 6,
+            "n_states": 240,
+            "extra_amp_queries": 6681,
+            "total_amp_queries": 15346,
+            "wrong_ed_weight_change": -0.00035047964614556853,
+            "n_krylov_flip": 240
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              88429,
+              108437,
+              108451,
+              88550,
+              92058,
+              96444,
+              81077,
+              79322,
+              89004,
+              93782,
+              87017,
+              108435,
+              31037,
+              92902,
+              81555,
+              105893,
+              108921,
+              31413,
+              105898,
+              30479,
+              88533,
+              30069,
+              22359,
+              92860,
+              103898,
+              14062,
+              31193,
+              32355,
+              72566,
+              31545
+            ],
+            "deltaE": -0.00011830728870591088,
+            "n_orbits": 30,
+            "n_states": 1200,
+            "extra_amp_queries": 7584,
+            "total_amp_queries": 16249,
+            "wrong_ed_weight_change": -9.573299099525044e-05,
+            "n_krylov_flip": 1200
+          },
+          "random": {
+            "selected_keys": [
+              89149,
+              113722,
+              88429,
+              79322,
+              92902,
+              31413,
+              14062,
+              107482
+            ],
+            "deltaE": -0.0001725975517944846,
+            "n_orbits": 8,
+            "n_states": 320,
+            "extra_amp_queries": 7469,
+            "total_amp_queries": 16134,
+            "wrong_ed_weight_change": -0.0001580914622343102,
+            "n_krylov_flip": 320
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5374,
+            "total_amp_queries": 14039,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              88550,
+              92058,
+              96444,
+              79322,
+              89004,
+              93782,
+              31037,
+              106029,
+              81555,
+              105893,
+              108921,
+              31098,
+              81254,
+              31413,
+              88533,
+              105898,
+              30479,
+              103898,
+              30069,
+              22359,
+              7023,
+              109965,
+              88009,
+              75693,
+              14062,
+              16053,
+              101805,
+              31193,
+              32355,
+              72566,
+              30425,
+              31545,
+              72653
+            ],
+            "deltaE": -4.40236238189131e-05,
+            "n_orbits": 33,
+            "n_states": 1320,
+            "extra_amp_queries": 7167,
+            "total_amp_queries": 15832,
+            "wrong_ed_weight_change": -4.5005474481778954e-05,
+            "n_krylov_flip": 1320
+          }
+        }
+      }
+    },
+    {
+      "seed": 209,
+      "n_seed": 120,
+      "accepted_fraction": 0.2534883720930233,
+      "unique_seed_states": 111,
+      "seen_states": 4679,
+      "candidate_orbits": 1951,
+      "preselection_amplitude_queries": 8009,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 1965,
+            "total_amp_queries": 9974,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              92765
+            ],
+            "deltaE": -5.519695358774343e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2343,
+            "total_amp_queries": 10352,
+            "wrong_ed_weight_change": -5.444943074896141e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              92058,
+              96444,
+              81182,
+              79322,
+              87862,
+              79673
+            ],
+            "deltaE": -3.303911932760373e-05,
+            "n_orbits": 8,
+            "n_states": 320,
+            "extra_amp_queries": 2957,
+            "total_amp_queries": 10966,
+            "wrong_ed_weight_change": -2.2605709161142845e-05,
+            "n_krylov_flip": 320
+          },
+          "random": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2949,
+            "total_amp_queries": 10958,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2097,
+            "total_amp_queries": 10106,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              79322,
+              87862,
+              79673,
+              85613,
+              71405,
+              72621,
+              72381
+            ],
+            "deltaE": -4.131591057751295e-06,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 2939,
+            "total_amp_queries": 10948,
+            "wrong_ed_weight_change": -5.93654764868957e-06,
+            "n_krylov_flip": 280
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5443,
+            "total_amp_queries": 13452,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              113754,
+              113722,
+              89149,
+              88685,
+              88429,
+              92765,
+              92509,
+              113750,
+              92733,
+              108437,
+              108451,
+              113859
+            ],
+            "deltaE": -0.0005786484067226393,
+            "n_orbits": 12,
+            "n_states": 480,
+            "extra_amp_queries": 6768,
+            "total_amp_queries": 14777,
+            "wrong_ed_weight_change": -0.0004235049881967033,
+            "n_krylov_flip": 480
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              92509,
+              88429,
+              108437,
+              108451,
+              92058,
+              92951,
+              81182,
+              92597,
+              96444,
+              79322,
+              81557,
+              87017,
+              105893,
+              81238,
+              92860,
+              87862,
+              79673,
+              87837,
+              87851,
+              71405
+            ],
+            "deltaE": -0.00015423913881614467,
+            "n_orbits": 20,
+            "n_states": 800,
+            "extra_amp_queries": 7703,
+            "total_amp_queries": 15712,
+            "wrong_ed_weight_change": -0.0001234521316677085,
+            "n_krylov_flip": 800
+          },
+          "random": {
+            "selected_keys": [
+              89149,
+              92509,
+              87770,
+              113859,
+              81557,
+              81238
+            ],
+            "deltaE": -0.00012404819926690964,
+            "n_orbits": 6,
+            "n_states": 240,
+            "extra_amp_queries": 7586,
+            "total_amp_queries": 15595,
+            "wrong_ed_weight_change": -0.0001021023944998711,
+            "n_krylov_flip": 240
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5370,
+            "total_amp_queries": 13379,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87765,
+              91610,
+              87770,
+              88938,
+              75719,
+              77165,
+              92058,
+              96444,
+              81182,
+              79322,
+              81557,
+              87017,
+              95405,
+              105893,
+              23403,
+              31098,
+              31094,
+              14279,
+              81238,
+              92860,
+              87862,
+              113811,
+              79673,
+              85613,
+              75454,
+              87837,
+              87851,
+              71405,
+              72621,
+              72381
+            ],
+            "deltaE": -7.105301054171484e-05,
+            "n_orbits": 30,
+            "n_states": 1200,
+            "extra_amp_queries": 7327,
+            "total_amp_queries": 15336,
+            "wrong_ed_weight_change": -5.6889137746169346e-05,
+            "n_krylov_flip": 1080
+          }
+        }
+      }
+    },
+    {
+      "seed": 210,
+      "n_seed": 120,
+      "accepted_fraction": 0.26488372093023255,
+      "unique_seed_states": 115,
+      "seen_states": 4977,
+      "candidate_orbits": 2058,
+      "preselection_amplitude_queries": 8414,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 1995,
+            "total_amp_queries": 10409,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88685
+            ],
+            "deltaE": -5.5196953587743557e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2558,
+            "total_amp_queries": 10972,
+            "wrong_ed_weight_change": -5.4449430748961395e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              81182,
+              105898,
+              30479,
+              22359,
+              83671,
+              88009
+            ],
+            "deltaE": -2.1069358965797555e-05,
+            "n_orbits": 8,
+            "n_states": 320,
+            "extra_amp_queries": 2816,
+            "total_amp_queries": 11230,
+            "wrong_ed_weight_change": -1.0737417124831856e-05,
+            "n_krylov_flip": 320
+          },
+          "random": {
+            "selected_keys": [
+              92733,
+              87613,
+              94871,
+              92597,
+              75191
+            ],
+            "deltaE": -4.499594799180372e-05,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 2876,
+            "total_amp_queries": 11290,
+            "wrong_ed_weight_change": -4.464677082110419e-05,
+            "n_krylov_flip": 200
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2055,
+            "total_amp_queries": 10469,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              89004,
+              15479,
+              81254,
+              105898,
+              30479,
+              22359,
+              83671,
+              13551,
+              88009,
+              89485,
+              105897,
+              31980,
+              86461,
+              103865,
+              101805,
+              105900,
+              75581,
+              75677,
+              105869,
+              72541,
+              80313
+            ],
+            "deltaE": -8.939076417286362e-06,
+            "n_orbits": 21,
+            "n_states": 840,
+            "extra_amp_queries": 2846,
+            "total_amp_queries": 11260,
+            "wrong_ed_weight_change": -1.4293903111589764e-05,
+            "n_krylov_flip": 840
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5564,
+            "total_amp_queries": 13978,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              88685,
+              92765,
+              92509,
+              96349,
+              88909,
+              94871,
+              108451,
+              92597
+            ],
+            "deltaE": -0.000327901304378465,
+            "n_orbits": 9,
+            "n_states": 360,
+            "extra_amp_queries": 6942,
+            "total_amp_queries": 15356,
+            "wrong_ed_weight_change": -0.0002595571846318754,
+            "n_krylov_flip": 360
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              92509,
+              108437,
+              108451,
+              94871,
+              92597,
+              93782,
+              81182,
+              89004,
+              108921,
+              15479,
+              103898,
+              105898,
+              30479,
+              92860,
+              75191,
+              22359,
+              81238,
+              83671,
+              88009,
+              89485,
+              31980,
+              87837,
+              87851
+            ],
+            "deltaE": -9.548953420973567e-05,
+            "n_orbits": 23,
+            "n_states": 920,
+            "extra_amp_queries": 7399,
+            "total_amp_queries": 15813,
+            "wrong_ed_weight_change": -7.753836349054694e-05,
+            "n_krylov_flip": 920
+          },
+          "random": {
+            "selected_keys": [
+              113770,
+              81182,
+              95405,
+              105898,
+              92860,
+              88009,
+              107482
+            ],
+            "deltaE": -1.426047193495168e-05,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 7512,
+            "total_amp_queries": 15926,
+            "wrong_ed_weight_change": -2.9756331828607155e-05,
+            "n_krylov_flip": 280
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5275,
+            "total_amp_queries": 13689,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87765,
+              88938,
+              75719,
+              81182,
+              89004,
+              108220,
+              93782,
+              81253,
+              111737,
+              81254,
+              95405,
+              108921,
+              15479,
+              103898,
+              105898,
+              30479,
+              81238,
+              92860,
+              22359,
+              83671,
+              13551,
+              75454,
+              88009,
+              89485,
+              105897,
+              31980,
+              86461,
+              103865,
+              101805,
+              75581,
+              75677,
+              87837,
+              87851,
+              105869,
+              72541
+            ],
+            "deltaE": -5.309529067099682e-05,
+            "n_orbits": 35,
+            "n_states": 1400,
+            "extra_amp_queries": 7278,
+            "total_amp_queries": 15692,
+            "wrong_ed_weight_change": -4.8337848609057836e-05,
+            "n_krylov_flip": 1360
+          }
+        }
+      }
+    },
+    {
+      "seed": 211,
+      "n_seed": 120,
+      "accepted_fraction": 0.25372093023255815,
+      "unique_seed_states": 115,
+      "seen_states": 4913,
+      "candidate_orbits": 2115,
+      "preselection_amplitude_queries": 8340,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2090,
+            "total_amp_queries": 10430,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              92765
+            ],
+            "deltaE": -5.519695358774343e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2429,
+            "total_amp_queries": 10769,
+            "wrong_ed_weight_change": -5.444943074896141e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108437,
+              108451,
+              88550,
+              31037,
+              23469,
+              87862,
+              29373,
+              105657,
+              14141,
+              79763,
+              32358
+            ],
+            "deltaE": -2.3830431940535454e-05,
+            "n_orbits": 11,
+            "n_states": 440,
+            "extra_amp_queries": 2808,
+            "total_amp_queries": 11148,
+            "wrong_ed_weight_change": -1.5057316081290258e-05,
+            "n_krylov_flip": 440
+          },
+          "random": {
+            "selected_keys": [
+              113770,
+              111737,
+              91981
+            ],
+            "deltaE": -9.457066770219786e-06,
+            "n_orbits": 3,
+            "n_states": 120,
+            "extra_amp_queries": 2779,
+            "total_amp_queries": 11119,
+            "wrong_ed_weight_change": -9.415297218042411e-06,
+            "n_krylov_flip": 120
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2162,
+            "total_amp_queries": 10502,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              30614,
+              91836,
+              95054,
+              15198,
+              91981,
+              77031,
+              7023,
+              87862,
+              14173,
+              14142,
+              29373,
+              105657,
+              14141,
+              79763,
+              32358
+            ],
+            "deltaE": -4.853538821767569e-06,
+            "n_orbits": 15,
+            "n_states": 600,
+            "extra_amp_queries": 2851,
+            "total_amp_queries": 11191,
+            "wrong_ed_weight_change": -3.972277492292725e-06,
+            "n_krylov_flip": 600
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5601,
+            "total_amp_queries": 13941,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              88637,
+              113754,
+              89149,
+              113722,
+              88685,
+              88429,
+              92765,
+              92509,
+              86893,
+              108437,
+              108451
+            ],
+            "deltaE": -0.0006136619463766265,
+            "n_orbits": 11,
+            "n_states": 440,
+            "extra_amp_queries": 6718,
+            "total_amp_queries": 15058,
+            "wrong_ed_weight_change": -0.000448453246171834,
+            "n_krylov_flip": 440
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              88429,
+              108437,
+              108451,
+              88550,
+              81077,
+              108435,
+              31037,
+              92902,
+              105893,
+              30614,
+              23469,
+              92860,
+              88533,
+              77031,
+              14173,
+              14142,
+              29373,
+              105657,
+              14141,
+              87851,
+              32358
+            ],
+            "deltaE": -9.01534562535879e-05,
+            "n_orbits": 21,
+            "n_states": 840,
+            "extra_amp_queries": 7434,
+            "total_amp_queries": 15774,
+            "wrong_ed_weight_change": -7.047298743968575e-05,
+            "n_krylov_flip": 840
+          },
+          "random": {
+            "selected_keys": [
+              108437,
+              108451,
+              87770,
+              88550,
+              81253,
+              108435,
+              92902,
+              91981,
+              105657
+            ],
+            "deltaE": -3.6503873750571033e-05,
+            "n_orbits": 9,
+            "n_states": 360,
+            "extra_amp_queries": 7600,
+            "total_amp_queries": 15940,
+            "wrong_ed_weight_change": -2.2882566834643966e-05,
+            "n_krylov_flip": 360
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5339,
+            "total_amp_queries": 13679,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              87770,
+              88938,
+              77165,
+              88550,
+              81253,
+              31037,
+              111737,
+              106029,
+              92902,
+              95405,
+              105893,
+              91836,
+              30614,
+              23469,
+              91981,
+              95054,
+              15198,
+              88533,
+              77031,
+              7023,
+              14173,
+              14142,
+              29373,
+              105657,
+              14141,
+              79763,
+              87851,
+              32358
+            ],
+            "deltaE": -5.0003226125142146e-05,
+            "n_orbits": 28,
+            "n_states": 1120,
+            "extra_amp_queries": 7319,
+            "total_amp_queries": 15659,
+            "wrong_ed_weight_change": -3.574039864950591e-05,
+            "n_krylov_flip": 1120
+          }
+        }
+      }
+    },
+    {
+      "seed": 212,
+      "n_seed": 120,
+      "accepted_fraction": 0.26069767441860464,
+      "unique_seed_states": 113,
+      "seen_states": 4935,
+      "candidate_orbits": 2283,
+      "preselection_amplitude_queries": 8674,
+      "arms": {
+        "100": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2116,
+            "total_amp_queries": 10790,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              92765
+            ],
+            "deltaE": -5.519695358774343e-05,
+            "n_orbits": 1,
+            "n_states": 40,
+            "extra_amp_queries": 2431,
+            "total_amp_queries": 11105,
+            "wrong_ed_weight_change": -5.444943074896141e-05,
+            "n_krylov_flip": 40
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              31037,
+              30479,
+              71582,
+              29373,
+              91065
+            ],
+            "deltaE": -4.050022440673538e-06,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 2674,
+            "total_amp_queries": 11348,
+            "wrong_ed_weight_change": -4.021755396916269e-06,
+            "n_krylov_flip": 200
+          },
+          "random": {
+            "selected_keys": [
+              87613,
+              79322,
+              31037,
+              92787,
+              23403
+            ],
+            "deltaE": -1.5144625222319712e-05,
+            "n_orbits": 5,
+            "n_states": 200,
+            "extra_amp_queries": 2850,
+            "total_amp_queries": 11524,
+            "wrong_ed_weight_change": -1.722780269739299e-05,
+            "n_krylov_flip": 200
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 2094,
+            "total_amp_queries": 10768,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              15479,
+              30479,
+              77286,
+              77031,
+              79674,
+              13551,
+              84349,
+              71582,
+              80569,
+              14142,
+              31980,
+              29373,
+              85661,
+              85613,
+              91065,
+              16053
+            ],
+            "deltaE": -3.902362213175794e-06,
+            "n_orbits": 16,
+            "n_states": 640,
+            "extra_amp_queries": 2884,
+            "total_amp_queries": 11558,
+            "wrong_ed_weight_change": -3.2717078423056025e-06,
+            "n_krylov_flip": 640
+          }
+        },
+        "300": {
+          "max_frustrated": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5706,
+            "total_amp_queries": 14380,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "observed_signed": {
+            "selected_keys": [
+              113754,
+              89149,
+              88685,
+              88429,
+              92765,
+              113770,
+              93277
+            ],
+            "deltaE": -0.0003603569874087266,
+            "n_orbits": 7,
+            "n_states": 280,
+            "extra_amp_queries": 6744,
+            "total_amp_queries": 15418,
+            "wrong_ed_weight_change": -0.0002872408744755934,
+            "n_krylov_flip": 280
+          },
+          "sign_only_field": {
+            "selected_keys": [
+              108451,
+              88550,
+              92058,
+              96444,
+              81182,
+              79322,
+              81557,
+              92902,
+              31037,
+              108435,
+              105893,
+              92787,
+              15479,
+              31413,
+              30479,
+              79674,
+              103898,
+              71582,
+              14142,
+              31980,
+              29373,
+              91065,
+              87851
+            ],
+            "deltaE": -4.892362929599063e-05,
+            "n_orbits": 23,
+            "n_states": 920,
+            "extra_amp_queries": 7211,
+            "total_amp_queries": 15885,
+            "wrong_ed_weight_change": -4.1182055503157314e-05,
+            "n_krylov_flip": 920
+          },
+          "random": {
+            "selected_keys": [
+              113754,
+              89149,
+              88429,
+              92058,
+              93750,
+              31098,
+              80569,
+              91065
+            ],
+            "deltaE": -0.00022150422057479327,
+            "n_orbits": 8,
+            "n_states": 320,
+            "extra_amp_queries": 7717,
+            "total_amp_queries": 16391,
+            "wrong_ed_weight_change": -0.00017013605540481513,
+            "n_krylov_flip": 320
+          },
+          "large_amplitude": {
+            "selected_keys": [],
+            "deltaE": 0.0,
+            "n_orbits": 0,
+            "n_states": 0,
+            "extra_amp_queries": 5372,
+            "total_amp_queries": 14046,
+            "wrong_ed_weight_change": 0.0,
+            "n_krylov_flip": 0
+          },
+          "small_amplitude": {
+            "selected_keys": [
+              88550,
+              92058,
+              96444,
+              81182,
+              79322,
+              31037,
+              111737,
+              106029,
+              81555,
+              93750,
+              105893,
+              92787,
+              15479,
+              23403,
+              31098,
+              31413,
+              30479,
+              103898,
+              77286,
+              77031,
+              79674,
+              13551,
+              84349,
+              71582,
+              80569,
+              14142,
+              31980,
+              16053,
+              29373,
+              85661,
+              85613,
+              91065,
+              81561,
+              87851,
+              74679
+            ],
+            "deltaE": -4.51205243464306e-05,
+            "n_orbits": 35,
+            "n_states": 1400,
+            "extra_amp_queries": 7246,
+            "total_amp_queries": 15920,
+            "wrong_ed_weight_change": -3.733857989307475e-05,
+            "n_krylov_flip": 1400
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Data backend is globally precomputed exact FN, so amplitude availability is still an oracle; neural guide needed for scaling.",
+    "Metropolis uses local swaps targeting amp^1, not FN walker / GFMC.",
+    "Greedy fixed-amplitude energy monotonicity does not imply convergence after amplitude updates, nor neural sign learning.",
+    "Symmetry orbit energy score uses identical amplitudes under the translations+global spin inversion.",
+    "Evaluation ED labels only used after selecting flips."
+  ]
+}

@@ -42,7 +42,7 @@ def score_model(model,mu,sd,seeds,pool,base_s,budget=300,policy='observed_signed
 
 def main():
  result=[]
- for seed in (0,1):
+ for seed in range(4):
   point=load(seed,'point');edge=load(seed,'edge')
   for t in range(3):
    sid=3000+seed*100+t

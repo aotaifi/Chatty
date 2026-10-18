@@ -70,3 +70,25 @@ The `data` stage may need significant RAM/CPU to diagonalize the exact 20-site p
 
 ## Prior 6x6/8x8 caution (historical)
 Earlier 8x8 FN-amplitude fits looked accurate on sampled configurations while **crucial rare Hamiltonian-neighbor ratios were off-support**, and the next FN step worsened. Sampled SR/amplitude optimisation also failed near convergence, whereas 4x4 exact-force SR improvements were oracle-limited. Therefore the new requirement of ~2–7% log-ratio precision on delicate 20-site orbit corrections is a **hard hurdle**, not an already achieved 8x8 capability. Do not scale without controlled held-out edge-ratio errors, calibrated confidence intervals, and comparable access cost.
+
+## 2026-10-18: callable CNN amplitude guide and equal-pool ranking (new)
+
+New reproducible scripts and outputs:
+- `j1j2_neural_local20.py`, `j1j2_neural_local20_results.json`
+- `j1j2_neural_matched_pool20.py`, `j1j2_neural_matched_pool20_results.json`
+
+Setup: 20-site tilted torus, same frozen-sign chamber as above. Two 4,881-parameter translation-invariant CNNs learn log FN amplitudes using 600 symmetry-orbit labels visited in local true-FN Metropolis exploration; both use the same training configurations, optimizer initialization and 900 steps. The second adds a loss on adjacent log-amplitude *differences*. Training used ~6,500 distinct full-space exact-FN amplitude queries per seed (optimistic teacher). **These training labels would not be directly accessible from a real GFMC mixed walker distribution**; this does not solve the amplitude handoff.
+
+Independent tests: candidate explorers are learned-guide Metropolis samplers; one-hop spin-exchange neighborhoods; 300 eligible orbit scores computed via callable model only; greedy up to 40 flips; exact FN vectors and ED signs kept out of selection and used only for energy verification. Two training seeds × three test seeds per model.
+
+- Same-guide exploratory pools: ordinary pointwise loss mean true fixed-a energy gain +0.000188313 (61% of per-pool exact-FN oracle gain); edge-ratio loss +0.000507152 (94% of its own different-pool oracle gain). Both positive in six of six runs. **Pools differ by learned-guide walker behavior; not a controlled head-to-head comparison.**
+- Matched-pool ablation: walk each pool using the *pointwise* guide, but score the same 120 walker seeds and their one-hop candidate pool with either model. Pointwise +0.000188313, edge-ratio-trained +0.000261125 (**39% higher**), ~3,554–3,556 distinct network orbit evaluations per scorer. Edge-trained matched-pool actual gains were at least equal in all 6 cases, higher in 5.
+- Independent cross-check: direct full Hamiltonian expectation agreed with the symmetry-orbit edge formula within 1.6e-14 for representative selected sets.
+- On separately encountered bond sets, exact-FN-weighted log-ratio RMSE was **0.313 (point)** vs **0.322 (edge)**, not a global RMSE improvement. Training on ratios may improve *decision-relevant regions* or guide exploration; the exact mechanism is not established.
+- Greedy proposed improvements are not guaranteed with approximate guide ratios: 5/37 pointwise flips and 4/74 edge-trained flips actually increased true marginal energy in their sequential contexts, even though total energy improved in every tested run.
+- A naive robust margin bound with eps=0.1 in neighbor log-amplitude errors accepted **zero** corrections in this study; eps=0.05 suppressed almost all benefit. Need better *calibrated per-edge uncertainty* rather than a global error threshold.
+- Main scaling caveats: only N=20, 2 training seeds, exact on-demand FN amplitudes used for *training oracle* and offline validation, stored table of existing signs still used as a sign oracle, and ~3,600 of the **4,654** symmetry orbits were queried in each 20-site test. The enumeration fraction is large because 20 sites is tiny; cost at larger N must be measured in calls/operations/visits, not finite-size percentage. No demonstrated 6x6/8x8 scaling, iterative FN reoptimization or generalization of a learned sign network.
+
+**Next gating experiment:** replace teacher access to `a_{FN}(x)` with labels or local ratios estimable from actual mixed FN walkers (plus uncertainty), then run the same fully online query-counted sign update. Separately replace the sign lookup table with a callable stored-sign net. Maintain a no-update energy baseline and monitor true marginal losses, not only aggregate energy gain.
+
+Reproduce locally (scripts currently assume data lives at `/mnt/data`): run `python prepare_sign20.py`, `python audit_sign20_targets.py`; then `python j1j2_neural_local20.py --seeds 2 --steps 900 --train-orbits 600 --trials 3 --budget 300`; and finally `python j1j2_neural_matched_pool20.py`. Files `sign20_training_data.npz` and `audit_sign20_targets.npz` are generated, not checked into GitHub.

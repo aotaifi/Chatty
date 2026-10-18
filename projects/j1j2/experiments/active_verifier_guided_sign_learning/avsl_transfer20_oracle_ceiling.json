@@ -1,0 +1,432 @@
+{
+  "n_orbits_global": 4654,
+  "note": "Oracle evaluates all heldout orbit gains for ranking ceiling; these computations are NOT allowed for a scalable proposal policy.",
+  "chambers": {
+    "marshall": {
+      "summary": {
+        "heldout_positive_orbits": 78.25,
+        "oracle_top_22_gain": 0.0025538805350663247,
+        "oracle_selected": 12.0,
+        "learned_gain": 0.00024913576302832064,
+        "bond_gain": 0.0007298843344359847,
+        "learned_vs_oracle": 0.0960547314640542,
+        "bond_vs_oracle": 0.2874061605300068
+      },
+      "trials": [
+        {
+          "seed": 30260,
+          "heldout_positive_orbits": 75,
+          "oracle_top_22_gain": 0.0024529004168867287,
+          "oracle_selected": 12,
+          "learned_gain": 0.0002085101842925655,
+          "bond_gain": 0.0007182150102353733,
+          "learned_vs_oracle": 0.0850055643747702,
+          "bond_vs_oracle": 0.29280235157159235
+        },
+        {
+          "seed": 30261,
+          "heldout_positive_orbits": 64,
+          "oracle_top_22_gain": 0.0026562446792457784,
+          "oracle_selected": 12,
+          "learned_gain": 0.0003280474591084278,
+          "bond_gain": 0.0007683997716537763,
+          "learned_vs_oracle": 0.12350046728435218,
+          "bond_vs_oracle": 0.28928049349428075
+        },
+        {
+          "seed": 30262,
+          "heldout_positive_orbits": 67,
+          "oracle_top_22_gain": 0.002695498151554607,
+          "oracle_selected": 12,
+          "learned_gain": 0.0009581965114496979,
+          "bond_gain": 0.0010358220201224723,
+          "learned_vs_oracle": 0.3554803073773453,
+          "bond_vs_oracle": 0.3842785124987269
+        },
+        {
+          "seed": 30263,
+          "heldout_positive_orbits": 84,
+          "oracle_top_22_gain": 0.0026025719287175535,
+          "oracle_selected": 12,
+          "learned_gain": 0.0008066669627860021,
+          "bond_gain": 0.001220770136418427,
+          "learned_vs_oracle": 0.3099499206477249,
+          "bond_vs_oracle": 0.4690629768760993
+        },
+        {
+          "seed": 30264,
+          "heldout_positive_orbits": 100,
+          "oracle_top_22_gain": 0.0026589903534057703,
+          "oracle_selected": 12,
+          "learned_gain": 0.0001505939998477494,
+          "bond_gain": 0.0007910516090329971,
+          "learned_vs_oracle": 0.05663578269656411,
+          "bond_vs_oracle": 0.2975007442278901
+        },
+        {
+          "seed": 30265,
+          "heldout_positive_orbits": 92,
+          "oracle_top_22_gain": 0.0022068146989044062,
+          "oracle_selected": 12,
+          "learned_gain": 8.122478523425038e-06,
+          "bond_gain": 0.001179760143276831,
+          "learned_vs_oracle": 0.0036806345940406863,
+          "bond_vs_oracle": 0.5345986429501914
+        },
+        {
+          "seed": 30266,
+          "heldout_positive_orbits": 85,
+          "oracle_top_22_gain": 0.002695498151554607,
+          "oracle_selected": 12,
+          "learned_gain": 6.401492138074662e-05,
+          "bond_gain": 0.00033720604047375667,
+          "learned_vs_oracle": 0.023748827779320317,
+          "bond_vs_oracle": 0.12509971126460456
+        },
+        {
+          "seed": 30267,
+          "heldout_positive_orbits": 83,
+          "oracle_top_22_gain": 0.002665852862239202,
+          "oracle_selected": 12,
+          "learned_gain": 0.00021031028813291782,
+          "bond_gain": 0.001431551651360335,
+          "learned_vs_oracle": 0.07889043356889029,
+          "bond_vs_oracle": 0.5369957478290429
+        },
+        {
+          "seed": 30268,
+          "heldout_positive_orbits": 89,
+          "oracle_top_22_gain": 0.002374073487608041,
+          "oracle_selected": 12,
+          "learned_gain": 0.00021590075725072704,
+          "bond_gain": 0.00013623855867214157,
+          "learned_vs_oracle": 0.09094105906058296,
+          "bond_vs_oracle": 0.05738599052778543
+        },
+        {
+          "seed": 30269,
+          "heldout_positive_orbits": 82,
+          "oracle_top_22_gain": 0.0025076417359882427,
+          "oracle_selected": 12,
+          "learned_gain": 0.00022620009266239162,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.0902043100559769,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30270,
+          "heldout_positive_orbits": 79,
+          "oracle_top_22_gain": 0.0026267840702319145,
+          "oracle_selected": 12,
+          "learned_gain": 7.083930451804304e-05,
+          "bond_gain": 0.0001849481162959548,
+          "learned_vs_oracle": 0.026968072983550855,
+          "bond_vs_oracle": 0.07040857236492455
+        },
+        {
+          "seed": 30271,
+          "heldout_positive_orbits": 73,
+          "oracle_top_22_gain": 0.0026790631738135163,
+          "oracle_selected": 12,
+          "learned_gain": 0.00032340932092786727,
+          "bond_gain": 0.00013623855867214157,
+          "learned_vs_oracle": 0.12071731793748999,
+          "bond_vs_oracle": 0.050853059384267
+        },
+        {
+          "seed": 30272,
+          "heldout_positive_orbits": 77,
+          "oracle_top_22_gain": 0.0025569657067334487,
+          "oracle_selected": 12,
+          "learned_gain": 3.8723938084021644e-05,
+          "bond_gain": 0.0007910516090329971,
+          "learned_vs_oracle": 0.015144488634339917,
+          "bond_vs_oracle": 0.3093712234582818
+        },
+        {
+          "seed": 30273,
+          "heldout_positive_orbits": 53,
+          "oracle_top_22_gain": 0.002539929460845935,
+          "oracle_selected": 12,
+          "learned_gain": 0.0010463944651144517,
+          "bond_gain": 0.0010358220201224723,
+          "learned_vs_oracle": 0.4119777660147874,
+          "bond_vs_oracle": 0.4078152704986882
+        },
+        {
+          "seed": 30274,
+          "heldout_positive_orbits": 68,
+          "oracle_top_22_gain": 0.0024691877505186055,
+          "oracle_selected": 12,
+          "learned_gain": 1.3957375609975997e-05,
+          "bond_gain": 0.0009759997253289518,
+          "learned_vs_oracle": 0.005652618196831941,
+          "bond_vs_oracle": 0.39527157265540536
+        },
+        {
+          "seed": 30275,
+          "heldout_positive_orbits": 94,
+          "oracle_top_22_gain": 0.0025845318253407707,
+          "oracle_selected": 12,
+          "learned_gain": 0.00012756614886222343,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.049357546156508954,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30276,
+          "heldout_positive_orbits": 75,
+          "oracle_top_22_gain": 0.002600201907312653,
+          "oracle_selected": 12,
+          "learned_gain": 1.8834351743977792e-05,
+          "bond_gain": 0.0006742002505248676,
+          "learned_vs_oracle": 0.0072434189402789005,
+          "bond_vs_oracle": 0.2592876532506137
+        },
+        {
+          "seed": 30277,
+          "heldout_positive_orbits": 74,
+          "oracle_top_22_gain": 0.002496105263243544,
+          "oracle_selected": 12,
+          "learned_gain": 1.530287395926601e-05,
+          "bond_gain": 0.0007910516090329971,
+          "learned_vs_oracle": 0.0061307005696469765,
+          "bond_vs_oracle": 0.31691436282020874
+        },
+        {
+          "seed": 30278,
+          "heldout_positive_orbits": 84,
+          "oracle_top_22_gain": 0.002481402829488889,
+          "oracle_selected": 12,
+          "learned_gain": 9.564335919650429e-06,
+          "bond_gain": 0.0007910516090329971,
+          "learned_vs_oracle": 0.003854406791992116,
+          "bond_vs_oracle": 0.3187920959999611
+        },
+        {
+          "seed": 30279,
+          "heldout_positive_orbits": 67,
+          "oracle_top_22_gain": 0.002527352247692286,
+          "oracle_selected": 12,
+          "learned_gain": 0.00014155949039228372,
+          "bond_gain": 0.0015983082494302047,
+          "learned_vs_oracle": 0.05601098561608935,
+          "bond_vs_oracle": 0.6324042289275714
+        }
+      ]
+    },
+    "post_krylov": {
+      "summary": {
+        "heldout_positive_orbits": 10.35,
+        "oracle_top_22_gain": 3.252374531386639e-05,
+        "oracle_selected": 10.05,
+        "learned_gain": 1.0362985382862329e-06,
+        "bond_gain": 0.0,
+        "learned_vs_oracle": 0.034986808660667085,
+        "bond_vs_oracle": 0.0
+      },
+      "trials": [
+        {
+          "seed": 30260,
+          "heldout_positive_orbits": 8,
+          "oracle_top_22_gain": 2.332174326512465e-05,
+          "oracle_selected": 8,
+          "learned_gain": 1.5915743716275951e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.06824422829521652,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30261,
+          "heldout_positive_orbits": 8,
+          "oracle_top_22_gain": 3.049799198701908e-05,
+          "oracle_selected": 8,
+          "learned_gain": 0.0,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.0,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30262,
+          "heldout_positive_orbits": 10,
+          "oracle_top_22_gain": 3.434044780680457e-05,
+          "oracle_selected": 10,
+          "learned_gain": 9.366761670796011e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.02727617800295541,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30263,
+          "heldout_positive_orbits": 11,
+          "oracle_top_22_gain": 3.925504407726223e-05,
+          "oracle_selected": 11,
+          "learned_gain": 2.8507140517882714e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.0072620324821886925,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30264,
+          "heldout_positive_orbits": 10,
+          "oracle_top_22_gain": 3.550132457816394e-05,
+          "oracle_selected": 10,
+          "learned_gain": 1.5404635678387944e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.004339172090458559,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30265,
+          "heldout_positive_orbits": 12,
+          "oracle_top_22_gain": 3.6569609416763874e-05,
+          "oracle_selected": 11,
+          "learned_gain": 1.1821935849449937e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.03232721387511085,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30266,
+          "heldout_positive_orbits": 12,
+          "oracle_top_22_gain": 3.6065509195080816e-05,
+          "oracle_selected": 12,
+          "learned_gain": 3.5673189409751105e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.009891220228388396,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30267,
+          "heldout_positive_orbits": 10,
+          "oracle_top_22_gain": 3.242575526873595e-05,
+          "oracle_selected": 9,
+          "learned_gain": 9.500217480503599e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.029298369156765508,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30268,
+          "heldout_positive_orbits": 9,
+          "oracle_top_22_gain": 3.3750492267100815e-05,
+          "oracle_selected": 9,
+          "learned_gain": 2.1112413797891647e-09,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 6.255438774287607e-05,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30269,
+          "heldout_positive_orbits": 9,
+          "oracle_top_22_gain": 2.2944084059019252e-05,
+          "oracle_selected": 9,
+          "learned_gain": 2.815823088683191e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.012272545207906433,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30270,
+          "heldout_positive_orbits": 9,
+          "oracle_top_22_gain": 3.373354125385581e-05,
+          "oracle_selected": 9,
+          "learned_gain": 8.67975096378535e-08,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.0025730328454007887,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30271,
+          "heldout_positive_orbits": 11,
+          "oracle_top_22_gain": 3.507634468380844e-05,
+          "oracle_selected": 11,
+          "learned_gain": 5.280979287726447e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.15055671665138456,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30272,
+          "heldout_positive_orbits": 10,
+          "oracle_top_22_gain": 3.126434628795813e-05,
+          "oracle_selected": 10,
+          "learned_gain": 2.7947106748852996e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.008938970446222695,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30273,
+          "heldout_positive_orbits": 12,
+          "oracle_top_22_gain": 3.8886411000631444e-05,
+          "oracle_selected": 12,
+          "learned_gain": 1.3352827157866856e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.003433802918363958,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30274,
+          "heldout_positive_orbits": 12,
+          "oracle_top_22_gain": 2.5814906413399318e-05,
+          "oracle_selected": 12,
+          "learned_gain": 3.1928206141831585e-07,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.012368127790406839,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30275,
+          "heldout_positive_orbits": 15,
+          "oracle_top_22_gain": 3.2903129550966376e-05,
+          "oracle_selected": 12,
+          "learned_gain": 1.6168876786383936e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.04914084771583392,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30276,
+          "heldout_positive_orbits": 9,
+          "oracle_top_22_gain": 3.140294757001441e-05,
+          "oracle_selected": 9,
+          "learned_gain": 1.0254492396472358e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.032654553759991684,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30277,
+          "heldout_positive_orbits": 8,
+          "oracle_top_22_gain": 2.2200150162105363e-05,
+          "oracle_selected": 8,
+          "learned_gain": 4.616348746486293e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.20794223069563686,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30278,
+          "heldout_positive_orbits": 11,
+          "oracle_top_22_gain": 3.487643062697933e-05,
+          "oracle_selected": 10,
+          "learned_gain": 3.1707108125875874e-08,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.0009091270968924278,
+          "bond_vs_oracle": 0.0
+        },
+        {
+          "seed": 30279,
+          "heldout_positive_orbits": 11,
+          "oracle_top_22_gain": 3.9644696806533726e-05,
+          "oracle_selected": 11,
+          "learned_gain": 1.5955107169661704e-06,
+          "bond_gain": 0.0,
+          "learned_vs_oracle": 0.04024524956647465,
+          "bond_vs_oracle": 0.0
+        }
+      ]
+    }
+  }
+}

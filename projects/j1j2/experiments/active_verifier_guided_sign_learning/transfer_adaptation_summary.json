@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-19",
+  "model": "20-site frozen-a policy ranker; source Marshall 1980 labels",
+  "benchmark": "22 scored orbit candidates on each of 20 held-out frontier episodes; two model seeds",
+  "source_zero_shot_gain": 0.0000010362985382862329,
+  "post_trained_only_gain": 0.000021734194109129322,
+  "post_trained_geometry_only_gain": 0.000028557635478989327,
+  "pooled_half_each_1980_total_gain": [
+    0.000012686864812443271,
+    0.00001129718883391226
+  ],
+  "full_space_hindsight_oracle_22_gain": 0.0000325,
+  "rows": [
+    {
+      "post_labels": 108,
+      "positive_labels": 4,
+      "warm_gain": 0.00001084371,
+      "scratch_gain": 0.00001050042
+    },
+    {
+      "post_labels": 360,
+      "positive_labels": 8,
+      "warm_gain": 0.0000149094,
+      "scratch_gain": 0.00001239265,
+      "geo_warm_gain": 0.00001421484,
+      "geo_scratch_gain": 0.00001302173
+    },
+    {
+      "post_labels": 720,
+      "positive_labels": 12,
+      "warm_gain": 0.00001531605,
+      "scratch_gain": 0.00001316919
+    },
+    {
+      "post_labels": 1980,
+      "positive_labels": 49,
+      "warm_gain": 0.00002247569,
+      "scratch_gain": 0.00002228406,
+      "geo_warm_gain": 0.00002310165,
+      "geo_scratch_gain": 0.00002450335
+    }
+  ],
+  "energy_validation": {
+    "pooled_n": 160,
+    "pooled_max_absolute_error": 3.1701908893150277e-14,
+    "fewshot_n": 64,
+    "fewshot_max_absolute_error": 2.5631952208513345e-14
+  },
+  "qualifications": [
+    "All on-demand guide amplitudes and sign tables supplied by exact 20-site oracle",
+    "Not learned exploration, not FN self-consistent energy, not optimized Krylov sign target",
+    "Positive training labels mark individually beneficial frozen-a flips",
+    "Source pretraining 1980 verification labels in addition to fine-tune labels",
+    "Two initialization seeds and correlated heldout frontier episodes",
+    "Partial geometry-only shortcut remains; need independent FN guide and unseen-chamber testing"
+  ]
+}

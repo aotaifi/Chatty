@@ -1,0 +1,646 @@
+{
+  "n_independent_checks": 64,
+  "max_abs_error": 2.5631952208513345e-14,
+  "rows": [
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 4.5719128903594e-06,
+      "direct": 4.5719128731747105e-06,
+      "abs_error": 1.718468913718997e-14,
+      "accepted": 3
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 6.503100546644628e-06,
+      "direct": 6.50310054162162e-06,
+      "abs_error": 5.023007868204619e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.4388498652805208e-05,
+      "direct": 1.4388498648543191e-05,
+      "abs_error": 4.2620173747653575e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 5.186686240643031e-06,
+      "direct": 5.18668624494012e-06,
+      "abs_error": 4.297088773946422e-15,
+      "accepted": 4
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 6.503100546644628e-06,
+      "direct": 6.50310054162162e-06,
+      "abs_error": 5.023007868204619e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.4394098990495505e-05,
+      "direct": 1.4394098993619764e-05,
+      "abs_error": 3.124259003090858e-15,
+      "accepted": 7
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 4.562376207330527e-06,
+      "direct": 4.562376194172657e-06,
+      "abs_error": 1.3157869941987557e-14,
+      "accepted": 2
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 6.503100546644628e-06,
+      "direct": 6.50310054162162e-06,
+      "abs_error": 5.023007868204619e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.3494254235033045e-05,
+      "direct": 1.3494254227808256e-05,
+      "abs_error": 7.224789546462183e-15,
+      "accepted": 4
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 4.5719128903594e-06,
+      "direct": 4.5719128731747105e-06,
+      "abs_error": 1.718468913718997e-14,
+      "accepted": 3
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 6.503100546644628e-06,
+      "direct": 6.50310054162162e-06,
+      "abs_error": 5.023007868204619e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "6",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.3773725302521575e-05,
+      "direct": 1.3773725296317707e-05,
+      "abs_error": 6.203867511400153e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 1.96900710274779e-05,
+      "direct": 1.9690071027866907e-05,
+      "abs_error": 3.8900835135600997e-16,
+      "accepted": 4
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 2.0993968095998843e-05,
+      "direct": 2.0993968089300097e-05,
+      "abs_error": 6.698746510833478e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.4388498652805208e-05,
+      "direct": 1.4388498648543191e-05,
+      "abs_error": 4.2620173747653575e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 1.9695671365168195e-05,
+      "direct": 1.9695671353403554e-05,
+      "abs_error": 1.176464050419053e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 2.0993968095998843e-05,
+      "direct": 2.0993968089300097e-05,
+      "abs_error": 6.698746510833478e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "20",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.4388498652805208e-05,
+      "direct": 1.4388498648543191e-05,
+      "abs_error": 4.2620173747653575e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 1.9058844094375037e-05,
+      "direct": 1.905884410113856e-05,
+      "abs_error": 6.763524202507698e-15,
+      "accepted": 4
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 1.0396125804260174e-05,
+      "direct": 1.0396125800227196e-05,
+      "abs_error": 4.0329779717619e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.3773725302521575e-05,
+      "direct": 1.3773725296317707e-05,
+      "abs_error": 6.203867511400153e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 1.905324375668474e-05,
+      "direct": 1.9053243736522063e-05,
+      "abs_error": 2.0162677408751273e-14,
+      "accepted": 3
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 8.232348313364344e-06,
+      "direct": 8.232348301717707e-06,
+      "abs_error": 1.1646636956176744e-14,
+      "accepted": 3
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 2.4886993353614387e-05,
+      "direct": 2.4886993340800245e-05,
+      "abs_error": 1.281414143089292e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "20",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.3779325640211871e-05,
+      "direct": 1.3779325627183425e-05,
+      "abs_error": 1.3028445848745941e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 1.9695671365168195e-05,
+      "direct": 1.9695671353403554e-05,
+      "abs_error": 1.176464050419053e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 2.0993968095998843e-05,
+      "direct": 2.0993968089300097e-05,
+      "abs_error": 6.698746510833478e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.3773725302521575e-05,
+      "direct": 1.3773725296317707e-05,
+      "abs_error": 6.203867511400153e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 1.9695671365168195e-05,
+      "direct": 1.9695671353403554e-05,
+      "abs_error": 1.176464050419053e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 9.46189501393161e-06,
+      "direct": 9.46189499728689e-06,
+      "abs_error": 1.664471918584251e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 2.0993968095998843e-05,
+      "direct": 2.0993968089300097e-05,
+      "abs_error": 6.698746510833478e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.4388498652805208e-05,
+      "direct": 1.4388498648543191e-05,
+      "abs_error": 4.2620173747653575e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 1.9058844094375037e-05,
+      "direct": 1.905884410113856e-05,
+      "abs_error": 6.763524202507698e-15,
+      "accepted": 4
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 2.58215582793142e-05,
+      "direct": 2.5821558285343826e-05,
+      "abs_error": 6.02962775195226e-15,
+      "accepted": 7
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 1.3779325640211871e-05,
+      "direct": 1.3779325627183425e-05,
+      "abs_error": 1.3028445848745941e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 1.9695671365168195e-05,
+      "direct": 1.9695671353403554e-05,
+      "abs_error": 1.176464050419053e-14,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 2.005940317029903e-05,
+      "direct": 2.005940317140187e-05,
+      "abs_error": 1.102836897325099e-15,
+      "accepted": 5
+    },
+    {
+      "budget": "40",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 1.3779325640211871e-05,
+      "direct": 1.3779325627183425e-05,
+      "abs_error": 1.3028445848745941e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 2.3167696908340763e-05,
+      "direct": 2.316769688270881e-05,
+      "abs_error": 2.5631952208513345e-14,
+      "accepted": 7
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 2.935881126670532e-05,
+      "direct": 2.9358811264756923e-05,
+      "abs_error": 1.948396007251177e-15,
+      "accepted": 8
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 2.8884966539849723e-05,
+      "direct": 2.8884966523534672e-05,
+      "abs_error": 1.6315050574639348e-14,
+      "accepted": 8
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 2.3162096570650466e-05,
+      "direct": 2.3162096557172163e-05,
+      "abs_error": 1.3478303352966806e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 2.935881126670532e-05,
+      "direct": 2.9358811264756923e-05,
+      "abs_error": 1.948396007251177e-15,
+      "accepted": 8
+    },
+    {
+      "budget": "110",
+      "mode": "warm",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 2.8884966539849723e-05,
+      "direct": 2.8884966523534672e-05,
+      "abs_error": 1.6315050574639348e-14,
+      "accepted": 8
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30260,
+      "stored": 2.3162096570650466e-05,
+      "direct": 2.3162096557172163e-05,
+      "abs_error": 1.3478303352966806e-14,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30262,
+      "stored": 3.4186401450020675e-05,
+      "direct": 3.41864014465898e-05,
+      "abs_error": 3.4308764596674424e-15,
+      "accepted": 9
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 19,
+      "episode": 30263,
+      "stored": 2.827019318956609e-05,
+      "direct": 2.8270193190849113e-05,
+      "abs_error": 1.2830245221286118e-15,
+      "accepted": 7
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30260,
+      "stored": 2.2552923558057132e-05,
+      "direct": 2.255292355712868e-05,
+      "abs_error": 9.284531422761727e-16,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30261,
+      "stored": 1.300536257102091e-05,
+      "direct": 1.3005362569984413e-05,
+      "abs_error": 1.0364972768961422e-15,
+      "accepted": 6
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30262,
+      "stored": 3.4186401450020675e-05,
+      "direct": 3.41864014465898e-05,
+      "abs_error": 3.4308764596674424e-15,
+      "accepted": 9
+    },
+    {
+      "budget": "110",
+      "mode": "scratch",
+      "seed": 29,
+      "episode": 30263,
+      "stored": 2.827019318956609e-05,
+      "direct": 2.8270193190849113e-05,
+      "abs_error": 1.2830245221286118e-15,
+      "accepted": 7
+    }
+  ]
+}

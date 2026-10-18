@@ -1,0 +1,74 @@
+{
+  "sampling": {
+    "seed": 53,
+    "nwalk": 3500,
+    "burn": 450,
+    "steps": 450,
+    "thin": 4,
+    "raw_samples": 395500,
+    "unique_samples": 65532,
+    "unique_projector_rows": 103084,
+    "hamiltonian_neighbor_probes": 8246720,
+    "moves_fraction": 0.11351936507936508,
+    "history": [
+      {
+        "step": 1,
+        "distinct_walkers": 3419,
+        "mean_diag": -0.8687142857142857,
+        "mean_branch": 0.9420891000585125
+      },
+      {
+        "step": 101,
+        "distinct_walkers": 3091,
+        "mean_diag": -2.5772857142857144,
+        "mean_branch": 0.9933875993606373
+      },
+      {
+        "step": 450,
+        "distinct_walkers": 3059,
+        "mean_diag": -2.592,
+        "mean_branch": 0.9953502004210985
+      },
+      {
+        "step": 900,
+        "distinct_walkers": 3079,
+        "mean_diag": -2.5895714285714284,
+        "mean_branch": 0.9931563469729242
+      }
+    ]
+  },
+  "reference": {
+    "raw_samples": 395500,
+    "unique_samples": 131449,
+    "nchains": 3500,
+    "acceptance": 0.42545333333333335,
+    "burn": 900,
+    "steps": 450
+  },
+  "training": {
+    "n_positive": 395500,
+    "n_negative": 395500,
+    "steps": 1200,
+    "strength": 4.0,
+    "trace": [
+      {
+        "step": 400,
+        "loss": 0.6069392561912537,
+        "heldout_unweighted_bce": 0.5984695553779602
+      },
+      {
+        "step": 800,
+        "loss": 0.6131148934364319,
+        "heldout_unweighted_bce": 0.6041823625564575
+      },
+      {
+        "step": 1200,
+        "loss": 0.6024540662765503,
+        "heldout_unweighted_bce": 0.59916752576828
+      }
+    ],
+    "mean_weight": 1.24142423549056,
+    "median_weight": 1.0,
+    "elapsed_s": 60.20089460999998
+  }
+}

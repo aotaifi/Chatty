@@ -1,0 +1,1446 @@
+{
+  "validation_rows": [
+    {
+      "seed": 30260,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.0002631315531040234,
+      "direct_gain": 0.00026313155309942715,
+      "abs_error": 4.596258269817799e-15
+    },
+    {
+      "seed": 30260,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 7.244213445465686e-05,
+      "direct_gain": 7.244213444401737e-05,
+      "abs_error": 1.0639492759034752e-14
+    },
+    {
+      "seed": 30260,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 4,
+      "stored_gain": 0.0007182150102353733,
+      "direct_gain": 0.0007182150102238438,
+      "abs_error": 1.1529514322428103e-14
+    },
+    {
+      "seed": 30260,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 5,
+      "stored_gain": 0.0003497109502314025,
+      "direct_gain": 0.00034971095022306997,
+      "abs_error": 8.332527376420096e-15
+    },
+    {
+      "seed": 30260,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 4,
+      "stored_gain": 1.920729011346862e-05,
+      "direct_gain": 1.920729011750666e-05,
+      "abs_error": 4.038039840654692e-15
+    },
+    {
+      "seed": 30260,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 2.2063477219112263e-06,
+      "direct_gain": 2.2063477196354597e-06,
+      "abs_error": 2.2757666180684387e-15
+    },
+    {
+      "seed": 30260,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30260,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30261,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.0004315219281065129,
+      "direct_gain": 0.0004315219281103566,
+      "abs_error": 3.84371354189561e-15
+    },
+    {
+      "seed": 30261,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 2.5449164098480372e-05,
+      "direct_gain": 2.5449164086310816e-05,
+      "abs_error": 1.2169556134295975e-14
+    },
+    {
+      "seed": 30261,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 4,
+      "stored_gain": 0.0007683997716537763,
+      "direct_gain": 0.0007683997716494417,
+      "abs_error": 4.334531865379798e-15
+    },
+    {
+      "seed": 30261,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 3.918064539696982e-05,
+      "direct_gain": 3.918064539831789e-05,
+      "abs_error": 1.348069876214164e-15
+    },
+    {
+      "seed": 30261,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 6,
+      "stored_gain": 9.615941370715488e-06,
+      "direct_gain": 9.615941365836989e-06,
+      "abs_error": 4.878499812238299e-15
+    },
+    {
+      "seed": 30261,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 6.475956157509507e-06,
+      "direct_gain": 6.475956157103724e-06,
+      "abs_error": 4.0578299184343414e-16
+    },
+    {
+      "seed": 30261,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30261,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30262,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.0001932593524437559,
+      "direct_gain": 0.0001932593524340831,
+      "abs_error": 9.672790996992364e-15
+    },
+    {
+      "seed": 30262,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 11,
+      "stored_gain": 9.520656256773099e-05,
+      "direct_gain": 9.520656255368465e-05,
+      "abs_error": 1.4046340588054484e-14
+    },
+    {
+      "seed": 30262,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 2,
+      "stored_gain": 0.0010358220201224723,
+      "direct_gain": 0.0010358220201140966,
+      "abs_error": 8.375678622885019e-15
+    },
+    {
+      "seed": 30262,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 2,
+      "stored_gain": 0.00020554487107586196,
+      "direct_gain": 0.000205544871063168,
+      "abs_error": 1.2693974560731847e-14
+    },
+    {
+      "seed": 30262,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 6,
+      "stored_gain": 2.5038928469018475e-05,
+      "direct_gain": 2.503892846128508e-05,
+      "abs_error": 7.733393867772817e-15
+    },
+    {
+      "seed": 30262,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 4,
+      "stored_gain": 7.552552623580325e-06,
+      "direct_gain": 7.552552613532271e-06,
+      "abs_error": 1.0048054544713279e-14
+    },
+    {
+      "seed": 30262,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30262,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 5.38844099731325e-06,
+      "direct_gain": 5.388441003617572e-06,
+      "abs_error": 6.304322230812724e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 6.032842855771889e-05,
+      "direct_gain": 6.032842855496767e-05,
+      "abs_error": 2.7512172227905918e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.7331085048025392e-05,
+      "direct_gain": 1.7331085045313444e-05,
+      "abs_error": 2.7119487753558824e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 3,
+      "stored_gain": 0.001220770136418427,
+      "direct_gain": 0.00122077013641686,
+      "abs_error": 1.5671058201105481e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 5.876205310623539e-05,
+      "direct_gain": 5.8762053098959655e-05,
+      "abs_error": 7.27573519010774e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 4,
+      "stored_gain": 6.466045787820881e-06,
+      "direct_gain": 6.4660457770315816e-06,
+      "abs_error": 1.0789299853119095e-14
+    },
+    {
+      "seed": 30263,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 6.3286062607033585e-06,
+      "direct_gain": 6.328606255934233e-06,
+      "abs_error": 4.76912583589114e-15
+    },
+    {
+      "seed": 30263,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30263,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30264,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 8.776004136685967e-05,
+      "direct_gain": 8.776004136379356e-05,
+      "abs_error": 3.0661101912618505e-15
+    },
+    {
+      "seed": 30264,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.9651664455889607e-05,
+      "direct_gain": 1.9651664453945727e-05,
+      "abs_error": 1.943879627576417e-15
+    },
+    {
+      "seed": 30264,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.0007910516090329971,
+      "direct_gain": 0.0007910516090170461,
+      "abs_error": 1.5950999202041238e-14
+    },
+    {
+      "seed": 30264,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 5,
+      "stored_gain": 0.00022170252882228666,
+      "direct_gain": 0.0002217025288100416,
+      "abs_error": 1.2245060651214223e-14
+    },
+    {
+      "seed": 30264,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 4,
+      "stored_gain": 9.300512228724872e-06,
+      "direct_gain": 9.300512219923007e-06,
+      "abs_error": 8.801864944361915e-15
+    },
+    {
+      "seed": 30264,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 7.756037732485061e-06,
+      "direct_gain": 7.756037719630626e-06,
+      "abs_error": 1.2854434788193807e-14
+    },
+    {
+      "seed": 30264,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30264,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30265,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.00020205584551343642,
+      "direct_gain": 0.000202055845496929,
+      "abs_error": 1.65074117569608e-14
+    },
+    {
+      "seed": 30265,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.1020605490740538e-05,
+      "direct_gain": 1.1020605478861967e-05,
+      "abs_error": 1.1878571517793916e-14
+    },
+    {
+      "seed": 30265,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 3,
+      "stored_gain": 0.001179760143276831,
+      "direct_gain": 0.0011797601432643745,
+      "abs_error": 1.245639875968596e-14
+    },
+    {
+      "seed": 30265,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 3.2849275276320205e-06,
+      "direct_gain": 3.2849275264368316e-06,
+      "abs_error": 1.1951888995642354e-15
+    },
+    {
+      "seed": 30265,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 4,
+      "stored_gain": 1.2245857635948122e-05,
+      "direct_gain": 1.2245857616832723e-05,
+      "abs_error": 1.9115399096502478e-14
+    },
+    {
+      "seed": 30265,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 2,
+      "stored_gain": 9.401652633901081e-07,
+      "direct_gain": 9.401652434348762e-07,
+      "abs_error": 1.995523194606776e-14
+    },
+    {
+      "seed": 30265,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30265,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30266,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 7.89379376266668e-05,
+      "direct_gain": 7.893793761759582e-05,
+      "abs_error": 9.070977476099973e-15
+    },
+    {
+      "seed": 30266,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 2.868930450766702e-05,
+      "direct_gain": 2.8689304487627965e-05,
+      "abs_error": 2.0039054644165402e-14
+    },
+    {
+      "seed": 30266,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 2,
+      "stored_gain": 0.00033720604047375667,
+      "direct_gain": 0.00033720604045761604,
+      "abs_error": 1.6140626162008953e-14
+    },
+    {
+      "seed": 30266,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 2,
+      "stored_gain": 7.919900085301661e-06,
+      "direct_gain": 7.919900083308562e-06,
+      "abs_error": 1.99309901807547e-15
+    },
+    {
+      "seed": 30266,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 6,
+      "stored_gain": 2.637421681663366e-05,
+      "direct_gain": 2.6374216815838736e-05,
+      "abs_error": 7.949234803392158e-16
+    },
+    {
+      "seed": 30266,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 2.444857561780792e-06,
+      "direct_gain": 2.4448575555169327e-06,
+      "abs_error": 6.263859466922386e-15
+    },
+    {
+      "seed": 30266,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30266,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30267,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 5.166430356870917e-05,
+      "direct_gain": 5.166430354286433e-05,
+      "abs_error": 2.5844838693212663e-14
+    },
+    {
+      "seed": 30267,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.7327757968273634e-05,
+      "direct_gain": 1.732775797158581e-05,
+      "abs_error": 3.3121766505710137e-15
+    },
+    {
+      "seed": 30267,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 4,
+      "stored_gain": 0.001431551651360335,
+      "direct_gain": 0.0014315516513541127,
+      "abs_error": 6.22223626789431e-15
+    },
+    {
+      "seed": 30267,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 6,
+      "stored_gain": 0.00040907877007584863,
+      "direct_gain": 0.0004090787700441467,
+      "abs_error": 3.1701908893150277e-14
+    },
+    {
+      "seed": 30267,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 3,
+      "stored_gain": 6.475956157509507e-06,
+      "direct_gain": 6.475956157103724e-06,
+      "abs_error": 4.0578299184343414e-16
+    },
+    {
+      "seed": 30267,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 7.104628624247574e-06,
+      "direct_gain": 7.10462862762995e-06,
+      "abs_error": 3.382375353107661e-15
+    },
+    {
+      "seed": 30267,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30267,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30268,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 3.7853061023471234e-05,
+      "direct_gain": 3.785306101278252e-05,
+      "abs_error": 1.0688715537665594e-14
+    },
+    {
+      "seed": 30268,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 7.453192874500204e-05,
+      "direct_gain": 7.453192873185799e-05,
+      "abs_error": 1.3144053987584892e-14
+    },
+    {
+      "seed": 30268,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.00013623855867214157,
+      "direct_gain": 0.00013623855866917722,
+      "abs_error": 2.96434426484693e-15
+    },
+    {
+      "seed": 30268,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 5,
+      "stored_gain": 4.017974211751294e-05,
+      "direct_gain": 4.017974210768216e-05,
+      "abs_error": 9.830779582314236e-15
+    },
+    {
+      "seed": 30268,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 2,
+      "stored_gain": 9.583287135940006e-06,
+      "direct_gain": 9.583287114978134e-06,
+      "abs_error": 2.0961871629210545e-14
+    },
+    {
+      "seed": 30268,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 2,
+      "stored_gain": 1.7161876269343243e-06,
+      "direct_gain": 1.7161876222360206e-06,
+      "abs_error": 4.6983037171053135e-15
+    },
+    {
+      "seed": 30268,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30268,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30269,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 4.316752183232904e-05,
+      "direct_gain": 4.3167521832643274e-05,
+      "abs_error": 3.1423567090418936e-16
+    },
+    {
+      "seed": 30269,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 3.272923699842878e-05,
+      "direct_gain": 3.272923700237129e-05,
+      "abs_error": 3.942511464863352e-15
+    },
+    {
+      "seed": 30269,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30269,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 3,
+      "stored_gain": 0.00018111813490645447,
+      "direct_gain": 0.0001811181348934099,
+      "abs_error": 1.3044578438259347e-14
+    },
+    {
+      "seed": 30269,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 1.2205537128020475e-05,
+      "direct_gain": 1.2205537121445786e-05,
+      "abs_error": 6.574688371312719e-15
+    },
+    {
+      "seed": 30269,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 7.589188381534181e-06,
+      "direct_gain": 7.58918838350553e-06,
+      "abs_error": 1.971348906055874e-15
+    },
+    {
+      "seed": 30269,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30269,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 1.5404635678387944e-07,
+      "direct_gain": 1.5404634723381605e-07,
+      "abs_error": 9.550063387413064e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.0001725540435111658,
+      "direct_gain": 0.00017255404351246284,
+      "abs_error": 1.297031058944409e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 6.936923803501278e-05,
+      "direct_gain": 6.936923803202433e-05,
+      "abs_error": 2.9884542106575762e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.0001849481162959548,
+      "direct_gain": 0.0001849481162903288,
+      "abs_error": 5.625979283135907e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 4.400514712621847e-05,
+      "direct_gain": 4.400514712088466e-05,
+      "abs_error": 5.3338139027053755e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 1.0284857995861492e-05,
+      "direct_gain": 1.0284858003473119e-05,
+      "abs_error": 7.611626105341433e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 4,
+      "stored_gain": 6.695248524489495e-06,
+      "direct_gain": 6.695248520927066e-06,
+      "abs_error": 3.562429146705508e-15
+    },
+    {
+      "seed": 30270,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30270,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 7.726082660898106e-08,
+      "direct_gain": 7.726081996395351e-08,
+      "abs_error": 6.6450275489697124e-15
+    },
+    {
+      "seed": 30271,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 3.2509445220049145e-05,
+      "direct_gain": 3.250944521049348e-05,
+      "abs_error": 9.55566328104604e-15
+    },
+    {
+      "seed": 30271,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 10,
+      "stored_gain": 1.614221276173772e-05,
+      "direct_gain": 1.614221274337524e-05,
+      "abs_error": 1.8362481674083497e-14
+    },
+    {
+      "seed": 30271,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.00013623855867214157,
+      "direct_gain": 0.00013623855866917722,
+      "abs_error": 2.96434426484693e-15
+    },
+    {
+      "seed": 30271,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 3,
+      "stored_gain": 0.00010661443957456785,
+      "direct_gain": 0.00010661443955939376,
+      "abs_error": 1.5174087030292438e-14
+    },
+    {
+      "seed": 30271,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 8,
+      "stored_gain": 1.6021573997659826e-05,
+      "direct_gain": 1.6021573996383154e-05,
+      "abs_error": 1.2766717750242046e-15
+    },
+    {
+      "seed": 30271,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 4,
+      "stored_gain": 3.916935011155255e-06,
+      "direct_gain": 3.916935011005762e-06,
+      "abs_error": 1.4949284486091147e-16
+    },
+    {
+      "seed": 30271,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30271,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 6.147733502836314e-07,
+      "direct_gain": 6.147733380146292e-07,
+      "abs_error": 1.2269002249226603e-14
+    },
+    {
+      "seed": 30272,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.00010049595249470536,
+      "direct_gain": 0.00010049595248062815,
+      "abs_error": 1.407721324491601e-14
+    },
+    {
+      "seed": 30272,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.7875371027889087e-05,
+      "direct_gain": 1.7875371035813714e-05,
+      "abs_error": 7.924626802208526e-15
+    },
+    {
+      "seed": 30272,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.0007910516090329971,
+      "direct_gain": 0.0007910516090170461,
+      "abs_error": 1.5950999202041238e-14
+    },
+    {
+      "seed": 30272,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 2,
+      "stored_gain": 1.7752581481483734e-05,
+      "direct_gain": 1.7752581461749628e-05,
+      "abs_error": 1.973410584249491e-14
+    },
+    {
+      "seed": 30272,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 6,
+      "stored_gain": 1.2297914579095167e-05,
+      "direct_gain": 1.229791457291185e-05,
+      "abs_error": 6.183316798033869e-15
+    },
+    {
+      "seed": 30272,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 4,
+      "stored_gain": 1.1864397154822759e-05,
+      "direct_gain": 1.1864397146510441e-05,
+      "abs_error": 8.312317170298608e-15
+    },
+    {
+      "seed": 30272,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30272,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30273,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.00015236465477635748,
+      "direct_gain": 0.00015236465476675676,
+      "abs_error": 9.60071865757639e-15
+    },
+    {
+      "seed": 30273,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 10,
+      "stored_gain": 6.578604273427784e-05,
+      "direct_gain": 6.578604272533539e-05,
+      "abs_error": 8.942445308551816e-15
+    },
+    {
+      "seed": 30273,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 2,
+      "stored_gain": 0.0010358220201224723,
+      "direct_gain": 0.0010358220201140966,
+      "abs_error": 8.375678622885019e-15
+    },
+    {
+      "seed": 30273,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 3,
+      "stored_gain": 0.0002310224293921377,
+      "direct_gain": 0.00023102242937689255,
+      "abs_error": 1.5245156482698863e-14
+    },
+    {
+      "seed": 30273,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 8,
+      "stored_gain": 1.2240024551779231e-05,
+      "direct_gain": 1.2240024535259408e-05,
+      "abs_error": 1.651982248370397e-14
+    },
+    {
+      "seed": 30273,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 7,
+      "stored_gain": 1.4355985478544367e-05,
+      "direct_gain": 1.4355985483049949e-05,
+      "abs_error": 4.5055816987483316e-15
+    },
+    {
+      "seed": 30273,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30273,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30274,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.00012159329604869536,
+      "direct_gain": 0.00012159329604521929,
+      "abs_error": 3.476074137732932e-15
+    },
+    {
+      "seed": 30274,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.4948505816841792e-05,
+      "direct_gain": 1.4948505810963297e-05,
+      "abs_error": 5.878495051305464e-15
+    },
+    {
+      "seed": 30274,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 2,
+      "stored_gain": 0.0009759997253289518,
+      "direct_gain": 0.0009759997253198094,
+      "abs_error": 9.142426399266768e-15
+    },
+    {
+      "seed": 30274,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 1.494352585054977e-05,
+      "direct_gain": 1.4943525842525673e-05,
+      "abs_error": 8.024097269336387e-15
+    },
+    {
+      "seed": 30274,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 4.387935245630544e-06,
+      "direct_gain": 4.387935234717588e-06,
+      "abs_error": 1.0912955651989908e-14
+    },
+    {
+      "seed": 30274,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 5,
+      "stored_gain": 1.4329100339095376e-06,
+      "direct_gain": 1.4329100217480573e-06,
+      "abs_error": 1.2161480310418616e-14
+    },
+    {
+      "seed": 30274,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30274,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 9.536683028872438e-09,
+      "direct_gain": 9.536671896626103e-09,
+      "abs_error": 1.1132246334427734e-14
+    },
+    {
+      "seed": 30275,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 5.75080525504044e-05,
+      "direct_gain": 5.7508052531574094e-05,
+      "abs_error": 1.8830308135247414e-14
+    },
+    {
+      "seed": 30275,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.1458635284483135e-05,
+      "direct_gain": 1.1458635261973882e-05,
+      "abs_error": 2.250925344011133e-14
+    },
+    {
+      "seed": 30275,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30275,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 2,
+      "stored_gain": 0.0002169634174624371,
+      "direct_gain": 0.0002169634174453705,
+      "abs_error": 1.7066589027420198e-14
+    },
+    {
+      "seed": 30275,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 3.298895349733492e-06,
+      "direct_gain": 3.2988953311274827e-06,
+      "abs_error": 1.8606009152133266e-14
+    },
+    {
+      "seed": 30275,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 1,
+      "stored_gain": 9.345649256998109e-07,
+      "direct_gain": 9.345649196745853e-07,
+      "abs_error": 6.025225615846261e-15
+    },
+    {
+      "seed": 30275,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30275,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30276,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 9.112813270942896e-05,
+      "direct_gain": 9.112813269851472e-05,
+      "abs_error": 1.0914243142069735e-14
+    },
+    {
+      "seed": 30276,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 3.600925343163492e-05,
+      "direct_gain": 3.600925343327788e-05,
+      "abs_error": 1.6429593146030652e-15
+    },
+    {
+      "seed": 30276,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 4,
+      "stored_gain": 0.0006742002505248676,
+      "direct_gain": 0.0006742002505166766,
+      "abs_error": 8.190930572693489e-15
+    },
+    {
+      "seed": 30276,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 2,
+      "stored_gain": 5.539891126213937e-06,
+      "direct_gain": 5.539891114736406e-06,
+      "abs_error": 1.1477531063422159e-14
+    },
+    {
+      "seed": 30276,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 4,
+      "stored_gain": 1.820700327008665e-05,
+      "direct_gain": 1.820700325083635e-05,
+      "abs_error": 1.9250297563682198e-14
+    },
+    {
+      "seed": 30276,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 1.8070719408817493e-06,
+      "direct_gain": 1.807071939197158e-06,
+      "abs_error": 1.6845914074770877e-15
+    },
+    {
+      "seed": 30276,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30276,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30277,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.0001324946753555379,
+      "direct_gain": 0.00013249467534137693,
+      "abs_error": 1.4160954310213358e-14
+    },
+    {
+      "seed": 30277,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 3.558852902725157e-05,
+      "direct_gain": 3.558852902507681e-05,
+      "abs_error": 2.174760480207205e-15
+    },
+    {
+      "seed": 30277,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.0007910516090329971,
+      "direct_gain": 0.0007910516090170461,
+      "abs_error": 1.5950999202041238e-14
+    },
+    {
+      "seed": 30277,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 0.0010126099321248513,
+      "direct_gain": 0.001012609932107722,
+      "abs_error": 1.7129310123098485e-14
+    },
+    {
+      "seed": 30277,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 1.048706823674104e-05,
+      "direct_gain": 1.0487068234255048e-05,
+      "abs_error": 2.4859925722804307e-15
+    },
+    {
+      "seed": 30277,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 3,
+      "stored_gain": 1.1249623804539127e-05,
+      "direct_gain": 1.1249623797837671e-05,
+      "abs_error": 6.7014553221987974e-15
+    },
+    {
+      "seed": 30277,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30277,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30278,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 4.636783195096116e-05,
+      "direct_gain": 4.6367831931348746e-05,
+      "abs_error": 1.961241092489699e-14
+    },
+    {
+      "seed": 30278,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 1.842490516841931e-05,
+      "direct_gain": 1.8424905158909155e-05,
+      "abs_error": 9.51015389485596e-15
+    },
+    {
+      "seed": 30278,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 1,
+      "stored_gain": 0.0007910516090329971,
+      "direct_gain": 0.0007910516090170461,
+      "abs_error": 1.5950999202041238e-14
+    },
+    {
+      "seed": 30278,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 0.0002018438970974173,
+      "direct_gain": 0.00020184389708965966,
+      "abs_error": 7.757629174459657e-15
+    },
+    {
+      "seed": 30278,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 1.559603816656576e-05,
+      "direct_gain": 1.5596038155152314e-05,
+      "abs_error": 1.141344709173174e-14
+    },
+    {
+      "seed": 30278,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 1,
+      "stored_gain": 1.6250285775326898e-08,
+      "direct_gain": 1.6250277568019555e-08,
+      "abs_error": 8.207307342614998e-15
+    },
+    {
+      "seed": 30278,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30278,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30279,
+      "chamber": "marshall",
+      "method": "learned_bonds",
+      "n_flips": 12,
+      "stored_gain": 0.00023309902482664908,
+      "direct_gain": 0.00023309902482537836,
+      "abs_error": 1.2707120512073233e-15
+    },
+    {
+      "seed": 30279,
+      "chamber": "marshall",
+      "method": "local_geometry_amp",
+      "n_flips": 12,
+      "stored_gain": 6.0777950084472776e-05,
+      "direct_gain": 6.077795006298459e-05,
+      "abs_error": 2.148818910351416e-14
+    },
+    {
+      "seed": 30279,
+      "chamber": "marshall",
+      "method": "observed_signed_bonds",
+      "n_flips": 5,
+      "stored_gain": 0.0015983082494302047,
+      "direct_gain": 0.0015983082494201994,
+      "abs_error": 1.0005234488130732e-14
+    },
+    {
+      "seed": 30279,
+      "chamber": "marshall",
+      "method": "random",
+      "n_flips": 4,
+      "stored_gain": 4.239703628763941e-05,
+      "direct_gain": 4.239703627995084e-05,
+      "abs_error": 7.688572272335908e-15
+    },
+    {
+      "seed": 30279,
+      "chamber": "post_krylov",
+      "method": "learned_bonds",
+      "n_flips": 5,
+      "stored_gain": 1.4402412011912108e-05,
+      "direct_gain": 1.4402411991909503e-05,
+      "abs_error": 2.0002605122379155e-14
+    },
+    {
+      "seed": 30279,
+      "chamber": "post_krylov",
+      "method": "local_geometry_amp",
+      "n_flips": 5,
+      "stored_gain": 1.361722053971094e-05,
+      "direct_gain": 1.3617220529837937e-05,
+      "abs_error": 9.873002480668969e-15
+    },
+    {
+      "seed": 30279,
+      "chamber": "post_krylov",
+      "method": "observed_signed_bonds",
+      "n_flips": 0,
+      "stored_gain": 0.0,
+      "direct_gain": 0.0,
+      "abs_error": 0.0
+    },
+    {
+      "seed": 30279,
+      "chamber": "post_krylov",
+      "method": "random",
+      "n_flips": 1,
+      "stored_gain": 1.5404635678387944e-07,
+      "direct_gain": 1.5404634723381605e-07,
+      "abs_error": 9.550063387413064e-15
+    }
+  ],
+  "max_abs_energy_error": 3.1701908893150277e-14,
+  "symmetry_orbits_checked": 100
+}

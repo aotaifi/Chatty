@@ -854,6 +854,858 @@
       "mean_predicted_gain": 0.0005768816671320244,
       "n_trials_worse": 0,
       "wall_seconds": 77.56
+    },
+    {
+      "seed": 2,
+      "objective": "point",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6676,
+        "initial_discovered_orbits": 633,
+        "training_orbits": 600,
+        "training_edges": 4154,
+        "proposals": 12000,
+        "training_seconds": 20.14,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.003434322774410248,
+          "pair": 0.0
+        },
+        "model_parameters": 4881,
+        "train_seed": 2,
+        "objective": "point"
+      },
+      "ratio_test": {
+        "n_test_edges": 21545,
+        "edge_logratio_rmse": 0.8861764141059256,
+        "edge_logratio_mae": 0.5218172520948352,
+        "edge_logratio_weighted_rmse": 0.2653765648925964,
+        "edge_abs_error_p90": 1.1428948609583516,
+        "edge_abs_error_p99": 2.121599593553009,
+        "model_calls_for_test": 4387
+      },
+      "per_trial": [
+        {
+          "n_selected": 6,
+          "predicted_gain": 0.0003148572579724137,
+          "actual_gain": 0.00022443255196391565,
+          "chosen_orbits": [
+            88637,
+            92733,
+            88685,
+            92951,
+            96349,
+            92787
+          ],
+          "predicted_marginal_gains": [
+            0.00013381012851694236,
+            4.540928548629416e-05,
+            4.4369899547783967e-05,
+            3.150087765250683e-05,
+            4.968327240217088e-05,
+            1.0083794366715613e-05
+          ],
+          "model_orbit_calls": 3690,
+          "model_state_requests": 22013,
+          "oracle_posthoc_query_count": 252,
+          "gates": {
+            "0.05": {
+              "n_selected": 3,
+              "actual_gain": 0.0001337900319854473,
+              "predicted_gain": 0.00022459215713151835
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.00023196804573866092,
+          "seed": 3200,
+          "acceptance": 0.278030303030303,
+          "distinct_seed_states": 117,
+          "candidate_orbits": 2355,
+          "model_orbit_calls_preselection": 2486,
+          "model_state_requests_preselection": 8311
+        },
+        {
+          "n_selected": 11,
+          "predicted_gain": 0.0012320611251859337,
+          "actual_gain": 0.0006995816376394184,
+          "chosen_orbits": [
+            113754,
+            113722,
+            88637,
+            113750,
+            92509,
+            88429,
+            88685,
+            89149,
+            92765,
+            92733,
+            96349
+          ],
+          "predicted_marginal_gains": [
+            0.00020464091701453274,
+            0.00023049040349395816,
+            0.00013381012851694236,
+            0.0001267940390141108,
+            0.00011033402054596274,
+            8.00010530225873e-05,
+            9.682240343757901e-05,
+            7.061213646025201e-05,
+            6.146880843495013e-05,
+            8.096610446592194e-05,
+            3.612111077913637e-05
+          ],
+          "model_orbit_calls": 3685,
+          "model_state_requests": 21922,
+          "oracle_posthoc_query_count": 434,
+          "gates": {
+            "0.05": {
+              "n_selected": 5,
+              "actual_gain": 0.0002968922443835341,
+              "predicted_gain": 0.000447919853505199
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0007041122783251674,
+          "seed": 3201,
+          "acceptance": 0.2696969696969697,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2374,
+          "model_orbit_calls_preselection": 2548,
+          "model_state_requests_preselection": 8176
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.0010682746861227616,
+          "actual_gain": 0.0005154657464611393,
+          "chosen_orbits": [
+            113754,
+            113722,
+            88637,
+            113750,
+            94871,
+            88429,
+            88685,
+            92733,
+            88909,
+            108451
+          ],
+          "predicted_marginal_gains": [
+            0.00020464091701453274,
+            0.00023049040349395816,
+            0.00013381012851694236,
+            0.0001267940390141108,
+            8.051447754523232e-05,
+            8.00010530225873e-05,
+            9.682240343757901e-05,
+            4.540928548629416e-05,
+            3.832249234252691e-05,
+            3.146948624899783e-05
+          ],
+          "model_orbit_calls": 3608,
+          "model_state_requests": 21782,
+          "oracle_posthoc_query_count": 416,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 0.00015684567252223996,
+              "predicted_gain": 0.00021381118153952961
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0005247454738617081,
+          "seed": 3202,
+          "acceptance": 0.25795454545454544,
+          "distinct_seed_states": 112,
+          "candidate_orbits": 2316,
+          "model_orbit_calls_preselection": 2504,
+          "model_state_requests_preselection": 8058
+        }
+      ],
+      "mean_actual_gain": 0.00047982664535482447,
+      "mean_predicted_gain": 0.000871731023093703,
+      "n_trials_worse": 0,
+      "wall_seconds": 36.06
+    },
+    {
+      "seed": 2,
+      "objective": "edge",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6676,
+        "initial_discovered_orbits": 633,
+        "training_orbits": 600,
+        "training_edges": 4154,
+        "proposals": 12000,
+        "training_seconds": 48.13,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.011933463625609875,
+          "pair": 0.0025760307908058167
+        },
+        "model_parameters": 4881,
+        "train_seed": 2,
+        "objective": "edge"
+      },
+      "ratio_test": {
+        "n_test_edges": 22260,
+        "edge_logratio_rmse": 0.8618044603015184,
+        "edge_logratio_mae": 0.5608949664098463,
+        "edge_logratio_weighted_rmse": 0.27912338751011767,
+        "edge_abs_error_p90": 1.2495878146320436,
+        "edge_abs_error_p99": 2.264715382139579,
+        "model_calls_for_test": 4365
+      },
+      "per_trial": [
+        {
+          "n_selected": 13,
+          "predicted_gain": 0.0009005202143815348,
+          "actual_gain": 0.0005357362438832322,
+          "chosen_orbits": [
+            113754,
+            88637,
+            92509,
+            88429,
+            92951,
+            88685,
+            108451,
+            108437,
+            92733,
+            92765,
+            93277,
+            95405,
+            108921
+          ],
+          "predicted_marginal_gains": [
+            0.00024127851376592362,
+            0.00012735782742172774,
+            0.00010978963439004733,
+            9.220695332200722e-05,
+            4.845807456575876e-05,
+            4.6728095031948894e-05,
+            4.244294347689943e-05,
+            3.957478190545446e-05,
+            2.764442735687185e-05,
+            7.647581122494128e-05,
+            3.4361091087645136e-05,
+            1.3087209984537901e-05,
+            1.1148508477704978e-06
+          ],
+          "model_orbit_calls": 3592,
+          "model_state_requests": 21951,
+          "oracle_posthoc_query_count": 531,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0005468152052150666,
+          "seed": 3200,
+          "acceptance": 0.2715909090909091,
+          "distinct_seed_states": 115,
+          "candidate_orbits": 2063,
+          "model_orbit_calls_preselection": 2230,
+          "model_state_requests_preselection": 8293
+        },
+        {
+          "n_selected": 11,
+          "predicted_gain": 0.0008000946766358875,
+          "actual_gain": 0.0005039053952373384,
+          "chosen_orbits": [
+            113754,
+            88637,
+            113750,
+            88429,
+            88685,
+            89149,
+            92733,
+            108437,
+            88909,
+            81077,
+            88435
+          ],
+          "predicted_marginal_gains": [
+            0.00024127851376592362,
+            0.00012735782742172774,
+            0.00010188437855337593,
+            9.220695332200722e-05,
+            7.794359846424541e-05,
+            5.357356795133972e-05,
+            4.059785103184262e-05,
+            3.957478190545446e-05,
+            1.3432919901091786e-05,
+            6.495874327596893e-06,
+            5.748409991281918e-06
+          ],
+          "model_orbit_calls": 3650,
+          "model_state_requests": 22045,
+          "oracle_posthoc_query_count": 451,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0005796350001416838,
+          "seed": 3201,
+          "acceptance": 0.27954545454545454,
+          "distinct_seed_states": 117,
+          "candidate_orbits": 2305,
+          "model_orbit_calls_preselection": 2470,
+          "model_state_requests_preselection": 8285
+        },
+        {
+          "n_selected": 6,
+          "predicted_gain": 0.0002779947997608387,
+          "actual_gain": 0.00014288038256217073,
+          "chosen_orbits": [
+            92509,
+            96349,
+            108451,
+            108437,
+            113750,
+            92733
+          ],
+          "predicted_marginal_gains": [
+            0.00010978963439004733,
+            6.513724852926417e-05,
+            4.244294347689943e-05,
+            3.957478190545446e-05,
+            1.673620760651363e-05,
+            4.313983852659645e-06
+          ],
+          "model_orbit_calls": 3709,
+          "model_state_requests": 21939,
+          "oracle_posthoc_query_count": 255,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.00021201247415186464,
+          "seed": 3202,
+          "acceptance": 0.25643939393939397,
+          "distinct_seed_states": 115,
+          "candidate_orbits": 2345,
+          "model_orbit_calls_preselection": 2511,
+          "model_state_requests_preselection": 8151
+        }
+      ],
+      "mean_actual_gain": 0.00039417400722758047,
+      "mean_predicted_gain": 0.0006595365635927537,
+      "n_trials_worse": 0,
+      "wall_seconds": 60.61
+    },
+    {
+      "seed": 3,
+      "objective": "point",
+      "train": {
+        "teacher_distinct_amplitude_queries": 5773,
+        "initial_discovered_orbits": 602,
+        "training_orbits": 600,
+        "training_edges": 4013,
+        "proposals": 10500,
+        "training_seconds": 18.22,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.0024662206415086985,
+          "pair": 0.0
+        },
+        "model_parameters": 4881,
+        "train_seed": 3,
+        "objective": "point"
+      },
+      "ratio_test": {
+        "n_test_edges": 21277,
+        "edge_logratio_rmse": 0.8332163839377282,
+        "edge_logratio_mae": 0.522068602375599,
+        "edge_logratio_weighted_rmse": 0.26166199457934025,
+        "edge_abs_error_p90": 1.1283971446778498,
+        "edge_abs_error_p99": 2.2703176505820246,
+        "model_calls_for_test": 4362
+      },
+      "per_trial": [
+        {
+          "n_selected": 7,
+          "predicted_gain": 0.00047043045899984484,
+          "actual_gain": 0.0003042351172070211,
+          "chosen_orbits": [
+            113754,
+            88429,
+            92765,
+            88685,
+            93277,
+            108451,
+            88938
+          ],
+          "predicted_marginal_gains": [
+            0.00015836332793170297,
+            8.546388741984218e-05,
+            6.664612213288699e-05,
+            5.632123787122751e-05,
+            4.9513148549310546e-05,
+            4.840152075030887e-05,
+            5.7212143445657866e-06
+          ],
+          "model_orbit_calls": 3661,
+          "model_state_requests": 21717,
+          "oracle_posthoc_query_count": 303,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003133476659124547,
+          "seed": 3300,
+          "acceptance": 0.2609848484848485,
+          "distinct_seed_states": 111,
+          "candidate_orbits": 2189,
+          "model_orbit_calls_preselection": 2376,
+          "model_state_requests_preselection": 8011
+        },
+        {
+          "n_selected": 5,
+          "predicted_gain": 9.743077734415718e-05,
+          "actual_gain": -7.039269619272284e-06,
+          "chosen_orbits": [
+            108451,
+            88909,
+            93277,
+            96675,
+            91610
+          ],
+          "predicted_marginal_gains": [
+            4.840152075030887e-05,
+            1.718459498676277e-05,
+            1.63828892896164e-05,
+            9.399825557978312e-06,
+            6.061946759490814e-06
+          ],
+          "model_orbit_calls": 3731,
+          "model_state_requests": 21975,
+          "oracle_posthoc_query_count": 229,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 4.458911180132284e-05,
+          "seed": 3301,
+          "acceptance": 0.2791666666666667,
+          "distinct_seed_states": 115,
+          "candidate_orbits": 2231,
+          "model_orbit_calls_preselection": 2416,
+          "model_state_requests_preselection": 8267
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.000479452574734982,
+          "actual_gain": 0.00021628705657240617,
+          "chosen_orbits": [
+            113754,
+            88429,
+            113750,
+            108451,
+            92733,
+            77165,
+            94871,
+            93277,
+            96675,
+            87765
+          ],
+          "predicted_marginal_gains": [
+            0.00015836332793170297,
+            8.546388741984218e-05,
+            6.16844527760237e-05,
+            4.840152075030887e-05,
+            3.730828352274543e-05,
+            3.0212656108205663e-05,
+            2.9518411507930837e-05,
+            1.63828892896164e-05,
+            9.399825557978312e-06,
+            2.7173198706274436e-06
+          ],
+          "model_orbit_calls": 3638,
+          "model_state_requests": 21602,
+          "oracle_posthoc_query_count": 440,
+          "gates": {
+            "0.05": {
+              "n_selected": 1,
+              "actual_gain": 6.379934102834648e-06,
+              "predicted_gain": 3.021265610820568e-05
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.00026941232380489795,
+          "seed": 3302,
+          "acceptance": 0.2571969696969697,
+          "distinct_seed_states": 110,
+          "candidate_orbits": 2119,
+          "model_orbit_calls_preselection": 2313,
+          "model_state_requests_preselection": 7898
+        }
+      ],
+      "mean_actual_gain": 0.000171160968053385,
+      "mean_predicted_gain": 0.00034910460369299467,
+      "n_trials_worse": 1,
+      "wall_seconds": 31.62
+    },
+    {
+      "seed": 3,
+      "objective": "edge",
+      "train": {
+        "teacher_distinct_amplitude_queries": 5773,
+        "initial_discovered_orbits": 602,
+        "training_orbits": 600,
+        "training_edges": 4013,
+        "proposals": 10500,
+        "training_seconds": 48.48,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.01887851022183895,
+          "pair": 0.0026236907579004765
+        },
+        "model_parameters": 4881,
+        "train_seed": 3,
+        "objective": "edge"
+      },
+      "ratio_test": {
+        "n_test_edges": 22110,
+        "edge_logratio_rmse": 0.7585548483679545,
+        "edge_logratio_mae": 0.5152749061101674,
+        "edge_logratio_weighted_rmse": 0.24776058873618528,
+        "edge_abs_error_p90": 1.1567336256427827,
+        "edge_abs_error_p99": 2.303069611665796,
+        "model_calls_for_test": 4353
+      },
+      "per_trial": [
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.0006490375053450502,
+          "actual_gain": 0.0004136783741660953,
+          "chosen_orbits": [
+            113754,
+            88637,
+            87613,
+            113722,
+            92765,
+            93277,
+            91501,
+            88685,
+            88938,
+            94814
+          ],
+          "predicted_marginal_gains": [
+            0.00014843740468644252,
+            0.00011923399121275408,
+            0.00010359496436810906,
+            9.939395914514409e-05,
+            8.425253348399954e-05,
+            4.296789549025588e-05,
+            1.6253017108308404e-05,
+            1.4438179588118763e-05,
+            1.1200468866398968e-05,
+            9.265091395519354e-06
+          ],
+          "model_orbit_calls": 3669,
+          "model_state_requests": 21933,
+          "oracle_posthoc_query_count": 422,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0004358346909161274,
+          "seed": 3300,
+          "acceptance": 0.2678030303030303,
+          "distinct_seed_states": 113,
+          "candidate_orbits": 2082,
+          "model_orbit_calls_preselection": 2291,
+          "model_state_requests_preselection": 8185
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.000620070752043368,
+          "actual_gain": 0.00034054296499680235,
+          "chosen_orbits": [
+            113754,
+            88637,
+            87613,
+            113722,
+            113770,
+            108451,
+            108437,
+            96349,
+            88938,
+            92860
+          ],
+          "predicted_marginal_gains": [
+            0.00014843740468644252,
+            0.00011923399121275408,
+            0.00010359496436810906,
+            9.939395914514409e-05,
+            3.74575059999691e-05,
+            3.496284189535528e-05,
+            3.3005376367258173e-05,
+            3.1763830671943476e-05,
+            1.1200468866398968e-05,
+            1.020408829993392e-06
+          ],
+          "model_orbit_calls": 3629,
+          "model_state_requests": 21968,
+          "oracle_posthoc_query_count": 422,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003592988652021423,
+          "seed": 3301,
+          "acceptance": 0.2628787878787879,
+          "distinct_seed_states": 116,
+          "candidate_orbits": 2181,
+          "model_orbit_calls_preselection": 2380,
+          "model_state_requests_preselection": 8244
+        },
+        {
+          "n_selected": 11,
+          "predicted_gain": 0.0009595158234379205,
+          "actual_gain": 0.0005412880051106157,
+          "chosen_orbits": [
+            92509,
+            92765,
+            113754,
+            88637,
+            113722,
+            88429,
+            92951,
+            88685,
+            108437,
+            91501,
+            81557
+          ],
+          "predicted_marginal_gains": [
+            0.0001744514623626455,
+            0.00015291305492273017,
+            0.00014843740468644252,
+            0.00011923399121275408,
+            9.939395914514409e-05,
+            9.86980079408249e-05,
+            6.796688786803634e-05,
+            4.1992254485892456e-05,
+            3.3005376367258173e-05,
+            1.6253017108308404e-05,
+            7.170407337884073e-06
+          ],
+          "model_orbit_calls": 3639,
+          "model_state_requests": 21756,
+          "oracle_posthoc_query_count": 462,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 0.0001041228367230586,
+              "predicted_gain": 0.0002731494703034704
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0005587081775597884,
+          "seed": 3302,
+          "acceptance": 0.2761363636363636,
+          "distinct_seed_states": 110,
+          "candidate_orbits": 2164,
+          "model_orbit_calls_preselection": 2332,
+          "model_state_requests_preselection": 8042
+        }
+      ],
+      "mean_actual_gain": 0.0004318364480911711,
+      "mean_predicted_gain": 0.0007428746936087796,
+      "n_trials_worse": 0,
+      "wall_seconds": 62.27
     }
   ],
   "limitations": [

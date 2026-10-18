@@ -62,3 +62,19 @@ Original scripts/results from the conversation were bundled in `avsl_chamber_tra
 - Binary input `sign20_training_data.npz` can be recreated by `projects/j1j2/results/scalable_sign_2026-10-18/prepare_sign20.py`. The experiments currently expect files at `/mnt/data`. Reproduce in an isolated workspace.
 
 No source code is claimed to be committed by this report unless separately uploaded and verified; do not lose the conversation archive before completing that upload.
+
+
+## Additional independent fixed-node projection audit (2026-10-19)
+
+For the first **six** held-out post-Krylov test seeds (1801–1806) from training seed 42, re-solve the lowest eigenvalue of the **new sign-constrained fixed-node Hamiltonian** after each chosen orbit correction, keeping the original positive post-Krylov guide `a_K` fixed in the FN diagonal potential. The baseline exact FN eigenvalue is **−10.417697678503304**, with residual 2.87e−8. All new solves converged to residuals ≤3e−8.
+
+| Screening method | Mean **FN eigenvalue improvement** (positive is favorable) | Cases with lower FN energy |
+|---|---:|---:|
+| Full AVSL policy | +0.0000422353 | 6/6 |
+| Geometry-only policy | +0.0000183960 | 6/6 |
+| Random candidate ranking | +0.0000133240 | 4/6 |
+| Original signed-bond heuristic | 0 | 0/6 |
+
+These FN improvements agree in direction with their frozen-amplitude gains, but are *not equal* numerically, as expected from reoptimizing the FN eigenstate for a newly chosen sign chamber. This is an **independent energetic check of selected updates**, not evidence that an approximate guide yields the same outcome, nor a full `FN amplitude -> Krylov -> learned sign -> FN` fixed-point loop. Results for 6 episodes only; avoid extrapolating to other seeds or larger N. Code `avsl_transfer20_fnprojected_audit.py` and JSON `avsl_transfer20_fnprojected_audit.json` are available in the conversation artifact archive pending repo source upload.
+
+**Current go/no-go:** Positive in this 20-site oracle benchmark; no claim of acceptable *end-to-end query/sample cost*. The training-stage acquisition was ~129k summed FN amplitude queries, and the full-amplitude oracle was precomputed. The next valid scaling test must use 128 actual FN walkers + callable neural signs/amplitudes, a strict total-cost comparison, and an independent FN/physical-H audit.

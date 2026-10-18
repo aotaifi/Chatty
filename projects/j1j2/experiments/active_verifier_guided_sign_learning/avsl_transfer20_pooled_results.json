@@ -1,0 +1,3387 @@
+{
+  "description": "AVSL clean chamber-transfer test, J1-J2 20-site tilted torus.\n\nLearn which symmetry orbits have positive fixed-a marginal sign-flip gain under\nMarshall signs; test zero-shot on a different post-Krylov chamber, and on\nheld-out symmetry orbits. Both chambers share the same FIXED amplitude vector,\nwalker seed/candidate pools, and local-query budgets. ED never trains labels.\n\nOn-demand full 20-site amplitude/sign arrays are ORACLE backends. This tests\ntransfer across sign chambers, NOT a scalable GFMC/guide learned solution.\n",
+  "args": {
+    "train_first": 20260,
+    "train_episodes": 18,
+    "test_first": 30260,
+    "test_episodes": 20,
+    "train_budget": 110,
+    "verify_budget": 22,
+    "roots": 140,
+    "epochs": 1000,
+    "seed": 19,
+    "out": "/mnt/data/avsl_transfer20_pooled_results.json"
+  },
+  "training": {
+    "full": {
+      "training_labels": 1980,
+      "positives": 220,
+      "positive_fraction": 0.1111111119389534,
+      "final_loss": 0.37904804944992065,
+      "positive_weight": 2.8284270763397217
+    },
+    "geo": {
+      "training_labels": 1980,
+      "positives": 220,
+      "positive_fraction": 0.1111111119389534,
+      "final_loss": 0.3541978597640991,
+      "positive_weight": 2.8284270763397217
+    }
+  },
+  "train_cost": [
+    {
+      "seed": 20260,
+      "root_count": 136,
+      "pool_count": 2379,
+      "acceptance": 0.26218905472636816,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 8,
+      "total_unique_amp": 10629
+    },
+    {
+      "seed": 20260,
+      "root_count": 136,
+      "pool_count": 2379,
+      "acceptance": 0.26218905472636816,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 0,
+      "total_unique_amp": 10629
+    },
+    {
+      "seed": 20261,
+      "root_count": 131,
+      "pool_count": 2414,
+      "acceptance": 0.2619402985074627,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 9,
+      "total_unique_amp": 10702
+    },
+    {
+      "seed": 20261,
+      "root_count": 131,
+      "pool_count": 2414,
+      "acceptance": 0.2619402985074627,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 0,
+      "total_unique_amp": 10702
+    },
+    {
+      "seed": 20262,
+      "root_count": 130,
+      "pool_count": 2283,
+      "acceptance": 0.25796019900497513,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 14,
+      "total_unique_amp": 10664
+    },
+    {
+      "seed": 20262,
+      "root_count": 130,
+      "pool_count": 2283,
+      "acceptance": 0.25796019900497513,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 0,
+      "total_unique_amp": 10664
+    },
+    {
+      "seed": 20263,
+      "root_count": 136,
+      "pool_count": 2200,
+      "acceptance": 0.24825870646766168,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 10,
+      "total_unique_amp": 10782
+    },
+    {
+      "seed": 20263,
+      "root_count": 136,
+      "pool_count": 2200,
+      "acceptance": 0.24825870646766168,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10782
+    },
+    {
+      "seed": 20264,
+      "root_count": 132,
+      "pool_count": 2297,
+      "acceptance": 0.2537313432835821,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 7,
+      "total_unique_amp": 10684
+    },
+    {
+      "seed": 20264,
+      "root_count": 132,
+      "pool_count": 2297,
+      "acceptance": 0.2537313432835821,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 2,
+      "total_unique_amp": 10684
+    },
+    {
+      "seed": 20265,
+      "root_count": 130,
+      "pool_count": 2344,
+      "acceptance": 0.2569651741293532,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 10,
+      "total_unique_amp": 10688
+    },
+    {
+      "seed": 20265,
+      "root_count": 130,
+      "pool_count": 2344,
+      "acceptance": 0.2569651741293532,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 3,
+      "total_unique_amp": 10688
+    },
+    {
+      "seed": 20266,
+      "root_count": 133,
+      "pool_count": 2286,
+      "acceptance": 0.24751243781094528,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 12,
+      "total_unique_amp": 10808
+    },
+    {
+      "seed": 20266,
+      "root_count": 133,
+      "pool_count": 2286,
+      "acceptance": 0.24751243781094528,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10808
+    },
+    {
+      "seed": 20267,
+      "root_count": 139,
+      "pool_count": 2519,
+      "acceptance": 0.2644278606965174,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 15,
+      "total_unique_amp": 11237
+    },
+    {
+      "seed": 20267,
+      "root_count": 139,
+      "pool_count": 2519,
+      "acceptance": 0.2644278606965174,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 11237
+    },
+    {
+      "seed": 20268,
+      "root_count": 137,
+      "pool_count": 2537,
+      "acceptance": 0.25796019900497513,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 7,
+      "total_unique_amp": 10933
+    },
+    {
+      "seed": 20268,
+      "root_count": 137,
+      "pool_count": 2537,
+      "acceptance": 0.25796019900497513,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 2,
+      "total_unique_amp": 10933
+    },
+    {
+      "seed": 20269,
+      "root_count": 137,
+      "pool_count": 2430,
+      "acceptance": 0.268407960199005,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 13,
+      "total_unique_amp": 10961
+    },
+    {
+      "seed": 20269,
+      "root_count": 137,
+      "pool_count": 2430,
+      "acceptance": 0.268407960199005,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 2,
+      "total_unique_amp": 10961
+    },
+    {
+      "seed": 20270,
+      "root_count": 136,
+      "pool_count": 2300,
+      "acceptance": 0.2472636815920398,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 11,
+      "total_unique_amp": 10807
+    },
+    {
+      "seed": 20270,
+      "root_count": 136,
+      "pool_count": 2300,
+      "acceptance": 0.2472636815920398,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 0,
+      "total_unique_amp": 10807
+    },
+    {
+      "seed": 20271,
+      "root_count": 137,
+      "pool_count": 2467,
+      "acceptance": 0.27562189054726366,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 14,
+      "total_unique_amp": 10998
+    },
+    {
+      "seed": 20271,
+      "root_count": 137,
+      "pool_count": 2467,
+      "acceptance": 0.27562189054726366,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 2,
+      "total_unique_amp": 10998
+    },
+    {
+      "seed": 20272,
+      "root_count": 135,
+      "pool_count": 2305,
+      "acceptance": 0.2664179104477612,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 9,
+      "total_unique_amp": 10903
+    },
+    {
+      "seed": 20272,
+      "root_count": 135,
+      "pool_count": 2305,
+      "acceptance": 0.2664179104477612,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10903
+    },
+    {
+      "seed": 20273,
+      "root_count": 131,
+      "pool_count": 2214,
+      "acceptance": 0.25398009950248757,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 12,
+      "total_unique_amp": 10365
+    },
+    {
+      "seed": 20273,
+      "root_count": 131,
+      "pool_count": 2214,
+      "acceptance": 0.25398009950248757,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10365
+    },
+    {
+      "seed": 20274,
+      "root_count": 137,
+      "pool_count": 2186,
+      "acceptance": 0.2582089552238806,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 11,
+      "total_unique_amp": 10614
+    },
+    {
+      "seed": 20274,
+      "root_count": 137,
+      "pool_count": 2186,
+      "acceptance": 0.2582089552238806,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 0,
+      "total_unique_amp": 10614
+    },
+    {
+      "seed": 20275,
+      "root_count": 130,
+      "pool_count": 2312,
+      "acceptance": 0.2606965174129353,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 10,
+      "total_unique_amp": 10600
+    },
+    {
+      "seed": 20275,
+      "root_count": 130,
+      "pool_count": 2312,
+      "acceptance": 0.2606965174129353,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10600
+    },
+    {
+      "seed": 20276,
+      "root_count": 134,
+      "pool_count": 2333,
+      "acceptance": 0.258955223880597,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 9,
+      "total_unique_amp": 10832
+    },
+    {
+      "seed": 20276,
+      "root_count": 134,
+      "pool_count": 2333,
+      "acceptance": 0.258955223880597,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 3,
+      "total_unique_amp": 10832
+    },
+    {
+      "seed": 20277,
+      "root_count": 133,
+      "pool_count": 2205,
+      "acceptance": 0.2562189054726368,
+      "chamber": "marshall",
+      "queried_labels": 55,
+      "positive_labels": 18,
+      "total_unique_amp": 10666
+    },
+    {
+      "seed": 20277,
+      "root_count": 133,
+      "pool_count": 2205,
+      "acceptance": 0.2562189054726368,
+      "chamber": "post_krylov",
+      "queried_labels": 55,
+      "positive_labels": 1,
+      "total_unique_amp": 10666
+    }
+  ],
+  "training_unique_labeled_orbits": {
+    "marshall": 990,
+    "post_krylov": 990
+  },
+  "test_count": 20,
+  "summary": {
+    "marshall": {
+      "learned_bonds": {
+        "beneficial_candidates": 15.4,
+        "fixed_a_gain": 0.0001294897541293719,
+        "accepted_orbits": 12.0,
+        "positive_gain_trials": 20
+      },
+      "local_geometry_amp": {
+        "beneficial_candidates": 14.6,
+        "fixed_a_gain": 3.703800438534581e-05,
+        "accepted_orbits": 11.75,
+        "positive_gain_trials": 20
+      },
+      "observed_signed_bonds": {
+        "beneficial_candidates": 2.1,
+        "fixed_a_gain": 0.0007298843344359847,
+        "accepted_orbits": 2.1,
+        "positive_gain_trials": 18
+      },
+      "random": {
+        "beneficial_candidates": 3.45,
+        "fixed_a_gain": 0.00017050874104345115,
+        "accepted_orbits": 3.45,
+        "positive_gain_trials": 20
+      }
+    },
+    "post_krylov": {
+      "learned_bonds": {
+        "beneficial_candidates": 5.0,
+        "fixed_a_gain": 1.2686864812443271e-05,
+        "accepted_orbits": 5.0,
+        "positive_gain_trials": 20
+      },
+      "local_geometry_amp": {
+        "beneficial_candidates": 3.3,
+        "fixed_a_gain": 5.800236782680242e-06,
+        "accepted_orbits": 3.3,
+        "positive_gain_trials": 20
+      },
+      "observed_signed_bonds": {
+        "beneficial_candidates": 0.0,
+        "fixed_a_gain": 0.0,
+        "accepted_orbits": 0.0,
+        "positive_gain_trials": 0
+      },
+      "random": {
+        "beneficial_candidates": 0.3,
+        "fixed_a_gain": 3.199052285401247e-07,
+        "accepted_orbits": 0.3,
+        "positive_gain_trials": 6
+      }
+    }
+  },
+  "test_episodes": [
+    {
+      "seed": 30260,
+      "common": {
+        "seed": 30260,
+        "root_count": 134,
+        "pool_count": 2335,
+        "acceptance": 0.25796019900497513
+      },
+      "frontier_cost": {
+        "unique_amp": 4402,
+        "unique_sign": 0,
+        "unique_orbit": 2335,
+        "amp_requests": 6879,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9316,
+        "unique_sign": 16010,
+        "unique_orbit": 2335,
+        "amp_requests": 23765,
+        "sign_requests": 16886
+      },
+      "test_orbits": 457,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 17,
+            "fixed_a_gain": 0.0002631315531040234,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              107981,
+              104341,
+              113799,
+              29403,
+              15931,
+              108331,
+              75582,
+              86717,
+              92045,
+              7119,
+              79573,
+              15086
+            ],
+            "marginal_extra_amp_queries": 691,
+            "total_amp_queries": 10007
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 7.244213445465686e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104341,
+              105178,
+              29403,
+              108331,
+              75582,
+              86717,
+              79421,
+              77405,
+              7119,
+              15086,
+              83885,
+              7799
+            ],
+            "marginal_extra_amp_queries": 674,
+            "total_amp_queries": 9990
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.0007182150102353733,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              107837,
+              107981,
+              109661,
+              87725
+            ],
+            "marginal_extra_amp_queries": 604,
+            "total_amp_queries": 9920
+          },
+          "random": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 0.0003497109502314025,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              107981,
+              81069,
+              103837,
+              117948,
+              80730
+            ],
+            "marginal_extra_amp_queries": 677,
+            "total_amp_queries": 9993
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 1.920729011346862e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              96349,
+              31037,
+              81555,
+              113811
+            ],
+            "marginal_extra_amp_queries": 700,
+            "total_amp_queries": 10016
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 2.2063477219112263e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              81555,
+              92860,
+              31546
+            ],
+            "marginal_extra_amp_queries": 691,
+            "total_amp_queries": 10007
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 620,
+            "total_amp_queries": 9936
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 633,
+            "total_amp_queries": 9949
+          }
+        }
+      }
+    },
+    {
+      "seed": 30261,
+      "common": {
+        "seed": 30261,
+        "root_count": 134,
+        "pool_count": 2263,
+        "acceptance": 0.24975124378109453
+      },
+      "frontier_cost": {
+        "unique_amp": 4321,
+        "unique_sign": 0,
+        "unique_orbit": 2263,
+        "amp_requests": 6815,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9014,
+        "unique_sign": 15450,
+        "unique_orbit": 2263,
+        "amp_requests": 23673,
+        "sign_requests": 16858
+      },
+      "test_orbits": 445,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 0.0004315219281065129,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              107837,
+              108327,
+              91053,
+              113814,
+              111804,
+              103341,
+              108141,
+              81235,
+              77261,
+              85559,
+              76749,
+              91878
+            ],
+            "marginal_extra_amp_queries": 705,
+            "total_amp_queries": 9719
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 12,
+            "fixed_a_gain": 2.5449164098480372e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104346,
+              108317,
+              86717,
+              79565,
+              79421,
+              92045,
+              85559,
+              76749,
+              91878,
+              6975,
+              16269,
+              72603
+            ],
+            "marginal_extra_amp_queries": 702,
+            "total_amp_queries": 9716
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.0007683997716537763,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              107837,
+              87389,
+              108973,
+              109165
+            ],
+            "marginal_extra_amp_queries": 610,
+            "total_amp_queries": 9624
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 3.918064539696982e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              91549,
+              108141,
+              79421,
+              72603
+            ],
+            "marginal_extra_amp_queries": 665,
+            "total_amp_queries": 9679
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 6,
+            "fixed_a_gain": 9.615941370715488e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 6,
+            "selected_keys": [
+              94871,
+              31037,
+              81238,
+              92860,
+              113811,
+              107482
+            ],
+            "marginal_extra_amp_queries": 713,
+            "total_amp_queries": 9727
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 6.475956157509507e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              94871,
+              81238,
+              92860
+            ],
+            "marginal_extra_amp_queries": 741,
+            "total_amp_queries": 9755
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 597,
+            "total_amp_queries": 9611
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 667,
+            "total_amp_queries": 9681
+          }
+        }
+      }
+    },
+    {
+      "seed": 30262,
+      "common": {
+        "seed": 30262,
+        "root_count": 135,
+        "pool_count": 2249,
+        "acceptance": 0.26592039800995027
+      },
+      "frontier_cost": {
+        "unique_amp": 4316,
+        "unique_sign": 0,
+        "unique_orbit": 2249,
+        "amp_requests": 6825,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9176,
+        "unique_sign": 15684,
+        "unique_orbit": 2249,
+        "amp_requests": 23705,
+        "sign_requests": 16880
+      },
+      "test_orbits": 441,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 17,
+            "fixed_a_gain": 0.0001932593524437559,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              89034,
+              31563,
+              92877,
+              103341,
+              111804,
+              105178,
+              108141,
+              101831,
+              104339,
+              80725,
+              108317,
+              79565
+            ],
+            "marginal_extra_amp_queries": 703,
+            "total_amp_queries": 9879
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 11,
+            "fixed_a_gain": 9.520656256773099e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 11,
+            "selected_keys": [
+              31563,
+              105178,
+              29403,
+              101831,
+              104333,
+              80725,
+              108317,
+              79565,
+              80087,
+              105180,
+              14781
+            ],
+            "marginal_extra_amp_queries": 697,
+            "total_amp_queries": 9873
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.0010358220201224723,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              109149,
+              107837
+            ],
+            "marginal_extra_amp_queries": 580,
+            "total_amp_queries": 9756
+          },
+          "random": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.00020554487107586196,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              108973,
+              113814
+            ],
+            "marginal_extra_amp_queries": 632,
+            "total_amp_queries": 9808
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 6,
+            "fixed_a_gain": 2.5038928469018475e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 6,
+            "selected_keys": [
+              96349,
+              81077,
+              81557,
+              81238,
+              92860,
+              113811
+            ],
+            "marginal_extra_amp_queries": 696,
+            "total_amp_queries": 9872
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 7.552552623580325e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              88550,
+              23403,
+              81238,
+              92860
+            ],
+            "marginal_extra_amp_queries": 690,
+            "total_amp_queries": 9866
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 576,
+            "total_amp_queries": 9752
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 5.38844099731325e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              88550
+            ],
+            "marginal_extra_amp_queries": 603,
+            "total_amp_queries": 9779
+          }
+        }
+      }
+    },
+    {
+      "seed": 30263,
+      "common": {
+        "seed": 30263,
+        "root_count": 136,
+        "pool_count": 2351,
+        "acceptance": 0.2574626865671642
+      },
+      "frontier_cost": {
+        "unique_amp": 4446,
+        "unique_sign": 0,
+        "unique_orbit": 2351,
+        "amp_requests": 6965,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9325,
+        "unique_sign": 15994,
+        "unique_orbit": 2351,
+        "amp_requests": 24211,
+        "sign_requests": 17246
+      },
+      "test_orbits": 464,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 6.032842855771889e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              113813,
+              104333,
+              113818,
+              91881,
+              104166,
+              30565,
+              76749,
+              29051,
+              15773,
+              30556,
+              96689,
+              83885
+            ],
+            "marginal_extra_amp_queries": 693,
+            "total_amp_queries": 10018
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 1.7331085048025392e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108317,
+              91881,
+              104166,
+              30565,
+              76749,
+              29051,
+              89036,
+              15773,
+              88540,
+              30556,
+              96689,
+              83885
+            ],
+            "marginal_extra_amp_queries": 686,
+            "total_amp_queries": 10011
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 0.001220770136418427,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              109149,
+              107837,
+              87389
+            ],
+            "marginal_extra_amp_queries": 577,
+            "total_amp_queries": 9902
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 5.876205310623539e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              91549,
+              32043,
+              31899,
+              92051
+            ],
+            "marginal_extra_amp_queries": 646,
+            "total_amp_queries": 9971
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 6.466045787820881e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              94871,
+              23403,
+              30069,
+              31546
+            ],
+            "marginal_extra_amp_queries": 672,
+            "total_amp_queries": 9997
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 6.3286062607033585e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              88550,
+              23403,
+              31546
+            ],
+            "marginal_extra_amp_queries": 679,
+            "total_amp_queries": 10004
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 562,
+            "total_amp_queries": 9887
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 672,
+            "total_amp_queries": 9997
+          }
+        }
+      }
+    },
+    {
+      "seed": 30264,
+      "common": {
+        "seed": 30264,
+        "root_count": 131,
+        "pool_count": 2326,
+        "acceptance": 0.26218905472636816
+      },
+      "frontier_cost": {
+        "unique_amp": 4324,
+        "unique_sign": 0,
+        "unique_orbit": 2326,
+        "amp_requests": 6740,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9069,
+        "unique_sign": 15550,
+        "unique_orbit": 2326,
+        "amp_requests": 23454,
+        "sign_requests": 16714
+      },
+      "test_orbits": 484,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 20,
+            "fixed_a_gain": 8.776004136685967e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              113814,
+              103341,
+              113818,
+              92051,
+              80725,
+              113817,
+              79421,
+              78749,
+              22254,
+              22237,
+              29051,
+              91878
+            ],
+            "marginal_extra_amp_queries": 668,
+            "total_amp_queries": 9737
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 18,
+            "fixed_a_gain": 1.9651664455889607e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104348,
+              104166,
+              78749,
+              113817,
+              22254,
+              22237,
+              29051,
+              91878,
+              89036,
+              7119,
+              96539,
+              6975
+            ],
+            "marginal_extra_amp_queries": 690,
+            "total_amp_queries": 9759
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.0007910516090329971,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              109149
+            ],
+            "marginal_extra_amp_queries": 559,
+            "total_amp_queries": 9628
+          },
+          "random": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 0.00022170252882228666,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              108973,
+              113814,
+              103997,
+              92051,
+              15759
+            ],
+            "marginal_extra_amp_queries": 714,
+            "total_amp_queries": 9783
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 9.300512228724872e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              88550,
+              31037,
+              88533,
+              113811
+            ],
+            "marginal_extra_amp_queries": 721,
+            "total_amp_queries": 9790
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 7.756037732485061e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              88550,
+              81555,
+              88533
+            ],
+            "marginal_extra_amp_queries": 683,
+            "total_amp_queries": 9752
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 559,
+            "total_amp_queries": 9628
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 659,
+            "total_amp_queries": 9728
+          }
+        }
+      }
+    },
+    {
+      "seed": 30265,
+      "common": {
+        "seed": 30265,
+        "root_count": 137,
+        "pool_count": 2485,
+        "acceptance": 0.26318407960199003
+      },
+      "frontier_cost": {
+        "unique_amp": 4546,
+        "unique_sign": 0,
+        "unique_orbit": 2485,
+        "amp_requests": 6989,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9582,
+        "unique_sign": 16534,
+        "unique_orbit": 2485,
+        "amp_requests": 24613,
+        "sign_requests": 17624
+      },
+      "test_orbits": 496,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 19,
+            "fixed_a_gain": 0.00020205584551343642,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108973,
+              104333,
+              113820,
+              71597,
+              103325,
+              22237,
+              29051,
+              15773,
+              81081,
+              96539,
+              29558,
+              73433
+            ],
+            "marginal_extra_amp_queries": 672,
+            "total_amp_queries": 10254
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 19,
+            "fixed_a_gain": 1.1020605490740538e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              103325,
+              79565,
+              113817,
+              96539,
+              15773,
+              81081,
+              30556,
+              15086,
+              80746,
+              29558,
+              73433,
+              79590
+            ],
+            "marginal_extra_amp_queries": 666,
+            "total_amp_queries": 10248
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 0.001179760143276831,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              109149,
+              109165,
+              108973
+            ],
+            "marginal_extra_amp_queries": 555,
+            "total_amp_queries": 10137
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 3.2849275276320205e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              75747,
+              22237,
+              30556,
+              71609
+            ],
+            "marginal_extra_amp_queries": 622,
+            "total_amp_queries": 10204
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 1.2245857635948122e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              88550,
+              81077,
+              81555,
+              23403
+            ],
+            "marginal_extra_amp_queries": 655,
+            "total_amp_queries": 10237
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 9.401652633901081e-07,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              23403,
+              31546
+            ],
+            "marginal_extra_amp_queries": 680,
+            "total_amp_queries": 10262
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 565,
+            "total_amp_queries": 10147
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 675,
+            "total_amp_queries": 10257
+          }
+        }
+      }
+    },
+    {
+      "seed": 30266,
+      "common": {
+        "seed": 30266,
+        "root_count": 138,
+        "pool_count": 2389,
+        "acceptance": 0.26169154228855723
+      },
+      "frontier_cost": {
+        "unique_amp": 4404,
+        "unique_sign": 0,
+        "unique_orbit": 2389,
+        "amp_requests": 6843,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9473,
+        "unique_sign": 16340,
+        "unique_orbit": 2389,
+        "amp_requests": 24313,
+        "sign_requests": 17470
+      },
+      "test_orbits": 486,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 16,
+            "fixed_a_gain": 7.89379376266668e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              115644,
+              103837,
+              29547,
+              88381,
+              108988,
+              91037,
+              79079,
+              113817,
+              100029,
+              80729,
+              29051,
+              91878
+            ],
+            "marginal_extra_amp_queries": 686,
+            "total_amp_queries": 10159
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 2.868930450766702e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104333,
+              104348,
+              91037,
+              108317,
+              113817,
+              80729,
+              29051,
+              95015,
+              91878,
+              88540,
+              30556,
+              80746
+            ],
+            "marginal_extra_amp_queries": 689,
+            "total_amp_queries": 10162
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.00033720604047375667,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              107981,
+              109661
+            ],
+            "marginal_extra_amp_queries": 570,
+            "total_amp_queries": 10043
+          },
+          "random": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 7.919900085301661e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              88553,
+              104156
+            ],
+            "marginal_extra_amp_queries": 657,
+            "total_amp_queries": 10130
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 6,
+            "fixed_a_gain": 2.637421681663366e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 6,
+            "selected_keys": [
+              96349,
+              94871,
+              81077,
+              81555,
+              89030,
+              90557
+            ],
+            "marginal_extra_amp_queries": 679,
+            "total_amp_queries": 10152
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 2.444857561780792e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              81555,
+              88533,
+              90557
+            ],
+            "marginal_extra_amp_queries": 691,
+            "total_amp_queries": 10164
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 572,
+            "total_amp_queries": 10045
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 665,
+            "total_amp_queries": 10138
+          }
+        }
+      }
+    },
+    {
+      "seed": 30267,
+      "common": {
+        "seed": 30267,
+        "root_count": 134,
+        "pool_count": 2357,
+        "acceptance": 0.2609452736318408
+      },
+      "frontier_cost": {
+        "unique_amp": 4457,
+        "unique_sign": 0,
+        "unique_orbit": 2357,
+        "amp_requests": 6963,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9227,
+        "unique_sign": 15756,
+        "unique_orbit": 2357,
+        "amp_requests": 24045,
+        "sign_requests": 17082
+      },
+      "test_orbits": 479,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 5.166430356870917e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              111804,
+              29403,
+              108331,
+              108317,
+              89033,
+              92045,
+              76749,
+              91709,
+              73434,
+              29561,
+              8109,
+              83885
+            ],
+            "marginal_extra_amp_queries": 676,
+            "total_amp_queries": 9903
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 1.7327757968273634e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108331,
+              108317,
+              104166,
+              76749,
+              78749,
+              95015,
+              91878,
+              89036,
+              29561,
+              8109,
+              71102,
+              83885
+            ],
+            "marginal_extra_amp_queries": 682,
+            "total_amp_queries": 9909
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.001431551651360335,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              109149,
+              107837,
+              109165,
+              87389
+            ],
+            "marginal_extra_amp_queries": 609,
+            "total_amp_queries": 9836
+          },
+          "random": {
+            "beneficial_candidates": 6,
+            "fixed_a_gain": 0.00040907877007584863,
+            "verified_orbits": 22,
+            "accepted_orbits": 6,
+            "selected_keys": [
+              107981,
+              109661,
+              113813,
+              31563,
+              113820,
+              73434
+            ],
+            "marginal_extra_amp_queries": 647,
+            "total_amp_queries": 9874
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 6.475956157509507e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              94871,
+              81238,
+              92860
+            ],
+            "marginal_extra_amp_queries": 690,
+            "total_amp_queries": 9917
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 7.104628624247574e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              88550,
+              23403,
+              88533
+            ],
+            "marginal_extra_amp_queries": 697,
+            "total_amp_queries": 9924
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 607,
+            "total_amp_queries": 9834
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 642,
+            "total_amp_queries": 9869
+          }
+        }
+      }
+    },
+    {
+      "seed": 30268,
+      "common": {
+        "seed": 30268,
+        "root_count": 130,
+        "pool_count": 2372,
+        "acceptance": 0.2716417910447761
+      },
+      "frontier_cost": {
+        "unique_amp": 4412,
+        "unique_sign": 0,
+        "unique_orbit": 2372,
+        "amp_requests": 6932,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9048,
+        "unique_sign": 15514,
+        "unique_orbit": 2372,
+        "amp_requests": 23620,
+        "sign_requests": 16688
+      },
+      "test_orbits": 469,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 3.7853061023471234e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              93357,
+              80725,
+              91881,
+              30389,
+              80087,
+              105677,
+              91709,
+              77405,
+              94875,
+              95015,
+              71102,
+              13757
+            ],
+            "marginal_extra_amp_queries": 662,
+            "total_amp_queries": 9710
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 7.453192874500204e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104341,
+              29403,
+              104333,
+              104348,
+              80725,
+              108331,
+              91881,
+              105677,
+              105180,
+              77405,
+              94875,
+              95015
+            ],
+            "marginal_extra_amp_queries": 696,
+            "total_amp_queries": 9744
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.00013623855867214157,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              87725
+            ],
+            "marginal_extra_amp_queries": 574,
+            "total_amp_queries": 9622
+          },
+          "random": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 4.017974211751294e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              81237,
+              75747,
+              80745,
+              73429,
+              80739
+            ],
+            "marginal_extra_amp_queries": 631,
+            "total_amp_queries": 9679
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 9.583287135940006e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              94871,
+              81077
+            ],
+            "marginal_extra_amp_queries": 663,
+            "total_amp_queries": 9711
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 1.7161876269343243e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              23403,
+              88533
+            ],
+            "marginal_extra_amp_queries": 674,
+            "total_amp_queries": 9722
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 571,
+            "total_amp_queries": 9619
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 656,
+            "total_amp_queries": 9704
+          }
+        }
+      }
+    },
+    {
+      "seed": 30269,
+      "common": {
+        "seed": 30269,
+        "root_count": 135,
+        "pool_count": 2404,
+        "acceptance": 0.26318407960199003
+      },
+      "frontier_cost": {
+        "unique_amp": 4466,
+        "unique_sign": 0,
+        "unique_orbit": 2404,
+        "amp_requests": 6938,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9378,
+        "unique_sign": 16116,
+        "unique_orbit": 2404,
+        "amp_requests": 24140,
+        "sign_requests": 17202
+      },
+      "test_orbits": 495,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 16,
+            "fixed_a_gain": 4.316752183232904e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              103341,
+              92382,
+              79079,
+              104345,
+              78749,
+              22254,
+              30570,
+              91709,
+              89036,
+              79573,
+              96539,
+              30556
+            ],
+            "marginal_extra_amp_queries": 684,
+            "total_amp_queries": 10062
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 3.272923699842878e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              105178,
+              108317,
+              104345,
+              78749,
+              113817,
+              22254,
+              30570,
+              89036,
+              96539,
+              30556,
+              15086,
+              16269
+            ],
+            "marginal_extra_amp_queries": 705,
+            "total_amp_queries": 10083
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 588,
+            "total_amp_queries": 9966
+          },
+          "random": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 0.00018111813490645447,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              109165,
+              113799,
+              80725
+            ],
+            "marginal_extra_amp_queries": 632,
+            "total_amp_queries": 10010
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.2205537128020475e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              88550,
+              81077,
+              81555,
+              81238,
+              30069
+            ],
+            "marginal_extra_amp_queries": 684,
+            "total_amp_queries": 10062
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 7.589188381534181e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              88550,
+              81555,
+              81238
+            ],
+            "marginal_extra_amp_queries": 705,
+            "total_amp_queries": 10083
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 588,
+            "total_amp_queries": 9966
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 1.5404635678387944e-07,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              113811
+            ],
+            "marginal_extra_amp_queries": 694,
+            "total_amp_queries": 10072
+          }
+        }
+      }
+    },
+    {
+      "seed": 30270,
+      "common": {
+        "seed": 30270,
+        "root_count": 135,
+        "pool_count": 2320,
+        "acceptance": 0.27114427860696516
+      },
+      "frontier_cost": {
+        "unique_amp": 4412,
+        "unique_sign": 0,
+        "unique_orbit": 2320,
+        "amp_requests": 6996,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9241,
+        "unique_sign": 15816,
+        "unique_orbit": 2320,
+        "amp_requests": 24054,
+        "sign_requests": 17058
+      },
+      "test_orbits": 458,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 0.0001725540435111658,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              81069,
+              105178,
+              101831,
+              81235,
+              71597,
+              108331,
+              108317,
+              91709,
+              32395,
+              101997,
+              29561,
+              101835
+            ],
+            "marginal_extra_amp_queries": 671,
+            "total_amp_queries": 9912
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 6.936923803501278e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104341,
+              105178,
+              88553,
+              91037,
+              108331,
+              108317,
+              86717,
+              79421,
+              77405,
+              101997,
+              29561,
+              101835
+            ],
+            "marginal_extra_amp_queries": 679,
+            "total_amp_queries": 9920
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.0001849481162959548,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              87389
+            ],
+            "marginal_extra_amp_queries": 560,
+            "total_amp_queries": 9801
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 4.400514712621847e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              89034,
+              105148,
+              92045,
+              80249
+            ],
+            "marginal_extra_amp_queries": 640,
+            "total_amp_queries": 9881
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.0284857995861492e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              94871,
+              81077,
+              81238,
+              90557,
+              107482
+            ],
+            "marginal_extra_amp_queries": 682,
+            "total_amp_queries": 9923
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 6.695248524489495e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              88550,
+              81238,
+              92860,
+              90557
+            ],
+            "marginal_extra_amp_queries": 670,
+            "total_amp_queries": 9911
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 560,
+            "total_amp_queries": 9801
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 7.726082660898106e-08,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              90557
+            ],
+            "marginal_extra_amp_queries": 656,
+            "total_amp_queries": 9897
+          }
+        }
+      }
+    },
+    {
+      "seed": 30271,
+      "common": {
+        "seed": 30271,
+        "root_count": 135,
+        "pool_count": 2309,
+        "acceptance": 0.24800995024875622
+      },
+      "frontier_cost": {
+        "unique_amp": 4333,
+        "unique_sign": 0,
+        "unique_orbit": 2309,
+        "amp_requests": 6797,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9107,
+        "unique_sign": 15728,
+        "unique_orbit": 2309,
+        "amp_requests": 23749,
+        "sign_requests": 16952
+      },
+      "test_orbits": 478,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 12,
+            "fixed_a_gain": 3.2509445220049145e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              103997,
+              88381,
+              91037,
+              79079,
+              105660,
+              79565,
+              76749,
+              113817,
+              6975,
+              81081,
+              96689,
+              83389
+            ],
+            "marginal_extra_amp_queries": 700,
+            "total_amp_queries": 9807
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 10,
+            "fixed_a_gain": 1.614221276173772e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 10,
+            "selected_keys": [
+              108331,
+              105660,
+              79565,
+              79421,
+              76749,
+              113817,
+              6975,
+              81081,
+              96689,
+              83885
+            ],
+            "marginal_extra_amp_queries": 703,
+            "total_amp_queries": 9810
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.00013623855867214157,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              87725
+            ],
+            "marginal_extra_amp_queries": 602,
+            "total_amp_queries": 9709
+          },
+          "random": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 0.00010661443957456785,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              30059,
+              107325,
+              80087
+            ],
+            "marginal_extra_amp_queries": 644,
+            "total_amp_queries": 9751
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 8,
+            "fixed_a_gain": 1.6021573997659826e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 8,
+            "selected_keys": [
+              94871,
+              81077,
+              31037,
+              81555,
+              89030,
+              81238,
+              92860,
+              107482
+            ],
+            "marginal_extra_amp_queries": 715,
+            "total_amp_queries": 9822
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 3.916935011155255e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              81555,
+              23403,
+              88533,
+              81238
+            ],
+            "marginal_extra_amp_queries": 692,
+            "total_amp_queries": 9799
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 614,
+            "total_amp_queries": 9721
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 6.147733502836314e-07,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              92860
+            ],
+            "marginal_extra_amp_queries": 660,
+            "total_amp_queries": 9767
+          }
+        }
+      }
+    },
+    {
+      "seed": 30272,
+      "common": {
+        "seed": 30272,
+        "root_count": 134,
+        "pool_count": 2347,
+        "acceptance": 0.2654228855721393
+      },
+      "frontier_cost": {
+        "unique_amp": 4343,
+        "unique_sign": 0,
+        "unique_orbit": 2347,
+        "amp_requests": 6773,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9100,
+        "unique_sign": 15658,
+        "unique_orbit": 2347,
+        "amp_requests": 23731,
+        "sign_requests": 16958
+      },
+      "test_orbits": 470,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 18,
+            "fixed_a_gain": 0.00010049595249470536,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108327,
+              80237,
+              91866,
+              117948,
+              92382,
+              103325,
+              79565,
+              78749,
+              22254,
+              91709,
+              22237,
+              91878
+            ],
+            "marginal_extra_amp_queries": 670,
+            "total_amp_queries": 9770
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 17,
+            "fixed_a_gain": 1.7875371027889087e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108331,
+              103325,
+              79565,
+              79421,
+              78749,
+              22254,
+              22237,
+              91878,
+              30556,
+              80746,
+              83885,
+              15262
+            ],
+            "marginal_extra_amp_queries": 659,
+            "total_amp_queries": 9759
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.0007910516090329971,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              109149
+            ],
+            "marginal_extra_amp_queries": 611,
+            "total_amp_queries": 9711
+          },
+          "random": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 1.7752581481483734e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              30239,
+              14781
+            ],
+            "marginal_extra_amp_queries": 653,
+            "total_amp_queries": 9753
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 6,
+            "fixed_a_gain": 1.2297914579095167e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 6,
+            "selected_keys": [
+              88550,
+              94871,
+              81238,
+              92860,
+              30069,
+              113811
+            ],
+            "marginal_extra_amp_queries": 682,
+            "total_amp_queries": 9782
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 1.1864397154822759e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              88550,
+              94871,
+              81238,
+              92860
+            ],
+            "marginal_extra_amp_queries": 655,
+            "total_amp_queries": 9755
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 618,
+            "total_amp_queries": 9718
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 665,
+            "total_amp_queries": 9765
+          }
+        }
+      }
+    },
+    {
+      "seed": 30273,
+      "common": {
+        "seed": 30273,
+        "root_count": 131,
+        "pool_count": 2021,
+        "acceptance": 0.25149253731343285
+      },
+      "frontier_cost": {
+        "unique_amp": 4127,
+        "unique_sign": 0,
+        "unique_orbit": 2021,
+        "amp_requests": 6699,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 8677,
+        "unique_sign": 14662,
+        "unique_orbit": 2021,
+        "amp_requests": 22919,
+        "sign_requests": 16220
+      },
+      "test_orbits": 393,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 12,
+            "fixed_a_gain": 0.00015236465477635748,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108327,
+              113814,
+              104341,
+              113799,
+              80730,
+              88538,
+              85559,
+              113820,
+              103325,
+              76749,
+              71095,
+              83389
+            ],
+            "marginal_extra_amp_queries": 708,
+            "total_amp_queries": 9385
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 10,
+            "fixed_a_gain": 6.578604273427784e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 10,
+            "selected_keys": [
+              104341,
+              80730,
+              88538,
+              88553,
+              113820,
+              108317,
+              103325,
+              86717,
+              85559,
+              76749
+            ],
+            "marginal_extra_amp_queries": 709,
+            "total_amp_queries": 9386
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.0010358220201224723,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              109149,
+              107837
+            ],
+            "marginal_extra_amp_queries": 611,
+            "total_amp_queries": 9288
+          },
+          "random": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 0.0002310224293921377,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              108973,
+              30379,
+              80237
+            ],
+            "marginal_extra_amp_queries": 660,
+            "total_amp_queries": 9337
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 8,
+            "fixed_a_gain": 1.2240024551779231e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 8,
+            "selected_keys": [
+              88550,
+              31037,
+              81555,
+              88533,
+              81238,
+              92860,
+              113811,
+              80569
+            ],
+            "marginal_extra_amp_queries": 692,
+            "total_amp_queries": 9369
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 7,
+            "fixed_a_gain": 1.4355985478544367e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 7,
+            "selected_keys": [
+              88550,
+              94871,
+              81555,
+              88533,
+              81238,
+              92860,
+              80569
+            ],
+            "marginal_extra_amp_queries": 700,
+            "total_amp_queries": 9377
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 631,
+            "total_amp_queries": 9308
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 640,
+            "total_amp_queries": 9317
+          }
+        }
+      }
+    },
+    {
+      "seed": 30274,
+      "common": {
+        "seed": 30274,
+        "root_count": 137,
+        "pool_count": 2326,
+        "acceptance": 0.25671641791044775
+      },
+      "frontier_cost": {
+        "unique_amp": 4322,
+        "unique_sign": 0,
+        "unique_orbit": 2326,
+        "amp_requests": 6706,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9201,
+        "unique_sign": 15922,
+        "unique_orbit": 2326,
+        "amp_requests": 23916,
+        "sign_requests": 17210
+      },
+      "test_orbits": 444,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 16,
+            "fixed_a_gain": 0.00012159329604869536,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              113813,
+              113814,
+              113799,
+              93357,
+              108141,
+              91881,
+              79565,
+              30565,
+              12927,
+              30556,
+              101835,
+              85563
+            ],
+            "marginal_extra_amp_queries": 688,
+            "total_amp_queries": 9889
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 1.4948505816841792e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              91881,
+              104166,
+              79565,
+              30565,
+              113817,
+              91878,
+              12927,
+              30556,
+              101835,
+              85563,
+              83885,
+              15091
+            ],
+            "marginal_extra_amp_queries": 675,
+            "total_amp_queries": 9876
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.0009759997253289518,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              109149,
+              87389
+            ],
+            "marginal_extra_amp_queries": 533,
+            "total_amp_queries": 9734
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 1.494352585054977e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              113799
+            ],
+            "marginal_extra_amp_queries": 654,
+            "total_amp_queries": 9855
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 4.387935245630544e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              31037,
+              88533,
+              92860,
+              107482,
+              31546
+            ],
+            "marginal_extra_amp_queries": 711,
+            "total_amp_queries": 9912
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.4329100339095376e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              88533,
+              92860,
+              76413,
+              75738,
+              31546
+            ],
+            "marginal_extra_amp_queries": 682,
+            "total_amp_queries": 9883
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 539,
+            "total_amp_queries": 9740
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 9.536683028872438e-09,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              107482
+            ],
+            "marginal_extra_amp_queries": 654,
+            "total_amp_queries": 9855
+          }
+        }
+      }
+    },
+    {
+      "seed": 30275,
+      "common": {
+        "seed": 30275,
+        "root_count": 134,
+        "pool_count": 2525,
+        "acceptance": 0.2681592039800995
+      },
+      "frontier_cost": {
+        "unique_amp": 4591,
+        "unique_sign": 0,
+        "unique_orbit": 2525,
+        "amp_requests": 7045,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9497,
+        "unique_sign": 16410,
+        "unique_orbit": 2525,
+        "amp_requests": 24519,
+        "sign_requests": 17474
+      },
+      "test_orbits": 505,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 12,
+            "fixed_a_gain": 5.75080525504044e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              31563,
+              104333,
+              88553,
+              92382,
+              78749,
+              22237,
+              91878,
+              101997,
+              15773,
+              15086,
+              85563,
+              31545
+            ],
+            "marginal_extra_amp_queries": 711,
+            "total_amp_queries": 10208
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 14,
+            "fixed_a_gain": 1.1458635284483135e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104166,
+              78749,
+              22254,
+              22237,
+              91878,
+              101997,
+              15773,
+              8109,
+              15086,
+              85563,
+              79590,
+              31548
+            ],
+            "marginal_extra_amp_queries": 656,
+            "total_amp_queries": 10153
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 576,
+            "total_amp_queries": 10073
+          },
+          "random": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 0.0002169634174624371,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              107981,
+              104341
+            ],
+            "marginal_extra_amp_queries": 666,
+            "total_amp_queries": 10163
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 3.298895349733492e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              81555,
+              23403,
+              92860,
+              113811,
+              107482
+            ],
+            "marginal_extra_amp_queries": 670,
+            "total_amp_queries": 10167
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 9.345649256998109e-07,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              23403
+            ],
+            "marginal_extra_amp_queries": 667,
+            "total_amp_queries": 10164
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 576,
+            "total_amp_queries": 10073
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 685,
+            "total_amp_queries": 10182
+          }
+        }
+      }
+    },
+    {
+      "seed": 30276,
+      "common": {
+        "seed": 30276,
+        "root_count": 133,
+        "pool_count": 2389,
+        "acceptance": 0.26990049751243783
+      },
+      "frontier_cost": {
+        "unique_amp": 4439,
+        "unique_sign": 0,
+        "unique_orbit": 2389,
+        "amp_requests": 6881,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9281,
+        "unique_sign": 15938,
+        "unique_orbit": 2389,
+        "amp_requests": 23949,
+        "sign_requests": 17068
+      },
+      "test_orbits": 473,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 9.112813270942896e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              113814,
+              92053,
+              92877,
+              77261,
+              76749,
+              104345,
+              22237,
+              7119,
+              96539,
+              101835,
+              96689,
+              83885
+            ],
+            "marginal_extra_amp_queries": 688,
+            "total_amp_queries": 9969
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 3.600925343163492e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              105178,
+              108331,
+              75582,
+              108317,
+              79565,
+              104345,
+              76749,
+              22237,
+              7119,
+              96539,
+              101835,
+              96689
+            ],
+            "marginal_extra_amp_queries": 693,
+            "total_amp_queries": 9974
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.0006742002505248676,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              107837,
+              107981,
+              109165,
+              87709
+            ],
+            "marginal_extra_amp_queries": 557,
+            "total_amp_queries": 9838
+          },
+          "random": {
+            "beneficial_candidates": 2,
+            "fixed_a_gain": 5.539891126213937e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 2,
+            "selected_keys": [
+              73421,
+              86717
+            ],
+            "marginal_extra_amp_queries": 656,
+            "total_amp_queries": 9937
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 1.820700327008665e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              96349,
+              107482,
+              88533,
+              90557
+            ],
+            "marginal_extra_amp_queries": 678,
+            "total_amp_queries": 9959
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 1.8070719408817493e-06,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              23403,
+              88533,
+              90557
+            ],
+            "marginal_extra_amp_queries": 666,
+            "total_amp_queries": 9947
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 555,
+            "total_amp_queries": 9836
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 655,
+            "total_amp_queries": 9936
+          }
+        }
+      }
+    },
+    {
+      "seed": 30277,
+      "common": {
+        "seed": 30277,
+        "root_count": 135,
+        "pool_count": 2399,
+        "acceptance": 0.2791044776119403
+      },
+      "frontier_cost": {
+        "unique_amp": 4484,
+        "unique_sign": 0,
+        "unique_orbit": 2399,
+        "amp_requests": 6905,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9446,
+        "unique_sign": 16216,
+        "unique_orbit": 2399,
+        "amp_requests": 24057,
+        "sign_requests": 17152
+      },
+      "test_orbits": 462,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 0.0001324946753555379,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              113813,
+              92877,
+              103341,
+              93357,
+              81075,
+              108141,
+              108331,
+              86717,
+              79079,
+              22237,
+              101997,
+              16269
+            ],
+            "marginal_extra_amp_queries": 668,
+            "total_amp_queries": 10114
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 19,
+            "fixed_a_gain": 3.558852902725157e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              88538,
+              88553,
+              15931,
+              91037,
+              108331,
+              108317,
+              86717,
+              77405,
+              22237,
+              80729,
+              101997,
+              15773
+            ],
+            "marginal_extra_amp_queries": 689,
+            "total_amp_queries": 10135
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.0007910516090329971,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              109149
+            ],
+            "marginal_extra_amp_queries": 612,
+            "total_amp_queries": 10058
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.0010126099321248513,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              109149,
+              108973,
+              113813,
+              76411
+            ],
+            "marginal_extra_amp_queries": 695,
+            "total_amp_queries": 10141
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.048706823674104e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              94871,
+              81077,
+              81238,
+              30069,
+              107482
+            ],
+            "marginal_extra_amp_queries": 673,
+            "total_amp_queries": 10119
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 3,
+            "fixed_a_gain": 1.1249623804539127e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 3,
+            "selected_keys": [
+              88550,
+              94871,
+              81238
+            ],
+            "marginal_extra_amp_queries": 685,
+            "total_amp_queries": 10131
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 617,
+            "total_amp_queries": 10063
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 670,
+            "total_amp_queries": 10116
+          }
+        }
+      }
+    },
+    {
+      "seed": 30278,
+      "common": {
+        "seed": 30278,
+        "root_count": 134,
+        "pool_count": 2440,
+        "acceptance": 0.26119402985074625
+      },
+      "frontier_cost": {
+        "unique_amp": 4505,
+        "unique_sign": 0,
+        "unique_orbit": 2440,
+        "amp_requests": 6930,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 9369,
+        "unique_sign": 16064,
+        "unique_orbit": 2440,
+        "amp_requests": 23986,
+        "sign_requests": 17056
+      },
+      "test_orbits": 482,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 15,
+            "fixed_a_gain": 4.636783195096116e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              107325,
+              91367,
+              101831,
+              108331,
+              22254,
+              108317,
+              95015,
+              6975,
+              15773,
+              30556,
+              80746,
+              15262
+            ],
+            "marginal_extra_amp_queries": 688,
+            "total_amp_queries": 10057
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 16,
+            "fixed_a_gain": 1.842490516841931e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              108331,
+              103325,
+              108317,
+              79565,
+              104345,
+              22254,
+              95015,
+              6975,
+              15773,
+              30556,
+              80746,
+              83885
+            ],
+            "marginal_extra_amp_queries": 677,
+            "total_amp_queries": 10046
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 0.0007910516090329971,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              109149
+            ],
+            "marginal_extra_amp_queries": 574,
+            "total_amp_queries": 9943
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 0.0002018438970974173,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              107981,
+              30073,
+              79421,
+              104345
+            ],
+            "marginal_extra_amp_queries": 683,
+            "total_amp_queries": 10052
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.559603816656576e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              88550,
+              94871,
+              81077,
+              81238,
+              107482
+            ],
+            "marginal_extra_amp_queries": 660,
+            "total_amp_queries": 10029
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 1.6250285775326898e-08,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              75581
+            ],
+            "marginal_extra_amp_queries": 651,
+            "total_amp_queries": 10020
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 566,
+            "total_amp_queries": 9935
+          },
+          "random": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 675,
+            "total_amp_queries": 10044
+          }
+        }
+      }
+    },
+    {
+      "seed": 30279,
+      "common": {
+        "seed": 30279,
+        "root_count": 132,
+        "pool_count": 2210,
+        "acceptance": 0.25796019900497513
+      },
+      "frontier_cost": {
+        "unique_amp": 4251,
+        "unique_sign": 0,
+        "unique_orbit": 2210,
+        "amp_requests": 6672,
+        "sign_requests": 0
+      },
+      "cost_after": {
+        "unique_amp": 8961,
+        "unique_sign": 15322,
+        "unique_orbit": 2210,
+        "amp_requests": 23212,
+        "sign_requests": 16540
+      },
+      "test_orbits": 444,
+      "arms": {
+        "marshall": {
+          "learned_bonds": {
+            "beneficial_candidates": 16,
+            "fixed_a_gain": 0.00023309902482664908,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              31067,
+              104341,
+              92053,
+              30554,
+              29403,
+              81084,
+              88538,
+              104346,
+              108317,
+              105660,
+              100029,
+              22237
+            ],
+            "marginal_extra_amp_queries": 709,
+            "total_amp_queries": 9670
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 13,
+            "fixed_a_gain": 6.0777950084472776e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 12,
+            "selected_keys": [
+              104341,
+              29403,
+              88538,
+              108317,
+              105660,
+              30570,
+              105180,
+              22237,
+              101997,
+              15773,
+              83885,
+              72923
+            ],
+            "marginal_extra_amp_queries": 722,
+            "total_amp_queries": 9683
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 0.0015983082494302047,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              109149,
+              107837,
+              109661,
+              107981,
+              108973
+            ],
+            "marginal_extra_amp_queries": 584,
+            "total_amp_queries": 9545
+          },
+          "random": {
+            "beneficial_candidates": 4,
+            "fixed_a_gain": 4.239703628763941e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 4,
+            "selected_keys": [
+              30554,
+              113799,
+              91866,
+              80745
+            ],
+            "marginal_extra_amp_queries": 698,
+            "total_amp_queries": 9659
+          }
+        },
+        "post_krylov": {
+          "learned_bonds": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.4402412011912108e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              88550,
+              94871,
+              31037,
+              88533,
+              107482
+            ],
+            "marginal_extra_amp_queries": 721,
+            "total_amp_queries": 9682
+          },
+          "local_geometry_amp": {
+            "beneficial_candidates": 5,
+            "fixed_a_gain": 1.361722053971094e-05,
+            "verified_orbits": 22,
+            "accepted_orbits": 5,
+            "selected_keys": [
+              88550,
+              94871,
+              81555,
+              88533,
+              81238
+            ],
+            "marginal_extra_amp_queries": 707,
+            "total_amp_queries": 9668
+          },
+          "observed_signed_bonds": {
+            "beneficial_candidates": 0,
+            "fixed_a_gain": 0.0,
+            "verified_orbits": 22,
+            "accepted_orbits": 0,
+            "selected_keys": [],
+            "marginal_extra_amp_queries": 608,
+            "total_amp_queries": 9569
+          },
+          "random": {
+            "beneficial_candidates": 1,
+            "fixed_a_gain": 1.5404635678387944e-07,
+            "verified_orbits": 22,
+            "accepted_orbits": 1,
+            "selected_keys": [
+              113811
+            ],
+            "marginal_extra_amp_queries": 662,
+            "total_amp_queries": 9623
+          }
+        }
+      }
+    }
+  ],
+  "wall_s": 19.12028980255127,
+  "limitations": [
+    "Identical frozen exact FN amplitudes in two chambers, not reoptimized FN transfer.",
+    "Global precomputed amplitude and sign arrays used solely as on-demand oracle backends.",
+    "Metropolis root proposer samples a^1, not the mixed FN distribution; not actual GFMC.",
+    "The heldout symmetry orbit split excludes label leakage by orbit, but orbit neighbors and their sign values remain queryable.",
+    "Common candidate pool uses walker roots and one-hop expansions; no learned multi-step exploration policy yet.",
+    "Budget is equal expensive orbit-score count, with independently cloned on-demand query caches per method; training label and common frontier costs are reported separately.",
+    "Pooled labels from both chambers; training classifier predicts positive *single-orbit frozen-a gain*, not exact ground-state signs or optimized Krylov label.",
+    "The 20-site symmetry class is small; source and target differ in signs but not configurations or amplitudes."
+  ]
+}

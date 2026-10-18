@@ -1,0 +1,56 @@
+{
+  "experiment": "AVSL 20-site Marshall-to-post-Krylov transfer",
+  "date": "2026-10-19",
+  "fixed_amplitude": true,
+  "actual_FN_reoptimization": false,
+  "orbit_count": 4654,
+  "heldout_eval_trials": 20,
+  "expensive_verified_orbits_per_trial": 22,
+  "post_krylov_oracle_gain": 0.00003252374531386639,
+  "profitable_orbits": {
+    "marshall": 1458,
+    "post_krylov": 201
+  },
+  "train": {
+    "marshall": {
+      "n_labels": 1980,
+      "n_positives": 408,
+      "trained_seed19_to_post_gain": 0.0000010362985382862329,
+      "trained_seed29_to_post_gain": 0.000002283
+    },
+    "post_krylov": [
+      {
+        "n_labels": 270,
+        "n_positive": 6,
+        "seed19_bond_gain": 0.000019288,
+        "seed19_geo_gain": 0.000024361,
+        "seed29_bond_gain": 0.000016778,
+        "seed29_geo_gain": 0.000024598
+      },
+      {
+        "n_labels": 630,
+        "n_positive": 12,
+        "seed19_bond_gain": 0.000018219,
+        "seed19_geo_gain": 0.000020916,
+        "seed29_bond_gain": 0.000019984,
+        "seed29_geo_gain": 0.000029137
+      },
+      {
+        "n_labels": 1980,
+        "n_positive": 49,
+        "seed19_bond_gain": 0.000021734,
+        "seed19_geo_gain": 0.000028558,
+        "seed29_bond_gain": 0.000022735,
+        "seed29_geo_gain": 0.000025306
+      }
+    ]
+  },
+  "notes": [
+    "Values are mean fixed-amplitude energy gains from trial summaries.",
+    "Roundoff in some reported seed29 and reduced-budget means; use raw re-run for full precision.",
+    "The oracle evaluates all candidate scores for hindsight ranking and violates cost budget.",
+    "Train/test labels use frozen-orbit gain, not Krylov sign labels or ED signs.",
+    "Network is a ranker, not a GRPO/RL rollout policy.",
+    "All policies rely on on-demand globally tabulated FN amplitudes."
+  ]
+}

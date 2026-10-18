@@ -39,3 +39,22 @@ ED target labels are permitted for evaluation only. Whole-orbit corrections enfo
 ## Code and data
 Files in this directory are archived in the same dated experiment and are designed to run with NumPy/SciPy/PyTorch. The original scripts were executed under `/mnt/data` and include hardcoded path references; use `J1J2_DATA_DIR` or adjust their base path to this directory for local replay.
 Recreate data with `fn_collapse_exact20_krylov_v2.py` + `prepare_sign20.py`, audit true Krylov labels with `audit_sign20_targets.py`, obtain next-step suppression using `measure_suppression20_fast.py`, run the corrected CNN with `train_sign20_corrected.py`, and run `j1j2_budgeted_orbit20.py` / `j1j2_noisy_oracle_diagnostic.py`. Independent local-E audit: `validate_j1j2_budgeted20.py`.
+
+
+## New robustness diagnostics — 2026-10-18 evening
+- The signed crossing-edge contribution from a symmetry orbit g into orbit h is `W_gh=sum_{x in g,y in h} H_xy s_x s_y a_x a_y`. For current flipped set F, replace W_gh by -W_gh when h belongs to F. Set P=sum max(W,0), N=sum max(-W,0). A single-orbit marginal flip improves *frozen-amplitude* energy when P>N.
+- Under per-neighbor bounded log-amplitude error |log(a_hat_h/a_h)| <= eps, **regardless of a positive multiplicative error at g**, a sufficient guarantee is `exp(-eps) P > exp(eps) N`; equivalently `eps < 0.5 log(P/N)` (when N>0). This is a bound on neighbor amplitude uncertainty; a bound on *neighbor/central ratios* can serve in its place. Gaussian sigma is NOT a deterministic error bound.
+- Exact-guide orbit ranking, 12 seeds, 88 greedily accepted orbits: epsilon certification thresholds quantiles (min,p10,p25,median,p75,p90,max) = (0.01459,0.02084,0.02496,0.05361,0.06627,0.06843,0.09886). At eps=0.01/0.03/0.05/0.07/0.1, the number of these 88 flips certifiable individually is 88/52/48/2/0, respectively. A conservative robust rule with eps=0.1 certifies **no** flips on the short tested seeds. Source: `j1j2_margin_precision20.py`, `j1j2_margin_precision20_results.json`, `j1j2_robust_gate20.py`.
+- Two consecutive fixed-sign FN amplitude solutions are MUCH better correlated than independent Gaussian per-orbit errors. With old-amplitude sampled candidate pools and old-amplitude greedy orbit decisions, actual gain evaluated at the next FN amplitude is positive for **all 12 trials**, mean +0.000405666 versus old-guide gain +0.000394493; zero originally chosen individual sequential corrections became adverse under the next amplitude. Mean unweighted median |neighbor log-ratio drift| is ~0.0373; p90 ~0.244; weighted RMS ~0.0464. This only tests two **successive FN solutions near convergence**, not an actual neural guide. Source: `j1j2_real_fn_drift20.py`, `j1j2_real_fn_drift20_results.json`.
+- Direct full-H expectation independently confirmed the FN-continuation energy gains for seeds 201 and 211 to ~1e-14, using `j1j2_real_fn_drift_validation20.py`.
+- Interpretation: **Ratio accuracy on important frustrated edges** is the bottleneck; a 20-site classifying CNN score does not establish scale-up. The next critical experiment requires an imperfect *callable NQS* amplitude and real query/training cost, ideally calibrating an empirical high-confidence bound on neighbor amplitude ratios before committing an orbit flip.
+
+## Reproduction file organization
+- `fn_collapse_exact20_krylov_v2.py` builds exact 20-site Hamiltonian and FN solver.
+- `prepare_sign20.py` writes `sign20_training_data.npz` (states, initial exact-FN guide amplitude, current signs, ED labels for scoring).
+- `audit_sign20_targets.py` writes `audit_sign20_targets.npz` with energy-optimized Krylov corrections; ED signs are NOT a training target.
+- `measure_suppression20_fast.py` writes `sign20_suppression.npz` with measured suppression and another FN amplitude iteration.
+- `j1j2_orbit_priority20.py` is imported by `train_sign20_corrected.py` (CPU/PyTorch).
+- `j1j2_budgeted_orbit20.py` depends on `j1j2_local_query_diagnostic.py`; the noise, precision, and continuation scripts depend on these.
+- Code currently uses literal `/mnt/data` working directories: **to reproduce on other machines, stage scripts/data there or replace these literal paths in copies with your dedicated scratch directory**. The uncommitted Mac workspace is independent; do not stage unrelated files.
+- Large binary `.npz` data are **not included** in the GitHub text archive; regenerate them with the preparatory scripts. A conversation-local archive of scripts/results was also generated separately.

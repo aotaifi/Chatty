@@ -16,6 +16,7 @@ idx=np.unique(np.array(pairs).ravel());rng=np.random.default_rng(41);ix=rng.choi
 res={}
 for tag in ('','_lowbudget','_m128','_focus'):
  name='j1j2_walker_focus20_model.pt' if tag=='_focus' else 'j1j2_walker_only_amplitude20'+tag+'_model.pt'
+ if not os.path.exists(P+name):continue
  ck=torch.load(P+name,weights_only=True,map_location='cpu');net=T.Net();net.load_state_dict(ck['model']);net.eval()
  pred=np.empty(W.D)
  with torch.no_grad():

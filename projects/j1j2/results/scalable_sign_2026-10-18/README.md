@@ -37,7 +37,7 @@ Result: naive energy gating is not robust to realistically imperfect amplitude e
 ED target labels are permitted for evaluation only. Whole-orbit corrections enforce translation and global spin-flip symmetries; make sure geometry includes all intended symmetries. A local greedy energy decrease is measured at frozen amplitudes and cannot guarantee FN self-consistent descent. Direct independent H expectation checks should agree with local crossing-edge energy differences. The sampled candidate *support* is bounded by whatever the explorer proposes; reweighting a distribution alone cannot find zero-support configurations.
 
 ## Code and data
-Files in this directory are archived in the same dated experiment and are designed to run with NumPy/SciPy/PyTorch. The original scripts were executed under `/mnt/data` and include hardcoded path references; use `J1J2_DATA_DIR` or adjust their base path to this directory for local replay.
+Files in this directory are archived in the same dated experiment and are designed to run with NumPy/SciPy/PyTorch. The original scripts were executed under `/mnt/data` and include hardcoded path references. Use the committed `reproduce.py` runner to stage copies with paths rewritten into an isolated scratch directory; it never edits archived originals.
 Recreate data with `fn_collapse_exact20_krylov_v2.py` + `prepare_sign20.py`, audit true Krylov labels with `audit_sign20_targets.py`, obtain next-step suppression using `measure_suppression20_fast.py`, run the corrected CNN with `train_sign20_corrected.py`, and run `j1j2_budgeted_orbit20.py` / `j1j2_noisy_oracle_diagnostic.py`. Independent local-E audit: `validate_j1j2_budgeted20.py`.
 
 
@@ -58,3 +58,15 @@ Recreate data with `fn_collapse_exact20_krylov_v2.py` + `prepare_sign20.py`, aud
 - `j1j2_budgeted_orbit20.py` depends on `j1j2_local_query_diagnostic.py`; the noise, precision, and continuation scripts depend on these.
 - Code currently uses literal `/mnt/data` working directories: **to reproduce on other machines, stage scripts/data there or replace these literal paths in copies with your dedicated scratch directory**. The uncommitted Mac workspace is independent; do not stage unrelated files.
 - Large binary `.npz` data are **not included** in the GitHub text archive; regenerate them with the preparatory scripts. A conversation-local archive of scripts/results was also generated separately.
+
+## Fresh-workspace commands
+Requires Python 3.11+ with `numpy` and `scipy` (plus `torch` for the CNN arm). From this directory:
+```bash
+python reproduce.py --workdir "$HOME/j1j2_20_repro" --stage data
+python reproduce.py --workdir "$HOME/j1j2_20_repro" --stage diagnostics
+python reproduce.py --workdir "$HOME/j1j2_20_repro" --stage cnn
+```
+The `data` stage may need significant RAM/CPU to diagonalize the exact 20-site problem. Results are written only into the requested scratch directory; none of the Mac repository's unrelated uncommitted changes are touched.
+
+## Prior 6x6/8x8 caution (historical)
+Earlier 8x8 FN-amplitude fits looked accurate on sampled configurations while **crucial rare Hamiltonian-neighbor ratios were off-support**, and the next FN step worsened. Sampled SR/amplitude optimisation also failed near convergence, whereas 4x4 exact-force SR improvements were oracle-limited. Therefore the new requirement of ~2–7% log-ratio precision on delicate 20-site orbit corrections is a **hard hurdle**, not an already achieved 8x8 capability. Do not scale without controlled held-out edge-ratio errors, calibrated confidence intervals, and comparable access cost.

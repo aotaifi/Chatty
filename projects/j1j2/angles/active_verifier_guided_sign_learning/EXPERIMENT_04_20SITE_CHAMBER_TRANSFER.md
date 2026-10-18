@@ -53,3 +53,19 @@ Before training another policy, explicitly decide whether to target **expected v
 - Run data: `avsl_transfer20_results.json` (all seeds, per-arm gains and extra queries), `avsl_transfer20_validation.json` (independent audit).
 - Input `sign20_training_data.npz` prepared with `results/scalable_sign_2026-10-18/prepare_sign20.py`; run uses `/mnt/data` explicitly, edit BASE path or stage copies in a scratch directory.
 - Scripts/results have also been exported as conversation artifacts in the active research chat. Unless separately uploaded into this repo, this note alone is a **report**, not a runnable replacement for the source files.
+
+## Replication: alternate network initialization seed 29 (same episodes and budgets)
+
+A second complete run changed only the network initialization and minibatch RNG from seed 19 to seed 29, preserving the 1980 source labels, 20 held-out walker seeds, frozen amplitudes, candidate pools and B=22 verification slots.
+
+| Ranking | Marshall source, init 19 → 29 | post-Krylov target, init 19 → 29 |
+|---|---:|---:|
+| learned observed-bond classifier | +0.000249136 → +0.000700866 | +0.0000010363 → +0.0000022830 |
+| geometry + amplitude control | +0.0000286178 → +0.0000516533 | +0.0000017740 → +0.0000010347 |
+| signed-bond heuristic (no training) | +0.000729884 | 0 |
+| random (same seeds) | +0.000170509 | +0.000000319905 |
+
+**Interpretation:** substantial initialization sensitivity; the learned reward classifier can nearly match the heuristic in its training chamber under a fortunate initialization, but the post-Krylov gains remain O(10^-6). Two initializations cannot establish reliable transfer or scaling, and both still use the same fixed oracle amplitude reference.
+
+All 32 independent direct-H energy-check cases and 100 random symmetry-invariance tests passed for the seed-19 run (max discrepancy 2.38e-14).
+

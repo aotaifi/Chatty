@@ -2,20 +2,20 @@
   "in_progress": false,
   "summary": {
     "actual_gain": {
-      "point": 0.00018831291906028135,
-      "edge": 0.0002611245389937045
+      "point": 0.000256903362882193,
+      "edge": 0.0002935856346301375
     },
     "predicted_gain": {
-      "point": 0.0003927262183684509,
-      "edge": 0.00034370374126550704
+      "point": 0.0005015719500445261,
+      "edge": 0.0004384188208914663
     },
     "n_selected": {
-      "point": 6.166666666666667,
-      "edge": 7.166666666666667
+      "point": 7.166666666666667,
+      "edge": 7.5
     },
     "n_model_orbit_queries": {
-      "point": 3553.6666666666665,
-      "edge": 3555.5
+      "point": 3596.5,
+      "edge": 3596.75
     }
   },
   "per_trial": [
@@ -42,7 +42,7 @@
           "n_model_orbit_queries": 3551
         }
       ],
-      "elapsed": 5.17
+      "elapsed": 4.92
     },
     {
       "seed": 0,
@@ -67,7 +67,7 @@
           "n_model_orbit_queries": 3612
         }
       ],
-      "elapsed": 4.79
+      "elapsed": 4.8
     },
     {
       "seed": 0,
@@ -92,7 +92,7 @@
           "n_model_orbit_queries": 3631
         }
       ],
-      "elapsed": 4.75
+      "elapsed": 4.93
     },
     {
       "seed": 1,
@@ -117,7 +117,7 @@
           "n_model_orbit_queries": 3499
         }
       ],
-      "elapsed": 4.59
+      "elapsed": 4.69
     },
     {
       "seed": 1,
@@ -142,7 +142,7 @@
           "n_model_orbit_queries": 3475
         }
       ],
-      "elapsed": 4.76
+      "elapsed": 5.48
     },
     {
       "seed": 1,
@@ -167,7 +167,157 @@
           "n_model_orbit_queries": 3565
         }
       ],
-      "elapsed": 5.27
+      "elapsed": 4.98
+    },
+    {
+      "seed": 2,
+      "trial": 0,
+      "explorer": "point",
+      "n_seed_visited": 117,
+      "n_orbit_pool": 2355,
+      "exploration_model_calls": 970,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.00022443255196391565,
+          "predicted_gain": 0.00031485725772256636,
+          "n_selected": 6,
+          "n_model_orbit_queries": 3673
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00022443255196391565,
+          "predicted_gain": 0.0002760202339127353,
+          "n_selected": 6,
+          "n_model_orbit_queries": 3648
+        }
+      ],
+      "elapsed": 5.55
+    },
+    {
+      "seed": 2,
+      "trial": 1,
+      "explorer": "point",
+      "n_seed_visited": 114,
+      "n_orbit_pool": 2374,
+      "exploration_model_calls": 1021,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.0006995816376394184,
+          "predicted_gain": 0.0012320609421482343,
+          "n_selected": 11,
+          "n_model_orbit_queries": 3661
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.0006995816376394184,
+          "predicted_gain": 0.0010882149554986176,
+          "n_selected": 11,
+          "n_model_orbit_queries": 3654
+        }
+      ],
+      "elapsed": 6.64
+    },
+    {
+      "seed": 2,
+      "trial": 2,
+      "explorer": "point",
+      "n_seed_visited": 112,
+      "n_orbit_pool": 2316,
+      "exploration_model_calls": 1010,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.0005154657464611393,
+          "predicted_gain": 0.0010682743636796586,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3577
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00047098771528883334,
+          "predicted_gain": 0.0008248432694734344,
+          "n_selected": 9,
+          "n_model_orbit_queries": 3578
+        }
+      ],
+      "elapsed": 5.03
+    },
+    {
+      "seed": 3,
+      "trial": 0,
+      "explorer": "point",
+      "n_seed_visited": 111,
+      "n_orbit_pool": 2189,
+      "exploration_model_calls": 985,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.0003042351172070211,
+          "predicted_gain": 0.0004704302054098893,
+          "n_selected": 7,
+          "n_model_orbit_queries": 3630
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.0003042351172070211,
+          "predicted_gain": 0.0004625114052088546,
+          "n_selected": 7,
+          "n_model_orbit_queries": 3630
+        }
+      ],
+      "elapsed": 5.24
+    },
+    {
+      "seed": 3,
+      "trial": 1,
+      "explorer": "point",
+      "n_seed_visited": 115,
+      "n_orbit_pool": 2231,
+      "exploration_model_calls": 1025,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": -7.039269619272284e-06,
+          "predicted_gain": 9.74309216372223e-05,
+          "n_selected": 5,
+          "n_model_orbit_queries": 3692
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 2.397087105461548e-05,
+          "predicted_gain": 5.261468585203137e-05,
+          "n_selected": 4,
+          "n_model_orbit_queries": 3715
+        }
+      ],
+      "elapsed": 4.74
+    },
+    {
+      "seed": 3,
+      "trial": 2,
+      "explorer": "point",
+      "n_seed_visited": 110,
+      "n_orbit_pool": 2119,
+      "exploration_model_calls": 977,
+      "arms": [
+        {
+          "arm": "point",
+          "actual_gain": 0.00021628705657240617,
+          "predicted_gain": 0.00047945239972603705,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3603
+        },
+        {
+          "arm": "edge",
+          "actual_gain": 0.00023307248844561945,
+          "predicted_gain": 0.000494598853158879,
+          "n_selected": 10,
+          "n_model_orbit_queries": 3603
+        }
+      ],
+      "elapsed": 4.73
     }
   ],
   "limitations": [

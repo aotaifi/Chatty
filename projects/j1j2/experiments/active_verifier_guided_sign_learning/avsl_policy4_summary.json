@@ -1,0 +1,530 @@
+{
+  "main": {
+    "setup": {
+      "train_seed_start": 300,
+      "train_runs": 9,
+      "test_seed_start": 2100,
+      "test_runs": 12,
+      "n_seeds": 160,
+      "train_cap": 80,
+      "B": 22,
+      "seed": 42,
+      "steps": 800,
+      "holdout_mode": "orbit_holdout",
+      "out": "/mnt/data/avsl_learned_policy4_seed42.json"
+    },
+    "train": {
+      "train_count": 3600,
+      "positive_count": 151,
+      "positive_fraction": 0.04194444417953491,
+      "positive_weight": 4.77923213008351,
+      "last_loss": 0.10224220901727676,
+      "train_sec": 0.9252369403839111
+    },
+    "total_train_guide_queries": 222550,
+    "total_train_verifier_queries": 52854,
+    "summary": {
+      "learned": {
+        "mean_gain_numerator": 209.3434460505353,
+        "median_gain_numerator": 192.9787649689497,
+        "mean_positive_tested": 3.75,
+        "mean_total_queries": 4236.694444444444,
+        "mean_gain_per_1000_queries": 50.01835085055292,
+        "wins_vs_random": 35,
+        "wins_vs_signed": 23
+      },
+      "signed": {
+        "mean_gain_numerator": 146.07021401043085,
+        "median_gain_numerator": 145.6563425084654,
+        "mean_positive_tested": 2.1666666666666665,
+        "mean_total_queries": 4249.805555555556,
+        "mean_gain_per_1000_queries": 34.8416469521227,
+        "wins_vs_random": 32,
+        "wins_vs_signed": 0
+      },
+      "random": {
+        "mean_gain_numerator": 40.92855628786564,
+        "median_gain_numerator": 6.479035672853201,
+        "mean_positive_tested": 0.6944444444444444,
+        "mean_total_queries": 4255.083333333333,
+        "mean_gain_per_1000_queries": 9.840593290451912,
+        "wins_vs_random": 0,
+        "wins_vs_signed": 1
+      },
+      "max_violation": {
+        "mean_gain_numerator": 0.0,
+        "median_gain_numerator": 0.0,
+        "mean_positive_tested": 0.0,
+        "mean_total_queries": 4202.75,
+        "mean_gain_per_1000_queries": 0.0,
+        "wins_vs_random": 0,
+        "wins_vs_signed": 0
+      }
+    }
+  },
+  "posthoc_energy_audit": {
+    "source": "/mnt/data/avsl_learned_policy4_seed42.json",
+    "normalizers": {
+      "0.8": 207604.13279532062,
+      "0.9": 343068.13918690314,
+      "1.0": 581648.65021304
+    },
+    "n_eval": 36,
+    "mean_energy_improvement": {
+      "learned": 0.0004603932747383452,
+      "signed": 0.0003303649724961164,
+      "random": 9.513799119313563e-05,
+      "max_violation": 0.0
+    },
+    "mean_gain_learned_minus_signed": 0.00013002830224222874,
+    "mean_gain_learned_minus_random": 0.0003652552835452095,
+    "seed_cluster_bootstrap_95pct_mean_diff_learned_minus_signed": [
+      8.724848207735917e-05,
+      0.00016993400654564258
+    ],
+    "wins_ties_losses_vs_signed": [
+      23,
+      13,
+      0
+    ],
+    "all_positive_tested": {
+      "learned": 135,
+      "signed": 78,
+      "random": 25,
+      "max_violation": 0
+    },
+    "per_kappa": {
+      "0.8": {
+        "learned": 0.00011709228822766619,
+        "signed": 0.00010755284019927049,
+        "random": 3.936159593175815e-05,
+        "max_violation": 0.0
+      },
+      "0.9": {
+        "learned": 0.0005513162550259174,
+        "signed": 0.0004108836397740369,
+        "random": 0.00011946488983166437,
+        "max_violation": 0.0
+      },
+      "1.0": {
+        "learned": 0.000712771280961452,
+        "signed": 0.00047265843751504187,
+        "random": 0.00012658748781598436,
+        "max_violation": 0.0
+      }
+    },
+    "train_total_guide_queries": 222550,
+    "train_extra_verifier_queries": 52854,
+    "mean_common_test_queries": 3837.6666666666665,
+    "mean_test_total_queries": {
+      "learned": 4236.694444444444,
+      "signed": 4249.805555555556,
+      "random": 4255.083333333333,
+      "max_violation": 4202.75
+    },
+    "caveats": [
+      "Z uses full Sz=0 enumeration post-hoc solely to normalize energy; not used for candidate selection/training.",
+      "Seed-level bootstrap accounts for three correlated kappa tests per seed, not independent cross-model replication.",
+      "No demonstrated favorable amortized training cost or extrapolation beyond 4x4."
+    ]
+  },
+  "ablation": {
+    "all": {
+      "mean_gain_numerator": 209.34344605053533,
+      "mean_positive_tested": 3.75,
+      "train_count": 3600,
+      "train_positive": 151,
+      "wins_vs_signed": 23,
+      "mean_signed_gain_numerator": 146.07021401043082
+    },
+    "geometry_only": {
+      "mean_gain_numerator": 209.34344605053533,
+      "mean_positive_tested": 3.75,
+      "train_count": 3600,
+      "train_positive": 151,
+      "wins_vs_signed": 23,
+      "mean_signed_gain_numerator": 146.07021401043082
+    },
+    "observed_bonds_only": {
+      "mean_gain_numerator": 203.3729187905705,
+      "mean_positive_tested": 3.7222222222222223,
+      "train_count": 3600,
+      "train_positive": 151,
+      "wins_vs_signed": 23,
+      "mean_signed_gain_numerator": 146.07021401043082
+    },
+    "no_geometry_except_kappa": {
+      "mean_gain_numerator": 203.3729187905705,
+      "mean_positive_tested": 3.7222222222222223,
+      "train_count": 3600,
+      "train_positive": 151,
+      "wins_vs_signed": 23,
+      "mean_signed_gain_numerator": 146.07021401043082
+    },
+    "without_kappa": {
+      "mean_gain_numerator": 209.34344605053533,
+      "mean_positive_tested": 3.75,
+      "train_count": 3600,
+      "train_positive": 151,
+      "wins_vs_signed": 23,
+      "mean_signed_gain_numerator": 146.07021401043082
+    }
+  },
+  "budget_stress": {
+    "setup": {
+      "checkpoint": "/mnt/data/avsl_learned_policy4_seed42.pt",
+      "n_seeds": 40,
+      "n_test_seeds": 8,
+      "B": [
+        8,
+        12,
+        18
+      ],
+      "kappas": [
+        0.7,
+        0.8,
+        0.9,
+        1.0,
+        1.2
+      ]
+    },
+    "summary": {
+      "8": {
+        "0.7": {
+          "learned": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1632.75
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1655.0
+          },
+          "random": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1645.375
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            0,
+            8,
+            0
+          ]
+        },
+        "0.8": {
+          "learned": {
+            "avg_positive_tested": 1.875,
+            "mean_gain_numerator": 20.218134766465727,
+            "mean_total_queries": 1628.75
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1649.375
+          },
+          "random": {
+            "avg_positive_tested": 0.125,
+            "mean_gain_numerator": 2.3578329571876617,
+            "mean_total_queries": 1656.5
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "0.9": {
+          "learned": {
+            "avg_positive_tested": 1.875,
+            "mean_gain_numerator": 93.47198418047923,
+            "mean_total_queries": 1627.625
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1652.75
+          },
+          "random": {
+            "avg_positive_tested": 0.25,
+            "mean_gain_numerator": 7.775338015251226,
+            "mean_total_queries": 1651.75
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "1.0": {
+          "learned": {
+            "avg_positive_tested": 2.25,
+            "mean_gain_numerator": 213.7778785974924,
+            "mean_total_queries": 1588.625
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1609.25
+          },
+          "random": {
+            "avg_positive_tested": 0.25,
+            "mean_gain_numerator": 38.12938361712641,
+            "mean_total_queries": 1606.625
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            8,
+            0,
+            0
+          ]
+        },
+        "1.2": {
+          "learned": {
+            "avg_positive_tested": 1.875,
+            "mean_gain_numerator": 676.0082629061442,
+            "mean_total_queries": 1536.75
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1551.125
+          },
+          "random": {
+            "avg_positive_tested": 0.125,
+            "mean_gain_numerator": 75.2786309887622,
+            "mean_total_queries": 1544.125
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            8,
+            0,
+            0
+          ]
+        }
+      },
+      "12": {
+        "0.7": {
+          "learned": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1719.75
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1752.875
+          },
+          "random": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1742.0
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            0,
+            8,
+            0
+          ]
+        },
+        "0.8": {
+          "learned": {
+            "avg_positive_tested": 1.875,
+            "mean_gain_numerator": 20.218134766465727,
+            "mean_total_queries": 1719.0
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1744.75
+          },
+          "random": {
+            "avg_positive_tested": 0.125,
+            "mean_gain_numerator": 2.3578329571876617,
+            "mean_total_queries": 1755.125
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "0.9": {
+          "learned": {
+            "avg_positive_tested": 2.0,
+            "mean_gain_numerator": 104.8232592556357,
+            "mean_total_queries": 1717.625
+          },
+          "signed": {
+            "avg_positive_tested": 0.125,
+            "mean_gain_numerator": 11.351275075156478,
+            "mean_total_queries": 1751.0
+          },
+          "random": {
+            "avg_positive_tested": 0.375,
+            "mean_gain_numerator": 14.631105753652925,
+            "mean_total_queries": 1751.875
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "1.0": {
+          "learned": {
+            "avg_positive_tested": 2.5,
+            "mean_gain_numerator": 245.18038753918222,
+            "mean_total_queries": 1681.0
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1713.625
+          },
+          "random": {
+            "avg_positive_tested": 0.25,
+            "mean_gain_numerator": 38.12938361712641,
+            "mean_total_queries": 1712.5
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            8,
+            0,
+            0
+          ]
+        },
+        "1.2": {
+          "learned": {
+            "avg_positive_tested": 2.0,
+            "mean_gain_numerator": 751.2868938949064,
+            "mean_total_queries": 1631.125
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1654.625
+          },
+          "random": {
+            "avg_positive_tested": 0.25,
+            "mean_gain_numerator": 150.5572619775244,
+            "mean_total_queries": 1649.375
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            8,
+            0,
+            0
+          ]
+        }
+      },
+      "18": {
+        "0.7": {
+          "learned": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1840.75
+          },
+          "signed": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1890.625
+          },
+          "random": {
+            "avg_positive_tested": 0.0,
+            "mean_gain_numerator": 0.0,
+            "mean_total_queries": 1877.75
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            0,
+            8,
+            0
+          ]
+        },
+        "0.8": {
+          "learned": {
+            "avg_positive_tested": 1.875,
+            "mean_gain_numerator": 20.218134766465727,
+            "mean_total_queries": 1850.625
+          },
+          "signed": {
+            "avg_positive_tested": 0.125,
+            "mean_gain_numerator": 2.3578329571876617,
+            "mean_total_queries": 1877.75
+          },
+          "random": {
+            "avg_positive_tested": 0.375,
+            "mean_gain_numerator": 7.073498871562985,
+            "mean_total_queries": 1893.75
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "0.9": {
+          "learned": {
+            "avg_positive_tested": 2.0,
+            "mean_gain_numerator": 104.8232592556357,
+            "mean_total_queries": 1849.25
+          },
+          "signed": {
+            "avg_positive_tested": 0.25,
+            "mean_gain_numerator": 22.702550150312955,
+            "mean_total_queries": 1892.625
+          },
+          "random": {
+            "avg_positive_tested": 0.625,
+            "mean_gain_numerator": 31.515757461438408,
+            "mean_total_queries": 1888.25
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "1.0": {
+          "learned": {
+            "avg_positive_tested": 2.5,
+            "mean_gain_numerator": 245.18038753918222,
+            "mean_total_queries": 1813.375
+          },
+          "signed": {
+            "avg_positive_tested": 0.75,
+            "mean_gain_numerator": 145.59887429649314,
+            "mean_total_queries": 1846.125
+          },
+          "random": {
+            "avg_positive_tested": 0.375,
+            "mean_gain_numerator": 64.9967562869681,
+            "mean_total_queries": 1850.75
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            7,
+            1,
+            0
+          ]
+        },
+        "1.2": {
+          "learned": {
+            "avg_positive_tested": 2.0,
+            "mean_gain_numerator": 751.2868938949064,
+            "mean_total_queries": 1769.5
+          },
+          "signed": {
+            "avg_positive_tested": 0.375,
+            "mean_gain_numerator": 225.83589296628662,
+            "mean_total_queries": 1789.125
+          },
+          "random": {
+            "avg_positive_tested": 0.375,
+            "mean_gain_numerator": 170.59907280760876,
+            "mean_total_queries": 1796.375
+          },
+          "learned_vs_signed_wins_ties_losses": [
+            6,
+            2,
+            0
+          ]
+        }
+      }
+    }
+  }
+}

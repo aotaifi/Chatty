@@ -1,0 +1,867 @@
+{
+  "in_progress": false,
+  "records": [
+    {
+      "seed": 0,
+      "objective": "point",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6512,
+        "initial_discovered_orbits": 634,
+        "training_orbits": 600,
+        "training_edges": 4273,
+        "proposals": 12000,
+        "training_seconds": 22.4,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.01590690203011036,
+          "pair": 0.0
+        },
+        "model_parameters": 4881,
+        "train_seed": 0,
+        "objective": "point"
+      },
+      "ratio_test": {
+        "n_test_edges": 22424,
+        "edge_logratio_rmse": 0.8087022479440367,
+        "edge_logratio_mae": 0.5439386677793339,
+        "edge_logratio_weighted_rmse": 0.3177187774005934,
+        "edge_abs_error_p90": 1.1749149057892576,
+        "edge_abs_error_p99": 2.151507352686179,
+        "model_calls_for_test": 4389
+      },
+      "per_trial": [
+        {
+          "n_selected": 4,
+          "predicted_gain": 0.0002626933557366765,
+          "actual_gain": 0.00012543980061125964,
+          "chosen_orbits": [
+            108437,
+            88429,
+            88685,
+            91501
+          ],
+          "predicted_marginal_gains": [
+            0.00010769262652128391,
+            6.949740005443572e-05,
+            6.131761039377152e-05,
+            2.4185718767185446e-05
+          ],
+          "model_orbit_calls": 3584,
+          "model_state_requests": 22064,
+          "oracle_posthoc_query_count": 172,
+          "gates": {
+            "0.05": {
+              "n_selected": 1,
+              "actual_gain": 7.057405283969106e-06,
+              "predicted_gain": 0.00010769262652128385
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003537587465967139,
+          "seed": 3000,
+          "acceptance": 0.2753787878787879,
+          "distinct_seed_states": 118,
+          "candidate_orbits": 2329,
+          "model_orbit_calls_preselection": 2497,
+          "model_state_requests_preselection": 8354
+        },
+        {
+          "n_selected": 3,
+          "predicted_gain": 0.00013724283516397504,
+          "actual_gain": 8.163085364220463e-06,
+          "chosen_orbits": [
+            108437,
+            92902,
+            23163
+          ],
+          "predicted_marginal_gains": [
+            0.00010769262652128391,
+            1.5904431403857314e-05,
+            1.3645777238833904e-05
+          ],
+          "model_orbit_calls": 3630,
+          "model_state_requests": 21695,
+          "oracle_posthoc_query_count": 129,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 5.620779889671316e-06,
+              "predicted_gain": 0.00012133840376011773
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.000183242889821135,
+          "seed": 3001,
+          "acceptance": 0.25833333333333336,
+          "distinct_seed_states": 109,
+          "candidate_orbits": 2070,
+          "model_orbit_calls_preselection": 2262,
+          "model_state_requests_preselection": 7943
+        },
+        {
+          "n_selected": 5,
+          "predicted_gain": 0.00010655027260003124,
+          "actual_gain": 7.224322324552851e-05,
+          "chosen_orbits": [
+            108451,
+            91501,
+            87770,
+            88685,
+            91610
+          ],
+          "predicted_marginal_gains": [
+            3.970301500459152e-05,
+            2.4185718767185446e-05,
+            2.1329241671373016e-05,
+            1.3458199112488696e-05,
+            7.874098044392428e-06
+          ],
+          "model_orbit_calls": 3646,
+          "model_state_requests": 21898,
+          "oracle_posthoc_query_count": 223,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.00034648406288464095,
+          "seed": 3002,
+          "acceptance": 0.25037878787878787,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2015,
+          "model_orbit_calls_preselection": 2187,
+          "model_state_requests_preselection": 8132
+        }
+      ],
+      "mean_actual_gain": 6.861536974033621e-05,
+      "mean_predicted_gain": 0.00016882882116689427,
+      "n_trials_worse": 0,
+      "wall_seconds": 36.44
+    },
+    {
+      "seed": 0,
+      "objective": "edge",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6512,
+        "initial_discovered_orbits": 634,
+        "training_orbits": 600,
+        "training_edges": 4273,
+        "proposals": 12000,
+        "training_seconds": 64.86,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.009815501049160957,
+          "pair": 0.0020556284580379725
+        },
+        "model_parameters": 4881,
+        "train_seed": 0,
+        "objective": "edge"
+      },
+      "ratio_test": {
+        "n_test_edges": 23292,
+        "edge_logratio_rmse": 0.813317632194322,
+        "edge_logratio_mae": 0.5449622084355856,
+        "edge_logratio_weighted_rmse": 0.3320419286456674,
+        "edge_abs_error_p90": 1.1562892776820866,
+        "edge_abs_error_p99": 2.1696242055168513,
+        "model_calls_for_test": 4462
+      },
+      "per_trial": [
+        {
+          "n_selected": 16,
+          "predicted_gain": 0.0010120319028271048,
+          "actual_gain": 0.0007361422708574475,
+          "chosen_orbits": [
+            92509,
+            92765,
+            92733,
+            88637,
+            89149,
+            93277,
+            88429,
+            92058,
+            88685,
+            113722,
+            113754,
+            113770,
+            113750,
+            75719,
+            96349,
+            81077
+          ],
+          "predicted_marginal_gains": [
+            5.7332741750445136e-05,
+            8.433640399026048e-05,
+            9.289772273606695e-05,
+            0.00010017988114143601,
+            0.0001676387419400796,
+            4.217016258263877e-05,
+            4.166020843938728e-05,
+            3.575483116917663e-05,
+            2.126557134515491e-05,
+            1.8342761947361293e-05,
+            0.00012167882302171725,
+            0.00012268962011205994,
+            7.646612340965237e-05,
+            1.328287683343313e-05,
+            1.297289103938397e-05,
+            3.3625413688505453e-06
+          ],
+          "model_orbit_calls": 3556,
+          "model_state_requests": 21825,
+          "oracle_posthoc_query_count": 628,
+          "gates": {
+            "0.05": {
+              "n_selected": 1,
+              "actual_gain": 5.388440997313176e-06,
+              "predicted_gain": 3.575483116917662e-05
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0007461177503052453,
+          "seed": 3000,
+          "acceptance": 0.2784090909090909,
+          "distinct_seed_states": 113,
+          "candidate_orbits": 2174,
+          "model_orbit_calls_preselection": 2340,
+          "model_state_requests_preselection": 8139
+        },
+        {
+          "n_selected": 15,
+          "predicted_gain": 0.0007273071733943329,
+          "actual_gain": 0.000576169191195647,
+          "chosen_orbits": [
+            108437,
+            92509,
+            96349,
+            88429,
+            108451,
+            113722,
+            113754,
+            113750,
+            92733,
+            88637,
+            89149,
+            88909,
+            81077,
+            86893,
+            87971
+          ],
+          "predicted_marginal_gains": [
+            7.091508383535148e-05,
+            5.7332741750445136e-05,
+            4.7127397113541484e-05,
+            4.166020843938728e-05,
+            2.9775719698700326e-05,
+            1.8342761947361293e-05,
+            0.00012167882302171725,
+            4.385528720475974e-05,
+            1.1069880530224958e-05,
+            0.00010017988114143601,
+            0.0001676387419400796,
+            1.0619296344653042e-05,
+            3.3625413688505453e-06,
+            2.2364151805522882e-06,
+            1.5123938772722235e-06
+          ],
+          "model_orbit_calls": 3644,
+          "model_state_requests": 21950,
+          "oracle_posthoc_query_count": 607,
+          "gates": {
+            "0.05": {
+              "n_selected": 1,
+              "actual_gain": 7.057405283969106e-06,
+              "predicted_gain": 7.091508383535146e-05
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0005865300939375832,
+          "seed": 3001,
+          "acceptance": 0.26931818181818185,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2077,
+          "model_orbit_calls_preselection": 2276,
+          "model_state_requests_preselection": 8190
+        },
+        {
+          "n_selected": 13,
+          "predicted_gain": 0.0008493528285056072,
+          "actual_gain": 0.0007077335107973867,
+          "chosen_orbits": [
+            92509,
+            92765,
+            92733,
+            88637,
+            89149,
+            88429,
+            108451,
+            88685,
+            113722,
+            113754,
+            113750,
+            96349,
+            108921
+          ],
+          "predicted_marginal_gains": [
+            5.7332741750445136e-05,
+            8.433640399026048e-05,
+            9.289772273606695e-05,
+            0.00010017988114143601,
+            0.0001676387419400796,
+            4.166020843938728e-05,
+            2.9775719698700326e-05,
+            2.126557134515491e-05,
+            1.8342761947361293e-05,
+            0.00012167882302171725,
+            9.312882967635891e-05,
+            1.297289103938397e-05,
+            8.142531779254872e-06
+          ],
+          "model_orbit_calls": 3584,
+          "model_state_requests": 21857,
+          "oracle_posthoc_query_count": 518,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.000715807619040225,
+          "seed": 3002,
+          "acceptance": 0.26856060606060606,
+          "distinct_seed_states": 113,
+          "candidate_orbits": 2133,
+          "model_orbit_calls_preselection": 2336,
+          "model_state_requests_preselection": 8083
+        }
+      ],
+      "mean_actual_gain": 0.0006733483242834937,
+      "mean_predicted_gain": 0.0008628973015756816,
+      "n_trials_worse": 0,
+      "wall_seconds": 78.66
+    },
+    {
+      "seed": 1,
+      "objective": "point",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6608,
+        "initial_discovered_orbits": 622,
+        "training_orbits": 600,
+        "training_edges": 4377,
+        "proposals": 12000,
+        "training_seconds": 22.51,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.003022835124284029,
+          "pair": 0.0
+        },
+        "model_parameters": 4881,
+        "train_seed": 1,
+        "objective": "point"
+      },
+      "ratio_test": {
+        "n_test_edges": 22353,
+        "edge_logratio_rmse": 0.8777830049541012,
+        "edge_logratio_mae": 0.5709976759628547,
+        "edge_logratio_weighted_rmse": 0.30869820722930824,
+        "edge_abs_error_p90": 1.2342995564842985,
+        "edge_abs_error_p99": 2.478771120058575,
+        "model_calls_for_test": 4397
+      },
+      "per_trial": [
+        {
+          "n_selected": 5,
+          "predicted_gain": 0.0005507515090972115,
+          "actual_gain": 0.0002268679705075515,
+          "chosen_orbits": [
+            113754,
+            92509,
+            108451,
+            89149,
+            75719
+          ],
+          "predicted_marginal_gains": [
+            0.000242938342487572,
+            0.0001631482475045159,
+            7.247058230823119e-05,
+            6.561136374678674e-05,
+            6.582973050105916e-06
+          ],
+          "model_orbit_calls": 3521,
+          "model_state_requests": 21888,
+          "oracle_posthoc_query_count": 225,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 5.911882364549829e-05,
+              "predicted_gain": 0.000235618829812747
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0002268679705075515,
+          "seed": 3100,
+          "acceptance": 0.2628787878787879,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2301,
+          "model_orbit_calls_preselection": 2442,
+          "model_state_requests_preselection": 8222
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.0007024478878664548,
+          "actual_gain": 0.00034155263179999666,
+          "chosen_orbits": [
+            92509,
+            113722,
+            88429,
+            108451,
+            89149,
+            113750,
+            92765,
+            93277,
+            92733,
+            89389
+          ],
+          "predicted_marginal_gains": [
+            0.0001631482475045159,
+            9.670085214514212e-05,
+            7.596412080698636e-05,
+            7.247058230823119e-05,
+            6.561136374678674e-05,
+            4.8457090422963944e-05,
+            2.6437202646801064e-05,
+            6.972184077874851e-05,
+            6.460351022853877e-05,
+            1.933307727773983e-05
+          ],
+          "model_orbit_calls": 3491,
+          "model_state_requests": 21922,
+          "oracle_posthoc_query_count": 411,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 5.911882364549829e-05,
+              "predicted_gain": 0.000235618829812747
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003781188946269459,
+          "seed": 3101,
+          "acceptance": 0.26136363636363635,
+          "distinct_seed_states": 112,
+          "candidate_orbits": 1981,
+          "model_orbit_calls_preselection": 2125,
+          "model_state_requests_preselection": 8186
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.000596671251221431,
+          "actual_gain": 0.0003556108028331312,
+          "chosen_orbits": [
+            92509,
+            113722,
+            88637,
+            89149,
+            108437,
+            88685,
+            86893,
+            88550,
+            104342,
+            81077
+          ],
+          "predicted_marginal_gains": [
+            0.0001631482475045159,
+            9.670085214514212e-05,
+            7.814629330247396e-05,
+            8.603824354226186e-05,
+            4.650012026513714e-05,
+            2.6096176466617552e-05,
+            3.503454834569912e-05,
+            2.3854029711732497e-05,
+            2.1659115266261424e-05,
+            1.949362467158945e-05
+          ],
+          "model_orbit_calls": 3613,
+          "model_state_requests": 21871,
+          "oracle_posthoc_query_count": 428,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 5.744985935884273e-05,
+              "predicted_gain": 0.00018700227721624835
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003660248703419026,
+          "seed": 3102,
+          "acceptance": 0.2534090909090909,
+          "distinct_seed_states": 111,
+          "candidate_orbits": 2145,
+          "model_orbit_calls_preselection": 2326,
+          "model_state_requests_preselection": 8065
+        }
+      ],
+      "mean_actual_gain": 0.0003080104683802264,
+      "mean_predicted_gain": 0.0006166235493950325,
+      "n_trials_worse": 0,
+      "wall_seconds": 34.82
+    },
+    {
+      "seed": 1,
+      "objective": "edge",
+      "train": {
+        "teacher_distinct_amplitude_queries": 6608,
+        "initial_discovered_orbits": 622,
+        "training_orbits": 600,
+        "training_edges": 4377,
+        "proposals": 12000,
+        "training_seconds": 65.28,
+        "final_loss": {
+          "step": 899,
+          "loss": 0.013911169953644276,
+          "pair": 0.005265440326184034
+        },
+        "model_parameters": 4881,
+        "train_seed": 1,
+        "objective": "edge"
+      },
+      "ratio_test": {
+        "n_test_edges": 21465,
+        "edge_logratio_rmse": 0.7872415397950208,
+        "edge_logratio_mae": 0.556433284182491,
+        "edge_logratio_weighted_rmse": 0.31170766596652727,
+        "edge_abs_error_p90": 1.2346385660201997,
+        "edge_abs_error_p99": 2.3273494164784476,
+        "model_calls_for_test": 4303
+      },
+      "per_trial": [
+        {
+          "n_selected": 9,
+          "predicted_gain": 0.0003808015659638529,
+          "actual_gain": 0.0002556020036518347,
+          "chosen_orbits": [
+            88637,
+            92509,
+            96349,
+            81238,
+            88685,
+            86893,
+            75719,
+            81557,
+            81077
+          ],
+          "predicted_marginal_gains": [
+            0.00013580276457905542,
+            0.00011128699502550117,
+            5.466402689173865e-05,
+            1.2508389077800356e-05,
+            7.1609416477532405e-06,
+            1.9717266157641487e-05,
+            6.07685190087058e-06,
+            4.903023996577624e-06,
+            2.8681306686914598e-05
+          ],
+          "model_orbit_calls": 3655,
+          "model_state_requests": 21859,
+          "oracle_posthoc_query_count": 375,
+          "gates": {
+            "0.05": {
+              "n_selected": 2,
+              "actual_gain": 0.00011927512171006507,
+              "predicted_gain": 0.00016789694954382
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.00032205293604352874,
+          "seed": 3100,
+          "acceptance": 0.27386363636363636,
+          "distinct_seed_states": 113,
+          "candidate_orbits": 2127,
+          "model_orbit_calls_preselection": 2329,
+          "model_state_requests_preselection": 8139
+        },
+        {
+          "n_selected": 11,
+          "predicted_gain": 0.0007987620772699696,
+          "actual_gain": 0.00039446220025981887,
+          "chosen_orbits": [
+            113754,
+            88637,
+            113750,
+            113770,
+            88429,
+            89149,
+            92733,
+            89629,
+            81557,
+            92597,
+            87971
+          ],
+          "predicted_marginal_gains": [
+            0.00022385349556654438,
+            0.00013580276457905542,
+            0.0001345583703538949,
+            8.691136856761616e-05,
+            8.658686599200493e-05,
+            7.817593457563172e-05,
+            3.404039381565732e-05,
+            8.834808583444169e-06,
+            4.903023996577624e-06,
+            3.9316075819251066e-06,
+            1.163443657617902e-06
+          ],
+          "model_orbit_calls": 3647,
+          "model_state_requests": 21894,
+          "oracle_posthoc_query_count": 455,
+          "gates": {
+            "0.05": {
+              "n_selected": 1,
+              "actual_gain": 0.00010478425416071085,
+              "predicted_gain": 0.00013580276457905542
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0004887612100751558,
+          "seed": 3101,
+          "acceptance": 0.2609848484848485,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2204,
+          "model_orbit_calls_preselection": 2392,
+          "model_state_requests_preselection": 8230
+        },
+        {
+          "n_selected": 10,
+          "predicted_gain": 0.0005510813581622509,
+          "actual_gain": 0.00037280406120628664,
+          "chosen_orbits": [
+            92509,
+            88429,
+            108451,
+            89149,
+            113750,
+            113722,
+            108437,
+            92733,
+            92765,
+            81557
+          ],
+          "predicted_marginal_gains": [
+            0.00011128699502550117,
+            8.658686599200493e-05,
+            7.998723426657208e-05,
+            5.693311205169128e-05,
+            5.006686521476201e-05,
+            4.7286435410905363e-05,
+            1.179121766549298e-05,
+            5.457913923468316e-06,
+            9.678169461527567e-05,
+            4.903023996577624e-06
+          ],
+          "model_orbit_calls": 3508,
+          "model_state_requests": 21920,
+          "oracle_posthoc_query_count": 418,
+          "gates": {
+            "0.05": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.1": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.2": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            },
+            "0.4": {
+              "n_selected": 0,
+              "actual_gain": 0.0,
+              "predicted_gain": 0.0
+            }
+          },
+          "oracle_same_pool_gain": 0.0003870524956947818,
+          "seed": 3102,
+          "acceptance": 0.2643939393939394,
+          "distinct_seed_states": 114,
+          "candidate_orbits": 2061,
+          "model_orbit_calls_preselection": 2236,
+          "model_state_requests_preselection": 8190
+        }
+      ],
+      "mean_actual_gain": 0.0003409560883726467,
+      "mean_predicted_gain": 0.0005768816671320244,
+      "n_trials_worse": 0,
+      "wall_seconds": 77.56
+    }
+  ],
+  "limitations": [
+    "FN amplitude labels for training were supplied by an exact on-demand full-space oracle, NOT by a realistic walker mixed estimator.",
+    "The current sign guide is supplied by an exact finite-size table rather than a callable sign network.",
+    "The 20-site torus is small and symmetry-orbit closure compresses its size.",
+    "Exact FN amplitudes are accessed only for training labels and post-decision test scoring, not for online proposal or flip selection.",
+    "Only fixed-amplitude variational energy evaluated; FN next-step energy not established.",
+    "True FN-based Metropolis is used for the training data acquisition; production would require GFMC/importance-weighted sampling."
+  ]
+}

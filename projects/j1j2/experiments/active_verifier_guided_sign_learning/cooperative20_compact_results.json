@@ -969,9 +969,9 @@
     }
   },
   "validation": {
-    "n_fullH_checks": 48,
-    "max_abs_error": 1.7763568394002505e-15,
-    "max_stored_error": 1.7763568394002505e-15,
+    "n_fullH_checks": 128,
+    "max_abs_error": 2.3314683517128287e-15,
+    "max_stored_error": 2.3314683517128287e-15,
     "n_symmetry_orbits": 223,
     "max_amp_symmetry_error": 7.632783294297951e-17,
     "n_sign_symmetry_violations_indicator": 0.0,

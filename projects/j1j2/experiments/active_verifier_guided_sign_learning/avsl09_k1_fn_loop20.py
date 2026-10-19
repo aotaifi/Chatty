@@ -79,7 +79,7 @@ def propose(world,root,method,theta,rng):
   world.policy_moves+=1
  return int(x)
 
-def stage(data,roots,method,theta,seed,budget,threshold):
+def stage(data,roots,method,theta,seed,budget,threshold,amp_cap=None):
  rng=np.random.default_rng(seed)
  policy=World(data,'post_krylov',seed+103)
  checker=K1Checker(data,threshold)
@@ -90,8 +90,10 @@ def stage(data,roots,method,theta,seed,budget,threshold):
   g,r,fresh=checker.score(dest)
   if r>threshold and g not in selected:
    selected.add(g);changed.append((int(g),r))
+  if amp_cap is not None and checker.o.counts()['unique_amp']>=amp_cap:
+   break
  return selected,dict(
-   method=method,threshold=threshold,
+   method=method,threshold=threshold,unique_amp_cap=amp_cap,
    n_selected_orbits=len(selected),selected_representatives=sorted(map(int,selected)),
    selected_local_fields={str(g):float(r) for g,r in changed},
    k1_cost=checker.counts(),
@@ -154,7 +156,7 @@ def run(args):
   arms={}
   for mid,method in enumerate(METHODS):
    selected,audit=stage(args.data,roots,method,theta,args.seed+10000*block+mid,
-       args.budget,args.threshold)
+       args.budget,args.threshold,args.amp_cap)
    physics,_,_=evaluate_signs(ns,args.data,selected,baseline)
    audit.update(physics)
    arms[method]=audit
@@ -198,6 +200,7 @@ if __name__=='__main__':
  p.add_argument('--root-prefix',default='/tmp/avsl_mixed20_budget_adjusted')
  p.add_argument('--seed',type=int,default=28019)
  p.add_argument('--budget',type=int,default=160)
+ p.add_argument('--amp-cap',type=int,default=None)
  p.add_argument('--test-seeds',type=int,default=6)
  p.add_argument('--threshold',type=float,default=0.)
  p.add_argument('--walkers',type=int,default=128)

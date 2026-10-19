@@ -41,7 +41,7 @@ GitHub branch `avsl/experiment-05-onpolicy-costed-2026-10-19`, experiments direc
 - `avsl_cooperative20_validate.py`: independent sparse full-H energy and symmetry audit.
 - `avsl_cooperative20_support.py`: explicitly non-deployable, evaluation-only global support ceiling.
 - `cooperative20_compact_results.json`: all 16 seed-wise summaries, counter values, support audit, SHA-256 hashes of **each full raw run JSON and input NPZ**, and full-H validation summary.
-- Full per-patch raw JSON files and the data-regeneration log remain on the isolated Mac scratch at `/tmp/avsl05-20site-structural-data/`; raw SHA values in the compact JSON support reconciliation. The exact FN NPZ binary was regenerated from archived scripts, **not committed**.
+- **All 16 full per-patch JSON outputs are now preserved in GitHub** as four compressed base64-wrapped tar.gz archives in `raw/`: `cooperative20_{tempered_a,a2,a_half,uniform_states}_raw.tar.gz.b64`. Unpack on Linux using `base64 -d raw/cooperative20_tempered_a_raw.tar.gz.b64 | tar -xz` (on macOS `base64 -D`). Individual JSON SHA-256 digests are recorded in `cooperative20_compact_results.json`. The original scratch copies and regeneration log remain at `/tmp/avsl05-20site-structural-data/`; the regenerated input NPZ binary is **not committed**, but its SHA-256 is recorded and original generating scripts are archived.
 
 Minimal reproduction on a NumPy/SciPy CPU environment (never in the dirty original Mac checkout):
 ```sh

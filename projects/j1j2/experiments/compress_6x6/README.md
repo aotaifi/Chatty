@@ -940,3 +940,22 @@ on 2 D0 - H.
 - The three round-2 jobs (17354415-17) were still PENDING when this note was written, so the pre-registration
   precedes every run.
 - The RESEARCH_MAP.md change in ac6b89e is not from this route.
+
+#### Amendment BF2-1 (2026-10-19 14:40, after arm A rounds 1-2 and ceiling solves 1-15, before anything below)
+- **Observation.** Arm A tracks the exact self-consistent iteration closely: round 1 gives 6.09e-5 vs exact solve 1
+  6.00e-5; round 2 gives 4.55e-5 vs 4.33e-5.
+- **Problem with the original cap.** The exact iteration itself needs about 10 solves to reach 1.0e-5 (solve 10:
+  1.04e-5), so a 6-round cap cannot reach the pass bar by construction.
+- **Change.** Arm A continues from its round-6 field for up to 10 more rounds (16 in total). It is a resume job;
+  the field is saved every round.
+- **Arm B (the information upper bound, not available to a walker) is dropped** to keep the budget (<= 4 slice-h).
+- **The pass bar is unchanged.**
+- **Add-on (lead / AVSL request): error structure** of the final trained field against the converged ceiling
+  field phi*, on bad bonds sampled from |phi*|^2 with weights |h| phi*_x phi*_y. Reported:
+  - weighted rms of delta = trained minus exact bad-bond log-ratio;
+  - corr(delta, exact log-ratio);
+  - rms by bond type (NN / NNN);
+  - correlation of delta between bad-bond pairs of the same configuration, vs bond distance;
+  - corr(delta_k, delta_{k+1}) between successive rounds.
+- **Noise test.** E_FN of the phi* field plus independent antisymmetric noise of equal weighted rms (per orbit pair,
+  hashed), against E_FN of the trained field. The wall is built directly; there is no global amplitude.

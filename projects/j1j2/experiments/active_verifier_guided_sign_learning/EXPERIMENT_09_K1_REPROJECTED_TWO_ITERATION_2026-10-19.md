@@ -89,3 +89,17 @@ Second-step sign corrections: random1 `[1,1,0]`, geometry1 `[2,1,1]`, learned2 `
 **Reproduction of second stage** needs the `newdata_path` intermediate amplitude/sign NPZ files from `avsl09_two_iteration20.py`; those are not GitHub-tracked since they use complete 20-site arrays. Run the first-stage and second-stage scripts sequentially to regenerate them. Seeds and options are stored in the raw JSON metadata. All source runs were executed on isolated local Mac scratch; user's primary working tree was not overwritten.
 
 **Decision:** Continue verifier-allocation research; do not claim present RL beats simple search on end-to-end cost. For a useful next result, remove orbit-table dependency and prove cost-efficient transfer at 6×6 with a compact sign rule.
+
+## Added same-guide-query-cap sensitivity check
+After the main study, we added an **approximate 5,000 distinct guide-amplitude configuration cap per method and population**, allowing at most 300 attempted proposals. Overshoot on the final K1 check is included. This is a *posthoc sensitivity check*, not an independent preregistered holdout. All arms used the same six archived genuine FN root populations. Every cost also includes proposal bond enumeration and sign queries, but the cap itself equalizes ONLY guide amplitude **unique-configuration** lookups, not the full economic training+FN cost.
+
+| Method | Mean FN improvement | Mean unique guide configurations | Mean distinct K1 checks |
+|---|---:|---:|---:|
+| Walker-only | 0 | 3,936 | 124.3 |
+| Random 1 hop | 6.996e-5 | 5,020 | 152.3 |
+| **Geometry 1 hop** | **7.697e-5** | 5,014 | 149.3 |
+| Learned 1 hop (frozen) | 5.292e-5 | 5,013 | 150.2 |
+| Random 2 hops | 2.512e-5 | 5,020 | 137.2 |
+| Learned 2 hops (frozen) | 6.566e-5 | 5,020 | 139.0 |
+
+**Conclusion remains negative on RL economics:** The simple geometry heuristic is the best mean post-FN-energy arm in this preliminary cap test. The two-hop learned policy is competitive, but it uses prior 400-training-label costs and an additional source FN population, which are still not amortized. Archive: `raw/avsl09_k1_fn_ampcap5000.json`. Setting `--amp-cap 5000 --budget 300` reproduces this run. This experiment has **not** held all expensive operations to a common end-to-end budget; that remains an outstanding requirement.

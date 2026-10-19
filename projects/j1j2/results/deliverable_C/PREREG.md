@@ -177,3 +177,21 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
   late - protocol = +2.3(1.8)e-5, not below -2 SE -> protocol value quoted. The SE target 1e-5 was missed by 7%.
 - E3: pilot done; production not run (Paderborn).
 - E4: not run (download not approved).
+
+## E5. 12x12 RBM+PP cost pilot on a Paderborn H100 (pre-registered 2026-10-19, before submission; lead decision)
+- Purpose: measure what option (b) of PLAN.md costs at 12x12 before committing H100 time. No energy claim.
+- Run: `cluster/paderborn/deliverable_C/rbmpp_L12_pilot_h100.sbatch`. PP alone (Nomura-Imada pair product, full
+  real 144 x 144 f, no RBM yet), our JAX code from results/rbmpp_6x6 unchanged, 'simple' published projection
+  (144 translations x {E, C4} x spin flip = 576 images), SR (natural gradient) lr 0.05 -> 0.03 (cosine), diagonal
+  shift 1e-3, max |d|_S 0.3, 4096 samples per step, 300 steps, checkpoints every 25 steps, then a 16384-sample VMC
+  evaluation. 1 H100, wall limit 2 h (cap 2 H100-h).
+- Recorded: seconds per SR step (sampling, local energies, S solve), memory, E/N and Var/N against step.
+- Checks (pass/fail, fixed now):
+  (i) sanity: all energies finite; acceptance in [0.1, 0.8]; mean E/N over the last 50 steps below the mean over steps
+      25-75 by more than 5 combined SE (the optimiser works at 12x12).
+  (ii) cost projection: steps to plateau taken from 6x6 (PP alone flat after ~400 steps; production 3000 PP steps + 900
+      RBM+PP steps + 1500 steps at 4x samples, results/rbmpp_6x6) times the measured seconds per step at 12x12 (4x
+      samples -> 4x time for the last stage). Pass for option (b) if the projected PP + RBM+PP training cost is
+      <= 50 H100-h; if it is 50-100 H100-h, report and propose cost cuts (projection only at the end, Nomura's 4x4
+      sublattice PP); if > 100 H100-h, option (b) is not the cheap route and the plan is revised.
+  (iii) reference point, not a criterion: published 12x12 RBM+PP (4x4-sublattice PP) -0.496791(4); GCNN -0.496769(9).

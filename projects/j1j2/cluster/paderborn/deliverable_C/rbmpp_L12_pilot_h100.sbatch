@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu:h100:1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=128G
-#SBATCH --time=01:30:00
+#SBATCH --time=02:00:00
 #SBATCH --job-name=pp12pilot
 #SBATCH --output=/pc2/users/h/hpcalot/chatty/j1j2/results/delC-pp12pilot-%j.out
 set -euo pipefail
@@ -19,6 +19,6 @@ BASE=/pc2/users/h/hpcalot/chatty/j1j2
 OUT="$BASE/results/delC_pp12pilot_${SLURM_JOB_ID}"; mkdir -p "$OUT"; cd "$BASE/src/rbmpp"
 cat > "$OUT/spec.json" <<J
 {"L": 12, "rbm": false, "seed": 1, "steps": 300, "chains": 4096, "lr": 0.05, "lr_end": 0.03, "shift": 1e-3,
- "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 50, "eval_samples": 65536, "eval_proj": ["simple"]}
+ "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 25, "eval_samples": 16384, "eval_proj": ["simple"]}
 J
 python rbmpp_train.py "$OUT" "$OUT/spec.json"

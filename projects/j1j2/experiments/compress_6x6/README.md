@@ -959,3 +959,32 @@ on 2 D0 - H.
   - corr(delta_k, delta_{k+1}) between successive rounds.
 - **Noise test.** E_FN of the phi* field plus independent antisymmetric noise of equal weighted rms (per orbit pair,
   hashed), against E_FN of the trained field. The wall is built directly; there is no global amplitude.
+
+## Expulsion / veto test (pre-registered 2026-10-19, consultant Fable + PI caveat; before any computation; code `cx_veto.py`; exact 6x6, sign s_1, no training, <= 1 slice-h)
+**Input.** phi* = the self-consistent field after the round-2 ceiling run (up to 60 solves, `bf2c` la_star). The
+ceiling is also Aitken-extrapolated from its last three solves.
+- X_tau = {x : phi*_x / |psi_P(x)| < tau} for tau = 1e-1, 1e-2, 1e-3 (both amplitudes normalised over the sector).
+
+**(2) Veto field.** E_FN(s_1, r_hyb), with ViT ratios on the support and a = 0 on X_tau (implemented as
+la_P - 40 on X_tau).
+- Exact decomposition of the ViT-field majoriser gap at phi*, sum_pairs |h| (sqrt(r_P) phi*_x - phi*_y/sqrt(r_P))^2,
+  into three bond classes:
+  - bulk: both ends with phi*/a_P >= 0.3;
+  - near-node in the support: one end in [tau, 0.3);
+  - into-expelled: one end in X_tau.
+- Readings: E_FN <= 1e-5 means next train the veto as a zero-hop sign net; > 3e-5 means a bulk-ratio (amplitude)
+  problem; in between, report.
+
+**Expulsion as a wrong-sign detector (PI caveat: expelled = sign inconsistent with its neighbours, not necessarily
+wrong).** For each tau: precision and recall of X_tau against {s_1 != s0}, by orbit-weighted count, by |psi0|^2 weight
+and by |psi_P|^2 weight. phi* weight is listed too, though it is ~0 on X by construction.
+
+**(3) Flip test.** s_2 = s_1 flipped on:
+- (i) all of X_tau;
+- (ii) X_tau intersected with the Krylov flip set (rule K with ViT amplitudes: s_1 sgn(1 + alpha(E_L - E)), alpha
+  energy-optimal at fixed amplitude);
+- (iii) oracle: X_tau intersected with {s_1 != s0}.
+For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-optimum (6 solves + Aitken).
+- If (i) or (ii) gives an E_FN below E_FN(s_1, ViT ratios) = 9.54e-5, the expelled set acts as the next sign step at
+  fixed cost. The best variant is then iterated 2 more times (X recomputed from the new phi*, with 6 solves each),
+  budget permitting.

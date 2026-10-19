@@ -988,3 +988,25 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
 - If (i) or (ii) gives an E_FN below E_FN(s_1, ViT ratios) = 9.54e-5, the expelled set acts as the next sign step at
   fixed cost. The best variant is then iterated 2 more times (X recomputed from the new phi*, with 6 solves each),
   budget permitting.
+
+#### Amendment V-1 (2026-10-19 15:00, after the math review, before any veto/flip computation)
+- **Change of input.** The round-2 ceiling job ran on a slow 16 GB slice. At 25 solves (3.65e-6, ratio of successive
+  decrements ~0.9) it would have hit its time limit before saving phi*, so it was cancelled. The veto job now
+  computes the ceiling itself on a full A40, from phi_FN(psi_P, s_1):
+  - (1a) the plain self-consistent iteration, 40 solves;
+  - (1b) L-BFGS (m = 10) on the global log-amplitude a_hat, with the exact Hellmann-Feynman gradient
+    dE/da_hat(z) = n_z [ -phi_z^2 V(z) + e^{a_hat(z)} sum_{x bad nbr} |h| phi_x^2 e^{-a_hat(x)} ], 30 evaluations
+    from the same start.
+  - Logged per solve: E_FN, the decomposition E_FN = f(phi) + D(phi; r) (D = sum_bad |h| (sqrt(r) phi_x -
+    phi_y/sqrt(r))^2, certified descent), and min / quantiles of phi_FN/|psi0|.
+  - Prediction from the math review: convergence is sublinear (face structure), not geometric.
+  - phi* = the lower of the two endpoints. Also recorded: W_B = sum_bad |h| phi*_x phi*_y per site.
+- **Flip arm (iv)** (math review): flip x in Z_tau with KKT multiplier mu_x = s_x (H s phi*)_x > 0. Flipping Z
+  alone is energy-neutral at phi*; the next FN solve decides.
+- **Pre-registered predictions (math review):**
+  - Z_1e-2 covers >= 80% of the |psi0|^2 weight of W = {s_1 != s0};
+  - after flipping (arm iv), E_FN falls monotonically toward exact within a few rounds;
+  - falsifiers: a finite-field geometric limit of the ceiling, or Z disjoint from W.
+- **Iteration.** If arm (iv) or (i) lowers E_FN below the s_1 ceiling, 2 more rounds of the best non-oracle arm (10
+  fixed-point solves each, then Z, mu, flip).
+- **Budget:** <= 1.5 slice-h, up from 1. The extra covers the ceiling that the cancelled round-2 job did not deliver.

@@ -144,7 +144,8 @@ if MODE == 'errstruct':                                     # amendment BF2-1 ad
             if len(bb) < 2: continue
             sub = m[np.ix_(bb, bb)]
             if not sub.any(): continue
-            dv = dln[i, bb]; prod = np.outer(dv, dv)[sub]; num += prod.sum(); den1 += (dv ** 2).sum() * sub.sum() / len(bb); 
+            dv = dln[i, bb]; sq = dv ** 2
+            num += np.outer(dv, dv)[sub].sum(); den1 += (0.5 * (sq[:, None] + sq[None, :]))[sub].sum()
         spatial[str(k_)] = float(num / max(den1, 1e-30))
     cons = [float(jnp.sum(w * deltas[i] * deltas[i + 1]) / jnp.sqrt(jnp.sum(w * deltas[i] ** 2) * jnp.sum(w * deltas[i + 1] ** 2)))
             for i in range(len(deltas) - 1)]
@@ -153,15 +154,17 @@ if MODE == 'errstruct':                                     # amendment BF2-1 ad
     log('error structure', json.dumps(res['error'])); dump(F, res)
 
     # noise test: wall built directly from a per-bond field; custom FN solve with that diagonal
-    def wall(la_f, sigma):
-        out = []
-        for i0 in range(0, sec.D, 16384):
-            ii = jnp.arange(i0, min(i0 + 16384, sec.D)); xx = sec.reps[ii]; vv = valid_bonds(xx)
+    CHW = 2048
+
+    @jax.jit
+    def wall_chunk(la_f, sigma, i0):
+        if True:
+            ii = jnp.minimum(i0 + jnp.arange(CHW), sec.D - 1); xx = sec.reps[ii]; vv = valid_bonds(xx)
             yy = jnp.where(vv, xx[:, None] ^ MASKS[None, :], xx[:, None])
             jj = SS.canon(sec.T, sec.reps, yy.reshape(-1)).reshape(xx.shape[0], NB)
             bd = vv & (s1[ii][:, None] * s1[jj] > 0)
             lr = la_f[jj] - la_f[ii][:, None]
-            if sigma > 0:
+            if True:
                 a_ = jnp.minimum(ii[:, None], jj).astype(jnp.uint32); b_ = jnp.maximum(ii[:, None], jj).astype(jnp.uint32)
                 h1 = (a_ * jnp.uint32(2654435761) ^ (b_ * jnp.uint32(40503) + jnp.uint32(12345))) * jnp.uint32(2246822519)
                 h2 = (b_ * jnp.uint32(2654435761) ^ (a_ * jnp.uint32(97) + jnp.uint32(777))) * jnp.uint32(3266489917)
@@ -169,8 +172,11 @@ if MODE == 'errstruct':                                     # amendment BF2-1 ad
                 g = jnp.sqrt(-2 * jnp.log(u1)) * jnp.cos(2 * np.pi * u2)
                 sgn = jnp.where(ii[:, None] < jj, 1.0, jnp.where(ii[:, None] > jj, -1.0, 0.0))
                 lr = lr + sigma * g * sgn
-            out.append(jnp.sum(jnp.where(bd, 0.5 * JB[None, :] * jnp.exp(jnp.clip(lr, -60, 60)), 0.0), 1))
-        return lab.D0 + jnp.concatenate(out)
+            return jnp.sum(jnp.where(bd, 0.5 * JB[None, :] * jnp.exp(jnp.clip(lr, -60, 60)), 0.0), 1)
+
+    def wall(la_f, sigma):
+        out = [wall_chunk(la_f, jnp.float64(sigma), i0) for i0 in range(0, sec.D, CHW)]
+        return lab.D0 + jnp.concatenate(out)[:sec.D]
 
     def fn_D(Dg, s, tol=1e-10, maxit=400):
         import scipy.linalg as sla

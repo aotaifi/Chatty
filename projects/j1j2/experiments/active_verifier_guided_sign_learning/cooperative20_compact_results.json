@@ -997,3 +997,146 @@
             "n_visited": 1365,
             "n_positive": 31,
             "positive_gain_sum": 0.0004282166276216012
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1399,
+            "n_positive": 38,
+            "positive_gain_sum": 0.000494920441835124
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1384,
+            "n_positive": 37,
+            "positive_gain_sum": 0.0003324570275762524
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1389,
+            "n_positive": 28,
+            "positive_gain_sum": 0.00038384287413117295
+          }
+        ]
+      },
+      {
+        "law": "a2",
+        "n_visited": 2232,
+        "n_positive_visited": 69,
+        "fraction_positive_orbits_visited": 0.3484848484848485,
+        "fraction_sum_positive_single_gains_visited": 0.9304653531150816,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 965,
+            "n_positive": 20,
+            "positive_gain_sum": 0.0004521188404351736
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1039,
+            "n_positive": 24,
+            "positive_gain_sum": 0.0004394169104760004
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1002,
+            "n_positive": 29,
+            "positive_gain_sum": 0.00042473241125674186
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1154,
+            "n_positive": 29,
+            "positive_gain_sum": 0.00028812554165801144
+          }
+        ]
+      },
+      {
+        "law": "a_half",
+        "n_visited": 3520,
+        "n_positive_visited": 114,
+        "fraction_positive_orbits_visited": 0.5757575757575758,
+        "fraction_sum_positive_single_gains_visited": 0.8889487620365019,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 1559,
+            "n_positive": 45,
+            "positive_gain_sum": 0.0005181714013803903
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1582,
+            "n_positive": 50,
+            "positive_gain_sum": 0.0004667919428655402
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1598,
+            "n_positive": 41,
+            "positive_gain_sum": 0.00011401137685067278
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1563,
+            "n_positive": 38,
+            "positive_gain_sum": 0.0003809085582905183
+          }
+        ]
+      },
+      {
+        "law": "uniform_states",
+        "n_visited": 3859,
+        "n_positive_visited": 163,
+        "fraction_positive_orbits_visited": 0.8232323232323232,
+        "fraction_sum_positive_single_gains_visited": 0.8526923985449248,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 1683,
+            "n_positive": 74,
+            "positive_gain_sum": 0.00031887240261285906
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1662,
+            "n_positive": 74,
+            "positive_gain_sum": 0.00026918783251046285
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1659,
+            "n_positive": 54,
+            "positive_gain_sum": 0.00025453064328489453
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1674,
+            "n_positive": 63,
+            "positive_gain_sum": 0.0003390919928875836
+          }
+        ]
+      }
+    ],
+    "union_n_visited": 4568,
+    "union_positive_orbit_fraction": 0.9494949494949495,
+    "union_positive_gain_mass_fraction": 0.9999017141921636,
+    "costs": {
+      "amp_requests": 200558,
+      "sign_requests": 200558,
+      "unique_amp": 45602,
+      "unique_sign": 45602,
+      "neighbor_probes": 372320,
+      "orbit_members_expanded": 184756,
+      "unique_orbits": 4654
+    },
+    "caveat": "POST HOC whole-sector amplitude and orbit enumeration forbidden in deployed walker policy."
+  },
+  "data_sha256": "5d15ad5ce2cc0f2b5dd9ba41c4c14d9f4b63d1dca5004acf85cd15509b1e208f",
+  "limitations": [
+    "All 20-site exact amplitude oracle on-demand; do not use for 6x6.",
+    "Independent FN walker access absent; toy root distributions including uniform full-state index.",
+    "All results from one physical sign chamber and reused overlapping patches; no independent disorder/chamber replicates.",
+    "No model/rule trained; no post-FN improvement and no size-consistency claim."
+  ]
+}

@@ -1028,3 +1028,11 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
     norm in total-energy units. The L-BFGS arm was therefore not executed.
 - **Fix.** gtol = ftol = 1e-30. L-BFGS is re-run as its own job: 30 evaluations from phi_FN(psi_P, s_1), ceiling only.
 - phi* for the flip stage stays the 40-solve fixed point, as already queued in job vetoF.
+
+#### Amendment V-4 (2026-10-19 16:30, after the first three flip lines of job vetoF, before any detector statistic was read)
+- **Bug.** The exact-sign table s0 differs from s_1 by a global sign: the flip job printed wrong-sign weight 1.000.
+  In addition, s0 = +1 was assigned where psi0 vanishes exactly by symmetry.
+- Consequence: precision/recall and the oracle arm (iii) would be meaningless.
+- **Fix.** Align s0 by the sign of sum |psi0|^2 s0 s_1, and exclude configurations with psi0 = 0 from {s_1 != s0}.
+- The flip job was cancelled and is rerun with the fix. Arms (i), (ii) and (iv) and the veto E_FN do not depend on
+  s0.

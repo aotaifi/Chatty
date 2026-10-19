@@ -115,7 +115,12 @@ if SPEC.get('stop_after_ceiling'):
 laPn = norm_la(la_P)
 q = jnp.exp(la_star - laPn)
 P0 = sec.vec(la0, s0) ** 2; PP = sec.vec(la_P, s_P) ** 2; PS = sec.vec(la_star, s1) ** 2
-wrong = s1 != s0
+# amendment V-4: align the global sign of s0 with s_1 and ignore configurations where psi0 vanishes exactly
+gsign = 1.0 if float(jnp.sum(P0 * s0 * s1)) >= 0 else -1.0
+s0 = s0 * gsign
+nz0 = P0 > 0
+res['psi0_global_sign_flip'] = gsign < 0; res['psi0_zero_frac_count'] = float(jnp.sum(nW * ~nz0))
+wrong = (s1 != s0) & nz0
 vS = s1 * phis * sec.sqrt_n; mu = s1 * sec.H(vS) / sec.sqrt_n          # (s H s phi*)_x
 _, V1, W1 = lab.VW(la_P, s1); v = sec.vec(la_P, s1); E1 = float(v @ sec.H(v)); EL1 = lab.D0 + V1 - W1; del V1, W1
 sd1 = float(jnp.sqrt(jnp.sum(v ** 2 * (EL1 - E1) ** 2))); del v
@@ -148,7 +153,8 @@ for tau in (1e-1, 1e-2, 1e-3):
     rec['flip'] = {}
     for nm, fl in flips.items():
         s2 = jnp.where(fl, -s1, s1)
-        fr = dict(frac=float(jnp.sum(nW * fl)), wrong_after_psi0=float(jnp.sum(P0 * (s2 != s0))))
+        fr = dict(frac=float(jnp.sum(nW * fl)), wrong_after_psi0=float(jnp.sum(P0 * (s2 != s0))),
+                  wrong_before_psi0=float(jnp.sum(P0 * (s1 != s0))))
         if tau == 1e-2:
             hist, ait, _ = own_c(s2); fr['EFN_vit'] = hist[0]; fr['c_history'] = hist; fr['c_aitken'] = ait
         else:

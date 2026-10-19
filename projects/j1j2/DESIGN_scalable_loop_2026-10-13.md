@@ -494,3 +494,13 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
   - But a flagged configuration has about 50 flagged neighbours (of ~80), so the depth recursion branches with
     r ~ 50, not < 1.
   - The near-node region is sparse in weight but dense and connected in configuration count.
+- **Bond-field fixed node (brainstorm idea 1), exact 6x6.**
+  - Ceiling: with the clipped-Lanczos sign s_1, the self-consistent reciprocal bad-bond field gives E_FN 4.6e-6
+    after 20 solves (still falling). That is below psi_P + 2 Lanczos (8.6e-6) and below FN with the exact psi0
+    ratios (7.5e-6).
+  - Trained field: d2, one-hop psi_P features, reaches 72-85% of the (a) -> (c) gap. Its E_FN is 3.0e-5 (s_1),
+    which is not competitive. Spins alone (d1) give nothing.
+  - Pre-registered bars: met for d2 and s_1 (with the caveat that (c) is unconverged).
+  - Idea 2 (released node) is dead: Delta_B = 0.385 per site, independent of the sign.
+  - Next decisive step if pursued: an iterate-and-refit loop toward a converged (c), with the field's error
+    measured in the weighted cosh metric.

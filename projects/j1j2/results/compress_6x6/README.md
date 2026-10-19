@@ -946,3 +946,65 @@ At 1% and 5% the picture is the same: r = 47-59, p_flag under the tail measure 3
     still above psi_P + 2 Lanczos steps (8.6e-6 at 2 hops).
   - From iteration 3 on, the flagged neighbours of flagged configurations need their own deeper hop, about 50 per
     level. The pre-registered bar r < 0.5 fails by a factor of about 100.
+
+# Bond-field fixed node (brainstorm idea 1) + Delta_B (idea 2), exact kill test (run 2026-10-13, analysed 2026-10-19)
+- Pre-registration: `experiments/compress_6x6/README.md` ("Bond-field fixed node"), commit 2db6fdf at 2026-10-13
+  20:54:59. That is before the jobs started (20:55:10, 21:20:39, 21:46:50).
+- Code `cx_bondfield.py`. Raw files: `runs/cx_bondfield_sign_sP.json`, `runs/cx_bondfield_sign_s1.json`,
+  `runs/cx_bondfield_deltaB_.json`.
+- Compute: 0.9 slice-h (budget 2). The analysis was delayed by a usage limit; nothing was re-run.
+
+## What was run
+1. **Signs:** s_P (ViT sign) and s_1 (the k = 1 clipped-Lanczos sign from psi_P).
+2. **E_FN for each sign** (exact lowest eigenvalue of the FN Hamiltonian, wall built from a bond-ratio field on the
+   bad bonds):
+   - (a) ViT ratios;
+   - (b) exact |psi0| ratios;
+   - (c) the self-consistent field, iterating r <- ratios of the current FN solution, 20 solves (the cap);
+   - (d) a trained field, ratios of |psi_P| exp(f), fit on bad bonds only to the iterated solution of (c) with
+     weights |H| phi_x phi_y:
+     - d1: f on spins + log|psi_P| (zero extra hop);
+     - d2: f on psi_P's one-hop features (one extra hop, see cost).
+3. **Delta_B:** Lanczos on the sign-free Hamiltonian (2 D0 - H).
+
+## Result
+**One line: the pre-registered bars are met, with s_1 and the one-hop-feature field (d2), but the trained field's
+actual energy is not competitive. The ceiling (c) is attractive (4.6e-6 for s_1, below psi_P + 2 Lanczos 8.6e-6),
+while the trained field reaches only 3.0e-5. Idea 2 is dead: Delta_B = 0.385 per site.**
+
+| sign | (a) ViT ratios | (b) exact ratios | (c) self-consistent, 20 solves | d1: zero hop | d2: one-hop features | recovered of (a) -> (c), d1 / d2 |
+|---|---|---|---|---|---|---|
+| s_P | 1.018e-4 | 7.69e-5 | 2.52e-5 (still falling 0.8% per solve) | 1.199e-4 | 3.68e-5 | -0.24 / **0.85** |
+| s_1 | 9.54e-5 | 7.52e-6 | **4.62e-6** (still falling 6% per solve) | 9.37e-5 | 2.99e-5 | 0.02 / **0.72** |
+
+Against the pre-registered bars:
+- **(d) recovers >= 70% of (a) -> (c) for the best sign (s_1): PASS for d2 (0.72), FAIL for d1 (0.02).**
+  - Caveat: (c) had not converged after 20 solves, so the true gap is larger and the true fraction lower than 0.72.
+- **(c) below psi_P + 2 Lanczos (8.6e-6) for the best sign: PASS** (4.62e-6 for s_1).
+  - Not below ViT + 2 Lanczos + variance extrapolation (1.5e-6, not variational).
+- **Kill the r part if (d) < 30%:** d1 (zero hop) is killed; d2 survives.
+- **Kill the route if (c) >= 8.6e-6 for both signs:** not killed (s_P misses at 2.52e-5; s_1 passes).
+
+**Idea 2 (Delta_B).**
+- E_B/N = -0.8891 against E0/N = -0.5038, so Delta_B = 0.385 per site. The Perron vector has a single sign, so the
+  sector check passes. Sanity check: E_FN with the exact amplitude and exact sign = 2e-16.
+- At N = 36 the released-node signal decays like exp(-2 x 0.385 x 36 tau) = exp(-27.7 tau). Idea 2 is dead at 6x6
+  already.
+- As stated in advance, Delta_B does not depend on the stored sign.
+
+**Readings.**
+- **The bound idea is sound and its ceiling is good.** With the clipped-Lanczos sign s_1, the best reciprocal
+  bad-bond field gives E_FN <= 4.6e-6 and is still falling.
+  - That is below psi_P + 2 Lanczos (8.6e-6) and below FN with exact psi0 ratios (7.5e-6).
+  - So for the bound, the ratios do not need to come from one global wavefunction.
+- **The trained field is the bottleneck.**
+  - Spins alone fail (d1, as for every spin-only representation of near-node quantities).
+  - psi_P's one-hop features get 72-85% of the gap, but from a high start: E_FN 3.0e-5 (s_1). That is worse than the
+    hybrid's 2.17e-5 and than psi_P + 1 Lanczos's E_FN 1.89e-5.
+- **Hop cost of d2.** r on a bad bond (x, y) needs psi_P's one-hop features at x and at y. A walker step at x therefore
+  costs one hop of psi_P plus one hop per bad neighbour; the number of bad bonds per configuration was not measured.
+- **What would decide it.**
+  - Fit the field toward a CONVERGED (c), plus an iterate-and-refit loop (fit, re-solve, refit), since descent is
+    guaranteed.
+  - A field that sees the current FN solution's own one-hop data. In GFMC that is the walker's local information, so
+    it costs no extra storage.

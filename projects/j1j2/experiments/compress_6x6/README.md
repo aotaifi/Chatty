@@ -931,3 +931,12 @@ on 2 D0 - H.
    below psi_P + 1 Lanczos (1.89e-5 in E_FN) and approaching psi_P + 2 Lanczos (8.6e-6).
    - B passing alone means: information sufficient, but not available to a walker.
    - Also reported: the fraction of the converged ceiling's gap that is closed.
+
+#### Provenance note (2026-10-19)
+- The round-2 pre-registration text above and the cx_lib.py changes (cosh loss, violating-first sampling) first
+  landed on main in commit ac6b89e (2026-10-19 13:45:13). That was another worker's commit, which swept in the
+  uncommitted files from the shared worktree; the committed text equals the text I wrote.
+- The code (cx_bondfield2.py, specs) followed in e649189 (13:45:43).
+- The three round-2 jobs (17354415-17) were still PENDING when this note was written, so the pre-registration
+  precedes every run.
+- The RESEARCH_MAP.md change in ac6b89e is not from this route.

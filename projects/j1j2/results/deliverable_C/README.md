@@ -113,3 +113,16 @@ p = 0, 1, 2, the repeated-step p = 2 state, the two-point line, and the exact E0
 | late-time psi_1 run (RTX 2080 Ti) | 1.27 |
 | smoke tests, probes, exact 6x6 check | 0.15 |
 | 4x4 gates | CPU (laptop) |
+
+## 12x12 RBM+PP cost pilot (PREREG E5): state on 2026-10-19 20:05, no result yet
+- Submitted to Paderborn `gpu_h100` on 2026-10-19 14:3x as job **3749014** (`cluster/paderborn/deliverable_C/rbmpp_L12_pilot_h100.sbatch`,
+  code staged in /pc2/users/h/hpcalot/chatty/j1j2/src/rbmpp/). Time limit reduced to 1 h after submission (lead: 1-hour pilot).
+  Output will land in /pc2/users/h/hpcalot/chatty/j1j2/results/delC_pp12pilot_3749014/ (rbmpp_train.py json + params every
+  25 steps) and delC-pp12pilot-3749014.out.
+- Last seen (16:20): PENDING (Priority), the only pending job in gpu_h100, Slurm's start estimate 2026-10-20 02:30
+  (moved earlier from 21:50 to 14:40 to 02:30 during the afternoon); all H100 nodes busy.
+- Access: via ws1 -> PC2 VPN (pc2-vpn-start, saved setup) -> `ssh -o HostName=login1 -o HostKeyAlias=login2 paderborn`
+  (login2 down). The VPN dropped at ~17:00, and ws1 has refused or hung SSH since then; polling stopped on the lead's
+  instruction. To resume: restart the VPN on ws1, then `sacct -j 3749014` and read the output directory.
+- Not started (scope decision 2026-10-19, drafts only): full 12x12 training, 10x10 reproduction and Lanczos
+  (`vit10_lanczos_h100.sbatch`, `dc_lanczos10.py`, untested on real weights), 8x8 p = 2 production, FN-DMC psi_1 guide.

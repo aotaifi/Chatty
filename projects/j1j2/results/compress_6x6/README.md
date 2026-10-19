@@ -1008,3 +1008,34 @@ Against the pre-registered bars:
     guaranteed.
   - A field that sees the current FN solution's own one-hop data. In GFMC that is the walker's local information, so
     it costs no extra storage.
+
+# Bond-field FN round 2 + expulsion/veto test: INTERIM status (2026-10-19, ws1 unreachable from ~17:00)
+- Pre-registrations and amendments: `experiments/compress_6x6/README.md`: round 2; BF2-1; veto test; V-1 to V-4.
+- The numbers below are read from the job logs before ws1 stopped accepting SSH connections.
+- Jobs still on the cluster:
+  - bf2Ar 17356419: arm A resume, 10 rounds;
+  - vetoF 17362028: flip stage, sign-aligned rerun;
+  - vetoLB 17360910: L-BFGS re-run.
+  Their results land in `/project/theorie/a/A.Otaifi/chatty_compress6/runs/<job>_<id>/` and are not analysed yet.
+- **Bad bonds per configuration (sign s_1):**
+  - 23.1 on average (median 23, 90th percentile 32) of 81.5 valid bonds, i.e. 28%;
+  - identical under |psi_P|^2 and under |phi_FN|^2.
+  - So a field with one-hop features costs about 1 + 23 psi_P hops per walker step.
+- **Ceiling (plain self-consistent iteration, s_1, 40 solves): 2.509e-6 per site, Aitken estimate 2.05e-6.**
+  - Decrement per 5 solves: 1.8e-6, 9.7e-7, 5.6e-7, 3.5e-7, 2.3e-7. The ratio grows from 0.53 to 0.65, so
+    convergence is slowly sub-geometric, as the math review predicted.
+  - D(phi; r) per solve falls from 1.9e-6 to 1.8e-8.
+  - min log(phi_FN/psi0) stays near -30: expelled configurations (the face structure).
+  - W_B = 0.042 per site.
+- **Arm A** (field = |psi_P| exp(f), f on psi_P's one-hop features, exact majoriser loss on bad bonds,
+  iterate-and-refit, every round accepted):
+  - E_FN: 9.54e-5 -> 6.09 -> 4.55 -> 3.71 -> 3.17 -> 2.82 -> **2.56e-5** after 6 rounds;
+  - the exact iteration at the same counts: 6.00 / 4.33 / 3.33 / 2.65 / 2.17 / 1.81e-5.
+  - The pass bar (<= 1.0e-5) is not reached in 6 rounds. The 10-round resume is pending.
+- **L-BFGS** on the global log-amplitude:
+  - first run stopped after one evaluation (tolerance bug, V-3);
+  - the re-run had reached only 9.49e-5 after 5 evaluations, against 6.0e-5 for one fixed-point solve.
+- **Flip test, tau = 0.1, arms independent of s0 (from the run cancelled for V-4):**
+  - flipping all of X (9.3% of configurations): E_FN with ViT ratios 1.019e-4, above s_1's 9.54e-5;
+  - flipping X intersected with the Krylov set (5.3%): 9.45e-5.
+  - Own c-optima and the tau = 1e-2 / 1e-3 rows are pending in vetoF.

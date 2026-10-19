@@ -160,6 +160,19 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
   rate, cause open). Equal hops: joint Lanczos still 3-5x better at 4 hops. Network loop on these guides not run.
 - Cost 25.4 GPU-h (brief 15): 6.5 h on two plateaued RBM+PP runs that located the optimiser cause.
 
+## 3r. Deliverable C round 1 (results/deliverable_C/, 2026-10-19) — known method, new 8x8 numbers
+- Literature: NQS + Lanczos published only at 6x6/10x10 (Chen 2022, Wang-He-Lu 2026); no NQS-guided FN/GFMC for J1-J2.
+- psi_P + 1 Lanczos step, direct VMC (11264 samples): -0.498971(12) (late-time only -0.498958(22)), 8.5e-5 below RBM+PP.
+- Variance extrapolation p = 0, 1 (exact-6x6-calibrated, sys 8e-6): E0(8x8) = -0.498992(16)(8); in 3.4-sigma tension with
+  Hu et al.'s -0.49906(1) (late-only 2.9 sigma). Heavy tails checked (trim, second estimator, late-time run).
+- FN-DMC with the psi_P guide (new cached-ViT referee; 4x4 gate passes after the 1/M population-bias extrapolation):
+  -0.498889(11), 8 populations; FN gain -4.2(1.5)e-5 over psi_P; equals RBM+PP, above psi_1.
+- p = 2: three-hop E_L costs 86 s/sample on a slice; 3x3 Ritz not estimable from a 64-sample pilot -> repeated step f^2
+  (keeps 78% of the optimal p2 gain at 6x6). Production ~130 H100-h for paired SE 5e-6 (Paderborn draft).
+- 10x10: our ViT code loads the HF architecture (434,760 params = card); weights need the user's OK to download.
+- 12x12/14x14 plan (PLAN.md): RBM+PP guide (own JAX code) + Lanczos + FN as the cheapest decisive route; ViT as add-on.
+- H100 NVL exists on ws1 inter (2.36e4 projected evals/s, 4.5x an A40 slice); using it needs the PI's OK.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

@@ -2,7 +2,7 @@
 
 Inputs are the raw per-sample local energies already on ws1 (copied locally):
   p = 0: plain VMC of psi_P  (l8vmc_17138725/vmc.npz: EL per sample, chain id)              -> E_0, var_0
-  p = 1: direct VMC of psi_1 (l8dira direct.npz, rvD1-3 direct2.npz, rvL2-3 late.npz)       -> E_1, var_1
+  p = 1: direct VMC of psi_1 (l8dira direct.npz, rvD1-3 direct2.npz, rvL1-3 late.npz; L1 = amendment 4)       -> E_1, var_1
          E_L1 = ((1 - a Er) E_L + a E_L2) / (1 + a (E_L - Er)), a = -0.160951, Er = -31.92677568
 var_p = <E_L^2> - <E_L>^2 under |psi_p|^2 = <psi_p|H^2|psi_p> - E_p^2 (exact identity for the local-energy variance).
 Extrapolation: E = E_inf + A var (linear, Hu-Becca-Parola-Sorella 2013).  Per-site units: E/N and var/N.
@@ -25,9 +25,11 @@ parts = []
 z = np.load(os.path.join(D_, 'dira', 'direct.npz')); parts.append((el1(z), z['chain'], 'run_a'))
 for k in (1, 2, 3):
     z = np.load(os.path.join(D_, f'rvD{k}', 'direct2.npz')); parts.append((el1(z), z['chain'] + 10000 * k, f'D{k}'))
-for k in (2, 3):
-    z = np.load(os.path.join(D_, f'rvL{k}', 'late.npz')); ok = np.isfinite(z['EL2'])
-    parts.append((el1(z)[ok], z['chain'][ok] + 10000 * k, f'L{k}'))
+for k in (1, 2, 3):                 # L1 = amendment 4 (continuation of D1), L2/L3 = review T6
+    p = os.path.join(D_, f'rvL{k}', 'late.npz')
+    if not os.path.exists(p): continue
+    z = np.load(p); ok = np.isfinite(z['EL2'])
+    parts.append((el1(z)[ok], z['chain'][ok] + 10000 * k + 100000, f'L{k}'))
 E1 = np.concatenate([p[0] for p in parts]); c1 = np.concatenate([p[1] for p in parts])
 
 
@@ -76,6 +78,23 @@ for k in (0, 5, 10, 30, 100):
         return E[o[:-k]]
     a = ev(trim(E0)); b = ev(trim(E1)); sens[k] = dict(E0=a[0], var0=a[1], E1=b[0], var1=b[1], E_extrap=extrap(*a, *b)[0])
 res['trim_sensitivity'] = sens
+# amendment 4: late-only psi_1 samples (L1-L3) vs all; bootstrap of the difference (chains resampled jointly)
+late = [p for p in parts if p[2].startswith('L')]
+if late:
+    El = np.concatenate([p[0] for p in late]); cl = np.concatenate([p[1] for p in late])
+    gl = groups(El, cl); el, vl = ev(El); Exl = extrap(e0, v0, el, vl)[0]
+    lab = {}
+    for p in parts:
+        for c in np.unique(p[1]): lab[c] = p[2]
+    ids1 = np.unique(c1); is_late = np.array([lab[c].startswith('L') for c in ids1])
+    bd = []; bl = []
+    for i in range(B):
+        idx = rg.integers(len(g1), size=len(g1)); Ea = np.concatenate([g1[j] for j in idx])
+        il = idx[is_late[idx]]; Eb = np.concatenate([g1[j] for j in il]) if len(il) else Ea
+        x_all = extrap(*b0[i], *ev(Ea))[0]; x_late = extrap(*b0[i], *ev(Eb))[0]; bd.append(x_late - x_all); bl.append(x_late)
+    res['late_only'] = dict(parts=[p[2] for p in late], n=len(El), nch=len(gl), E1=el, var1=vl, E_extrap=Exl,
+                            E_extrap_boot_se=float(np.std(bl)), diff_late_minus_all=Exl - Ex, diff_boot_se=float(np.std(bd)))
+    res['primary'] = 'late_only' if (Exl - Ex) > 2 * np.std(bd) else 'all'
 # alternative psi_P variance estimator check is done on referee data (<(H^2 psi)/psi> - h1^2), see README
 json.dump(res, open(OUT, 'w'), indent=1, default=float)
 print(json.dumps(res, indent=1, default=float))

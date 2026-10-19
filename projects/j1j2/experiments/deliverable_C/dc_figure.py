@@ -17,7 +17,7 @@ fig, ax = plt.subplots(1, 2, figsize=(7.2, 3.0))
 
 a = ax[0]; S = 1e4; Y = 1e5; E00 = -0.4988                       # x in 1e-4, y = (E/N - E00) in 1e-5
 v = np.array([ex['var0'], ex['var1']]); e = np.array([ex['E0'], ex['E1']])
-ve = np.array([ex['var0_boot_se'], ex['var1_boot_se']]); ee = np.array([1.06e-5, 1.41e-5])
+ve = np.array([ex['var0_boot_se'], ex['var1_boot_se']]); ee = np.array([ex['E0_boot_se'], ex['E1_boot_se']])
 xx = np.linspace(0, v[0] * 1.05, 50)
 a.plot(xx * S, (ex['E_extrap'] + ex['slope'] * xx - E00) * Y, '-', lw=0.7, color='C0')
 a.errorbar(v * S, (e - E00) * Y, xerr=ve * S, yerr=ee * Y, fmt='o', ms=4, color='C0', lw=0.8, capsize=2, label='ViT, Lanczos p = 0, 1')
@@ -27,10 +27,10 @@ for val, err, lab, c, ls in ((-0.498886, 1e-6, 'RBM+PP (Nomura-Imada)', 'C2', '-
     a.axhspan((val - err - E00) * Y, (val + err - E00) * Y, color=c, alpha=0.25, lw=0)
     a.axhline((val - E00) * Y, color=c, ls=ls, lw=0.8, label=lab)
 if fn:
-    q = fn['quoted']; a.errorbar([v[0] * S * 0.5], [(q['E'] - E00) * Y], yerr=[q['se'] * Y], fmt='D', ms=4, color='C1', lw=0.8, capsize=2,
+    q = fn['quoted']; a.errorbar([2.5], [(q['E'] - E00) * Y], yerr=[q['se'] * Y], fmt='D', ms=4, color='C1', lw=0.8, capsize=2,
                                  label='FN-DMC, ViT guide')
 a.set_xlabel(r'variance $\sigma^2/N$  ($10^{-4}$)'); a.set_ylabel(r'$E/N + 0.4988$  ($10^{-5}$)')
-a.set_title('(a) 8x8', loc='left', fontsize=9); a.legend(fontsize=6.5, frameon=False, loc='upper left')
+a.set_title('(a) 8x8', loc='left', fontsize=9); a.legend(fontsize=6.5, frameon=False, loc='center right')
 
 b = ax[1]; E0 = -0.50380965
 pts = [('p0', 'o', 'C0'), ('p1', 'o', 'C0'), ('p2_opt', 'o', 'C0'), ('p2_repeated', '^', 'C1')]

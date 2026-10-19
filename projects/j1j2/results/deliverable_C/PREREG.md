@@ -167,3 +167,13 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
   new L1; ~3072 samples, >= 80 sweeps after the random start). If (ii) - (i) > 2 sigma (bootstrap of the difference by
   chains), (ii) is the primary value; otherwise (i) is primary and (ii) is quoted as the conservative value. The Hu
   tension rule of E1 is applied to the primary value.
+
+## Outcomes (2026-10-19), against the registered rules
+- E1 (extrapolation, amendment 4 rule): all samples -0.498992(16) stat (8) sys; late-only -0.498974(27); late - all
+  +1.8(2.4)e-5 < 2 sigma -> "all" is primary. Trim k = 10 moves it +6e-6 < stat -> no doubling. Hu tension: 3.4 sigma
+  (> 3) -> "in tension with Hu's -0.49906(1)"; DMRG: 2.1 sigma (no tension by the rule).
+- E2 (FN-DMC psi_P guide): 8 populations (both jobs stopped by the 4.5 GPU-h per-job cap; 7.2 GPU-h total, cap 9),
+  E_FN = -0.498889(11). FN gain resolved: -4.2(1.5)e-5 (E_FN + 2 SE_comb < E_0). New best bound: no. Transient rule:
+  late - protocol = +2.3(1.8)e-5, not below -2 SE -> protocol value quoted. The SE target 1e-5 was missed by 7%.
+- E3: pilot done; production not run (Paderborn).
+- E4: not run (download not approved).

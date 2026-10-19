@@ -388,7 +388,7 @@ class GuideCtx:
 
 
 def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3, tag='', excl=None, clip=None,
-             ev=None, hcurve=None, which='kept'):
+             ev=None, hcurve=None, which='kept', loss_kind='quad'):
     """wt_loop.fit, edge loss (kept bonds of (la, s), weight |H_xy| a_y/a_x): sum w ((f_x + DLR_x) - (f_y + DLR_y))^2.
     excl: optional bool mask of orbits whose incident edges get weight 0 (held-out orbits)."""
     import optax
@@ -401,10 +401,17 @@ def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3,
         k1, k2 = jax.random.split(key)
         idx = jnp.clip(jnp.searchsorted(CDF, jax.random.uniform(k1, (B,), f64) * CDF[-1]), 0, sec.D - 1)
         x = sec.reps[idx]
-        valid = valid_bonds(x); nval = valid.sum(1)
-        sc = jnp.where(valid, jax.random.uniform(k2, valid.shape), -1.0)
+        valid = valid_bonds(x)
+        if which == 'viol':                                   # pick K bonds among the VIOLATING ones (all neighbours looked up)
+            yall = jnp.where(valid, x[:, None] ^ MASKS[None, :], x[:, None])
+            iall = SS.canon(sec.T, sec.reps, yall.reshape(-1)).reshape(B, NB)
+            cand = valid & (s[idx][:, None] * s[iall] > 0)
+        else:
+            cand = valid
+        nval = cand.sum(1)
+        sc = jnp.where(cand, jax.random.uniform(k2, valid.shape), -1.0)
         _, bsel = jax.lax.top_k(sc, K)
-        ok = jnp.take_along_axis(valid, bsel, 1)
+        ok = jnp.take_along_axis(cand, bsel, 1)
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
         rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
@@ -419,7 +426,9 @@ def fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, seed, B=256, K=8, lr=3e-3,
         X = bits(jnp.concatenate([x, y.reshape(-1)])); Tt = jnp.concatenate([tx, ty.reshape(-1)])
         fa = model.f_aug(q, X, Tt, jnp.concatenate([G, jnp.repeat(G, K)])).astype(f64)
         fx, fy = fa[:B], fa[B:].reshape(B, K)
-        return 0.5 * jnp.mean(iw * jnp.sum(wgt * ((fx + dlx)[:, None] - (fy + dly)) ** 2, 1)) / N
+        dd = (fx + dlx)[:, None] - (fy + dly)
+        pen = dd ** 2 if loss_kind == 'quad' else 2.0 * (jnp.cosh(jnp.clip(dd, -30, 30)) - 1.0)
+        return 0.5 * jnp.mean(iw * jnp.sum(wgt * pen, 1)) / N
 
     @jax.jit
     def step(fl, ost, key):
@@ -462,7 +471,7 @@ def base_features(lab):
 
 
 
-def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=4321, which='kept'):
+def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=4321, which='kept', loss_kind='quad'):
     """held-out evaluator: the same edge loss as fit_edge on nb fixed batches drawn from CDF (all edges kept)."""
     sec = lab.sec
 
@@ -471,10 +480,17 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
         k1, k2 = jax.random.split(key)
         idx = jnp.clip(jnp.searchsorted(CDF, jax.random.uniform(k1, (B,), f64) * CDF[-1]), 0, sec.D - 1)
         x = sec.reps[idx]
-        valid = valid_bonds(x); nval = valid.sum(1)
-        sc = jnp.where(valid, jax.random.uniform(k2, valid.shape), -1.0)
+        valid = valid_bonds(x)
+        if which == 'viol':                                   # pick K bonds among the VIOLATING ones (all neighbours looked up)
+            yall = jnp.where(valid, x[:, None] ^ MASKS[None, :], x[:, None])
+            iall = SS.canon(sec.T, sec.reps, yall.reshape(-1)).reshape(B, NB)
+            cand = valid & (s[idx][:, None] * s[iall] > 0)
+        else:
+            cand = valid
+        nval = cand.sum(1)
+        sc = jnp.where(cand, jax.random.uniform(k2, valid.shape), -1.0)
         _, bsel = jax.lax.top_k(sc, K)
-        ok = jnp.take_along_axis(valid, bsel, 1)
+        ok = jnp.take_along_axis(cand, bsel, 1)
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B, K)
         rP = jnp.exp(jnp.clip(la[iy] - la[idx][:, None], -60, 60))
@@ -488,14 +504,16 @@ def make_edge_eval(lab, model, la, s, CDF, LIW, DLR, B=256, K=8, nb=16, key0=432
         X = bits(jnp.concatenate([x, y.reshape(-1)])); Tt = jnp.concatenate([tx, ty.reshape(-1)])
         fa = model.f(q, X, Tt).astype(f64)                       # exactly symmetric evaluation
         fx, fy = fa[:B], fa[B:].reshape(B, K)
-        return 0.5 * jnp.mean(iw * jnp.sum(wgt * ((fx + dlx)[:, None] - (fy + dly)) ** 2, 1)) / N
+        dd = (fx + dlx)[:, None] - (fy + dly)
+        pen = dd ** 2 if loss_kind == 'quad' else 2.0 * (jnp.cosh(jnp.clip(dd, -30, 30)) - 1.0)
+        return 0.5 * jnp.mean(iw * jnp.sum(wgt * pen, 1)) / N
     bds = [batch(jax.random.PRNGKey(key0 + i)) for i in range(nb)]
     lj = jax.jit(loss)
     return lambda q: float(np.mean([float(lj(q, *b)) for b in bds]))
 
 
 def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, clip=1.0, heldout_curve=False,
-               normalize=True, which='kept'):
+               normalize=True, which='kept', loss_kind='quad'):
     """fit_edge with (i) the 20% held-out orbits excluded from training (never sampled, incident edges weight 0),
     (ii) global-norm gradient clipping (the seed-1003 'dead fit' was a collapse to a constant output after an early
     large update: the edge loss returned exactly to its f = 0 value), (iii) collapse/stall detection and re-seeding,
@@ -519,12 +537,12 @@ def robust_fit(lab, model_fn, la, s, target, steps, seed, lr, tag, max_tries=3, 
     for t in range(max_tries):
         sd = seed + 7919 * t; lr_t = lr / (2 ** t)
         model = model_fn(sd); model.out_scale = scale
-        ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR, which=which)
+        ev = make_edge_eval(lab, model, la, s, CDFh, LIWh, DLR, which=which, loss_kind=loss_kind)
         L0 = ev(model.flat0)
         lab.sec.offload()
         hc = [] if heldout_curve else None
         flat, curve = fit_edge(lab, model, la, s, CDF, LIW, DLR, steps, sd, lr=lr_t, tag=f'{tag}.{t}', excl=lab.HO, clip=clip,
-                               ev=ev if heldout_curve else None, hcurve=hc, which=which)
+                               ev=ev if heldout_curve else None, hcurve=hc, which=which, loss_kind=loss_kind)
         lab.sec.reload()
         Lh = ev(flat)
         stalled = len(curve) > 1 and curve[1][1] > 0.995 * curve[0][1] and abs(curve[-1][1] - curve[0][1]) < 1e-3 * curve[0][1]

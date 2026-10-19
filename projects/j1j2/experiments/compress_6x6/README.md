@@ -897,3 +897,37 @@ on 2 D0 - H.
 - (c) for the best stored sign is below psi_P + 2 Lanczos (8.6e-6 per site).
 - Also reported against ViT + 2 Lanczos + variance extrapolation (1.5e-6 from p = 0, 1, 2; not variational).
 - Kill the r part if (d) recovers < 30%. Kill the route if (c) is not below 8.6e-6 for s_P and s_1.
+
+## Bond-field FN, round 2: training the field on the FN energy (pre-registered 2026-10-19, lead approved; before any run; code `cx_bondfield2.py`; <= 4 slice-h; exact 6x6, sign s_1)
+**Gradient check (derived here).** H_eff(r) = H on kept bonds + diag(D0 + sum_bad |h_xy| r_xy), with r_yx = 1/r_xy.
+- For the normalised ground state phi, Hellmann-Feynman gives dE/dlog r_xy = |h_xy| (r_xy phi_x^2 - phi_y^2 / r_xy).
+  It vanishes at r = phi_y/phi_x. This is the lead's formula.
+- With phi held fixed, E_phi(r) = <phi|H_eff(r)|phi> = const + sum_{bad pairs} |h| phi_x phi_y (t + 1/t - 2), with
+  t = r phi_x / phi_y.
+  - It majorises E_FN: E_FN(r) <= E_phi(r), with equality at the current r.
+  - Its gradient at the current r equals the Hellmann-Feynman gradient (envelope theorem).
+- So "descend E_FN" is done by minimising the exact majoriser. Loss per bad bond: |h| phi_x phi_y 2 (cosh delta - 1),
+  with delta = log r - log(phi_y/phi_x).
+- Then re-solve phi and refit. A refit is accepted only if the exact E_FN decreases, which makes the loop monotone.
+- Symmetry: r = ratios of a_hat = |psi_P| exp(f), with f orbit-invariant (FEAT nets on orbit features), so H_eff
+  keeps the full symmetry and the orbit tables apply.
+
+**Runs:**
+1. **Bad bonds per configuration.** The number of valid bonds with s_1(x) s_1(x^b) > 0, under |phi|^2 for the field
+   of (c), and under |psi_P|^2. This sets the hop cost of fields with one-hop features: one extra hop of psi_P per bad
+   neighbour of a walker.
+2. **(c) converged further:** up to 60 self-consistent solves, or until the change is < 1e-9 per site. This fixes
+   the ceiling (20 solves gave 4.62e-6).
+3. **Iterate-and-refit,** starting from a_hat = |psi_P|, phi_0 = phi_FN; up to 6 outer rounds, each a fresh 30k-step
+   FEAT fit with the exact majoriser loss on bad bonds only, then an exact re-solve. Feature arms:
+   - A: psi_P's one-hop features with neighbours split by s_1 (log a, log V, log W, asinh E_L).
+     Cost: 1 + n_bad psi_P hops per walker step.
+   - B: A + the current FN solution's own one-hop quantities at x (log phi, log V_phi, log W_phi, asinh E_L,phi).
+     **Honest cost:** phi is never stored in a GFMC run, so these inputs are NOT available to a walker. B is an
+     information upper bound only.
+   - C (reciprocal edge net on the local spin patch + psi_P's bond ratio): conditional, only if budget remains after
+     1-3; it needs a custom wall operator.
+4. **Pass:** the trained field (arm A, or C if run) reaches E_FN <= 1.0e-5 per site at the stated hop cost. That is
+   below psi_P + 1 Lanczos (1.89e-5 in E_FN) and approaching psi_P + 2 Lanczos (8.6e-6).
+   - B passing alone means: information sufficient, but not available to a walker.
+   - Also reported: the fraction of the converged ceiling's gap that is closed.

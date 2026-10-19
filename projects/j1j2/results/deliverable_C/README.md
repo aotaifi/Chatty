@@ -114,7 +114,16 @@ p = 0, 1, 2, the repeated-step p = 2 state, the two-point line, and the exact E0
 | smoke tests, probes, exact 6x6 check | 0.15 |
 | 4x4 gates | CPU (laptop) |
 
-## 12x12 RBM+PP cost pilot (PREREG E5): state on 2026-10-19 20:05, no result yet
+## 12x12 RBM+PP cost pilot (PREREG E5): result (2026-10-19)
+- **Result:** ran 17:08-18:08 on one H100 (gpu1014), 20 SR steps before the 1 h limit (`pp12pilot_3749014_log.txt`).
+  96.6 s per SR step with the published 576-image projection during training, 25 min to thermalise, ~92 GB device memory
+  requested. E/N -0.088 -> -0.187 in 20 steps from a random start. Projected training cost by the pre-registered rule:
+  **~266 H100-h (lower bound) -> fails the <= 100 H100-h line; option (b) as configured is not the cheap route.**
+- Cost cuts to test before any 12x12 training (each is a short pilot): train without projection (576x fewer
+  determinant evaluations per amplitude) and project only for the final energy; Nomura's 4x4-sublattice PP (fewer
+  parameters); warm start from the 6x6 PP tiled to 12x12; fewer samples in the early steps.
+
+### History of the pilot submission
 - Submitted to Paderborn `gpu_h100` on 2026-10-19 14:3x as job **3749014** (`cluster/paderborn/deliverable_C/rbmpp_L12_pilot_h100.sbatch`,
   code staged in /pc2/users/h/hpcalot/chatty/j1j2/src/rbmpp/). Time limit reduced to 1 h after submission (lead: 1-hour pilot).
   Output will land in /pc2/users/h/hpcalot/chatty/j1j2/results/delC_pp12pilot_3749014/ (rbmpp_train.py json + params every

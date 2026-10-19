@@ -195,3 +195,12 @@ Definitions (periodic 8x8, J2/J1 = 0.5, per-site energies in J1):
       <= 50 H100-h; if it is 50-100 H100-h, report and propose cost cuts (projection only at the end, Nomura's 4x4
       sublattice PP); if > 100 H100-h, option (b) is not the cheap route and the plan is revised.
   (iii) reference point, not a criterion: published 12x12 RBM+PP (4x4-sublattice PP) -0.496791(4); GCNN -0.496769(9).
+
+### E5 outcome (2026-10-19, job 3749014, 1 H100, 17:08-18:08, stopped by the 1 h limit after 20 SR steps)
+- Cost: 96.6 s per SR step (4096 samples, 576 projection images, PP alone, 20,736 active parameters); thermalisation
+  (20 sweeps) 1489 s; XLA asked for 91.8 GB device memory (above the 66 GB it could get; it ran after rematerialisation).
+- (i) sanity: energies finite, acceptance 0.23-0.25: pass; the "last 50 vs steps 25-75" comparison is not evaluable
+  (only 20 steps). E/N fell from -0.0881 (step 1) to -0.1867 (step 20) from the random start (target region ~-0.497).
+- (ii) projection by the registered rule: (3000 + 900) x 96.6 s + 1500 x 4 x 96.6 s = 9.6e5 s = **~266 H100-h**,
+  a lower bound (12x12 will need more steps than 6x6). > 100 H100-h -> **option (b) as configured is not the cheap
+  route; the plan must be revised** (registered consequence).

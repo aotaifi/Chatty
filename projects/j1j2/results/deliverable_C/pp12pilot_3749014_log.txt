@@ -1,0 +1,10 @@
+[17:08:26] lattice 12x12 proj simple (576 images) rbm False params 25376 (active 20736)
+[17:35:35] thermalised (1489s), acc 0.252
+[17:37:23] it     1 E/N -0.088084 +- 8.0e-04 var/N 3.780e-01 acc 0.25 |d|_S 0.369 |F| 3.43e+01 (107.43s, sample 0.00s)
+[17:38:59] it     2 E/N -0.092789 +- 8.0e-04 var/N 3.795e-01 acc 0.25 |d|_S 0.370 |F| 3.22e+01 (96.61s, sample 0.00s)
+[17:40:36] it     3 E/N -0.097849 +- 7.7e-04 var/N 3.505e-01 acc 0.25 |d|_S 0.355 |F| 2.75e+01 (96.60s, sample 0.00s)
+[17:51:52] it    10 E/N -0.134520 +- 7.8e-04 var/N 3.601e-01 acc 0.24 |d|_S 0.360 |F| 3.30e+01 (96.59s, sample 0.00s)
+[18:07:57] it    20 E/N -0.186736 +- 6.9e-04 var/N 2.777e-01 acc 0.23 |d|_S 0.315 |F| 2.41e+01 (96.52s, sample 0.00s)
+[2026-10-19T18:08:16.005] error: *** JOB 3749014 ON gpu1014 CANCELLED AT 2026-10-19T18:08:16 DUE TO TIME LIMIT ***
+{"L": 12, "rbm": false, "seed": 1, "steps": 300, "chains": 4096, "lr": 0.05, "lr_end": 0.03, "shift": 1e-3,
+ "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 25, "eval_samples": 16384, "eval_proj": ["simple"]}

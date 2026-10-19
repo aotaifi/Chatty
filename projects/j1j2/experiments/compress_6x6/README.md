@@ -1036,3 +1036,17 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
 - **Fix.** Align s0 by the sign of sum |psi0|^2 s0 s_1, and exclude configurations with psi0 = 0 from {s_1 != s0}.
 - The flip job was cancelled and is rerun with the fix. Arms (i), (ii) and (iv) and the veto E_FN do not depend on
   s0.
+
+#### Amendment V-5 (2026-10-19 21:45, after the flip results, before this run)
+- **Result of the flip stage.** At 6 solves the flipped signs s_2 reach 1.65e-5 (arms i / iii / iv) and 1.80e-5
+  (arm ii), against s_1's 1.81e-5 after 6 solves. The pre-registered iterate condition compared them with s_1's
+  40-solve ceiling, so it did not fire.
+- That comparison is unequal, so it is repeated at an equal solve count:
+  - s_2a = s_1 flipped on all of X_0.1;
+  - s_2b = s_1 flipped on X_0.1 with mu > 0 (KKT);
+  - each with 40 fixed-point solves from ViT ratios, against s_1's 2.51e-6 at 40 solves.
+- Then one more round from the better of the two: s_3 = KKT flip at tau = 0.1 from that phi*, 30 solves.
+- Reading:
+  - s_2 below 2.51e-6 at 40 solves: the expelled set acts as the next sign step and the loop closes at fixed cost;
+  - otherwise not.
+- Code `cx_s2ceil.py`, <= 1.2 slice-h.

@@ -1010,3 +1010,12 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
 - **Iteration.** If arm (iv) or (i) lowers E_FN below the s_1 ceiling, 2 more rounds of the best non-oracle arm (10
   fixed-point solves each, then Z, mu, flip).
 - **Budget:** <= 1.5 slice-h, up from 1. The extra covers the ceiling that the cancelled round-2 job did not deliver.
+
+#### Amendment V-2 (2026-10-19 15:45, during the ceiling phase of the veto job, before any flip computation)
+- **Problem.** The only free GPUs are 16 GB slices, at ~1.3 min per FN solve. One job cannot finish ceiling +
+  flips + iterations within its time limit.
+- **Change.** Split into two jobs:
+  - job `veto16` (17356522, running, unchanged settings) computes the ceiling (40 fixed-point solves + 30 L-BFGS
+    evaluations) and saves phi*. It may time out in its flip phase; those partial flip numbers are not used.
+  - A second job reruns the flip stage from the saved phi*, with the same flip/iterate settings.
+- Nothing pre-registered changes.

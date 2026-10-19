@@ -58,38 +58,54 @@ def grad(lan, lphi, Vg, s):
 
 
 # ---------------------------------------------------------------- (1a) fixed point
-r0, lphi, _, _ = solve(la_P, s1); res['EFN_s1_vit'] = r0['E']
-fp = [r0]; la_fp = lphi
-for k in range(SPEC.get('fp_solves', 40)):
-    rk, lphi_k, _, _ = solve(la_fp, s1); fp.append(rk); la_fp = lphi_k
-    if k % 5 == 4: log(f'  fp {k + 1}: E {rk["E"]:.6e}  D {rk["D"]:.3e}  min log(phi/psi0) {rk["minq0"]:.1f}'); res['fixed_point'] = fp; dump(F, res)
-res['fixed_point'] = fp; dump(F, res)
-# ---------------------------------------------------------------- (1b) L-BFGS on a_hat
-lb = []; cache = {}
-def fun(xv):
-    la = jnp.asarray(xv)
-    rk, lph, lan, Vg = solve(la, s1)
-    g = grad(lan, lph, Vg, s1)
-    lb.append(rk); cache['la'] = la; cache['lphi'] = lph
-    if len(lb) % 5 == 0: log(f'  lbfgs eval {len(lb)}: E {rk["E"]:.6e}  D {rk["D"]:.3e}'); res['lbfgs'] = lb; dump(F, res)
-    return rk['E'] * N, np.asarray(g, np.float64)
-opt = minimize(fun, np.asarray(la_P, np.float64), jac=True, method='L-BFGS-B',
-               options=dict(maxfun=SPEC.get('lbfgs_evals', 30), maxiter=SPEC.get('lbfgs_evals', 30), maxcor=10))
-res['lbfgs'] = lb
-best_lb = int(np.argmin([q['E'] for q in lb]))
-# phi*: the lower endpoint; for L-BFGS phi* is the FN solution of the best field
-if lb[best_lb]['E'] < fp[-1]['E']:
-    _, la_star, _, _ = solve(jnp.asarray(opt.x), s1); res['phi_star_from'] = 'lbfgs'
+if SPEC.get('la_star'):                                     # flip stage: ceiling from a previous job (amendment V-2)
+    cj = json.load(open(SPEC['ceiling_json']))
+    for k_ in ('fixed_point', 'lbfgs', 'EFN_s1_vit'):
+        if k_ in cj: res[k_] = cj[k_]
+    fp = cj['fixed_point']; lb = cj.get('lbfgs', [])
+    la_star = norm_la(jnp.asarray(np.load(SPEC['la_star'])))
+    res['ceiling'] = min([q_['E'] for q_ in fp] + [q_['E'] for q_ in lb]); res['phi_star_from'] = 'previous job'
+    h_ = [q_['E'] for q_ in fp]; a_, b_, c_ = h_[-3:]
+    res['fp_aitken'] = c_ - (c_ - b_) ** 2 / (c_ - 2 * b_ + a_); res['fp_last_ratio'] = (c_ - b_) / (b_ - a_)
+    SKIP_CEILING = True
 else:
-    la_star = la_fp; res['phi_star_from'] = 'fixed_point'
-la_star = norm_la(la_star)
-res['ceiling'] = min(fp[-1]['E'], lb[best_lb]['E'])
-h_ = [q['E'] for q in fp]; a_, b_, c_ = h_[-3:]
-res['fp_aitken'] = c_ - (c_ - b_) ** 2 / (c_ - 2 * b_ + a_); res['fp_last_ratio'] = (c_ - b_) / (b_ - a_)
+    SKIP_CEILING = False
+r0, lphi, _, _ = (solve(la_P, s1) if not SKIP_CEILING else (dict(E=res['EFN_s1_vit']), None, None, None)); res['EFN_s1_vit'] = r0['E']
+if not SKIP_CEILING:
+  fp = [r0]; la_fp = lphi
+  for k in range(SPEC.get('fp_solves', 40)):
+      rk, lphi_k, _, _ = solve(la_fp, s1); fp.append(rk); la_fp = lphi_k
+      if k % 5 == 4: log(f'  fp {k + 1}: E {rk["E"]:.6e}  D {rk["D"]:.3e}  min log(phi/psi0) {rk["minq0"]:.1f}'); res['fixed_point'] = fp; dump(F, res)
+  res['fixed_point'] = fp; dump(F, res)
+  # ---------------------------------------------------------------- (1b) L-BFGS on a_hat
+  lb = []; cache = {}
+  def fun(xv):
+      la = jnp.asarray(xv)
+      rk, lph, lan, Vg = solve(la, s1)
+      g = grad(lan, lph, Vg, s1)
+      lb.append(rk); cache['la'] = la; cache['lphi'] = lph
+      if len(lb) % 5 == 0: log(f'  lbfgs eval {len(lb)}: E {rk["E"]:.6e}  D {rk["D"]:.3e}'); res['lbfgs'] = lb; dump(F, res)
+      return rk['E'] * N, np.asarray(g, np.float64)
+  opt = minimize(fun, np.asarray(la_P, np.float64), jac=True, method='L-BFGS-B',
+                 options=dict(maxfun=SPEC.get('lbfgs_evals', 30), maxiter=SPEC.get('lbfgs_evals', 30), maxcor=10))
+  res['lbfgs'] = lb
+  best_lb = int(np.argmin([q['E'] for q in lb]))
+  # phi*: the lower endpoint; for L-BFGS phi* is the FN solution of the best field
+  if lb[best_lb]['E'] < fp[-1]['E']:
+      _, la_star, _, _ = solve(jnp.asarray(opt.x), s1); res['phi_star_from'] = 'lbfgs'
+  else:
+      la_star = la_fp; res['phi_star_from'] = 'fixed_point'
+  la_star = norm_la(la_star)
+  res['ceiling'] = min(fp[-1]['E'], lb[best_lb]['E'])
+  h_ = [q['E'] for q in fp]; a_, b_, c_ = h_[-3:]
+  res['fp_aitken'] = c_ - (c_ - b_) ** 2 / (c_ - 2 * b_ + a_); res['fp_last_ratio'] = (c_ - b_) / (b_ - a_)
+  phis = jnp.exp(la_star)
+  res['W_B_site'] = float(0.5 * jnp.sum(sec.n * phis * S_viol(phis, s1))) / N
+  log('ceiling', res['ceiling'], 'from', res['phi_star_from'], 'aitken(fp)', res['fp_aitken'], 'W_B', res['W_B_site']); dump(F, res)
 phis = jnp.exp(la_star)
 res['W_B_site'] = float(0.5 * jnp.sum(sec.n * phis * S_viol(phis, s1))) / N
-log('ceiling', res['ceiling'], 'from', res['phi_star_from'], 'aitken(fp)', res['fp_aitken'], 'W_B', res['W_B_site']); dump(F, res)
-np.save(os.path.join(OUT, 'la_star.npy'), np.asarray(la_star))
+if not SKIP_CEILING: np.save(os.path.join(OUT, 'la_star.npy'), np.asarray(la_star))
+dump(F, res)
 
 # ---------------------------------------------------------------- Z, mu, detectors, flips
 laPn = norm_la(la_P)

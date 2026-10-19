@@ -1039,3 +1039,72 @@ Against the pre-registered bars:
   - flipping all of X (9.3% of configurations): E_FN with ViT ratios 1.019e-4, above s_1's 9.54e-5;
   - flipping X intersected with the Krylov set (5.3%): 9.45e-5.
   - Own c-optima and the tau = 1e-2 / 1e-3 rows are pending in vetoF.
+
+# Expulsion / veto / flip test: results (2026-10-19)
+Pre-registration: `experiments/compress_6x6/README.md` ("Expulsion / veto test", amendments V-1 to V-5). Raw files:
+`runs/cx_veto_ceiling.json` (veto16), `runs/cx_veto_lbfgs.json`, `runs/cx_veto_flip.json` (vetoF 17365524),
+`runs/cx_s2ceil.json` (17365834).
+Incidents:
+- vetoF 17362028 failed copying its code (transient /project error, ERANGE). It was rerun unchanged as 17365524.
+- vetoLB timed out at 1 h, after 25 recorded L-BFGS evaluations.
+
+## What was run
+1. **phi*:** 40 plain self-consistent solves for s_1.
+2. **X_tau** = {x : phi*_x / |psi_P(x)| < tau}, the "expelled" configurations.
+3. **Wrong-sign detector:** precision and recall of X_tau as a detector of s_1 != s0 (s0 aligned to s_1's global
+   sign, psi0 zeros excluded).
+4. **Veto field:** E_FN with ViT ratios and a = 0 on X_tau.
+5. **Flips** of s_1 on X_tau: (i) all; (ii) where the Krylov step agrees; (iii) oracle s_1 != s0; (iv) KKT
+   mu_x = s_x (H s phi*)_x > 0. Each scored by E_FN with ViT ratios and by its own self-consistent iteration.
+6. **Equal-solve comparison:** 40 solves for s_2 from (i) and (iv) at tau = 0.1, and one more KKT round s_3
+   (30 solves).
+
+## Result
+**One line: the expelled set IS largely the wrong-sign set, and flipping it is a genuine sign step. At 40 solves
+the flipped sign s_2 reaches E_FN 9.1e-7, against 2.5e-6 for s_1 (2.7x lower). A second round adds only ~4%. The
+veto alone, on ViT ratios, does little (9.1e-5 vs 9.5e-5): the remaining gap is a bulk-ratio (amplitude) problem.**
+
+s_1's wrong-sign set is 10.2% of configurations by count, but only 7.2e-6 of the |psi0|^2 weight.
+
+| tau | X_tau, count | precision (count / psi0 / psi_P weight) | recall (count / psi0 / psi_P weight) | veto E_FN (ViT ratios) | share of X_tau with mu > 0 |
+|---|---|---|---|---|---|
+| 1e-1 | 9.3% | 0.90 / 0.997 / 0.91 | 0.82 / **0.83** / 0.82 | 9.07e-5 | 0.88 |
+| 1e-2 | 6.3% | 0.97 / 1.000 / 0.996 | 0.60 / **0.61** / 0.34 | 9.31e-5 | 0.99 |
+| 1e-3 | 4.9% | 0.98 / 1.000 / 0.999 | 0.47 / 0.44 / 0.18 | 9.41e-5 | 1.00 |
+
+Flips, E_FN per site (s_1: 9.54e-5 with ViT ratios; 1.81e-5 after 6 own solves):
+
+| tau = 1e-2 | flipped (count) | wrong-sign weight after (psi0^2; s_1: 7.2e-6) | E_FN, ViT ratios | own solves, 6 | Aitken |
+|---|---|---|---|---|---|
+| (i) all | 6.3% | 2.84e-6 | 9.67e-5 | 1.65e-5 | 7.3e-6 |
+| (ii) Krylov agrees | 4.1% | 6.64e-6 | 9.50e-5 | 1.80e-5 | 8.1e-6 |
+| (iii) oracle | 6.1% | 2.84e-6 | 9.67e-5 | 1.65e-5 | 7.3e-6 |
+| (iv) KKT | 6.3% | 2.84e-6 | 9.67e-5 | 1.65e-5 | 7.3e-6 |
+
+At tau = 0.1 all arms remove 83% of the wrong-sign weight (7.2e-6 -> 1.2e-6), except Krylov-agree (6.5e-6).
+
+Equal-solve comparison (amendment V-5), E_FN per site after k self-consistent solves from ViT ratios:
+
+| k | s_1 | s_2a (flip all of X_0.1) | s_2b (KKT, X_0.1) | s_3 (KKT round from s_2a) |
+|---|---|---|---|---|
+| 6 | 1.81e-5 | 1.51e-5 | 1.54e-5 | 1.50e-5 |
+| 10 | 1.04e-5 | 7.84e-6 | 8.05e-6 | 7.75e-6 |
+| 20 | 4.62e-6 | 2.78e-6 | 2.88e-6 | 2.70e-6 |
+| 30 | 3.09e-6 | 1.44e-6 | 1.49e-6 | **1.38e-6** |
+| 40 | 2.51e-6 | **9.15e-7** | 9.48e-7 | - |
+
+**Against the pre-registered readings and the math-review predictions:**
+- **Veto:** E_FN 9.1-9.4e-5 > 3e-5, so a bulk-ratio (amplitude) problem. Expelling X alone does not help unless the
+  ratios on the support are also right.
+- **"Z covers >= 80% of the |psi0|^2 weight of W":** holds at tau = 0.1 (0.83); FAILS at tau = 1e-2 (0.61).
+- **PI caveat** (expulsion = inconsistency, not necessarily wrongness): the false-positive rate is 10% by count at
+  tau = 0.1 and 2-3% at tau <= 1e-2. By |psi0|^2 weight, precision is >= 0.997.
+- **Flip:** the expelled set acts as the next sign step. At equal solve count, s_2 beats s_1 by 1.3-2.7x, rising with
+  k. KKT and flip-all are equivalent (88-100% of X has mu > 0). Krylov-agree is too conservative.
+- **"E_FN falls monotonically toward exact within a few rounds":** monotone, yes. But the second round (s_3) adds
+  only ~4% at 30 solves, and s_3 flips only 1.7%. The remaining error is mostly the field (amplitude), not the sign.
+- **Ceiling convergence:** plain iteration ratio ~0.92 per solve at 40 solves, slowly sub-geometric. L-BFGS on the
+  global log-amplitude is far slower (9.25e-5 after 20 evaluations), so it is no help in this parametrisation.
+- **Caveat on scale.** All ceilings use the exact self-consistent field, i.e. the FN solution itself, which is never
+  stored. What is storable is the sign (a sign net, fact 5) and possibly a veto bit. The stored-field route
+  (arm A) is pending; its 6-round value is 2.56e-5.

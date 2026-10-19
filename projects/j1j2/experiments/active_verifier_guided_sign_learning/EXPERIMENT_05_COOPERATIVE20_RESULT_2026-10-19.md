@@ -23,10 +23,10 @@ Each row aggregates `1024` **overlapping** eight-orbit patches across four seeds
 - Independent **full sparse H** expectations checked `128` joint sign actions (oracle subsets and random subsets, drawn from all 16 sample runs): max `|ΔE_direct−ΔE_boundary|=2.3314683517128287e-15`; amplitude symmetry error `7.632783294297951e-17` over `223` sampled orbits; zero sign symmetry violations. The physical energies agree. The diagonal cancels exactly for sign-only changes.
 
 ## Proposal-support warning (crucial)
-A **post-hoc whole 20-site oracle audit** found `4,654` symmetry orbits, `198` individually profitable flips above the numerical threshold `G>1e-12`; the old handoff counted `201` at a looser strict-positive cutoff (the discrepancy concerns negligible gains, not evidence of new physics).
+A **post-hoc whole 20-site oracle audit** found `4,654` symmetry orbits, `198` individually profitable flips above the numerical threshold `G>1e-12`; the archived handoff recorded `201` under its earlier numerical solver/threshold. The regenerated guide has `208` strictly positive values, but `10` are below `1e-12` and sum to just `7.37e-13`. Thus meaningful support comparisons use the explicit `1e-12` cutoff; do not interpret tiny count discrepancies as physical discoveries.
 
 - `pi∝a` 4-seed union: visited `2,981` orbits, including `91/198` significant positive singles (46.0%) but **92.8%** of the summed positive *single-action* gain.
-- Union of all 4 root laws × 4 seeds: visited `4,568/4,654` orbits (**98.2%**), `94.95%` of significant positive orbit identities, **99.990%` of summed positive single-action gain.
+- Union of all 4 root laws × 4 seeds: visited `4,568/4,654` orbits (**98.2%**), `94.95%` of significant positive orbit identities, **99.990%** of summed positive single-action gain.
 - These are hindsight coverage measurements, **not** gain obtainable by a scalable policy; the union is effectively enumerating most orbit representatives at this tiny N. The four sampling laws should never be pooled to claim cheap walker discovery.
 - Each `pi∝a` seed averaged `27,843.75` **unique exact amplitude array lookups** after scoring; `a²`, `sqrt(a)`, and uniform roots averaged separately and all cache/request/probe counts are in the results JSON. The ~1-second CPU runtimes are *not* estimates of NQS/128-walker inference costs; exact amplitude preparation is excluded.
 
@@ -52,6 +52,7 @@ python3 prepare_sign20.py
 # Then, in the experiments/active_verifier_guided_sign_learning directory:
 for law in tempered_a a2 a_half uniform_states; do
   for seed in 30260 30261 30262 30263; do
+    if [ "$law" = tempered_a ]; then prefix=''; else prefix="${law}_"; fi
     python3 avsl_cooperative20.py --data /scratch/SIGN_DATA/sign20_training_data.npz \
       --anchors 256 --seed "$seed" --root-law "$law" \
       --out "/scratch/SIGN_DATA/cooperative20_${law}_${seed}.json"
@@ -60,8 +61,6 @@ done
 python3 avsl_cooperative20_support.py \
  --data /scratch/SIGN_DATA/sign20_training_data.npz \
  --directory /scratch/SIGN_DATA --out /scratch/SIGN_DATA/support.json
-# For support.py archived naming, the tempered_a files are historically named
-# cooperative20_<seed>.json (without 'tempered_a_'), so rename/copy those four.
 # Validate direct H with all 16 result paths using:
 python3 avsl_cooperative20_validate.py \
  --data /scratch/SIGN_DATA/sign20_training_data.npz \

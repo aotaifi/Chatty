@@ -78,3 +78,12 @@ Implement an append-only JSONL event ledger. Required per event: `run_id, code_c
 5. Prepare a short readout answering: does **support** exist? are predictions **verifiable**? does **NN exploration** win at equal fully loaded cost? does the **local sign rule** remain size-consistent? Do not run the 6x6/8x8 training stage until all gates are visibly passed.
 
 **Status at preregistration:** Literature-inspired on-policy verifier-guided discovery remains a hypothesis. The only completed new result here is a reanalysis of existing archive and a fully costed, falsifiable protocol; no fresh numerics.
+
+## Infrastructure progress on this branch (no new physics result)
+Two standalone, pure-Python files are now included:
+- `avsl_onpolicy_core.py`: explicit per-arm metered callable caches and append-only incremental JSONL cost events; paired same-amplitude Hamiltonian energy-difference estimator, **requiring independent a² chains**; marked-window overlap component combiner.
+- `test_avsl_onpolicy_core.py`: eight deterministic tests covering independent joint-update Hamiltonian energy identity, nonadditivity, no-flip/global-sign invariance, FN-mixed sampling rejection, exact uniform q audit, component merge/parity and ledger counters.
+
+The tests prove only mathematical/software invariants on a small graph, **not** an unbiased stochastic estimator on actual correlated walker histories, independent FN energy improvements or size consistency of a fully constructed local-window rule. The callable frontends deliberately contain neither ED signs nor global amplitude tables.
+
+**Unimplemented:** isolated 128-walker FN adapter, an independently seeded equilibrated a² VMC sampler, adaptive proposal runner, actual C_w region-excess predicate, empirical ratio-error calibration, fully timed per-arm baselines, and independent reprojected FN energies. Consequently no new transferable policy or acceptance decision is claimed. Stage 0 latency/performance calibration is the next permitted run, then Stage 1 only after the resource guard is verified.

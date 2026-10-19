@@ -1,6 +1,6 @@
 # AVSL cooperative-patch diagnostic — 2026-10-19
 
-Status: **completed bounded 20-site numerical scout**, pending additional independent full-H and compression-rule audits. No NN training, GFMC walkers, FN reoptimisation or 6×6/8×8 run.
+Status: **completed bounded 20-site numerical scout, independent full-H regression passed (5/5)**. Local-rule compression and genuinely on-policy FN-walker tests remain open. No NN training, GFMC walkers, FN reoptimisation or 6×6/8×8 run.
 
 ## Research question
 Is an individual-orbit positive fixed-amplitude gain label missing many **profitable joint flips with all individually adverse constituents** in *gain-blind, walker-neighbour-accessible* small configuration-graph patches?
@@ -34,7 +34,7 @@ Values below are normalized **frozen-amplitude total variational energy gains**,
 - Only **4/1,024**, **4/1,024**, **3/1,024** patches, respectively, showed a best subset exceeding the greedy-singles result by >1e-12.
 - Unique exact amplitude oracle values cached in a representative run averaged ~27,844 (a^1), ~30,413 (a^0.5), ~28,859 (uniform). Mean wall per experiment was ~0.88s, ~0.89s and ~1.32s respectively on the Mac, **not counting guide construction, FN solves or model training**. Cache misses/query counts are machine- and backend-specific; they do **not** establish 6×6 scaling.
 - The fourth seeds in each law use the same physical Hamiltonian and FN sign chamber. This is **not twelve independent physical instances**.
-- Score verification relies on the crossing-edge formula, previously audited against full H at ~1e-14 in the transfer benchmark. **This new implementation still needs its own independent full-H regression test and local-rule compression evaluation** before making a stronger statement.
+- New independent regression test `test_avsl_cooperative20.py` PASSED 5/5 on regenerated reference: direct full-H matrix-free energy for single and joint orbit updates matches the cut scorer to an asserted tolerance of 2e-11; orbit symmetry, symmetric W, best-subset score and global sign invariance also pass. **Local-rule compression remains untested**.
 
 ## Interpretation / decision
 **TEST gate yielded a bounded negative result:** no observed *all-individually-adverse but jointly profitable* pair/subset in 3,072 connected patches of <=8 symmetry orbits across three root laws. Even a deliberately broadened full-basis **oracle** root control did not reveal this hypothesized common local structure.
@@ -48,7 +48,15 @@ Values below are normalized **frozen-amplitude total variational energy gains**,
 ## Algebra
 For disjoint orbit sets A,B and `Z=sum a²`, `G(A union B)=G(A)+G(B)-8W_AB/Z`, where W_AB counts H_xy a_xa_y s_xs_y **once** from A to B. Negative W_AB reflects satisfied internal bonds, so a large 'synergy' term alone is **not** proof of a useful correction. Measure **actual joint gain against keep** and, for all-bad pairs, whether positive gain survives under the full external boundary objective. `G(all)=0`: global sign reversal is irrelevant.
 
-## Immediate reproducibility blocker
-The local scratch run completed, but the Mac Remote Desktop Commander connection became unresponsive while preparing the archive. The core uncommitted scout script and full per-patch raw JSON currently exist at the scratch paths above; until fetched/uploaded, **this commit is the exact protocol and consolidated numerical readout, not a complete independently rerunnable archive**. Never claim that the raw files were committed until GitHub retrieval verifies them.
+## Reproduction archive (GitHub PR #1)
 
-Next: recover script and raw results, unit-test orbit-coupling/independent H identity, then decide whether Experiment 05's short walker preflight should proceed.
+- Executed `avsl_cooperative20.py` and new `test_avsl_cooperative20.py` are committed next to this readout.
+- The **full 3,072-patch compact record** (candidate orbit keys, per-orbit gains, optimized mask, best/greedy gains, per-seed hardware/query counters) is committed as `cooperative20_compact_results.json.gz.b64`. It is gzip-compressed JSON encoded as text for the GitHub contents API.
+- To extract: `base64 -d cooperative20_compact_results.json.gz.b64 | gzip -dc > cooperative20_compact_results.json` (on macOS use `base64 -D`).
+- To regenerate the original `sign20_training_data.npz`, use archived `results/scalable_sign_2026-10-18/reproduce.py --stage data` in a **fresh isolated scratch workdir**. Its script copies and rewrites literal `/mnt/data` references in scratch; do not edit the main/dirty Mac checkout.
+- Example rerun from this experiment directory:
+  `python avsl_cooperative20.py --data /path/to/sign20_training_data.npz --root-law a_half --seed 30260 --anchors 256 --out /path/to/a_half_30260.json`
+- Identity test: `AVSL_SIGN20_DATA=/path/to/sign20_training_data.npz python -m unittest -v test_avsl_cooperative20`. Independent full-H energy regression **PASSED 5/5** locally.
+- Raw uncompressed per-seed JSONs remain at Mac scratch `/tmp/avsl05-20site-structural-data/`. The committed compressed archive retains essential per-patch results, not every original intermediate. No expensive physics data or global oracle state is bundled in GitHub.
+
+Next decision: preserve the single-orbit baseline and the joint-rule evaluator, **do not** train a collective-QUBO policy from these data. Continue the bounded callable 128-walker *instrumentation/latency* preflight only when the source-vs-new-chamber comparison and independent VMC/FN gates are ready.

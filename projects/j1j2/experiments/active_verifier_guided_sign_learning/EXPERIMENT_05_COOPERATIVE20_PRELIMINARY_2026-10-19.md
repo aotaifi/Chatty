@@ -1,3 +1,5 @@
+> **Superseded:** The complete 4-root-law, 4,096-patch, independently validated result (plus executable scripts and all 16 full raw runs) is now archived in `EXPERIMENT_05_COOPERATIVE20_RESULT_2026-10-19.md`. This earlier checkpoint contains obsolete missing-archive warnings and only three sampling laws.
+
 # AVSL 20-site cooperative patch diagnostic — provisional checkpoint (2026-10-19)
 
 **Status: exploratory numerical data reproduced in isolated scratch on MacBook-Air-2; no scalable FN/Krylov conclusion. Full raw JSON and exact executed script remain in the isolated machine's /tmp scratch directory, not yet mirrored to GitHub due an interrupted Remote Desktop connection. Do not treat this note as complete reproducibility.** This note records supported aggregate values to avoid losing the progress.

@@ -87,7 +87,9 @@ if not SKIP_CEILING:
       if len(lb) % 5 == 0: log(f'  lbfgs eval {len(lb)}: E {rk["E"]:.6e}  D {rk["D"]:.3e}'); res['lbfgs'] = lb; dump(F, res)
       return rk['E'] * N, np.asarray(g, np.float64)
   opt = minimize(fun, np.asarray(la_P, np.float64), jac=True, method='L-BFGS-B',
-                 options=dict(maxfun=SPEC.get('lbfgs_evals', 30), maxiter=SPEC.get('lbfgs_evals', 30), maxcor=10))
+                 options=dict(maxfun=SPEC.get('lbfgs_evals', 30), maxiter=SPEC.get('lbfgs_evals', 30), maxcor=10,
+                              gtol=1e-30, ftol=1e-30))     # amendment V-3: scipy's default gtol stopped it after 1 evaluation
+  res['lbfgs_message'] = str(opt.message)
   res['lbfgs'] = lb
   best_lb = int(np.argmin([q['E'] for q in lb]))
   # phi*: the lower endpoint; for L-BFGS phi* is the FN solution of the best field
@@ -106,6 +108,8 @@ phis = jnp.exp(la_star)
 res['W_B_site'] = float(0.5 * jnp.sum(sec.n * phis * S_viol(phis, s1))) / N
 if not SKIP_CEILING: np.save(os.path.join(OUT, 'la_star.npy'), np.asarray(la_star))
 dump(F, res)
+if SPEC.get('stop_after_ceiling'):
+    res['sec'] = time.time() - T00; dump(F, res); log('DONE (ceiling only)'); sys.exit(0)
 
 # ---------------------------------------------------------------- Z, mu, detectors, flips
 laPn = norm_la(la_P)

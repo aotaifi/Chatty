@@ -1019,3 +1019,12 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
     evaluations) and saves phi*. It may time out in its flip phase; those partial flip numbers are not used.
   - A second job reruns the flip stage from the saved phi*, with the same flip/iterate settings.
 - Nothing pre-registered changes.
+
+#### Amendment V-3 (2026-10-19 16:20, after the ceiling phase, before the L-BFGS re-run and any flip result)
+- **Ceiling job result.**
+  - 40 fixed-point solves: 2.509e-6, Aitken 2.05e-6. min log(phi/psi0) stays near -30, i.e. expelled
+    configurations.
+  - L-BFGS stopped after ONE evaluation: scipy's default projected-gradient tolerance (1e-5) exceeds the gradient
+    norm in total-energy units. The L-BFGS arm was therefore not executed.
+- **Fix.** gtol = ftol = 1e-30. L-BFGS is re-run as its own job: 30 evaluations from phi_FN(psi_P, s_1), ceiling only.
+- phi* for the flip stage stays the 40-solve fixed point, as already queued in job vetoF.

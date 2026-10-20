@@ -1,0 +1,61 @@
+{
+ "spec": {
+  "mode": "errstruct",
+  "la_star": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/veto16_17356522/la_star.npy",
+  "f_paths": [
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2A_17354559/f_best.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round1.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round2.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round3.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round4.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round5.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round6.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round7.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round8.npy",
+   "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2Ar_17365525/f_round9.npy"
+  ]
+ },
+ "error": {
+  "wrms": 0.06621217000831177,
+  "corr_with_exact": 0.02884175057119501,
+  "rms_by_type": {
+   "NN": 0.24268525103267347,
+   "NNN": 0.034665995247566264
+  },
+  "spatial_corr_by_distance": {
+   "0.0": 0.07273198801655575,
+   "1.0": 0.08063580166739848,
+   "1.414": 0.07014634337422165,
+   "2.0": 0.07945648068051842,
+   "2.236": 0.05763911204629837,
+   "2.828": 0.06116618980260825,
+   "3.0": 0.33175124831996494,
+   "3.162": 0.4760112091889538,
+   "3.606": 0.030712764801381597
+  },
+  "round_to_round_corr": [
+   0.998299533283234,
+   0.9978522609294097,
+   0.9986797026168601,
+   0.9991028444563839,
+   0.9990714102878462,
+   0.999331808648198,
+   0.9990331096640854,
+   0.9993008315803749,
+   0.9993549875483692
+  ]
+ },
+ "noise_test": {
+  "E_trained": 1.9207664648628826e-05,
+  "E_trained_via_wall": 1.9207664648530136e-05,
+  "E_star": 2.4740620996826438e-06,
+  "E_star_plus_iid_noise": 0.00017766757518384365,
+  "sigma": 0.06621217000831177,
+  "iters": [
+   30,
+   23,
+   29
+  ]
+ },
+ "sec": 251.43573594093323
+}

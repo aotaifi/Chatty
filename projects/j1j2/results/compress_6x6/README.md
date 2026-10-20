@@ -1108,3 +1108,41 @@ Equal-solve comparison (amendment V-5), E_FN per site after k self-consistent so
 - **Caveat on scale.** All ceilings use the exact self-consistent field, i.e. the FN solution itself, which is never
   stored. What is storable is the sign (a sign net, fact 5) and possibly a veto bit. The stored-field route
   (arm A) is pending; its 6-round value is 2.56e-5.
+
+# Bond-field round 2: arm A final + error-structure add-on (2026-10-20)
+Raw files: `runs/cx_bondfield2_refit_A.json` (rounds 1-6), `runs/cx_bondfield2_refit_A_resume.json` (rounds 7-16,
+job 17365525), `runs/cx_bondfield2_errstruct.json` (job 17374334).
+
+## Arm A, 16 rounds (pre-registered bar: trained field E_FN <= 1.0e-5)
+- E_FN by round:
+  - rounds 1-6: 9.54e-5 (start) -> 6.09 -> 4.55 -> 3.71 -> 3.17 -> 2.82 -> 2.56e-5;
+  - rounds 7-15: 2.39 -> 2.29 -> 2.18 -> 2.10 -> 2.05 -> 2.01 -> 1.98 -> 1.95 -> **1.92e-5**;
+  - round 16 was rejected (1.923e-5 >= 1.921e-5), so the loop stopped there.
+- **Verdict: FAIL (1.92e-5 > 1.0e-5)**, at a hop cost of about 1 + 23 psi_P hops per walker step.
+- The exact self-consistent iteration reaches 1.0e-5 at about 10 solves and 2.5e-6 at 40. The trained field
+  plateaus: its held-out majoriser loss grows from 2.4e-6 to 3.7e-6 per round as the target sharpens around the
+  expelled set.
+- The result lies between psi_P + 1 Lanczos (E_FN 1.89e-5) and psi_P + 2 Lanczos (<H> 8.6e-6).
+
+## Error structure of the final trained field
+Measured against phi* (40 solves) on bad bonds, weighted |h| phi*_x phi*_y:
+- weighted rms of delta (trained minus exact bad-bond log-ratio): **0.066**;
+- corr(delta, exact log-ratio): 0.03;
+- rms by bond type: **NN 0.24, NNN 0.035**. The error sits on the NN bad bonds;
+- correlation of delta between bad bonds of the same configuration: 0.06-0.08 at distance <= 2.8, 0.33-0.48 at
+  distance 3.0-3.2 (few pairs);
+- round-to-round corr(delta_k, delta_{k+1}): **0.998-0.999**. The error is systematic and reproducible, not noise.
+
+**iid-noise test:**
+- trained field: E_FN 1.921e-5 (the wall-built solve reproduces the direct one to 1e-16);
+- phi* field alone: 2.47e-6;
+- phi* field + independent antisymmetric noise of the SAME weighted rms 0.066: **1.78e-4**, i.e. 9x worse than the
+  trained field and 2x worse than plain ViT ratios.
+
+**Reading.**
+- The trained field's error is strongly structured and benign compared with iid noise of equal rms; this agrees with
+  the AVSL observation.
+- The weighted-rms bar is therefore the wrong yardstick. What matters is where the error falls: iid noise hits bonds
+  into expelled configurations, where errors cost at first order.
+- But the trained field still misses 1e-5. Its systematic error is concentrated on NN bad bonds and does not fall
+  with more rounds.

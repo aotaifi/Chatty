@@ -504,3 +504,13 @@ reverses the parity. Also, e_b depends on distant spins through the amplitude ra
   - Idea 2 (released node) is dead: Delta_B = 0.385 per site, independent of the sign.
   - Next decisive step if pursued: an iterate-and-refit loop toward a converged (c), with the field's error
     measured in the weighted cosh metric.
+- **Bond-field round 2 and the expulsion / flip test (2026-10-19/20, exact 6x6, sign s_1).**
+  - Ceiling: 2.51e-6 after 40 self-consistent solves (Aitken 2.05e-6).
+  - The trained one-hop field (arm A) plateaus at 1.92e-5 after 15 rounds: FAIL against the 1.0e-5 bar. Its error is
+    systematic (round-to-round corr 0.999), on NN bad bonds, and 9x less harmful than iid noise of equal rms.
+  - The expelled set {phi*/|psi_P| < 0.1} is 90% wrong-signed by count (>= 0.997 by |psi0|^2) and holds 83% of the
+    wrong-sign weight.
+  - Flipping it (all, or by the KKT rule) gives a sign s_2 with E_FN 9.1e-7 at 40 solves, against 2.5e-6 for s_1.
+    A second round adds ~4%.
+  - So the sign step "flip the expelled set" works on exact data. The storable-field part (bulk ratios) remains the
+    bottleneck.

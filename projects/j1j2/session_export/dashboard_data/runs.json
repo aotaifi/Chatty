@@ -3,8 +3,8 @@
   "run": "T0b: tail precision at equal accuracy",
   "plain": "Does a pairing (PP) network trained to the same overall accuracy as the ViT get the rare configurations more precisely? Compares six existing networks; no training",
   "where": "LMU cluster (A40)",
-  "state": "Running",
-  "result": "Pending. Decides whether a backflow pairing network can give the loop an edge, or whether a better tail just means a better variational network",
+  "state": "Done",
+  "result": "No: at equal overall accuracy the pairing networks are no more precise on rare configurations than the ViT (1.3x worse). Precision on rare configurations tracks overall accuracy, so the T0 kill stands",
   "updated": "2026-10-21"
  },
  {

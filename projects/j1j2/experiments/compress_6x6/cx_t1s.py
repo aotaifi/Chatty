@@ -41,6 +41,7 @@ dry=True: CPU plumbing test (small batches, a few steps; the 'table' is the warm
         a sample of orbits; bond readout on a few chunks; fn_solve only with dry_fn_maxit > 0).  NOT a result.
 """
 import os, sys, time, math
+from functools import partial
 import numpy as np
 from cx_lib import *
 
@@ -55,13 +56,18 @@ B_ACC = int(SPEC.get('B_acc', B)); B_HO = int(SPEC.get('B_ho', 4096))
 LAM_B = float(SPEC.get('lam_b', 1.0)); FIT_SEC = float(SPEC.get('fit_sec', 1800)); MAX_STEPS = int(SPEC.get('max_steps', 10 ** 9))
 LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0)); LAM_MIN = 1e-6
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
+# T1s-2 (README "Test T1s-2"): tau anneal TAU -> TAU_MIN, halved each time the held-out loss is flat (< FLAT_TOL) over
+# ANNEAL_STEPS steps (and >= ANNEAL_STEPS steps since the last change); convergence additionally needs tau == TAU_MIN.
+TAU_MIN = float(SPEC.get('tau_min', TAU)); ANNEAL_STEPS = int(SPEC.get('anneal_steps', 20))
+WARM_THETA = SPEC.get('warm_theta')                   # T1s-2: start from a previous run's theta.npy
+SPLICE_DEC = int(SPEC.get('splice_dec', -9))          # T1s-2: splice E_FN, fitted ratios for decades >= SPLICE_DEC
 HO_EVERY = int(SPEC.get('ho_every', 10)); MIN_STEPS = int(SPEC.get('min_steps', 50)); FLAT_TOL = float(SPEC.get('flat_tol', 0.02))
 MIN_MOVE = float(SPEC.get('min_move', 1e-3))           # README amendment T1s-1
 MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
 T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
 res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP,
-                                                    tau=TAU, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
+                                                    tau=TAU, tau_min=TAU_MIN, anneal_steps=ANNEAL_STEPS, warm_theta=WARM_THETA, splice_dec=SPLICE_DEC, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
                                                     flat_tol=FLAT_TOL, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
 
 
@@ -172,6 +178,11 @@ else:
     jac_j = jax.jit(jax.vmap(jax.grad(logA_one), in_axes=(None, 0)))
     jac_in = lambda Sx: bits(Sx).astype(jnp.float64)
 NPAR = int(theta0.size)
+theta_start = theta0
+if WARM_THETA:
+    _w = np.load(WARM_THETA); assert _w.size == NPAR, (_w.size, NPAR)
+    theta_start = jnp.asarray(_w, theta0.dtype).reshape(theta0.shape); del _w
+    res['warm_theta_sha256'] = __import__('hashlib').sha256(open(WARM_THETA, 'rb').read()).hexdigest()
 res['npar'] = NPAR; res['npar_note'] = ('ViT (cx_reanchor)' if MODEL == 'vit' else
                                        f'f 36x36 ({N * N}, diagonal unused: {N * N - N} active)' + (f' + backflow u1,u2 2x9x36 ({2 * 9 * N})' if MODEL == 'ppbf' else ''))
 progress(f'[t1s {ARM}] model {MODEL} npar {NPAR}')
@@ -189,11 +200,19 @@ def fwd(th, Sx, ch=None):
     return jnp.concatenate(out)
 
 
+@partial(jax.jit, donate_argnums=(0,))
+def _put(Gb, blk, i0):
+    return jax.lax.dynamic_update_slice(Gb, blk, (i0, 0))
+
+
 def jac(th, Sx):
-    out = []
-    for i in range(0, Sx.shape[0], JCH):
-        s_, m = _pad(Sx[i:i + JCH], JCH); out.append(jac_j(th, jac_in(s_))[:m])
-    return jnp.concatenate(out)
+    """per-configuration gradients written into one preallocated (donated) buffer: no 2x peak from a concatenation."""
+    R_ = Sx.shape[0]
+    Gb = jnp.zeros((R_, NPAR), theta0.dtype)
+    for i in range(0, R_, JCH):
+        s_, m = _pad(Sx[i:i + JCH], JCH)
+        Gb = _put(Gb, jac_j(th, jac_in(s_))[:m].astype(theta0.dtype), i)
+    return Gb
 
 
 def table(th, idx=None):
@@ -253,7 +272,10 @@ def wbar_of(sampler, key, n_per):
 
 def make_batch(sampler, M, key, wbar):
     idx, g = sampler.draw(M)
-    x, yk, iyk, W = bonds_of(jnp.asarray(idx), key)
+    parts = []
+    for i in range(0, idx.size, 2052):                # bounded memory of the 288-image canonicalisation
+        key, k_ = jax.random.split(key); parts.append(bonds_of(jnp.asarray(idx[i:i + 2052]), k_))
+    x, yk, iyk, W = (jnp.concatenate([q[j] for q in parts]) for j in range(4))
     return dict(idx=idx, g=g, x=x, y=yk, lx=ls2[jnp.asarray(idx)], ly=ls2[iyk],
                 wb=LAM_B * W / jnp.asarray(wbar)[jnp.asarray(g)] / K, W=W, ng=len(sampler.groups))
 
@@ -297,8 +319,9 @@ def decade_diag(bt, ex, db):
 
 # ============================================================================================ GN / minSR direction
 @jax.jit
-def solve_dir(G, S, lx, ly, wb, c, lam_rel):
-    """rows: value rows sv e_x (+ offset column -sv) and bond rows sb_x (e_x - e_yk); G = d log A / d theta on [x; y]."""
+def solve_dir(G, S, lx, ly, wb, c, lam_rel, tau):
+    """rows: value rows sv e_x (+ offset column -sv) and bond rows sb_x (e_x - e_yk); G = d log A / d theta on [x; y].
+    Sample space (minSR): T = A G G^T A^T + cc cc^T with the 2-sparse row combination A applied by gathers."""
     M = lx.shape[0]; P = G.shape[1]; dt = G.dtype
     ex = S[:M] - lx - c; ey = S[M:].reshape(M, -1) - ly - c; Kb = ey.shape[1]
     sv = 1.0 / jnp.sqrt(M); sb = jnp.sqrt(wb / M)
@@ -306,15 +329,18 @@ def solve_dir(G, S, lx, ly, wb, c, lam_rel):
     cc = jnp.concatenate([jnp.full(M, -sv, f64), jnp.zeros(M * Kb, f64)])
     R = M * (1 + Kb)
     Gx = G[:M]
-    if R <= P + 1:                                        # minSR, sample space: J = A G, never materialised
-        rows = jnp.arange(M * Kb); xs = rows // Kb; sbr = sb[xs]
-        A = jnp.zeros((R, R), f64).at[jnp.arange(M), jnp.arange(M)].set(sv)
-        A = A.at[M + rows, xs].set(sbr).at[M + rows, M + rows].set(-sbr)
+    if R <= P + 1:                                        # minSR, sample space: J = A G never materialised
+        rows = jnp.arange(M * Kb); xs = rows // Kb
+        i1 = jnp.concatenate([jnp.arange(M), xs]); c1 = jnp.concatenate([jnp.full(M, sv, f64), sb[xs]])
+        i2 = jnp.concatenate([jnp.zeros(M, jnp.int32), M + rows]); c2 = jnp.concatenate([jnp.zeros(M, f64), -sb[xs]])
         GG = (G @ G.T).astype(f64)
-        T = A @ GG @ A.T + jnp.outer(cc, cc); del GG
+        H = c1[:, None] * GG[i1] + c2[:, None] * GG[i2]; del GG
+        T = H[:, i1] * c1[None, :] + H[:, i2] * c2[None, :] + jnp.outer(cc, cc); del H
         lam = lam_rel * jnp.trace(T) / R
-        a = jnp.linalg.solve(T + lam * jnp.eye(R, dtype=f64), r)
-        dP = -(G.T @ (A.T @ a).astype(dt)).astype(f64); dc = -(cc @ a)
+        T = T.at[jnp.arange(R), jnp.arange(R)].add(lam)
+        a = jax.scipy.linalg.cho_solve(jax.scipy.linalg.cho_factor(T, lower=True), r); del T
+        w = jnp.zeros(R, f64).at[i1].add(c1 * a).at[i2].add(c2 * a)        # A^T a
+        dP = -(G.T @ w.astype(dt)).astype(f64); dc = -(cc @ a)
     else:                                                 # the same LM step in parameter space (PP arms)
         Jv = Gx * sv.astype(dt)
         Jb = ((Gx[:, None, :] - G[M:].reshape(M, Kb, P)) * sb.astype(dt)[:, None, None]).reshape(M * Kb, P)
@@ -325,8 +351,26 @@ def solve_dir(G, S, lx, ly, wb, c, lam_rel):
         dP = d[:P]; dc = d[P]
     pc = (Gx.astype(f64) @ dP); pc = pc - jnp.mean(pc)
     prms = jnp.sqrt(jnp.mean(pc * pc))
-    sc = jnp.minimum(1.0, TAU / jnp.maximum(prms, 1e-30))
+    sc = jnp.minimum(1.0, tau / jnp.maximum(prms, 1e-30))
     return dP * sc, dc * sc, prms, sc, jnp.sum(r * r)
+
+
+def dense_check(seed=0, M=6, Kb=2, P=40):
+    """dry-run self-test: the gather form of T equals the dense A G G^T A^T (sample-space branch)."""
+    rng = np.random.default_rng(seed); R = M * (1 + Kb)
+    G = jnp.asarray(rng.normal(size=(R, P)), f64); S = jnp.asarray(rng.normal(size=R)); lx = jnp.asarray(rng.normal(size=M))
+    ly = jnp.asarray(rng.normal(size=(M, Kb))); wb = jnp.asarray(rng.random(M)); c = 0.1
+    dP, dc, prms, sc, _ = solve_dir(G, S, lx, ly, wb, c, 1e-2, 1e9)
+    sv = 1 / np.sqrt(M); sb = np.sqrt(np.asarray(wb) / M); A = np.zeros((R, R))
+    A[np.arange(M), np.arange(M)] = sv
+    for i in range(M):
+        for k in range(Kb):
+            A[M + i * Kb + k, i] = sb[i]; A[M + i * Kb + k, M + i * Kb + k] = -sb[i]
+    Gn = np.asarray(G); Sn = np.asarray(S); ex = Sn[:M] - np.asarray(lx) - c; ey = Sn[M:].reshape(M, Kb) - np.asarray(ly) - c
+    r = np.concatenate([sv * ex, (sb[:, None] * (ex[:, None] - ey)).reshape(-1)]); cc = np.concatenate([np.full(M, -sv), np.zeros(M * Kb)])
+    J = A @ Gn; T = J @ J.T + np.outer(cc, cc); T = T + 1e-2 * np.trace(T) / R * np.eye(R)
+    a = np.linalg.solve(T, r)
+    return float(np.max(np.abs(np.asarray(dP) + J.T @ a))), float(abs(float(dc) + cc @ a))
 
 
 # ============================================================================================ readout
@@ -414,10 +458,14 @@ Sw = fwd(theta0, HOB['x']); dw = np.asarray(Sw - WARM[jnp.asarray(HOB['idx'])]);
 res['control2']['warm_net_vs_table_rms'] = float(np.sqrt(np.mean(dw ** 2)))
 res['control2']['warm_net_vs_table_max'] = float(np.max(np.abs(dw)))
 c = float(np.mean(np.asarray(Sw) - np.asarray(HOB['lx'])))          # offset start: mean over the stratified held-out batch
-theta = theta0
+theta = theta_start
+if WARM_THETA:
+    c = float(np.mean(np.asarray(fwd(theta, HOB['x'])) - np.asarray(HOB['lx'])))
 L_ho0, ex, db = batch_loss(theta, c, HOB); L_ho0 = float(jnp.mean(L_ho0))
 curve = [dict(step=0, t=0.0, L_ho=L_ho0, c=c, by_decade=decade_diag(HOB, ex, db))]
 progress(f'[fit {ARM}] start held-out loss {L_ho0:.4e}  warm net vs table rms {res["control2"]["warm_net_vs_table_rms"]:.2e}')
+tau = TAU; tau_changed = 0; tau_hist = [dict(step=0, tau=tau)]
+if DRY: res['dense_check_maxdiff'] = dense_check(); progress(f'[dry] gather-vs-dense T check {res["dense_check_maxdiff"]}')
 hist = []; lam_rel = LAM0; n = 0; t0 = time.time(); conv = dict(converged=False, reason='not checked')
 sec.offload()
 
@@ -432,12 +480,13 @@ def check_converged():
     accd = [h['pred_rms'] * h['trust_scale'] for h in win if h['ok']]
     med_acc = float(np.median(accd)) if accd else 0.0
     moving = med_acc >= MIN_MOVE                      # README amendment T1s-1: a flat but frozen fit is not converged
-    ok = bool(acc >= 0.5 and lam_ok and flat < FLAT_TOL and moving)
+    tau_ok = tau <= TAU_MIN * (1 + 1e-9)               # T1s-2: tau has reached its floor
+    ok = bool(acc >= 0.5 and lam_ok and flat < FLAT_TOL and moving and tau_ok)
     why = f'window steps {w0 + 1}..{n_}: acceptance {acc:.2f} (>= 0.5), lam_rel < cap at all steps {lam_ok}, ' \
           f'held-out change {flat:.4f} (< {FLAT_TOL}) from step {c0["step"]}, ' \
-          f'median predicted rms change per accepted step {med_acc:.2e} (>= {MIN_MOVE:.0e})'
+          f'median predicted rms change per accepted step {med_acc:.2e} (>= {MIN_MOVE:.0e}), tau {tau:.4f} (== {TAU_MIN})'
     if not moving: why = 'stalled: ' + why
-    return dict(converged=ok, stalled=not moving, median_move_accepted_window=med_acc, reason=why, acc_window=acc, lam_below_cap=lam_ok, heldout_rel_change=flat, window_start=w0 + 1,
+    return dict(converged=ok, stalled=not moving, tau=tau, tau_at_floor=tau_ok, median_move_accepted_window=med_acc, reason=why, acc_window=acc, lam_below_cap=lam_ok, heldout_rel_change=flat, window_start=w0 + 1,
                 median_pred_rms_window=float(np.median([h['pred_rms'] * h['trust_scale'] for h in win])),
                 median_lam_rel_window=float(np.median([h['lam_rel'] for h in win])))
 
@@ -448,7 +497,7 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
     bt = make_batch(S_tr, B, k1, WBAR)
     Xall = jnp.concatenate([bt['x'], bt['y'].reshape(-1)])
     S = fwd(theta, Xall); G = jac(theta, Xall)
-    dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel); del G
+    dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau); del G
     dc = float(dc)
     ab = make_batch(S_tr, B_ACC, k2, WBAR)              # fresh stratified acceptance batch
     L_old, _, _ = batch_loss(theta, c, ab)
@@ -464,7 +513,7 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         ok = True; verdict = 'noise'
     if ok: theta = cand; c = c + dc
     hist.append(dict(step=n, ok=ok, verdict=verdict, lam_rel=lam_used, lam_next=lam_rel, L_acc_old=float(jnp.mean(L_old)),
-                     dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), loss_batch=float(rr), c=c,
+                     dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
                      sec=time.time() - ts))
     if n % HO_EVERY == 0:
         Lh, ex, db = batch_loss(theta, c, HOB)
@@ -472,11 +521,16 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         acc10 = np.mean([h['ok'] for h in hist[-HO_EVERY:]])
         d11 = curve[-1]['by_decade'].get('-11', {}).get('rms_e')
         progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e}  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
-                 f'trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
+                 f'tau {tau:.4f} trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
+        if tau > TAU_MIN and n - tau_changed >= ANNEAL_STEPS:          # T1s-2 anneal
+            cb = [q for q in curve if q['step'] <= n - ANNEAL_STEPS]
+            if cb and abs(cb[-1]['L_ho'] - curve[-1]['L_ho']) / curve[-1]['L_ho'] < FLAT_TOL:
+                tau = max(tau / 2, TAU_MIN); tau_changed = n; tau_hist.append(dict(step=n, tau=tau))
+                progress(f'  {ARM} step {n}: held-out flat over {ANNEAL_STEPS} steps -> tau {tau:.4f}')
         if n >= MIN_STEPS:
             conv = check_converged()
             if conv['converged']: break
-        res['fit'] = dict(hist=hist, curve=curve); dump(F, res)
+        res['fit'] = dict(hist=hist, curve=curve, tau_hist=tau_hist); dump(F, res)
 if not conv['converged']:
     conv = check_converged() if len(hist) >= max(2 * HO_EVERY, 2) and len(curve) > 1 else dict(converged=False, reason='too few steps')
     if conv.get('stalled'):
@@ -487,7 +541,7 @@ if not conv['converged']:
 conv['steps'] = n; conv['fit_sec'] = time.time() - t0
 conv['acceptance_all'] = float(np.mean([h['ok'] for h in hist])) if hist else None
 conv['lam_rel_at_cap_steps'] = int(sum(h['lam_rel'] >= LAM_CAP for h in hist))
-res['fit'] = dict(hist=hist, curve=curve); res['converged'] = conv; dump(F, res)
+res['fit'] = dict(hist=hist, curve=curve, tau_hist=tau_hist); res['converged'] = conv; dump(F, res)
 np.save(os.path.join(OUT, 'theta.npy'), np.asarray(theta)); np.save(os.path.join(OUT, 'offset_c.npy'), np.asarray(c))
 progress(f'[fit {ARM}] converged {conv["converged"]}: {conv["reason"]}')
 
@@ -522,4 +576,11 @@ if mx > 0:
     info = efn(norm_la(la_fit), mx)
     res['E_FN'] = info['dE_FN_site']; res['E_FN_info'] = info
     progress(f'[E_FN {ARM}] {info["dE_FN_site"]:.4e}  (lobpcg it {info["lobpcg_it"]}, res {info["res"]:.1e})')
+    # splice: fitted log-amplitudes on decades >= SPLICE_DEC (offset aligned to phi* there, |phi*|^2-weighted), exact phi* below
+    lf = norm_la(la_fit); msk = dec >= SPLICE_DEC
+    off = float(jnp.sum(jnp.where(msk, PT * (lf - ls2), 0.0)) / jnp.sum(jnp.where(msk, PT, 0.0)))
+    la_sp = jnp.where(msk, lf - off, ls2); del lf
+    info = efn(la_sp, mx); del la_sp
+    res['E_FN_splice'] = info['dE_FN_site']; res['E_FN_splice_info'] = dict(info, splice_dec=SPLICE_DEC, offset=off)
+    progress(f'[E_FN splice {ARM}] fitted >= {SPLICE_DEC}, exact below: {info["dE_FN_site"]:.4e}  (lobpcg it {info["lobpcg_it"]})')
 res['sec'] = time.time() - T00; res['done'] = True; dump(F, res); progress(f'DONE {res["sec"]:.0f}s')

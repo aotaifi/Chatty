@@ -1128,7 +1128,7 @@ Measured:
   confirmed.
 - The H_FN-SR test is not started; its gate was 3e-5.
 
-#### Results: T0 (t0_17410220; read by the lead 2026-10-21) - KILL RULE FIRES for the fixed pairing determinant
+#### Results: T0 (t0_17410220; read by the lead 2026-10-21) - kill rule fires for the FIXED pairing only; determinant + backflow route INCONCLUSIVE (untested: T0 has no backflow, the part meant to move the nodes)
 | base | dE_VMC | E_FN(s_2) | + veto | eps median, decades 1e-9..1e-13 | bond-error rms, decades -9 / -10 / -11 / -12 |
 |---|---|---|---|---|---|
 | ViT | 1.32e-4 | 1.02e-4 | 9.67e-5 | 5.7e-7 | 0.085 / 0.155 / 0.31 / 0.58 |
@@ -1136,7 +1136,7 @@ Measured:
 | PP | 6.3e-5 | 5.37e-5 | 5.26e-5 | 4.5e-7 | 0.089 / 0.153 / 0.27 / 0.47 |
 | RBM+PP | 4.74e-5 | 3.76e-5 | 3.67e-5 | 3.0e-7 | 0.065 / 0.11 / 0.20 / 0.38 |
 | (c) PP x \|1 + alpha(E_L - E)\|, alpha -0.108 | - | 2.37e-5 | 2.13e-5 | - | - |
-- eps(PP) / eps(ViT) = 0.78, inside the factor 2: by the pre-registered rule the determinant bias is dead.
+- eps(PP) / eps(ViT) = 0.78, inside the factor 2: a fixed pairing gives no tail advantage (measured). Per CLAUDE.md rule 1 this is not a route failure: the consultant's own diagnosis says a fixed F puts the node in the wrong place, and backflow (T1 arm ii) is what would move it.
 - (c) < 5e-5 meets the second clause, but (c) uses E_L, which is a one-hop quantity. Its gain comes from the hop and
   not from the determinant. The equal-hop reference psi_P + 1 Lanczos (E_FN 1.89e-5, ViT sign) is better, so (c)
   does not rescue the determinant.

@@ -1390,3 +1390,23 @@ Lead's reading:
   still moved by about 5% in log A per step. The plateau may be the noise floor of 228 samples per decade per step,
   not a minimum. The ViT "representability limit" reading carries this caveat until a run with more samples per step
   settles it.
+
+## Test T1s-2: is the T1s plateau a sampling noise floor? (pre-registered 2026-10-21, lead; before any run; cx_t1s.py, spec changes only; ~6 slice-h)
+**Setup:**
+- Same code, target and readout as T1s.
+- Changes per step:
+  - B = 8192 samples per step (912 per decade), and B_acc = 8192;
+  - the trust radius tau is annealed from 0.05 to 0.01, halved each time the held-out loss is flat (< 2%) over 20
+    steps.
+- Warm starts: arms (b) PP, (c) PP+backflow and (a) ViT, each from its own T1s endpoint (theta.npy).
+- Fit budgets: 3600 s for PP and ViT, 5400 s for PP+backflow.
+- Convergence: the T1s-1 rule, plus "tau has reached 0.01".
+
+**Readings, per arm (r = decade -11 rms):**
+- Noise floor: r falls by >= 1.5x from its T1s value. The plateau was sampling, and the arm continues toward 1e-5.
+- Converged limit: r falls by < 1.2x and the arm converged. For the ViT this confirms the representability limit;
+  for PP / PP+backflow, a limit at that r.
+- Between these: inconclusive.
+
+**Pass (the T1 bar, unchanged):** E_FN(s_2) <= 1e-5. Also reported: E_FN with the fitted ratios on bulk decades
+(>= -9) and exact phi* below (a splice), to show which decades still carry the gap.

@@ -1115,7 +1115,7 @@ Measured:
 
 #### Results: amplitude refresh (refresh_17409419, refresh2_17409866; read by the lead 2026-10-21) - FAIL
 - One-solve E_FN(s_2, fitted ViT): 9.16e-5 (seed 0), 9.22e-5 (seed 1); bar 1.0e-5. Plain ViT ratios 1.019e-4; oracle
-  veto 8.18e-5; ceiling 9.15e-7. The fit had converged: held-out loss 1.76e-3 -> 6.99e-4, flat over its last 4 checks.
+  veto 8.18e-5; ceiling 9.15e-7. CORRECTION (Fable audit, verified by the lead from fit/hist): the fit had NOT converged. Only 28/200 (seed 1: 35/200) steps were accepted, and the trust region sat at its cap from step 24-30 onward. Late accepted steps moved by 1e-5, against 3e-3 early. The flat held-out curve is a stall, not a minimum. The refit numbers are a lower bound on what a ViT can do.
 - Decade splices (seed 0 / seed 1): fitted ViT down to decade t, exact phi*(s_2) below that:
   - t = -8: 2.0 / 2.2e-6;
   - t = -9: 5.8 / 5.9e-6;
@@ -1288,3 +1288,13 @@ of the |psi0|^2 weight.
     at decades -9..-13.
   - On W_2, 92% of the configurations have a non-Marshall exact sign. The remaining sign errors of s_2 sit where the
     true sign departs from Marshall and the guide sign has stayed Marshall-like.
+#### Fable training audit (results/consult/fable_training_audit_2026-10-21.md) - read by the lead 2026-10-21
+- The T0/T0b evaluation is sound. The conclusion "a precise tail = a better variational state; the Pfaffian route is
+  dead" does NOT follow.
+- 80-91% of each network's L2 error sits at a^2 < 1e-10 (Fable, measured). Its eps = (1.2-1.8) x sqrt(L2/N_conf) for
+  all six bases. Every network was trained on a |psi|^2-weighted objective, so "eps tracks dE" is that objective's
+  signature, not a representability limit.
+- The T0 kill rule could only give "within 2x" at equal L2. It kills "a fixed pairing is automatically right"; it
+  says nothing about a node-moving ansatz trained on the tail.
+- Verdict status: T0 kill = fixed VMC-trained PP only. The Pfaffian+backflow route is INCONCLUSIVE (cause: no network
+  has been trained with weight on the tail). Next: the decade-stratified fit (T1s, pre-registration below).

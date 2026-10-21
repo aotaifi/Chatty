@@ -1364,3 +1364,29 @@ of the |psi0|^2 weight.
 - Control 1 is a training run, decided before any run: draws from |phi*|^2, no per-decade renormalisation, with the
   refresh fit's 900 s budget.
 - Note on PP's parameter count: the trained PP f is a general 36x36 matrix with 1260 active entries, not 630.
+
+#### Results: T1s (runs t1s_{vit_17412547, vitns_17412548, pp_17412549, ppbf_17412550}; verified by the lead from cx_t1s.json 2026-10-21)
+Rms log error per |phi*|^2 decade, -5 .. -13, count-weighted. The sha guard and control 2 pass in every arm.
+
+| arm | -5 | -8 | -9 | -10 | -11 | -12 | -13 | converged | E_FN(s_2) |
+|---|---|---|---|---|---|---|---|---|---|
+| (a) ViT, stratified | 0.023 | 0.021 | 0.028 | 0.056 | 0.124 | 0.213 | 0.305 | yes (acc 0.98, move 4.4e-2, held-out 0.1%) | 8.18e-5 |
+| control 1, ViT, unstratified | 0.007 | 0.011 | 0.021 | 0.054 | 0.129 | 0.247 | 0.399 | no (budget) | 8.93e-5 |
+| (b) PP f-only | 0.005 | 0.016 | 0.023 | 0.038 | 0.073 | 0.153 | 0.317 | yes (acc 1.00, move 5.0e-2, held-out 1.7%) | 2.82e-5 |
+| (c) PP + 3x3 backflow | 0.010 | 0.015 | 0.022 | 0.038 | 0.074 | 0.163 | 0.333 | no (budget; held-out still falling 20%) | 2.96e-5 |
+
+Pre-registered readings:
+- (a) ViT: converged with 0.124 >= 0.1 at decade -11, so the reading is "representability limit". Stratifying moved its
+  tail by only 4% (0.129 -> 0.124) and cost bulk accuracy (0.007 -> 0.023).
+- (b) PP: inconclusive (0.073 lies between 0.03 and 0.1).
+- (c) PP + 3x3 backflow: inconclusive, because it had not converged.
+- Physics pass (E_FN <= 1e-5): no arm passes.
+
+Lead's reading:
+- Trained on the tail, the pairing structure does what T0 could not show. With 1260 parameters against the ViT's
+  155k, PP reaches a 1.7x lower error at decade -11 and 1.5x lower at decade -10. Its E_FN falls from 5.37e-5 (VMC
+  table) to 2.82e-5, against the ViT's 8.18e-5. The T0 kill is therefore overturned for the PP family.
+- Caveat on "converged" for (a) and (b): 78/90 and 119/120 accepted steps were "within noise", and the parameters
+  still moved by about 5% in log A per step. The plateau may be the noise floor of 228 samples per decade per step,
+  not a minimum. The ViT "representability limit" reading carries this caveat until a run with more samples per step
+  settles it.

@@ -27,6 +27,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
+| G0 (worker building; launcher read by the lead before sbatch) | chatty_compress6/runs/g0_<id> | PASS -> T1 moot for the energy; work moves to the sign labels. FAIL -> T1(ii) is the remaining tail route (PI's design). Partial -> report the fraction removed. |
+| T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
 | T0b 17410565 | chatty_compress6/runs/t0b_17410565 | eps(B2) <= eps(ViT)/2 -> propose T1(ii) to the PI. Within 1.5x on one eps(dE) curve -> PI kill stands; run G0. Otherwise inconclusive -> G0. |
 
 ## Dead ends (number, run)

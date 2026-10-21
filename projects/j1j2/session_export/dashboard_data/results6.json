@@ -53,5 +53,20 @@
   "guide": "Fixed node, best bond numbers, after one flip",
   "group": "Bond route",
   "err": 9.15e-07
+ },
+ {
+  "guide": "Fixed node, corrected sign, refit ViT",
+  "group": "Bond route",
+  "err": 9.16e-05
+ },
+ {
+  "guide": "Fixed node, corrected sign, PP ratios",
+  "group": "Bond route",
+  "err": 5.37e-05
+ },
+ {
+  "guide": "Fixed node, corrected sign, RBM+PP ratios",
+  "group": "Bond route",
+  "err": 3.76e-05
  }
 ]

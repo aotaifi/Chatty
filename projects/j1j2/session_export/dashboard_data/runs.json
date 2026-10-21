@@ -1,5 +1,29 @@
 [
  {
+  "run": "T0b: tail precision at equal accuracy",
+  "plain": "Does a pairing (PP) network trained to the same overall accuracy as the ViT get the rare configurations more precisely? Compares six existing networks; no training",
+  "where": "LMU cluster (A40)",
+  "state": "Running",
+  "result": "Pending. Decides whether a backflow pairing network can give the loop an edge, or whether a better tail just means a better variational network",
+  "updated": "2026-10-21"
+ },
+ {
+  "run": "T0: pairing networks on rare configurations",
+  "plain": "Fixed node with the corrected sign, using amplitude ratios from PP and RBM+PP networks instead of the ViT; measures the error on rare configurations",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Kill rule fires: PP's rare-configuration error is 0.78x the ViT's (bar: 2x better). Every network gives about 0.8x its own variational error",
+  "updated": "2026-10-21"
+ },
+ {
+  "run": "ViT refit after the flip (2 seeds)",
+  "plain": "Retrain the ViT to the best amplitudes for the corrected sign, then run fixed node with it",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Fails: 9.2e-5 (bar 1e-5). Good down to probability 1e-9; configurations rarer than 1e-11 carry 60% of the error. Flip labels from the network find almost none of the wrong signs",
+  "updated": "2026-10-21"
+ },
+ {
   "run": "Flip test",
   "plain": "Fixed node with the best bond numbers: does the switched-off set hold the wrong signs, and does flipping it lower the energy?",
   "where": "LMU cluster (A40)",

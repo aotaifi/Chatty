@@ -2,12 +2,12 @@
  {
   "question": "Does flipping the switched-off configurations correct the signs?",
   "status": "Settled",
-  "note": "Yes on exact 6x6: the energy ceiling drops 2.7x; storable as a sign network"
+  "note": "Yes on exact 6x6 (2.7x lower ceiling), but only with exact amplitudes"
  },
  {
   "question": "Can the amplitudes of the configurations that stay in be supplied cheaply?",
   "status": "Open",
-  "note": "ViT ratios give only 9.5e-5; a learned field with neighbour inputs plateaus at 1.9e-5 and does not scale"
+  "note": "Not with a refit ViT (9.2e-5) or a fixed pairing network (5.4e-5); the remaining test is whether the tail error tracks overall accuracy (T0b running)"
  },
  {
   "question": "Do global sign steps keep their strength up to 14x14?",
@@ -21,8 +21,8 @@
  },
  {
   "question": "Can signs be stored at constant cost?",
-  "status": "Settled",
-  "note": "Yes, sign network + one exact step works at 8x8"
+  "status": "Open",
+  "note": "Only from exact tables: the flip labels need the exact amplitudes, and labels from a fitted network find almost no wrong signs"
  },
  {
   "question": "Is a 12x12 starting network affordable?",

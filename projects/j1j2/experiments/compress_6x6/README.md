@@ -1329,3 +1329,22 @@ of the |psi0|^2 weight.
 - The broken-version check: the arm-(a) loss evaluated with the decade weights switched off reproduces the refresh
   fit's tail error profile.
 - The unchanged warm-start psi_P reproduces the T0 eps 5.72e-7.
+
+#### Results: G0 (g0_17411369; read and verified by the lead 2026-10-21) - FAIL
+**Controls:** all pass.
+- (i) gamma = 0 reproduces 1.0185827e-4.
+- (ii) Eigenvector residual with the exact psi0: 1.3e-15 x |E0| at gamma 0, 0.5, 2.
+- (iii) The broken copy fails, with residual 0.22 / 0.87 x |E0|.
+- Every solve reached tolerance (res <= 9.7e-11), and the Perron vector had no negative weight.
+
+**<H> on phi^gamma, in units of 1e-5, at gamma = 0 / 0.25 / 0.5 / 1 / 2:**
+- ViT: 7.57 / 8.27 / 8.84 / 9.71 / 10.86.
+- PP: 4.23 / 4.56 / 4.81 / 5.19 / 5.67.
+- RBM+PP: 2.93 / 3.17 / 3.35 / 3.63 / 3.98.
+
+**Reading:**
+- The minimum is at gamma = 0 for every base, and <H> rises monotonically with gamma. Chord estimates at gamma = -1:
+  8.18 / 4.52 / 3.14e-5.
+- The primary measure (ViT, 7.57e-5) removes 26% of the gap to the ceiling 9.15e-7. That is below 50%: FAIL.
+- The gamma extrapolation does not free the reported energy from the tail ratios. The only gain comes from evaluating
+  <H> on the FN state at gamma = 0, which is 0.57-0.67 x dE_VMC, against 0.8 for E_FN.

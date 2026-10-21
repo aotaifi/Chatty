@@ -19,9 +19,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
-| Does tail precision track global accuracy rather than architecture? (T0b) | 0.5 slice-h | cx_t0 bases + B1/B2 checkpoints; passed over: new training |
 | Can the reported energy avoid the tail? (G0, above) | 0.5 slice-h | gamma-FN extrapolation; passed over: tail networks |
-| Backflow Pfaffian (T1 arm ii), the PI-approved design | <= 4 A40-h | runs only if T0b shows a pairing advantage at equal accuracy, or the PI asks |
+| Backflow Pfaffian (T1 arm ii), the PI-approved design | <= 4 A40-h | not run: T0 kill + T0b (no pairing advantage at equal accuracy); runs only if the PI asks |
 | Sign labels without the oracle phi* | - | open; fitted-net labels recall 5e-7 (refresh2) |
 
 ## Running
@@ -29,9 +28,9 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 |---|---|---|
 | G0 (worker building; launcher read by the lead before sbatch) | chatty_compress6/runs/g0_<id> | PASS -> T1 moot for the energy; work moves to the sign labels. FAIL -> T1(ii) is the remaining tail route (PI's design). Partial -> report the fraction removed. |
 | T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
-| T0b 17410565 | chatty_compress6/runs/t0b_17410565 | eps(B2) <= eps(ViT)/2 -> propose T1(ii) to the PI. Within 1.5x on one eps(dE) curve -> PI kill stands; run G0. Otherwise inconclusive -> G0. |
 
 ## Dead ends (number, run)
+- Tail precision from architecture: eps tracks dE_VMC (eps ~ dE^0.72); at equal dE the pairing family is not better than the ViT (t0b_17410565).
 - ViT refit to phi*(s_2): E_FN 9.16e-5 / 9.22e-5, bar 1e-5 (refresh_17409419, refresh2_17409866).
 - Fixed pairing determinant as the tail basis: eps 0.78x the ViT's, kill rule (t0_17410220).
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13).

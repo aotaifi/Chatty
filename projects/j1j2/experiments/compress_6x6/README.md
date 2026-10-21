@@ -1225,3 +1225,22 @@ All are per site, relative to E0.
 - FAIL if it removes < 50% of the gap from 1.0186e-4 to the ceiling.
 - In between: partial; report the fraction removed, per base.
 - The chord estimate is reported but never decides.
+
+#### Results: T0b (t0b_17410565; read by the lead 2026-10-21) - the tail eps tracks global accuracy; no pairing advantage
+| base | dE_VMC | E_FN(s_2) | eps (median, decades 1e-9..1e-13) |
+|---|---|---|---|
+| RBM+PP | 4.74e-5 | 3.76e-5 | 3.02e-7 |
+| PP | 6.3e-5 | 5.37e-5 | 4.47e-7 |
+| ViT | 1.32e-4 | 1.02e-4 | 5.72e-7 |
+| B2 (RBM+PP, early) | 1.54e-4 | 1.46e-4 | 8.62e-7 |
+| B1 (RBM+PP, early) | 3.87e-4 | 3.69e-4 | 1.37e-6 |
+- The vit / pp / rbmpp rows reproduce t0_17410220 to 3 digits; vit is bit-identical.
+- eps rises monotonically with dE_VMC: eps ~ dE^0.72 from RBM+PP to B1. E_FN(s_2) / dE_VMC is 0.77-0.95 for all
+  five bases.
+- Direct ratio eps(B2) / eps(ViT) = 1.507, 0.007 above the pre-registered 1.5x cap. B2 is 16% less accurate than the
+  ViT. Interpolated to equal dE (log-log, between RBM+PP and B2), the pairing family's eps is 7.5e-7: the ViT is 0.76x
+  of it and PP is 1.15x, both inside 1.5x. Read at equal accuracy, which is what the rule asks, this is the second
+  branch: tail precision tracks global accuracy, and at equal accuracy the pairing family is no better than the ViT
+  on the tail (if anything 1.3x worse).
+- Consequence: a better tail means a better variational state, so the T0 kill stands. Extrapolating the measured slope
+  (derived, unvalidated, past measurement): eps ~ 1e-8 would need dE_VMC ~1e-6.

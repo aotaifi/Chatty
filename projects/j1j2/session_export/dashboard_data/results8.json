@@ -1,0 +1,10 @@
+[
+ {"what":"Our ViT (symmetrised)","energy":-0.4988474,"err":0.0000106,"kind":"Upper bound"},
+ {"what":"ViT + one write-back","energy":-0.498884,"err":0.000024,"kind":"Upper bound"},
+ {"what":"ViT + 1 Lanczos step","energy":-0.498971,"err":0.000012,"kind":"Upper bound, new"},
+ {"what":"Fixed node, ViT guide","energy":-0.498889,"err":0.000011,"kind":"Upper bound, new"},
+ {"what":"RBM+PP (Nomura 2021)","energy":-0.498886,"err":0.000001,"kind":"Published bound"},
+ {"what":"VMC + 2 Lanczos (Hu 2013)","energy":-0.49886,"err":0.00001,"kind":"Published bound"},
+ {"what":"Our ground-state estimate","energy":-0.498992,"err":0.000016,"kind":"Estimate, new"},
+ {"what":"Hu 2013 ground-state estimate","energy":-0.49906,"err":0.00001,"kind":"Published estimate"}
+]

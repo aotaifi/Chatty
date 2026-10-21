@@ -1,0 +1,57 @@
+[
+ {
+  "guide": "ViT (symmetrised)",
+  "group": "Reference",
+  "err": 0.000132
+ },
+ {
+  "guide": "RBM+PP (published)",
+  "group": "Reference",
+  "err": 4.47e-05
+ },
+ {
+  "guide": "ViT + 1 Lanczos step",
+  "group": "Reference",
+  "err": 2.55e-05
+ },
+ {
+  "guide": "ViT + 2 Lanczos steps",
+  "group": "Reference",
+  "err": 8.6e-06
+ },
+ {
+  "guide": "Network loop, old target, 8 rounds",
+  "group": "Loop",
+  "err": 4.58e-05
+ },
+ {
+  "guide": "Table loop, old target, 8 rounds",
+  "group": "Loop",
+  "err": 3.16e-05
+ },
+ {
+  "guide": "Network loop, Lanczos-type target, 4 rounds",
+  "group": "Loop",
+  "err": 2e-05
+ },
+ {
+  "guide": "Fixed node, ViT bond numbers",
+  "group": "Bond route",
+  "err": 9.54e-05
+ },
+ {
+  "guide": "Fixed node, learned bond numbers (16 rounds)",
+  "group": "Bond route",
+  "err": 1.92e-05
+ },
+ {
+  "guide": "Fixed node, best bond numbers",
+  "group": "Bond route",
+  "err": 2.51e-06
+ },
+ {
+  "guide": "Fixed node, best bond numbers, after one flip",
+  "group": "Bond route",
+  "err": 9.15e-07
+ }
+]

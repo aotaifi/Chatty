@@ -1,0 +1,42 @@
+[
+ {
+  "run": "Flip test",
+  "plain": "Fixed node with the best bond numbers: does the switched-off set hold the wrong signs, and does flipping it lower the energy?",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Yes: switched-off set holds ~100% wrong signs by weight; flipping lowers the best energy 2.5e-6 to 9.1e-7",
+  "updated": "2026-10-20"
+ },
+ {
+  "run": "Learned bond numbers, 16 rounds",
+  "plain": "Network predicts the bond numbers, trained on the fixed-node energy",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Plateau 1.9e-5 (bar 1e-5): fails; also needs ~23 extra neighbour evaluations per step",
+  "updated": "2026-10-20"
+ },
+ {
+  "run": "12x12 cost probe",
+  "plain": "How expensive is training a 12x12 starting network (RBM+PP)?",
+  "where": "Paderborn (H100)",
+  "state": "Done",
+  "result": "97 s per step; at least 266 H100-h (bar 100): too expensive as configured",
+  "updated": "2026-10-19"
+ },
+ {
+  "run": "Math review",
+  "plain": "Formal analysis of fixed node with free bond numbers, flip rule, scaling",
+  "where": "Consultant",
+  "state": "Done",
+  "result": "Exact flip rule found; loop can only settle on the ground state",
+  "updated": "2026-10-19"
+ },
+ {
+  "run": "Fable review",
+  "plain": "Conceptual check of the bond-number idea",
+  "where": "Consultant",
+  "state": "Done",
+  "result": "Best bond numbers mostly switch off wrong-sign configurations",
+  "updated": "2026-10-19"
+ }
+]

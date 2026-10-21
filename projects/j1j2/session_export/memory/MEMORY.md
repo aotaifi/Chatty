@@ -1,0 +1,8 @@
+- [J1-J2 paper on Overleaf](j1j2-paper-on-overleaf.md) — paper edited on Overleaf git; Chatty repo = data/scripts only
+- [Always push Chatty](always-push-chatty.md) — push commits to GitHub main right away (Overleaf syncs from it)
+- [Figures polished first](figures-polished-first.md) — send presentable plots on the first try, never quick diagnostics
+- [Cluster cleanup rule](cluster-cleanup-rule.md) — delete stale runs on ws1 only if quota critical; else ask owning session (ruby_runs)
+- [J1-J2 viability criteria](j1j2-viability-criteria.md) — scale to new benchmarks, beat brute-force cost, guide-correction add-on pitch
+- [Paderborn when back](paderborn-when-back.md) — after ~Oct 9 move GPU work to Paderborn H100s (via ws1 VPN, login1)
+- [No failure without understood cause](check-method-before-negative.md) — find why it failed (optimizer, convergence, literature); fail only on a conceptual, unfixable limit
+- [SSH waiter loops](ssh-waiter-loops.md) — never poll ws1 with until-ssh-pgrep -f loops; they never end and get ws1 SSH blocked

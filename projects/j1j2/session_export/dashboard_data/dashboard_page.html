@@ -1,0 +1,219 @@
+<style>
+.lt { display: grid; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); max-width: 72rem; margin-inline: auto; }
+.lt h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+.lt-take { color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 65ch; }
+.lt-chips { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); }
+.lt-chip { display: inline-flex; align-items: baseline; gap: var(--cds-gap-xs); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: 999px; background: var(--color-panel); font-size: var(--cds-font-size-caption); }
+.lt-chip b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-heading); font-variant-numeric: tabular-nums; }
+.lt-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
+.lt-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; display: grid; gap: var(--cds-gap-sm); align-content: start; }
+.lt-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.lt-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; }
+.lt-wide { grid-column: 1 / -1; }
+.lt-tablebox { overflow-x: auto; min-height: 6rem; }
+.lt table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+.lt th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.lt td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+.lt td.lt-num { white-space: nowrap; }
+.lt-pill { display: inline-block; padding: 0 var(--cds-pad-sm); border-radius: 999px; font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); white-space: nowrap; }
+.lt-pill.ok { color: var(--color-ok); }
+.lt-pill.warn { color: var(--color-warn); }
+.lt-pill.bad { color: var(--color-bad); }
+.lt-bars { display: grid; gap: var(--cds-gap-sm); min-height: 18rem; }
+.lt-bar-row { display: grid; gap: 2px; }
+.lt-bar-label { font-size: var(--cds-font-size-caption); display: flex; justify-content: space-between; gap: var(--cds-gap-sm); }
+.lt-bar-label span:last-child { font-variant-numeric: tabular-nums; color: var(--color-fg-muted); white-space: nowrap; }
+.lt-bar-track { position: relative; height: 10px; }
+.lt-bar { position: absolute; left: 0; top: 0; height: 10px; border-radius: 5px; }
+.lt-ref { position: absolute; top: -3px; height: 16px; width: 0; border-left: 1px dashed var(--cds-chart-reference); }
+.lt-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lt-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.lt-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); min-height: 6rem; }
+.lt-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+[data-dash-source-state=empty] { color: transparent; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+@media (max-width: 40rem) { .lt-hide-narrow { display: none; } }
+</style>
+
+<div class="lt">
+  <header>
+    <h1 id="title">J1-J2 loop tracker</h1>
+    <p class="lt-take" id="takeaway">The flip test decides whether the bond-number route works: fixed node switches off configurations, and the right flip rule turns that into the next sign correction.</p>
+  </header>
+
+  <div class="lt-chips" id="status" aria-label="Runs by state">
+    <span class="lt-chip">Running <b data-source="runcounts" data-field="n" data-where="state=Running" class="dash-skeleton">—</b></span>
+    <span class="lt-chip">Queued <b data-source="runcounts" data-field="n" data-where="state=Queued" class="dash-skeleton">—</b></span>
+    <span class="lt-chip">Done <b data-source="runcounts" data-field="n" data-where="state=Done" class="dash-skeleton">—</b></span>
+  </div>
+
+  <section class="lt-card lt-wide" id="runs-card">
+    <h2>Runs right now</h2>
+    <p class="lt-note">What each run checks, where it runs, and its latest result.</p>
+    <div class="lt-tablebox" id="runs-box">
+      <table id="runs-table" data-source="runs" data-row-key="run">
+        <thead><tr>
+          <th data-field="run">Run</th>
+          <th data-field="state">State</th>
+          <th data-field="plain" class="lt-hide-narrow">What it checks</th>
+          <th data-field="where" class="lt-hide-narrow">Where</th>
+          <th data-field="result">Latest result</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="lt-grid">
+    <section class="lt-card" id="err6-card">
+      <h2>6x6: error per site above the exact energy</h2>
+      <p class="lt-note">Lower is better, log scale. Dashed line: ViT + 2 Lanczos steps, the bar to beat at equal cost.</p>
+      <div class="lt-legend" id="err6-legend" data-source="results6"></div>
+      <div class="lt-bars" id="err6" data-source="results6"></div>
+    </section>
+
+    <section class="lt-card" id="e8-card">
+      <h2>8x8: energy per site</h2>
+      <p class="lt-note">No exact answer exists at 8x8. Lower is better; bounds are guaranteed to lie above the true value.</p>
+      <div class="lt-tablebox" id="e8-box">
+        <table id="e8-table" data-source="results8" data-row-key="what">
+          <thead><tr>
+            <th data-field="what">State</th>
+            <th data-field="energy">E / N</th>
+            <th data-field="err">± error</th>
+            <th data-field="kind" class="lt-hide-narrow">Type</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="lt-card lt-wide" id="decisions-card">
+    <h2>Open and settled questions</h2>
+    <p class="lt-note">Where the project stands on each question that decides the next step.</p>
+    <div class="lt-tablebox" id="dec-box">
+      <table id="dec-table" data-source="decisions" data-row-key="question">
+        <thead><tr>
+          <th data-field="question">Question</th>
+          <th data-field="status">Status</th>
+          <th data-field="note" class="lt-hide-narrow">Why</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+dash.calc('runcounts', {
+  inputs: ['runs'],
+  title: 'Runs by state',
+  description: 'Number of runs in each state.',
+  fn: (runs) => ['Running', 'Queued', 'Done'].map(state => ({ state, n: runs.filter(r => r.state === state).length }))
+});
+
+(function () {
+  const pillClass = { Running: 'warn', Queued: 'warn', Done: 'ok', Open: 'warn', 'Not yet': 'warn', Settled: 'ok', Failed: 'bad' };
+  const sci = d3.format('.2~e');
+
+  function failLine(box) {
+    const d = document.createElement('div');
+    d.className = 'lt-fail';
+    d.textContent = 'Failed to load';
+    box.replaceChildren(d);
+  }
+
+  function fillTable(tableId, id, cols) {
+    const table = document.getElementById(tableId);
+    const tbody = table.querySelector('tbody');
+    const res = dash.data(id);
+    table.classList.toggle('dash-skeleton', res.status === 'loading');
+    tbody.replaceChildren();
+    if (res.status !== 'ok') {
+      if (res.status === 'error' || res.status === 'connect') {
+        const tr = document.createElement('tr'); const td = document.createElement('td');
+        td.colSpan = cols.length; td.className = 'lt-fail'; td.textContent = 'Failed to load';
+        tr.appendChild(td); tbody.appendChild(tr);
+      }
+      return;
+    }
+    res.data.forEach(row => {
+      const tr = document.createElement('tr');
+      cols.forEach(c => {
+        const td = document.createElement('td');
+        if (c.hide) td.className = 'lt-hide-narrow';
+        if (c.num) td.classList.add('lt-num');
+        const v = row[c.field];
+        if (c.pill) {
+          const s = document.createElement('span');
+          s.className = 'lt-pill ' + (pillClass[v] || '');
+          s.textContent = v;
+          td.appendChild(s);
+        } else {
+          td.textContent = c.fmt ? c.fmt(v) : v;
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function drawBars() {
+    const box = document.getElementById('err6');
+    const legend = document.getElementById('err6-legend');
+    const res = dash.data('results6');
+    box.replaceChildren(); legend.replaceChildren();
+    box.classList.toggle('dash-skeleton', res.status === 'loading');
+    if (res.status === 'error' || res.status === 'connect') { failLine(box); return; }
+    if (res.status !== 'ok') return;
+    const rows = res.data.map(r => ({ ...r, err: Number(r.err) }));
+    const groups = Array.from(new Set(rows.map(r => r.group)));
+    const color = g => dash.colors[groups.indexOf(g) % dash.colors.length];
+    groups.forEach(g => {
+      const s = document.createElement('span');
+      const i = document.createElement('i'); i.style.background = color(g);
+      s.appendChild(i); s.appendChild(document.createTextNode(g));
+      legend.appendChild(s);
+    });
+    const lo = 1e-6, hi = d3.max(rows, r => r.err) * 1.3;
+    const x = d3.scaleLog([lo, hi], [0, 100]).clamp(true);
+    const ref = rows.find(r => r.guide === 'ViT + 2 Lanczos steps');
+    rows.forEach(r => {
+      const row = document.createElement('div'); row.className = 'lt-bar-row';
+      const lab = document.createElement('div'); lab.className = 'lt-bar-label';
+      const a = document.createElement('span'); a.textContent = r.guide;
+      const b = document.createElement('span'); b.textContent = sci(r.err);
+      lab.appendChild(a); lab.appendChild(b);
+      const track = document.createElement('div'); track.className = 'lt-bar-track';
+      const bar = document.createElement('div'); bar.className = 'lt-bar';
+      bar.style.width = x(r.err) + '%'; bar.style.background = color(r.group);
+      track.appendChild(bar);
+      if (ref) { const rl = document.createElement('div'); rl.className = 'lt-ref'; rl.style.left = x(ref.err) + '%'; track.appendChild(rl); }
+      row.appendChild(lab); row.appendChild(track);
+      box.appendChild(row);
+    });
+  }
+
+  dash.onData(() => {
+    fillTable('runs-table', 'runs', [
+      { field: 'run' }, { field: 'state', pill: true }, { field: 'plain', hide: true }, { field: 'where', hide: true }, { field: 'result' }
+    ]);
+    fillTable('e8-table', 'results8', [
+      { field: 'what' }, { field: 'energy', num: true, fmt: v => String(v) }, { field: 'err', num: true, fmt: v => sci(Number(v)) }, { field: 'kind', hide: true }
+    ]);
+    fillTable('dec-table', 'decisions', [
+      { field: 'question' }, { field: 'status', pill: true }, { field: 'note', hide: true }
+    ]);
+    drawBars();
+    const rc = dash.data('runcounts');
+    document.querySelectorAll('[data-source="runcounts"]').forEach(el => {
+      el.classList.toggle('dash-skeleton', rc.status === 'loading');
+      if (rc.status !== 'ok') { el.textContent = '—'; return; }
+      const st = new URLSearchParams(el.getAttribute('data-where')).get('state');
+      const hit = rc.data.find(r => r.state === st);
+      el.textContent = hit ? String(hit.n) : '—';
+    });
+  });
+})();
+</script>

@@ -1,0 +1,32 @@
+[
+ {
+  "question": "Does flipping the switched-off configurations correct the signs?",
+  "status": "Settled",
+  "note": "Yes on exact 6x6: the energy ceiling drops 2.7x; storable as a sign network"
+ },
+ {
+  "question": "Can the amplitudes of the configurations that stay in be supplied cheaply?",
+  "status": "Open",
+  "note": "ViT ratios give only 9.5e-5; a learned field with neighbour inputs plateaus at 1.9e-5 and does not scale"
+ },
+ {
+  "question": "Do global sign steps keep their strength up to 14x14?",
+  "status": "Settled",
+  "note": "Yes for good starting signs; they weaken only near 1,000-10,000 sites"
+ },
+ {
+  "question": "Can a network store each round's amplitudes at constant cost at J2 = 0.5?",
+  "status": "Failed",
+  "note": "Seven designs; cause understood: frustration makes the amplitudes non-local"
+ },
+ {
+  "question": "Can signs be stored at constant cost?",
+  "status": "Settled",
+  "note": "Yes, sign network + one exact step works at 8x8"
+ },
+ {
+  "question": "Is a 12x12 starting network affordable?",
+  "status": "Not yet",
+  "note": "Cost cuts drafted; only needed once the loop works at 8x8"
+ }
+]

@@ -1050,3 +1050,27 @@ For each tau and variant: E_FN(s_2, ViT ratios). For tau = 1e-2 also its own c-o
   - s_2 below 2.51e-6 at 40 solves: the expelled set acts as the next sign step and the loop closes at fixed cost;
   - otherwise not.
 - Code `cx_s2ceil.py`, <= 1.2 slice-h.
+
+## Amplitude refresh after the flip (pre-registered 2026-10-21, lead approved; before any run; code `cx_refresh.py` + `cx_reanchor.py` options target_la / edges='all'; <= 3 slice-h)
+**Hypothesis.** The spin-only ViT re-anchor failed on rare configurations that were mostly wrong-signed or newly
+flipped. After the flip (s_2 = s_1 flipped on X_0.1) the sign handles those, so the ViT may now be precise enough on
+the support.
+
+**Steps:**
+- (A) phi*(s_2): 40 self-consistent solves from ViT ratios (cx_s2ceil gave 9.15e-7), saved.
+- (B) Fine-tune the warm symmetrised ViT to log phi*(s_2):
+  - cx_reanchor machinery: minSR with value rows, trust region, fixed validation acceptance, held-out acceptance,
+    15 min;
+  - edge loss over ALL valid bonds (kept and bad) in the wall metric (|h| phi_x phi_y);
+  - X_0.1 is held at its flipped sign (it is part of s_2).
+- (C) E_FN(s_2, ratios of the fitted ViT): one solve, and after 3 own solves. Also:
+  - an oracle-veto variant: a = 0 where phi*(s_2)/|fitted ViT| < 0.1; this uses phi*, so it is an upper bound;
+  - the majoriser-gap decomposition at phi*(s_2): bulk bad bonds / near-node (ratio in [0.1, 0.3)) / bonds into X,
+    for the fitted field and for plain ViT ratios;
+  - the cost of one refresh (fit seconds, steps).
+- References:
+  - E_FN(s_2, ViT ratios), recomputed here, against the tau = 0.1 flip value 1.0186e-4;
+  - s_1 + ViT ratios 9.54e-5;
+  - the ceiling 9.15e-7.
+
+**Pass:** one-solve E_FN(s_2, fitted ViT) <= 1.0e-5, i.e. the fitted ViT is a usable zero-hop guide.

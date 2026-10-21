@@ -71,7 +71,12 @@ H_G = lab.H_site(la_G, s_G)
 _, V, W = lab.VW(la_G, s_G)
 _v = sec.vec(la_G, s_G); E = float(_v @ sec.H(_v)); del _v
 EL = lab.D0 + V - W; del V, W
-la_t, s_t, d, alpha = clipped_lanczos(la_G, s_G, EL, E); del EL
+if SPEC.get('target_la'):                        # amplitude-refresh test: externally supplied target state
+    la_t = jnp.asarray(np.load(SPEC['target_la'])); s_t = jnp.asarray(np.load(SPEC['target_s']).astype(np.float32))
+    la_t = la_t - jnp.max(la_t); d = la_t - (la_G - jnp.max(la_G)); alpha = 0.0
+else:
+    la_t, s_t, d, alpha = clipped_lanczos(la_G, s_G, EL, E)
+del EL
 H_t = lab.H_site(la_t, s_t)
 PT = sec.vec(la_t, s_t) ** 2
 mu_d = float(jnp.sum(PT * d)); d_ptrms = float(jnp.sqrt(jnp.sum(PT * (d - mu_d) ** 2)))
@@ -132,6 +137,7 @@ LIW_TR = jnp.where(Qtr > 0, jnp.log(jnp.maximum(PA, 1e-300)) - jnp.log(jnp.maxim
 LIW_TE = jnp.where(Qte > 0, jnp.log(jnp.maximum(PA, 1e-300)) - jnp.log(jnp.maximum(Qte, 1e-300)), -jnp.inf)
 del Q, Qtr, Qte, PA
 HOJ = lab.HO
+EDGES = SPEC.get('edges', 'kept')
 
 
 def make_batch(cdf, liw, withhold, B_):
@@ -147,7 +153,8 @@ def make_batch(cdf, liw, withhold, B_):
         y = x[:, None] ^ MASKS[bsel]
         iy = SS.canon(sec.T, sec.reps, y.reshape(-1)).reshape(B_, KB)
         r = jnp.clip(la_t[iy] - la_t[idx][:, None], -60, 60)
-        w = jnp.where(ok & (s_t[idx][:, None] * s_t[iy] < 0), 0.5 * JB[bsel] * jnp.exp(r), 0.0) * (nval[:, None] / KB)
+        esel = ok if EDGES == 'all' else (ok & (s_t[idx][:, None] * s_t[iy] < 0))   # 'all': kept + bad bonds (wall metric)
+        w = jnp.where(esel, 0.5 * JB[bsel] * jnp.exp(r), 0.0) * (nval[:, None] / KB)
         if withhold: w = jnp.where(HOJ[iy], 0.0, w)
         lw = liw[idx]; iw = jnp.exp(lw - jnp.max(lw))
         return x, y, la_t[idx], la_t[iy], w, iw

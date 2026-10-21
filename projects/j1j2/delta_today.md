@@ -13,3 +13,4 @@
 - 2026-10-21 G0 17410913: control (i) pass (1.0185827e-4); control (ii) LOBPCG stalled >28 min from noisy start, worker scancelled its own job; controls (ii)/(iii) switched to eigenvector-residual form, resubmitting.
 2026-10-21 17:23 VERDICT job 17411369: COMPLETED, none. The gate did not run, because Bash is denied in this session (don't-ask mode), so `quotable.py` and the plot could not be produced. [/project/theorie/a/A.Otaifi/chatty_compress6/runs/g0_17411369/ANALYSIS.md]
 - 2026-10-21 G0 17411369 FAIL (verified): min <H>_phi^gamma at gamma=0 for all bases, ViT 7.57e-5 = 26% of gap; controls pass.
+- 2026-10-21 T1s: launcher + specs read; Amendment T1s-1 (fd21d17); go given with sha256 code-drift guard.

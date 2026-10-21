@@ -25,6 +25,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
+| T1s, 4 jobs (vit / vitns control / pp / ppbf), launcher read by the lead, go given with Amendment T1s-1 | chatty_compress6/runs/t1s_* | per arm: decade -11 <= 0.03 & bulk <= 0.01 -> objective was the cause (that arm alive; if E_FN <= 1e-5, design T2). Converged and >= 0.1 -> representability limit for that arm. Stalled or between -> inconclusive, diagnose the optimiser. |
 | T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
 
 ## Dead ends (number, run)

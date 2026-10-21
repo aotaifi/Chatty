@@ -11,11 +11,17 @@ HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6
 RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_t1s.py" "$HERE/../rbmpp_6x6/rbmpp_lib.py" "$B/code/"
 sha256sum "$B/code/cx_t1s.py" "$B/code/cx_lib.py" "$B/code/rbmpp_lib.py"
+# code drift guard: cx_slice.sbatch copies $B/code/*.py at job START; the job compares these hashes and exits 3 on a mismatch
+SHAJSON=$(python3 -c "import hashlib,json;print(json.dumps({f:hashlib.sha256(open('$B/code/'+f,'rb').read()).hexdigest() for f in ('cx_t1s.py','cx_lib.py','rbmpp_lib.py')}))")
+for f in cx_t1s.py cx_lib.py; do cmp -s "$HERE/$f" "$B/code/$f" || { echo "copy of $f differs"; exit 1; }; done
+SPECD=$B/specs_t1s/$(date +%Y%m%dT%H%M%S); mkdir -p "$SPECD"
 cd "$HERE"
 for spec in specs/t1s_vit.json specs/t1s_vitns.json specs/t1s_pp.json specs/t1s_ppbf.json; do [ -f "$spec" ] || { echo "missing $spec"; exit 1; }; done
 submit() {   # name spec wall
-  local OUTL JOB RUN
-  OUTL=$(sbatch --parsable --no-requeue --job-name="$1" --time="$3" "$B/cx_slice.sbatch" cx_t1s.py "$2")
+  local OUTL JOB RUN SP
+  SP=$SPECD/$(basename "$2")
+  python3 -c "import json,sys;d=json.load(open('$2'));d['code_sha256']=json.loads(sys.argv[1]);json.dump(d,open('$SP','w'))" "$SHAJSON"
+  OUTL=$(sbatch --parsable --no-requeue --job-name="$1" --time="$3" "$B/cx_slice.sbatch" cx_t1s.py "$SP")
   JOB=${OUTL%%;*}; RUN=$RUNS/${1}_$JOB; mkdir -p "$RUN"
   ARM=$(python3 -c "import json;print(json.load(open('$2'))['arm'])")
   cat > "$RUN/ANALYSIS_BRIEF.md" <<EOB
@@ -24,11 +30,12 @@ Question (README "Test T1s", projects/j1j2/experiments/compress_6x6/README.md, p
 the fit to log phi*(s_2) a representability limit or the training objective? Asked per arm; this run is arm '$ARM'
 (vit = (a) ViT warm psi_P; vit_nostrat = control 1, (a) with the decade weights off; pp = (b) PP f-only; ppbf = (c) PP + 3x3 backflow).
 Files: $RUN/cx_t1s.json (keys: readout.primary_table = count-weighted rms log error per decade -5..-13; readout.rms_by_decade
-  (rms_count, rms_count_heldout, rms_T0, eps_T0); converged {converged, reason, acc_window, lam_below_cap, heldout_rel_change};
+  (rms_count, rms_count_heldout, rms_T0, eps_T0); converged {converged, stalled, reason, acc_window, lam_below_cap, heldout_rel_change,
+  median_move_accepted_window} (README amendment T1s-1); code_sha256 {expected, running, match};
   fit.hist (per step: ok, verdict, lam_rel, dmean, dse, trust_scale), fit.curve (held-out loss and per-decade rms every 10 steps);
   E_FN (one sec.fn_solve with s_2 and the fitted table); control2 (readout code on the warm table vs cx_t0.json eps; warm net vs
   table); control1 (vit_nostrat only: profile next to the refresh fit's)); $RUN/progress.txt; $RUN/la_table.npy; $RUN/theta.npy.
-  Code: cx_t1s.py (git, experiments/compress_6x6), spec $2.
+  Code: cx_t1s.py (git, experiments/compress_6x6), spec $SP (= $2 + code_sha256; copied to $RUN/spec.json at start).
 Gate: no Monte Carlo chains (exact tables, one fit): quotable.py does not apply. The numbers are read directly from cx_t1s.json:
   python3 -c "import json;d=json.load(open('$RUN/cx_t1s.json'));print(d['readout']['primary_table'],d['converged'],d.get('E_FN'),d['control2'].get('rel_diff_eps'))"
 Readings (pre-registered, per arm): objective was the cause if rms at decade -11 <= 0.03 with the bulk (decades >= -8) <= 0.01;

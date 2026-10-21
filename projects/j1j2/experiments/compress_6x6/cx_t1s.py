@@ -56,11 +56,13 @@ LAM_B = float(SPEC.get('lam_b', 1.0)); FIT_SEC = float(SPEC.get('fit_sec', 1800)
 LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0)); LAM_MIN = 1e-6
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
 HO_EVERY = int(SPEC.get('ho_every', 10)); MIN_STEPS = int(SPEC.get('min_steps', 50)); FLAT_TOL = float(SPEC.get('flat_tol', 0.02))
+MIN_MOVE = float(SPEC.get('min_move', 1e-3))           # README amendment T1s-1
+MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
 T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
 res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP,
                                                     tau=TAU, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
-                                                    flat_tol=FLAT_TOL, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
+                                                    flat_tol=FLAT_TOL, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
 
 
 def progress(msg):
@@ -68,6 +70,23 @@ def progress(msg):
     log(msg)
 
 
+# code drift guard (lead, 2026-10-21): the files actually run must be the ones hashed at submission
+import hashlib
+HERE_ = os.path.dirname(os.path.abspath(__file__))
+CODE_FILES = ('cx_t1s.py', 'cx_lib.py', 'rbmpp_lib.py')
+SHA_RUN = {fn: (hashlib.sha256(open(os.path.join(HERE_, fn), 'rb').read()).hexdigest()
+                if os.path.exists(os.path.join(HERE_, fn)) else None) for fn in CODE_FILES}
+SHA_EXP = SPEC.get('code_sha256')
+res['code_sha256'] = dict(expected=SHA_EXP, running=SHA_RUN, dir=HERE_)
+if SHA_EXP is not None:
+    bad = [fn for fn in CODE_FILES if SHA_EXP.get(fn) != SHA_RUN[fn]]
+    res['code_sha256']['match'] = not bad
+    if bad:
+        res['code_sha256']['mismatch'] = bad; dump(F, res)
+        progress(f'CODE DRIFT: sha256 mismatch for {bad}; exit 3 before fitting'); sys.exit(3)
+elif not DRY:
+    dump(F, res); progress('CODE DRIFT GUARD: no code_sha256 in the spec; exit 3'); sys.exit(3)
+dump(F, res)
 lab = Lab(); sec = lab.sec
 
 
@@ -404,16 +423,21 @@ sec.offload()
 
 
 def check_converged():
-    n_ = len(hist); w0 = max(0, n_ - max(int(math.ceil(0.2 * n_)), 2 * HO_EVERY))
+    n_ = len(hist); w0 = max(0, n_ - max(int(math.ceil(0.2 * n_)), 2 * HO_EVERY, MIN_WINDOW))
     win = hist[w0:]
     acc = float(np.mean([h['ok'] for h in win]))
     lam_ok = all(h['lam_rel'] < LAM_CAP for h in win)
     c0 = [q for q in curve if q['step'] <= w0]; c0 = c0[-1] if c0 else curve[0]
     flat = abs(c0['L_ho'] - curve[-1]['L_ho']) / curve[-1]['L_ho']
-    ok = bool(acc >= 0.5 and lam_ok and flat < FLAT_TOL)
+    accd = [h['pred_rms'] * h['trust_scale'] for h in win if h['ok']]
+    med_acc = float(np.median(accd)) if accd else 0.0
+    moving = med_acc >= MIN_MOVE                      # README amendment T1s-1: a flat but frozen fit is not converged
+    ok = bool(acc >= 0.5 and lam_ok and flat < FLAT_TOL and moving)
     why = f'window steps {w0 + 1}..{n_}: acceptance {acc:.2f} (>= 0.5), lam_rel < cap at all steps {lam_ok}, ' \
-          f'held-out change {flat:.4f} (< {FLAT_TOL}) from step {c0["step"]}'
-    return dict(converged=ok, reason=why, acc_window=acc, lam_below_cap=lam_ok, heldout_rel_change=flat, window_start=w0 + 1,
+          f'held-out change {flat:.4f} (< {FLAT_TOL}) from step {c0["step"]}, ' \
+          f'median predicted rms change per accepted step {med_acc:.2e} (>= {MIN_MOVE:.0e})'
+    if not moving: why = 'stalled: ' + why
+    return dict(converged=ok, stalled=not moving, median_move_accepted_window=med_acc, reason=why, acc_window=acc, lam_below_cap=lam_ok, heldout_rel_change=flat, window_start=w0 + 1,
                 median_pred_rms_window=float(np.median([h['pred_rms'] * h['trust_scale'] for h in win])),
                 median_lam_rel_window=float(np.median([h['lam_rel'] for h in win])))
 
@@ -455,7 +479,10 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         res['fit'] = dict(hist=hist, curve=curve); dump(F, res)
 if not conv['converged']:
     conv = check_converged() if len(hist) >= max(2 * HO_EVERY, 2) and len(curve) > 1 else dict(converged=False, reason='too few steps')
-    conv['reason'] = f'out of budget ({n} steps, {time.time() - t0:.0f}s of {FIT_SEC:.0f}s): ' + conv['reason']
+    if conv.get('stalled'):
+        conv['reason'] = f'stalled (fit ended after {n} steps, {time.time() - t0:.0f}s of {FIT_SEC:.0f}s): ' + conv['reason']
+    else:
+        conv['reason'] = f'out of budget ({n} steps, {time.time() - t0:.0f}s of {FIT_SEC:.0f}s): ' + conv['reason']
     conv['converged'] = False
 conv['steps'] = n; conv['fit_sec'] = time.time() - t0
 conv['acceptance_all'] = float(np.mean([h['ok'] for h in hist])) if hist else None

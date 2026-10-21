@@ -1,9 +1,10 @@
 #!/bin/bash
 # Test T1s-2 launcher (README "Test T1s-2"): 3 jobs, one per arm, each warm from its own T1s theta.npy; run AFTER the lead's go.
-#   B = B_acc = 8208 (912 per decade), tau 0.05 -> 0.01 anneal, splice E_FN.  Walls: (fit budget + measured T1s overhead) x ~1.4.
-#   t1s2_pp   (b) PP          fit <= 3600 s, A40 24 GB slice (cx_slice.sbatch), wall 2:30
-#   t1s2_ppbf (c) PP+backflow fit <= 5400 s, A40 24 GB slice,                    wall 4:40
-#   t1s2_vit  (a) ViT         fit <= 3600 s, FULL A40 (cx.sbatch: G alone is 24624 x 154980 fp32 = 15.3 GB, the slice has 19.15 GB), wall 2:30
+#   B = B_acc = 8208 (912 per decade), tau 0.05 -> 0.01 anneal, splice E_FN.  Fit budgets: amendment T1s2-1.
+#   Walls: (fit budget + measured T1s overhead) x ~1.3; partition MaxTime cip/inter 2 days (sinfo, 2026-10-21).
+#   t1s2_pp   (b) PP          fit <= 3600 s,  A40 24 GB slice (cx_slice.sbatch), wall 2:20
+#   t1s2_ppbf (c) PP+backflow fit <= 10800 s, A40 24 GB slice,                    wall 6:15
+#   t1s2_vit  (a) ViT         fit <= 9000 s,  FULL A40 (cx.sbatch: G alone is 24624 x 154980 fp32 = 15.3 GB, the slice has 19.15 GB), wall 4:10
 # Stages code like launch_g0.sh (cx_slice.sbatch copies $B/code/*.py into the run), submits, writes ANALYSIS_BRIEF.md,
 # arms one durable setsid watcher per job (cx_t1s_watch.sh -> job_finish.sh --wake none).
 set -euo pipefail
@@ -47,6 +48,6 @@ EOB
   echo "job=$JOB arm=$ARM run=$RUN watcher_pid=$!"
   sacct -j "$JOB" -X -n -o State,Reason%30
 }
-submit t1s2_pp   specs/t1s2_pp.json   02:30:00 cx_slice.sbatch
-submit t1s2_ppbf specs/t1s2_ppbf.json 04:40:00 cx_slice.sbatch
-submit t1s2_vit  specs/t1s2_vit.json  02:30:00 cx.sbatch
+submit t1s2_pp   specs/t1s2_pp.json   02:20:00 cx_slice.sbatch
+submit t1s2_ppbf specs/t1s2_ppbf.json 06:15:00 cx_slice.sbatch
+submit t1s2_vit  specs/t1s2_vit.json  04:10:00 cx.sbatch

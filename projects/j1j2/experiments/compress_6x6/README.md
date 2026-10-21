@@ -1298,3 +1298,34 @@ of the |psi0|^2 weight.
   says nothing about a node-moving ansatz trained on the tail.
 - Verdict status: T0 kill = fixed VMC-trained PP only. The Pfaffian+backflow route is INCONCLUSIVE (cause: no network
   has been trained with weight on the tail). Next: the decade-stratified fit (T1s, pre-registration below).
+
+## Test T1s: tail-weighted (decade-stratified) fit to phi*(s_2) (pre-registered 2026-10-21, lead, from the Fable training audit; before any run; <= 4 slice-h)
+**Question.** Is the tail error a representability limit or the training objective? The question is asked per arm.
+
+**Target and sampling:**
+- Target: log phi*(s_2) (refresh_17409419/la_star_s2.npy). The sign is s_2 and is fixed.
+- Sampling: decade-stratified. Equal counts per |phi*|^2 decade from -5 to -13, uniform within a decade, at least 2048
+  samples per step.
+- Loss: per-configuration (log a - log phi*)^2 plus a bond term on bad bonds of s_2, each renormalised per decade.
+
+**Arms:**
+- (a) ViT, warm psi_P;
+- (b) PP f-only, warm from sym_tables_PP;
+- (c) PP + local backflow with a 3x3 receptive field, zero-initialised.
+
+**Optimiser and convergence:**
+- minSR or SR with a trust region.
+- Converged means: acceptance >= 50%, trust region below its cap over the last 20% of steps, and a flat stratified
+  held-out loss. Run until converged or out of budget, and report which.
+
+**Readings, per arm:**
+- Objective was the cause: rms log error at decade -11 <= 0.03 with the bulk (decades >= -8) <= 0.01.
+- Representability limit: a verifiably converged fit still has >= 0.1 at decade -11.
+- Otherwise inconclusive.
+
+**Physics pass:** E_FN(s_2, fitted ratios), one solve, <= 1e-5.
+
+**Controls:**
+- The broken-version check: the arm-(a) loss evaluated with the decade weights switched off reproduces the refresh
+  fit's tail error profile.
+- The unchanged warm-start psi_P reproduces the T0 eps 5.72e-7.

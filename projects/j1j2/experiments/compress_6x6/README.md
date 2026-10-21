@@ -1112,3 +1112,45 @@ Measured:
 **Decision (consultant's rule):**
 - eps(PP) within 2x of eps(ViT) means the determinant bias is dead;
 - eps(PP) down >= 5x, or (c) < 5e-5, means propose T1.
+
+#### Results: amplitude refresh (refresh_17409419, refresh2_17409866; read by the lead 2026-10-21) - FAIL
+- One-solve E_FN(s_2, fitted ViT): 9.16e-5 (seed 0), 9.22e-5 (seed 1); bar 1.0e-5. Plain ViT ratios 1.019e-4; oracle
+  veto 8.18e-5; ceiling 9.15e-7. The fit had converged: held-out loss 1.76e-3 -> 6.99e-4, flat over its last 4 checks.
+- Decade splices (seed 0 / seed 1): fitted ViT down to decade t, exact phi*(s_2) below that:
+  - t = -8: 2.0 / 2.2e-6;
+  - t = -9: 5.8 / 5.9e-6;
+  - t = -10: 1.68 / 1.68e-5;
+  - t = -11: 3.49 / 3.51e-5.
+  The ViT is good enough for a^2 >= 1e-9. Decades -10 and -11 cost 2.9e-5, and the configurations below 1e-11 cost
+  5.7e-5, about 60% of the gap.
+- Flip labels from the fitted network are useless: recall 5e-7 by weight for both X and KKT. The exact labels on s_2
+  recall 0.13, with KKT precision 0.998. The KKT step needs the oracle phi*: the circularity found in the audit is
+  confirmed.
+- The H_FN-SR test is not started; its gate was 3e-5.
+
+#### Results: T0 (t0_17410220; read by the lead 2026-10-21) - KILL RULE FIRES for the fixed pairing determinant
+| base | dE_VMC | E_FN(s_2) | + veto | eps median, decades 1e-9..1e-13 | bond-error rms, decades -9 / -10 / -11 / -12 |
+|---|---|---|---|---|---|
+| ViT | 1.32e-4 | 1.02e-4 | 9.67e-5 | 5.7e-7 | 0.085 / 0.155 / 0.31 / 0.58 |
+| ViT refreshed | - | 9.16e-5 | 8.18e-5 | 3.4e-7 | 0.056 / 0.10 / 0.19 / 0.33 |
+| PP | 6.3e-5 | 5.37e-5 | 5.26e-5 | 4.5e-7 | 0.089 / 0.153 / 0.27 / 0.47 |
+| RBM+PP | 4.74e-5 | 3.76e-5 | 3.67e-5 | 3.0e-7 | 0.065 / 0.11 / 0.20 / 0.38 |
+| (c) PP x \|1 + alpha(E_L - E)\|, alpha -0.108 | - | 2.37e-5 | 2.13e-5 | - | - |
+- eps(PP) / eps(ViT) = 0.78, inside the factor 2: by the pre-registered rule the determinant bias is dead.
+- (c) < 5e-5 meets the second clause, but (c) uses E_L, which is a one-hop quantity. Its gain comes from the hop and
+  not from the determinant. The equal-hop reference psi_P + 1 Lanczos (E_FN 1.89e-5, ViT sign) is better, so (c)
+  does not rescue the determinant.
+- With any zero-hop guide, E_FN(s_2) / dE_VMC is 0.77 (ViT), 0.85 (PP) and 0.79 (RBM+PP). The improved sign
+  (ceiling 9.15e-7) buys only about 20% over the guide's own VMC energy, because the guide's ratios set E_FN.
+
+#### Test T0b: tail precision at equal global accuracy (pre-registered 2026-10-21, before any run; cx_t0 bases only, no training, <= 0.5 slice-h)
+- Question: is eps an architecture property, or does it track the guide's global accuracy?
+- Bases: the four T0 bases plus the early RBM+PP checkpoints B2 (dE 1.54e-4, close to the ViT's 1.32e-4) and B1
+  (dE 3.87e-4), from rbmpp_6x6 rpTabB2_17166873 and rpTabB1_17166872. Measured as in T0 (a) and (b).
+- Decision:
+  - eps(B2) <= eps(ViT) / 2 means the pairing family has a tail bias at equal accuracy. Backflow T1 stays a live
+    option for the PI.
+  - eps(B2) within 1.5x of eps(ViT), with all six bases on one monotone eps(dE) curve (no base off it by more than
+    1.5x), means tail precision tracks global accuracy. A better tail then means a better VMC state, so T1/T2 cannot
+    show a loop edge. Recommend route C (ViT/RBM+PP + 1-2 Lanczos + calibrated FN at 8x8-14x14).
+  - Anything between these two is inconclusive and is reported as such.

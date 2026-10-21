@@ -1074,3 +1074,17 @@ the support.
   - the ceiling 9.15e-7.
 
 **Pass:** one-solve E_FN(s_2, fitted ViT) <= 1.0e-5, i.e. the fitted ViT is a usable zero-hop guide.
+
+#### Amendment AR-1 (2026-10-21, audit request; written while job 17409419 was in stage B, before any fit or E_FN result was read)
+- **Second seed** of the ViT fit (seed 1, same settings).
+- **Decade splices** (per seed). E_FN(s_2) with one solve, for a field taking the fitted ViT ratios where phi*(s_2)
+  has probability decade >= t and the exact phi*(s_2) ratios below, for t = -8, -9, -10, -11. This shows which decades
+  carry the remaining E_FN gap.
+- **Flip labels from the fitted network** (per seed), with phi_f = the FN solution of the fitted-ViT field (one
+  solve, what a GFMC run with that guide would give):
+  - expelled set X_f = {phi_f / |fitted ViT| < 0.1} and KKT set {x in X_f : mu_x(phi_f) > 0};
+  - compared with the exact labels from phi*(s_2) and |psi_P|;
+  - for both: precision and recall against W_2 = {s_2 != s0} (aligned, psi0 zeros excluded) by |psi0|^2 weight,
+    plus the overlap between the fitted and exact label sets.
+- Code `cx_refresh2.py`, a follow-up job after 17409419. Total budget ~3.3 slice-h, 0.3 over.
+- The H_FN-SR test is not started unless the refit reaches ~3e-5 or better.

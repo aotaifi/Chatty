@@ -1410,3 +1410,11 @@ Lead's reading:
 
 **Pass (the T1 bar, unchanged):** E_FN(s_2) <= 1e-5. Also reported: E_FN with the fitted ratios on bulk decades
 (>= -9) and exact phi* below (a splice), to show which decades still carry the gap.
+
+#### Amendment T1s2-1 (2026-10-21, lead; before submission, after reading launch_t1s2.sh and the specs)
+At the measured speeds (s/step x 4), the pre-registered budgets give ppbf about 72 steps and the ViT about 54. The
+convergence rule needs >= 60 steps of annealing plus a 50-step window, so those two arms would end "out of budget" by
+construction: a test that cannot settle.
+- New fit budgets: pp 3600 s (unchanged, about 116 steps), ppbf 10800 s (about 144 steps), ViT 9000 s (about 134
+  steps).
+- The readings and the pass bar are unchanged.

@@ -1244,3 +1244,47 @@ All are per site, relative to E0.
   on the tail (if anything 1.3x worse).
 - Consequence: a better tail means a better variational state, so the T0 kill stands. Extrapolating the measured slope
   (derived, unvalidated, past measurement): eps ~ 1e-8 would need dE_VMC ~1e-6.
+
+#### Results: T0-phys (t0phys_17410698, runs/cx_t0phys.json; 15 min, one A40 slice)
+**Checks.** s_2 equals s_1 flipped on the recomputed X_0.1 (0 mismatches). X_0.1 holds 9.3% of the orbits and 6.0e-6
+of the |psi0|^2 weight.
+
+**(1) The one-hop construction |base| |1 + alpha (E_L - E)| with sign s_2 (identical search for every base):**
+
+| base | zero-hop E_FN | one-hop E_FN (alpha) | + veto | one-hop / own dE_VMC |
+|---|---|---|---|---|
+| ViT | 1.02e-4 | 2.90e-5 (-0.099) | 2.61e-5 | 0.22 |
+| PP | 5.37e-5 | 2.37e-5 (-0.108) | 2.13e-5 | 0.38 |
+| RBM+PP | 3.76e-5 | 1.29e-5 (-0.122) | 1.08e-5 | 0.27 |
+
+- ViT / PP after one hop = 1.23. That is just above the 1.2 bar and below 2, so the pre-registered reading is
+  **inconclusive**.
+- The lean is toward "the hop, not the determinant":
+  - PP's advantage shrinks from 1.9x with no hop to 1.23x after one hop;
+  - relative to its own VMC error, the ViT gains the most from the hop.
+- This leaves the T0 kill and the T0b verdict (eps tracks global accuracy) unchanged.
+
+**(2) Physics of the near-node sets.** All values are |psi0|^2-weighted means. Random Sz = 0 reference values:
+- M_Neel^2 about 0.029, M_stripe^2 about 0.057;
+- Neel plaquettes 0.125, stripe plaquettes 0.25;
+- ferromagnetic J1 bonds about 0.49.
+
+| set (psi0 weight) | J1 Marshall-violating (s0) | Marshall-wrong config | M_Neel^2 | M_stripe^2 | ratio S/N | plaq Neel / stripe | ferro J1 |
+|---|---|---|---|---|---|---|---|
+| bulk, decades >= -8 (0.76) | 0.013 | 0.003 | 0.153 | 0.041 | 0.27 | 0.46 / 0.28 | 0.27 |
+| tail, decades -10..-12 (0.077) | 0.111 | 0.156 | 0.049 | 0.061 | 1.25 | 0.25 / 0.31 | 0.40 |
+| X_0.1 (6.0e-6) | 0.400 | 0.239 | 0.053 | 0.081 | 1.52 | 0.24 / 0.29 | 0.39 |
+| W_2 = {s_2 != s0} (1.2e-6) | 0.463 | 0.923 | 0.053 | 0.069 | 1.29 | 0.33 / 0.33 | 0.34 |
+
+- **Prediction confirmed by the pre-registered rule.** M_stripe^2 / M_Neel^2 is 5.7x the bulk value on X_0.1 and 4.7x
+  in the tail (bar 1.5x).
+- The plaquette criterion alone would not confirm it: the stripe share is 1.04x / 1.09x the bulk value.
+- Mechanism, stated precisely: Neel order collapses toward its random value, M_Neel^2 down 2.9x. The stripe moment
+  rises 2.0x over the bulk and sits 1.4x above random. Ferromagnetic J1 bonds (domain walls) rise 1.4x. These are
+  stripe-tilted, Neel-disordered configurations, not clean stripe domains.
+- **Marshall violation is the strongest signal.**
+  - 40% of the J1 bonds out of X_0.1 have the non-Marshall sign product, against 1.3% in the bulk (30x). That is 3.6x
+    the tail average at comparable weight. The fraction rises smoothly with decade: 0.054 / 0.097 / 0.15 / 0.19 / 0.24
+    at decades -9..-13.
+  - On W_2, 92% of the configurations have a non-Marshall exact sign. The remaining sign errors of s_2 sit where the
+    true sign departs from Marshall and the guide sign has stayed Marshall-like.

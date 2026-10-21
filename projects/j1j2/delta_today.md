@@ -6,3 +6,4 @@
 - 2026-10-21 lead wrongly relabelled the T0 kill as "inconclusive" (0e1929b), reverted to the pre-registered verdict.
 - 2026-10-21 G0 pre-registered (27507c4); worker building cx_g0.py. Another session (ge25sup identity) pushed T0-phys da596a2 and submitted 17410698.
 - 2026-10-21 T0b 17410565 read and verified from cx_t0b.json: eps tracks dE (slope 0.72); B2/ViT 1.507 direct, 1.32 at equal dE; T0 kill stands; T1 not run unless the PI asks.
+- 2026-10-21 T0-phys 17410698 read: one-hop ViT/PP 1.23 (inconclusive by the pre-registered 1.2/2 bar; RBM+PP one-hop 1.29e-5); stripe/Neel ratio 5.7x bulk on X_0.1 (confirmed via moment ratio, not plaquettes); J1 Marshall violation 0.40 on X_0.1 vs 0.013 bulk; W_2 92% Marshall-wrong.

@@ -1194,3 +1194,34 @@ Measured per set, as a |psi0|^2-weighted mean (and an unweighted orbit-count mea
 
 Prediction counts as confirmed if the stripe plaquette share or M_stripe^2 / M_Neel^2 on X_0.1 and in the tail is
 >= 1.5x the bulk value. It is refuted if both are <= 1.1x.
+
+## Test G0: gamma-FN on exact tables, so the reported energy does not depend on the tail (pre-registered 2026-10-21, lead; before any run; code `cx_g0.py`; exact 6x6, no training, <= 0.5 slice-h)
+**Idea.** This uses Sorella-Capriotti PRB 61, 2599 (2000), after ten Haaf et al. PRB 51, 13039 (1995). Work in the
+amplitude basis u (psi = s u). The gamma-FN operator keeps the kept bonds of H_FN, puts back the sign-violating ("bad")
+off-diagonals as -gamma H_xy, and weights the wall term by (1 + gamma):
+  H^gamma = D0 + (1 + gamma) V_a - W_kept - gamma B_bad,
+where V_a(x) = sum_bad H_xy a_y / a_x is the wall term and B_bad is the bad-bond hopping.
+- gamma = 0 is our H_FN; gamma = -1 is H itself.
+- In cx_lib terms: Dg_gamma = D0 + (1 + gamma)(Dg - D0), B x = 0.5(h1 + s h2) - D0 x, and
+  A_gamma x = Dg_gamma x - 0.5(h1 - s h2) - gamma B x.
+- Hellmann-Feynman: <psi^gamma|H|psi^gamma> = E^gamma - (1 + gamma) dE^gamma/dgamma, the tangent extrapolation to
+  gamma = -1. It is a variational upper bound, and walkers estimate it from two FN runs.
+
+**Measured.** Sign s_2 throughout (refresh_17409419). Ratios a from the ViT, PP and RBM+PP (as in T0), at
+gamma = 0, 0.25, 0.5, 1, 2:
+- E^gamma (the Perron ground energy of H^gamma);
+- <H> on phi^gamma, exact, with sign s_2;
+- the chord extrapolation of E^gamma to gamma = -1, an estimate and not a bound.
+All are per site, relative to E0.
+
+**Controls (each must be able to fail):**
+- (i) gamma = 0 reproduces T0: E_FN of the ViT = 1.0186e-4.
+- (ii) Exact a = |psi0| with the exact sign s0 gives E^gamma = E0 to 1e-9 for every gamma.
+- (iii) A broken version, with the sign of the gamma B term flipped, must fail control (ii); report both runs.
+
+**Decision (primary = min over gamma of <H> on phi^gamma, ViT ratios):**
+- PASS if <= 1e-5 or within 3x of the ceiling 9.15e-7. The reported energy then does not need a tail network: T1 is
+  moot for the energy, and the open problem is the sign labels.
+- FAIL if it removes < 50% of the gap from 1.0186e-4 to the ceiling.
+- In between: partial; report the fraction removed, per base.
+- The chord estimate is reported but never decides.

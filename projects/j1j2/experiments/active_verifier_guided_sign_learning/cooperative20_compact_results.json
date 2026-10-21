@@ -1,0 +1,1142 @@
+{
+  "date": "2026-10-19",
+  "purpose": "20-site oracle post-hoc cooperative patch test; NOT actual FN walker experiment",
+  "data_generation": "prepare_sign20.py (copied with absolute paths rewritten)",
+  "seeds": [
+    30260,
+    30261,
+    30262,
+    30263
+  ],
+  "patches_per_seed": 256,
+  "patch_size": 8,
+  "per_law": {
+    "tempered_a": {
+      "n_patches": 1024,
+      "positive_patches": 148,
+      "bad_pair_positive": 0,
+      "allbad_cooperative_positive": 0,
+      "mean_best_gain": 2.7778072382322523e-06,
+      "mean_greedy_gain": 2.7656746863205676e-06,
+      "mean_incremental_cooperative_gain": 1.2132551911684561e-08,
+      "relative_incremental_gain_fraction_of_best": 0.004367672365705802,
+      "n_oracle_exceeds_greedy": 4,
+      "rows": [
+        {
+          "seed": 30260,
+          "summary": {
+            "positive_patch_fraction": 0.14453125,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.9874208553024292e-06,
+            "mean_best_single_gain": 2.75338744489838e-06,
+            "mean_greedy_gain": 2.9567896130411824e-06,
+            "mean_random_mask_gain": -0.1537698210120431,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 3.063124226124707e-08,
+            "prefix_mean_gains": {
+              "1": -0.10518587027268783,
+              "2": -0.13408703795176358,
+              "4": -0.203571815334414,
+              "8": -0.2792211421926087
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6284,
+              "sign_requests": 0,
+              "unique_amp": 2877,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6284,
+              "sign_requests": 0,
+              "unique_amp": 2877,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 182276,
+              "unique_orbits": 4592
+            },
+            "after_eval": {
+              "amp_requests": 67379,
+              "sign_requests": 61095,
+              "unique_amp": 27625,
+              "unique_sign": 25377,
+              "neighbor_probes": 688168,
+              "orbit_members_expanded": 182956,
+              "unique_orbits": 4609
+            },
+            "wall_s": 0.8923044167459011
+          },
+          "n_unique_patch_orbits": 1365,
+          "n_unique_root_orbits": 212
+        },
+        {
+          "seed": 30261,
+          "summary": {
+            "positive_patch_fraction": 0.15625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.9063666577092303e-06,
+            "mean_best_single_gain": 2.599206789596757e-06,
+            "mean_greedy_gain": 2.888535585628514e-06,
+            "mean_random_mask_gain": -0.14349939862458885,
+            "fraction_patch_oracle_better_greedy": 0.0078125,
+            "excess_oracle_over_greedy": 1.7831072080716234e-08,
+            "prefix_mean_gains": {
+              "1": -0.0924021140517815,
+              "2": -0.14646026120697841,
+              "4": -0.19426085825342784,
+              "8": -0.2599433020236828
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6246,
+              "sign_requests": 0,
+              "unique_amp": 2861,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6246,
+              "sign_requests": 0,
+              "unique_amp": 2861,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 182056,
+              "unique_orbits": 4586
+            },
+            "after_eval": {
+              "amp_requests": 68699,
+              "sign_requests": 62453,
+              "unique_amp": 27874,
+              "unique_sign": 25608,
+              "neighbor_probes": 690888,
+              "orbit_members_expanded": 182776,
+              "unique_orbits": 4604
+            },
+            "wall_s": 0.8741288748569787
+          },
+          "n_unique_patch_orbits": 1399,
+          "n_unique_root_orbits": 193
+        },
+        {
+          "seed": 30262,
+          "summary": {
+            "positive_patch_fraction": 0.16015625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 3.1036866175267737e-06,
+            "mean_best_single_gain": 2.795260631824585e-06,
+            "mean_greedy_gain": 3.1036866175267737e-06,
+            "mean_random_mask_gain": -0.14986835496767648,
+            "fraction_patch_oracle_better_greedy": 0.0,
+            "excess_oracle_over_greedy": 2.646897180812994e-23,
+            "prefix_mean_gains": {
+              "1": -0.10965673092540305,
+              "2": -0.14182474997699676,
+              "4": -0.18368487806336595,
+              "8": -0.28017599607932775
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6312,
+              "sign_requests": 0,
+              "unique_amp": 2884,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6312,
+              "sign_requests": 0,
+              "unique_amp": 2884,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 182412,
+              "unique_orbits": 4594
+            },
+            "after_eval": {
+              "amp_requests": 68384,
+              "sign_requests": 62072,
+              "unique_amp": 27758,
+              "unique_sign": 25521,
+              "neighbor_probes": 689688,
+              "orbit_members_expanded": 183372,
+              "unique_orbits": 4618
+            },
+            "wall_s": 0.8825860833749175
+          },
+          "n_unique_patch_orbits": 1384,
+          "n_unique_root_orbits": 205
+        },
+        {
+          "seed": 30263,
+          "summary": {
+            "positive_patch_fraction": 0.1171875,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.113754822390575e-06,
+            "mean_best_single_gain": 2.113569349706862e-06,
+            "mean_greedy_gain": 2.1136869290858003e-06,
+            "mean_random_mask_gain": -0.13093002823686353,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 6.789330477491123e-11,
+            "prefix_mean_gains": {
+              "1": -0.11758445223236565,
+              "2": -0.14693516192906575,
+              "4": -0.2074073972806924,
+              "8": -0.2779003063447915
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6366,
+              "sign_requests": 0,
+              "unique_amp": 2910,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6366,
+              "sign_requests": 0,
+              "unique_amp": 2910,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 182096,
+              "unique_orbits": 4586
+            },
+            "after_eval": {
+              "amp_requests": 68683,
+              "sign_requests": 62317,
+              "unique_amp": 28118,
+              "unique_sign": 25783,
+              "neighbor_probes": 690088,
+              "orbit_members_expanded": 183136,
+              "unique_orbits": 4612
+            },
+            "wall_s": 0.8824488748796284
+          },
+          "n_unique_patch_orbits": 1389,
+          "n_unique_root_orbits": 208
+        }
+      ],
+      "raw_sha256": {
+        "cooperative20_30260.json": "5f3d16631d5a992abbdb7c6d8a4f59dfd665c8017cfcaa1746fa15246db56ff5",
+        "cooperative20_30261.json": "4457b2847e2a3024b634fe4473adcf7ea93904f3ef8cbb3584fe66bd112ed5b0",
+        "cooperative20_30262.json": "8d0d2896d3f2c3689aa5d4b8988d6acda2fcc81865fc7ec77cf01378072dba0c",
+        "cooperative20_30263.json": "04d3ecea6f6750fc138793ae9fb512599daf8c614058a9e74f3e9c620f060050"
+      }
+    },
+    "a2": {
+      "n_patches": 1024,
+      "positive_patches": 117,
+      "bad_pair_positive": 0,
+      "allbad_cooperative_positive": 0,
+      "mean_best_gain": 2.278318386024688e-06,
+      "mean_greedy_gain": 2.269937963867862e-06,
+      "mean_incremental_cooperative_gain": 8.380422156825839e-09,
+      "relative_incremental_gain_fraction_of_best": 0.003678336710194564,
+      "n_oracle_exceeds_greedy": 2,
+      "rows": [
+        {
+          "seed": 30260,
+          "summary": {
+            "positive_patch_fraction": 0.08984375,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.441762848606535e-06,
+            "mean_best_single_gain": 2.2178374077150593e-06,
+            "mean_greedy_gain": 2.4388724022404795e-06,
+            "mean_random_mask_gain": -0.49163874243320405,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 2.8904463660559138e-09,
+            "prefix_mean_gains": {
+              "1": -0.5255474812040126,
+              "2": -0.61207704398344,
+              "4": -0.7467985716668185,
+              "8": -0.9017850090962088
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6372,
+              "sign_requests": 0,
+              "unique_amp": 2457,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6372,
+              "sign_requests": 0,
+              "unique_amp": 2457,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 170092,
+              "unique_orbits": 4283
+            },
+            "after_eval": {
+              "amp_requests": 50079,
+              "sign_requests": 43707,
+              "unique_amp": 21294,
+              "unique_sign": 19607,
+              "neighbor_probes": 656168,
+              "orbit_members_expanded": 173612,
+              "unique_orbits": 4371
+            },
+            "wall_s": 0.8711807918734848
+          },
+          "n_unique_patch_orbits": 965,
+          "n_unique_root_orbits": 91
+        },
+        {
+          "seed": 30261,
+          "summary": {
+            "positive_patch_fraction": 0.1171875,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.879039254120762e-06,
+            "mean_best_single_gain": 2.868987368692491e-06,
+            "mean_greedy_gain": 2.8790392541207617e-06,
+            "mean_random_mask_gain": -0.4105791113189121,
+            "fraction_patch_oracle_better_greedy": 0.0,
+            "excess_oracle_over_greedy": 5.293955920339377e-23,
+            "prefix_mean_gains": {
+              "1": -0.41300703876647293,
+              "2": -0.5057208913328266,
+              "4": -0.6319675434745546,
+              "8": -0.7458241184538852
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6358,
+              "sign_requests": 0,
+              "unique_amp": 2551,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6358,
+              "sign_requests": 0,
+              "unique_amp": 2551,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 171716,
+              "unique_orbits": 4326
+            },
+            "after_eval": {
+              "amp_requests": 53313,
+              "sign_requests": 46955,
+              "unique_amp": 22463,
+              "unique_sign": 20602,
+              "neighbor_probes": 662088,
+              "orbit_members_expanded": 174896,
+              "unique_orbits": 4406
+            },
+            "wall_s": 0.8430147496983409
+          },
+          "n_unique_patch_orbits": 1039,
+          "n_unique_root_orbits": 106
+        },
+        {
+          "seed": 30262,
+          "summary": {
+            "positive_patch_fraction": 0.12109375,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.3467922616748044e-06,
+            "mean_best_single_gain": 2.319327910774472e-06,
+            "mean_greedy_gain": 2.3467922616748044e-06,
+            "mean_random_mask_gain": -0.5222776738255381,
+            "fraction_patch_oracle_better_greedy": 0.0,
+            "excess_oracle_over_greedy": -5.624828165360588e-23,
+            "prefix_mean_gains": {
+              "1": -0.4933920656742871,
+              "2": -0.609421274721464,
+              "4": -0.7408584559557917,
+              "8": -0.8966420611049297
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6190,
+              "sign_requests": 0,
+              "unique_amp": 2411,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6190,
+              "sign_requests": 0,
+              "unique_amp": 2411,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 171592,
+              "unique_orbits": 4322
+            },
+            "after_eval": {
+              "amp_requests": 51344,
+              "sign_requests": 45154,
+              "unique_amp": 21747,
+              "unique_sign": 20054,
+              "neighbor_probes": 659128,
+              "orbit_members_expanded": 174872,
+              "unique_orbits": 4404
+            },
+            "wall_s": 0.836753583047539
+          },
+          "n_unique_patch_orbits": 1002,
+          "n_unique_root_orbits": 89
+        },
+        {
+          "seed": 30263,
+          "summary": {
+            "positive_patch_fraction": 0.12890625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 1.4456791796966507e-06,
+            "mean_best_single_gain": 1.415047937435403e-06,
+            "mean_greedy_gain": 1.415047937435403e-06,
+            "mean_random_mask_gain": -0.2817611053032931,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 3.063124226124744e-08,
+            "prefix_mean_gains": {
+              "1": -0.2905289803547092,
+              "2": -0.34440512384535127,
+              "4": -0.4331099562514486,
+              "8": -0.5492013434718591
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6312,
+              "sign_requests": 0,
+              "unique_amp": 2615,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6312,
+              "sign_requests": 0,
+              "unique_amp": 2615,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 174792,
+              "unique_orbits": 4403
+            },
+            "after_eval": {
+              "amp_requests": 58284,
+              "sign_requests": 51972,
+              "unique_amp": 23805,
+              "unique_sign": 21878,
+              "neighbor_probes": 671288,
+              "orbit_members_expanded": 176832,
+              "unique_orbits": 4454
+            },
+            "wall_s": 0.8507368331775069
+          },
+          "n_unique_patch_orbits": 1154,
+          "n_unique_root_orbits": 125
+        }
+      ],
+      "raw_sha256": {
+        "cooperative20_a2_30260.json": "0301df7241cd4bf54abde95f8af1138977f73046e520d6e1862914476986cca4",
+        "cooperative20_a2_30261.json": "2a8b587038769932e297b8381d8c59d6b10548cd74d494b8fa1d6435a8b960da",
+        "cooperative20_a2_30262.json": "36553e67b27da63c854e5447506c5430215ac8a37f575e9cf8c6846ea66b1438",
+        "cooperative20_a2_30263.json": "86b793942610c691608aa027f6218805fef9849e67b877a658b4b2d0eb1a8ffd"
+      }
+    },
+    "a_half": {
+      "n_patches": 1024,
+      "positive_patches": 183,
+      "bad_pair_positive": 0,
+      "allbad_cooperative_positive": 0,
+      "mean_best_gain": 1.9594974198957264e-06,
+      "mean_greedy_gain": 1.9579205538958816e-06,
+      "mean_incremental_cooperative_gain": 1.5768659998451205e-09,
+      "relative_incremental_gain_fraction_of_best": 0.0008047298168573412,
+      "n_oracle_exceeds_greedy": 4,
+      "rows": [
+        {
+          "seed": 30260,
+          "summary": {
+            "positive_patch_fraction": 0.1796875,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.7677380248982256e-06,
+            "mean_best_single_gain": 2.540522049024253e-06,
+            "mean_greedy_gain": 2.7677380248982256e-06,
+            "mean_random_mask_gain": -0.05942878138308886,
+            "fraction_patch_oracle_better_greedy": 0.0,
+            "excess_oracle_over_greedy": -5.293955920339377e-23,
+            "prefix_mean_gains": {
+              "1": -0.027737473633132483,
+              "2": -0.04226550702752585,
+              "4": -0.07046118010996252,
+              "8": -0.12082147360580661
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 5998,
+              "sign_requests": 0,
+              "unique_amp": 2848,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 5998,
+              "sign_requests": 0,
+              "unique_amp": 2848,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 184436,
+              "unique_orbits": 4646
+            },
+            "after_eval": {
+              "amp_requests": 75033,
+              "sign_requests": 69035,
+              "unique_amp": 30217,
+              "unique_sign": 27839,
+              "neighbor_probes": 703688,
+              "orbit_members_expanded": 184556,
+              "unique_orbits": 4649
+            },
+            "wall_s": 0.9037179173901677
+          },
+          "n_unique_patch_orbits": 1559,
+          "n_unique_root_orbits": 241
+        },
+        {
+          "seed": 30261,
+          "summary": {
+            "positive_patch_fraction": 0.21875,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.4167798943912394e-06,
+            "mean_best_single_gain": 2.397685146482432e-06,
+            "mean_greedy_gain": 2.414365404663122e-06,
+            "mean_random_mask_gain": -0.05181437066033618,
+            "fraction_patch_oracle_better_greedy": 0.0078125,
+            "excess_oracle_over_greedy": 2.414489728117054e-09,
+            "prefix_mean_gains": {
+              "1": -0.022560329800530906,
+              "2": -0.03094894752957013,
+              "4": -0.05187131655314868,
+              "8": -0.09000350950475809
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6118,
+              "sign_requests": 0,
+              "unique_amp": 2906,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6118,
+              "sign_requests": 0,
+              "unique_amp": 2906,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 184676,
+              "unique_orbits": 4652
+            },
+            "after_eval": {
+              "amp_requests": 76096,
+              "sign_requests": 69978,
+              "unique_amp": 30601,
+              "unique_sign": 28263,
+              "neighbor_probes": 705528,
+              "orbit_members_expanded": 184756,
+              "unique_orbits": 4654
+            },
+            "wall_s": 0.8841353342868388
+          },
+          "n_unique_patch_orbits": 1582,
+          "n_unique_root_orbits": 241
+        },
+        {
+          "seed": 30262,
+          "summary": {
+            "positive_patch_fraction": 0.15625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 4.609073173769995e-07,
+            "mean_best_single_gain": 4.464251422072391e-07,
+            "mean_greedy_gain": 4.5869513125321475e-07,
+            "mean_random_mask_gain": -0.05330757639527625,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 2.2121861237848353e-09,
+            "prefix_mean_gains": {
+              "1": -0.0165395202508681,
+              "2": -0.028639706935077155,
+              "4": -0.05150871441470628,
+              "8": -0.09966544697918116
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6012,
+              "sign_requests": 0,
+              "unique_amp": 2836,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6012,
+              "sign_requests": 0,
+              "unique_amp": 2836,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 184476,
+              "unique_orbits": 4647
+            },
+            "after_eval": {
+              "amp_requests": 76476,
+              "sign_requests": 70464,
+              "unique_amp": 30327,
+              "unique_sign": 28115,
+              "neighbor_probes": 706808,
+              "orbit_members_expanded": 184636,
+              "unique_orbits": 4651
+            },
+            "wall_s": 0.884787832852453
+          },
+          "n_unique_patch_orbits": 1598,
+          "n_unique_root_orbits": 243
+        },
+        {
+          "seed": 30263,
+          "summary": {
+            "positive_patch_fraction": 0.16015625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.1925644429164417e-06,
+            "mean_best_single_gain": 2.162610204422897e-06,
+            "mean_greedy_gain": 2.190883654768964e-06,
+            "mean_random_mask_gain": -0.047024832488418454,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 1.6807881474786457e-09,
+            "prefix_mean_gains": {
+              "1": -0.03291561125878281,
+              "2": -0.05041855242954561,
+              "4": -0.06754964007296135,
+              "8": -0.10612315920316423
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 6164,
+              "sign_requests": 0,
+              "unique_amp": 2932,
+              "unique_sign": 0,
+              "neighbor_probes": 5528,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 6164,
+              "sign_requests": 0,
+              "unique_amp": 2932,
+              "unique_sign": 0,
+              "neighbor_probes": 578968,
+              "orbit_members_expanded": 184694,
+              "unique_orbits": 4651
+            },
+            "after_eval": {
+              "amp_requests": 75355,
+              "sign_requests": 69191,
+              "unique_amp": 30506,
+              "unique_sign": 28218,
+              "neighbor_probes": 704008,
+              "orbit_members_expanded": 184694,
+              "unique_orbits": 4651
+            },
+            "wall_s": 0.8778221248649061
+          },
+          "n_unique_patch_orbits": 1563,
+          "n_unique_root_orbits": 246
+        }
+      ],
+      "raw_sha256": {
+        "cooperative20_a_half_30260.json": "17adddc8996f0483fe2e75fc5b3be532d72e3b3120176b4037350d815bfbf331",
+        "cooperative20_a_half_30261.json": "9ace9d432a80c959886d3b95462a70cdac28cf975e781dded2df204aff5d8329",
+        "cooperative20_a_half_30262.json": "ff28ff899ebf681d02d3e948f8ac38d6295a28536468965799819df15221ab91",
+        "cooperative20_a_half_30263.json": "459cc9d2fe2faad856efb43797357bb971c58fce771635ae0fcdc7fb1ccf1bce"
+      }
+    },
+    "uniform_states": {
+      "n_patches": 1024,
+      "positive_patches": 263,
+      "bad_pair_positive": 0,
+      "allbad_cooperative_positive": 0,
+      "mean_best_gain": 1.5943384753799737e-06,
+      "mean_greedy_gain": 1.594153017269099e-06,
+      "mean_incremental_cooperative_gain": 1.8545811087480288e-10,
+      "relative_incremental_gain_fraction_of_best": 0.00011632292247767728,
+      "n_oracle_exceeds_greedy": 3,
+      "rows": [
+        {
+          "seed": 30260,
+          "summary": {
+            "positive_patch_fraction": 0.2890625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 2.1492217692740674e-06,
+            "mean_best_single_gain": 2.1221805610528124e-06,
+            "mean_greedy_gain": 2.1492217692740674e-06,
+            "mean_random_mask_gain": -0.014702478441857292,
+            "fraction_patch_oracle_better_greedy": 0.0,
+            "excess_oracle_over_greedy": -7.277412244619362e-24,
+            "prefix_mean_gains": {
+              "1": -0.006283853870377192,
+              "2": -0.010971745433063415,
+              "4": -0.016864214274230876,
+              "8": -0.036740976081529444
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 0,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 573440,
+              "orbit_members_expanded": 184754,
+              "unique_orbits": 4653
+            },
+            "after_eval": {
+              "amp_requests": 72397,
+              "sign_requests": 72397,
+              "unique_amp": 28695,
+              "unique_sign": 28695,
+              "neighbor_probes": 708080,
+              "orbit_members_expanded": 184754,
+              "unique_orbits": 4653
+            },
+            "wall_s": 0.8697478747926652
+          },
+          "n_unique_patch_orbits": 1683,
+          "n_unique_root_orbits": 252
+        },
+        {
+          "seed": 30261,
+          "summary": {
+            "positive_patch_fraction": 0.2890625,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 1.6132030936675555e-06,
+            "mean_best_single_gain": 1.1781404823646963e-06,
+            "mean_greedy_gain": 1.6131951650469877e-06,
+            "mean_random_mask_gain": -0.03567380362068356,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 7.928620567842685e-12,
+            "prefix_mean_gains": {
+              "1": -0.011686646361685258,
+              "2": -0.01372266062143573,
+              "4": -0.021484836558483662,
+              "8": -0.05285744500723406
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 0,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 573440,
+              "orbit_members_expanded": 184752,
+              "unique_orbits": 4653
+            },
+            "after_eval": {
+              "amp_requests": 71784,
+              "sign_requests": 71784,
+              "unique_amp": 28827,
+              "unique_sign": 28827,
+              "neighbor_probes": 706400,
+              "orbit_members_expanded": 184752,
+              "unique_orbits": 4653
+            },
+            "wall_s": 0.875286458991468
+          },
+          "n_unique_patch_orbits": 1662,
+          "n_unique_root_orbits": 252
+        },
+        {
+          "seed": 30262,
+          "summary": {
+            "positive_patch_fraction": 0.2109375,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 1.022945110388343e-06,
+            "mean_best_single_gain": 9.959867217369308e-07,
+            "mean_greedy_gain": 1.0222114088077056e-06,
+            "mean_random_mask_gain": -0.022451688665703063,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 7.337015806373886e-10,
+            "prefix_mean_gains": {
+              "1": -0.009194413583992438,
+              "2": -0.013156332568286648,
+              "4": -0.02223722360022682,
+              "8": -0.04454928712562495
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 0,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 573440,
+              "orbit_members_expanded": 184756,
+              "unique_orbits": 4654
+            },
+            "after_eval": {
+              "amp_requests": 71833,
+              "sign_requests": 71833,
+              "unique_amp": 28868,
+              "unique_sign": 28868,
+              "neighbor_probes": 706160,
+              "orbit_members_expanded": 184756,
+              "unique_orbits": 4654
+            },
+            "wall_s": 0.86986312456429
+          },
+          "n_unique_patch_orbits": 1659,
+          "n_unique_root_orbits": 249
+        },
+        {
+          "seed": 30263,
+          "summary": {
+            "positive_patch_fraction": 0.23828125,
+            "negative_single_positive_pair_fraction": 0.0,
+            "oracle_best_with_only_bad_singles_fraction": 0.0,
+            "mean_oracle_best_gain": 1.5919839281899288e-06,
+            "mean_best_single_gain": 1.5566198890964674e-06,
+            "mean_greedy_gain": 1.5919837259476347e-06,
+            "mean_random_mask_gain": -0.025139850004660423,
+            "fraction_patch_oracle_better_greedy": 0.00390625,
+            "excess_oracle_over_greedy": 2.022422939874223e-13,
+            "prefix_mean_gains": {
+              "1": -0.005531730658942479,
+              "2": -0.016204832199853254,
+              "4": -0.03053565232483077,
+              "8": -0.051809761454698025
+            },
+            "null_keep_gain": 0.0,
+            "n_bad_single_positive_pair": 0,
+            "n_all_bad_singles_oracle_positive": 0
+          },
+          "costs": {
+            "sampler": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 0,
+              "orbit_members_expanded": 0,
+              "unique_orbits": 0
+            },
+            "after_discovery": {
+              "amp_requests": 0,
+              "sign_requests": 0,
+              "unique_amp": 0,
+              "unique_sign": 0,
+              "neighbor_probes": 573440,
+              "orbit_members_expanded": 184714,
+              "unique_orbits": 4651
+            },
+            "after_eval": {
+              "amp_requests": 72636,
+              "sign_requests": 72636,
+              "unique_amp": 29045,
+              "unique_sign": 29045,
+              "neighbor_probes": 707360,
+              "orbit_members_expanded": 184734,
+              "unique_orbits": 4652
+            },
+            "wall_s": 2.6827505826950073
+          },
+          "n_unique_patch_orbits": 1674,
+          "n_unique_root_orbits": 247
+        }
+      ],
+      "raw_sha256": {
+        "cooperative20_uniform_states_30260.json": "47847e3a802e91c4eabb244f380d860aabe29674247beac7d1267712528beb51",
+        "cooperative20_uniform_states_30261.json": "c65955279363c6598b5c31e3dab2508cf51cfb5ec25afd5469d336875180e07e",
+        "cooperative20_uniform_states_30262.json": "077cd699a28ec5b065a15dd8450b3b75efe3535c412658f665a72ff0322ff2be",
+        "cooperative20_uniform_states_30263.json": "4cbb4c03be291851af3ec6602270642c933f44a4c7c43c89d33758a8817f2056"
+      }
+    }
+  },
+  "validation": {
+    "n_fullH_checks": 128,
+    "max_abs_error": 2.3314683517128287e-15,
+    "max_stored_error": 2.3314683517128287e-15,
+    "n_symmetry_orbits": 223,
+    "max_amp_symmetry_error": 7.632783294297951e-17,
+    "n_sign_symmetry_violations_indicator": 0.0,
+    "E0_offdiag": -6.942364706518291,
+    "notes": "Offdiagonal full Hamiltonian expectation independently agrees with crossing scores; diagonal cancels for sign-only flips."
+  },
+  "support": {
+    "n_states": 184756,
+    "n_orbits": 4654,
+    "n_profitable_singles": 198,
+    "sum_positive_single_gains": 0.0008001565242074627,
+    "max_positive_single_gain": 0.00010478425416071064,
+    "root_laws": [
+      {
+        "law": "tempered_a",
+        "n_visited": 2981,
+        "n_positive_visited": 91,
+        "fraction_positive_orbits_visited": 0.4595959595959596,
+        "fraction_sum_positive_single_gains_visited": 0.9277365673628468,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 1365,
+            "n_positive": 31,
+            "positive_gain_sum": 0.0004282166276216012
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1399,
+            "n_positive": 38,
+            "positive_gain_sum": 0.000494920441835124
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1384,
+            "n_positive": 37,
+            "positive_gain_sum": 0.0003324570275762524
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1389,
+            "n_positive": 28,
+            "positive_gain_sum": 0.00038384287413117295
+          }
+        ]
+      },
+      {
+        "law": "a2",
+        "n_visited": 2232,
+        "n_positive_visited": 69,
+        "fraction_positive_orbits_visited": 0.3484848484848485,
+        "fraction_sum_positive_single_gains_visited": 0.9304653531150816,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 965,
+            "n_positive": 20,
+            "positive_gain_sum": 0.0004521188404351736
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1039,
+            "n_positive": 24,
+            "positive_gain_sum": 0.0004394169104760004
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1002,
+            "n_positive": 29,
+            "positive_gain_sum": 0.00042473241125674186
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1154,
+            "n_positive": 29,
+            "positive_gain_sum": 0.00028812554165801144
+          }
+        ]
+      },
+      {
+        "law": "a_half",
+        "n_visited": 3520,
+        "n_positive_visited": 114,
+        "fraction_positive_orbits_visited": 0.5757575757575758,
+        "fraction_sum_positive_single_gains_visited": 0.8889487620365019,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 1559,
+            "n_positive": 45,
+            "positive_gain_sum": 0.0005181714013803903
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1582,
+            "n_positive": 50,
+            "positive_gain_sum": 0.0004667919428655402
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1598,
+            "n_positive": 41,
+            "positive_gain_sum": 0.00011401137685067278
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1563,
+            "n_positive": 38,
+            "positive_gain_sum": 0.0003809085582905183
+          }
+        ]
+      },
+      {
+        "law": "uniform_states",
+        "n_visited": 3859,
+        "n_positive_visited": 163,
+        "fraction_positive_orbits_visited": 0.8232323232323232,
+        "fraction_sum_positive_single_gains_visited": 0.8526923985449248,
+        "seeds": [
+          {
+            "seed": 30260,
+            "n_visited": 1683,
+            "n_positive": 74,
+            "positive_gain_sum": 0.00031887240261285906
+          },
+          {
+            "seed": 30261,
+            "n_visited": 1662,
+            "n_positive": 74,
+            "positive_gain_sum": 0.00026918783251046285
+          },
+          {
+            "seed": 30262,
+            "n_visited": 1659,
+            "n_positive": 54,
+            "positive_gain_sum": 0.00025453064328489453
+          },
+          {
+            "seed": 30263,
+            "n_visited": 1674,
+            "n_positive": 63,
+            "positive_gain_sum": 0.0003390919928875836
+          }
+        ]
+      }
+    ],
+    "union_n_visited": 4568,
+    "union_positive_orbit_fraction": 0.9494949494949495,
+    "union_positive_gain_mass_fraction": 0.9999017141921636,
+    "costs": {
+      "amp_requests": 200558,
+      "sign_requests": 200558,
+      "unique_amp": 45602,
+      "unique_sign": 45602,
+      "neighbor_probes": 372320,
+      "orbit_members_expanded": 184756,
+      "unique_orbits": 4654
+    },
+    "caveat": "POST HOC whole-sector amplitude and orbit enumeration forbidden in deployed walker policy."
+  },
+  "data_sha256": "5d15ad5ce2cc0f2b5dd9ba41c4c14d9f4b63d1dca5004acf85cd15509b1e208f",
+  "limitations": [
+    "All 20-site exact amplitude oracle on-demand; do not use for 6x6.",
+    "Independent FN walker access absent; toy root distributions including uniform full-state index.",
+    "All results from one physical sign chamber and reused overlapping patches; no independent disorder/chamber replicates.",
+    "No model/rule trained; no post-FN improvement and no size-consistency claim."
+  ]
+}

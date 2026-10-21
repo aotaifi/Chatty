@@ -1088,3 +1088,27 @@ the support.
     plus the overlap between the fitted and exact label sets.
 - Code `cx_refresh2.py`, a follow-up job after 17409419. Total budget ~3.3 slice-h, 0.3 over.
 - The H_FN-SR test is not started unless the refit reaches ~3e-5 or better.
+
+## Test T0: determinant/Pfaffian bases as the bad-bond field (pre-registered 2026-10-21, consultant Fable; before any run; code `cx_t0.py`; exact 6x6, no training, <= 1 slice-h)
+**Input.** phi*(s_2) from the amplitude-refresh run (refresh_17409419). The sign is always s_2; the bases give
+amplitude ratios only.
+Bases:
+- ViT (psi_P);
+- PP alone (rbmpp_6x6 `sym_tables_PP.npz`, dE 6.3e-5);
+- converged RBM+PP (`sym_tables_A.npz`, dE 4.7e-5);
+- for reference, the refreshed ViT (seed 0, `refresh_17409419/vit`).
+
+Measured:
+- **(a)** E_FN(s_2, r = base ratios), one solve, with and without an (oracle) veto a = 0 on
+  X_0.1(base) = {phi*(s_2)/|base| < 0.1}.
+- **(b)** On bad bonds of s_2, weighted |h| phi*_x phi*_y and binned by the probability decade of phi*(s_2) at x:
+  - rms of delta = Delta log base - Delta log phi*, total and NN / NNN;
+  - the pointwise error e = log base - log phi*, offset aligned in the phi* metric. Its fitted eps (model e ~ eps/a)
+    is eps_d = rms_d(e) x a_d, with a_d = 10^{d/2} the decade's amplitude. eps is reported per decade and as the
+    median over decades 1e-9 .. 1e-13.
+- **(c)** a(x) = |PP(x)| |1 + alpha (E_L(x) - E)|, with E_L the local energy of (|PP|, s_2) and one scalar alpha
+  minimising E_FN(s_2, a) (bounded scalar search, <= 12 solves). Also with the veto.
+
+**Decision (consultant's rule):**
+- eps(PP) within 2x of eps(ViT) means the determinant bias is dead;
+- eps(PP) down >= 5x, or (c) < 5e-5, means propose T1.

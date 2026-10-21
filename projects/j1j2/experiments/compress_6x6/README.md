@@ -1154,3 +1154,43 @@ Measured:
     1.5x), means tail precision tracks global accuracy. A better tail then means a better VMC state, so T1/T2 cannot
     show a loop edge. Recommend route C (ViT/RBM+PP + 1-2 Lanczos + calibrated FN at 8x8-14x14).
   - Anything between these two is inconclusive and is reported as such.
+#### Amendment T0-phys (2026-10-21, written after reading the T0 numbers, before any of the computations below; code `cx_t0phys.py`; <= 0.5 slice-h; separate from T0b)
+**Why (1).** The lead's T0 verdict stands (kill rule fires). The two branches of the T0 rule disagree, and the lead resolved it with the equal-hop reference psi_P + 1 Lanczos. Part (1) makes that resolution an identical-construction comparison:
+- eps(PP)/eps(ViT) = 0.78 falls within 2x, so the "determinant bias is dead" branch fires;
+- (c) = 2.37e-5 < 5e-5, so the "propose T1" branch fires.
+
+The (c) construction |PP| |1 + alpha (E_L - E)| is one Lanczos-like hop. The fair control (rule 5) applies the same
+hop to the ViT. The earlier table gives E_FN 1.95e-5 for the exact k = 1 clipped target of psi_P, but that uses the
+s_1 sign and the clipped form, so it is not an identical construction.
+
+**(1) Same-construction control.** Run (c) exactly as in T0 (same E_L definition with sign s_2, same bounded search
+over +-3/sdE, 12 evaluations, same veto and statistics) for base = ViT and base = RBM+PP.
+
+Reading, fixed now:
+- ViT one-hop <= 1.2 x PP one-hop (<= 2.84e-5): the (c) trigger comes from the hop, not the determinant. The rule
+  reads "determinant bias dead" and T0 gives no evidence for T1.
+- ViT one-hop >= 2 x PP one-hop (>= 4.73e-5): the determinant basis earns the gain, and T1 is proposed.
+- In between: inconclusive, reported to the lead with the numbers.
+
+**(2) Physics add-on (consultant prediction: a stripe / domain-wall enhancement near the nodes).**
+
+Sets:
+- X_0.1, the expelled set used for s_2. It is recomputed from phi*(s_1) (veto16 la_star) and psi_P, and checked
+  against s2.npy.
+- The remaining wrong-sign set W_2 = {s_2 != s0}.
+- The psi0 probability decades d = -5 .. -15, each on its own.
+- Bulk = decades >= -8. Tail = decades -10 .. -12.
+
+Measured per set, as a |psi0|^2-weighted mean (and an unweighted orbit-count mean):
+- (i) The fraction of valid J1 bonds out of x whose exact sign product s0_x s0_y = +1. This is Marshall-violating:
+  Marshall predicts -1 on every J1 bond.
+- (ii) The weight share of Marshall-wrong configurations, s0_x != Marshall(x) after a global alignment.
+- (iii) The configuration moments
+  - M_Neel^2 = (sum_i sigma_i (-1)^(x+y) / N)^2;
+  - M_stripe^2 = (sum_i sigma_i (-1)^x / N)^2 + (sum_i sigma_i (-1)^y / N)^2.
+- (iv) The 2x2-plaquette shares: Neel (checkerboard) vs stripe (two parallel columns or rows, antiparallel to each
+  other).
+- (v) The density of ferromagnetic J1 bonds (domain walls).
+
+Prediction counts as confirmed if the stripe plaquette share or M_stripe^2 / M_Neel^2 on X_0.1 and in the tail is
+>= 1.5x the bulk value. It is refuted if both are <= 1.1x.

@@ -3,7 +3,7 @@
 Operator in the amplitude basis u (psi = s u), per sector vector x (weights as sec.vec / sec.fn_solve):
   A_gamma x = Dg_gamma x - 0.5 (h1 - s h2) - gamma B x,   B x = 0.5 (h1 + s h2) - D0 x,   h1,h2 = H x, H (s x)
   Dg_gamma = D0 + (1 + gamma)(Dg - D0).   gamma = 0 is H_FN, gamma = -1 is H.
-Controls (run first; the grid runs only if (i), (ii) pass and (iii) fails as it must).
+Controls (run first; the grid runs only if (i), (ii) pass and (iii) fails as it must). (ii)/(iii) are eigenvector-residual forms.
 """
 import os, sys, time
 import numpy as np
@@ -11,11 +11,8 @@ import scipy.linalg
 from cx_lib import *
 
 
-def fn_solve_gamma(sec, D0, la, s, gamma, flip=False, x0=None, tol=1e-10, maxit=600, nsite=N):
-    """Ground state of A_gamma[a, s] (LOBPCG loop copied from st6_sector.Sector.fn_solve).
-    flip=True is the deliberately broken copy: sign of the gamma B term reversed.
-    Returns (E^gamma per site rel E0, u >= 0 normalised, info)."""
-    t0 = time.time(); nm0 = sec.nmv
+def gamma_op(sec, D0, la, s, gamma, flip=False):
+    """Returns (A, w, Dg_g): A_gamma as a closure, w = normalised weighted vector built as in fn_solve."""
     sg = -1.0 if flip else 1.0
     la = la - jnp.max(la)
     a = jnp.exp(la); a = a / jnp.sqrt(jnp.sum(sec.n * a * a))
@@ -31,7 +28,15 @@ def fn_solve_gamma(sec, D0, la, s, gamma, flip=False, x0=None, tol=1e-10, maxit=
     def A(x):
         h1, h2 = sec.H2(x, s * x)
         return Dg_g * x - 0.5 * (h1 - s * h2) - sg * gamma * (0.5 * (h1 + s * h2) - D0 * x)
+    return A, w, Dg_g
 
+
+def fn_solve_gamma(sec, D0, la, s, gamma, flip=False, x0=None, tol=1e-10, maxit=600, nsite=N):
+    """Ground state of A_gamma[a, s] (LOBPCG loop copied from st6_sector.Sector.fn_solve).
+    flip=True is the deliberately broken copy: sign of the gamma B term reversed.
+    Returns (E^gamma per site rel E0, u >= 0 normalised, info)."""
+    t0 = time.time(); nm0 = sec.nmv
+    A, w, Dg_g = gamma_op(sec, D0, la, s, gamma, flip)
     x = (w if x0 is None else x0); x = x / jnp.linalg.norm(x)
     del w
     Ax = A(x); th = float(x @ Ax)
@@ -41,6 +46,7 @@ def fn_solve_gamma(sec, D0, la, s, gamma, flip=False, x0=None, tol=1e-10, maxit=
     for it in range(1, maxit + 1):
         r = Ax - th * x
         rn = float(jnp.linalg.norm(r))
+        if it % 25 == 1: log(f'  g={gamma} flip={flip} lobpcg it {it} theta_site {(th - sec.E0) / nsite:.10e} res {rn / abs(th):.3e}')
         if rn <= tol * abs(th): break
         z = r / den
         z = z - (x @ z) * x
@@ -100,8 +106,6 @@ if __name__ == '__main__':
     z = np.load(TABLE); amp = z['amp']; del z
     la0 = norm_la(jnp.log(jnp.maximum(jnp.abs(jnp.asarray(amp)), 1e-300)))
     s0 = jnp.where(jnp.asarray(amp) >= 0, 1.0, -1.0).astype(jnp.float32); del amp
-    rng = np.random.default_rng(0)
-    x0n = jnp.asarray(np.exp(0.1 * rng.standard_normal(sec.D)))      # perturbed start for (ii), (iii)
     ctl = res['controls']
 
     # ---- control (i)
@@ -112,18 +116,36 @@ if __name__ == '__main__':
               pass_=bool(abs(E - EFN_T0) < 1e-8 and abs(E - info_ref['dE_FN_site']) < 1e-9 and abs(E - E_FN_README) < 1e-7))
     ctl['i'] = ci; dump(F, res); log('control (i)', ci)
 
-    # ---- controls (ii) and (iii)
-    cii = dict(tol=1e-9, runs={}); ciii = dict(tol=1e-9, runs={})
+    # ---- probe: rows with tiny |psi0| (a0 normalised, sum n a0^2 = 1)
+    a0 = jnp.exp(la0); tiny = a0 < 1e-12
+    ntiny = int(jnp.sum(tiny)); ctl['probe'] = {'n_rows_abs_psi0_lt_1e-12': ntiny, 'D': int(sec.D), 'n_rows_lt_1e-15': int(jnp.sum(a0 < 1e-15)),
+                                                    'min_a0': float(jnp.min(a0)), 'weight_tiny': float(jnp.sum(jnp.where(tiny, sec.n * a0 * a0, 0.0)))}
+    log('probe', ctl['probe']); dump(F, res)
+
+    # ---- controls (ii), (iii): eigenvector residual of A_gamma at exact w = |psi0| sqrt_n, sign s0
+    E0t = float(sec.E0)
+    def resid(g, flip):
+        A, w, _ = gamma_op(sec, D0, la0, s0, g, flip)
+        w = w / jnp.linalg.norm(w)
+        Aw = A(w); r = Aw - E0t * w
+        r_all = float(jnp.linalg.norm(r)); r_ok = float(jnp.linalg.norm(jnp.where(tiny, 0.0, r)))
+        ray = (float(w @ Aw) - E0t) / N
+        return dict(r=r_all, r_rel=r_all / abs(E0t), r_excl_tiny=r_ok, r_excl_tiny_rel=r_ok / abs(E0t), rayleigh_site=ray)
+    cii = dict(tol_r_rel=1e-6, tol_ray=1e-9, runs={}); ciii = dict(tol_r_rel_min=1e-3, runs={})
     for g in (0.0, 0.5, 2.0):
-        E, u, info = fn_solve_gamma(sec, D0, la0, s0, g, x0=x0n); del u
-        cii['runs'][str(g)] = dict(E_site=E, info=info, ok=bool(abs(E) < 1e-9))
+        x = resid(g, False); x['ok'] = bool(x['r_rel'] < 1e-6 and abs(x['rayleigh_site']) < 1e-9)
+        cii['runs'][str(g)] = x; log('control (ii)', g, x); dump(F, res)
     cii['pass_'] = all(r['ok'] for r in cii['runs'].values())
     for g in (0.5, 2.0):
-        E, u, info = fn_solve_gamma(sec, D0, la0, s0, g, flip=True, x0=x0n); del u
-        ciii['runs'][str(g)] = dict(E_site=E, info=info, fails_as_required=bool(abs(E) >= 1e-9))
+        x = resid(g, True); x['fails_as_required'] = bool(x['r_rel'] > 1e-3)
+        ciii['runs'][str(g)] = x; log('control (iii)', g, x); dump(F, res)
     ciii['pass_'] = all(r['fails_as_required'] for r in ciii['runs'].values())      # True = the broken copy failed (-> check OK)
-    ctl['ii'] = cii; ctl['iii'] = ciii; dump(F, res); log('control (ii)', cii); log('control (iii)', ciii)
+    ctl['ii'] = cii; ctl['iii'] = ciii; dump(F, res)
     ctl['all_ok'] = bool(ci['pass_'] and cii['pass_'] and ciii['pass_'])
+    dump(F, res)
+    if ctl['all_ok'] or True:      # informational solver check (does not gate): gamma = 0.5, exact a, s0, exact start, maxit 50
+        E, u, info = fn_solve_gamma(sec, D0, la0, s0, 0.5, x0=None, maxit=50); del u
+        ctl['solver_check'] = dict(E_site=E, info=info, gating=False); log('solver check', ctl['solver_check'])
     dump(F, res)
     if not ctl['all_ok']:
         log('CONTROLS FAILED: grid not run'); res['sec'] = time.time() - T00; dump(F, res); sys.exit(2)

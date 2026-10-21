@@ -1348,3 +1348,19 @@ of the |psi0|^2 weight.
 - The primary measure (ViT, 7.57e-5) removes 26% of the gap to the ceiling 9.15e-7. That is below 50%: FAIL.
 - The gamma extrapolation does not free the reported energy from the tail ratios. The only gain comes from evaluating
   <H> on the FN state at gamma = 0, which is 0.57-0.67 x dE_VMC, against 0.8 for E_FN.
+
+#### Amendment T1s-1 (2026-10-21, lead; written before submission, after reading cx_t1s.py and launch_t1s.sh)
+- "Converged" in the T1s pre-registration had two gaps:
+  - (i) a frozen optimiser passed it;
+  - (ii) the thresholds were not numbers.
+- The added rules:
+  - **Converged** means all of the following over the last 20% of steps (at least 50 steps):
+    - acceptance >= 0.5;
+    - lam below its cap at every step;
+    - the held-out loss changing < 2%;
+    - the median predicted rms change of log A per accepted step >= 1e-3, so the parameters are still moving.
+  - A fit that is flat but frozen is reported as "stalled", never as converged, and cannot give the
+    "representability limit" reading.
+- Control 1 is a training run, decided before any run: draws from |phi*|^2, no per-decade renormalisation, with the
+  refresh fit's 900 s budget.
+- Note on PP's parameter count: the trained PP f is a general 36x36 matrix with 1260 active entries, not 630.

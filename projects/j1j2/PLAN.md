@@ -19,13 +19,13 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
-| Tail-weighted fit, T1s: ViT / PP f-only / PP + 3x3 backflow, decade-stratified sampling | 2-4 slice-h | Fable audit: T0/T0b tested the training objective, not representability; the refit stalled |
+| Tail-trained amplitude to E_FN <= 1e-5 (T1s done: PP 2.82e-5, ViT 8.18e-5) | ~6 slice-h (T1s-2) | pairing family (PP, PP+backflow) trained decade-stratified; ViT kept as control |
 | Sign labels without the oracle phi* | - | open; fitted-net labels recall 5e-7 (refresh2) |
 
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| T1s, 4 jobs (vit / vitns control / pp / ppbf), launcher read by the lead, go given with Amendment T1s-1 | chatty_compress6/runs/t1s_* | per arm: decade -11 <= 0.03 & bulk <= 0.01 -> objective was the cause (that arm alive; if E_FN <= 1e-5, design T2). Converged and >= 0.1 -> representability limit for that arm. Stalled or between -> inconclusive, diagnose the optimiser. |
+| T1s-2 (worker staging; launcher read by the lead before sbatch): PP / PP+backflow / ViT with 4x samples and annealed trust radius | chatty_compress6/runs/t1s2_* | r falls >= 1.5x -> noise floor, keep pushing PP+backflow toward 1e-5. Falls < 1.2x and converged -> a real limit at that r; for PP, backflow or larger receptive field next. Pass E_FN <= 1e-5 -> design T2. |
 | T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
 
 ## Dead ends (number, run)

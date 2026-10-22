@@ -68,5 +68,20 @@
   "guide": "Fixed node, corrected sign, RBM+PP ratios",
   "group": "Bond route",
   "err": 3.76e-05
+ },
+ {
+  "guide": "Fixed node, corrected sign, ViT trained on rare configurations",
+  "group": "Bond route",
+  "err": 6.89e-05
+ },
+ {
+  "guide": "Fixed node, corrected sign, pairing net trained on rare configurations",
+  "group": "Bond route",
+  "err": 2.61e-05
+ },
+ {
+  "guide": "Fixed node, corrected sign, pairing + backflow trained on rare configurations",
+  "group": "Bond route",
+  "err": 2.42e-05
  }
 ]

@@ -1,5 +1,29 @@
 [
  {
+  "run": "G1: one extra step on the rare-configuration networks",
+  "plain": "Add one cheap Lanczos-like correction to the networks trained on rare configurations; no training",
+  "where": "LMU cluster (A40)",
+  "state": "Preparing",
+  "result": "Pass if the error is <= 1e-5 and beats ViT + 1 Lanczos step (1.9e-5)",
+  "updated": "2026-10-22"
+ },
+ {
+  "run": "T1s / T1s-2: train networks on rare configurations",
+  "plain": "Fit ViT, pairing net and pairing + backflow with equal samples per probability decade, then 4x more samples",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Pairing + backflow best: 2.4e-5 (was 5.4e-5); ViT 6.9e-5. Bar 1e-5 not reached; more samples help only 5-12%",
+  "updated": "2026-10-22"
+ },
+ {
+  "run": "G0: gamma-extrapolated fixed node",
+  "plain": "Standard lattice trick to remove the dependence on rare-configuration amplitudes",
+  "where": "LMU cluster (A40)",
+  "state": "Done",
+  "result": "Fails: removes 26% of the gap (bar 50%)",
+  "updated": "2026-10-21"
+ },
+ {
   "run": "T0b: tail precision at equal accuracy",
   "plain": "Does a pairing (PP) network trained to the same overall accuracy as the ViT get the rare configurations more precisely? Compares six existing networks; no training",
   "where": "LMU cluster (A40)",

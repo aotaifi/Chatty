@@ -1673,3 +1673,18 @@ the ceiling each sign allows once the amplitude is exact, which this table does 
   because each round's tax fluctuates by ~10% around the hop's gain.
 - Reading: with the target oracle removed, the loop holds ~8-9e-6, set by the refit of PP + 3x3 backflow. All fits
   unconverged (constant-cost budget, Amendment O2b-1), one seed, sign oracle s_2 still in.
+
+#### Amendment B0-2 (2026-10-22 21:10, lead; after reading seed 1's train.json, before any B0 readout number)
+- **Seed 1 (17445407) is void as a baseline.** Training restarted the converged PP (trained to lr_end 0.01) at lr 0.05.
+  Its VMC energy ROSE from -0.503708 (first 10 steps) to -0.50366 +- 1.4e-5 within 50 steps and stayed there (bins of
+  50 steps: -0.503675, -0.503658, -0.503659, -0.503659, -0.503661, -0.503639): the stationary SR noise floor at lr 0.05
+  sits ~4-5e-5 per site above the start. The plateau rule then fired on noise at step 334 (tol / se_diff = 0.07).
+  Its readout would measure a network WORSE than the start and fake an "edge is real" verdict. The job is left to
+  finish (free 2080 Ti); its numbers are not read for the decision.
+- **Fix:** lr 0.01 -> 0.002 (cosine; the PP's own end value downward), plateau stop disabled (train the full horizon,
+  4300 steps), on Paderborn H100 (1.1 s/step measured, probe 3806779).
+- **Pilot first** (2 x 400 steps, ~8 min each, lr 0.01 and 0.003 constant): accept an lr only if its last-100-step mean
+  is below the start's (-0.503708 +- ~1e-5 measured at step 1-10; the pilot measures its own first 20 steps) by > 2
+  se. If neither falls below the start, the backflow does not help VMC within this budget, which is itself the B0
+  answer (E_B0 = the PP start + hop, 2.37e-5 with s_2), and no full run is made.
+- **Then two seeds** (1 and 2) with the accepted lr, readout as before; disagreement beyond errors is a finding.

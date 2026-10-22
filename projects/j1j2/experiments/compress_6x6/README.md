@@ -1656,3 +1656,20 @@ the ceiling each sign allows once the amplitude is exact, which this table does 
 - Reading: both oracle-free signs have ceilings well under the 1e-5 bar (2.5e-6, <= 7e-6). The oracle flip (s_2,
   9.15e-7) buys a further 2.7x. The fitted loop sits at 9.2e-6 with s_2 because of the ~6e-6 refit tax (O2b), so the
   binding constraint at 6x6 is the refit, not the sign.
+
+#### Results: O2b, the fitted loop (o2b_17431886, cx_o2b.json + progress.txt; verified by the lead 2026-10-22) - PASS bar, viability FAIL
+| round k | E_FN(g_k) | c_k | fit tax | exact gain | tax < 0.5 gain |
+|---|---|---|---|---|---|
+| 0 | 2.369e-5 | 0.58 | 6.01e-6 | 1.56e-5 | yes |
+| 1 | 1.412e-5 | 0.75 | 5.93e-6 | 9.17e-6 | no |
+| 2 | 1.088e-5 | 0.84 | 5.69e-6 | 7.31e-6 | no |
+| 3 | 9.262e-6 | 1.00 | 6.35e-6 | 6.37e-6 | no |
+| 4 | 9.247e-6 | 0.90 | 5.88e-6 | 6.71e-6 | no |
+| 5 | 8.423e-6 | | | | |
+- PASS: E_FN <= 1e-5 at round 3 (pre-run estimate from the fixed point 9.5e-6). No STALL, no RISE. Controls
+  reproduce O2a.
+- Viability criterion FAILS from round 1 (as predicted in the README before the run): the refit tax is 5.7-6.4e-6 in
+  every round, independent of fit length (359 steps round 0, 80 after). The loop creeps (round 3 flat, round 4 -9%)
+  because each round's tax fluctuates by ~10% around the hop's gain.
+- Reading: with the target oracle removed, the loop holds ~8-9e-6, set by the refit of PP + 3x3 backflow. All fits
+  unconverged (constant-cost budget, Amendment O2b-1), one seed, sign oracle s_2 still in.

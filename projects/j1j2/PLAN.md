@@ -21,16 +21,18 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
    - FAIL: the extrapolation removes < 50% of the ViT gap 1.02e-4 -> ceiling.
    - Caveat: an extrapolated value is an estimate, not a bound.
 
+## Result 2026-10-22: G1 PASS (6x6, oracle target): a tail-trained PP + 3x3 backflow with one hop gives E_FN 7.06e-6 (bar 1e-5; best equal-hop reference 1.29e-5). Run g1_17426232.
+
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
 | Tail-trained amplitude to E_FN <= 1e-5 (T1s-2 done: PP+bf 2.42e-5, PP 2.61e-5, ViT 6.89e-5) | spent ~16 slice-h | pairing family (PP, PP+backflow) trained decade-stratified; ViT kept as control |
+| T2 design: (i) the same guide trained without oracle phi* (from FN walkers + fast-update neighbour ratios); (ii) cost at 8x8 with Woodbury updates; (iii) edge over plain SR VMC of PP+backflow at equal GPU-h | design first (Opus partner + literature), then pre-register | PI's T2 spec |
 | Sign labels without the oracle phi* | - | open; fitted-net labels recall 5e-7 (refresh2) |
 
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| G1 (worker staging; launcher read by the lead before sbatch): one-hop on the tail-trained tables | chatty_compress6/runs/g1_* | <= 1e-5 and < 1.89e-5 -> the one-hop Pfaffian guide passes; design T2 (8x8 cost with fast updates). Between 1e-5 and 1.89e-5 -> partial; 5x5 backflow / hidden-fermion rows next. >= 1.89e-5 -> no edge at one hop over Lanczos. |
 | T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
 
 ## Dead ends (number, run)

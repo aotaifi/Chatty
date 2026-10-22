@@ -1454,3 +1454,23 @@ for reference also the T1s ones):
 - PASS: E_FN <= 1e-5 and below every equal-hop reference.
 - Partial: below 1.29e-5 but above 1e-5.
 - No edge: >= 1.29e-5, i.e. no better than the VMC-trained RBM+PP with the same hop.
+
+#### Results: G1 (g1_17426232; verified by the lead 2026-10-22) - PASS
+The control reproduces T0-phys's ViT one-hop (2.9048e-5, rel 7e-12). The job timed out after 4 of 6 bases; the two
+T1s pp/vit bases were references only and do not affect the reading.
+
+| base (tail-trained) | zero-hop E_FN | one-hop E_FN | + veto | alpha |
+|---|---|---|---|---|
+| PP + 3x3 backflow (T1s-2) | 2.42e-5 | **7.06e-6** | 5.43e-6 | -0.114 |
+| PP (T1s-2) | 2.61e-5 | 8.06e-6 | 6.35e-6 | -0.119 |
+| PP + 3x3 backflow (T1s) | 2.96e-5 | 7.98e-6 | 6.18e-6 | -0.112 |
+| ViT (T1s-2) | 6.89e-5 | 1.52e-5 | 1.42e-5 | -0.085 |
+
+- **PASS.** 7.06e-6 <= 1e-5, and it is below every equal-hop reference: RBM+PP one-hop 1.29e-5, psi_P + 1 Lanczos
+  1.89e-5, ViT one-hop 2.90e-5. It is 1.8x below the best of them.
+- The tail-trained ViT with the same hop reaches only 1.52e-5. The pairing structure, once trained on the tail, is
+  what gets below 1e-5.
+- **What this does NOT show** (the T2 questions):
+  - (i) the fit target was the exact phi*(s_2) and alpha was chosen on the exact E_FN, both oracle quantities at 6x6;
+  - (ii) the cost at 8x8-14x14 with fast Pfaffian updates;
+  - (iii) an edge over plain SR VMC of the same architecture at equal GPU-h.

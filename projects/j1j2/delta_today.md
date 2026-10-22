@@ -33,3 +33,4 @@
 2026-10-22 09:53 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r1/ANALYSIS.md]
 2026-10-22 09:53 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r2/ANALYSIS.md]
 2026-10-22 09:54 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r3/ANALYSIS.md]
+- 2026-10-22 Fable O2 review: fit tax 6.1e-6 leaves ~3e-6 for the loop; noiseless SHDMC rises to wrong node (Caffarel 2609.01301); amendment O2-1 (80b39ab): O2a fit-free chain first, RISE verdict, fit-tax viability criterion. O2a waits for O1.

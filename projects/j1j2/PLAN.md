@@ -25,6 +25,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 
 ## Next (2026-10-22): remove the oracles from the G1 guide, one at a time (README 'De-oracling'): O1 alpha by VMC energy (minutes) -> O2a fit-free reference chain (1.5 A40-h) then O2b the fitted loop with fit-tax viability criterion and RISE stop (~12 A40-h; amendment O2-1) -> O3 sign labels -> O4 walkers.
 
+## Running 2026-10-22: O2b (fitted loop, PP+3x3 backflow, sign s_2) on a full A40, ~14 h. Prediction written before the run: round 1 ~1.4e-5, floor ~7e-6, viability criterion fails from round 2 (fit tax ~6e-6 > half the exact gains). On that outcome the lever is the fit floor (larger backflow / hidden-fermion rows), not the loop. On a viability PASS: O3 (sign labels without the oracle).
+
 ## Open questions
 | question | budget | scope line |
 |---|---|---|

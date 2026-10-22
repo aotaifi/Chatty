@@ -39,3 +39,4 @@
 - 2026-10-22 O2a 17430739 submitted (2cf5250); s2/s0 global-sign swap noted in expelled split labels.
 - 2026-10-22 O2a 17430739 verified: exact hop+FN chain 2.37e-5 -> 8.1e-6 -> 4.5e-6 -> 2.9e-6 -> 2.1e-6 -> 1.7e-6 (c 0.32-0.64); map fast; next O2b.
 2026-10-22 10:27 VERDICT job 17430739: COMPLETED, no gate verdict. Bash was denied, so quotable.py did not run (the brief also says it does not apply to exact solves). The numbers below come straight from cx_o2a.json and progress.txt. [/project/theorie/a/A.Otaifi/chatty_compress6/runs/o2a_17430739/ANALYSIS.md]
+- 2026-10-22 O2b launcher read; amendment O2b-1 (f1a6132): round-0 fit 10800 s; go given (~14 A40-h).

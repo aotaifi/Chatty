@@ -1545,3 +1545,15 @@ The review's points are accepted; numbers were spot-checked against G1 and T1s-2
    - fit tax >= the exact gain: a representation floor;
    - small tax but rising s_2-right expelled weight: the spurious-attractor mechanism of self-healing DMC.
 7. **Budget:** about 2.7 A40-h per fitted round (measured T1s-2 speeds), so O2b is about 12 A40-h, sized from rates.
+
+#### Results: O1 (o1_17430543; verified by the lead 2026-10-22) - PASS
+Alpha is chosen by the variational energy of the one-hop state (alpha_V), which is walker-accessible. The control
+recomputes G1's 7.056e-6.
+
+| base | alpha_V | <H>(alpha_V) | E_FN(alpha_V) | E_FN at the G1 oracle alpha |
+|---|---|---|---|---|
+| PP + 3x3 backflow | -0.1207 | 1.049e-5 | **7.11e-6** | 7.06e-6 |
+| PP | -0.1313 | 1.351e-5 | 8.18e-6 | 8.06e-6 |
+| ViT | -0.0869 | 2.442e-5 | 1.53e-5 | 1.52e-5 |
+
+The alpha oracle costs at most 1.5%: one of the three oracles is removed at no measurable cost.

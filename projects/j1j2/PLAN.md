@@ -11,7 +11,13 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
   -> 1.7e-6, c = 0.32-0.64. The loop's map is fast and there is no wrong-node signature.
 - O2b (o2b_17431886): fitted loop 2.37e-5 -> 9.26e-6 at round 3 -> 8.42e-6 at round 5; PASS, viability FAIL (refit tax ~6e-6 every round).
 - S1: oracle-free signs allow 2.5e-6 (s_1) and <= 7e-6 (PP own); the refit, not the sign, binds at 6x6.
-- Open: does the loop beat plain VMC on the same network (B0)? Can the refit tax be cut (fit-floor lever)? And sign labels without the oracle (O3)?
+- B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow; edge ~1.5x vs RBM+PP.
+- Open: Can the refit tax be cut (fit-floor lever)? And sign labels without the oracle (O3)?
+
+## Step back 2026-10-22 evening (trigger: second failed version of B0 training)
+1. Verdict: stop sharpening B0; take the middle branch (modest edge, ~1.5x, from RBM+PP one hop 1.29e-5 vs loop 8.4e-6).
+2. Thought: the decision does not need the PP+bf VMC number; 400 SR steps show no resolvable gain over the PP (+2e-6 +- 1.1e-5).
+3. Next: the fit-floor test F1 (bigger backflow fitted to the saved O2b round targets, tax vs 5.9e-6), ~1-2 H100-h.
 
 ## Step back 2026-10-22 (trigger: T1s then T1s-2 both missed 1e-5 at zero hop)
 1. Verdict: switch from training harder to one hop. Done (G1 PASS).
@@ -22,7 +28,6 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| B0, job 17445407 (RTX 2080 Ti, wall 10 h, setsid watcher pid 1401520 -> VERDICT in delta_today.md) | chatty_compress6/runs/b0_ppbf_simple (ANALYSIS_BRIEF.md) | README Test B0 + B0-1: within 1.2x of the loop (8.4e-6) -> cost comparison; >= 2x -> fit-floor lever (5x5 backflow on saved round_k targets); between -> fit-floor test first |
 
 ## Angles
 - conceptual (angle lead session, started 2026-10-22 at the PI's request): physics of the loop's blocks with the PI; plan file PLAN_conceptual.md, deliverable conceptual/MEMO.md (ranked hypotheses with kill tests). Acted on when closed or when it changes this plan (O3 design especially).
@@ -30,11 +35,11 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
-| B0: same network (PP+3x3 bf) trained by plain VMC + one hop + FN; decides whether the loop has an accuracy edge or only a cost edge (README Test B0) | <= 8 A40-h; worker building code 2026-10-22, launcher to be read before sbatch | MC SR, rbmpp_train recipe; exact-gradient VMC on the 15.8M table rejected (41 min per forward pass) |
 | O3: KKT flip labels from the network's own FN solution (sign s_1 -> s_2' without the oracle) | pre-register after O2b | previous fitted-ViT labels recalled 5e-7; retry with PP+backflow |
 | O4 / T2: walkers instead of exact solves; cost at 8x8 with Woodbury updates; edge over plain SR VMC of PP+backflow at equal GPU-h | design after O3 | the PI's T2 spec; the tail-steered sampling idea is in RESEARCH_MAP section 5 |
 
 ## Dead ends
+- B0 PP+3x3bf VMC: SR from the converged PP gives no gain in 400 steps (lr 0.01: +2e-6 +- 1.1e-5; Paderborn 3806793); gradient not unit-tested.
 - (not dead, settled) S1 s1_17446338: oracle-free PP sign ceiling <= 7.0e-6 (3-6e-6 extrapolated); oracle-free s_1 ceiling 2.51e-6; oracle s_2 9.15e-7. Sign is not the binding constraint at 6x6; the refit tax (~6e-6) is. (number, run)
 - gamma-FN to free the energy from the tail: 26% of the gap removed, bar 50% (g0_17411369).
 - ViT refit to phi*(s_2): 9.2e-5 (refresh_17409419, refresh2_17409866; the fit had stalled).

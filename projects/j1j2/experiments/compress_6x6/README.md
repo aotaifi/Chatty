@@ -1688,3 +1688,36 @@ the ceiling each sign allows once the amplitude is exact, which this table does 
   se. If neither falls below the start, the backflow does not help VMC within this budget, which is itself the B0
   answer (E_B0 = the PP start + hop, 2.37e-5 with s_2), and no full run is made.
 - **Then two seeds** (1 and 2) with the accepted lr, readout as before; disagreement beyond errors is a finding.
+
+#### Results: B0 pilots (Paderborn job 3806793; train.json copies /scratch/a/A.Otaifi/tmp/b0pdb/pilot/; verified by the lead 2026-10-22) - no resolvable VMC gain; B0 closed by step-back
+- Start reference corrected: the converged PP's own 400k-sample energy under 'simple' is -0.50369 +- 6e-6
+  (rpT1_pp_17163493 train.json eval), not the first-steps mean used in B0-2.
+- Last 100 of 400 steps, against -0.50369: lr 0.01 -0.503688 +- 9e-6 (+2e-6, 0.2 sigma: flat); lr 0.003
+  -0.503666 +- 9e-6 (+2.4e-5, 2.2 sigma); seed 1 at lr 0.05 -0.50366 (+3e-5, ~2 sigma). **Correction to B0-2:** seed
+  1's rise is ~3e-5 at ~2 sigma, not 4-5e-5; "void" stands only as "no gain, possibly a noise-floor rise".
+- Not checked: the backflow Jacobian in rbmpp_bf_train (log psi and eloc were tested, the gradient was not). A
+  small upward drift at lr 0.003 is weak evidence of a gradient problem.
+- **Step back (second failed version of B0 training).** Verdict: stop sharpening B0. Thought: the decision does not
+  need the PP+bf number. The best VMC baseline in hand, RBM+PP (variational 3.76e-5, one hop 1.29e-5), is already 1.5x
+  the loop's 8.4e-6, the middle branch; only a PP+bf VMC state better than RBM+PP could move it, and 400 steps show no
+  gain at all (resolving 1e-5 would need ~10x the samples). Reading: modest accuracy edge (~1.5x, cross-network); next
+  per the middle branch is the fit-floor test.
+
+## Test F1: is the refit tax capacity or under-training? (pre-registered 2026-10-22 21:40, lead; before any code or run; Paderborn H100, <= 3 H100-h)
+**Why.** O2b's tax is ~6e-6 in every round whatever the fit length (359 or 80 steps), and it sets the loop's level.
+Two causes predict different cures: capacity (bigger network) or under-training at constant cost (better optimiser).
+- **Target and start:** O2b round 1 exactly: target round_1/target_la.npy (log phi_1), warm start a_1 (the network
+  O2b's round 0 produced), the round-1 fit spec otherwise. Reference: O2b round-1 tax 5.93e-6; hop(phi_1) 4.951e-6.
+- **Arm A (time):** PP + 3x3 backflow, fit budget 10800 s on H100 (about 20x O2b's round-1 step count).
+- **Arm B (capacity):** PP + 5x5 backflow (u1, u2 over a 5x5 window, the 3x3 values embedded, the rest zero at start),
+  same budget.
+- **Measured:** fit tax = E_FN(hop(a_2)) - 4.951e-6, steps done, held-out loss curve, per-decade rms and mean error.
+- **Control:** Arm A's code at O2b's step count reproduces the round-1 tax 5.93e-6 (rel 5%: unconverged fits are not
+  bit-reproducible across GPUs); Arm B with u outside 3x3 frozen at zero equals Arm A.
+- **Decision:**
+  - A's tax <= 3.5e-6: under-training dominates; the lever is the per-round optimiser and budget (cost question).
+  - A's tax > 4.5e-6 and B's <= 0.6 x A's: capacity is the lever; re-run O2b with 5x5.
+  - Both > 4.5e-6: neither; the limit is the fit objective or the ansatz class. Next: fit the quantity E_FN uses (ratios
+    on sign-violating bonds) or a different class (hidden-fermion rows).
+  - Anything else: report, decide with the PI.
+- Lead's prediction: A 4.5-5.5e-6 (some under-training, not most), B 0.6-0.8 x A. About 40% on "both > 4.5e-6".

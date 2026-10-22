@@ -1517,3 +1517,31 @@ Reference: the exact iteration contracts by 0.6-0.65 per solve from a fitted ViT
 
 ### O3 (after an O2 pass): KKT flip labels from the network's own FN solution instead of phi*; sign s_1 -> s_2' without the oracle. Pre-registered after O2.
 ### O4: walkers instead of exact solves (8x8 problem; tail-steered sampling). Pre-registered after O3.
+
+#### Amendment O2-1 (2026-10-22, lead; from results/consult/fable_O2_design_review_2026-10-22.md, before any O2 run)
+The review's points are accepted; numbers were spot-checked against G1 and T1s-2.
+- **Fit tax.** The best fit of the exact phi* plus one hop already sits at 7.06e-6, against the 9.15e-7 ceiling, so
+  only about 3e-6 of the 1e-5 bar is left for the loop. The fit-free chain from 2.37e-5 is itself marginal at 4
+  rounds (estimated by the review, not measured).
+- **Unnamed failure.** Noise-free self-healing DMC (Caffarel et al., arXiv:2609.01301) is O2's steps (b)-(c). Its
+  energy RISES monotonically to a wrong node. O2 did not name that signature.
+
+**Changes:**
+1. **O2a first: the fit-free reference chain**, phi_{k+1} = FN solution of hop(phi_k), from the same VMC-PP start and
+   with the same alpha rule (O1). No training; 4 rounds; about 1.5 A40-h. It measures the rate of the map itself.
+2. **O2b: the fitted loop**, as pre-registered, run after O1 passes. Each round it also reports:
+   - the fit tax = E_FN(hop(a_{k+1})) - E_FN(hop(phi_k));
+   - the splice;
+   - the per-decade MEAN fit error, as well as the rms;
+   - the expelled set {phi_k / |g_k| < 0.1}, split into s_2-right and s_2-wrong |psi0|^2 weight (oracle diagnostics
+     only).
+3. **Contraction** c_k is defined on E_FN - 9.15e-7.
+4. **New verdict RISE:** c_k > 1 in any round. Stop.
+5. **Viability criterion** (added; the absolute 1e-5 bar stays the PASS bar): in each of the first 3 rounds the
+   fitted loop keeps >= 50% of the exact chain's gain, i.e. fit tax < 0.5 x the exact gain. If it does not, the
+   representation, not the map, limits the loop, and the loop is not viable at constant cost as designed.
+6. **Reading a STALL:**
+   - O2a's rate > 0.9: the map is too slow;
+   - fit tax >= the exact gain: a representation floor;
+   - small tax but rising s_2-right expelled weight: the spurious-attractor mechanism of self-healing DMC.
+7. **Budget:** about 2.7 A40-h per fitted round (measured T1s-2 speeds), so O2b is about 12 A40-h, sized from rates.

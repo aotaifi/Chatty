@@ -29,3 +29,7 @@
 - 2026-10-22 G1 code+launcher read; go with 2 h wall (~52 min compute, over the 0.5 slice-h pre-reg estimate).
 2026-10-22 06:45 VERDICT job 17426232: TIMEOUT [/project/theorie/a/A.Otaifi/chatty_compress6/runs/g1_17426232/ANALYSIS.md]
 - 2026-10-22 G1 17426232 PASS (verified): PP+bf T1s-2 one-hop E_FN 7.06e-6 < 1e-5 < refs (RBM+PP 1-hop 1.29e-5); timeout after 4/6 bases (refs only). Next: T2 design.
+- 2026-10-22 O1/O2 pre-registered (ee4d488); O1 worker launched; Fable O2 design review launched (adversarial, before O2 runs).
+2026-10-22 09:53 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r1/ANALYSIS.md]
+2026-10-22 09:53 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r2/ANALYSIS.md]
+2026-10-22 09:54 VERDICT job 1: DISAPPEARED [/scratch/a/A.Otaifi/tmp/claude-29196/-project-theorie-a-A-Otaifi/b0c3a6ee-1f88-4816-9c14-ae183c72ff38/scratchpad/wt/r3/ANALYSIS.md]

@@ -19,6 +19,14 @@ No production runs; do not touch O2b 17431886 or B0.
 3. Does the FN target carry information VMC energy training does not reach (B0 decides; what physics predicts).
 
 ## Diagnostics (none submitted yet)
+- D1 (proposed to the PI 2026-10-22, awaiting go): the hop's discarded sign as the O3 label. On O1 tables (ppbf,
+  alpha_V, sign s_2 and s_1), s' = s sgn(1 + alpha(E_L - E)); recompute E_FN. Survives if the gain >= 50% of the
+  oracle X_0.1 flip (s_1 -> s_2); dies if flips land on already-right signs. <= 0.5 slice-h. Hypothesis ~45%.
+- D2 (proposed): O2b fit tax split by decade and by Marshall violation of the bond (saved round_k tables).
 
 ## Status
 - 2026-10-22: plan file created; greeting sent to the PI.
+- 2026-10-22 evening: discussed with the PI: why determinants (parton sign/cancellation, cheap; the cost is backflow),
+  the division of labour (network = smooth/global, hop = local cancellation, refit = weak link), and that the hop
+  factor's sign IS the Krylov sign step (discarded by |.|). PI's original thesis (better amp -> better sign -> repeat):
+  my view ~50/50, amp half shown (O2a), sign half untested. Resume tomorrow with D1.

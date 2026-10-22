@@ -1579,3 +1579,27 @@ The alpha oracle costs at most 1.5%: one of the three oracles is removed at no m
 - Change: round 0's fit gets 10800 s, the T1s-2 level, standing for the one-time initial training. Rounds 1-4 keep
   2400 s warm-started, standing for the constant per-round cost at scale.
 - The readings are unchanged. The fit tax of rounds 1-4 is read as the tax of a constant-cost update.
+
+## Test B0: the same network trained by plain VMC (pre-registered 2026-10-22 16:50, lead; before any code or run; <= 8 A40-h)
+**Why.** O2b converges toward E* = tax / (1 - r), about 6e-6 / 0.66 = 9e-6 (derived from rounds 0-2, unvalidated).
+This is the fixed point of fitted value iteration: an improve-then-distil loop cannot get much below its network's
+own fit floor (Munos 2007; Anthony et al. 1705.08439 for expert iteration; cited from memory). The loop's case
+therefore rests on beating the standard pipeline on the SAME network: VMC energy training + one Lanczos hop + FN
+(Hu, Becca, Parola, Sorella 2013). G1 has that pipeline only for a different network (RBM+PP one hop 1.29e-5, 1.4x
+above the loop's projected 9e-6). B0 measures it for PP + 3x3 backflow.
+- **Network:** cx_t1s 'ppbf' exactly (F_ij(z) = f_ij + B_ij(z), 3x3 backflow u1, u2), whole space group x spin flip
+  (576 images) at readout. Start: rpT1_pp_17163493 params_final (the O2b start) with u1 = u2 = 0.
+- **Training:** SR, the rbmpp_train recipe (MC sampling, own PP sign), until the VMC energy plateaus: change of the
+  100-step running mean < 1e-6 per site over 200 steps, or budget out (reported as not converged).
+- **Readout:** the |psi| table on the 15.8M orbits; E_FN with sign s_2 at zero hop and at one hop with alpha_V (O1
+  rule); also the network's own sign at one hop (secondary). One seed, as the loop.
+- **Control:** the readout reproduces O2a's zero-hop PP 5.3677e-5 and one-hop 2.3692e-5 on the unmodified start.
+  The backflow code reproduces cx_t1s 'ppbf' log|psi| on o2b round_1 theta to 1e-12.
+- **Decision** (E_loop = O2b's best E_FN(g_k), E_B0 = B0 one hop, sign s_2):
+  - E_B0 <= 1.2 x E_loop: no accuracy edge on this network. The fit-floor lever is deprioritised; the loop's case is
+    cost only, and the next step is GPU-h to reach equal E_FN (loop vs SR), which O4 needs anyway.
+  - E_B0 >= 2 x E_loop: the FN targets carry what energy minimisation does not find; the edge is real. Next: the
+    fit-floor lever (5x5 backflow fitted to the saved round_k/target_la.npy, tax compared with 5.93e-6).
+  - In between: a modest edge; run both, the fit-floor test first (cheaper).
+  - B0 not converged: E_B0 is an upper bound; only the "edge is real" branch can be read off it, and only if a
+    longer run is not projected (from the energy-vs-step curve) to close the gap.

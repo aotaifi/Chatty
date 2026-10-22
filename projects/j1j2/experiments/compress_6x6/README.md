@@ -1557,3 +1557,17 @@ recomputes G1's 7.056e-6.
 | ViT | -0.0869 | 2.442e-5 | 1.53e-5 | 1.52e-5 |
 
 The alpha oracle costs at most 1.5%: one of the three oracles is removed at no measurable cost.
+
+#### Results: O2a, the fit-free reference chain (o2a_17430739; verified by the lead 2026-10-22) - the map is fast
+- Start: the VMC PP table plus one hop (alpha_V). Control: zero-hop PP 5.3677e-5 reproduced.
+- E_FN(g_k) per round, k = 0 .. 5: 2.37e-5 -> 8.11e-6 -> 4.48e-6 -> 2.89e-6 -> 2.13e-6 -> 1.69e-6.
+- c_k on E_FN - 9.15e-7: 0.32, 0.50, 0.55, 0.62, 0.64. No RISE; the map slows gently toward the ceiling.
+- Expelled set: weight 1.6-6.4e-14, almost all on s_2-wrong configurations; right-signed weight <= 4e-17. The
+  label fields are swapped because of the global sign of s_2 vs s0. There is no spurious-attractor signature.
+- Reading: with exact amplitudes, hop + FN from an oracle-free amplitude start goes below 1e-5 in ONE round and
+  reaches 2e-6 in 4. The loop's map is not the bottleneck. Whether the loop works depends on the fit tax (G1: about
+  6e-6 for PP + 3x3 backflow on phi*).
+- Prediction for O2b (lead; fit tax taken from G1, not measured in a loop): round 1 about 1.4e-5. Later rounds
+  approach a floor of about 7e-6, set by the fit. From round 2 on the exact gains (3.6e-6, then 1.6e-6) fall below
+  2x the fit tax, so the pre-registered viability criterion is expected to FAIL from round 2. If so, the result reads
+  "the loop is limited by representation, not by the map", and the lever is the fit floor.

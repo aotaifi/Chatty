@@ -36,3 +36,5 @@
 - 2026-10-22 Fable O2 review: fit tax 6.1e-6 leaves ~3e-6 for the loop; noiseless SHDMC rises to wrong node (Caffarel 2609.01301); amendment O2-1 (80b39ab): O2a fit-free chain first, RISE verdict, fit-tax viability criterion. O2a waits for O1.
 2026-10-22 10:10 VERDICT job 17430543: COMPLETED, gate not run (exact solves, no MC chains, quotable.py does not apply). Bash was denied here, so I read cx_o1.json and progress.txt directly. Control ok=True: ppbf E_FN 7.05625e-6 vs ref 7.056e-6 (rel 3.6e-5). [/project/theorie/a/A.Otaifi/chatty_compress6/runs/o1_17430543/ANALYSIS.md]
 - 2026-10-22 O1 17430543 PASS (verified): alpha by VMC energy gives ppbf E_FN 7.11e-6 vs oracle 7.06e-6. Next O2a.
+- 2026-10-22 O2a 17430739 submitted (2cf5250); s2/s0 global-sign swap noted in expelled split labels.
+- 2026-10-22 O2a 17430739 verified: exact hop+FN chain 2.37e-5 -> 8.1e-6 -> 4.5e-6 -> 2.9e-6 -> 2.1e-6 -> 1.7e-6 (c 0.32-0.64); map fast; next O2b.

@@ -1640,3 +1640,19 @@ the ceiling each sign allows once the amplitude is exact, which this table does 
   - Ceiling > 1e-5: the advantage is amplitude-sign consistency only; O3 as planned.
 - Lead's prediction before the run: ceiling 3-8e-6 (19x more wrong weight than s_2, whose ceiling is 9.15e-7, but the
   wrong weight sits on the tail, where s_2's errors also sit). About 60% in the middle branch.
+
+#### Results: S1 (s1_17446338, runs/s1_own/cx_s1.json; verified by the lead 2026-10-22) - middle branch, with a correction
+- Fit-free hop+FN chain with the PP's own sign s_PP (wrong |psi0|^2 weight 2.38e-5), from |PP| + one hop. Controls:
+  zero hop 4.773828e-5 and round 0 1.869427e-5 reproduced (rel 1e-11); 1% sign flip raises round 0 to 3.08e-3.
+- E_FN(g_k), k = 0..12: 1.869e-5, 1.186e-5, 1.038e-5, 9.51e-6, 8.90e-6, 8.47e-6, 8.13e-6, 7.88e-6, 7.65e-6, 7.45e-6,
+  7.30e-6, 7.15e-6, 7.02e-6. Stopped by the 2% rule at k = 12 while still falling 1.8% per round; alpha_V -> 0 by k = 3,
+  so from there the chain is plain self-consistent FN, which is slow. Aitken unstable (5.3 to 7.1e-6, one negative).
+- Ceiling: <= 7.0e-6 (measured upper bound); 3-6e-6 by extrapolation (geometric ratio 0.87 gives 6.2e-6, the observed
+  power-law decay of the steps gives ~3e-6). Not converged; middle branch either way.
+- **Correction (lead).** The middle branch's action, "O3 flips from s_PP, not from s_1", was written without checking
+  s_1's ceiling. s_1 (the ViT's clipped-Lanczos sign, also oracle-free) has a self-consistent ceiling of 2.51e-6 at 40
+  solves (Aitken 2.05e-6; RESEARCH_MAP 2026-10-20), below s_PP's. So s_1 is the better oracle-free sign by ceiling;
+  s_PP is better only on its own amplitude (1.87e-5 vs s_2 2.37e-5 at one hop) and costs nothing to carry.
+- Reading: both oracle-free signs have ceilings well under the 1e-5 bar (2.5e-6, <= 7e-6). The oracle flip (s_2,
+  9.15e-7) buys a further 2.7x. The fitted loop sits at 9.2e-6 with s_2 because of the ~6e-6 refit tax (O2b), so the
+  binding constraint at 6x6 is the refit, not the sign.

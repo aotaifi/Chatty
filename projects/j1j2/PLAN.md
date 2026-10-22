@@ -28,13 +28,13 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
-| S1: ceiling of the PP's own (oracle-free) sign; on the PP amplitude it beats oracle s_2 (one hop 1.87e-5 vs 2.37e-5) | <= 2 A40-h, worker staging | O2a chain with sign s_PP; decides whether O3 becomes 'carry the network's own sign' (README Test S1) |
 | B0: same network (PP+3x3 bf) trained by plain VMC + one hop + FN; decides whether the loop has an accuracy edge or only a cost edge (README Test B0) | <= 8 A40-h; worker building code 2026-10-22, launcher to be read before sbatch | MC SR, rbmpp_train recipe; exact-gradient VMC on the 15.8M table rejected (41 min per forward pass) |
 | O2b: the fitted loop | ~14 A40-h | PP + 3x3 backflow, cx_t1s fits; ViT dropped (tail-trained ViT + hop only 1.52e-5) |
 | O3: KKT flip labels from the network's own FN solution (sign s_1 -> s_2' without the oracle) | pre-register after O2b | previous fitted-ViT labels recalled 5e-7; retry with PP+backflow |
 | O4 / T2: walkers instead of exact solves; cost at 8x8 with Woodbury updates; edge over plain SR VMC of PP+backflow at equal GPU-h | design after O3 | the PI's T2 spec; the tail-steered sampling idea is in RESEARCH_MAP section 5 |
 
-## Dead ends (number, run)
+## Dead ends
+- (not dead, settled) S1 s1_17446338: oracle-free PP sign ceiling <= 7.0e-6 (3-6e-6 extrapolated); oracle-free s_1 ceiling 2.51e-6; oracle s_2 9.15e-7. Sign is not the binding constraint at 6x6; the refit tax (~6e-6) is. (number, run)
 - gamma-FN to free the energy from the tail: 26% of the gap removed, bar 50% (g0_17411369).
 - ViT refit to phi*(s_2): 9.2e-5 (refresh_17409419, refresh2_17409866; the fit had stalled).
 - Tail-trained ViT: decade -11 error 0.113, E_FN 6.89e-5; + hop 1.52e-5 (t1s2_vit_17418858, g1).

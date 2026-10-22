@@ -1721,3 +1721,11 @@ Two causes predict different cures: capacity (bigger network) or under-training 
     on sign-violating bonds) or a different class (hidden-fermion rows).
   - Anything else: report, decide with the PI.
 - Lead's prediction: A 4.5-5.5e-6 (some under-training, not most), B 0.6-0.8 x A. About 40% on "both > 4.5e-6".
+
+#### Results: B0 seed 1 readout (17445407, cx_b0.json; verified by the lead 2026-10-22) - void as a baseline, informative as physics
+- 334 SR steps at lr 0.05 (plateau stop on noise), max|u| 2.8e-3. VMC energy -0.50366 vs start -0.50369 (+3e-5, ~2 sigma).
+- E_FN per site, trained vs start: s_2 zero hop 7.77e-5 vs 5.37e-5, one hop 3.65e-5 vs 2.37e-5; own sign zero hop
+  6.64e-5 vs 4.77e-5, one hop 2.90e-5 vs 1.87e-5; own-sign wrong weight 4.40e-5 vs 2.38e-5. Control ok.
+- Reading: a VMC-energy change of ~3e-5 per site came with a ~50% worse E_FN and a doubled sign error. Noisy SR
+  damages the tail (which sets E_FN) far more than the bulk energy it optimises. This supports the conceptual
+  angle's Q3: energy minimisation on |psi|^2 samples does not control what FN needs.

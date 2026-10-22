@@ -28,6 +28,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
+| S1: ceiling of the PP's own (oracle-free) sign; on the PP amplitude it beats oracle s_2 (one hop 1.87e-5 vs 2.37e-5) | <= 2 A40-h, worker staging | O2a chain with sign s_PP; decides whether O3 becomes 'carry the network's own sign' (README Test S1) |
 | B0: same network (PP+3x3 bf) trained by plain VMC + one hop + FN; decides whether the loop has an accuracy edge or only a cost edge (README Test B0) | <= 8 A40-h; worker building code 2026-10-22, launcher to be read before sbatch | MC SR, rbmpp_train recipe; exact-gradient VMC on the 15.8M table rejected (41 min per forward pass) |
 | O2b: the fitted loop | ~14 A40-h | PP + 3x3 backflow, cx_t1s fits; ViT dropped (tail-trained ViT + hop only 1.52e-5) |
 | O3: KKT flip labels from the network's own FN solution (sign s_1 -> s_2' without the oracle) | pre-register after O2b | previous fitted-ViT labels recalled 5e-7; retry with PP+backflow |

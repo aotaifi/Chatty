@@ -1418,3 +1418,39 @@ construction: a test that cannot settle.
 - New fit budgets: pp 3600 s (unchanged, about 116 steps), ppbf 10800 s (about 144 steps), ViT 9000 s (about 134
   steps).
 - The readings and the pass bar are unchanged.
+
+#### Results: T1s-2 (t1s2_pp_17418856, t1s2_ppbf_17418857, t1s2_vit_17418858; verified by the lead 2026-10-22)
+| arm | -9 | -10 | -11 | -12 | r(-11): T1s -> T1s-2 | converged | E_FN(s_2) | splice E_FN (fitted >= -9, exact below) |
+|---|---|---|---|---|---|---|---|---|
+| PP | 0.025 | 0.039 | 0.070 | 0.141 | 0.073 -> 0.070 (1.05x) | no (budget; tau stopped at 0.025) | 2.61e-5 | 7.9e-6 |
+| PP + 3x3 backflow | 0.021 | 0.035 | 0.066 | 0.138 | 0.074 -> 0.066 (1.12x) | no (budget; tau stopped at 0.025) | 2.42e-5 | 6.0e-6 |
+| ViT | 0.023 | 0.050 | 0.113 | 0.200 | 0.124 -> 0.113 (1.10x) | no (lam at cap on 16 window steps) | 6.89e-5 | 8.2e-6 |
+
+Pre-registered readings:
+- The noise-floor reading (>= 1.5x) fails for all three arms: 4x samples and 3x the steps move r by 5-12%.
+- The converged-limit reading cannot apply, because no arm converged. Strictly, every arm is inconclusive.
+- The pass bar (E_FN <= 1e-5) is not met.
+
+Lead's reading:
+- All three splices land at 6-8e-6, so the whole remaining gap sits at |phi*|^2 <= 1e-10 for every network.
+- The best zero-hop guide is now PP+backflow at 2.42e-5, against the original ViT's 1.02e-4.
+- More sampling or training time on this objective is unlikely to close the remaining 2.4x: r(-11) must fall from
+  0.066 to about 0.03.
+
+## Test G1: one hop on the tail-trained amplitudes (pre-registered 2026-10-22, lead; before any run; cx_t0 part-(c) machinery; no training, <= 0.5 slice-h)
+**Construction.** For each tail-trained table (t1s2_ppbf_17418857, t1s2_pp_17418856, t1s2_vit_17418858 la_table.npy;
+for reference also the T1s ones):
+- a(x) = |base(x)| |1 + alpha (E_L(x) - E)|, where E_L is the local energy of (|base|, s_2);
+- a bounded scalar search over alpha, exactly as in T0 (c) / T0-phys (1);
+- E_FN(s_2, a), one solve, with and without the oracle veto.
+
+**Equal-hop references:**
+- psi_P + 1 Lanczos: 1.89e-5;
+- ViT one-hop: 2.90e-5 (T0-phys);
+- PP one-hop: 2.37e-5;
+- RBM+PP one-hop: 1.29e-5 (all VMC tables).
+
+**Readings (best tail-trained Pfaffian arm, no veto):**
+- PASS: E_FN <= 1e-5 and below every equal-hop reference.
+- Partial: below 1.29e-5 but above 1e-5.
+- No edge: >= 1.29e-5, i.e. no better than the VMC-trained RBM+PP with the same hop.

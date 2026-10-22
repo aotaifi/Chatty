@@ -2,6 +2,11 @@
 Goal: a loop (FN amplitude <-> sign flip, stored in networks) that improves a trained network's ground state at
 constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 
+## Step back 2026-10-22 (trigger: second failed version, T1s then T1s-2, of the tail-trained amplitude)
+1. Verdict: switch from training harder to one hop. 4x samples and 3x steps moved r(-11) by only 5-12%. The splice puts the whole gap at |phi*|^2 <= 1e-10.
+2. Thought that changed it: a Pfaffian makes neighbour ratios cheap (Woodbury), so a one-hop correction |a| |1 + alpha(E_L - E)| is constant cost. It was the consultant's PfH1 form. On the VMC tables it already gave PP 2.37e-5 and ViT 2.90e-5 (T0, T0-phys).
+3. Cheapest next test: G1. Apply the one-hop correction to the tail-trained tables (t1s2 ppbf / pp / vit); no training, <= 0.5 slice-h. Pass: E_FN <= 1e-5 and below psi_P + 1 Lanczos (1.89e-5) at equal hops.
+
 ## Step back 2026-10-21 (trigger: the ViT refit is the 8th failed version of "a network stores the near-node tail")
 1. Verdict: stop making networks precise at |psi|^2 < 1e-10. Four networks share the same tail displacement,
    eps 3-6e-7, and give E_FN(s_2) ~0.8 x their own VMC error: ViT, PP, RBM+PP, and a ViT fitted to phi* itself.
@@ -19,13 +24,13 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
-| Tail-trained amplitude to E_FN <= 1e-5 (T1s done: PP 2.82e-5, ViT 8.18e-5) | ~6 slice-h (T1s-2) | pairing family (PP, PP+backflow) trained decade-stratified; ViT kept as control |
+| Tail-trained amplitude to E_FN <= 1e-5 (T1s-2 done: PP+bf 2.42e-5, PP 2.61e-5, ViT 6.89e-5) | spent ~16 slice-h | pairing family (PP, PP+backflow) trained decade-stratified; ViT kept as control |
 | Sign labels without the oracle phi* | - | open; fitted-net labels recall 5e-7 (refresh2) |
 
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| T1s-2 (worker staging; launcher read by the lead before sbatch): PP / PP+backflow / ViT with 4x samples and annealed trust radius | chatty_compress6/runs/t1s2_* | r falls >= 1.5x -> noise floor, keep pushing PP+backflow toward 1e-5. Falls < 1.2x and converged -> a real limit at that r; for PP, backflow or larger receptive field next. Pass E_FN <= 1e-5 -> design T2. |
+| G1 (worker staging; launcher read by the lead before sbatch): one-hop on the tail-trained tables | chatty_compress6/runs/g1_* | <= 1e-5 and < 1.89e-5 -> the one-hop Pfaffian guide passes; design T2 (8x8 cost with fast updates). Between 1e-5 and 1.89e-5 -> partial; 5x5 backflow / hidden-fermion rows next. >= 1.89e-5 -> no edge at one hop over Lanczos. |
 | T0-phys 17410698 (submitted by another session, Mac identity) | chatty_compress6/runs/t0phys_17410698 | same-construction one-hop control for T0 (c); read per its README amendment |
 
 ## Dead ends (number, run)

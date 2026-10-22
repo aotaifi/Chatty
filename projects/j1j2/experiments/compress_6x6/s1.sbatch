@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=s1
-#SBATCH --partition=cip
-#SBATCH --gres=gpu:a40-24gb:1
+#SBATCH --partition=inter
+#SBATCH --gres=gpu:rtx2080ti:1
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=38G
+#SBATCH --mem=24G
 #SBATCH --time=01:00:00
 #SBATCH --output=/home/a/A.Otaifi/chatty_compress6/logs/%x-%j.out
 # Test S1 (README compress_6x6 "Test S1"): the fit-free hop+FN chain with the Pfaffian's own sign, up to 15 rounds, one A40 slice.

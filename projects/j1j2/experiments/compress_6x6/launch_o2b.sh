@@ -1,8 +1,10 @@
 #!/bin/bash
 # Test O2b launcher (README "De-oracling the G1 guide" O2 + Amendment O2-1): the fitted loop, ONE job on a full A40 (cx.sbatch),
 # rounds 0..4 + the closing hop, per-round checkpoints in RUN/round_k (resume: spec key resume_from). Run AFTER the lead's go.
-# Wall 16:30 = 1.3 x (5 rounds x ~8870 s + ~300 s), per round from measured rates: 2 hops x 110 s (o2a_17430739), fit 2400 s
-# + one step (71 s, t1s2_ppbf), table 5782 s (t1s2_ppbf, slice), fit-job overhead ~400 s. Partition MaxTime cip/inter 2 days.
+# Amendment O2b-1: round 0 fit 10800 s (one-time initial training), rounds 1-4 fit 2400 s.
+# Wall 19:15 = 1.3 x (round 0 ~17270 s + 4 x ~8870 s + controls and closing hop ~410 s), per round from measured rates: 2 hops
+# x 110 s (o2a_17430739), fit + one step (71 s, t1s2_ppbf), table 5782 s (t1s2_ppbf, slice), fit-job overhead ~400 s.
+# Partition MaxTime cip/inter 2 days (sinfo 2026-10-22).
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6
 RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
@@ -14,7 +16,7 @@ SHAJSON=$(python3 -c "import hashlib,json;print(json.dumps({f:hashlib.sha256(ope
 SPECD=$B/specs_o2b/$(date +%Y%m%dT%H%M%S); mkdir -p "$SPECD"; SP=$SPECD/o2b.json
 python3 -c "import json,sys;d=json.load(open('$HERE/specs/o2b.json'));d['code_sha256']=json.loads(sys.argv[1]);json.dump(d,open('$SP','w'))" "$SHAJSON"
 cd "$HERE"
-OUTL=$(sbatch --parsable --no-requeue --job-name=o2b --time=16:30:00 "$B/cx.sbatch" cx_o2b.py "$SP")
+OUTL=$(sbatch --parsable --no-requeue --job-name=o2b --time=19:15:00 "$B/cx.sbatch" cx_o2b.py "$SP")
 JOB=${OUTL%%;*}; RUN=$RUNS/o2b_$JOB; mkdir -p "$RUN"
 cat > "$RUN/ANALYSIS_BRIEF.md" <<EOB
 # O2b analysis brief (job $JOB, run $RUN)

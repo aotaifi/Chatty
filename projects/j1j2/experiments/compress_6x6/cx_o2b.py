@@ -29,9 +29,10 @@ OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_o
 F = os.path.join(OUT, 'cx_o2b.json'); T00 = time.time()
 CEIL = 9.15e-7; TAU_X = 0.1; FLOOR = 1e-15
 NROUND = int(SPEC.get('nround', 5)); FIT_SEC = float(SPEC.get('fit_sec', 2400)); DRY = bool(SPEC.get('dry', False))
+FIT_SEC0 = float(SPEC.get('fit_sec_round0', FIT_SEC))   # Amendment O2b-1: round 0 = the one-time initial training (10800 s)
 FN_MAXIT = 2 if DRY else 400; A_MAXIT = 3 if DRY else 100
 O2A = dict(EFN_g0=2.369190165069707e-05, EFN_g1=8.106142726936759e-06, EFN_zero_PP=5.3677e-05)   # o2a_17430739, T0
-res = dict(spec=SPEC, done=False, rounds=[], design=dict(nround=NROUND, fit_sec=FIT_SEC, ceil=CEIL, tau_expel=TAU_X, floor=FLOOR))
+res = dict(spec=SPEC, done=False, rounds=[], design=dict(nround=NROUND, fit_sec=FIT_SEC, fit_sec_round0=FIT_SEC0, ceil=CEIL, tau_expel=TAU_X, floor=FLOOR))
 
 
 def progress(msg):
@@ -131,7 +132,7 @@ def fit_round(k, target_path, warm_theta):
     sp = dict(arm='ppbf', refresh=RF, pp_params=SPEC['pp_params'], pp_table=SPEC['pp_table'], target_la=target_path,
               seed=1 + k, B=8208, K=2, B_acc=8208, B_ho=4096, lam_b=1.0, lam0=0.01, lam_cap=1.0, tau=0.05, tau_min=0.01,
               anneal_steps=20, z_acc=2.0, ho_every=10, min_steps=50, min_window=50, flat_tol=0.02, min_move=1e-3, splice_dec=-9,
-              fit_sec=FIT_SEC, skip_control2=True,
+              fit_sec=FIT_SEC0 if k == 0 else FIT_SEC, skip_control2=True,
               code_sha256={f: SHA_EXP[f] for f in ('cx_t1s.py', 'cx_lib.py', 'rbmpp_lib.py')})
     if warm_theta: sp['warm_theta'] = warm_theta
     sp.update(SPEC.get('fit_overrides', {}))

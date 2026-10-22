@@ -19,6 +19,8 @@ rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $
 case $ARM in
   ctl1) WIN=3; FRZ=false; EXTRA='"max_steps": 80, "o2b_table": "@D@/round_1_la_table.npy", "expect_tax": 5.93021221797743e-06'; FS=${FIT_SEC:-3000}; TM=${SBATCH_TIME:-00:30:00};;
   ctl2) WIN=5; FRZ=true;  EXTRA='"max_steps": 80'; FS=${FIT_SEC:-3000}; TM=${SBATCH_TIME:-00:30:00};;
+  ctl1s) WIN=3; FRZ=false; EXTRA='"max_steps": 10'; FS=3000; TM=${SBATCH_TIME:-00:20:00};;   # control 2 at 10 steps (before roundoff amplification)
+  ctl2s) WIN=5; FRZ=true;  EXTRA='"max_steps": 10'; FS=3000; TM=${SBATCH_TIME:-00:20:00};;
   ctl3) WIN=5; FRZ=false; EXTRA='"max_steps": 20, "rate_only": true'; FS=${FIT_SEC:-3000}; TM=${SBATCH_TIME:-00:20:00};;
   brk)  WIN=5; FRZ=true;  EXTRA='"max_steps": 1, "rate_only": true, "break_embed": true'; FS=${FIT_SEC:-3000}; TM=${SBATCH_TIME:-00:15:00};;
   A)    WIN=3; FRZ=false; EXTRA='"expect_tax": null'; FS=${FIT_SEC:-10800}; TM=${SBATCH_TIME:?set SBATCH_TIME for A};;

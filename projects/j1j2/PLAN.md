@@ -23,6 +23,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 
 ## Result 2026-10-22: G1 PASS (6x6, oracle target): a tail-trained PP + 3x3 backflow with one hop gives E_FN 7.06e-6 (bar 1e-5; best equal-hop reference 1.29e-5). Run g1_17426232.
 
+## Next (2026-10-22): remove the oracles from the G1 guide, one at a time (README 'De-oracling'): O1 alpha by VMC energy (minutes) -> O2 the loop with a walker-producible target, stall stop + viability projection (<= 8 A40-h) -> O3 sign labels -> O4 walkers.
+
 ## Open questions
 | question | budget | scope line |
 |---|---|---|

@@ -1479,3 +1479,41 @@ T1s pp/vit bases were references only and do not affect the reading.
   - (i) the fit target was the exact phi*(s_2) and alpha was chosen on the exact E_FN, both oracle quantities at 6x6;
   - (ii) the cost at 8x8-14x14 with fast Pfaffian updates;
   - (iii) an edge over plain SR VMC of the same architecture at equal GPU-h.
+
+## De-oracling the G1 guide (pre-registered 2026-10-22, lead; before any run). Order O1 -> O2 -> O3 -> O4, one oracle removed at a time; exact solves stand in for walkers until O4.
+
+### O1: alpha without the exact E_FN (no training; <= 0.5 slice-h; code cx_g1 + one option)
+- Bases: t1s2_ppbf, t1s2_pp, t1s2_vit (G1). Sign s_2.
+- alpha_V = argmin of the exact variational energy <H> of the one-hop state s_2 |a| |1 + alpha(E_L - E)|. This
+  quantity is walker-accessible as a VMC estimate.
+- Report E_FN(s_2, alpha_V), compared with the G1 optimum (7.06e-6 for ppbf).
+- **PASS:** E_FN(ppbf, alpha_V) <= 1e-5.
+- **FAIL:** > 1e-5. In that case alpha needs an FN-based rule, e.g. a two-point mixed estimate.
+
+### O2: the loop with a walker-producible target (sign s_2 still oracle; <= 8 A40-h)
+**Round k:**
+- (a) Guide g_k = network a_k + one hop, with alpha by the O1 rule.
+- (b) phi_k = the one-shot FN solution of g_k (one sec.fn_solve), which is what a long GFMC run with g_k samples.
+- (c) Fit a_{k+1} to log phi_k: warm start from a_k, decade-stratified, the cx_t1s machinery, B = 8208, at most 40 min.
+- (d) E_FN(g_{k+1}).
+
+**Start:** a_0 = the VMC-trained PP table (zero-hop 5.37e-5) with zero backflow. This is a start that needs no
+oracle.
+
+**Measured each round:**
+- E_FN(g_k);
+- the per-round contraction c_k = E_FN(g_{k+1}) / E_FN(g_k);
+- the fit error per decade against phi_k.
+
+Reference: the exact iteration contracts by 0.6-0.65 per solve from a fitted ViT (refresh "own" solves:
+9.2 -> 4.3 -> 2.5 -> 1.7e-5).
+
+**Decision:**
+- **PASS:** E_FN(g_k) <= 1e-5 within 4 rounds.
+- **STALL, stop early:** two consecutive rounds with c_k > 0.9 while E_FN > 1.5e-5. The loop then does not converge
+  at constant cost per round, and the cause is diagnosed from the per-decade fit error against phi_k.
+- **Viability flag:** a projection to 8x8 from the measured c_k and the s/round. If it needs > 15 rounds to reach
+  1e-5 from a VMC start, the loop is not viable as designed, even on a PASS, and this is reported as such.
+
+### O3 (after an O2 pass): KKT flip labels from the network's own FN solution instead of phi*; sign s_1 -> s_2' without the oracle. Pre-registered after O2.
+### O4: walkers instead of exact solves (8x8 problem; tail-steered sampling). Pre-registered after O3.

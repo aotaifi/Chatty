@@ -11,7 +11,7 @@ cd "$HERE"
 python3 - <<PY
 import json,os
 d=json.load(open('specs/o1.json'))
-for p in list(d['bases'].values())+[d['control_ref'],d['refresh']+'/s2.npy',d['refresh']+'/la_star_s2.npy']: assert os.path.exists(p),p
+for p in list(d['bases'].values())+[d['g1_json'],d['refresh']+'/s2.npy',d['refresh']+'/la_star_s2.npy']: assert os.path.exists(p),p
 PY
 SPECD=$B/specs_o1/$(date +%Y%m%dT%H%M%S); mkdir -p "$SPECD"; SP=$SPECD/o1.json
 python3 -c "import json,sys;d=json.load(open('specs/o1.json'));d['code_sha256']=json.loads(sys.argv[1]);json.dump(d,open('$SP','w'),indent=1)" "$SHAJSON"

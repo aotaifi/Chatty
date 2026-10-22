@@ -1603,3 +1603,40 @@ above the loop's projected 9e-6). B0 measures it for PP + 3x3 backflow.
   - In between: a modest edge; run both, the fit-floor test first (cheaper).
   - B0 not converged: E_B0 is an upper bound; only the "edge is real" branch can be read off it, and only if a
     longer run is not projected (from the energy-vs-step curve) to close the gap.
+
+#### Amendment B0-1 (2026-10-22 18:30, lead; after reading launch_b0.sh, b0.sbatch and the specs, before submission)
+- Training projection 'simple' (144 images, the published Nomura-Imada projection), readout 'full' (576): 'full' at
+  17.8 s/step (RTX 2080 Ti) gives ~1070 steps in budget, far from a plateau (the PP start needed 3000 steps).
+- eloc in float32: error 1.2e-7 per site rms against a per-step statistical error of 5e-5. Accepted.
+- The plateau rule (1e-6) is below the statistical resolution of a 100-step mean difference (5e-6 to 1e-5). It stays
+  as written, se_diff is logged, and convergence is judged from the full energy-vs-step curve. "Budget out" is the
+  expected outcome, so E_B0 is read as an upper bound (see the last decision branch).
+- Test a2 (1e-10 vs rbmpp_lib's fast eloc) fails at 3.7e-8. The reference is at fault: rbmpp_lib fast vs its own brute
+  force is also 3.7e-8 (rank-2 update roundoff); rbmpp_bf vs brute force is 1.4e-14. Accepted.
+
+#### Pre-run finding: the PP's own sign (b0 control job 17444507, /scratch/a/A.Otaifi/tmp/b0dbg/b0ctl-17444507.out)
+VMC PP (rpT1_pp, the O2/B0 start), amplitude |PP| from sym_tables_PP. E_FN per site above E0:
+
+| sign | |psi0|^2 weight wrong (mod global) | zero hop | one hop (alpha_V) |
+|---|---|---|---|
+| s_2 (oracle-built from the ViT) | 1.23e-6 | 5.368e-5 | 2.369e-5 |
+| PP's own sign s_PP (no oracle) | 2.38e-5 | **4.774e-5** | **1.869e-5** |
+
+The oracle-free Pfaffian sign gives a LOWER E_FN than the oracle sign on the same amplitude, although it has 19x
+more wrong weight. Reading (hypothesis, lead): the PP's sign and amplitude were optimised together, so they are
+consistent, and FN rewards that consistency; s_2 is better in weight but mismatched to |PP|. What decides O3 is
+the ceiling each sign allows once the amplitude is exact, which this table does not give.
+
+## Test S1: the ceiling of the Pfaffian's own sign (pre-registered 2026-10-22 18:30, lead; before any run; O2a code + a sign option; no training; <= 2 A40-h)
+- Run O2a's fit-free hop+FN chain (6 rounds) with sign s_PP instead of s_2, from the same start (|PP| + one hop,
+  alpha_V). Report E_FN(g_k) per round, c_k, and the ceiling: the self-consistent FN energy of s_PP (iterate to
+  change < 2% per round or 15 rounds; Aitken estimate beside it).
+- Control: round 0 reproduces 1.86943e-5 (above); the s_2 chain is O2a.
+- **Decision:**
+  - Ceiling(s_PP) <= 3e-6: the oracle-free Pfaffian sign is good enough for the loop at 6x6. O3 is redesigned as
+    "carry the network's own sign" (the loop trains sign and amplitude together, like VMC), and O2b is re-run with
+    s_PP (one change). This would remove the sign oracle.
+  - 3e-6 < ceiling <= 1e-5: the PP sign is a usable start for O3; O3 flips from s_PP, not from the ViT's s_1.
+  - Ceiling > 1e-5: the advantage is amplitude-sign consistency only; O3 as planned.
+- Lead's prediction before the run: ceiling 3-8e-6 (19x more wrong weight than s_2, whose ceiling is 9.15e-7, but the
+  wrong weight sits on the tail, where s_2's errors also sit). About 60% in the middle branch.

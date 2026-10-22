@@ -25,6 +25,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Open questions
 | question | budget | scope line |
 |---|---|---|
+| B0: same network (PP+3x3 bf) trained by plain VMC + one hop + FN; decides whether the loop has an accuracy edge or only a cost edge (README Test B0) | <= 8 A40-h; worker building code 2026-10-22, launcher to be read before sbatch | MC SR, rbmpp_train recipe; exact-gradient VMC on the 15.8M table rejected (41 min per forward pass) |
 | O2b: the fitted loop | ~14 A40-h | PP + 3x3 backflow, cx_t1s fits; ViT dropped (tail-trained ViT + hop only 1.52e-5) |
 | O3: KKT flip labels from the network's own FN solution (sign s_1 -> s_2' without the oracle) | pre-register after O2b | previous fitted-ViT labels recalled 5e-7; retry with PP+backflow |
 | O4 / T2: walkers instead of exact solves; cost at 8x8 with Woodbury updates; edge over plain SR VMC of PP+backflow at equal GPU-h | design after O3 | the PI's T2 spec; the tail-steered sampling idea is in RESEARCH_MAP section 5 |

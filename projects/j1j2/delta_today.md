@@ -45,3 +45,4 @@
 - 2026-10-22 O2b 17431886 running on cip-cl-nv01 (code 699b532); controls pass (5.367685e-5, 2.369190e-5, 8.106143e-6 = O2a); round-0 fit started 11:06.
 - 2026-10-22 O2b round 0->1: E_FN 2.369e-5 -> 1.412e-5 (c 0.58), fit tax 6.01e-6 < 0.5 x exact gain 1.56e-5 (viability OK round 1); matches pre-run prediction 1.4e-5. Fit not converged (359 steps).
 - 2026-10-22 O2b round 1->2: 1.412e-5 -> 1.088e-5 (c 0.755); fit tax 5.93e-6 > 0.5 x exact gain 9.17e-6 = 4.59e-6 -> pre-registered viability criterion FAILS at round 2 (as predicted). Job continues to round 4 for the PASS bar.
+- 2026-10-22 O2b rounds 0-2: fit tax constant ~6e-6 -> fixed point ~9e-6 (derived). B0 pre-registered (a7af876): same-network VMC baseline decides accuracy-edge vs cost-edge before the fit-floor lever; worker building code.

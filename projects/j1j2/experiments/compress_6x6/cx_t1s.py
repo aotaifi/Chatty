@@ -101,7 +101,9 @@ def norm_la(la):
 
 
 RF = SPEC['refresh']
-ls2 = norm_la(jnp.asarray(np.load(os.path.join(RF, 'la_star_s2.npy'))))
+TARGET = SPEC.get('target_la') or os.path.join(RF, 'la_star_s2.npy')     # O2b: phi_k of the loop instead of phi*(s_2)
+res['target_la'] = TARGET
+ls2 = norm_la(jnp.asarray(np.load(TARGET), jnp.float64))
 s2 = jnp.asarray(np.load(os.path.join(RF, 's2.npy')).astype(np.float32))
 dec, _ = lab.decade_of(ls2)
 dec_h = np.asarray(dec); ho_h = np.asarray(lab.HO); n_h = np.asarray(sec.n); ls2_h = np.asarray(ls2)
@@ -432,10 +434,11 @@ def efn(la_b, maxit=400):
 
 
 # ============================================================================================ control 2 (readout code on the warm table)
-t0json = json.load(open(T0JSON)) if os.path.exists(T0JSON) else None
+SKIP_C2 = bool(SPEC.get('skip_control2', False))   # O2b: the target is not phi*(s_2), so cx_t0.json does not apply
+t0json = json.load(open(T0JSON)) if (os.path.exists(T0JSON) and not SKIP_C2) else None
 base_key = 'vit' if MODEL == 'vit' else 'pp'
 dt_warm = decade_table(WARM)
-c2 = dict(warm_table=('lab.lP0 (psi_P)' if MODEL == 'vit' else SPEC['pp_table']), eps_median_tail_T0=dt_warm['eps_median_tail_T0'],
+c2 = dict(skipped_t0_comparison=SKIP_C2, warm_table=('lab.lP0 (psi_P)' if MODEL == 'vit' else SPEC['pp_table']), eps_median_tail_T0=dt_warm['eps_median_tail_T0'],
           by_decade=dt_warm['by_decade'])
 if t0json:
     ref = t0json['bases'][base_key]
@@ -554,6 +557,7 @@ if DRY:
     off = jnp.mean(WARM[jnp.asarray(idx_s)] - a_0)
     la_fit = WARM.at[jnp.asarray(idx_s)].set(a_fit + off)
     res['dry_splice_orbits'] = int(idx_s.size)
+    np.save(os.path.join(OUT, 'la_table.npy'), np.asarray(la_fit, np.float64))     # dry: lets an O2b dry run chain rounds
 else:
     la_fit = table(theta)
     np.save(os.path.join(OUT, 'la_table.npy'), np.asarray(la_fit, np.float64))

@@ -1729,3 +1729,12 @@ Two causes predict different cures: capacity (bigger network) or under-training 
 - Reading: a VMC-energy change of ~3e-5 per site came with a ~50% worse E_FN and a doubled sign error. Noisy SR
   damages the tail (which sets E_FN) far more than the bulk energy it optimises. This supports the conceptual
   angle's Q3: energy minimisation on |psi|^2 samples does not control what FN needs.
+
+#### Amendment F1-1 (2026-10-22, lead; after reading launch_f1.sh, f1.sbatch and the arm specs, before submission)
+- Budget: the pre-registration's "<= 3 H100-h" contradicted its own two 10800 s arms (my error). Measured: ~3.15 h per
+  arm, 6.3 H100-h expected (wall 4 h each).
+- Controls (H100 jobs 3806815/16/18/19, 3807044/45): window-3 at 80 steps tax 5.959e-6 vs O2b 5.930e-6 (+0.5%);
+  hop(phi_1) 4.951226e-6; frozen-ring window 5 equals window 3 at 10 steps (tax rel 6e-11; log-amplitudes 1e-7, not
+  1e-10: float32 network, accepted). At 80 steps the two separate by 1.4% (roundoff amplified through the
+  accept/reject chain): 1.4% is the resolution floor between arms, small against the 3.5e-6 / 4.5e-6 / 0.6x thresholds.
+- Steps in 10800 s: A ~2850 (36x O2b's 80), B ~2600.

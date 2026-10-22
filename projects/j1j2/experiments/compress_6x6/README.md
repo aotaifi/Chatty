@@ -1571,3 +1571,11 @@ The alpha oracle costs at most 1.5%: one of the three oracles is removed at no m
   approach a floor of about 7e-6, set by the fit. From round 2 on the exact gains (3.6e-6, then 1.6e-6) fall below
   2x the fit tax, so the pre-registered viability criterion is expected to FAIL from round 2. If so, the result reads
   "the loop is limited by representation, not by the map", and the lever is the fit floor.
+
+#### Amendment O2b-1 (2026-10-22, lead; before submission, after reading launch_o2b.sh)
+- Problem: a 2400 s fit is about 34 steps for PP + backflow. Round 0 starts from the VMC PP with zero backflow, and
+  T1s needed about 120 steps to reach a tail-fitted state from there. With 2400 s, round 1's fit tax would mix
+  representation with under-training.
+- Change: round 0's fit gets 10800 s, the T1s-2 level, standing for the one-time initial training. Rounds 1-4 keep
+  2400 s warm-started, standing for the constant per-round cost at scale.
+- The readings are unchanged. The fit tax of rounds 1-4 is read as the tax of a constant-cost update.

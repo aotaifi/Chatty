@@ -20,7 +20,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| O2b, fitted loop (worker staging/submitting 2026-10-22; check squeue for job name o2b*) | chatty_compress6/runs/o2b_* (round_k checkpoints; ANALYSIS_BRIEF.md) | Pre-registered: README O2 + Amendments O2-1, O2b-1. PASS (<= 1e-5 within 4 rounds) and viability (fit tax < 0.5 x the O2a gain in rounds 1-3) -> O3. Viability FAIL with a floor near 7e-6 (the lead's prediction, written before the run) -> the lever is the fit floor: a 5x5 backflow or hidden-fermion rows, then retry. STALL or RISE -> diagnose with O2-1 item 6. |
+| O2b, fitted loop, job 17431886 (one job, wall 19:15, setsid watcher pid 145313 -> VERDICT line in delta_today.md) | chatty_compress6/runs/o2b_17431886 (round_k checkpoints, resumable with resume_from; ANALYSIS_BRIEF.md) | Pre-registered: README O2 + Amendments O2-1, O2b-1. PASS (<= 1e-5 within 4 rounds) and viability (fit tax < 0.5 x the O2a gain in rounds 1-3) -> O3. Viability FAIL with a floor near 7e-6 (the lead's prediction, written before the run) -> the lever is the fit floor: a 5x5 backflow or hidden-fermion rows, then retry. STALL or RISE -> diagnose with O2-1 item 6. |
 
 ## Open questions
 | question | budget | scope line |

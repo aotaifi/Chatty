@@ -1470,6 +1470,11 @@ T1s pp/vit bases were references only and do not affect the reading.
   1.89e-5, ViT one-hop 2.90e-5. It is 1.8x below the best of them.
 - The tail-trained ViT with the same hop reaches only 1.52e-5. The pairing structure, once trained on the tail, is
   what gets below 1e-5.
+- CORRECTIONS (lead, 2026-10-22):
+  - The sign s_2 is ALSO oracle-derived (the flip of X_0.1 was computed from phi*(s_1) on exact tables). G1 is a
+    representability result: oracle sign + oracle target + alpha tuned on the exact E_FN.
+  - One seed throughout.
+  - The fair equal-hop comparison is RBM+PP one-hop (same s_2): 1.8x. psi_P + 1 Lanczos used the ViT sign.
 - **What this does NOT show** (the T2 questions):
   - (i) the fit target was the exact phi*(s_2) and alpha was chosen on the exact E_FN, both oracle quantities at 6x6;
   - (ii) the cost at 8x8-14x14 with fast Pfaffian updates;

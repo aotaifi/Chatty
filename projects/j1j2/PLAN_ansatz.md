@@ -45,15 +45,16 @@ the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its 
 3. Next: exact full-sum variational optimiser at 4x6 (2.7M configs; JAX on a ws1 GPU) with pluggable positive base
    (Jastrow, RBM), layers (none, 1 + aH, 1 + aH_J2) and output forms (C5); C2-T2 and C5-T0 on it; ~2 h build + <= 2 GPU-h.
 
-## Candidates (novelty check: worker -> ansatz/lit/NOVELTY.md; landscape: ansatz/lit/LANDSCAPE.md)
-| id | ansatz | physics it targets | first kill test | my prior |
-|---|---|---|---|---|
-| C1 | psi = s_N A + s_X B + s_Y C, A,B,C >= 0 smooth (node = level set of smooth functions) | Neel/stripe competition; the node as interference, learnable in log space | C1-T0 below | ~55% survives T0 |
-| C2 | psi = sum_{y near x} K_theta(x,y) Phi(y), Phi >= 0 nodeless, K local signed (learned generalised hop) | cancellation built into the ansatz | representability: is K^-1 psi0 near-positive for a local K (e.g. 1 + a H_J2)? | ~35% |
-| C3 | weighted sum of projected BCS states over Z2 flux (vison) configurations | spin liquid vs columnar VBS competition (vison fluctuations) | 4x4/6x6 overlap gain over one projected state at equal params | ~30% |
-| C4 | positive amplitude in the 2x2 crossed-plaquette eigenframe | frustration absorbed by a local frame | sign-violating weight of psi0 in the plaquette frame at 4x4 vs Marshall | ~25% (likely anticipated: Torlai 2020, Levy-Clark 2021) |
-Scaling caveat on C1 (stated before any test): a global sum of 3 components is a low-rank version of a product of local
-interferences; at 6x6 (L ~ correlation length) global ~ local, so a 6x6 pass must be followed by a locality test.
+## Candidates and live directions (2026-10-23 night; dead ones are in Dead ends)
+Live (>= 3, per the PI's guidance):
+| id | idea | decisive test | status |
+|---|---|---|---|
+| C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
+| C2-loc | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
+| C5 | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
+Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
+refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
+Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
 
 ## Pre-registered tests
 ### C1-T0: is the exact sign structure that of three-rule interference? (2026-10-23, before any run; exact, no training, CPU minutes)

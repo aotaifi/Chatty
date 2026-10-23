@@ -211,9 +211,13 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 | exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
 | C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
-| C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends
+- C3 vison-dressed Z2 spin liquid (C3-T0-1 KILL, C3-FN KILL at 4x6; theorie jobs 17463650, 17465189; ansatz_runs/
+  c3_t0_4x6, c3_fn_4x6; verified VERDICT line): at equal rank 20, vison span E_var 7.36e-4 vs random no-flux
+  perturbations of the same bonds 4.1/5.7/4.3e-4 (V/R' 1.3-1.8); E_FN 4.6e-4 vs 2.7-3.9e-4. Flux fluctuations carry
+  less than amplitude fluctuations of the same bonds; the 4x4 gain (1.1e-5 vs 5e-4) was the 4x4 anomaly. Caveat:
+  base AA optimisation stopped at 60 evaluations (overlap 0.889); d_xy on (1,1) not (2,2) bonds (Hu et al.).
 - C2 as an add-on layer (C2-T1 preview, 4x4, ansatz_runs/small/c2t1_4x4.json): E_FN with the H_J2 layer vs the
   full-H layer on |psi0|-Marshall 6.9e-3 vs 1.6e-3, Marshall-FN 3.7e-3 vs 6.6e-4, no-J2-hop GS 1.6e-2 vs 1.6e-2
   (product forms 1.4e-2). The J2 layer is not a useful add-on to existing sign-free states.

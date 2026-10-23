@@ -396,17 +396,34 @@ json.dump(res, open(os.path.join(OUT, 'c3_t0.json'), 'w'), indent=1, default=str
 
 # ====================================================================== 8. C3-FN (option --fn; PLAN_ansatz.md "C3-FN")
 if '--fn' in sys.argv:
-    def fn_energy(v):                                  # lattice FN (ten Haaf), sign and guide from v (c2_t1_small.py)
-        s = np.where(v >= 0, 1.0, -1.0); g = np.maximum(np.abs(v), 1e-300)
-        C = H.tocoo(); off = C.row != C.col
-        r, c, h = C.row[off], C.col[off], C.data[off]
+    _C = H.tocoo(); _off = _C.row != _C.col
+    _R, _Cc, _Hh = _C.row[_off].astype(np.int64), _C.col[_off].astype(np.int64), _C.data[_off]; _HD = H.diagonal(); del _C, _off
+    FNINFO = {}
+    def fn_energy(v, zero_rel=1e-14, tag=None):
+        """lattice FN (ten Haaf), sign and guide from v. Configurations with |v| < zero_rel * max|v| lie on the node
+        (infinite wall) and are removed. Lowest eigenvalue by LOBPCG with a Jacobi preconditioner (the sign-flip
+        potential can be huge where |v| is tiny, which stalls plain Lanczos), started from s|v|."""
+        from scipy.sparse.linalg import lobpcg
+        s = np.where(v >= 0, 1.0, -1.0); g = np.abs(v); nz = g > zero_rel * g.max()
+        sel = nz[_R] & nz[_Cc]
+        r, c, h = _R[sel], _Cc[sel], _Hh[sel]
         viol = h * s[r] * s[c] > 0
-        keep = sp.csr_matrix((h[~viol], (r[~viol], c[~viol])), shape=(Dim, Dim))
-        vsf = np.bincount(r[viol], weights=h[viol] * s[r[viol]] * s[c[viol]] * g[c[viol]] / g[r[viol]], minlength=Dim)
-        HF = keep + sp.diags(H.diagonal() + vsf)
-        return float((sla.eigsh(HF, k=1, which='SA', tol=1e-10)[0][0] - E0) / N)
+        mp = -np.ones(v.size, np.int64); mp[nz] = np.arange(int(nz.sum())); n = int(nz.sum())
+        vsf = np.bincount(r[viol], weights=h[viol] * s[r[viol]] * s[c[viol]] * g[c[viol]] / g[r[viol]], minlength=v.size)
+        d = (_HD + vsf)[nz]
+        HF = sp.csr_matrix((h[~viol], (mp[r[~viol]], mp[c[~viol]])), shape=(n, n)) + sp.diags(d)
+        del r, c, h, viol
+        x0 = (s * g)[nz]; x0 /= np.linalg.norm(x0); rq = float(x0 @ (HF @ x0))
+        den = np.maximum(d - (rq - 1.0), 0.5)
+        Mp = sla.LinearOperator((n, n), matvec=lambda x: (x.ravel() / den).reshape(x.shape), dtype=float)
+        e, X = lobpcg(HF, x0[:, None], M=Mp, largest=False, tol=1e-9, maxiter=3000)
+        x = X[:, 0] / np.linalg.norm(X[:, 0]); lam = float(x @ (HF @ x)); resid = float(np.linalg.norm(HF @ x - lam * x))
+        info = dict(n_removed=int(v.size - n), dE_guide=(rq - E0) / N, resid=resid)
+        if tag: FNINFO[tag] = info
+        if resid > 1e-5: print('WARNING FN residual', tag, info, flush=True)
+        return float((lam - E0) / N)
     # FN control: a variationally exact sign must give E_FN = E0
-    fnres = dict(check_FN_exact_psi0=fn_energy(psi0), E_FN_marshall=fn_energy(sN * np.abs(psi0)))
+    fnres = dict(check_FN_exact_psi0=fn_energy(psi0, tag='psi0'), E_FN_marshall=fn_energy(sN * np.abs(psi0), tag='marshall'))
     def ritz_vec(vecs, cut=1e-10):
         Phi = np.array([v / np.linalg.norm(v) for v in vecs]).T
         S = Phi.T @ Phi; Hm = Phi.T @ (H @ Phi)
@@ -417,6 +434,8 @@ if '--fn' in sys.argv:
         cur = list(S_states); rk, dE, vg = ritz_vec(cur); prefixes = [(rk, dE, vg)]; rest = list(pool)
         while rest:
             tr = [(ritz_vec(cur + [w]), i) for i, w in enumerate(rest)]
+            tr = [q for q in tr if q[0][0] > rk]                 # only candidates that add a direction above the cut
+            if not tr: break
             (rk2, dE2, vg2), i = min(tr, key=lambda q: q[0][1])
             if rk2 <= rk: break
             cur.append(rest.pop(i)); rk, dE, vg = rk2, dE2, vg2; prefixes.append((rk, dE, vg))
@@ -437,21 +456,19 @@ if '--fn' in sys.argv:
     kc = min(p[-1][0] for p in arms.values())
     fnres['common_rank'] = kc
     def at(pre, k): return [q for q in pre if q[0] <= k][-1]
-    fnres['span_0'] = dict(dE_var=r1['dE_site'], E_FN=fn_energy(v0))
-    rkS, dS, vS = ritz_vec(S_states); fnres['span_S'] = dict(rank=rkS, dE_var=dS, E_FN=fn_energy(vS))
+    fnres['span_0'] = dict(dE_var=r1['dE_site'], E_FN=fn_energy(v0, tag='0'))
+    rkS, dS, vS = ritz_vec(S_states); fnres['span_S'] = dict(rank=rkS, dE_var=dS, E_FN=fn_energy(vS, tag='S'))
     for nm, pre in arms.items():
         rk, dE, vg = at(pre, kc)
-        fnres[f'span_{nm}'] = dict(rank=rk, dE_var=dE, E_FN=fn_energy(vg),
+        fnres[f'span_{nm}'] = dict(rank=rk, dE_var=dE, E_FN=fn_energy(vg, tag=nm),
                                    curve=[(q[0], q[1]) for q in pre])
         log('C3-FN', nm, 'rank', rk, 'dE_var', dE, 'E_FN-E0 per site', fnres[f'span_{nm}']['E_FN'])
-    # (1 + aH) on the best (S) state, a by min E_var
+    # (1 + aH) on the best (S) state, a by min E_var = 2-state Ritz in span{psi_S, H psi_S}
     HvS = H @ vS
-    def evar(a):
-        w = vS + a * HvS; return energy(w)
-    from scipy.optimize import minimize_scalar
-    ra = minimize_scalar(evar, bounds=(-2.0, 0.0), method='bounded', options=dict(xatol=1e-8))
-    wS = vS + ra.x * HvS
-    fnres['span_S_1aH'] = dict(a=float(ra.x), dE_var=float((ra.fun - E0) / N), E_FN=fn_energy(wS))
+    Phi2 = np.array([vS, HvS]).T; G2 = Phi2.T @ Phi2; H2 = Phi2.T @ (H @ Phi2)
+    from scipy.linalg import eigh as geigh
+    e2, c2 = geigh(H2, G2); wS = Phi2 @ c2[:, 0]
+    fnres['span_S_1aH'] = dict(a=float(c2[1, 0] / c2[0, 0]), dE_var=float((e2[0] - E0) / N), E_FN=fn_energy(wS, tag='S_1aH'))
     eV = fnres['span_V']['E_FN']
     verd = {}
     for lab in ('R', 'Rp'):
@@ -463,6 +480,7 @@ if '--fn' in sys.argv:
     fnres['verdict'] = dict(E_FN_V=eV, E_FN_marshall=fnres['E_FN_marshall'], by_control=verd,
                             rule='PASS if E_FN(V) <= 0.3 E_FN(R) for all seeds and <= 0.3 E_FN(Marshall); '
                                  'KILL if E_FN(V) >= E_FN(R) for >= 2 of 3 seeds (E_FN measured above E0 per site)')
+    fnres['fn_solver_info'] = FNINFO
     res['C3_FN'] = fnres
     json.dump(res, open(os.path.join(OUT, 'c3_t0.json'), 'w'), indent=1, default=str)
     log('C3-FN summary', {k: (v['E_FN'] if isinstance(v, dict) and 'E_FN' in v else v) for k, v in fnres.items() if k != 'verdict'})

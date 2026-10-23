@@ -13,7 +13,13 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - S1: oracle-free signs allow 2.5e-6 (s_1) and <= 7e-6 (PP own); the refit, not the sign, binds at 6x6.
 - B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow; edge ~1.5x vs RBM+PP.
 - F1 (Paderborn 3811214/6): the refit tax is not under-training (13x steps: -6%) and only partly capacity (5x5: -18%); the log-amplitude objective misses what FN uses.
-- F2 run 1 void (optimiser random-walked; README 'Results: F2'). Open: does fitting the violating-bond ratios cut the tax (F2-1 rerun)? And sign labels without the oracle (O3)?
+- F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
+- Open: does a second hop absorb the refit tax (H1)? And sign labels without the oracle (O3)?
+
+## Step back 2026-10-23 (trigger: second failed refit fix)
+1. Verdict: stop improving the stored network on the tail; compute it at use time (more hops).
+2. Thought: the FN-relevant error sits on ~0.1% of violating bonds whose ratios are cancellations; networks do not generalise there, a hop evaluates them exactly.
+3. Next: H1 (tax with two hops on existing tables), minutes, no training.
 
 ## Step back 2026-10-22 evening (trigger: second failed version of B0 training)
 1. Verdict: stop sharpening B0; take the middle branch (modest edge, ~1.5x, from RBM+PP one hop 1.29e-5 vs loop 8.4e-6).

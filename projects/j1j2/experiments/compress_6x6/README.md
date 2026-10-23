@@ -1788,3 +1788,27 @@ while this error stays.
   held-out L_v by >= 30%, and with the F2 objective the held-out total must fall by >= 10%. Pilot "L_v only" is also a
   result: if L_v cannot be lowered by 30% even alone, the 3x3 class cannot represent the violating-bond ratios.
 - Arms C and D then rerun unchanged otherwise; decision branches as F2.
+
+#### Results: F2-1 gate (Paderborn 3816801 diag, 3816959/60 pilots; commit ecbb0f6; verified from the worker report, curves in runs/f2_p{a,b}) - gate (a) FAILS
+- The violating-bond error is extremely heavy-tailed: top 0.1% of w-sampled bonds carry 55% of L_v, top 1% 81%;
+  effective sample size 915 per 1M bonds; 4096-bond batches scatter by 55%.
+- With a fixed 2^17-bond set the optimiser works on that set (L_v -83% in 150 steps, L_v-only) but held-out L_v
+  (2^17 independent bonds) does not fall: 3.24e-3 -> 3.43e-3. Gate (a) (>= 30% held-out drop) fails; (b) fails too.
+- Reading: the 3x3 network fits the specific dominant bonds it is shown and does not generalise to other violating
+  bonds. Not separated: 3x3 capacity vs a fixed set too small to cover the tail (effective size ~115 bonds).
+
+## Step back 2026-10-23 (trigger: second failed version of the refit fix: F1 time/capacity, F2 objective)
+1. Verdict: stop improving the stored network on the tail; compute the tail at use time instead (more hops).
+2. Thought: the FN-relevant error sits on ~0.1% of violating bonds whose ratios are cancellations between opposite-sign
+   neighbours (conceptual angle's picture); a network does not generalise there, but a hop evaluates that sum exactly.
+3. Cheapest test: H1 below, no training, minutes on H100.
+
+## Test H1: does a second hop absorb the refit tax? (pre-registered 2026-10-23, lead; before any run; no training; <= 0.5 H100-h)
+- Tables: a_2 from O2b round 1 (tax 5.93e-6 at one hop), F1 arm A, F1 arm B; target phi_1.
+- For k = 1, 2: E_FN(K_k(a_2)) and E_FN(K_k(phi_1)), K_k = the joint k-step Krylov polynomial on the amplitude with
+  coefficients by the variational energy (O1 rule generalised; k = 1 is the current hop). tax_k = difference.
+- Control: k = 1 reproduces each run's recorded one-hop numbers (rel 1e-6).
+- Decision: tax_2 <= 0.5 tax_1 (on the O2b and F1-A tables): the second hop absorbs the refit loss; next is O2b with two
+  hops per guide (cost: neighbours of neighbours, still constant per round with Pfaffian updates). tax_2 >= 0.8 tax_1:
+  the loss is not hop-correctable; next is the ansatz class (hidden-fermion rows). Between: report.
+- Lead's prediction: tax_2 / tax_1 = 0.3-0.6; ~55% on the "absorbs" branch.

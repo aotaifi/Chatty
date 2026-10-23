@@ -13,7 +13,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - S1: oracle-free signs allow 2.5e-6 (s_1) and <= 7e-6 (PP own); the refit, not the sign, binds at 6x6.
 - B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow; edge ~1.5x vs RBM+PP.
 - F1 (Paderborn 3811214/6): the refit tax is not under-training (13x steps: -6%) and only partly capacity (5x5: -18%); the log-amplitude objective misses what FN uses.
-- Open: does fitting the violating-bond ratios (F2) cut the tax? And sign labels without the oracle (O3)?
+- F2 run 1 void (optimiser random-walked; README 'Results: F2'). Open: does fitting the violating-bond ratios cut the tax (F2-1 rerun)? And sign labels without the oracle (O3)?
 
 ## Step back 2026-10-22 evening (trigger: second failed version of B0 training)
 1. Verdict: stop sharpening B0; take the middle branch (modest edge, ~1.5x, from RBM+PP one hop 1.29e-5 vs loop 8.4e-6).
@@ -29,7 +29,6 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| F2 arms C 3813945, D 3813947 (Paderborn H100 express, wall 4 h, setsid watchers -> VERDICT in delta_today.md) | chatty_compress6/runs/f2_{C,D} | README Test F2: min tax <= 3.0e-6 -> re-run O2b with the new objective; 3-4e-6 -> 5x5 + larger lambda_v once; > 4e-6 -> hidden-fermion rows or the hop-sign idea |
 
 ## Angles
 - conceptual (angle lead session, started 2026-10-22 at the PI's request): physics of the loop's blocks with the PI; plan file PLAN_conceptual.md, deliverable conceptual/MEMO.md (ranked hypotheses with kill tests). Acted on when closed or when it changes this plan (O3 design especially).

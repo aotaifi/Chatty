@@ -1767,3 +1767,24 @@ while this error stays.
   - 3.0e-6 < min tax <= 4.0e-6: partial; combine with the 5x5 and test a larger lambda_v once.
   - > 4.0e-6: the ansatz class is the limit; next is hidden-fermion rows or the conceptual angle's hop-sign idea.
 - Lead's prediction: C 3.5-4.5e-6, D 3-4e-6; ~45% on the partial branch, ~30% on the lever branch.
+
+#### Results: F2 (Paderborn 3813945 arm C, 3813947 arm D; verified by the lead 2026-10-23) - VOID: the optimiser did not optimise the new objective
+- Taxes as recorded: C (3x3) 5.06e-6 (880 steps), D (5x5) 4.23e-6 (580 steps), both "converged" by the fit's rule.
+- But the held-out TOTAL objective (fixed held-out sets) never fell: C 8.74e-2 at step 0, 7.96e-2 to 1.51e-1 in between,
+  9.59e-2 at the end; D 8.74e-2 -> 7.6e-2 to 1.19e-1 -> 9.23e-2. L_v wandered 2.5e-3 to 6.3e-3 (start 3.06e-3). F1 arm A's
+  held-out loss fell smoothly 4.37e-2 -> 2.96e-2. The steps were a random walk (acceptance 0.99), and the convergence rule
+  fired on that noise.
+- Probable cause (lead, not yet tested): L_v is heavy-tailed under w-sampling, so 4096-bond batches give GN rows and
+  acceptance differences dominated by a few bonds; with errors added in quadrature the acceptance test passes almost
+  anything. The F2 controls checked the value of L_v, not that the optimiser lowers it. My pre-registration omitted that
+  control.
+- The F2 branches are NOT read: these taxes are not a test of the objective.
+
+#### Amendment F2-1 (2026-10-23, lead; before any rerun)
+- Optimiser fix, worker to choose and justify from a diagnostic: per-batch L_v variance and its tail; options are a
+  fixed importance-sampled bond set of >= 2^17 bonds reused every step (deterministic L_v), larger B_v, and acceptance
+  on the fixed set.
+- New gating control (must pass before production): a 150-step pilot with ONLY L_v (old loss off) on 3x3 must lower the
+  held-out L_v by >= 30%, and with the F2 objective the held-out total must fall by >= 10%. Pilot "L_v only" is also a
+  result: if L_v cannot be lowered by 30% even alone, the 3x3 class cannot represent the violating-bond ratios.
+- Arms C and D then rerun unchanged otherwise; decision branches as F2.

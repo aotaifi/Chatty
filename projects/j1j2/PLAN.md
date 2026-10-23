@@ -16,6 +16,11 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
 - Open: does a second hop absorb the refit tax (H1)? And sign labels without the oracle (O3)?
 
+## Step back 2026-10-23 afternoon (trigger: the PI; the tail finding had not moved in weeks)
+1. Verdict: reframe. The tail is the neighbourhood of the nodal surface; its amplitude and the sign are one object (the node). We store them as two (log|a| network + discrete sign), and log|psi| is singular at a node, so the tail cannot be learned that way.
+2. Thought: S1 (own PP sign beats oracle s_2 on |PP|: 1.87e-5 vs 2.37e-5 with 19x more wrong weight) says sign-amplitude consistency matters more than sign correctness; F2 (tail ratios do not generalise in log space) and B0 (VMC damages the tail freely) fit the same picture. Our edge: FN computes the near-node amplitude given a sign, and the hop computes the near-node cancellation sums; neither has to be learned.
+3. Next: N0 diagnostic (are the top-0.1% violating bonds near-node, i.e. strong cancellation c(x) = |sum_y H_xy phi(y)| / sum_y |H_xy phi(y)| small?), minutes on existing tables; then a signed guide (network's own sign x sign of the hop factor; the conceptual angle's hop-sign check) instead of more refit work. Hypothesis, ~50%.
+
 ## Step back 2026-10-23 (trigger: second failed refit fix)
 1. Verdict: stop improving the stored network on the tail; compute it at use time (more hops).
 2. Thought: the FN-relevant error sits on ~0.1% of violating bonds whose ratios are cancellations; networks do not generalise there, a hop evaluates them exactly.

@@ -50,8 +50,8 @@ Live (>= 3, per the PI's guidance):
 | id | idea | decisive test | status |
 |---|---|---|---|
 | C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
-| C2-loc | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
-| C5 | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
+| C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
+| C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
 refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
 Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
@@ -237,6 +237,12 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 | C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
 
 ## Dead ends
+- C2 as a trained variational layer (C2-T2 KILL, 4x6 exact optimiser, jobs 17469982/17469926, ansatz_runs/
+  exact_vmc_4x6/verdict.json, verified): E_var with the H_J2 layer vs the full-H layer on the same jointly trained base:
+  Jastrow 1.61e-2 vs 1.02e-2, RBM a=2 3.56e-3 vs 2.83e-3 (E_FN same direction). Check note: the J2 = 0 Marshall-
+  Jastrow sits 1.16% above E0 against my 1% bar; scipy BFGS gives the same optimum, so the bar was wrong, not the tool.
+- C5 amplitude-sign coupled output (C5-T0 INCONCLUSIVE, parked; jobs 17469983/4): coupled/standard E_var 0.73 (R1),
+  1.30 (R2, one seed), 0.97 (R4, within seed spread 3e-4); no consistent advantage, pass needed <= 0.5.
 - C3 vison-dressed Z2 spin liquid (C3-T0-1 KILL, C3-FN KILL at 4x6; theorie jobs 17463650, 17465189; ansatz_runs/
   c3_t0_4x6, c3_fn_4x6; verified VERDICT line): at equal rank 20, vison span E_var 7.36e-4 vs random no-flux
   perturbations of the same bonds 4.1/5.7/4.3e-4 (V/R' 1.3-1.8); E_FN 4.6e-4 vs 2.7-3.9e-4. Flux fluctuations carry

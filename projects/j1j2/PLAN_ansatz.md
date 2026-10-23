@@ -52,6 +52,7 @@ Live (>= 3, per the PI's guidance):
 | C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
 | C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
 | C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
+| C6 | unfrustrated parent + J2 dressing: psi0 = (1 + a H_J2) GS(H_p), H_p local and stoquastic | C6-T0 (4x4, 4x6) | starting |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
 refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
 Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
@@ -198,6 +199,23 @@ steps, G-tax batch/tau/stratification, warm start: (i) A, (ii) A's RBM factor. R
 G-tax's. Rule as C2-L (pass: tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; kill: tax_B(2) >= 1.657e-6), per arm.
 <= 5 A40-h. A kill with the 400-step cap reads "inconclusive (cause: warm start)" only if the held-out loss is still
 falling steeply at step 400 (slope over the last 50 steps > 1% of the loss per 10 steps).
+
+### C6-T0: is the frustrated ground state a local dressing of an UNFRUSTRATED parent? (2026-10-24, before any run; exact 4x4 and 4x6, CPU; code ansatz/code/c6_t0.py)
+Hypothesis (~20%): psi0 = (1 + a H_J2) GS(H_p) with H_p local and stoquastic in the Marshall frame (sign-free GFMC at
+any L; frustration lives only in the explicit J2 dressing). Rests on: the exact pre-image Phi = (1 + a H_J2)^{-1} psi
+is Marshall-positive at strong layers (6x6 loop target: W_M 7.4e-8 at cond 30, 0 at cond 100; C2-L-0).
+Method (inverse problem, Chertkov-Clark PRX 8, 031029 (2018)): for Phi at H_J2 cond 5, 10, 30, the quantum covariance
+matrix C_kl = <O_k O_l> - <O_k><O_l> in Phi over a local symmetric operator basis O_k: XY_d and ZZ_d bond sums for all
+displacement classes with |d| <= 2 sqrt 2, plus the J1-plaquette ring exchange. Stoquastic constraint per operator from
+the sign of its Marshall-frame off-diagonal elements (checked numerically). Parent = argmin c^T C c with the J1 XY
+coefficient fixed to 1, (u) unconstrained, (s) stoquastic-constrained. Then GS(H_p) by Lanczos and the dressed state
+(1 + a' H_J2) GS(H_p) with a' re-optimised.
+Measured: relative variance of the parent on Phi, fidelity |<GS(H_p)|Phi>|^2, E_var - E0 per site of the dressed
+state, and its E_FN. Baselines (sign-free routes at the same size): Marshall-FN E_FN (4x6: 6.95e-3/site), and
+(1 + aH_J2) applied to the Marshall-FN ground state. Checks: parent search on psi0 itself, unconstrained, recovers
+H_J1-J2 (J2/J1 = 0.5 to 1e-6); a stoquastic parent of Phi at cond 100 recovers ~-H_J2 dominance (sanity).
+- Pass (4x6): stoquastic parent with dressed E_var - E0 <= 1e-3/site (7x below Marshall-FN). Kill: dressed state no
+  better than (1 + aH_J2) on the Marshall-FN ground state. Pass earns a 6x6 version (sector machinery) and a GFMC plan.
 
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN

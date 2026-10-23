@@ -1828,3 +1828,12 @@ while this error stays.
   i.e. ~2.5e-6, against 8.4e-6 for one hop.
 - The SIGNED two-step polynomial has lower <H> than the unsigned one in every case (O2b a_2: 5.88e-6 vs 6.89e-6): the
   hop's sign carries usable node information (supports the signed-guide step).
+
+## Test N0: is the tail the near-node cancellation region? (pre-registered 2026-10-23, lead; before any run; no training; <= 0.3 H100-h)
+- Cancellation ratio c(x) = |sum_y H_xy phi(y)| / sum_y |H_xy phi(y)| (off-diagonal neighbours, phi = phi_1 with sign
+  s_2); c -> 0 where opposite-sign neighbours cancel (near a node).
+- Bond sets: (i) the top 0.1% and top 1% of violating bonds by d^2 under w-sampling (F2-1 diagnostic, a_2 = O2b round 1),
+  (ii) a w-sampled reference set of equal size. Report the c(x), c(y) quantiles per set, and the share of d^2 carried by
+  bonds with min(c) below the reference median.
+- Decision: median min(c) on the top 0.1% <= 1/3 of the reference median: the near-node picture holds (proceed with
+  the signed guide). Within 2/3 of it: the picture is dead; say so. Between: report.

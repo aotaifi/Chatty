@@ -269,6 +269,25 @@ def tax_set(la, s, tag):
     del lp, sp; return out
 
 
+# ================================================================= Amendment C2-L-0 (stage 'L0'): exact |Phi| with s_N, no fit
+if STAGE == 'L0':
+    HJ2_op = HJ2; KERN = {'H_J2': HJ2_op, 'V_J2': V2}; res['L0'] = []
+    for kname, Kop_ in KERN.items():
+        km, kM = (lmin, lmax) if kname == 'H_J2' else lanczos_ext(V2)
+        for cnd in (5.0, 10.0, 30.0, 100.0):
+            A_ = (cnd - 1) / (km - cnd * kM); HJ2 = Kop_
+            Phi, nit, rel = cg(lambda x: x + A_ * Kop_(x), v_phi0); Phi = Phi / jnp.linalg.norm(Phi)
+            gN = float(jnp.sign(jnp.sum(Phi * sN))); sN_f = (gN * sN).astype(jnp.float32)
+            la_Phi = norm_la(jnp.log(jnp.maximum(jnp.abs(Phi), 1e-300) / sec.sqrt_n))
+            rec = dict(kernel=kname, cond=(1 + A_ * km) / (1 + A_ * kM), a=A_, spec=[km, kM], cg_iters=nit, rel_resid=rel, W_M=WM(Phi), tail_w=tail(Phi))
+            del Phi
+            rec.update(tax_set(la_Phi, sN_f, f'L0 {kname} cond {cnd:g} exact |Phi| s_N')); del la_Phi
+            res['L0'].append(rec); dump(F, res)
+            progress(f'[L0] {kname} cond {cnd:g} a {A_:.5f}: W_M {rec["W_M"]:.3e} tail {rec["tail_w"]:.4f} tax_B1 {rec["tax_B1"]:.4e} tax_B2 {rec["tax_B2"]:.4e} (resid {rel:.1e})')
+    m2 = min(r['tax_B2'] for r in res['L0'])
+    res['verdict_L0'] = 'KILL' if m2 >= 1.657e-6 else ('CONTINUE' if m2 < 0.82e-6 else 'INCONCLUSIVE'); res['min_tax_B2_L0'] = m2
+    res['sec'] = time.time() - T00; res['done'] = True; dump(F, res)
+    progress(f'VERDICT DONE L0 {res["verdict_L0"]} min tax_B2 {m2:.4e} {res["sec"]:.0f}s'); sys.exit(0)
 # exact-Phi controls: storing Phi exactly (own sign) must give back phi_0's E_FN(K_2); s_N with exact |Phi| = sign-only tax
 res['exact_Phi'] = {'sign_Phi': tax_set(la_Phi, sPhi, 'exact Phi, sign(Phi)')}
 r_ex = abs(res['exact_Phi']['sign_Phi']['EFN_K2'] - efn_p0[2]['EFN']) / efn_p0[2]['EFN']; res['exact_Phi']['rel_K2'] = r_ex; dump(F, res)

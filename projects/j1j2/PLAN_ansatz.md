@@ -187,6 +187,18 @@ H_J2 and V_J2 at cond 5, 10, 30, 100 (a < 0): tax_B(1), tax_B(2) with exact |Phi
 - Kill C2-L: min over cond of tax_B(2) >= 1.657e-6. Continue: tax_B(2) < 0.82e-6 at some cond -> the 400-step fit at
   that cond (<= 3 GPU-h). Between: inconclusive, report.
 
+#### C2-L-0 result (theorie A40 17466418, run_17466418/cx_gtax.json L0): CONTINUE by the rule
+Exact |Phi|, s_N, no fit; tax_B(2): H_J2 cond 5/10/30/100: 2.93e-5 / 1.85e-6 / 2.5e-7 / 0 (W_M(Phi) 5.8e-4 / 1.7e-5 /
+7.4e-8 / 0; tail 0.092 / 0.124 / 0.241 / 0.404 vs phi_0 0.078). V_J2 never below 1.38e-6. Cond 100 is trivial (Phi
+dominated by H_J2's top eigenvector, positive in the Marshall frame); cond 30 is the test point.
+#### Amendment C2-L-1 (2026-10-24, before the fit): fit at H_J2 cond 30 (a = -0.1028), two network arms
+(i) RBM+PP (G-tax class, as pre-registered); (ii) a positive network of ~2480 parameters (RBM part only, no Pfaffian:
+a Pfaffian's amplitude has its own nodes, a structural mismatch for a node-free Phi). Both: sign s_N, 400 fixed
+steps, G-tax batch/tau/stratification, warm start: (i) A, (ii) A's RBM factor. Report fit rms by decade next to
+G-tax's. Rule as C2-L (pass: tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; kill: tax_B(2) >= 1.657e-6), per arm.
+<= 5 A40-h. A kill with the 400-step cap reads "inconclusive (cause: warm start)" only if the held-out loss is still
+falling steeply at step 400 (slope over the last 50 steps > 1% of the loss per 10 steps).
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).

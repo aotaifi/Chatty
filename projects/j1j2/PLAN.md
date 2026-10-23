@@ -17,7 +17,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
 - H1 (Paderborn 3818121): a second hop cuts the refit tax to 0.32x (1.90e-6 on O2b's table); derived two-hop loop floor ~2.5e-6.
 - N0 (Paderborn 3818482): yes, the tail is the near-node cancellation region (median c 0.056 vs 0.583).
-- Open: L1 (proposals/2026-10-23_next_major_calc.md) under two-round review: oracle-free loop with RBM+PP and two signed hops. And sign labels without the oracle (O3)?
+- NEXT MAJOR CALCULATION approved 2026-10-23 17:40 (PI): M1 + gate, proposals/2026-10-23_next_major_calc_v2_final.md. Takeover by the lead from 17:45. And sign labels without the oracle (O3)?
 
 ## Step back 2026-10-23 afternoon (trigger: the PI; the tail finding had not moved in weeks)
 1. Verdict: reframe. The tail is the neighbourhood of the nodal surface; its amplitude and the sign are one object (the node). We store them as two (log|a| network + discrete sign), and log|psi| is singular at a node, so the tail cannot be learned that way.
@@ -43,6 +43,10 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
+| gate G-A2/N0c/A3 (worker, Paderborn express) | runs/gate_* | README 'M1 + gate' readings; C only if A3 gain/round > 2 x G-tax |
+| gate G-tax (worker, Paderborn express) | runs/gate_tax | feeds the C gate |
+| M1.0 literature (worker) | J1J2_BENCHMARKS_COST.md | drop from M1 whatever is published |
+| M1.1 GFMC 6x6 validation (worker stages, lead reads launcher) | tbd | production validation, then M1.2 timing |
 
 ## Angles
 - ansatz-pioneer (angle lead session, started 2026-10-23 at the PI's request): find a genuinely new ansatz for frustrated magnets (landscape map, >= 3 candidates with novelty checks, cheap 4x4/6x6 tests); plan file PLAN_ansatz.md, deliverable ansatz/ANSATZ_MEMO.md; normal QoS on Paderborn.

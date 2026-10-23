@@ -1861,3 +1861,15 @@ Pre-registered before any run (lead):
 - Gate: run C only if G-A3's gain per round > 2 x G-tax. C's PASS as in the plan file.
 - M1.1: GFMC reproduces E_FN(A + 1 signed hop) = 5.57e-6 within 2 sigma, time-step and population bias measured,
   two seeds, before any 8x8 number.
+
+#### Results: gate G-A2, G-N0c, G-A3 (Paderborn 3824436/37/64; runs/gate_*; verified by the lead from cx_ga2.json, cx_ga3.json 2026-10-23)
+- G-A2 (real residual spliced): tail-only tax_1 5.53e-6 -> tax_2 1.83e-6 (0.33); bulk-only 7.4e-7 -> 6.4e-7 (0.86);
+  full 5.93e-6 -> 1.90e-6 (0.32). The tail carries 93% of tax_1 and the hop removes two thirds of it; it barely touches
+  the bulk part. Reading: the hop is tail-specific (0.38 < 1/1.5).
+- G-N0c (smooth perturbation matched to the residual's bulk rms): top-d^2 median c ratio 0.90 / 1.16 (two forms; the
+  second's bootstrap degenerate), vs N0's 0.095. N0 is not by construction.
+- G-A3 (fit-free, signed two-step polynomial from RBM+PP A, own sign, exact FN amplitudes): E_FN 1.95e-6 (round 0 =
+  the no-loop K_2(A) reference), 3.18e-7, 9.17e-8, 3.31e-8, 1.38e-8, 6.24e-9, 3.03e-9; gain per round 6.1 -> 2.1;
+  wrong-sign weight 1.9e-7 -> 2.6e-11. Without storage, the oracle-free signed iteration goes far below the oracle
+  sign's ceiling (9.15e-7). Absolute gain in round 0->1: 1.63e-6.
+- Gate C pending G-tax: C runs only if the round-0->1 gain (1.63e-6) > 2 x the RBM+PP two-hop refit tax, i.e. tax < 0.82e-6.

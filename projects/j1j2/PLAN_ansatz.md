@@ -71,7 +71,7 @@ removes violations at large enough cond, so specificity is quantitative. Phi is 
 decades -8..-13 is similar to psi0's); it is sign-free there. The full-hop kernel does nothing (J1 and J2 parts act
 in opposite directions), so the running 6x6 C2-T0 (kernel V) is expected uninformative; C2-T0b now has V_J2, V_J1, H_J2.
 C4 (plaquette frame) 4x4: no rotation beats Marshall (0.012725 vs 0.012731 from Marshall start; eigenbasis start
-ends at 0.015-0.018): KILL at 4x4; 4x6 still running.
+ends at 0.015-0.018): KILL at 4x4. The 4x6 confirmation was stopped (ws1 overloaded, low value).
 
 ### C2-T0 at 6x6 (2026-10-23, after the 4x4 result and before any 6x6 run; code ansatz/code/c2_t0_6x6.py; <= 3 H100-h)
 4x4 (pre_4x4.json): Phi = (1 + aK)^{-1} psi0 is EXACTLY Marshall-positive (W_M = 0, cond 4.6-17) for K = H_J2, V_J2 and
@@ -101,6 +101,10 @@ psi_K(a) = (1 + a K) phi_+, phi_+ Marshall-signed and positive. Bases phi_+: (1)
 Measured: E_var at the optimal a (closed form from 3 matvecs) and E_FN with the sign of psi_K(a*), per site above E0;
 W_M of psi_K(a*). Check: K = H on base (4) must give E_var = E0 at a = 0 to 1e-10 (|psi0| with Marshall is not psi0,
 so this check is instead: base psi0 itself with K = H gives a* = 0 and E0).
+Scaling arms (added before any run): an additive layer acts through the EXTENSIVE local energy, 1 + a E_L^J2(x),
+so in a large system its sign flips are set by a global fluctuation (the C1 lesson). The extensive form is a product
+of local layers: psi = phi_+ prod_p (1 + a e_p(x)), e_p = (H_J2^(p) phi_+)(x)/phi_+(x) on plaquette p (its two J2
+bonds; per-bond variant prod_b too). Same bases, E_var by a 1-D scan in a, E_FN at a*.
 - Pass: for bases (1)-(3), H_J2 layer gives E_FN <= 0.5 x the H layer's E_FN, on at least 2 of 3 bases.
 - Kill: H_J2 layer E_FN >= H layer's on 2 of 3 bases. Pass makes C2 a concrete proposal for the loop's hop
   (report to the project lead) and earns C2-T2 (trained phi_theta, full-sum VMC, vs same-size free-sign NQS).
@@ -125,7 +129,9 @@ D2 = 0: W_M 1e-62, broken sign 0.27-0.47; brute-force BCS fidelity 1.0).
 4x6 PBC (symmetric sector ~1e4 dims, so 24 states cannot fit by counting). Control (R'): same strings, t and D
 multiplied by random factors in [0.5, 1.5] (no flux), 3 seeds. Add states greedily (largest energy gain first) and
 compare E_Ritz - E0 at EQUAL S-rank k = 4..rank_max. Pass: at the largest common rank, V residual <= 0.3 x R'
-residual for all seeds. Kill: V residual >= 0.7 x R'. Pass earns a 6x6 VMC-sampled version (design then).
+residual for all seeds. Kill: V residual >= 0.7 x R' for at least 2 of 3 seeds (clarified 2026-10-23 before any
+4x6 output). Pass earns a 6x6 VMC-sampled version (design then). Runtime: only the AA sector is optimised (from the
+4x4 optimum, <= 60 evaluations); other sectors at that point; Slurm CPU node, not ws1 (ws1 load 35-52 on 10 cores).
 Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupled output psi = s_N e^f tanh(g)
 (node = smooth zero crossing) vs e^f x sign at equal capacity, exact 6x6 tail error and own-sign E_FN.
 
@@ -134,8 +140,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 | C2-T0 6x6 (kernel V = H - diag) | Paderborn 3820416, PENDING (est. start 10-28) | 4x6 predicts uninformative (0.95); cancel if the PI agrees |
 | C2-T0b 6x6 (V_J2, V_J1, H_J2) | Paderborn 3823050 PENDING (10-28); copy on theorie inter GPU (worker) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
-| C3-T0-1 4x6 (vison span, rank-matched) | ws1 CPU, setsid, ansatz_runs/c3_t0_4x6 | PASS -> 6x6 VMC design; KILL -> C3 dead |
-| C4 4x6 | ws1 CPU, small_pretests.py | KILL at 4x4 already; confirm |
+| C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends
 - C1 global sign-rule interference (C1-T0 KILL, 2026-10-23, /scratch/a/A.Otaifi/ansatz_runs/c1_t0/c1_t0.json, code

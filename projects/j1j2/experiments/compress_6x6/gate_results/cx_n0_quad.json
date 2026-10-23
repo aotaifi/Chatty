@@ -1,0 +1,145 @@
+{
+ "spec": {
+  "refresh": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/refresh_17409419",
+  "a2_table": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/runs/gate_n0c/pert_quad_la.npy",
+  "target_la": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/o2b_r1/round_1_target_la.npy",
+  "nbonds": 1048576,
+  "seed": 7777
+ },
+ "done": true,
+ "sample": {
+  "n_bonds": 1048576,
+  "mean_d2": 3.711375577418383e-05,
+  "share_top_0p1pct": 0.012039985661702758,
+  "share_top_1pct": 0.08495867421349369,
+  "n_eff_frac": 0.3272775786509065,
+  "frac_bonds_J1": 0.06334400177001953,
+  "unique_x": 234279,
+  "unique_orbits": 377951
+ },
+ "controls": {
+  "A_bruteforce_c": {
+   "n": 40,
+   "max_rel_c": 1.3373683321860063e-15,
+   "c_min_checked": 0.3697397407457722,
+   "c_median_checked": 0.6950541978945692,
+   "viol_counts_match": true,
+   "ok": true
+  },
+  "B_unsigned": {
+   "n_orbits": 4136,
+   "unsigned_c_max_abs_dev_from_1": 0.0,
+   "unsigned_bruteforce_max_abs_dev": 0.0,
+   "signed_c_frac_below_0p999_random_orbits": 1.0,
+   "signed_c_median_random_orbits": 0.3202150261899579,
+   "ok": true
+  },
+  "C_sampled_bonds": {
+   "n": 1500,
+   "not_bond": 0,
+   "canon": 0,
+   "not_viol": 0,
+   "j1flag": 0,
+   "ok": true
+  }
+ },
+ "reference_median_min_c": 0.5834138169929269,
+ "sets": {
+  "top_0.1pct": {
+   "n": 1048,
+   "c_x_q10_50_90": [
+    0.5603523784031865,
+    0.6991262815888499,
+    0.7601579248961325
+   ],
+   "c_y_q10_50_90": [
+    0.573608614401535,
+    0.6994603847853794,
+    0.7584400353549922
+   ],
+   "min_c_q10_50_90": [
+    0.525270558040749,
+    0.677263022250023,
+    0.7491982493694485
+   ],
+   "share_d2_of_set": 0.012039985661702788,
+   "frac_bonds_min_c_below_ref_median": 0.20801526717557253,
+   "share_d2_with_min_c_below_ref_median": 0.21393956566167707,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.4866412213740458,
+    "frac_y_has_violating_J1_bond": 0.4580152671755725,
+    "frac_either_endpoint": 0.8196564885496184,
+    "frac_both_endpoints": 0.125,
+    "frac_sampled_bond_itself_J1": 0.004770992366412214
+   }
+  },
+  "top_1pct": {
+   "n": 10485,
+   "c_x_q10_50_90": [
+    0.5224485247119678,
+    0.6804516247656799,
+    0.7907634404926374
+   ],
+   "c_y_q10_50_90": [
+    0.5243322429346856,
+    0.680170498202345,
+    0.7883325238550932
+   ],
+   "min_c_q10_50_90": [
+    0.4733337415283526,
+    0.6407083161732516,
+    0.7747049673300508
+   ],
+   "share_d2_of_set": 0.08495867421349527,
+   "frac_bonds_min_c_below_ref_median": 0.3164520743919886,
+   "share_d2_with_min_c_below_ref_median": 0.30899454172698937,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.501859799713877,
+    "frac_y_has_violating_J1_bond": 0.4831664282308059,
+    "frac_either_endpoint": 0.7348593228421555,
+    "frac_both_endpoints": 0.2501669051025274,
+    "frac_sampled_bond_itself_J1": 0.01010968049594659
+   }
+  },
+  "reference_all_w_sampled": {
+   "n": 1048576,
+   "c_x_q10_50_90": [
+    0.44301642246709483,
+    0.6420364205383022,
+    0.7631587240420414
+   ],
+   "c_y_q10_50_90": [
+    0.44328088587081216,
+    0.6417107597671667,
+    0.7643078244677141
+   ],
+   "min_c_q10_50_90": [
+    0.3621907066790778,
+    0.5834138169929269,
+    0.7055632482713358
+   ],
+   "share_d2_of_set": 0.9999999999998844,
+   "frac_bonds_min_c_below_ref_median": 0.49993896484375,
+   "share_d2_with_min_c_below_ref_median": 0.44840135020197286,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.6643028259277344,
+    "frac_y_has_violating_J1_bond": 0.6632528305053711,
+    "frac_either_endpoint": 0.8139667510986328,
+    "frac_both_endpoints": 0.5135889053344727,
+    "frac_sampled_bond_itself_J1": 0.06334400177001953
+   }
+  }
+ },
+ "decision": {
+  "median_min_c_top0p1": 0.677263022250023,
+  "median_min_c_ref": 0.5834138169929269,
+  "ratio": 1.1608621573976776,
+  "ratio_boot95": [
+   1.1608621573976776,
+   1.1608621573976776
+  ],
+  "branch": "DEAD (ratio >= 2/3)",
+  "note": "reference = the whole w-sampled sample (top sets are subsets of it)"
+ },
+ "sec": 33.512484073638916
+}

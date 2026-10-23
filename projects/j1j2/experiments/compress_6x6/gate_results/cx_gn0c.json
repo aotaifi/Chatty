@@ -1,0 +1,43 @@
+{
+ "spec": {
+  "refresh": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/refresh_17409419",
+  "o2b_table": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/o2b_r1/round_1_la_table.npy",
+  "target_la": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/o2b_r1/round_1_target_la.npy"
+ },
+ "done": true,
+ "lin_wsym_spread": 1.2836953722228372e-16,
+ "lin_wsym_mean_vs_mean_w": [
+  -0.025401971434018858,
+  -0.025401971434018865
+ ],
+ "quad_Wsym_distinct_values_offdiag": 21,
+ "quad_Wsym_invariance_maxdev": 7.771561172376096e-16,
+ "invariance_maxdev": {
+  "lin": 8.326672684688674e-16,
+  "quad": 7.105427357601002e-14,
+  "scale_lin": 0.609647314416453,
+  "scale_quad": 21.808296684100338
+ },
+ "gpu_vs_numpy_lin_maxdev": 2.220446049250313e-16,
+ "r": {
+  "bulk_rms": 0.0073432303015964805,
+  "tail_rms": 0.026586561984972,
+  "bulk_prob": 0.7625524527205888
+ },
+ "lin": {
+  "eps": 0.03298345290393856,
+  "bulk_rms": 0.007343230301596481,
+  "tail_rms": 0.0048704282308358335,
+  "finite": true,
+  "corr_with_r_bulk": -0.007594462442908214,
+  "max_abs": 0.06032482044920307
+ },
+ "quad": {
+  "eps": 0.0008732023723314103,
+  "bulk_rms": 0.007343230301596479,
+  "tail_rms": 0.006291907578105777,
+  "finite": true,
+  "corr_with_r_bulk": 0.028201306019606843,
+  "max_abs": 0.055312368459314275
+ }
+}

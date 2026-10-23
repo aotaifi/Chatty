@@ -1,0 +1,145 @@
+{
+ "spec": {
+  "refresh": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/refresh_17409419",
+  "a2_table": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/runs/gate_n0c/pert_lin_la.npy",
+  "target_la": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/o2b_r1/round_1_target_la.npy",
+  "nbonds": 1048576,
+  "seed": 7777
+ },
+ "done": true,
+ "sample": {
+  "n_bonds": 1048576,
+  "mean_d2": 9.3389358544983e-06,
+  "share_top_0p1pct": 0.00510054859295167,
+  "share_top_1pct": 0.04839614299068038,
+  "n_eff_frac": 0.3782889853003101,
+  "frac_bonds_J1": 0.06334400177001953,
+  "unique_x": 234279,
+  "unique_orbits": 377951
+ },
+ "controls": {
+  "A_bruteforce_c": {
+   "n": 40,
+   "max_rel_c": 7.334798381904277e-15,
+   "c_min_checked": 0.013480839279048697,
+   "c_median_checked": 0.5965876118446602,
+   "viol_counts_match": true,
+   "ok": true
+  },
+  "B_unsigned": {
+   "n_orbits": 4136,
+   "unsigned_c_max_abs_dev_from_1": 0.0,
+   "unsigned_bruteforce_max_abs_dev": 0.0,
+   "signed_c_frac_below_0p999_random_orbits": 1.0,
+   "signed_c_median_random_orbits": 0.3202150261899579,
+   "ok": true
+  },
+  "C_sampled_bonds": {
+   "n": 1500,
+   "not_bond": 0,
+   "canon": 0,
+   "not_viol": 0,
+   "j1flag": 0,
+   "ok": true
+  }
+ },
+ "reference_median_min_c": 0.5834138169929269,
+ "sets": {
+  "top_0.1pct": {
+   "n": 1048,
+   "c_x_q10_50_90": [
+    0.3107010818041859,
+    0.6234349979363266,
+    0.7746456135625124
+   ],
+   "c_y_q10_50_90": [
+    0.33396437447612165,
+    0.6203253167987954,
+    0.7736405048860172
+   ],
+   "min_c_q10_50_90": [
+    0.23739481027851866,
+    0.5276878906604761,
+    0.671045235008201
+   ],
+   "share_d2_of_set": 0.005100548592951572,
+   "frac_bonds_min_c_below_ref_median": 0.6765267175572519,
+   "share_d2_with_min_c_below_ref_median": 0.6950753316842814,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.7194656488549618,
+    "frac_y_has_violating_J1_bond": 0.700381679389313,
+    "frac_either_endpoint": 0.898854961832061,
+    "frac_both_endpoints": 0.5209923664122137,
+    "frac_sampled_bond_itself_J1": 0.09255725190839695
+   }
+  },
+  "top_1pct": {
+   "n": 10485,
+   "c_x_q10_50_90": [
+    0.35714301030137086,
+    0.6258269127902423,
+    0.7772942456363304
+   ],
+   "c_y_q10_50_90": [
+    0.3672585814437564,
+    0.6244554366464812,
+    0.7846200419007306
+   ],
+   "min_c_q10_50_90": [
+    0.28039393384351247,
+    0.532540007037545,
+    0.6704398662472287
+   ],
+   "share_d2_of_set": 0.04839614299068846,
+   "frac_bonds_min_c_below_ref_median": 0.6759179780639009,
+   "share_d2_with_min_c_below_ref_median": 0.6778765256546985,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.7028135431568908,
+    "frac_y_has_violating_J1_bond": 0.7024320457796852,
+    "frac_either_endpoint": 0.8958512160228899,
+    "frac_both_endpoints": 0.5093943729136862,
+    "frac_sampled_bond_itself_J1": 0.05560324272770625
+   }
+  },
+  "reference_all_w_sampled": {
+   "n": 1048576,
+   "c_x_q10_50_90": [
+    0.44301642246709483,
+    0.6420364205383022,
+    0.7631587240420414
+   ],
+   "c_y_q10_50_90": [
+    0.44328088587081216,
+    0.6417107597671667,
+    0.7643078244677141
+   ],
+   "min_c_q10_50_90": [
+    0.3621907066790778,
+    0.5834138169929269,
+    0.7055632482713358
+   ],
+   "share_d2_of_set": 1.0000000000204425,
+   "frac_bonds_min_c_below_ref_median": 0.49993896484375,
+   "share_d2_with_min_c_below_ref_median": 0.5794083271875182,
+   "marshall": {
+    "frac_x_has_violating_J1_bond": 0.6643028259277344,
+    "frac_y_has_violating_J1_bond": 0.6632528305053711,
+    "frac_either_endpoint": 0.8139667510986328,
+    "frac_both_endpoints": 0.5135889053344727,
+    "frac_sampled_bond_itself_J1": 0.06334400177001953
+   }
+  }
+ },
+ "decision": {
+  "median_min_c_top0p1": 0.5276878906604761,
+  "median_min_c_ref": 0.5834138169929269,
+  "ratio": 0.9044830192406526,
+  "ratio_boot95": [
+   0.8820567981197839,
+   0.9198312607284904
+  ],
+  "branch": "DEAD (ratio >= 2/3)",
+  "note": "reference = the whole w-sampled sample (top sets are subsets of it)"
+ },
+ "sec": 32.62609910964966
+}

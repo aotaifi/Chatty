@@ -119,6 +119,20 @@ bonds; per-bond variant prod_b too). Same bases, E_var by a 1-D scan in a, E_FN 
 - Kill: H_J2 layer E_FN >= H layer's on 2 of 3 bases. Pass makes C2 a concrete proposal for the loop's hop
   (report to the project lead) and earns C2-T2 (trained phi_theta, full-sum VMC, vs same-size free-sign NQS).
 
+### Shared tool + C2-T2 + C5-T0 (2026-10-23 night, before any code or run; exact 4x6, ansatz/code/exact_vmc.py; <= 4 GPU-h ws1)
+Tool: exact full-sum variational optimiser on the 4x6 Sz=0 basis (2.7M configurations; psi0, E0/N -0.52252493537),
+JAX on one GPU, H and H_J2 as per-bond gather matvecs, energy E = <psi|H|psi>/<psi|psi> with autodiff gradients,
+L-BFGS (deterministic objective), 3 seeds per arm, curves of E vs step kept. Base f_theta: Jastrow over displacement
+classes (J); translation-symmetric real RBM with alpha = 1, 2, 4 (R1, R2, R4). FN energy of the final state with its
+own sign (scipy, as c2_t1_small.py). Checks: autodiff gradient = finite differences on 5 parameters (and fails with a
+flipped sign in the energy); the 1-state energy equals a scipy evaluation; J2 = 0 Marshall-Jastrow lands within 1%
+of E0(J2=0).
+- C2-T2 (trained J2 layer): arms with the same base: s_N e^f; (1 + a H) s_N e^f; (1 + a H_J2) s_N e^f; a trained with
+  theta. Pass: J2 layer E_var <= 0.5 x full-H layer for J and R2. Kill: J2 layer >= full-H layer for both.
+- C5-T0 (amplitude-sign coupling): f, g of the same RBM size; standard s_N e^{f + i pi sigmoid(g)} vs coupled
+  s_N e^f tanh(g). Pass: coupled E_var <= 0.5 x standard for 2 of 3 alphas and lower E_FN. Kill: coupled >= standard
+  for all three. (Equal parameter counts; same optimiser and steps.)
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -150,6 +164,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 | C2-T0 6x6 (kernel V = H - diag) | Paderborn 3820416, PENDING (est. start 10-28) | 4x6 predicts uninformative (0.95); cancel if the PI agrees |
 | C2-T0b 6x6 (V_J2, V_J1, H_J2) | Paderborn 3823050 PENDING (10-28); copy on theorie inter GPU (worker) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
+| exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
 | C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends

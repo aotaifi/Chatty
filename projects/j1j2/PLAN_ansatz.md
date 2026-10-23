@@ -57,6 +57,22 @@ Reference: W_M(psi0) = Marshall-violating |psi0|^2 weight (6x6: 0.0196). Both re
   Control: the same optimiser in the Ising frame with single-site rotations must not beat Marshall by > 10% (the
   Marshall rule is the best product rule; a big gain would mean the optimiser or the metric is wrong).
 
+#### C2-T0 small-lattice result (2026-10-23; ansatz_runs/small/pre_4x4.json, pre_4x6.json)
+W_M(Phi_a)/W_M(psi0) at matched conditioning (best a with cond <= 3 / <= 5):
+| kernel | 4x4 | 4x6 |
+|---|---|---|
+| H_J2 (hop + J2 diagonal) | 0.014 / 0 | 0.10 / 0.003 |
+| V_J2 (J2 hop) | 0.015 / 0 | 0.13 / 0.13 (0.005 at cond 5.3) |
+| V_J1 (control) | 1.3 / 0.9 | 0.45 / 0.14 |
+| V_J3 (control, same sublattice, wrong geometry) | 0.30 / 0.05 | 0.59 / 0.42 |
+| V = H - diag (full hop) | - | 0.95 / 0.93 |
+Reading: J2 is the most efficient kernel (3.5x V_J1 at cond 3 on 4x6), but any positivity-preserving smoothing
+removes violations at large enough cond, so specificity is quantitative. Phi is NOT tail-free at 4x6 (its weight in
+decades -8..-13 is similar to psi0's); it is sign-free there. The full-hop kernel does nothing (J1 and J2 parts act
+in opposite directions), so the running 6x6 C2-T0 (kernel V) is expected uninformative; C2-T0b now has V_J2, V_J1, H_J2.
+C4 (plaquette frame) 4x4: no rotation beats Marshall (0.012725 vs 0.012731 from Marshall start; eigenbasis start
+ends at 0.015-0.018): KILL at 4x4; 4x6 still running.
+
 ### C2-T0 at 6x6 (2026-10-23, after the 4x4 result and before any 6x6 run; code ansatz/code/c2_t0_6x6.py; <= 3 H100-h)
 4x4 (pre_4x4.json): Phi = (1 + aK)^{-1} psi0 is EXACTLY Marshall-positive (W_M = 0, cond 4.6-17) for K = H_J2, V_J2 and
 the control V_J1; V_J3 0.028 W_M. The effect is generic to local hop kernels, not J2-specific. Phi's support stops at
@@ -89,6 +105,16 @@ Spans compared by Ritz energy (generalised eigenproblem in the span) and infidel
 Checks: D2 = 0, mu = 0 gives W_M = 0 (bipartite pairing obeys Marshall); a 1-state span's Ritz energy = <H>.
 - Pass: (V) lowers E_Ritz - E0 by >= 2x more than (R) at equal K. Kill: (V) <= (R). 4x4 is anomalous: a pass
   earns a 6x6 version, never a production run.
+#### C3-T0 result (4x4, /scratch/a/A.Otaifi/ansatz_runs/c3_t0/c3_t0.json): INCONCLUSIVE by the rule (cause: rule and sector)
+(0) best single Z2 state 5.07e-3/site; (S) 4 BC sectors 4.86e-3; (V) +20 vison-pair states 1.1e-5 (rank 23);
+(R) +20 random no-flux states 4.9-5.6e-4 (rank 12-13). Lowering ratio V/R 1.1 (rule: pass >= 2) but the residual
+differs 44x. Not interpretable: unequal rank (13 vs 23) in a 153-dim symmetric sector. Checks passed (Marshall at
+D2 = 0: W_M 1e-62, broken sign 0.27-0.47; brute-force BCS fidelity 1.0).
+#### Amendment C3-T0-1 (2026-10-23, before the run): 4x6, rank-matched control
+4x6 PBC (symmetric sector ~1e4 dims, so 24 states cannot fit by counting). Control (R'): same strings, t and D
+multiplied by random factors in [0.5, 1.5] (no flux), 3 seeds. Add states greedily (largest energy gain first) and
+compare E_Ritz - E0 at EQUAL S-rank k = 4..rank_max. Pass: at the largest common rank, V residual <= 0.3 x R'
+residual for all seeds. Kill: V residual >= 0.7 x R'. Pass earns a 6x6 VMC-sampled version (design then).
 Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupled output psi = s_N e^f tanh(g)
 (node = smooth zero crossing) vs e^f x sign at equal capacity, exact 6x6 tail error and own-sign E_FN.
 

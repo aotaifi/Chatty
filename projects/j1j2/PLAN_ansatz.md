@@ -23,6 +23,10 @@ alone is not the bar; a sign-structure law that does not lower the energy is not
 PI 2026-10-23: also (a) make the loop's node -> network -> repeat edge prominent and (b) work because it encodes the
 physics. Lead's reading: the stored part of the guide should be compact physics (few parameters, cheap refit) and the
 near-node detail computed by FN + hop. Best fit: C3 as the loop's guide; first loop test = FN energy of its sign.
+PI 2026-10-23: and it must scale to larger L without data-centre compute. C3 cost: one projected determinant O(N^3)
+(fast updates O(N^2)); a short vison pair is a low-rank update of the pairing matrix (string of l bonds: rank ~2l),
+so a dilute sum over short pairs costs O(N^2 l^2) per amplitude given F^{-1}; VMC/GFMC with such a guide is standard
+to 18x18+ (Hu et al. 1304.2630 ran 18x18). To be measured, not assumed, if C3 survives.
 
 ## Working picture (hypothesis, not claim)
 Each of the three symmetric product sign rules cures two of the three bond families and frustrates the third:

@@ -17,7 +17,9 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
 - H1 (Paderborn 3818121): a second hop cuts the refit tax to 0.32x (1.90e-6 on O2b's table); derived two-hop loop floor ~2.5e-6.
 - N0 (Paderborn 3818482): yes, the tail is the near-node cancellation region (median c 0.056 vs 0.583).
-- NEXT MAJOR CALCULATION approved 2026-10-23 17:40 (PI): M1 + gate, proposals/2026-10-23_next_major_calc_v2_final.md. Takeover by the lead from 17:45. And sign labels without the oracle (O3)?
+- NEXT MAJOR CALCULATION approved 2026-10-23 17:40 (PI): M1 + gate, proposals/2026-10-23_next_major_calc_v2_final.md. Takeover by the lead from 17:45.
+- Gate (2026-10-23): hop is tail-specific (G-A2), N0 not by construction, fit-free signed chain 1.95e-6 -> 3.0e-9 in 6 rounds, but RBM+PP two-hop refit tax 1.66e-6 = 1.02 x the round gain: GATE SHUT, loop C not run. Storage of the node region is the blocker (ansatz angle C2-L).
+- M1.0: no Lanczos+FN, no FN/GFMC and no NQS+Lanczos at 8x8 published; M1.3 is new. And sign labels without the oracle (O3)?
 
 ## Step back 2026-10-23 afternoon (trigger: the PI; the tail finding had not moved in weeks)
 1. Verdict: reframe. The tail is the neighbourhood of the nodal surface; its amplitude and the sign are one object (the node). We store them as two (log|a| network + discrete sign), and log|psi| is singular at a node, so the tail cannot be learned that way.
@@ -43,9 +45,6 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| gate G-A2/N0c/A3 (worker, Paderborn express) | runs/gate_* | README 'M1 + gate' readings; C only if A3 gain/round > 2 x G-tax |
-| gate G-tax (worker, Paderborn express) | runs/gate_tax | feeds the C gate |
-| M1.0 literature (worker) | J1J2_BENCHMARKS_COST.md | drop from M1 whatever is published |
 | M1.1 GFMC 6x6 validation (worker stages, lead reads launcher) | tbd | production validation, then M1.2 timing |
 
 ## Angles

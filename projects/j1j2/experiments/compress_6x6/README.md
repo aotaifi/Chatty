@@ -1873,3 +1873,13 @@ Pre-registered before any run (lead):
   wrong-sign weight 1.9e-7 -> 2.6e-11. Without storage, the oracle-free signed iteration goes far below the oracle
   sign's ceiling (9.15e-7). Absolute gain in round 0->1: 1.63e-6.
 - Gate C pending G-tax: C runs only if the round-0->1 gain (1.63e-6) > 2 x the RBM+PP two-hop refit tax, i.e. tax < 0.82e-6.
+
+#### Results: G-tax (Paderborn 3825087 control, 3825295 full; runs/gate_tax/out_full/cx_gtax.json; verified by the lead 2026-10-23) - the gate stays SHUT
+- RBM+PP A refit to phi_0 = FN(K_2(A)) (own signed-polynomial sign), 400 fixed steps: E_FN(K_2(a_1)) 1.975e-6 against
+  E_FN(K_2(phi_0)) 3.18e-7: tax_2 = 1.657e-6 (tax_1 5.11e-6, ratio 0.324). Controls: 0 steps returns A bitwise; one hop
+  reproduces 5.5738e-6; broken versions fail. Held-out loss 0.115 -> 0.029 but jumps 0.03-0.12 between checks. One seed.
+- Gate: the fit-free round-0->1 gain is 1.63e-6; C needed tax_2 < 0.82e-6. tax_2 = 1.02 x the gain: one refitted
+  round returns the network to where it started (E_FN(K_2(a_1)) 1.975e-6 vs the no-loop E_FN(K_2(A)) 1.947e-6).
+- Reading: with RBM+PP storage the loop gains nothing over the standard pipeline at equal hops. The refit cannot hold
+  the near-node tail (fit rms by decade: -8 0.011, -11 0.061, -13 0.273). C is not run. The loop's future is a storage
+  object that holds the node region (ansatz angle, test C2-L), not more loop rounds.

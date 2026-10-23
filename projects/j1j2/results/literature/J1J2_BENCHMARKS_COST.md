@@ -214,3 +214,29 @@ Three lines.
 - Our loop must beat, at 10x10, E/N below -0.497634 (Rel 1.6e-4) in under 1,920 A100-h (Rel x GPU-h under 0.3), and -0.4976921 for the accuracy record; at 8x8, E/N below -0.498886(1) (ours is 6e-5 above), with whatever cost we state. No A100 to H100 conversion is measured, so quote our GPU type with the hours.
 
 Corrections to the survey above: (1) Sec. 2 "rule of thumb" says the 16x16 GCNN is 2e-3 from Chen-Heyl; from the tabulated values -0.496509(6) vs -0.4967163(8) it is 4.2e-4 (arithmetic). (2) arXiv:2502.09725 (Sinibaldi et al.) is a non-stabilizerness paper: it gives ViT parameter counts at 6x6 and 8x8 but no energies and no cost, so it is not an energy benchmark. (3) Chen-Heyl's 4-A100 figure is a timing test, not the training cost. Not checked: Hu 2013 and Gong 2014 numbers (EARLIER only), Chen-Heyl full text beyond abstract/intro/captions, Nutakki/PITQS/HQT beyond HTML summaries.
+
+## Lanczos + FN at 8x8+ (2026-10-23)
+
+Read-only literature step for M1 step 0 (no jobs). J2/J1 = 0.5, PBC, E/N in units of J1. Question: what is published for "variational state + p Lanczos steps (+ variance extrapolation) (+ fixed-node / GFMC)". Provenance: TEXT = read in the paper text/table on 2026-10-23 (arXiv cache), section or table named; EARLIER = read by the 2026-10-07 survey above, not re-read today; NOT FOUND = searched, absent. Reference energies: 6x6 ED -0.503810; 8x8 Hu extrapolation -0.49906(1) (DMRG torus extrapolation -0.4992(1), so 8x8 has about 1.5e-4 reference uncertainty).
+
+| Source (arXiv) | Lattice | Ansatz | p | FN/GFMC | E/N (err) | Extrapolated | Stated cost | Provenance |
+|---|---|---|---|---|---|---|---|---|
+| Hu, Becca, Parola, Sorella, 1304.2630 | 6x6 | Gutzwiller-projected fermionic mean-field (BCS-type) w.f. | 0 / 1 / 2 | no | -0.50117(1) / -0.50323(1) / -0.50357(1) (text: p=2 -0.503571(3)) | variance extrap. -0.50382(1) (ED -0.50381) | not stated | TEXT Tables 1-4 |
+| same | 8x8 | same | 0 / 1 / 2 | no | -0.49656(1) / -0.49855(1) / -0.49886(1) | variance extrap. -0.49906(1) | not stated | TEXT Tables 1-4 |
+| same | 10x10 | same | 0 / 1 / 2 | no | -0.49521(1) / -0.49718(1) / -0.49755(1) | -0.49781(2) | not stated | TEXT Tables 1-4 |
+| same | 14x14, 18x18 | same | 0 / 1 only (text: 2nd step only up to L=10) | no | 14: -0.49447 / -0.49638; 18: -0.49426 / -0.49611 (err (1)) | 14: -0.49722(2); 18: -0.49717(2) per EARLIER | not stated | TEXT Tables 1-2, 4 |
+| Chen, Hendry, Weinberg, Feiguin, 2206.14307 | 6x6 | symmetrised RBM | 0 / 1 / 2 | no | -0.50364(2) / -0.50376(3) / -0.50378(4) | none quoted; text says variance extrapolation is possible, no value | not stated; per-step cost O(N_sample x M N^2), exponential in p | TEXT Table 2, Sec. 4, Limitations |
+| same | 10x10 | symmetrised RBM | 0 / 1 | no | -0.49580(2) / -0.4968(4) | none | not stated | TEXT Table 4 |
+| same | 8x8 | RBM | J2 = 0 only (Table 3: -0.673482(3)) | no | no J2 = 0.5 value | none | | TEXT Table 3 |
+| Nomura, Imada, 2005.14142 | 6x6 / 8x8 / 10x10 | RBM+PP (16 hidden units) | 0 only; Lanczos applied to the compared VMC(p) data of Hu, not to RBM+PP | no | -0.503765(1) / -0.498886(1) / -0.497629(1) | none | not stated; text: Lanczos on PP-only would scale N_site^(p+3), RBM adds O(1) | TEXT Sec. 5, Tables 1-2, App. B |
+| Wang, He, Lu, 2502.01264 | 6x6 | CNN (aCNN, ~6.6k params per net), MSR sign | SLL p = 0 / 1 / 2; VMCL p=1, 2 | no | SLL -0.502184(2) / -0.502918 / -0.503049; VMCL p=2 (ANet1+ANet2) -0.503178(4) | none | single RTX 3090; no hours | TEXT Table 4, Sec. III |
+| same | 10x10 | aCNN | SLL p = 0 / 1; VMCL p=1 | no | -0.495627(6) / -0.496064 / -0.496102(7) | none (cites MinSR -0.497715(9)) | single RTX 3090; no hours | TEXT Table 4 |
+| same | 8x8 | | | | NOT FOUND (only L = 4, 6, 10, plus a 1D chain) | | | TEXT |
+| Lin, Guo, He, Xie, Lu, 2406.12207 | 6x6 / 10x10 | PEPS D <= 7 guide | none | yes, FN-GFMC | 6x6: -0.5033(4) (D=6); 10x10: -0.4957(2) (D=5) | power-law in D: -0.50376(4) at 6x6 | Tianhe-2, hours not stated | TEXT (grep: no Lanczos, no 8x8); numbers EARLIER |
+| Sorella, cond-mat/0009149 | t-J model only | any w.f. | few Lanczos steps via SR; variance extrapolation | FN or variational reference state in GFMCSR | no J1-J2 numbers | | not stated | TEXT (method paper; no J1-J2 data) |
+| Capriotti, Sorella PRL 84, 3173 (2000); Lin-He-Lu RBM-GFMC (Chin. Phys. B 31, 080203, 2022) | | | | GFMC | not retrieved | | | NOT READ (not on arXiv search / no text access today) |
+
+Three lines.
+- Already published for M1's planned numbers: p = 0, 1, 2 Lanczos plus variance extrapolation at 8x8 for a Gutzwiller-type ansatz without FN (Hu 2013), and RBM+PP at 8x8 with p = 0 only and no FN (Nomura-Imada); RBM+Lanczos p <= 2 only at 6x6 and 10x10 (Chen et al.), a CNN NQS-Lanczos only at 6x6 and 10x10 (Wang et al.), and FN-GFMC only with a PEPS guide at 6x6 and 10x10, no Lanczos (Lin et al.).
+- Missing: any RBM+PP (or any NQS) state with p = 1, 2 Lanczos at 8x8, any FN or GFMC energy at 8x8 for J1-J2, any Lanczos-plus-FN combination at any size, and any stated cost (hours, cores or GPUs) for the 8x8 Lanczos or RBM+PP numbers; I did not read Capriotti-Sorella 2000 or the RBM-GFMC paper, so an old GFMC-SR 8x8 number cannot be excluded.
+- Best published 8x8 energy from this family: RBM+PP -0.498886(1) variational (Nomura-Imada Table 1, p = 0), against Hu p=2 -0.49886(1) and Hu variance-extrapolated -0.49906(1) (an extrapolation, not a bound). The best UB with Lanczos is Hu p=2 -0.49886(1).

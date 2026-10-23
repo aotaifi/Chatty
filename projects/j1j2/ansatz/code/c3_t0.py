@@ -167,6 +167,7 @@ _st, SSIGN = slater_sign(Uidx, N)
 _tgt = np.zeros(Dim, np.int64)
 for i in range(N): _tgt |= np.where(bits[:, i], np.int64(1) << (2 * i), np.int64(1) << (2 * i + 1))
 assert np.all(_st == _tgt)
+res['slater_sign_values'] = [int(q) for q in np.unique(SSIGN)]
 
 # ====================================================================== 2. lattice, bonds with BC signs, mean field
 # bond list: (i, j, kind, x, y, dx, dy); kind 0 = NN x, 1 = NN y, 2 = NNN (1,1), 3 = NNN (1,-1)
@@ -220,9 +221,13 @@ log('4x4 f-form vs Slater-form fidelity', xc)
 chk = {}
 for (bcx, bcy) in ((0, 1), (1, 0), (1, 1), (0, 0)):
     v, gap, cA = state((0.6, 0.0, 0.0), bcx, bcy)
-    vb, _, _ = state((0.6, 0.0, 0.0), bcx, bcy, permsign=False)
-    if v is None: chk[f'bc{bcx}{bcy}'] = dict(gap=gap, condA=cA, state='ill-defined'); continue
-    chk[f'bc{bcx}{bcy}'] = dict(gap=gap, condA=cA, W_M=WM(v), W_M_broken_permsign=WM(vb),
+    if v is None: chk[f'bc{bcx}{bcy}'] = dict(gap=gap, state='ill-defined'); continue
+    vb = v * PSIGN                                         # broken: Slater amplitude times the f-form ordering sign
+    vf, _, cA = state((0.6, 0.0, 0.0), bcx, bcy, form='f')
+    vfb, _, _ = state((0.6, 0.0, 0.0), bcx, bcy, form='f', permsign=False)
+    chk[f'bc{bcx}{bcy}'] = dict(gap=gap, condA=cA, W_M=WM(v), W_M_broken_slater_times_permsign=WM(vb),
+                                W_M_fform=None if vf is None else WM(vf),
+                                W_M_fform_no_permsign=None if vfb is None else WM(vfb),
                                 overlap2=float((psi0 @ v) ** 2), E_site=energy(v) / N)
 res['check_i_marshall_D2_0_mu_0_D1_0.6'] = chk
 log('check (i)', chk)
@@ -388,3 +393,77 @@ res['verdict'] = dict(dV_lowering_site=dV, dR_lowering_site=dR, rule='PASS if dV
                       verdict=verdict)
 log('VERDICT C3-T0', verdict, 'lowering vs (S): V', dV, 'R', dR)
 json.dump(res, open(os.path.join(OUT, 'c3_t0.json'), 'w'), indent=1, default=str)
+
+# ====================================================================== 8. C3-FN (option --fn; PLAN_ansatz.md "C3-FN")
+if '--fn' in sys.argv:
+    def fn_energy(v):                                  # lattice FN (ten Haaf), sign and guide from v (c2_t1_small.py)
+        s = np.where(v >= 0, 1.0, -1.0); g = np.maximum(np.abs(v), 1e-300)
+        C = H.tocoo(); off = C.row != C.col
+        r, c, h = C.row[off], C.col[off], C.data[off]
+        viol = h * s[r] * s[c] > 0
+        keep = sp.csr_matrix((h[~viol], (r[~viol], c[~viol])), shape=(Dim, Dim))
+        vsf = np.bincount(r[viol], weights=h[viol] * s[r[viol]] * s[c[viol]] * g[c[viol]] / g[r[viol]], minlength=Dim)
+        HF = keep + sp.diags(H.diagonal() + vsf)
+        return float((sla.eigsh(HF, k=1, which='SA', tol=1e-10)[0][0] - E0) / N)
+    # FN control: a variationally exact sign must give E_FN = E0
+    fnres = dict(check_FN_exact_psi0=fn_energy(psi0), E_FN_marshall=fn_energy(sN * np.abs(psi0)))
+    def ritz_vec(vecs, cut=1e-10):
+        Phi = np.array([v / np.linalg.norm(v) for v in vecs]).T
+        S = Phi.T @ Phi; Hm = Phi.T @ (H @ Phi)
+        s, U = np.linalg.eigh(S); keep = s > cut * s.max()
+        X = U[:, keep] / np.sqrt(s[keep]); e, c = np.linalg.eigh(X.T @ Hm @ X)
+        vg = Phi @ (X @ c[:, 0]); return int(keep.sum()), float((e[0] - E0) / N), vg / np.linalg.norm(vg)
+    def greedy(pool):
+        cur = list(S_states); rk, dE, vg = ritz_vec(cur); prefixes = [(rk, dE, vg)]; rest = list(pool)
+        while rest:
+            tr = [(ritz_vec(cur + [w]), i) for i, w in enumerate(rest)]
+            (rk2, dE2, vg2), i = min(tr, key=lambda q: q[0][1])
+            if rk2 <= rk: break
+            cur.append(rest.pop(i)); rk, dE, vg = rk2, dE2, vg2; prefixes.append((rk, dE, vg))
+        return prefixes
+    # R' (factors in [0.5, 1.5]) on the same strings, 3 seeds
+    ctlp = {s: [] for s in range(3)}
+    for k in sorted(best):
+        for cl in CLASSES:
+            m = masks[cl]
+            if state(best[k]['params'], *k, fac=1.0 - 2.0 * m)[0] is None: continue
+            for sd in ctlp:
+                rr = np.random.default_rng(5000 + 1000 * sd + len(ctlp[sd]))
+                vr, _, _ = state(best[k]['params'], *k, fac=np.where(m == 1, rr.uniform(0.5, 1.5, NB), 1.0))
+                ctlp[sd].append(symmetrise(vr))
+    arms = {'V': greedy(vis)}
+    for sd in range(3):
+        arms[f'R_seed{sd}'] = greedy(ctl[sd]); arms[f'Rp_seed{sd}'] = greedy(ctlp[sd])
+    kc = min(p[-1][0] for p in arms.values())
+    fnres['common_rank'] = kc
+    def at(pre, k): return [q for q in pre if q[0] <= k][-1]
+    fnres['span_0'] = dict(dE_var=r1['dE_site'], E_FN=fn_energy(v0))
+    rkS, dS, vS = ritz_vec(S_states); fnres['span_S'] = dict(rank=rkS, dE_var=dS, E_FN=fn_energy(vS))
+    for nm, pre in arms.items():
+        rk, dE, vg = at(pre, kc)
+        fnres[f'span_{nm}'] = dict(rank=rk, dE_var=dE, E_FN=fn_energy(vg),
+                                   curve=[(q[0], q[1]) for q in pre])
+        log('C3-FN', nm, 'rank', rk, 'dE_var', dE, 'E_FN-E0 per site', fnres[f'span_{nm}']['E_FN'])
+    # (1 + aH) on the best (S) state, a by min E_var
+    HvS = H @ vS
+    def evar(a):
+        w = vS + a * HvS; return energy(w)
+    from scipy.optimize import minimize_scalar
+    ra = minimize_scalar(evar, bounds=(-2.0, 0.0), method='bounded', options=dict(xatol=1e-8))
+    wS = vS + ra.x * HvS
+    fnres['span_S_1aH'] = dict(a=float(ra.x), dE_var=float((ra.fun - E0) / N), E_FN=fn_energy(wS))
+    eV = fnres['span_V']['E_FN']
+    verd = {}
+    for lab in ('R', 'Rp'):
+        eR = [fnres[f'span_{lab}_seed{s}']['E_FN'] for s in range(3)]
+        if all(eV <= 0.3 * e for e in eR) and eV <= 0.3 * fnres['E_FN_marshall']: v_ = 'PASS'
+        elif sum(eV >= e for e in eR) >= 2: v_ = 'KILL'
+        else: v_ = 'INCONCLUSIVE'
+        verd[lab] = dict(E_FN_R=eR, verdict=v_)
+    fnres['verdict'] = dict(E_FN_V=eV, E_FN_marshall=fnres['E_FN_marshall'], by_control=verd,
+                            rule='PASS if E_FN(V) <= 0.3 E_FN(R) for all seeds and <= 0.3 E_FN(Marshall); '
+                                 'KILL if E_FN(V) >= E_FN(R) for >= 2 of 3 seeds (E_FN measured above E0 per site)')
+    res['C3_FN'] = fnres
+    json.dump(res, open(os.path.join(OUT, 'c3_t0.json'), 'w'), indent=1, default=str)
+    log('C3-FN summary', {k: (v['E_FN'] if isinstance(v, dict) and 'E_FN' in v else v) for k, v in fnres.items() if k != 'verdict'})
+    log('VERDICT C3-FN 4x4', fnres['verdict'])

@@ -1,7 +1,7 @@
 """C2-T0b at exact 6x6 (PLAN_ansatz.md "C2-T0b at 6x6"): is the positive pre-image effect specific to the J2 hop?
-Phi_a = (1 + a K)^{-1} psi0 for K in {V_J2, V_J1} (bond-class hop operators, sector_ops.py), a chosen so that
+Phi_a = (1 + a K)^{-1} psi0 for K in {V_J2, H_J2 = V_J2 + D_J2, V_J1} (bond-class hop operators, sector_ops.py), a chosen so that
 1 + aK is positive definite with cond in {1.5, 2, 3, 5, 10, 30, 100}, both signs of a.
-  python c2_t0b_6x6.py OUT_DIR TABDIR [smoke]
+  python c2_t0b_6x6.py OUT_DIR TABDIR [smoke]   (env C2B_TIMING=1: slice timing also in a full run)
 env ST6_CSR, ST6_TABLE (sector), GPU.  Measurement logic (W_M, by-decade, tail) copied from c2_t0_6x6.py.
 smoke: time the table build on a 1M-rep slice per class; if the full build extrapolates to <= 30 min per class,
 build and save both tables and run checks (a)-(c), then stop.
@@ -24,23 +24,31 @@ D = sec.D; N = 36
 res = dict(D=int(D), E0_site=sec.E0 / N, smoke=SMOKE)
 def dump(): json.dump(res, open(F, 'w'), indent=1)
 D0 = OPS.diag0(sec)
+DJ1 = OPS.diag0(sec, 0, len(SS.NN)); DJ2 = OPS.diag0(sec, len(SS.NN))       # bond-class diagonals
+res['check_DJ1+DJ2=D0_maxabs'] = float(jnp.max(jnp.abs(DJ1 + DJ2 - D0)))
+res['check_DJ2_misscaled_maxabs'] = float(jnp.max(jnp.abs(DJ1 + 1.01 * DJ2 - D0)))
+log('[c2b] diag split check', res['check_DJ1+DJ2=D0_maxabs'], 'misscaled', res['check_DJ2_misscaled_maxabs'])
 
-if SMOKE:
+TIMING = SMOKE or os.environ.get('C2B_TIMING', '0') == '1'   # full job may also time a 1M slice first
+if TIMING:
     res['slice_timing'] = {}
     for cls in ('J1', 'J2'):
         OPS.build_table(sec, cls, limit=1 << 14, log=log)            # compile
         t, info = OPS.build_table(sec, cls, limit=1 << 20, log=log)
         info['extrap_full_sec'] = info['sec'] * D / (1 << 20); res['slice_timing'][cls] = info
         log('[c2b] slice', info); dump()
-    if max(v['extrap_full_sec'] for v in res['slice_timing'].values()) > 1800:
-        res['stop'] = 'full build > 30 min per class: size the full job from slice_timing'; dump(); log('[c2b] SMOKE STOP'); sys.exit(0)
+    lim = 1800 if SMOKE else float(os.environ.get('C2B_BUILD_LIMIT', '3600'))
+    if max(v['extrap_full_sec'] for v in res['slice_timing'].values()) > lim:
+        res['stop'] = f'full build > {lim:.0f} s per class: size the job from slice_timing'; dump()
+        log('[c2b] DONE STOP build too slow'); sys.exit(3)
 
 tabs = {}
 for cls in ('J1', 'J2'):
     t, info = OPS.load_or_build(sec, cls, TABDIR, log=log); res[f'table_{cls}'] = info; tabs[cls] = t; dump()
 V = {c: OPS.BondOp(sec, tabs[c], c) for c in ('J1', 'J2')}; del tabs
 ck = OPS.checks(sec, D0, V['J1'], V['J2']); res['checks'] = ck; dump(); log('[c2b] checks', ck)
-if not (ck['a_pass'] and ck['b_fails'] and ck['c_pass']):
+if not (ck['a_pass'] and ck['b_fails'] and ck['c_pass'] and res['check_DJ1+DJ2=D0_maxabs'] < 1e-12
+        and res['check_DJ2_misscaled_maxabs'] > 1e-6):
     res['verdict'] = 'CHECK_FAILED'; dump(); log('[c2b] DONE VERDICT CHECK_FAILED'); sys.exit(2)
 if SMOKE:
     res['sec'] = time.time() - T0; dump(); log('[c2b] DONE SMOKE OK'); sys.exit(0)
@@ -87,8 +95,9 @@ def cg(op, b, tol=1e-10, maxit=3000):
 
 CONDS = (1.5, 2, 3, 5, 10, 30, 100)
 res['scan'] = {}; res['spectrum'] = {}; res['best_le3'] = {}
-for cls in ('J2', 'J1'):
-    K = V[cls]; lmin, lmax, rmin, rmax = lanczos_ext(K)
+KER = {'J2': V['J2'], 'HJ2': lambda x: V['J2'](x) + DJ2 * x, 'J1': V['J1']}   # HJ2 = V_J2 + D_J2 (lead, 2026-10-23)
+for cls in ('J2', 'HJ2', 'J1'):
+    K = KER[cls]; lmin, lmax, rmin, rmax = lanczos_ext(K)
     res['spectrum'][cls] = dict(lmin=lmin, lmax=lmax, ritz_res_min=rmin, ritz_res_max=rmax)
     log('[c2b]', cls, 'spectrum', res['spectrum'][cls]); res['scan'][cls] = []
     for c in CONDS:
@@ -104,7 +113,9 @@ for cls in ('J2', 'J1'):
     phi = cg(lambda x: x + best['a'] * K(x), v0)[0]; res[f'best_le3_by_decade_{cls}'] = by_dec(phi)
     np.save(os.path.join(OUT, f'phi_best_le3_{cls}.npy'), np.asarray(phi / jnp.linalg.norm(phi), np.float32)); dump()
 W0 = res['W_M_psi0']; r2 = res['best_le3']['J2']['W_M'] / W0; r1 = res['best_le3']['J1']['W_M'] / W0
-res['ratio_J2_le3'] = r2; res['ratio_J1_le3'] = r1
-res['verdict'] = ('PASS' if (r2 <= 0.1 and r1 >= 0.5) else ('KILL' if r2 >= 0.5 else 'INCONCLUSIVE'))
+rh = res['best_le3']['HJ2']['W_M'] / W0
+res['ratio_J2_le3'] = r2; res['ratio_J1_le3'] = r1; res['ratio_HJ2_le3'] = rh
+res['verdict'] = ('PASS' if (r2 <= 0.1 and r1 >= 0.5) else ('KILL' if r2 >= 0.5 else 'INCONCLUSIVE'))   # pre-registered (V_J2)
+res['verdict_HJ2_same_rule'] = ('PASS' if (rh <= 0.1 and r1 >= 0.5) else ('KILL' if rh >= 0.5 else 'INCONCLUSIVE'))
 res['sec'] = time.time() - T0; dump()
-log('[c2b] DONE VERDICT', res['verdict'], 'ratio_J2', r2, 'ratio_J1', r1)
+log('[c2b] DONE VERDICT', res['verdict'], 'ratio_J2', r2, 'ratio_J1', r1, 'ratio_HJ2', rh, res['verdict_HJ2_same_rule'])

@@ -108,8 +108,10 @@ def _bond_mv(tab, sq, isq, u, J):
     return jax.lax.map(one, (tab, sq)).reshape(-1)
 
 
-def diag0(sec):
-    BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB)
+def diag0(sec, b0=0, b1=None):
+    """per-rep S^z S^z diagonal over bonds b0:b1 (default all bonds = D0 of c2_t0_6x6.py)."""
+    b1 = len(SS.JB) if b1 is None else b1
+    BI = jnp.asarray(SS.BI[b0:b1]); BJ = jnp.asarray(SS.BJ[b0:b1]); JB = jnp.asarray(SS.JB[b0:b1])
 
     @jax.jit
     def diag_chunk(x):

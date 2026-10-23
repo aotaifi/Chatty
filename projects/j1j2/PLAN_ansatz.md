@@ -117,6 +117,18 @@ equals sec.H on 3 random vectors to rel 1e-12 (fails on a deliberately mis-scale
 - Pass: W_M(Phi_a; V_J2) at cond <= 3 is <= 0.1 W_M(psi0), AND V_J1 at cond <= 3 is >= 0.5 W_M(psi0) (specificity).
 - Kill: V_J2 at cond <= 3 >= 0.5 W_M(psi0). Else inconclusive. Also report the tail weight of Phi (p < 1e-9).
 
+#### C2-T0b result (6x6, theorie A40 job 17463609, ansatz_runs/c2_t0b_6x6/run_17463609/c2_t0b_6x6.json; verified by the lead): INCONCLUSIVE
+W_M(Phi)/W_M(psi0) (better sign of a; J2 kernels need a < 0, a > 0 makes it 1.4-3.1x worse):
+| cond | V_J2 | H_J2 | V_J1 |
+|---|---|---|---|
+| 3 | 0.24 | 0.18 | 0.47 |
+| 5 | 0.082 | 0.034 | 0.22 |
+| 10 | 0.016 | 0.0011 | 0.029 |
+Size trend of V_J2 at cond 3: 0.015 (4x4), 0.13 (4x6), 0.24 (6x6): the additive layer's grip weakens with N, as the
+extensive-local-energy argument predicts. Specificity over J1 is 2-2.5x, not qualitative. Phi is not tail-free
+(tail weight p < 1e-9: psi0 0.078, Phi(cond 3) 0.08-0.09, rising to 0.30 at cond 30). Checks: D0 + V_J1 + V_J2 = H to
+2.7e-16 (J2 x 1.01: 3.7e-3); tables match brute force; W_M(psi0) 0.0195582523. Tables: ansatz_runs/c2_t0b_6x6/tables/.
+
 ### C2-T1: does a J2 layer on a sign-free state beat the standard Lanczos layer? (2026-10-23, before any run; exact 6x6, no training; after C2-T0b delivers sector_ops.py; <= 2 H100-h)
 psi_K(a) = (1 + a K) phi_+, phi_+ Marshall-signed and positive. Bases phi_+: (1) |ViT| (sym_tables.npz), (2) |PP|
 (sym_tables_PP.npz), (3) Marshall lattice-FN ground state (sec.fn_solve with s_N, guide |PP|), (4) oracle |psi0|
@@ -197,9 +209,8 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| C2-T0b 6x6 (V_J2, V_J1, H_J2) | theorie inter GPU (worker); Paderborn 3820416/3823050 cancelled before start (PI ok) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
 | exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
-| C2-L (loop refit tax with stored pre-image) | waits for G-tax (loop lead) + sector_ops H_J2 | per the rule above |
+| C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
 | C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends

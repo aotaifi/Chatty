@@ -1,4 +1,13 @@
 # PLAN_ansatz (angle lead "ansatz pioneer", started 2026-10-23; project lead's PLAN.md points here)
+
+## How to work (PI, via the project lead, 2026-10-23)
+- Bold in ideas, prudent in compute: write what a test can teach and what kills the idea before any GPU time; a bold
+  idea earns a cheap test first (4x4 exact, minutes), never a large run on hope.
+- Step back on a countable event (second failed version of one idea, a spent test budget, five actions on one
+  sub-problem without the key number moving): load the step-back skill.
+- Consult: ask the PI what only he knows (which physics matters most, what counts as a breakthrough); literature for
+  field knowledge; a worker without my view to break a claim; the ws1 research workspace for colleagues. Ask early.
+- Breadth before depth: >= 3 live directions until tests kill them; drop a refuted idea in a sentence.
 Question: is there a variational ansatz for frustrated magnets that represents the frustration physics (sign structure,
 near-node region, criticality) natively, which the literature has missed? Trade-off allowed: physics over scalability.
 Ends: a candidate beats the best in-family baseline on a pre-registered exact 6x6 test (J2/J1 = 0.5), or ~5 working
@@ -68,6 +77,20 @@ Build: sector operators V_J1, V_J2 (bond-class neighbour tables in the 15.8M orb
 equals sec.H on 3 random vectors to rel 1e-12 (fails on a deliberately mis-scaled J2).
 - Pass: W_M(Phi_a; V_J2) at cond <= 3 is <= 0.1 W_M(psi0), AND V_J1 at cond <= 3 is >= 0.5 W_M(psi0) (specificity).
 - Kill: V_J2 at cond <= 3 >= 0.5 W_M(psi0). Else inconclusive. Also report the tail weight of Phi (p < 1e-9).
+
+### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
+Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
+d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
+psi(x) = sign_order(x) det[f(u_a, d_b)], f from the BCS ground state. Optimise (D1, D2, mu) for max overlap per BC.
+Spans compared by Ritz energy (generalised eigenproblem in the span) and infidelity of the best combination:
+ (0) best single state; (S) + the other 3 BC sectors; (V) + vison-pair states (sign of t, D flipped on a bond string
+ between two plaquettes, all separations/orientations, each symmetrised over translations); (R) control: + the same
+ number K of states with random +-10% changes of t, D on the same bonds (no flux).
+Checks: D2 = 0, mu = 0 gives W_M = 0 (bipartite pairing obeys Marshall); a 1-state span's Ritz energy = <H>.
+- Pass: (V) lowers E_Ritz - E0 by >= 2x more than (R) at equal K. Kill: (V) <= (R). 4x4 is anomalous: a pass
+  earns a 6x6 version, never a production run.
+Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupled output psi = s_N e^f tanh(g)
+(node = smooth zero crossing) vs e^f x sign at equal capacity, exact 6x6 tail error and own-sign E_FN.
 
 ## Running
 | job | where | next step per verdict |

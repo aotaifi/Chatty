@@ -87,14 +87,17 @@ BFW = int(SPEC.get('bf_window', 3)); FREEZE = bool(SPEC.get('freeze_outer', Fals
 assert BFW in (3, 5), BFW
 LAMV_SPEC = SPEC.get('lambda_v', 0.0)                 # F2: number or 'auto'
 B_V = int(SPEC.get('B_v', 4096)); B_VACC = int(SPEC.get('B_v_acc', B_V)); B_VHO = int(SPEC.get('B_v_ho', 8192))
-LV_CHECK = bool(SPEC.get('lv_check', False)); LV_CHECK_REPS = int(SPEC.get('lv_check_reps', 2000))
+LV_CHECK = bool(SPEC.get('lv_check', False)); LV_DIAG = bool(SPEC.get('lv_diag', False)); LV_CHECK_REPS = int(SPEC.get('lv_check_reps', 2000))
+V_FIXED = int(SPEC.get('v_fixed', 2 ** 17))            # F2 revision (Amendment F2-1): size of the FIXED importance-sampled training bond set (0 = fresh 4096-bond batches as the first F2 run)
+B_VHO2 = int(SPEC.get('B_v_ho2', 2 ** 17))             # extra, logged-only held-out bond set (the decision set stays B_v_ho)
+W_OLD = float(SPEC.get('old_weight', 1.0))              # F2-1 pilot (a): weight of the old loss (0 = L_v only)
 MIN_MOVE = float(SPEC.get('min_move', 1e-3))           # README amendment T1s-1
 MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
 T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
 res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP,
                                                     tau=TAU, tau_min=TAU_MIN, anneal_steps=ANNEAL_STEPS, warm_theta=WARM_THETA, splice_dec=SPLICE_DEC, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
-                                                    flat_tol=FLAT_TOL, lambda_v=LAMV_SPEC, B_v=B_V, B_v_acc=B_VACC, B_v_ho=B_VHO, bf_window=BFW, freeze_outer=FREEZE, max_steps=MAX_STEPS, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
+                                                    flat_tol=FLAT_TOL, lambda_v=LAMV_SPEC, v_fixed=V_FIXED, B_v_ho2=B_VHO2, old_weight=W_OLD, B_v=B_V, B_v_acc=B_VACC, B_v_ho=B_VHO, bf_window=BFW, freeze_outer=FREEZE, max_steps=MAX_STEPS, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
 
 
 def progress(msg):
@@ -441,20 +444,54 @@ def lv_exact(th, ridx, flip=False, chunk=512):
     return num / den, nb_
 
 
+# ---- F2-1: FIXED bond sets.  A bond set is drawn once (importance sampling in w, so L_v = plain mean of d^2); the configurations are deduplicated
+#      (orbit indices of x and of y; the network is invariant under the space group x spin flip, so fwd(reps[iy]) = fwd(y); checked in lv_check D).
+def make_fixed(vb):
+    ix = np.asarray(vb['ix']); iy = np.asarray(vb['iy']); M = ix.size
+    U, inv = np.unique(np.concatenate([ix, iy]), return_inverse=True)
+    return dict(M=M, nU=int(U.size), cfg=sec.reps[jnp.asarray(U)], px=jnp.asarray(inv[:M]), py=jnp.asarray(inv[M:]), t=jnp.asarray(np.asarray(vb['ly'] - vb['lx'])))
+
+
+def d_fixed(S, FX, swap=False):
+    a, b = (FX['px'], FX['py']) if not swap else (FX['py'], FX['px'])
+    return (S[b] - S[a]) - FX['t']
+
+
+def lv_fixed(S, FX):
+    d = d_fixed(S, FX); return float(jnp.mean(d * d))
+
+
+GCH = 8192
+
+
+def gn_fixed(th, FX, S, lamv, swap=False):
+    """normal equations of the rows sqrt(lamv/M) (G_y - G_x), residual sqrt(lamv/M) d over the whole fixed set: (Sm (P,P), g (P), sum r^2).  Chunked: no (M, P) matrix."""
+    Gu = jac(th, FX['cfg']); d = d_fixed(S, FX, swap).astype(f64); M = FX['M']
+    a_, b_ = (FX['px'], FX['py']) if not swap else (FX['py'], FX['px'])
+    Sm = jnp.zeros((Gu.shape[1], Gu.shape[1]), f64); g = jnp.zeros(Gu.shape[1], f64)
+    for i in range(0, M, GCH):
+        dg = (Gu[b_[i:i + GCH]] - Gu[a_[i:i + GCH]]).astype(f64)
+        Sm = Sm + dg.T @ dg; g = g + dg.T @ d[i:i + GCH]
+    del Gu
+    q = lamv / M
+    return Sm * q, g * q, q * jnp.sum(d * d)
+
+
 # ============================================================================================ GN / minSR direction
 @jax.jit
-def solve_dir(G, S, lx, ly, wb, c, lam_rel, tau, Jx=None, rx=None):
+def solve_dir(G, S, lx, ly, wb, c, lam_rel, tau, Jx=None, rx=None, Qv=None, wo=1.0):
     """rows: value rows sv e_x (+ offset column -sv) and bond rows sb_x (e_x - e_yk); G = d log A / d theta on [x; y].
     Sample space (minSR): T = A G G^T A^T + cc cc^T with the 2-sparse row combination A applied by gathers."""
     M = lx.shape[0]; P = G.shape[1]; dt = G.dtype
     ex = S[:M] - lx - c; ey = S[M:].reshape(M, -1) - ly - c; Kb = ey.shape[1]
-    sv = 1.0 / jnp.sqrt(M); sb = jnp.sqrt(wb / M)
+    wos = jnp.sqrt(wo)                                 # F2-1: weight of the old loss (1.0: bit-identical to F1)
+    sv = (1.0 / jnp.sqrt(M)) * wos; sb = jnp.sqrt(wb / M) * wos
     r = jnp.concatenate([sv * ex, (sb[:, None] * (ex[:, None] - ey)).reshape(-1)])
     cc = jnp.concatenate([jnp.full(M, -sv, f64), jnp.zeros(M * Kb, f64)])
     R = M * (1 + Kb)
     Gx = G[:M]
     if R <= P + 1:
-        assert Jx is None, 'F2 L_v rows are implemented for the parameter-space branch only'                                        # minSR, sample space: J = A G never materialised
+        assert Jx is None and Qv is None, 'F2 L_v rows are implemented for the parameter-space branch only'                                        # minSR, sample space: J = A G never materialised
         rows = jnp.arange(M * Kb); xs = rows // Kb
         i1 = jnp.concatenate([jnp.arange(M), xs]); c1 = jnp.concatenate([jnp.full(M, sv, f64), sb[xs]])
         i2 = jnp.concatenate([jnp.zeros(M, jnp.int32), M + rows]); c2 = jnp.concatenate([jnp.zeros(M, f64), -sb[xs]])
@@ -473,14 +510,16 @@ def solve_dir(G, S, lx, ly, wb, c, lam_rel, tau, Jx=None, rx=None):
         if Jx is not None:                             # F2: rows sqrt(lambda_v/M_v) (G_y - G_x); the offset column is 0 (c cancels in a ratio)
             Jf = jnp.concatenate([Jf, jnp.concatenate([Jx.astype(f64), jnp.zeros((Jx.shape[0], 1), f64)], 1)])
             r = jnp.concatenate([r, rx])
-        Sm = Jf.T @ Jf; g = Jf.T @ r
+        Sm = Jf.T @ Jf; g = Jf.T @ r; r2 = jnp.sum(r * r)
+        if Qv is not None:                             # F2-1: the fixed bond set's normal equations, accumulated in chunks (gn_fixed)
+            Sm = Sm.at[:P, :P].add(Qv[0]); g = g.at[:P].add(Qv[1]); r2 = r2 + Qv[2]
         lam = lam_rel * jnp.trace(Sm) / (P + 1)
         d = -jnp.linalg.solve(Sm + lam * jnp.eye(P + 1, dtype=f64), g)
         dP = d[:P]; dc = d[P]
     pc = (Gx.astype(f64) @ dP); pc = pc - jnp.mean(pc)
     prms = jnp.sqrt(jnp.mean(pc * pc))
     sc = jnp.minimum(1.0, tau / jnp.maximum(prms, 1e-30))
-    return dP * sc, dc * sc, prms, sc, jnp.sum(r * r)
+    return dP * sc, dc * sc, prms, sc, (r2 if R > P + 1 else jnp.sum(r * r))
 
 
 def dense_check(seed=0, M=6, Kb=2, P=40):
@@ -599,16 +638,48 @@ progress(f'[F2] violating-bond weights W_x over {sec.D} orbits {time.time() - t_
 VS_tr = VSampler(Wx, ~ho_h, 9000 + SEED); VS_acc = VSampler(Wx, ~ho_h, 9500 + SEED); VS_ho = VSampler(Wx, ho_h, 9900 + SEED)
 VHO = VS_ho.draw(B_VHO)                                # fixed held-out bond set
 Lv_ho0, _ = lv_value(theta, VHO)
+FIX = None; VHO2 = None
+if B_VHO2 > 0: VHO2 = make_fixed(VSampler(Wx, ho_h, 9901 + SEED).draw(B_VHO2))
 LAMV = (L_ho0 / Lv_ho0) if LAMV_SPEC == 'auto' else float(LAMV_SPEC)
 res['F2'] = dict(lambda_v=LAMV, lambda_v_auto_at_step0=L_ho0 / Lv_ho0, L_ho_old_step0=L_ho0, L_v_ho_step0=Lv_ho0, lambda_v_x_L_v_step0=LAMV * Lv_ho0,
                  W_total=float(Wx.sum()), n_orbits_with_violating_bond=int((Wx > 0).sum()), B_v=B_V, B_v_acc=B_VACC, B_v_ho=B_VHO)
 dump(F, res)
 progress(f'[F2] step 0 held-out: old loss {L_ho0:.6e}  L_v {Lv_ho0:.6e}  auto lambda_v = old/L_v = {L_ho0 / Lv_ho0:.6f}  used lambda_v = {LAMV:.6f}')
+if LV_DIAG:                                            # F2 revision diagnostic (no fit): tail of d^2 under the w-sampling, batch noise of L_v
+    t_d = time.time(); NBt, Bt = 256, 4096
+    vbd = VSampler(Wx, ~ho_h, 7777).draw(NBt * Bt)
+    dd_ = np.asarray(v_resid(Sv_of(theta, vbd), vbd)); d2 = dd_ * dd_; Nd = d2.size
+    srt = np.sort(d2)[::-1]; cs = np.cumsum(srt); tot_ = float(cs[-1])
+    top = {f'top_{q}': float(cs[max(int(q * Nd), 1) - 1] / tot_) for q in (0.0001, 0.001, 0.01, 0.1)}
+    top['top_10_bonds'] = float(cs[9] / tot_); top['top_100_bonds'] = float(cs[99] / tot_)
+    qq = {str(q): float(np.quantile(d2, q)) for q in (0.5, 0.9, 0.99, 0.999, 0.9999)}; qq['max'] = float(srt[0]); qq['mean'] = tot_ / Nd
+    bm = d2.reshape(NBt, Bt).mean(1); bm17 = d2.reshape(8, Nd // 8).mean(1)
+    ix_d = np.asarray(vbd['ix']); iy_d = np.asarray(vbd['iy']); pair = ix_d.astype(np.int64) * sec.D + iy_d
+    ux, cx_ = np.unique(ix_d, return_counts=True)
+    hod = np.asarray(v_resid(Sv_of(theta, VHO), VHO)) ** 2
+    dgn = dict(n_bonds=int(Nd), quantiles_d2=qq, share_of_L_v=top, mean_d2=tot_ / Nd, rms_d=float(np.sqrt(tot_ / Nd)),
+               n_eff=float(tot_ ** 2 / np.sum(d2 ** 2)), n_eff_frac=float(tot_ ** 2 / np.sum(d2 ** 2) / Nd),
+               batch4096_rel_std=float(bm.std(ddof=1) / bm.mean()), batch4096_min_max_over_mean=[float(bm.min() / bm.mean()), float(bm.max() / bm.mean())],
+               batch131072_rel_std_8=float(bm17.std(ddof=1) / bm17.mean()), unique_x_frac=float(ux.size / Nd), unique_pairs_frac=float(np.unique(pair).size / Nd),
+               top_x_orbit_share_of_bonds=float(cx_.max() / Nd), heldout_B_v_ho=int(hod.size), heldout_L_v=float(hod.mean()),
+               heldout_rel_se_from_train_var=float(d2.std(ddof=1) / math.sqrt(hod.size) / d2.mean()),
+               heldout_top1pct_share=float(np.sort(hod)[::-1][:max(hod.size // 100, 1)].sum() / hod.sum()), sec=time.time() - t_d)
+    res['lv_diag'] = dgn; res['lv_check_pass'] = None; res['F2']['lv_diag'] = True; res['done'] = True; dump(F, res)
+    progress('[lv_diag] ' + json.dumps(dgn)); sys.exit(0)
 if LV_CHECK:
     exec(open(os.path.join(HERE_, 'cx_f2_lvcheck.py')).read())
     sys.exit(0)
-L_ho_tot0 = L_ho0 + LAMV * Lv_ho0
-curve = [dict(step=0, t=0.0, L_ho=L_ho_tot0, L_ho_old=L_ho0, L_v_ho=Lv_ho0, c=c, by_decade=decade_diag(HOB, ex, db))]
+if LAMV > 0 and V_FIXED > 0:                           # F2-1: ONE fixed training bond set (own stream), drawn once, used for GN rows and acceptance
+    FIX = make_fixed(VSampler(Wx, ~ho_h, 9700 + SEED).draw(V_FIXED))
+    S_fix = fwd(theta, FIX['cfg']); Lv_fix0 = lv_fixed(S_fix, FIX)
+    res['F2'].update(v_fixed=V_FIXED, v_fixed_unique_configs=FIX['nU'], L_v_fixed_step0=Lv_fix0)
+    progress(f'[F2-1] fixed training bond set {V_FIXED} bonds, {FIX["nU"]} unique configs; L_v(fixed set, step 0) {Lv_fix0:.6e}')
+if VHO2 is not None:
+    Lv_ho2_0 = lv_fixed(fwd(theta, VHO2['cfg']), VHO2); res['F2'].update(B_v_ho2=B_VHO2, L_v_ho2_step0=Lv_ho2_0)
+    progress(f'[F2-1] big held-out bond set {B_VHO2} bonds, {VHO2["nU"]} unique configs; L_v(big held-out, step 0) {Lv_ho2_0:.6e}')
+dump(F, res)
+L_ho_tot0 = W_OLD * L_ho0 + LAMV * Lv_ho0
+curve = [dict(step=0, t=0.0, L_ho=L_ho_tot0, L_ho_old=L_ho0, L_v_ho=Lv_ho0, L_v_ho2=(Lv_ho2_0 if VHO2 is not None else None), L_v_fix=(Lv_fix0 if FIX is not None else None), c=c, by_decade=decade_diag(HOB, ex, db))]
 progress(f'[fit {ARM}] start held-out loss {L_ho_tot0:.4e} (old {L_ho0:.4e}, L_v {Lv_ho0:.4e}, lambda_v {LAMV:.4f})  warm net vs table rms {res["control2"]["warm_net_vs_table_rms"]:.2e}')
 tau = TAU; tau_changed = 0; tau_hist = [dict(step=0, tau=tau)]
 if DRY: res['dense_check_maxdiff'] = dense_check(); progress(f'[dry] gather-vs-dense T check {res["dense_check_maxdiff"]}')
@@ -643,24 +714,31 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
     bt = make_batch(S_tr, B, k1, WBAR)
     Xall = jnp.concatenate([bt['x'], bt['y'].reshape(-1)])
     S = fwd(theta, Xall); G = jac(theta, Xall)
-    Jx = rx = None
-    if LAMV > 0:                                       # F2: fresh violating-bond batch (own streams); rows sqrt(lambda_v/M_v) (G_y - G_x)
+    Jx = rx = Qv = None
+    if FIX is not None:                                # F2-1: the fixed set's normal equations at the current theta (S_fix cached for it)
+        Qv = gn_fixed(theta, FIX, S_fix, LAMV)
+    elif LAMV > 0:                                       # F2: fresh violating-bond batch (own streams); rows sqrt(lambda_v/M_v) (G_y - G_x)
         vb = VS_tr.draw(B_V); Xv = jnp.concatenate([vb['x'], vb['y']])
         Sv = fwd(theta, Xv); Gv = jac(theta, Xv); sq = math.sqrt(LAMV / B_V)
         Jx = (Gv[B_V:] - Gv[:B_V]) * sq; rx = sq * v_resid(Sv, vb).astype(f64); del Gv, Sv, Xv
     if ACT is None:
-        dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau, Jx, rx)
+        dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau, Jx, rx, Qv, W_OLD)
     else:                                              # F1 freeze_outer: the step on the active columns only (= the window-3 step)
-        dPa, dc, prms, sc, rr = solve_dir(G[:, ACT], S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau, None if Jx is None else Jx[:, ACT], rx)
+        dPa, dc, prms, sc, rr = solve_dir(G[:, ACT], S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau, None if Jx is None else Jx[:, ACT], rx,
+                                       None if Qv is None else (Qv[0][ACT][:, ACT], Qv[1][ACT], Qv[2]), W_OLD)
         dP = jnp.zeros(NPAR, dPa.dtype).at[ACT].set(dPa)
-    del G, Jx
+    del G, Jx, Qv
     dc = float(dc)
     ab = make_batch(S_tr, B_ACC, k2, WBAR)              # fresh stratified acceptance batch
     L_old, _, _ = batch_loss(theta, c, ab)
     cand = theta + dP.astype(theta.dtype)
     L_new, _, _ = batch_loss(cand, c + dc, ab)
-    dmean, dse = strat_mean_se(L_new - L_old, ab['g'], ab['ng'])
-    if LAMV > 0:                                       # F2: paired L_v change on a fresh bond batch; error bars added in quadrature
+    dmean, dse = strat_mean_se(L_new - L_old, ab['g'], ab['ng']); dmean *= W_OLD; dse *= W_OLD
+    dv_fix = None
+    if FIX is not None:                                # F2-1: deterministic paired change of L_v on the fixed set (no sampling error, no fresh batch)
+        S_cand = fwd(cand, FIX['cfg']); d_o = d_fixed(S_fix, FIX); d_n = d_fixed(S_cand, FIX)
+        dv_fix = float(jnp.mean(d_n * d_n - d_o * d_o)); dmean += LAMV * dv_fix
+    elif LAMV > 0:                                       # F2: paired L_v change on a fresh bond batch; error bars added in quadrature
         va = VS_acc.draw(B_VACC)
         d_o = v_resid(Sv_of(theta, va), va); d_n = v_resid(Sv_of(cand, va), va); dd = np.asarray(d_n * d_n - d_o * d_o)
         dmean += LAMV * float(dd.mean()); dse = math.sqrt(dse ** 2 + LAMV ** 2 * float(dd.var(ddof=1)) / dd.size)
@@ -671,17 +749,21 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         ok = True; verdict = 'better'; lam_rel = max(lam_rel / 2, LAM_MIN)
     else:
         ok = True; verdict = 'noise'
-    if ok: theta = cand; c = c + dc
+    if ok:
+        theta = cand; c = c + dc
+        if FIX is not None: S_fix = S_cand
     hist.append(dict(step=n, ok=ok, verdict=verdict, lam_rel=lam_used, lam_next=lam_rel, L_acc_old=float(jnp.mean(L_old)),
-                     dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
+                     dmean=dmean, dse=dse, dv_fix=dv_fix, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
                      sec=time.time() - ts))
     if n % HO_EVERY == 0:
         Lh, ex, db = batch_loss(theta, c, HOB)
         Lv_h, _ = lv_value(theta, VHO)
-        curve.append(dict(step=n, t=time.time() - t0, L_ho=float(jnp.mean(Lh)) + LAMV * Lv_h, L_ho_old=float(jnp.mean(Lh)), L_v_ho=Lv_h, c=c, by_decade=decade_diag(HOB, ex, db)))
+        Lv2 = lv_fixed(fwd(theta, VHO2['cfg']), VHO2) if VHO2 is not None else None
+        curve.append(dict(step=n, t=time.time() - t0, L_ho=W_OLD * float(jnp.mean(Lh)) + LAMV * Lv_h, L_ho_old=float(jnp.mean(Lh)), L_v_ho=Lv_h, L_v_ho2=Lv2,
+                          L_v_fix=(lv_fixed(S_fix, FIX) if FIX is not None else None), c=c, by_decade=decade_diag(HOB, ex, db)))
         acc10 = np.mean([h['ok'] for h in hist[-HO_EVERY:]])
         d11 = curve[-1]['by_decade'].get('-11', {}).get('rms_e')
-        progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e} (old {curve[-1]["L_ho_old"]:.4e}, L_v {curve[-1]["L_v_ho"]:.4e})  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
+        progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e} (old {curve[-1]["L_ho_old"]:.4e}, L_v {curve[-1]["L_v_ho"]:.4e}, L_v big-ho {curve[-1]["L_v_ho2"]}, L_v fixed-train {curve[-1]["L_v_fix"]})  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
                  f'tau {tau:.4f} trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
         if tau > TAU_MIN and n - tau_changed >= ANNEAL_STEPS:          # T1s-2 anneal
             cb = [q for q in curve if q['step'] <= n - ANNEAL_STEPS]

@@ -24,6 +24,9 @@ LV=${LAMBDA_V:-}
 case $ARM in
   ctl1)  WIN=3; FRZ=false; LV=0; EXTRA='"max_steps": 80, "expect_tax": 5.958984511463446e-06'; FS=${FIT_SEC:-3000}; TM=${SBATCH_TIME:-00:30:00};;
   lvchk) WIN=3; FRZ=false; LV=${LV:-auto}; EXTRA='"rate_only": true, "lv_check": true, "lv_check_reps": 2000'; FS=3000; TM=${SBATCH_TIME:-00:30:00};;
+  diag)  WIN=3; FRZ=false; LV=${LV:-auto}; EXTRA='"rate_only": true, "lv_diag": true'; FS=3000; TM=${SBATCH_TIME:-00:30:00};;
+  pa)    WIN=3; FRZ=false; LV=${LV:?set LAMV}; EXTRA='"max_steps": 150, "rate_only": true, "old_weight": 0, "fit_overrides": {"min_steps": 150}'; FS=7000; TM=${SBATCH_TIME:-02:00:00};;
+  pb)    WIN=3; FRZ=false; LV=${LV:?set LAMV}; EXTRA='"max_steps": 150, "rate_only": true, "fit_overrides": {"min_steps": 150}'; FS=7000; TM=${SBATCH_TIME:-02:00:00};;
   rC)    WIN=3; FRZ=false; LV=${LV:-auto}; EXTRA='"max_steps": 20, "rate_only": true'; FS=3000; TM=${SBATCH_TIME:-00:20:00};;
   rD)    WIN=5; FRZ=false; LV=${LV:?set LAMBDA_V for rD}; EXTRA='"max_steps": 20, "rate_only": true'; FS=3000; TM=${SBATCH_TIME:-00:20:00};;
   C)     WIN=3; FRZ=false; LV=${LV:?set LAMBDA_V for C}; EXTRA='"expect_tax": null'; FS=${FIT_SEC:-10800}; TM=${SBATCH_TIME:?set SBATCH_TIME for C};;

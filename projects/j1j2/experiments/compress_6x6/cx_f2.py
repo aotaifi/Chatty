@@ -99,7 +99,7 @@ sp = json.load(open(SPEC['o2b_fit_spec']))                      # O2b round_1/sp
 for k in ('refresh', 'pp_params', 'pp_table', 'target_la', 'warm_theta'): sp[k] = SPEC[k]
 sp.update(fit_sec=float(SPEC['fit_sec']), bf_window=int(SPEC['window']), freeze_outer=bool(SPEC.get('freeze_outer', False)), skip_control2=True,
           code_sha256={f: SHA_EXP[f] for f in ('cx_f2fit.py', 'cx_f2_lvcheck.py', 'cx_lib.py', 'rbmpp_lib.py')})
-for k in ('max_steps', 'rate_only', 'break_embed', 'lambda_v', 'B_v', 'B_v_acc', 'B_v_ho', 'lv_check', 'lv_check_reps'):
+for k in ('max_steps', 'rate_only', 'break_embed', 'lambda_v', 'B_v', 'B_v_acc', 'B_v_ho', 'lv_check', 'lv_check_reps', 'lv_diag', 'v_fixed', 'B_v_ho2', 'old_weight'):
     if k in SPEC: sp[k] = SPEC[k]
 sp.update(SPEC.get('fit_overrides', {}))
 spf = os.path.join(rd, 'spec_fit.json'); json.dump(sp, open(spf, 'w'), indent=1)
@@ -114,6 +114,8 @@ jf = os.path.join(rd, 'cx_t1s.json')
 j = json.load(open(jf)) if os.path.exists(jf) else {}
 if not j.get('done') or rc != 0:
     res['stop'] = f'FIT FAILED (exit {rc}; see {rd}/fit.log)'; res['done'] = True; json.dump(res, open(F, 'w'), indent=1, default=float); progress(res['stop']); sys.exit(4)
+if SPEC.get('lv_diag'):
+    res['lv_diag'] = j['lv_diag']; res['done'] = True; res['sec'] = time.time() - T00; json.dump(res, open(F, 'w'), indent=1, default=float); progress('DONE lv_diag'); sys.exit(0)
 if SPEC.get('lv_check'):
     res['lv_check'] = j['lv_check']; res['lv_check_pass'] = j.get('lv_check_pass'); res['F2'] = j.get('F2'); res['done'] = True; res['sec'] = time.time() - T00
     json.dump(res, open(F, 'w'), indent=1, default=float); progress(f'DONE lv_check pass {res["lv_check_pass"]}'); sys.exit(0)

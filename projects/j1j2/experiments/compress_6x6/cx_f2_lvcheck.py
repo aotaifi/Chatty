@@ -72,9 +72,21 @@ Wd = {d: float(Wx[(~ho_h) & (dec_h == d)].sum()) for d in DECS}; tot = sum(Wd.va
 frac = {d: float(np.mean(dC == d)) for d in DECS}
 lvc['C_decade_fractions'] = {str(d): dict(sampled=frac[d], exact=Wd[d] / tot, z=(frac[d] - Wd[d] / tot) / math.sqrt(max(Wd[d] / tot * (1 - Wd[d] / tot), 1e-30) / 200000)) for d in DECS}
 progress('[lv_check C] decade fractions sampled/exact: ' + ' '.join(f'{d}:{frac[d]:.4f}/{Wd[d] / tot:.4f}' for d in DECS))
+# ---- D (F2-1): the fixed-set assembly.  D1 deduplicated configs (orbit reps of y) vs raw y; D2 chunked normal equations vs the dense rows of the first F2 run; D3 swapped bond ends must be caught
+vbD = VSampler(Wx, ~ho_h, 4545).draw(2048); FXD = make_fixed(vbD); MD = FXD['M']
+S_u = fwd(theta, FXD['cfg']); Lv_fx = lv_fixed(S_u, FXD); Lv_raw, _ = lv_value(theta, vbD)
+Xd = jnp.concatenate([vbD['x'], vbD['y']]); Sd = fwd(theta, Xd); Gd = jac(theta, Xd); sqd = math.sqrt(LAMV / MD)
+Jd = ((Gd[MD:] - Gd[:MD]) * sqd).astype(f64); rd_ = sqd * v_resid(Sd, vbD).astype(f64)
+Sm_d = Jd.T @ Jd; g_d = Jd.T @ rd_; r2_d = float(jnp.sum(rd_ * rd_)); del Gd, Jd
+Sm_f, g_f, r2_f = gn_fixed(theta, FXD, S_u, LAMV); Sm_s, g_s, r2_s = gn_fixed(theta, FXD, S_u, LAMV, swap=True)
+rel = lambda a, b: float(jnp.linalg.norm(a - b) / jnp.linalg.norm(b))
+lvc['D_fixed_set'] = dict(n_bonds=MD, n_unique_configs=FXD['nU'], rel_L_v_fixed_vs_raw=abs(Lv_fx / Lv_raw - 1), rel_Sm=rel(Sm_f, Sm_d), rel_g=rel(g_f, g_d), rel_r2=float(abs(r2_f / r2_d - 1)),
+                          broken_swap_rel_g=rel(g_s, g_d), broken_swap_rel_Sm=rel(Sm_s, Sm_d))
+progress('[lv_check D] fixed set: ' + json.dumps(lvc['D_fixed_set']))
 lvc['sec'] = time.time() - tchk
 res['lv_check'] = lvc
 res['lv_check_pass'] = bool(lvc['A_sampled']['not_violating'] == 0 and lvc['A_sampled']['mismatch_canon_y'] == 0 and lvc['A_sampled']['not_a_bond'] == 0 and lvc['A_sampled']['rel'] < 1e-6
                             and res_B['true']['rel'] < 1e-6 and res_B['true']['n_bonds_bruteforce'] == res_B['true']['n_bonds_code'] and res_B['mislabelled']['rel'] < 1e-6
-                            and res_B['mislabelled_vs_true_rel_diff'] > 1e-3 and max(abs(v['z']) for v in lvc['C_decade_fractions'].values()) < 5)
+                            and res_B['mislabelled_vs_true_rel_diff'] > 1e-3 and max(abs(v['z']) for v in lvc['C_decade_fractions'].values()) < 5
+                            and lvc['D_fixed_set']['rel_L_v_fixed_vs_raw'] < 1e-8 and lvc['D_fixed_set']['rel_Sm'] < 1e-8 and lvc['D_fixed_set']['rel_g'] < 1e-8 and lvc['D_fixed_set']['broken_swap_rel_g'] > 0.5)
 res['sec'] = time.time() - T00; res['done'] = True; dump(F, res); progress(f'[lv_check] pass {res["lv_check_pass"]}  {lvc["sec"]:.0f}s')

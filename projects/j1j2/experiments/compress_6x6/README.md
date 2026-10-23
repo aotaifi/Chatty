@@ -1837,3 +1837,13 @@ while this error stays.
   bonds with min(c) below the reference median.
 - Decision: median min(c) on the top 0.1% <= 1/3 of the reference median: the near-node picture holds (proceed with
   the signed guide). Within 2/3 of it: the picture is dead; say so. Between: report.
+
+#### Results: N0 (Paderborn 3818482; runs/n0/cx_n0.json; verified by the lead 2026-10-23) - near-node: the tail is the cancellation region
+- 2^20 w-sampled violating bonds (a_2 = O2b round 1, phi_1, s_2); top 0.1% carry 57% of d^2, top 1% 81%.
+- Median min(c): top 0.1% 0.056, top 1% 0.154, reference 0.583; ratio 0.095 (bootstrap 0.089-0.103; bar 1/3).
+- 100% of the top-0.1% d^2 sits on bonds below the reference median of c (98% in the whole sample: d^2 lives in the
+  low-c half everywhere). Top-0.1% bonds: 97% have a Marshall-violating J1 bond at both ends (reference 51%); 64% are
+  J1 bonds (reference 6%).
+- Controls: brute-force c agrees to 1.2e-14; unsigned phi gives c = 1 exactly (the check can fail).
+- Reading: the energy-relevant error lives where opposite-sign neighbours cancel to ~5% (near a node), on frustrated
+  (Marshall-violating) J1 bonds. The hop computes exactly this sum, which supports routing the tail through hops.

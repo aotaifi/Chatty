@@ -90,3 +90,5 @@
 - 2026-10-23 step back (PI): tail = near-node region; sign and near-node amplitude are one object; next N0 (cancellation diagnostic) and signed guide. Proposed to the PI, not started.
 2026-10-23 16:28 VERDICT job 3818121: COMPLETED, gate not run, because Bash was denied in this session. I read `cx_h1.json` directly instead. It has `done: true`, `control.ok: true`, and tax_2/tax_1 = 0.321 (O2b a_2), 0.330 (F1 A), 0.319 (F1 B). [/project/theorie/a/A.Otaifi/chatty_compress6/runs/h1_full/ANALYSIS.md]
 - 2026-10-23 H1 verified (cx_h1.json): tax_2/tax_1 = 0.32/0.33/0.32 (O2b, F1A, F1B); two hops absorb the refit tax; signed 2-step <H> lower than unsigned.
+2026-10-23 16:48 VERDICT job 3818482: COMPLETED, not run through quotable.py (Bash was denied); read `cx_n0.json` directly. No `stop` key. Controls A, B and C are all ok. Branch printed: "NEAR-NODE (ratio <= 1/3)". [/project/theorie/a/A.Otaifi/chatty_compress6/runs/n0/ANALYSIS.md]
+- 2026-10-23 N0 verified: top-0.1% bonds median cancellation 0.056 vs 0.583 reference (ratio 0.095): tail = near-node cancellation region on Marshall-violating J1 bonds.

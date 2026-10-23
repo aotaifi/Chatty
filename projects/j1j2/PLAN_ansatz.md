@@ -146,6 +146,18 @@ of E0(J2=0).
   s_N e^f tanh(g). Pass: coupled E_var <= 0.5 x standard for 2 of 3 alphas and lower E_FN. Kill: coupled >= standard
   for all three. (Equal parameter counts; same optimiser and steps.)
 
+### C2-L: does storing the sign-free J2 pre-image cut the loop's refit tax? (2026-10-23, before any run; loop lead's test design; exact 6x6; after G-tax lands and sector_ops.py H_J2 exists; <= 2 GPU-h)
+Second opinion of the FN-loop lead (2026-10-23): for the loop, (B) = C2-stored-pre-image beats (A) = C3 about 60/40,
+because 93% of the refit tax sits in the tail (G-A2) and the fit-free signed two-hop chain goes 1.95e-6 -> 3.0e-9 in
+6 rounds (G-A3): whatever cuts the storage tax wins. My bet stays (A) for physics; the tests decide.
+Setup = gate G-tax (runs/gate_tax): target phi_1 = FN solution of K_2(RBM+PP A), own sign.
+- Phi = (1 + a H_J2)^{-1} phi_1, a = argmin W_M over the cond <= 5 grid; report W_M(Phi) and its decade table.
+- Fit the G-tax network class to log|Phi| (Marshall sign), same fixed steps and time as G-tax.
+- psi_fit = (1 + a H_J2) s_N e^{f_fit}. tax_B(k) = E_FN(K_k(psi_fit)) - E_FN(K_k(phi_1)), k = 1, 2 (the J2 layer costs
+  ~half a full hop: 72 of 144 bonds).
+- Pass: tax_B(1) (1.5 hops) < the G-tax baseline tax at K_2 (2 hops), AND tax_B(2) < 0.82e-6 (loop gate C bar).
+  Kill: tax_B(2) >= G-tax baseline tax at K_2.
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -182,6 +194,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 | C2-T0b 6x6 (V_J2, V_J1, H_J2) | theorie inter GPU (worker); Paderborn 3820416/3823050 cancelled before start (PI ok) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
 | exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
+| C2-L (loop refit tax with stored pre-image) | waits for G-tax (loop lead) + sector_ops H_J2 | per the rule above |
 | C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends

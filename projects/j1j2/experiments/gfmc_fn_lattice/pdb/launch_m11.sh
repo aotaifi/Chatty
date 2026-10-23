@@ -25,6 +25,8 @@ dt04_s3  3 2048 0.4  850  25 40";;
 C) CHAINS="
 M0512_s3 3  512 0.2 6800  50 40
 M8192_s3 3 8192 0.2  430  50 40";;
+R) CHAINS="
+refA_s1  1 2048 0.2  190  25 6";;   # reduced single chain (lead 2026-10-23): ~4.4 H100-h, error ~1.5e-6 per site, catches a gross 6x6 bug only
 T) CHAINS="
 test_s9  9   64 0.2    6   4  1";;   # smoke test of the launcher path (~3 min), not part of the production
 *) echo bad stage; exit 1;; esac
@@ -43,10 +45,10 @@ echo "$CHAINS" | while read name seed M dt nb burn wh; do
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=48G
+#SBATCH --mem=64G
 #SBATCH --time=$wh:00:00
 #SBATCH --no-requeue
-#SBATCH --output=$RB/runs/%x-%j.out
+#SBATCH --output=$RB/runs/$name/slurm-%j.out
 set -uo pipefail
 RUN=$RB/runs/$name; mkdir -p \$RUN/code; cp $RB/code/*.py \$RUN/code/
 export GFMC_PARAMS=$RB/data/params_final.npz GFMC_TABLE_A=$RB/data/table_A.json
@@ -56,7 +58,7 @@ cd \$RUN/code
 $RB/../venv_jax_0.8.2/bin/python gfmc6_run.py \$RUN --M $M --dtau $dt --blocks $nb --burn $burn --seed $seed --chunk $CHUNK --maxsec $maxsec $([ "$RESUME" = 1 ] && echo --resume) > \$RUN/stdout.txt 2>&1; rc=\$?
 echo exit=\$rc finished=\$(date -Is) >> \$RUN/run_metadata.txt; exit \$rc"
   if [ "$GO" = 1 ]; then
-    printf '%s\n' "$body" | $SSH paderborn "cat > $sb"
+    printf '%s\n' "$body" | $SSH paderborn "mkdir -p $RB/runs/$name; cat > $sb"
     jid=$($SSH -n paderborn "export PATH=$SL:\$PATH; sbatch --parsable $sb")
     echo "SUBMITTED $name job $jid"
     [ -n "$jid" ] || { echo "no job id for $name"; continue; }

@@ -15,6 +15,12 @@ days (by 2026-10-30). Deliverable: ansatz/ANSATZ_MEMO.md (< 3 pages). Report to 
 finding changes PLAN.md. Since 2026-10-23 the PI lets this angle run as its own project (own workers, own angles).
 Budget: <= 20 H100-h (normal QoS, Paderborn), workstation CPU freely; literature first.
 
+## Breakthrough bar (lead's proposal to the PI, 2026-10-23; PI asked for my view)
+A compact, interpretable ansatz built on one named mechanism (tens to hundreds of parameters) that reaches <= 2e-5
+per site at exact 6x6 (within ~10x of the black-box record 2.3e-6, CNN-MPS arXiv:2603.14425), and whose mechanism
+parameter says something checkable at larger L (e.g. vison fugacity: spin liquid vs columnar VBS). An energy record
+alone is not the bar; a sign-structure law that does not lower the energy is not either.
+
 ## Working picture (hypothesis, not claim)
 Each of the three symmetric product sign rules cures two of the three bond families and frustrates the third:
 Neel s_N = (-1)^{n_up(x+y even)} cures J1x, J1y; stripe s_X = (-1)^{n_up(x odd)} cures J1x, J2; s_Y cures J1y, J2.
@@ -162,8 +168,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| C2-T0 6x6 (kernel V = H - diag) | Paderborn 3820416, PENDING (est. start 10-28) | 4x6 predicts uninformative (0.95); cancel if the PI agrees |
-| C2-T0b 6x6 (V_J2, V_J1, H_J2) | Paderborn 3823050 PENDING (10-28); copy on theorie inter GPU (worker) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
+| C2-T0b 6x6 (V_J2, V_J1, H_J2) | theorie inter GPU (worker); Paderborn 3820416/3823050 cancelled before start (PI ok) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
 | exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
 | C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 

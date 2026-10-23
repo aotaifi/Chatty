@@ -94,6 +94,17 @@ equals sec.H on 3 random vectors to rel 1e-12 (fails on a deliberately mis-scale
 - Pass: W_M(Phi_a; V_J2) at cond <= 3 is <= 0.1 W_M(psi0), AND V_J1 at cond <= 3 is >= 0.5 W_M(psi0) (specificity).
 - Kill: V_J2 at cond <= 3 >= 0.5 W_M(psi0). Else inconclusive. Also report the tail weight of Phi (p < 1e-9).
 
+### C2-T1: does a J2 layer on a sign-free state beat the standard Lanczos layer? (2026-10-23, before any run; exact 6x6, no training; after C2-T0b delivers sector_ops.py; <= 2 H100-h)
+psi_K(a) = (1 + a K) phi_+, phi_+ Marshall-signed and positive. Bases phi_+: (1) |ViT| (sym_tables.npz), (2) |PP|
+(sym_tables_PP.npz), (3) Marshall lattice-FN ground state (sec.fn_solve with s_N, guide |PP|), (4) oracle |psi0|
+(ceiling). Layers K: H (standard Lanczos step, the project's hop form), H_J2, V_J2, H_J1 (control).
+Measured: E_var at the optimal a (closed form from 3 matvecs) and E_FN with the sign of psi_K(a*), per site above E0;
+W_M of psi_K(a*). Check: K = H on base (4) must give E_var = E0 at a = 0 to 1e-10 (|psi0| with Marshall is not psi0,
+so this check is instead: base psi0 itself with K = H gives a* = 0 and E0).
+- Pass: for bases (1)-(3), H_J2 layer gives E_FN <= 0.5 x the H layer's E_FN, on at least 2 of 3 bases.
+- Kill: H_J2 layer E_FN >= H layer's on 2 of 3 bases. Pass makes C2 a concrete proposal for the loop's hop
+  (report to the project lead) and earns C2-T2 (trained phi_theta, full-sum VMC, vs same-size free-sign NQS).
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -121,8 +132,10 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| C2-T0 6x6 (kernel V = H - diag) | worker, Paderborn H100 | PASS/INCONCLUSIVE: wait for C2-T0b; KILL: V_H mixes J1 smoothing, still run C2-T0b |
-| C2-T0b 6x6 (V_J2, V_J1 operators) | worker, Paderborn H100 | PASS -> C2-T1 full-sum VMC arms; KILL -> C2 dead, back to C3 |
+| C2-T0 6x6 (kernel V = H - diag) | Paderborn 3820416, PENDING (est. start 10-28) | 4x6 predicts uninformative (0.95); cancel if the PI agrees |
+| C2-T0b 6x6 (V_J2, V_J1, H_J2) | Paderborn 3823050 PENDING (10-28); copy on theorie inter GPU (worker) | PASS -> C2-T1; KILL -> C2 dead as a sign statement |
+| C3-T0-1 4x6 (vison span, rank-matched) | ws1 CPU, setsid, ansatz_runs/c3_t0_4x6 | PASS -> 6x6 VMC design; KILL -> C3 dead |
+| C4 4x6 | ws1 CPU, small_pretests.py | KILL at 4x4 already; confirm |
 
 ## Dead ends
 - C1 global sign-rule interference (C1-T0 KILL, 2026-10-23, /scratch/a/A.Otaifi/ansatz_runs/c1_t0/c1_t0.json, code
@@ -134,7 +147,9 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 
 ## Status
 - 2026-10-23: plan created; greeting with blind-spot reading and C1-C3 sent to the PI; C4 added.
+- 2026-10-23 evening: C1 dead; C2 lead (4x4, 4x6); C3 inconclusive at 4x4, 4x6 running; asked the PI what counts
+  as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Mapping the ansatz literature and testing whether the exact 6x6 sign structure is an interference of the Neel and stripe sign rules.
-- NEXT (open, medium): Run the sign-class test on the exact 6x6 state, then fit the three-component ansatz if it passes.
+- STATUS (in progress, medium): The frustrated ground state looks like a sign-free state plus one local J2 cancellation layer on 4x4 and 4x6; the exact 6x6 test is queued.
+- NEXT (open, medium): Test the J2 layer against the standard Lanczos layer on exact 6x6, and the spin-liquid vison sum at 4x6.

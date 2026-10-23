@@ -214,6 +214,12 @@ Measured: relative variance of the parent on Phi, fidelity |<GS(H_p)|Phi>|^2, E_
 state, and its E_FN. Baselines (sign-free routes at the same size): Marshall-FN E_FN (4x6: 6.95e-3/site), and
 (1 + aH_J2) applied to the Marshall-FN ground state. Checks: parent search on psi0 itself, unconstrained, recovers
 H_J1-J2 (J2/J1 = 0.5 to 1e-6); a stoquastic parent of Phi at cond 100 recovers ~-H_J2 dominance (sanity).
+Novelty (worker, ansatz/lit/NOVELTY.md section C6): NOVEL as a construction; closest: transcorrelated FCIQMC
+(Dobrautz-Luo-Alavi arXiv:1811.03607; diagonal similarity only, which can never cure non-stoquasticity), Chertkov-
+Clark inversion (no stoquastic constraint). Risks it names: additive K gives a global sign threshold (my size trend);
+a local parent may not exist (Brito-Marston, projected states, abstracts only). Scalable successor if C6-T0 passes
+(C6b): K = prod_b (1 + a h_b) as a finite-depth circuit of 2-site non-unitary gates, so K^{-1} H K is quasi-local;
+test whether it is (nearly) stoquastic in the Marshall frame, which would make projector QMC on it sign-free.
 - Pass (4x6): stoquastic parent with dressed E_var - E0 <= 1e-3/site (7x below Marshall-FN). Kill: dressed state no
   better than (1 + aH_J2) on the Marshall-FN ground state. Pass earns a 6x6 version (sector machinery) and a GFMC plan.
 

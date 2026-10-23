@@ -16,6 +16,7 @@ carried the search. Absence below means "not found by these searches", not proof
 | C2 positive state through a learned local signed kernel | PARTIALLY ANTICIPATED (global-alpha version ANTICIPATED) | Sorella, PRB 64, 024512 (2001), cond-mat/0009149 |
 | C3 gauge-fluctuating partons | PARTIALLY ANTICIPATED | Emonts et al., PRD (2023), arXiv:2211.00023 (structure); Ivanov & Senthil, PRB 66, 115111 (2002) (physics) |
 | C4 plaquette-frame positive state | PARTIALLY ANTICIPATED (as an idea), NOVEL as a VMC/FN implementation for J1-J2 | Herz, Schäfer, Gonzalez, Luitz, arXiv:2607.24679 (2026) |
+| C6 non-unitary dressing of a stoquastic parent GS | NOVEL as a construction (H_p reconstruction + GFMC); the dressing (1 + a H_J2) on a positive state is the C2 constant-alpha form, ANTICIPATED (Sorella 2001) | Dobrautz, Luo, Alavi, PRB 99, 075119 (2019), arXiv:1811.03607 |
 
 ---
 
@@ -221,6 +222,115 @@ average sign of the exact 4x4 / 6x6 ground state in the plaquette frame versus t
 only half of the J1 bonds and a quarter of the J2 bonds intra-plaquette, so inter-plaquette terms
 stay non-stoquastic; Herz et al. found the hexagon (6-site) basis already too slow for SSE, a cost
 that VMC does not pay.
+
+---
+
+## C6. Non-unitary local dressing of a stoquastic ground state: psi0 = K GS(H_p), K = 1 + a H_J2, H_p reconstructed from Phi = K^{-1} psi0
+
+Worker report 2026-10-24. Same reading-level labels as above. Wiki: no page on transcorrelation,
+non-unitary similarity or stoquastic parent Hamiltonians (index grep).
+
+### Closest works
+1. **Dobrautz, Luo, Alavi, PRB 99, 075119 (2019), arXiv:1811.03607** [section read: Intro, method,
+   all "sign problem" passages]. Non-unitary similarity e^{-J} H e^{J} with a DIAGONAL Gutzwiller
+   correlator; the right eigenvector of the non-Hermitian H_TC is projected with FCIQMC and is very
+   compact. The sign problem is reduced only through compactness/initiator; they never make H_TC
+   stoquastic, never use a non-diagonal correlator, never write psi0 = K Phi with Phi the GS of a
+   Hermitian stoquastic parent. Follow-ups (Luo-Alavi 1712.07524 HEG; Haupt et al. 2302.13683;
+   Ten-no 2309.02811 "projective" TC; Liao et al. 2103.03176; Filip et al. 2411.03175, 2506.04895)
+   [abstract only] are all diagonal Jastrow (or F12 geminal) correlators in chemistry/Hubbard; no
+   spin model, no stoquasticity target. NO-GO for this family: a positive diagonal K = D gives
+   (D^{-1} H D)_xy = H_xy D_y/D_x, same off-diagonal signs, so a Jastrow/Gutzwiller similarity can
+   never cure non-stoquasticity. A non-diagonal K, as in C6, is necessary; not found anywhere.
+2. **Chertkov & Clark, PRX 8, 031029 (2018), arXiv:1802.01590** [section read: Intro, Method,
+   Summary, all "sign" passages]; Qi & Ranard, Quantum 3, 159 (2019), arXiv:1712.01850; Bairey,
+   Arad, Lindner, PRL 122, 020504 (2019), arXiv:1807.04342 [abstract only]. The QCM/parent-Hamiltonian
+   inversion C6 would use. Chertkov-Clark only remark that the QCM "can be computed in the context of
+   sign-problem free Hamiltonians using quantum Monte Carlo"; no stoquasticity constraint on the
+   reconstructed H, no pre-image of a frustrated state. **Brito & Marston, arXiv:2510.15034 (2025)**
+   and **Brito, Carr, Jacoby, Marston, arXiv:2311.09302 (2023)** [abstract only]: for 2D
+   Gutzwiller-projected Fermi sea and pi-flux states the QCM finds NO simple local parent at finite
+   size. This is the most direct warning for C6: a generic state, and Phi = K^{-1} psi0 is generic,
+   need not have a local parent at all.
+3. **Fixed-node / Lanczos lineage on the lattice**: ten Haaf, van Bemmel, van Leeuwen, van Saarloos,
+   Ceperley, PRB 51, 13039 (1995) (effective stoquastic H_FN, psi = S |phi| with S the guide's
+   diagonal sign gauge) [abstract]; Sorella-Capriotti PRB 61, 2599 (2000); Hu, Becca, Parola,
+   Sorella PRB 88, 060402(R) (2013), arXiv:1304.2630 (p-step (1 + sum a_m H^m) on projected states
+   for J1-J2) [abstract + text skimmed, via paper/RELATED_WORK_NOTES.md]. These cover "sample a
+   sign-free projector, dress with a power of H": FN replaces the signs by a diagonal gauge S, the
+   Lanczos step dresses a signed variational state. Neither writes the exact psi0 as K times the GS
+   of a reconstructed stoquastic Hermitian H_p.
+4. **Local non-unitary dressing of a sign-free GS with a stoquastic parent**: Castelnovo-Chamon
+   deformed toric code e^{beta sum sigma^z/2}|TC> (PRB 77, 054433 (2008)) and Verstraete, Wolf,
+   Perez-Garcia, Cirac, PRL 96, 220601 (2006), quant-ph/0601075 [from memory, not re-read];
+   generalized RK / stochastic-matrix-form: Henley cond-mat/0311345, Castelnovo, Chamon, Mudry,
+   Pujol, Ann. Phys. 318, 316 (2005), cond-mat/0502068 [abstract only]: any positive Phi = sqrt of a
+   local Gibbs weight is the GS of a local stoquastic frustration-free H. Here the dressing keeps
+   the state positive and the parent is built by hand; this is the existence theorem C6 needs for
+   H_p (sufficient condition: Phi^2 a local Gibbs weight), not the sign-generating use.
+   Sikora, Chang, Chou, Pollmann, Kao, arXiv:1407.4107 (2014) [abstract only]: tensor-product
+   operator (local non-unitary) applied to a Jastrow/HF state, optimised by VMC; variational, no
+   sign-free projector, no parent.
+5. **Curing non-stoquasticity by basis change**: Marvian-Lidar-Hen Nat. Commun. 10, 1571 (2019),
+   arXiv:1802.03408; Klassen et al. arXiv:1906.08800; Hangleiter et al. 1906.02309; Levy-Clark
+   1907.02076; Murota-Todo arXiv:2501.18069; Herz et al. 2607.24679; Karakashian-Hen arXiv:2607.18596
+   ("vanishing geometric phase", local stoquastisation hard) [abstract only / first page]. All
+   unitary or orthogonal (local or circuit) transformations; none uses an invertible non-unitary
+   map, which C6 needs. Hen arXiv:1811.03027 (frustrated triplet) regroups series weights, not a
+   transformation [abstract only].
+
+### No-go / structural constraints found
+- Perron-Frobenius: GS of a connected stoquastic H_p is strictly positive in the stoquastic basis,
+  so C6 needs Phi = (1 + a H_J2)^{-1} psi0 sign-definite (up to a fixed diagonal gauge, e.g.
+  Marshall) with ONE scalar a. Necessary, ED-checkable before any reconstruction (4x4, 6x6).
+- K = 1 + a H_J2 is a SUM of local terms, not a product: K^{-1} is a resolvent of an extensive
+  operator (singular when -1/a is in spec(H_J2), non-local otherwise), and psi0(x)/Phi(x) =
+  1 + a e_J2(x) with e_J2(x) an extensive local energy, so K changes signs only through one global
+  threshold. This is the single-Lanczos-step situation, whose gain per site vanishes as N grows
+  (Lanczos lineage, item 3). A size-independent a cannot be exact at large N; the scalable local
+  version is a product (finite-depth non-unitary circuit) K = prod_b (1 + a h_b).
+- Even for a finite-depth K, Phi is the right eigenvector of the local but non-Hermitian K^{-1} H K;
+  a local HERMITIAN stoquastic parent is not implied (Brito-Marston evidence that generic states
+  have none). Note that GFMC/FCIQMC needs only a non-negative propagator: if K^{-1} H K itself is
+  stoquastic (non-positive off-diagonals), project it directly as in transcorrelated FCIQMC and skip
+  the H_p reconstruction.
+- Intrinsic-sign-problem theorems (Hastings 1506.08883; Smith-Golan-Ringel 2005.05343, Golan-Smith-
+  Ringel 2005.05566; Seo et al. 2503.21925; counterexample Shackleton 2509.03708) [abstract only]
+  restrict LOCAL UNITARY curing of chiral / most topological orders; a non-unitary K is outside
+  their hypotheses, and J1-J2 candidates are non-chiral. No theorem found that forbids C6.
+
+### Search strings
+1. arXiv: `abs:"parent Hamiltonian" AND abs:"stoquastic"` (0 hits)
+2. arXiv: `abs:"similarity transformation" AND abs:"sign problem"` (2 hits: 1811.03607, 1908.10471)
+3. arXiv: `abs:"stoquastic" AND (abs:"non-unitary" OR abs:"nonunitary" OR abs:"invertible" OR abs:"similarity")` (no relevant hit)
+4. arXiv: `abs:"sign problem" AND (abs:"non-unitary transformation" OR abs:"nonunitary transformation" OR abs:"non-Hermitian transformation")` (0 hits)
+5. arXiv: `abs:"transcorrelated" AND (abs:"Heisenberg" OR abs:"spin" OR abs:"sign problem" OR abs:"Monte Carlo")` (chemistry/HEG/Hubbard only)
+6. arXiv: `(abs:"Jastrow" OR abs:"transcorrelated" OR abs:"imaginary gauge") AND (abs:"stoquastic" OR abs:"Marshall sign" OR abs:"sign structure")` (1 hit: 1407.4107)
+7. arXiv: `abs:"Hamiltonian reconstruction" OR abs:"parent Hamiltonian" AND (abs:"sign structure" OR abs:"positive" OR abs:"nonnegative")`
+8. arXiv: `abs:"intrinsic sign problem" OR (abs:"non-negative" AND abs:"wavefunction" AND abs:"topological order" AND abs:"stoquastic")`
+9. arXiv: `abs:"stochastic matrix form" OR (abs:"Rokhsar-Kivelson" AND abs:"generalized" AND abs:"classical")`
+10. arXiv: `(abs:"sign-problem-free" OR abs:"sign-free" OR abs:"stoquastic") AND (abs:"inverse" OR abs:"reconstruct" OR abs:"learn") AND abs:"Hamiltonian" AND abs:"ground state" AND abs:"wave function"`
+11. arXiv: `abs:"sign problem" AND (abs:"non-orthogonal basis" OR abs:"nonorthogonal basis" OR abs:"overcomplete basis") AND (abs:"frustrated" OR abs:"spin")` (0 hits)
+12. Web: `non-unitary similarity transformation turns frustrated Heisenberg Hamiltonian stoquastic sign-free quantum Monte Carlo` (only unitary/orthogonal work)
+13. Web: `"parent Hamiltonian" sign-free OR stoquastic ground state frustrated magnet wave function reconstruction quantum Monte Carlo dressed operator`
+14. Web: `transcorrelated OR "similarity transformed" Heisenberg OR "J1-J2" spin lattice FCIQMC Jastrow non-Hermitian sign problem reduced`
+15. Web: `frustrated ground state written as operator applied to ground state of unfrustrated (stoquastic) Hamiltonian, quantum Monte Carlo sample unfrustrated then apply correction operator`
+16. Web: `"stoquastic" "non-unitary" OR "invertible" transformation local operator ground state sign problem cure beyond unitary "stoquastizable"`
+17. Web: `quantum covariance matrix Hamiltonian reconstruction constrained stoquastic OR "sign-problem-free" parent Hamiltonian for given wave function quantum Monte Carlo`
+18. OpenAlex: `non-unitary transformation stoquastic parent Hamiltonian sign problem frustrated magnet`
+
+### What is still open
+Not found: psi0 = K Phi with K a non-diagonal, non-unitary operator built from the frustrating
+term, Phi the GS of a reconstructed local stoquastic parent, sampled by GFMC. Closest pieces:
+non-unitary similarity + projector QMC (Dobrautz-Luo-Alavi, diagonal only, provably cannot fix
+signs), parent-Hamiltonian inversion (Chertkov-Clark, no stoquastic constraint), FN/Lanczos
+(diagonal sign gauge / global H-powers). Kill tests before investing: (i) ED 4x4 and 6x6 at
+J2 = 0.5: scan a, measure the sign-violating weight of (1 + a H_J2)^{-1} psi0 in the Marshall
+basis; (ii) if it vanishes, run QCM on Phi with a 2-3-site operator basis and report the smallest
+eigenvalue (null vector exists?) and whether it is stoquastic; (iii) repeat at 4x4 -> 6x6 to see
+whether the optimal a scales like 1/N (expected from the sum-form argument). Not read in full:
+Castelnovo-Chamon 2008, Verstraete et al. 2006 (from memory), Qi-Ranard, Bairey et al.,
+Brito-Marston (abstract only).
 
 ---
 

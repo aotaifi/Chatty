@@ -1883,3 +1883,18 @@ Pre-registered before any run (lead):
 - Reading: with RBM+PP storage the loop gains nothing over the standard pipeline at equal hops. The refit cannot hold
   the near-node tail (fit rms by decade: -8 0.011, -11 0.061, -13 0.273). C is not run. The loop's future is a storage
   object that holds the node region (ansatz angle, test C2-L), not more loop rounds.
+
+#### Results: M1.1 + M1.2 (worker; verified by the lead from runs blocks.npz / timing 2026-10-23)
+- Walker code (experiments/gfmc_fn_lattice, 6b88840/ea8b713): 4x4 walker - exact = +0.65 +- 0.54e-7 against a 4.2e-6
+  signal over six chains (broken versions fail: -100 sigma, +17.6 sigma). 6x6 guide amplitudes match the exact table to
+  1.8e-10.
+- 6x6, ONE chain (Paderborn 3825997, M 2048, dtau 0.2, 190 blocks, 3.9 H100-h; /scratch/a/A.Otaifi/gfmc_m11/prod/refA_s1):
+  mixed estimator 5.99e-6 +- 1.8e-6 (blocking plateau 1.5-1.8e-6) against exact 5.57e-6, +0.23 sigma; growth 4.97e-6
+  +- 1.1e-6. Single chain: a consistency check (no gross 6x6 bug), not a converged number; dtau and 1/M bias at 6x6
+  not measured (4x4 shows none at 5%). The 200 GPU-h full validation was not run (takeover ceiling).
+- Cost per amplitude evaluation, ms (full space group / translations / none): 6x6 0.124 / 0.016 / 0.0008; 8x8 1.02 /
+  0.10 / 0.001; 14x14 30 / 4.8 / 0.009. One-hop guide, s per walker-tau: 6x6 0.16 / 0.02; 8x8 4.0 / 0.41; 14x14 1100 /
+  180 (extrapolated from hops per tau = 0.42 N). Two hops cost ~n^2/2 more evaluations per hop (8x8: ~300 / 30 s).
+- Reading: the symmetry projection, not the hop, dominates the walker cost; at 14x14 a projected guide is unusable in
+  walkers. M1.3 trains the 8x8 RBM+PP with translation x spin-flip projection (128 images), and the accuracy cost of
+  dropping the point group is itself measured against the published full-projection RBM+PP (-0.498886).

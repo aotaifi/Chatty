@@ -138,3 +138,14 @@
 - 2026-10-23 ansatz angle: C2-L job 17466020 (cip A40, run /scratch/a/A.Otaifi/ansatz_runs/c2l_6x6/run_17466020) stopped itself before the fit: 16.7 s/step on A40 fp64 -> 400 steps ~6700 s (> 2 GPU-h budget). Done before the stop: controls passed (E_FN(K_2 phi_0) 3.181795e-7, rel 1.5e-6 to G-tax); Phi at a=-0.0702 (cond 5) W_M 5.76e-4 (phi_0 1.87e-2), tail 0.092 (phi_0 0.078); exact |Phi| with s_N already costs tax_B1 7.35e-5, tax_B2 2.93e-5 (KILL bar 1.657e-6) -> the s_N arm cannot pass; the sign(Phi) arm needs the fit (lead to decide on GPU time). Earlier 17465311 FAILED: missing import (fixed).
 2026-10-23 20:38 VERDICT job 17466418: COMPLETED, L0 `verdict_L0` = CONTINUE (`min_tax_B2_L0` = 0.0). The full-stage run printed only `DONE STOP fit too slow: est 6687s > 4800s`, with no `verdict` key. [/scratch/a/A.Otaifi/ansatz_runs/c2l_6x6/ANALYSIS.md]
 - 2026-10-23 ansatz angle: C2-L-0 (cip A40 job 17466418, /scratch/a/A.Otaifi/ansatz_runs/c2l_6x6/run_17466418/cx_gtax.json) CONTINUE by the rule: exact |Phi| with s_N, tax_B2 H_J2 cond 5/10/30/100 = 2.9e-5/1.85e-6/2.5e-7/0 (cond 100: W_M = 0, so s_N = sign(Phi)); V_J2 5.7e-5/1.25e-5/2.4e-6/1.4e-6. Caveat: Phi tail weight (p<1e-9) 0.24 (cond 30), 0.40 (cond 100) vs phi_0 0.078; the fit has to carry that tail.
+2026-10-23 22:21 VERDICT job 17465050: STALLED [/scratch/a/A.Otaifi/ansatz_runs/small/c2t1_4x6_run/ANALYSIS.md]
+2026-10-23 22:59 VERDICT job 17469815: TIMEOUT [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/check2/ANALYSIS.md]
+2026-10-23 23:01 VERDICT job 17469816: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c2t2/ANALYSIS.md]
+2026-10-23 23:01 VERDICT job 17469817: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c5t0_R12/ANALYSIS.md]
+2026-10-23 23:01 VERDICT job 17469818: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c5t0_R4/ANALYSIS.md]
+2026-10-23 23:07 VERDICT job 17469926: FAILED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/check3/ANALYSIS.md]
+2026-10-23 23:11 VERDICT job 17469927: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c2t2/ANALYSIS.md]
+2026-10-23 23:11 VERDICT job 17469928: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c5t0_R12/ANALYSIS.md]
+2026-10-23 23:11 VERDICT job 17469929: CANCELLED [/scratch/a/A.Otaifi/ansatz_runs/exact_vmc_4x6/c5t0_R4/ANALYSIS.md]
+2026-10-23 23:27 VERDICT job 3825997: COMPLETED, none. The Bash tool was denied (don't-ask mode), so I could not run `quotable.py` and have no gate output to quote. [/scratch/a/A.Otaifi/gfmc_m11/prod/refA_s1/ANALYSIS.md]
+- 2026-10-23 M1.1/M1.2 verified: 6x6 one-chain GFMC 5.99e-6 +- 1.8e-6 vs exact 5.57e-6 (+0.23 sigma); projection dominates walker cost (8x8 one-hop 4.0 s/walker-tau full vs 0.41 translation). Correction: the 'missing #SBATCH header' I flagged was my grep filtering '#' lines; the header was there. Next M1.3a: 8x8 RBM+PP training, translation x flip, <= 10 H100-h.

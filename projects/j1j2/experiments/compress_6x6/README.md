@@ -1812,3 +1812,19 @@ while this error stays.
   hops per guide (cost: neighbours of neighbours, still constant per round with Pfaffian updates). tax_2 >= 0.8 tax_1:
   the loss is not hop-correctable; next is the ansatz class (hidden-fermion rows). Between: report.
 - Lead's prediction: tax_2 / tax_1 = 0.3-0.6; ~55% on the "absorbs" branch.
+
+#### Results: H1 (Paderborn 3817743 control, 3818121 full; runs/h1_full/cx_h1.json; verified by the lead 2026-10-23) - the second hop absorbs the tax
+| table | E_FN, 1 hop | E_FN, 2 hops | tax_1 | tax_2 | tax_2 / tax_1 |
+|---|---|---|---|---|---|
+| phi_1 (target) | 4.951e-6 | 3.244e-6 | | | |
+| O2b a_2 | 1.088e-5 | 5.147e-6 | 5.93e-6 | 1.90e-6 | 0.32 |
+| F1 A a_2 | 1.055e-5 | 5.090e-6 | 5.60e-6 | 1.85e-6 | 0.33 |
+| F1 B a_2 | 9.527e-6 | 4.705e-6 | 4.58e-6 | 1.46e-6 | 0.32 |
+- Controls: one hop reproduces every recorded number (rel <= 9e-12). k = 2 minimum converged from two starts. Sign s_2
+  fixed; unsigned polynomial |1 + a1 (H-E) + a2 (H-E)^2|. ~0.1 H100-h.
+- "Absorbs" branch (bar 0.5; predicted 0.3-0.6, ~55%). The refit loss shrinks by the same ~1/3 per hop as any other
+  error: the hop rebuilds the stored network's tail from its neighbours.
+- Derived, unvalidated: a two-hop loop settles near tax_2 / (1 - r_2) with r_2 = 3.24e-6 / 1.41e-5 = 0.23 (round 1),
+  i.e. ~2.5e-6, against 8.4e-6 for one hop.
+- The SIGNED two-step polynomial has lower <H> than the unsigned one in every case (O2b a_2: 5.88e-6 vs 6.89e-6): the
+  hop's sign carries usable node information (supports the signed-guide step).

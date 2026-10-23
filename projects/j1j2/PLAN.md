@@ -14,7 +14,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow; edge ~1.5x vs RBM+PP.
 - F1 (Paderborn 3811214/6): the refit tax is not under-training (13x steps: -6%) and only partly capacity (5x5: -18%); the log-amplitude objective misses what FN uses.
 - F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
-- Open: does a second hop absorb the refit tax (H1)? And sign labels without the oracle (O3)?
+- H1 (Paderborn 3818121): a second hop cuts the refit tax to 0.32x (1.90e-6 on O2b's table); derived two-hop loop floor ~2.5e-6.
+- Open: is the tail the near-node cancellation region (N0)? Does a signed guide remove the sign oracle (O3 as signed hop)? And sign labels without the oracle (O3)?
 
 ## Step back 2026-10-23 afternoon (trigger: the PI; the tail finding had not moved in weeks)
 1. Verdict: reframe. The tail is the neighbourhood of the nodal surface; its amplitude and the sign are one object (the node). We store them as two (log|a| network + discrete sign), and log|psi| is singular at a node, so the tail cannot be learned that way.

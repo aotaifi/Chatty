@@ -46,6 +46,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 | O4 / T2: walkers instead of exact solves; cost at 8x8 with Woodbury updates; edge over plain SR VMC of PP+backflow at equal GPU-h | design after O3 | the PI's T2 spec; the tail-steered sampling idea is in RESEARCH_MAP section 5 |
 
 ## Dead ends
+- Fitting the tail better, any objective (closed 2026-10-23): log-amplitude L2 (refresh, 9.2e-5), decade-stratified (T1s/T1s-2, r(-11) plateau 0.07; 4x samples +5-12%), more steps/capacity (F1: -6% / -18% tax), the exact FN-relevant bond-ratio objective (F2-1: fits shown bonds, held-out flat). The tail is not learnable by these networks; route around it (hops), do not refit harder.
 - B0 PP+3x3bf VMC: SR from the converged PP gives no gain in 400 steps (lr 0.01: +2e-6 +- 1.1e-5; Paderborn 3806793); gradient not unit-tested.
 - (not dead, settled) S1 s1_17446338: oracle-free PP sign ceiling <= 7.0e-6 (3-6e-6 extrapolated); oracle-free s_1 ceiling 2.51e-6; oracle s_2 9.15e-7. Sign is not the binding constraint at 6x6; the refit tax (~6e-6) is. (number, run)
 - gamma-FN to free the energy from the tail: 26% of the gap removed, bar 50% (g0_17411369).

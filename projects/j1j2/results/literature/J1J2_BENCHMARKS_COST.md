@@ -180,3 +180,37 @@ All J1-J2 checkpoints are 10x10 only; I found no 6x6 or 8x8 checkpoints on the h
 - Hugging Face data: model cards, API listing and file sizes read on 2026-10-07 (nqs-models org).
 - Not found / not reported: GPU-hours for Chen-Heyl; CPU-hours for DMRG, PEPS, mVMC; any published 6x6/8x8/12x12/14x14/18x18 transformer energies with error bars; any NQS-guided GFMC for J1-J2 at 0.5.
 - Other related 2026 items seen but not used for numbers: arXiv:2608.21291 (review, Rigo et al.), arXiv:2607.02292 (RL view of NQS, 1024-sample/A100 benchmarks at J2 = 0.5, no records), Ferrari & Becca arXiv:2005.12941 (Gutzwiller + Lanczos, finite-size level crossings, not used for energies).
+
+## Bar for the loop at 8x8/10x10 (2026-10-23)
+
+Read-only literature step (no jobs). J2/J1 = 0.5, PBC, E/N in units of J1. "Rel" = (E - E_ref)/|E_ref| with E_ref: 6x6 ED -0.503810 (Schulz et al. 1996, quoted in arXiv:1304.2630); 8x8 Hu variance extrapolation -0.49906(1) (arXiv:1304.2630 Table IV; DMRG torus extrapolation -0.4992(1), arXiv:1311.5962, gives a different reference, so 8x8 Rel carries about 1.5e-4 of reference uncertainty); 10x10 Chen-Heyl zero-variance extrapolation -0.497715(9) (arXiv:2302.01941). Provenance: TEXT = number read in the paper text/table by me on 2026-10-23 (section/table named); EARLIER = read by the 2026-10-07 survey above, not re-read today; ABS = abstract/HTML summary only. Cost "not stated" means the paper gives no GPU-hours or wall time x devices; nothing is estimated unless marked "arithmetic".
+
+| L | Method (arXiv) | E/N (err) | Rel | Params | Stated training cost | Provenance |
+|---|---|---|---|---|---|---|
+| 6 | RBM+PP, Nomura-Imada (2005.14142) | -0.503765(1) | 8.9e-5 | 16 hidden units; count not stated at 6x6 | not stated (ISSP/K/Fugaku CPUs only, Acknowledgements) | TEXT Table 1 |
+| 6 | Deep CNN transfer stage, Liang et al. (2204.07816) | -0.5002 (no err), after 100 SR steps, not converged | 7.2e-3 | CNN1 106,529 | not stated (per-iteration timings on Sunway only) | TEXT Sec. 7.3.1 |
+| 6 | ResNet+MinSR, Chen-Heyl (2302.01941) | no E/N; infidelity vs ED only (Extended Data Fig. 2) | n/a | n/a | not stated | TEXT |
+| 6 | ViT+SRt, Sinibaldi et al. (2502.09725) | no E/N reported (paper is about magic, not energies) | n/a | 154,980 (Suppl. Table 1) | not stated; Ns = 8192, tau 1e-3, lambda 1e-4 | TEXT Suppl. II.6 |
+| 6 | ours, ViT (projects/j1j2/paper/main.tex) | -0.503654(21) | 3.1e-4 | ours | ours | EARLIER |
+| 8 | RBM+PP, Nomura-Imada (2005.14142) | -0.498886(1) (no sublattice; with 4x4 sublattice -0.498460(6)) | 3.5e-4 | 16 hidden units; count not stated | not stated (CPUs, no hours) | TEXT Table 1, App. B |
+| 8 | VMC p=2 Gutzwiller+Lanczos, Hu et al. (1304.2630) | -0.49886(1) | 4.0e-4 | 5 | not stated | EARLIER |
+| 8 | ViT, Sinibaldi et al. (2502.09725) | no E/N reported (SRE only) | n/a | 302,540 (8 layers, d = 60) | not stated | TEXT Suppl. II.6 |
+| 8 | ResNet/ViT scaling study, Rende et al. (2606.02794) | V-scores only, no E/N | n/a | n/a | about 1e5 A100-h for the whole study, no per-size split | TEXT Acknowledgements; EARLIER |
+| 8 | HQT (2607.00398) | -0.5001(1) | below bound, suspect | not stated | one RTX 5070 Ti, no time | ABS, treat as unreliable |
+| 8 | ours, ViT | -0.498823(35) | 4.7e-4 | ours | ours | EARLIER |
+| 10 | ResNet2+MinSR, Chen-Heyl (2302.01941; Nat. Phys. 20, 1476) | -0.4976921(4) | 4.6e-5 | >1e6 (ResNet2); ResNet1 64 layers 146,320 | not stated. Only a per-step benchmark on A100 80 GB (Extended Data Fig. 1; the "4 parallel A100" there is a timing test, not the run) | TEXT Abstract/Intro, Ext. Data Table 1 |
+| 10 | Deep ViT+SRt, Rende et al. (2310.05715; Commun. Phys. 2024) | -0.497634(1) | 1.6e-4 | 267,720 | "four days on twenty A100 GPUs" = 1,920 A100-h (arithmetic); M = 6000; 5000+5000+4000 steps after symmetry restoration | TEXT Table 1, Results "Numerical calculations" |
+| 10 | ViT checkpoint `symm_trxy_ising` (HF nqs-models/j1j2_square_10x10_05) | -0.497676335 (no err on card) | 7.8e-5 | 434,760 | 40 x A100-64GB, about 4 days = about 3,840 A100-h (arithmetic) | EARLIER (model card, not a paper) |
+| 10 | RBM+PP, Nomura-Imada (2005.14142) | -0.497629(1) | 1.7e-4 | 13,132 (Rende Table 1) | not stated (CPUs) | TEXT Table 2 of 2005.14142; params TEXT Table 1 of 2310.05715 |
+| 10 | Deep CNN (Sunway), Liang et al. (2204.07816) | -0.497468(1) | 5.0e-4 | 421,953 per Rende Table 1; Liang's own text names CNN1 = 106,529 for the 6 to 10 transfer, so which size gave -0.497468 is unresolved | not stated; Sunway up to 4e7 cores, scaling timings only | TEXT Sec. 7.3.1, 7; Rende Table 1 |
+| 10 | ConvNext, Nutakki et al. (2505.03466) | -0.497583(6) | 2.7e-4 | 2.6e5 | 8 x A100, hours not stated | EARLIER / ABS |
+| 10 | ours | not yet | | | | |
+
+No 2024-2026 paper I found gives a 6x6 or 8x8 deep-NQS energy with a stated cost. 2602.02665 (ViT-SA, 20x20 -0.496732(1)) states 25,000 GH200-h for the whole paper; 2609.40209 (foundation NQS inverse design) and 2605.13807 (parallel-scan RNN) contain no J1-J2 energy at these sizes (grep of the full text, no GPU-h for J1-J2); 2608.18065 (QGT-preconditioned RNN) has a J1-J2 row at an unstated size/J2 (E/N -0.485), not usable. I did not find a record beyond the table.
+
+Three lines.
+- 8x8: best accuracy is RBM+PP -0.498886(1), Rel 3.5e-4 vs Hu -0.49906(1); no 8x8 number anywhere has a stated GPU-h, so accuracy per GPU-h at 8x8 is undefined in the literature, and any 8x8 run of ours with stated GPU-h is a first cost data point.
+- 10x10: best accuracy per stated GPU-h is Rende, Rel 1.6e-4 at 1,920 A100-h (Rel x GPU-h = 0.31); the HF checkpoint is equal (7.8e-5 x 3,840 = 0.30); Chen-Heyl is the accuracy record (4.6e-5) with cost not stated.
+- Our loop must beat, at 10x10, E/N below -0.497634 (Rel 1.6e-4) in under 1,920 A100-h (Rel x GPU-h under 0.3), and -0.4976921 for the accuracy record; at 8x8, E/N below -0.498886(1) (ours is 6e-5 above), with whatever cost we state. No A100 to H100 conversion is measured, so quote our GPU type with the hours.
+
+Corrections to the survey above: (1) Sec. 2 "rule of thumb" says the 16x16 GCNN is 2e-3 from Chen-Heyl; from the tabulated values -0.496509(6) vs -0.4967163(8) it is 4.2e-4 (arithmetic). (2) arXiv:2502.09725 (Sinibaldi et al.) is a non-stabilizerness paper: it gives ViT parameter counts at 6x6 and 8x8 but no energies and no cost, so it is not an energy benchmark. (3) Chen-Heyl's 4-A100 figure is a timing test, not the training cost. Not checked: Hu 2013 and Gong 2014 numbers (EARLIER only), Chen-Heyl full text beyond abstract/intro/captions, Nutakki/PITQS/HQT beyond HTML summaries.

@@ -1847,3 +1847,17 @@ while this error stays.
 - Controls: brute-force c agrees to 1.2e-14; unsigned phi gives c = 1 exactly (the check can fail).
 - Reading: the energy-relevant error lives where opposite-sign neighbours cancel to ~5% (near a node), on frustrated
   (Marshall-violating) J1 bonds. The hop computes exactly this sum, which supports routing the tail through hops.
+
+## M1 + gate for the loop (approved by the PI 2026-10-23 17:40; plan: proposals/2026-10-23_next_major_calc_v2_final.md)
+Pre-registered before any run (lead):
+- G-A2 null control: splice the real residual (a_2 - phi_1, O2b round 1) into tail-only decades (<= -9) and bulk-only
+  (>= -8), exact elsewhere; tax_1, tax_2 per splice (sign s_2, H1 rules). Reading: tax_2/tax_1 lower for the tail
+  splice than the bulk splice by >= 1.5x -> the hop is tail-specific; within 1.2x -> the hop is a generic contractor.
+- G-N0c: the top-d^2 set of a smooth perturbation of phi_1 unrelated to the fit (matched bulk rms); its median c
+  against the reference. If it also sits <= 1/3 of the reference median, N0's 0.095 is partly by construction.
+- G-A3: fit-free two-hop chain from RBM+PP A, own sign (Re(e^{-i theta} psi)), 6 rounds: gain per round.
+- G-tax: one two-hop refit tax measured on RBM+PP (refit to the round-1 target from A + K_2 + FN), fixed steps and
+  time, held-out loss must fall.
+- Gate: run C only if G-A3's gain per round > 2 x G-tax. C's PASS as in the plan file.
+- M1.1: GFMC reproduces E_FN(A + 1 signed hop) = 5.57e-6 within 2 sigma, time-step and population bias measured,
+  two seeds, before any 8x8 number.

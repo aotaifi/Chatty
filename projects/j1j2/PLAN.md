@@ -29,6 +29,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
+| F2 arms C 3813945, D 3813947 (Paderborn H100 express, wall 4 h, setsid watchers -> VERDICT in delta_today.md) | chatty_compress6/runs/f2_{C,D} | README Test F2: min tax <= 3.0e-6 -> re-run O2b with the new objective; 3-4e-6 -> 5x5 + larger lambda_v once; > 4e-6 -> hidden-fermion rows or the hop-sign idea |
 
 ## Angles
 - conceptual (angle lead session, started 2026-10-22 at the PI's request): physics of the loop's blocks with the PI; plan file PLAN_conceptual.md, deliverable conceptual/MEMO.md (ranked hypotheses with kill tests). Acted on when closed or when it changes this plan (O3 design especially).

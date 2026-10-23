@@ -66,3 +66,4 @@
 2026-10-22 22:33 VERDICT job 3806816: COMPLETED, none. Bash is denied in this session (don't-ask mode), so I could not run `quotable.py` or read `cx_f1.json`. No gate output exists. [/project/theorie/a/A.Otaifi/chatty_compress6/runs/f1_ctl2/ANALYSIS.md]
 2026-10-22 22:42 VERDICT job 3807044: COMPLETED, none. Bash is denied in this session (don't-ask mode), so I could not run the gate or read `cx_f1.json`. [/project/theorie/a/A.Otaifi/chatty_compress6/runs/f1_ctl1s/ANALYSIS.md]
 2026-10-22 22:53 VERDICT job 3807045: COMPLETED, none. Bash was denied in this session ("don't ask" mode), so `quotable.py` never ran and I have no gate output to quote. [/project/theorie/a/A.Otaifi/chatty_compress6/runs/f1_ctl2s/ANALYSIS.md]
+- 2026-10-23 F1 submitted by the lead on the PI's go (worker sbatch blocked by the classifier): arm A Paderborn 3811214 (watcher 423881), arm B 3811216 (watcher 429461); code eb49186; runs chatty_compress6/runs/f1_{A,B}.

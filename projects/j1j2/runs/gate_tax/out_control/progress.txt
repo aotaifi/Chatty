@@ -1,0 +1,18 @@
+2026-10-23T18:02:27 PROGRESS [setup] im_weight(A) = 7.722e-27 (table_A.json, exact over all orbits)
+2026-10-23T18:02:35 PROGRESS [E_FN K_1(A)] 5.573833e-06 (lobpcg 29, res 7.0e-11, neg_w 0.0e+00, 7s)
+2026-10-23T18:02:42 PROGRESS [E_FN wrong hop 0.9 alpha (must fail)] 6.061593e-06 (lobpcg 29, res 7.0e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:02:42 PROGRESS CONTROL 2: K_1(A) variational 7.37979574e-06 vs 7.37979574e-06 (rel 1.3e-11); E_FN 5.57383323e-06 vs 5.57383323e-06 (rel 0.0e+00); broken hop E_FN 6.061593e-06 rel 8.8e-02 (fails: True) ok=True
+2026-10-23T18:02:42 PROGRESS [g_0 = K_2(A)] variational 2.48510697e-06 (lanczos p=2 2.48510697e-06, rel 4.0e-11) coeffs [1.0, -0.3807218490590523, 0.032076712676519264]  sign-flip weight vs A 8.292e-06
+2026-10-23T18:02:49 PROGRESS [E_FN g_0 = phi_0] 1.947417e-06 (lobpcg 29, res 6.1e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:02:55 PROGRESS [E_FN K_1(phi_0)] 7.988023e-07 (lobpcg 28, res 9.0e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:03:02 PROGRESS [E_FN K_2(phi_0)] 3.181795e-07 (lobpcg 28, res 9.9e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:03:02 PROGRESS [phi_0] t_setup 34s  E_FN(phi_0) 1.947417e-06  E_FN(K_1 phi_0) 7.988023e-07  E_FN(K_2 phi_0) 3.181795e-07
+2026-10-23T18:03:02 PROGRESS [fit setup] orbits per decade {'-5': {'train': 9, 'heldout': 4}, '-6': {'train': 160, 'heldout': 41}, '-7': {'train': 1885, 'heldout': 450}, '-8': {'train': 15505, 'heldout': 3886}, '-9': {'train': 74989, 'heldout': 18656}, '-10': {'train': 253343, 'heldout': 63593}, '-11': {'train': 640564, 'heldout': 160142}, '-12': {'train': 1242443, 'heldout': 310811}, '-13': {'train': 1897308, 'heldout': 473661}}
+2026-10-23T18:03:09 PROGRESS [wbar] [ 0.769  1.504  2.406  3.427  4.741  6.751  9.587 13.83  20.338]
+2026-10-23T18:03:11 PROGRESS [fit ctl0] start held-out loss 1.1486e-01
+2026-10-23T18:03:13 PROGRESS [fit ctl0b] start held-out loss 1.1485e-01
+2026-10-23T18:03:13 PROGRESS CONTROL 1: 0-step fit returns A: bitwise True, max|dlogA| on 4096 orbits 2.22e-15 (<1e-12), sign agree 1.0; broken max 5.15e-02 fails=True  ok=True
+2026-10-23T18:03:13 PROGRESS [fit fit] start held-out loss 1.1486e-01
+2026-10-23T18:03:36 PROGRESS   fit step 10: held-out 9.6625e-02  rms_e(-11) 0.07288216530955154  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.66  2.0s/step
+2026-10-23T18:03:36 PROGRESS [fit] 10 steps in 23s = 2.26 s/step (median 2.01); held-out 1.1486e-01 -> 9.6625e-02 (falls True), acceptance 1.00
+2026-10-23T18:03:36 PROGRESS DONE control stage 71s

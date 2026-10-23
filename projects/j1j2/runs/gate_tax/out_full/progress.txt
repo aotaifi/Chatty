@@ -1,0 +1,63 @@
+2026-10-23T18:09:03 PROGRESS [setup] im_weight(A) = 7.722e-27 (table_A.json, exact over all orbits)
+2026-10-23T18:09:12 PROGRESS [E_FN K_1(A)] 5.573833e-06 (lobpcg 29, res 7.0e-11, neg_w 0.0e+00, 7s)
+2026-10-23T18:09:18 PROGRESS [E_FN wrong hop 0.9 alpha (must fail)] 6.061593e-06 (lobpcg 29, res 7.0e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:09:18 PROGRESS CONTROL 2: K_1(A) variational 7.37979574e-06 vs 7.37979574e-06 (rel 0.0e+00); E_FN 5.57383323e-06 vs 5.57383323e-06 (rel 0.0e+00); broken hop E_FN 6.061593e-06 rel 8.8e-02 (fails: True) ok=True
+2026-10-23T18:09:19 PROGRESS [g_0 = K_2(A)] variational 2.48510697e-06 (lanczos p=2 2.48510697e-06, rel 4.0e-11) coeffs [1.0, -0.38072184905905626, 0.03207671267651988]  sign-flip weight vs A 8.292e-06
+2026-10-23T18:09:25 PROGRESS [E_FN g_0 = phi_0] 1.947417e-06 (lobpcg 29, res 6.1e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:09:32 PROGRESS [E_FN K_1(phi_0)] 7.988023e-07 (lobpcg 28, res 9.0e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:09:38 PROGRESS [E_FN K_2(phi_0)] 3.181795e-07 (lobpcg 28, res 9.9e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:09:38 PROGRESS [phi_0] t_setup 34s  E_FN(phi_0) 1.947417e-06  E_FN(K_1 phi_0) 7.988023e-07  E_FN(K_2 phi_0) 3.181795e-07
+2026-10-23T18:09:39 PROGRESS [fit setup] orbits per decade {'-5': {'train': 9, 'heldout': 4}, '-6': {'train': 160, 'heldout': 41}, '-7': {'train': 1885, 'heldout': 450}, '-8': {'train': 15505, 'heldout': 3886}, '-9': {'train': 74989, 'heldout': 18656}, '-10': {'train': 253343, 'heldout': 63593}, '-11': {'train': 640564, 'heldout': 160142}, '-12': {'train': 1242443, 'heldout': 310811}, '-13': {'train': 1897308, 'heldout': 473661}}
+2026-10-23T18:09:46 PROGRESS [wbar] [ 0.769  1.504  2.406  3.427  4.741  6.751  9.587 13.83  20.338]
+2026-10-23T18:09:48 PROGRESS [fit ctl0] start held-out loss 1.1486e-01
+2026-10-23T18:09:49 PROGRESS [fit ctl0b] start held-out loss 1.1485e-01
+2026-10-23T18:09:49 PROGRESS CONTROL 1: 0-step fit returns A: bitwise True, max|dlogA| on 4096 orbits 2.22e-15 (<1e-12), sign agree 1.0; broken max 5.15e-02 fails=True  ok=True
+2026-10-23T18:09:49 PROGRESS [fit fit] start held-out loss 1.1486e-01
+2026-10-23T18:10:12 PROGRESS   fit step 10: held-out 8.2583e-02  rms_e(-11) 0.07085949552684712  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.54  2.0s/step
+2026-10-23T18:10:32 PROGRESS   fit step 20: held-out 1.1801e-01  rms_e(-11) 0.06882073779796424  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.47  2.0s/step
+2026-10-23T18:10:52 PROGRESS   fit step 30: held-out 6.9372e-02  rms_e(-11) 0.06697599851056678  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.67  2.0s/step
+2026-10-23T18:11:12 PROGRESS   fit step 40: held-out 6.5761e-02  rms_e(-11) 0.06695077480925544  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.55  2.0s/step
+2026-10-23T18:11:33 PROGRESS   fit step 50: held-out 3.9050e-02  rms_e(-11) 0.06451016100115722  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.74  2.0s/step
+2026-10-23T18:11:53 PROGRESS   fit step 60: held-out 8.0440e-02  rms_e(-11) 0.061338402402536164  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.56  2.0s/step
+2026-10-23T18:12:13 PROGRESS   fit step 70: held-out 5.2908e-02  rms_e(-11) 0.0664935468687795  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.82  2.0s/step
+2026-10-23T18:12:33 PROGRESS   fit step 80: held-out 3.7024e-02  rms_e(-11) 0.06409369781640009  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.55  2.0s/step
+2026-10-23T18:12:53 PROGRESS   fit step 90: held-out 4.7425e-02  rms_e(-11) 0.06190014966399761  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.69  2.0s/step
+2026-10-23T18:13:14 PROGRESS   fit step 100: held-out 4.2707e-02  rms_e(-11) 0.06513447356199344  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.53  2.0s/step
+2026-10-23T18:13:34 PROGRESS   fit step 110: held-out 3.6333e-02  rms_e(-11) 0.06202840374970602  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.50  2.0s/step
+2026-10-23T18:13:54 PROGRESS   fit step 120: held-out 3.9280e-02  rms_e(-11) 0.058694189217546315  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.58  2.0s/step
+2026-10-23T18:14:14 PROGRESS   fit step 130: held-out 7.7247e-02  rms_e(-11) 0.061061502224224906  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.66  2.0s/step
+2026-10-23T18:14:34 PROGRESS   fit step 140: held-out 3.3528e-02  rms_e(-11) 0.060057445095079695  acc 0.90  lam_rel 2.0e-02  tau 0.0500 trust 0.73  2.0s/step
+2026-10-23T18:14:55 PROGRESS   fit step 150: held-out 3.5780e-02  rms_e(-11) 0.0650028114843979  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.98  2.0s/step
+2026-10-23T18:15:15 PROGRESS   fit step 160: held-out 3.4310e-02  rms_e(-11) 0.059224635995411966  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.75  2.0s/step
+2026-10-23T18:15:35 PROGRESS   fit step 170: held-out 7.4439e-02  rms_e(-11) 0.0591179117689796  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.66  2.0s/step
+2026-10-23T18:15:55 PROGRESS   fit step 180: held-out 3.2277e-02  rms_e(-11) 0.060161404743795575  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.65  2.0s/step
+2026-10-23T18:16:15 PROGRESS   fit step 190: held-out 3.0336e-02  rms_e(-11) 0.06080866015310669  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.63  2.0s/step
+2026-10-23T18:16:36 PROGRESS   fit step 200: held-out 5.9063e-02  rms_e(-11) 0.061371045759189106  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.68  2.0s/step
+2026-10-23T18:16:56 PROGRESS   fit step 210: held-out 9.4693e-02  rms_e(-11) 0.05910890754759063  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.50  2.0s/step
+2026-10-23T18:17:16 PROGRESS   fit step 220: held-out 4.0044e-02  rms_e(-11) 0.05845296106387923  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.56  2.0s/step
+2026-10-23T18:17:36 PROGRESS   fit step 230: held-out 3.6484e-02  rms_e(-11) 0.0588064507316263  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.64  2.0s/step
+2026-10-23T18:17:58 PROGRESS   fit step 240: held-out 5.0861e-02  rms_e(-11) 0.061210163601872314  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.95  2.0s/step
+2026-10-23T18:18:18 PROGRESS   fit step 250: held-out 3.7789e-02  rms_e(-11) 0.05876973578417257  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.76  2.0s/step
+2026-10-23T18:18:38 PROGRESS   fit step 260: held-out 9.3639e-02  rms_e(-11) 0.05692189470501289  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.56  2.0s/step
+2026-10-23T18:18:58 PROGRESS   fit step 270: held-out 5.2470e-02  rms_e(-11) 0.05852779997511645  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.95  2.0s/step
+2026-10-23T18:19:19 PROGRESS   fit step 280: held-out 6.6442e-02  rms_e(-11) 0.06044550647673202  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 1.00  2.0s/step
+2026-10-23T18:19:39 PROGRESS   fit step 290: held-out 5.5948e-02  rms_e(-11) 0.05821413182849436  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.64  2.0s/step
+2026-10-23T18:19:59 PROGRESS   fit step 300: held-out 3.8181e-02  rms_e(-11) 0.05951311881668731  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 1.00  2.0s/step
+2026-10-23T18:20:19 PROGRESS   fit step 310: held-out 2.9308e-02  rms_e(-11) 0.057017621194896874  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.60  2.0s/step
+2026-10-23T18:20:39 PROGRESS   fit step 320: held-out 6.1137e-02  rms_e(-11) 0.057545171429737224  acc 1.00  lam_rel 2.0e-02  tau 0.0500 trust 0.66  2.0s/step
+2026-10-23T18:20:59 PROGRESS   fit step 330: held-out 6.2733e-02  rms_e(-11) 0.05744621021954985  acc 1.00  lam_rel 1.0e-02  tau 0.0500 trust 0.74  2.0s/step
+2026-10-23T18:21:20 PROGRESS   fit step 340: held-out 6.7001e-02  rms_e(-11) 0.05791698086527101  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.56  2.0s/step
+2026-10-23T18:21:40 PROGRESS   fit step 350: held-out 3.5309e-02  rms_e(-11) 0.05979134999964066  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.71  2.0s/step
+2026-10-23T18:22:00 PROGRESS   fit step 360: held-out 5.9582e-02  rms_e(-11) 0.05913557024413911  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.65  2.0s/step
+2026-10-23T18:22:20 PROGRESS   fit step 370: held-out 3.2811e-02  rms_e(-11) 0.06121656543097101  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.59  2.0s/step
+2026-10-23T18:22:40 PROGRESS   fit step 380: held-out 4.3848e-02  rms_e(-11) 0.05954116454719366  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.70  2.0s/step
+2026-10-23T18:23:01 PROGRESS   fit step 390: held-out 7.4107e-02  rms_e(-11) 0.05355996133993169  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.54  2.0s/step
+2026-10-23T18:23:21 PROGRESS   fit step 400: held-out 2.8463e-02  rms_e(-11) 0.05904842837744104  acc 1.00  lam_rel 5.0e-03  tau 0.0500 trust 0.75  2.0s/step
+2026-10-23T18:23:22 PROGRESS [fit] 400 steps in 813s = 2.03 s/step (median 2.01); held-out 1.1486e-01 -> 2.8463e-02 (falls True), acceptance 1.00
+2026-10-23T18:25:22 PROGRESS   table 12311040/15804956  120s
+2026-10-23T18:25:57 PROGRESS [a_1] im_weight 4.402e-25; rms log error (phi_0-weighted) 0.0161; rms by decade -5:0.004 -6:0.005 -7:0.007 -8:0.011 -9:0.017 -10:0.031 -11:0.061 -12:0.129 -13:0.273
+2026-10-23T18:26:04 PROGRESS [E_FN a_1 zero hop (s_g0)] 2.148078e-05 (lobpcg 31, res 7.0e-11, neg_w 0.0e+00, 7s)
+2026-10-23T18:26:11 PROGRESS [E_FN K_1(a_1)] 5.906185e-06 (lobpcg 30, res 6.7e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:26:18 PROGRESS [E_FN K_2(a_1)] 1.974940e-06 (lobpcg 30, res 6.9e-11, neg_w 0.0e+00, 6s)
+2026-10-23T18:26:18 PROGRESS TAX tax_2 1.6568e-06 = E_FN(K_2 a_1) 1.974940e-06 - E_FN(K_2 phi_0) 3.181795e-07; tax_1 5.1074e-06; tax_0 1.9533e-05
+2026-10-23T18:26:18 PROGRESS VERDICT DONE 1037s tax_2 1.6568e-06 heldout_falls True im_weight_a1 4.40e-25

@@ -11,7 +11,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
   -> 1.7e-6, c = 0.32-0.64. The loop's map is fast and there is no wrong-node signature.
 - O2b (o2b_17431886): fitted loop 2.37e-5 -> 9.26e-6 at round 3 -> 8.42e-6 at round 5; PASS, viability FAIL (refit tax ~6e-6 every round).
 - S1: oracle-free signs allow 2.5e-6 (s_1) and <= 7e-6 (PP own); the refit, not the sign, binds at 6x6.
-- B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow; edge ~1.5x vs RBM+PP.
+- B0 closed (README 'Results: B0 pilots'): no resolvable VMC gain from 3x3 backflow.
+- CORRECTION 2026-10-23: the fair competitor is VMC RBM+PP + the same Lanczos steps + FN with its OWN sign: one step 5.57e-6, two steps <H> 2.49e-6, three 1.07e-6 (results/rbmpp_6x6/runs/table_A.json). It beats the fitted loop (8.4e-6). The earlier '1.5x edge' paired RBM+PP with the mismatched s_2 and is withdrawn. The loop's accuracy edge at 6x6 is NOT demonstrated.
 - F1 (Paderborn 3811214/6): the refit tax is not under-training (13x steps: -6%) and only partly capacity (5x5: -18%); the log-amplitude objective misses what FN uses.
 - F2: fitting the violating-bond ratios does not generalise (top 0.1% of bonds carry 55% of the error; held-out L_v flat). Step back: compute the tail at use time.
 - H1 (Paderborn 3818121): a second hop cuts the refit tax to 0.32x (1.90e-6 on O2b's table); derived two-hop loop floor ~2.5e-6.

@@ -20,6 +20,9 @@ A compact, interpretable ansatz built on one named mechanism (tens to hundreds o
 per site at exact 6x6 (within ~10x of the black-box record 2.3e-6, CNN-MPS arXiv:2603.14425), and whose mechanism
 parameter says something checkable at larger L (e.g. vison fugacity: spin liquid vs columnar VBS). An energy record
 alone is not the bar; a sign-structure law that does not lower the energy is not either.
+PI 2026-10-23: also (a) make the loop's node -> network -> repeat edge prominent and (b) work because it encodes the
+physics. Lead's reading: the stored part of the guide should be compact physics (few parameters, cheap refit) and the
+near-node detail computed by FN + hop. Best fit: C3 as the loop's guide; first loop test = FN energy of its sign.
 
 ## Working picture (hypothesis, not claim)
 Each of the three symmetric product sign rules cures two of the three bond families and frustrates the third:
@@ -162,6 +165,11 @@ compare E_Ritz - E0 at EQUAL S-rank k = 4..rank_max. Pass: at the largest common
 residual for all seeds. Kill: V residual >= 0.7 x R' for at least 2 of 3 seeds (clarified 2026-10-23 before any
 4x6 output). Pass earns a 6x6 VMC-sampled version (design then). Runtime: only the AA sector is optimised (from the
 4x4 optimum, <= 60 evaluations); other sectors at that point; Slurm CPU node, not ws1 (ws1 load 35-52 on 10 cores).
+#### C3-FN (2026-10-23, before any run): is the vison-dressed spin liquid's NODE good? (exact 4x4 now, 4x6 after C3-T0-1)
+Lattice FN energy (ten Haaf, guide = the state itself) with the sign of the best state of each span (0), (S), (V), (R/R')
+at equal rank; references: Marshall sign E_FN, and E_FN of (1 + aH) applied to the best (S) state.
+- Pass: E_FN(V) <= 0.3 x E_FN(R) and <= 0.3 x E_FN(Marshall). Kill: E_FN(V) >= E_FN(R).
+
 Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupled output psi = s_N e^f tanh(g)
 (node = smooth zero crossing) vs e^f x sign at equal capacity, exact 6x6 tail error and own-sign E_FN.
 

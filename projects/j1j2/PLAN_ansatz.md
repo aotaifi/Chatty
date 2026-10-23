@@ -176,6 +176,17 @@ E_FN(K_2 phi_0) 3.1818e-7); one seed, held-out loss jumpy (0.03-0.12), so match 
 So C2-L passes only if tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; kill if tax_B(2) >= 1.657e-6. Sign of the stored
 Phi: report both sign(Phi) and s_N (oracle-free).
 
+#### C2-L first result (theorie A40 17466020, ansatz_runs/c2l_6x6/run_17466020): s_N arm fails before any fit
+Control: E_FN(K_2 phi_0) 3.181795e-7 (G-tax 3.1818e-7). Phi at a = -0.0702 (H_J2, cond 5): W_M 5.76e-4 (phi_0 1.87e-2,
+32x cut), tail 0.092 vs 0.078. Exact |Phi| with s_N, no fit: tax_B(1) 7.35e-5, tax_B(2) 2.93e-5, 18x above the kill
+bar; the residual violating weight costs E_FN 4.5e-4 at zero hop. sign(Phi) arm: exact round trip tax 0, but sign(Phi)
+is not available at use time without storing a non-Marshall sign (the problem C2 was meant to remove); its fit (400
+steps at 16.7 s/step on A40 = 2.4 h, warm-start loss 14x worse than G-tax's) is not run.
+#### Amendment C2-L-0 (2026-10-23, before the run): exact Phi with s_N at stronger layers, no fit (<= 0.5 GPU-h)
+H_J2 and V_J2 at cond 5, 10, 30, 100 (a < 0): tax_B(1), tax_B(2) with exact |Phi| and s_N, W_M(Phi), tail weight.
+- Kill C2-L: min over cond of tax_B(2) >= 1.657e-6. Continue: tax_B(2) < 0.82e-6 at some cond -> the 400-step fit at
+  that cond (<= 3 GPU-h). Between: inconclusive, report.
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).

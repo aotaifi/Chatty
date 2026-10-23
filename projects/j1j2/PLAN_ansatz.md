@@ -157,6 +157,11 @@ Setup = gate G-tax (runs/gate_tax): target phi_1 = FN solution of K_2(RBM+PP A),
   ~half a full hop: 72 of 144 bonds).
 - Pass: tax_B(1) (1.5 hops) < the G-tax baseline tax at K_2 (2 hops), AND tax_B(2) < 0.82e-6 (loop gate C bar).
   Kill: tax_B(2) >= G-tax baseline tax at K_2.
+Baseline (loop lead, verified from raw JSON; runs/gate_tax, commit 52e7f76; gtax_full): RBM+PP (2480 params) refit
+to phi_0 = FN(K_2(A)), 400 fixed steps, B = 8208: tax_1 5.107e-6, tax_2 1.657e-6 (E_FN(K_2 a_1) 1.9749e-6 vs
+E_FN(K_2 phi_0) 3.1818e-7); one seed, held-out loss jumpy (0.03-0.12), so match steps and batch exactly.
+So C2-L passes only if tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; kill if tax_B(2) >= 1.657e-6. Sign of the stored
+Phi: report both sign(Phi) and s_N (oracle-free).
 
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN

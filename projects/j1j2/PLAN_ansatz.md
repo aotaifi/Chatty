@@ -60,11 +60,20 @@ sign-free state can never be exact, while a hop kernel can.
 - Pass leads to C2-T1: fit a positive network to log Phi vs the same network to log|psi0| (equal parameters, same
   objective), then E_FN and energy of (1 + aV) Phi_fit vs Phi_fit-free baselines.
 
+### C2-T0b at 6x6: is the pre-image effect specific to the frustrating J2 hop? (2026-10-23, before any run; <= 4 H100-h)
+4x4 at moderate conditioning (cond <= 3, |a| rho(K) <= 1/2), pre_4x4.json: V_J2 cuts W_M 68x (1.9e-4 vs 1.27e-2),
+V_J3 3.3x, V_J1 not at all (1.7e-2); V_J1 reaches 0 only at cond 19 (Perron dominance, trivial). So the honest
+metric is W_M at fixed cond, and the kernel must be V_J2 alone.
+Build: sector operators V_J1, V_J2 (bond-class neighbour tables in the 15.8M orbit basis); check: D0 + V_J1 + V_J2
+equals sec.H on 3 random vectors to rel 1e-12 (fails on a deliberately mis-scaled J2).
+- Pass: W_M(Phi_a; V_J2) at cond <= 3 is <= 0.1 W_M(psi0), AND V_J1 at cond <= 3 is >= 0.5 W_M(psi0) (specificity).
+- Kill: V_J2 at cond <= 3 >= 0.5 W_M(psi0). Else inconclusive. Also report the tail weight of Phi (p < 1e-9).
+
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| lit: landscape map | worker (Opus) -> ansatz/lit/LANDSCAPE.md | read; update candidates/gaps |
-| lit: novelty check C1-C4 | worker (Opus) -> ansatz/lit/NOVELTY.md | drop anticipated candidates |
+| C2-T0 6x6 (kernel V = H - diag) | worker, Paderborn H100 | PASS/INCONCLUSIVE: wait for C2-T0b; KILL: V_H mixes J1 smoothing, still run C2-T0b |
+| C2-T0b 6x6 (V_J2, V_J1 operators) | worker, Paderborn H100 | PASS -> C2-T1 full-sum VMC arms; KILL -> C2 dead, back to C3 |
 
 ## Dead ends
 - C1 global sign-rule interference (C1-T0 KILL, 2026-10-23, /scratch/a/A.Otaifi/ansatz_runs/c1_t0/c1_t0.json, code

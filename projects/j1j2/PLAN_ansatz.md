@@ -22,6 +22,16 @@ They are the only lattice-symmetric product rules on the square lattice, and s_N
 sits in an odd number of the three sets). Frustration = no rule cures all bonds. Exact data (T0-phys, t0phys_17410698):
 the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its J1 bonds violate Marshall.
 
+## Step back 2026-10-23 night (trigger: second failed C2 version: specificity only quantitative at 4x6, add-on fails at 4x4)
+1. Verdict: switch. C2 as an add-on layer is dead; C2 survives only as a jointly trained positive base + J2 layer,
+   tested once with a shared exact optimiser that also serves C5. C3 (vison sum) becomes the lead if C3-T0-1 passes.
+2. Thought: the sign-free pre-image Phi = (1 + a H_J2)^{-1} psi0 is far from |psi0| (a ~ -0.1 times the J2 diagonal,
+   up to +9 on Neel-like configurations, reweights them ~10x), so its existence says nothing about add-on value; on
+   existing bases the full-H Lanczos layer wins 4.5x/5.5x/1x (4x4, c2t1_4x4.json). Form-wise this is a non-diagonal
+   similarity transform (cf. Gutzwiller-transcorrelated FCIQMC, Dobrautz-Luo-Alavi PRB 99, 075119 (2019), diagonal only).
+3. Next: exact full-sum variational optimiser at 4x6 (2.7M configs; JAX on a ws1 GPU) with pluggable positive base
+   (Jastrow, RBM), layers (none, 1 + aH, 1 + aH_J2) and output forms (C5); C2-T2 and C5-T0 on it; ~2 h build + <= 2 GPU-h.
+
 ## Candidates (novelty check: worker -> ansatz/lit/NOVELTY.md; landscape: ansatz/lit/LANDSCAPE.md)
 | id | ansatz | physics it targets | first kill test | my prior |
 |---|---|---|---|---|
@@ -143,6 +153,9 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 | C3-T0-1 4x6 (vison span, rank-matched) | moving to a Slurm CPU node (worker) | PASS -> 6x6 VMC design; KILL -> C3 dead |
 
 ## Dead ends
+- C2 as an add-on layer (C2-T1 preview, 4x4, ansatz_runs/small/c2t1_4x4.json): E_FN with the H_J2 layer vs the
+  full-H layer on |psi0|-Marshall 6.9e-3 vs 1.6e-3, Marshall-FN 3.7e-3 vs 6.6e-4, no-J2-hop GS 1.6e-2 vs 1.6e-2
+  (product forms 1.4e-2). The J2 layer is not a useful add-on to existing sign-free states.
 - C1 global sign-rule interference (C1-T0 KILL, 2026-10-23, /scratch/a/A.Otaifi/ansatz_runs/c1_t0/c1_t0.json, code
   ansatz/code/c1_t0.py): Marshall-violation fraction is the same in every (s_N, s_X, s_Y) class at every psi0 decade
   (e.g. decade -11: K1 0.262, K2 0.257, K3+K4 0.274); R/R_null = 0.99. Cause: the rule classes are global sublattice

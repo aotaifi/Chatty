@@ -1738,3 +1738,32 @@ Two causes predict different cures: capacity (bigger network) or under-training 
   1e-10: float32 network, accepted). At 80 steps the two separate by 1.4% (roundoff amplified through the
   accept/reject chain): 1.4% is the resolution floor between arms, small against the 3.5e-6 / 4.5e-6 / 0.6x thresholds.
 - Steps in 10800 s: A ~2850 (36x O2b's 80), B ~2600.
+
+#### Results: F1 (Paderborn 3811214 arm A, 3811216 arm B; cx_f1.json in runs/f1_{A,B}; verified by the lead 2026-10-23) - neither time nor capacity: the objective
+| arm | steps (fit converged by its own rule) | tax | vs O2b round 1 (5.93e-6) | bond error total | E_FN(hop(a_2)) |
+|---|---|---|---|---|---|
+| A: 3x3, 13x O2b's steps | 1070 (stopped converged, 4004 s) | 5.60e-6 | -5.6% | 0.0518 | 1.055e-5 |
+| B: 5x5 | 230 (stopped converged, 948 s) | 4.58e-6 | -23% (0.82x A) | 0.0510 | 9.53e-6 |
+- Controls held (hop(phi_1) 4.951226e-6, rel 2e-11). Roundoff floor between arms 1.4% (F1-1).
+- Branch: "both > 4.5e-6" (B by 1.7%, about the roundoff floor; it is not near the 0.6 x A capacity bar either).
+  Under-training is ruled out (13x the steps buys 6%, and the fit's own held-out loss is flat); capacity helps 18%.
+- Reading: the fit converges on its objective (log-amplitude L2, decade-stratified) while the E_FN-relevant error stays.
+  The objective does not target what FN uses: the guide ratios on sign-violating bonds. Next: F2.
+- Lead's pre-run prediction: A 4.5-5.5e-6 (got 5.6), B 0.6-0.8 x A (got 0.82), ~40% on this branch.
+
+## Test F2: fit what fixed node uses (pre-registered 2026-10-23 12:10, lead; before any code or run; Paderborn H100, <= 3 H100-h)
+**Why.** In lattice FN (ten Haaf et al.) the guide enters E_FN only through the ratios psi_G(y)/psi_G(x) on
+sign-violating bonds (s(x) H_xy s(y) > 0), moved to the diagonal with weight |H_xy|. To first order the energy error
+is sum over violating bonds of phi(x)^2 |H_xy| (r_G(x,y) - r*(x,y)) / norm. F1 shows log-amplitude fits converge
+while this error stays.
+- **Objective (new):** the current loss plus lambda_v x L_v, L_v = sum over violating bonds (x,y) of
+  w_xy (log r_G(x,y) - log r_phi(x,y))^2, w_xy = phi_k(x) phi_k(y) |H_xy| (normalised); bonds sampled from the target
+  table in proportion to w. Walker-computable at scale: violating bonds appear in every local energy.
+- **Arms** (O2b round-1 setup as F1, budget 10800 s, the fit's own convergence rule): C = 3x3, lambda_v chosen so L_v
+  and the old loss are equal at step 0; D = 5x5, same lambda_v. Control: lambda_v = 0 reproduces F1 arm A at 80 steps.
+- **Decision:**
+  - min tax(C, D) <= 3.0e-6: the objective is the lever; re-run O2b with it (round tax ~3e-6 puts the fixed point
+    near tax / (1 - 0.34) ~ 4.5e-6, half the bar).
+  - 3.0e-6 < min tax <= 4.0e-6: partial; combine with the 5x5 and test a larger lambda_v once.
+  - > 4.0e-6: the ansatz class is the limit; next is hidden-fermion rows or the conceptual angle's hop-sign idea.
+- Lead's prediction: C 3.5-4.5e-6, D 3-4e-6; ~45% on the partial branch, ~30% on the lever branch.

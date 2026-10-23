@@ -43,6 +43,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 |---|---|---|
 
 ## Angles
+- ansatz-pioneer (angle lead session, started 2026-10-23 at the PI's request): find a genuinely new ansatz for frustrated magnets (landscape map, >= 3 candidates with novelty checks, cheap 4x4/6x6 tests); plan file PLAN_ansatz.md, deliverable ansatz/ANSATZ_MEMO.md; normal QoS on Paderborn.
 - conceptual (angle lead session, started 2026-10-22 at the PI's request): physics of the loop's blocks with the PI; plan file PLAN_conceptual.md, deliverable conceptual/MEMO.md (ranked hypotheses with kill tests). Acted on when closed or when it changes this plan (O3 design especially).
 
 ## Open questions

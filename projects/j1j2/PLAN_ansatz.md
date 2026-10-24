@@ -60,7 +60,6 @@ the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its 
 Live (>= 3, per the PI's guidance):
 | id | idea | decisive test | status |
 |---|---|---|---|
-| C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
 | C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
 | C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
@@ -276,10 +275,14 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| exact 4x6 optimiser, C2-T2, C5-T0 | worker (Opus), ws1 GPU | per the rules above |
-| C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
 
 ## Dead ends
+- C2-L store the J2 pre-image in the FN loop (C2-L-1 KILL, theorie A40 17468620/21, ansatz_runs/c2l_6x6/run_*,
+  verified): H_J2 cond 30, 400 fixed steps, two-hop tax (bar 1.657e-6, gate 0.82e-6): RBM+PP 3.41e-3 (cannot fit a
+  node-free target: rms 0.13 already at decade -5), positive RBM (2442 params) 5.66e-5; exact store 2.50e-7. The
+  positive RBM fits Phi's tail far better than G-tax fits phi_0 (rms at -13: 0.060 vs 0.273), but the layer magnifies
+  the storage error ~30x. Trade-off with no window at 6x6: node-free Phi needs cond >= 30 (cond 5: exact-store tax
+  already 2.9e-5), and cond 30 amplifies fit errors by ~cond. Held-out slopes 0.11% / 0.73% per 10 steps (< 1%).
 - C6b product of 2-site J2 gates as a non-unitary similarity (C6b-T0 KILL, ansatz_runs/c6b/c6b_4x4.json; first run
   void: inverse gates in the wrong order, residual 0.3, kept as c6b_4x4_buggy_order.json): sign exponent per site
   g(Ht(a)) >= g(H) = 0.383 for every a (0.497 at a = -0.25 where Phi is already exactly Marshall-positive; 27 at
@@ -317,5 +320,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): The frustrated ground state looks like a sign-free state plus one local J2 cancellation layer on 4x4 and 4x6; the exact 6x6 test is queued.
-- NEXT (open, medium): Test the J2 layer against the standard Lanczos layer on exact 6x6, and the spin-liquid vison sum at 4x6.
+- STATUS (in progress, medium): Eight ansatz ideas tested and killed on exact lattices; the data say the frustrated sign is made by a dynamical cancellation of exchange paths, so only hop-dressed networks capture it.
+- NEXT (open, medium): Adversarial review of the memo's conclusion, then close the angle with the memo and a handoff note.

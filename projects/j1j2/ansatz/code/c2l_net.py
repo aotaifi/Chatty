@@ -38,3 +38,33 @@ def make_net(params_npz, theta_ph):
     parts_j = jax.jit(lambda th, Sx: jax.vmap(lambda s_: parts_one(th, s_))(bits64(Sx)))
     jac_j = jax.jit(lambda th, Sx: jax.vmap(jax.grad(logA_one), in_axes=(None, 0))(th, bits64(Sx)))
     return dict(theta0=theta0, unravel=unravel, fwd_j=fwd_j, parts_j=parts_j, jac_j=jac_j, logA_one=logA_one, fns=fns)
+
+
+def make_rbm_net(params_npz, M=33, seed=0, init_scale=1e-2):
+    """C2-L-1 arm (ii): POSITIVE symmetrised RBM, no Pfaffian.  A(sigma) = sum_g |phi_RBM(z_g)| over the 576 images
+    (full space group x spin flip), phi_RBM = prod_k 2 cosh(b_k + z.W_k) with complex b, W (real params Re/Im).
+    Warm start: A's 16 RBM units (b, W from params_npz) + M-16 extra units drawn N(0, init_scale) (nonzero so their
+    gradients are nonzero).  Params: 2 M (N + 1) = 2442 for M = 33.  Sign is +1 everywhere (parts: [logA, 1, 0])."""
+    z = np.load(params_npz)
+    rng = np.random.default_rng(seed); M0 = z['bre'].shape[0]; ex = M - M0
+    p0 = {'bre': jnp.asarray(np.concatenate([z['bre'], init_scale * rng.standard_normal(ex)])),
+          'bim': jnp.asarray(np.concatenate([z['bim'], init_scale * rng.standard_normal(ex)])),
+          'Wre': jnp.asarray(np.concatenate([z['Wre'], init_scale * rng.standard_normal((N, ex))], 1)),
+          'Wim': jnp.asarray(np.concatenate([z['Wim'], init_scale * rng.standard_normal((N, ex))], 1))}
+    theta0, unravel = ravel_pytree(p0)
+    lat = Lattice(6, 0.5, 'full')
+    from c2l_rbmpp_lib import logcosh
+    IMG, FL = lat.IMG, lat.FL.astype(jnp.float64)
+
+    def logA_one(th, sigma):
+        p = unravel(th); b = p['bre'] + 1j * p['bim']; W = p['Wre'] + 1j * p['Wim']
+        Z = FL[:, None] * sigma[IMG]                       # (576, N) images
+        lr = jnp.real(jnp.sum(logcosh(b[None, :] + Z.astype(jnp.complex128) @ W), 1))
+        return jax.scipy.special.logsumexp(lr)
+
+    def parts_one(th, sigma):
+        return jnp.stack([logA_one(th, sigma), jnp.ones(()), jnp.zeros(())])
+    fwd_j = jax.jit(lambda th, Sx: jax.vmap(lambda s_: logA_one(th, s_))(bits64(Sx)))
+    parts_j = jax.jit(lambda th, Sx: jax.vmap(lambda s_: parts_one(th, s_))(bits64(Sx)))
+    jac_j = jax.jit(lambda th, Sx: jax.vmap(jax.grad(logA_one), in_axes=(None, 0))(th, bits64(Sx)))
+    return dict(theta0=theta0, unravel=unravel, fwd_j=fwd_j, parts_j=parts_j, jac_j=jac_j, logA_one=logA_one, fns=None)

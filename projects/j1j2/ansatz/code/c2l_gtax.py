@@ -20,7 +20,7 @@ import numpy as np
 import scipy.linalg as sl
 from c2l_cx_lib import *
 import sector_ops as OPS
-from c2l_net import make_net
+from c2l_net import make_net, make_rbm_net
 
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 F = os.path.join(OUT, 'cx_gtax.json'); PROG = os.path.join(OUT, 'progress.txt'); T00 = time.time()
@@ -69,9 +69,10 @@ def norm_la(la):
 
 
 laA = norm_la(laA)
-net = make_net(SPEC['params'], THETA_PH); theta0 = net['theta0']; NPAR = int(theta0.size)
+ARM = SPEC.get('arm', 'rbmpp')
+net = (make_rbm_net(SPEC['params'], M=int(SPEC.get('M', 33)), seed=SEED) if ARM == 'rbm' else make_net(SPEC['params'], THETA_PH)); theta0 = net['theta0']; NPAR = int(theta0.size)
 FCH, JCH, TCH = 512, 64, 512
-res['npar'] = NPAR; res['theta_phase'] = THETA_PH
+res['npar'] = NPAR; res['arm'] = ARM; res['theta_phase'] = THETA_PH
 
 
 def _pad(Sx, ch):
@@ -247,6 +248,10 @@ for cnd in (1.5, 2.0, 3.0, 5.0):
     if best is None or rec['W_M'] < best[0]['W_M']: best = (rec, Phi)
     del Phi
 rec, Phi = best; A_ = rec['a']; Phi = Phi / jnp.linalg.norm(Phi)
+if SPEC.get('cond_fixed'):                                   # Amendment C2-L-1: Phi at a fixed cond (a < 0)
+    del Phi; cnd = float(SPEC['cond_fixed']); A_ = (cnd - 1) / (lmin - cnd * lmax)
+    Phi, nit, rel = cg(lambda x: x + A_ * HJ2(x), v_phi0); Phi = Phi / jnp.linalg.norm(Phi)
+    rec = dict(a=A_, cond=(1 + A_ * lmin) / (1 + A_ * lmax), cg_iters=nit, rel_resid=rel, W_M=WM(Phi), tail_w=tail(Phi), fixed=True)
 res['Phi'] = dict(rec, by_decade=by_dec(Phi), W_M_over_W_M_phi0=rec['W_M'] / res['W_M_phi0']); dump(F, res)
 progress(f'[Phi] a = {A_:.6f} cond {rec["cond"]:.3f}: W_M {rec["W_M"]:.4e} (phi_0 {res["W_M_phi0"]:.4e}) tail {rec["tail_w"]:.4e} (phi_0 {res["tail_phi0"]:.4e})')
 gN = float(jnp.sign(jnp.sum(Phi * sN)))
@@ -477,8 +482,13 @@ c1a = ctl1_check(r0['theta'], 'fit code, 0 steps')
 c1a['theta_bitwise_equal_A'] = bool(np.array_equal(np.asarray(r0['theta']), np.asarray(theta0)))
 pert = theta0 + 1e-6 * jax.random.normal(jax.random.PRNGKey(5), theta0.shape, jnp.float64)
 c1b = ctl1_check(run_fit(pert, 0, 'ctl0b')['theta'], 'broken: theta perturbed by 1e-6 (must FAIL)')
-res['control1'] = dict(zero_steps=c1a, broken=c1b, ok=bool(c1a['max_abs_dev_after_offset'] < 1e-12 and c1a['theta_bitwise_equal_A'] and c1a['sign_agree_512'] == 1.0),
-                       broken_fails=bool(c1b['max_abs_dev_after_offset'] >= 1e-12)); dump(F, res)
+if ARM == 'rbm':      # positive-RBM arm: warm start is A's RBM factor, not A; control = 0 steps returns theta0, perturbation changes logA
+    dpert = float(jnp.max(jnp.abs(fwd(pert, sec.reps[I4]) - fwd(theta0, sec.reps[I4]))))
+    res['control1'] = dict(zero_steps=c1a, broken=c1b, arm='rbm', pert_max_dlogA=dpert, ok=bool(c1a['theta_bitwise_equal_A']),
+                           broken_fails=bool(dpert >= 1e-12)); dump(F, res)
+else:
+    res['control1'] = dict(zero_steps=c1a, broken=c1b, ok=bool(c1a['max_abs_dev_after_offset'] < 1e-12 and c1a['theta_bitwise_equal_A'] and c1a['sign_agree_512'] == 1.0),
+                           broken_fails=bool(c1b['max_abs_dev_after_offset'] >= 1e-12)); dump(F, res)
 progress(f'CONTROL 1: 0-step fit returns A: bitwise {c1a["theta_bitwise_equal_A"]}, max|dlogA| on 4096 orbits {c1a["max_abs_dev_after_offset"]:.2e} (<1e-12), '
          f'sign agree {c1a["sign_agree_512"]}; broken max {c1b["max_abs_dev_after_offset"]:.2e} fails={res["control1"]["broken_fails"]}  ok={res["control1"]["ok"]}')
 if not (res['control1']['ok'] and res['control1']['broken_fails']): ctl_fail('control 1')

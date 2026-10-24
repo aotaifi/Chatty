@@ -1,5 +1,5 @@
 # Ansatz pioneer: what captures frustration in the J1-J2 ground state (J2/J1 = 0.5)
-Angle lead, 2026-10-23/24. Draft; C2-L pending. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
+Angle lead, 2026-10-23/24. Draft for adversarial review. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
 
 ## Bottom line
 In every exact test (4x4, 4x6, 6x6) the sign of the frustrated ground state is made by a local, dynamical
@@ -10,9 +10,12 @@ The one robust positive fact is about the ground state alone. Undo the J2 exchan
 or a product of 2-site gates) and the pre-image is exactly Marshall-positive (4x4 both forms; 6x6 loop target with the
 additive form at strong layers, cond >= 30).
 So the frustration is "one J2 step" deep, but only as a computed operation, never as a stored or static one.
-Recommendation: the right ansatz class is "stored smooth part + computed cancellation" (Krylov/hop-dressed networks),
-which is what the FN loop already is. The open question is only what to store. C2-L tests the best candidate
-(a Marshall-positive J2 pre-image).
+Storing that pre-image in the FN loop fails for a quantitative reason (C2-L): the pre-image is node-free only at a
+strong layer (cond 30 at 6x6), and the layer then magnifies storage errors ~30x (two-hop tax 5.7e-5 vs bar 1.66e-6,
+although the network fits the pre-image's tail 4.5x better than the loop fits its own target).
+Recommendation: frustration's sign is a computed, not a stored, object. The right class is "stored smooth part +
+computed cancellation" (hop/Krylov-dressed networks), which the FN loop already is; improve what is stored with the
+best literature network rather than with a new sign structure.
 
 ## Landscape (details and evidence: lit/LANDSCAPE.md; novelty checks: lit/NOVELTY.md)
 | family | builds in | structurally cannot / measured | best 6x6 (per site above ED unless rel.) |
@@ -48,14 +51,15 @@ J2 ~ 0.5; PSG inside NQS; sums over flux sectors.
 | C5 | amplitude-sign coupled output e^f tanh(g) | generic | ratios 0.73/1.30/0.97 vs standard (4x6) | parked |
 | C6 | psi0 = (1 + a H_J2) GS(H_p), H_p stoquastic | novel construction | no stoquastic parent; dressing amplifies parent error | dead |
 | C6b | 2-site J2 gates as non-unitary similarity | novel | sign exponent never below H's | dead |
-| C2-L | store the Marshall-positive J2 pre-image in the FN loop | loop-specific | exact store: two-hop tax 2.5e-7 < gate 0.82e-6 (cond 30); fit: PENDING | pending |
+| C2-L | store the Marshall-positive J2 pre-image in the FN loop | loop-specific | exact store 2.5e-7; fitted 5.7e-5 (positive RBM), 3.4e-3 (RBM+PP); bar 1.66e-6 | dead |
 
 ## Ranked recommendation (my view)
-1. (pending C2-L) If a network can store the cond-30 pre-image within the loop gate (two-hop tax < 0.82e-6 vs RBM+PP
-   1.657e-6), adopt "store the J2 pre-image, apply the J2 layer and hops at use time" as the loop's storage. It puts
-   the frustration in an explicit operator and the network on a node-free target. Scaling caveat: the additive
-   layer's grip fades with N, so at 8x8+ the product-of-gates form is needed (its pre-image is exactly positive at
-   4x4 for a <= -0.25; untested beyond).
-2. Use the literature's best storage (CNN + MPS backflow, 2603.14425) as the loop's refit network before inventing
-   new ones: it is the only family at 2e-6 on 6x6.
-3. Do not spend more on static sign structure (rules, partons, frames, parents, similarities): seven kills say why.
+1. Keep the frustration computed: the loop's hops and FN are the only constructions that represent the near-node
+   cancellation; no static sign structure tested here does (seven kills), and storing a sign-free pre-image trades the
+   tail for error amplification (C2-L).
+2. Improve the stored part with the literature's best storage (CNN + MPS backflow, arXiv:2603.14425, 2.3e-6 at 6x6)
+   as the loop's refit network, and test it with the G-tax protocol (tax_2 < 0.82e-6).
+3. Physics worth keeping (memo-level, not yet a paper claim): the J2 pre-image of the frustrated ground state is
+   exactly Marshall-positive at 4x4 and at strong layers on 6x6, and the fraction of Marshall-violating weight rises
+   to 1/2 in the deep tail. Both say the sign is "one J2 exchange deep" but only as a dynamical operation.
+4. Do not spend more on static sign structure (rules, partons + visons, frames, parents, similarities).

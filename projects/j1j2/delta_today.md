@@ -194,3 +194,5 @@
 2026-10-24 12:59 VERDICT job 3833003: COMPLETED, none (gate not run) [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s2/ANALYSIS.md]
 2026-10-24 12:59 VERDICT job 3833002: COMPLETED, not obtained. The gate was not run, so there is no gate verdict and no E_FN number to quote. [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s1/ANALYSIS.md]
 - 2026-10-24 13:10 M1.3b analysed by the lead (gfmc8_analyze.py; the job_finish auto-analyses all failed on denied Bash): FN p=0 -0.4987565(28) QUOTABLE 0.4 H100-h; FN p=1 -0.4989486(68) NOT QUOTABLE (binning rising), 4.2 H100-h; VMC p=0 -0.498674(12), p=1 -0.498923(17); p=0 bias scans flat. Figures results/m1_8x8/.
+2026-10-24 13:40 VERDICT job 3833008: COMPLETED, none. I ran no valid gate, because it needs two independent chains and only this one is present. [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s3_M0064_dt0.1/ANALYSIS.md]
+- 2026-10-24 M1.3b p=1 population check (3833008, M 64, seed 3): -0.4989467 +- 1.4e-5 vs M 256 -0.4989486 +- 6.8e-6 (0.1 sigma): no population bias visible. Directory move (CLEANUP_ACTIONS row 16/F): worktree now Chatty/organize, runs under Chatty/runs/<name>; old paths in docs and launchers being rewritten.

@@ -28,3 +28,8 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 - Workers: Sonnet for routine jobs, Opus for design-heavy ones; brief them with the state-of-the-art method and ask for convergence evidence.
 - Delete run data on ws1 only if the quota is critical; other campaigns' data: ask their owner session (e.g. ruby_runs).
 - Research Workspace (thread 0cc53438..., server on ws1 at 127.0.0.1:18002, client in ~/agent-workspace-pilot/clients/python, scripts in ws1:~/chatty_admin) as researcher.chatty: read at checkpoints, post concise findings and questions; never poll.
+
+## Directory layout changed 2026-10-24
+Read the section "Where everything lives now" in AGENTS.md first. Short form: all former `chatty_*` dirs are `Chatty/runs/<name>/`,
+`~/chatty_admin` is `Chatty/admin/` (the "scripts in ws1:~/chatty_admin" above means that directory now), and this worktree lives at
+`Chatty/organize/` with `~/Chatty-organize` kept as a symlink. Old-to-new paths: `Chatty/runs/PATHS_MOVED.tsv`.

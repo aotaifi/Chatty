@@ -241,6 +241,21 @@ projector governs the average sign). Reference g(H). Scan a over values where ev
   of Ht (off-diagonal weight versus Hamming distance), since a quasi-local Ht is what makes GFMC possible.
 Check: a = 0 gives g(H); g(M) = 0 for M = H at J2 = 0 (Marshall-stoquastic).
 
+### Amendments after the adversarial review (2026-10-24, ansatz/REVIEW_adversarial.md; before any rerun)
+Review verdicts: C1, C2 add-on (run at 4x4, registered for 6x6), C2-T2, C2-L, C6b SOUND; C6 FLAWED; C3, C4, C5 WEAK.
+- C6-T0b (fixes the min-variance criterion; exact 4x4, CPU minutes): optimise the stoquastic couplings (all of them
+  free, normalised by |c| = 1, so -H_J2 is reachable) directly for the dressed state's E_var, (1 + a' H_J2) GS(H_p),
+  Powell/Nelder-Mead from 5 starts incl. the C6-T0 parents and -H_J2 + H_J1. Pass: dressed E_var <= 0.5 x the
+  dressed-Marshall-FN baseline (4.17e-3 at 4x4); kill: >= baseline. Pass earns the 4x6 version.
+- C3-T0-2 (fixes the control's advantage; 4x6, <= 1 CPU-node-hour): converge the AA base (<= 400 evaluations), add
+  the 3 parameter-derivative states of the base to (S) so both arms start from a repaired base, then V vs R' at equal
+  rank with the greedy step that only takes new directions, to the largest common rank. Rule as C3-T0-1.
+- C5-T0 continuation (<= 2 A40-h): continue all C5 arms from their checkpoints to |dE| < 1e-8/site per 500 steps or
+  6000 steps, complete 3 seeds for R1, R2. Rule as C5-T0.
+- C4 stays "dead at 4x4, untested at 4x6" (low value). C2-L kill stands; its mechanism is corrected: the positive
+  RBM's fit is 2-2.4x worse than G-tax in the bulk (decades -8, -10) and better only at -12, -13; amplification by the
+  layer and bulk misfit are not separated.
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -282,7 +297,8 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   node-free target: rms 0.13 already at decade -5), positive RBM (2442 params) 5.66e-5; exact store 2.50e-7. The
   positive RBM fits Phi's tail far better than G-tax fits phi_0 (rms at -13: 0.060 vs 0.273), but the layer magnifies
   the storage error ~30x. Trade-off with no window at 6x6: node-free Phi needs cond >= 30 (cond 5: exact-store tax
-  already 2.9e-5), and cond 30 amplifies fit errors by ~cond. Held-out slopes 0.11% / 0.73% per 10 steps (< 1%).
+  already 2.9e-5); at cond 30 the fit's bulk misfit (2-2.4x G-tax's) and the layer's amplification are not separated.
+  Held-out slopes 0.11% / 0.73% per 10 steps (< 1%).
 - C6b product of 2-site J2 gates as a non-unitary similarity (C6b-T0 KILL, ansatz_runs/c6b/c6b_4x4.json; first run
   void: inverse gates in the wrong order, residual 0.3, kept as c6b_4x4_buggy_order.json): sign exponent per site
   g(Ht(a)) >= g(H) = 0.383 for every a (0.497 at a = -0.25 where Phi is already exactly Marshall-positive; 27 at
@@ -320,5 +336,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Eight ansatz ideas tested and killed on exact lattices; the data say the frustrated sign is made by a dynamical cancellation of exchange paths, so only hop-dressed networks capture it.
-- NEXT (open, medium): Adversarial review of the memo's conclusion, then close the angle with the memo and a handoff note.
+- STATUS (in progress, medium): Eight structured ansatz ideas tested on exact lattices, five kills sound and three being re-tested after an adversarial review; none beats the baselines so far.
+- NEXT (open, medium): Re-test the three weak kills (spin-liquid vison sum, unfrustrated parent, coupled output), then close the angle with the memo.

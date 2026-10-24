@@ -1,21 +1,17 @@
 # Ansatz pioneer: what captures frustration in the J1-J2 ground state (J2/J1 = 0.5)
-Angle lead, 2026-10-23/24. Draft for adversarial review. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
+Angle lead, 2026-10-23/24. Draft, revised after the adversarial review (REVIEW_adversarial.md); three re-tests running. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
 
 ## Bottom line
-In every exact test (4x4, 4x6, 6x6) the sign of the frustrated ground state is made by a local, dynamical
-cancellation of J1 and J2 exchange paths, not by any static structure. Seven structural candidates were killed by
-pre-registered tests: global sign rules, Z2 partons dressed by visons, rotated local frames, an unfrustrated parent,
-stoquastic non-unitary similarities, and J2 layers used as add-on or as a trained variational layer.
-The one robust positive fact is about the ground state alone. Undo the J2 exchange (an inverse J2 operator, additive
-or a product of 2-site gates) and the pre-image is exactly Marshall-positive (4x4 both forms; 6x6 loop target with the
-additive form at strong layers, cond >= 30).
-So the frustration is "one J2 step" deep, but only as a computed operation, never as a stored or static one.
-Storing that pre-image in the FN loop fails for a quantitative reason (C2-L): the pre-image is node-free only at a
-strong layer (cond 30 at 6x6), and the layer then magnifies storage errors ~30x (two-hop tax 5.7e-5 vs bar 1.66e-6,
-although the network fits the pre-image's tail 4.5x better than the loop fits its own target).
-Recommendation: frustration's sign is a computed, not a stored, object. The right class is "stored smooth part +
-computed cancellation" (hop/Krylov-dressed networks), which the FN loop already is; improve what is stored with the
-best literature network rather than with a new sign structure.
+None of the physics-structured ansatze tested here captures the sign of the frustrated ground state better than
+the baselines: global sign rules, Z2 partons dressed by visons, rotated local frames, an unfrustrated parent,
+stoquastic non-unitary similarities, and J2 layers (add-on, trained, or as a stored pre-image in the FN loop).
+Five kills are sound per an independent review; three (C3 vison sum, C6 parent, C5 coupled output) rested on
+tests that could not fairly succeed and are being re-tested. Black-box learned signs do capture it (CNN + MPS,
+2.3e-6/site at 6x6, arXiv:2603.14425), so the claim is about these structures, not about stored signs in general.
+Two exact facts survive: (i) Marshall violations are local and their fraction rises to ~1/2 in the deep tail;
+(ii) undoing the J2 exchange removes them: the pre-image is exactly Marshall-positive at 4x4 at moderate layers
+(cond 5.4) and at 6x6 only near singular layers (cond >= 30, the regime the plan calls near-trivial), with J2
+2-26x more effective than J1. Storing that pre-image in the loop fails (two-hop tax 5.7e-5 vs bar 1.66e-6).
 
 ## Landscape (details and evidence: lit/LANDSCAPE.md; novelty checks: lit/NOVELTY.md)
 | family | builds in | structurally cannot / measured | best 6x6 (per site above ED unless rel.) |
@@ -54,12 +50,11 @@ J2 ~ 0.5; PSG inside NQS; sums over flux sectors.
 | C2-L | store the Marshall-positive J2 pre-image in the FN loop | loop-specific | exact store 2.5e-7; fitted 5.7e-5 (positive RBM), 3.4e-3 (RBM+PP); bar 1.66e-6 | dead |
 
 ## Ranked recommendation (my view)
-1. Keep the frustration computed: the loop's hops and FN are the only constructions that represent the near-node
-   cancellation; no static sign structure tested here does (seven kills), and storing a sign-free pre-image trades the
-   tail for error amplification (C2-L).
+1. Keep the frustration computed in the loop (hops + FN); none of the structured signs tested here helps it, and a
+   stored sign-free pre-image fails the loop gate (C2-L; bulk misfit and layer amplification not separated).
 2. Improve the stored part with the literature's best storage (CNN + MPS backflow, arXiv:2603.14425, 2.3e-6 at 6x6)
    as the loop's refit network, and test it with the G-tax protocol (tax_2 < 0.82e-6).
 3. Physics worth keeping (memo-level, not yet a paper claim): the J2 pre-image of the frustrated ground state is
    exactly Marshall-positive at 4x4 and at strong layers on 6x6, and the fraction of Marshall-violating weight rises
    to 1/2 in the deep tail. Both say the sign is "one J2 exchange deep" but only as a dynamical operation.
-4. Do not spend more on static sign structure (rules, partons + visons, frames, parents, similarities).
+4. Pending the three re-tests, do not spend more on structured signs (rules, frames, similarities are soundly dead).

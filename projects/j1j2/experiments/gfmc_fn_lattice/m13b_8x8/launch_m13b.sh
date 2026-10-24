@@ -25,23 +25,30 @@ SSH="ssh -o BatchMode=yes -o HostName=login4"; SL=/opt/software/slurm/25.11.8-1/
 RUNS=$RB/runs/$TAG
 # ---- chain table: name p seed M dtau blocks burn walltime_h  (blocks counted after burn; burn = 10 tau at least)
 # SIZING_TABLE_BEGIN
+# Sizing from the pilots of 2026-10-24 (H100; pilot parameters pilot8_long; jobs 3831879 VMC, 3832040 p=0, 3832041 p=1):
+#   p=0: 0.0038 s/walker-tau, sigma_walker/N 5.9e-3, tau_int 0.75 blocks (dtau 0.1); p=1: 0.52 s/walker-tau, sigma_walker/N 2.8e-3, tau_int 1.3 blocks;
+#   VMC 0.13 ms/eval, 20 s per sweep of 1024 chains (147 evals per sample), E_1 error 4.4e-5 per site from 32k samples.
+#   error^2 = sigma_w^2 * 2 tau_int_blocks / (walker-blocks).  Targets: GFMC 1e-5 (p=1, two chains) and ~4e-6 (p=0); VMC E_1 ~2e-5.
+#   Cost (H100-h): V 1.1, A 0.5, B 4.2 (burn 15 tau = 0.55 h of each chain), X 1.5; total about 7.3 (budget 10).  The production parameters
+#   will have a different sigma_walker: the first chains' progress lines give it; if the error is off by a factor f, cost scales by f^2.
 case $STAGE in
 T) VMC="--chains 64 --sweeps 4 --stageA_sweeps 4 --stageA_chains 64 --therm 20 --seeds 1,2"; VWH=1
    CHAINS="
 p0_s9 0 9 64 0.2 3 2 1
 p1_s9 1 9 32 0.2 3 2 1";;
-V) VMC="--chains 1024 --sweeps 40 --seeds 1,2"; VWH=2; CHAINS="";;
+V) VMC="--chains 1024 --sweeps 80 --seeds 1,2"; VWH=3; CHAINS="";;
 A) CHAINS="
-p0_s1 0 1 1024 0.2 400 50 3
-p0_s2 0 2 1024 0.2 400 50 3";;
+p0_s1 0 1 1024 0.1 2000 100 1
+p0_s2 0 2 1024 0.1 2000 100 1";;
 B) CHAINS="
-p1_s1 1 1 256 0.2 400 50 6
-p1_s2 1 2 256 0.2 400 50 6";;
+p1_s1 1 1 256 0.1 420 150 4
+p1_s2 1 2 256 0.1 420 150 4";;
 X) CHAINS="
-p0_s3_M0256_dt0.2 0 3 256 0.2 800 50 2
-p0_s3_M4096_dt0.2 0 3 4096 0.2 100 50 3
-p0_s3_M1024_dt0.1 0 3 1024 0.1 800 100 3
-p0_s3_M1024_dt0.4 0 3 1024 0.4 200 25 3";;
+p0_s3_M0256_dt0.1 0 3 256 0.1 4000 100 1
+p0_s3_M4096_dt0.1 0 3 4096 0.1 300 100 1
+p0_s3_M1024_dt0.2 0 3 1024 0.2 1000 50 1
+p0_s3_M1024_dt0.4 0 3 1024 0.4 500 25 1
+p1_s3_M0064_dt0.1 1 3 64 0.1 600 150 2";;
 *) echo "bad stage"; exit 1;; esac
 # SIZING_TABLE_END
 run() { if [ "$GO" = 1 ]; then eval "$@"; else echo "DRY: $*"; fi; }

@@ -315,6 +315,9 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   Jastrow sits 1.16% above E0 against my 1% bar; scipy BFGS gives the same optimum, so the bar was wrong, not the tool.
 - C5 amplitude-sign coupled output (C5-T0 INCONCLUSIVE, parked; jobs 17469983/4): coupled/standard E_var 0.73 (R1),
   1.30 (R2, one seed), 0.97 (R4, within seed spread 3e-4); no consistent advantage, pass needed <= 0.5.
+- C3 re-test after review (C3-T0-2 KILL, C3-FN KILL; cip 17470728, ansatz_runs/c3_t0_2_4x6, verified VERDICT line):
+  base was already converged (overlap 0.8889297 at 60 and 111 evaluations); derivative states move (S) only 5.28e-3 ->
+  5.23e-3; at rank 24, V 6.36e-4 vs R' 2.8/4.1/3.3e-4 (V/R' 1.55-2.29); E_FN V 4.0e-4 vs R' 1.9-2.8e-4. Kill sound.
 - C3 vison-dressed Z2 spin liquid (C3-T0-1 KILL, C3-FN KILL at 4x6; theorie jobs 17463650, 17465189; ansatz_runs/
   c3_t0_4x6, c3_fn_4x6; verified VERDICT line): at equal rank 20, vison span E_var 7.36e-4 vs random no-flux
   perturbations of the same bonds 4.1/5.7/4.3e-4 (V/R' 1.3-1.8); E_FN 4.6e-4 vs 2.7-3.9e-4. Flux fluctuations carry

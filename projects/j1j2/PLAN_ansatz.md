@@ -52,7 +52,7 @@ Live (>= 3, per the PI's guidance):
 | C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
 | C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
 | C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
-| C6 | unfrustrated parent + J2 dressing: psi0 = (1 + a H_J2) GS(H_p), H_p local and stoquastic | C6-T0 (4x4, 4x6) | starting |
+| C6b | product of 2-site J2 gates as a non-unitary similarity: is K^{-1} H K (nearly) stoquastic? | C6b-T0 (4x4) | starting |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
 refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
 Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
@@ -223,6 +223,15 @@ test whether it is (nearly) stoquastic in the Marshall frame, which would make p
 - Pass (4x6): stoquastic parent with dressed E_var - E0 <= 1e-3/site (7x below Marshall-FN). Kill: dressed state no
   better than (1 + aH_J2) on the Marshall-FN ground state. Pass earns a 6x6 version (sector machinery) and a GFMC plan.
 
+### C6b-T0: does a product of 2-site J2 gates, used as a non-unitary similarity, ease the sign problem? (2026-10-24, before any run; exact 4x4, CPU minutes; code ansatz/code/c6b_t0.py)
+K(a) = prod_b (1 + a h_b) over all J2 bonds b in a fixed order (h_b = J2 S_i.S_j), Ht = K^{-1} H K (same spectrum;
+right ground vector Phi = K^{-1} psi0). Sign-problem exponent per site of a matrix M in the Marshall frame:
+g(M) = (E0 - lambda_min(M_s))/N, M_s = M with every off-diagonal replaced by -|M_xy| (the stoquastised matrix whose
+projector governs the average sign). Reference g(H). Scan a over values where every gate is invertible.
+- Pass: min_a g(Ht(a)) <= 0.1 g(H). Kill: g(Ht(a)) >= 0.5 g(H) for all a. Also report W_M(Phi(a)) and the locality
+  of Ht (off-diagonal weight versus Hamming distance), since a quasi-local Ht is what makes GFMC possible.
+Check: a = 0 gives g(H); g(M) = 0 for M = H at J2 = 0 (Marshall-stoquastic).
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -261,6 +270,12 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 | C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
 
 ## Dead ends
+- C6 unfrustrated parent + additive J2 dressing (C6-T0 KILL, cip 17470331/2, ansatz_runs/c6_t0): the min-variance
+  stoquastic parent of Phi drops every same-sublattice XY term and its GS is magnetic (fidelity 0 at 4x6); dressed
+  E_var 0.82/site vs 4.06e-3 baseline. At 4x4 a stoquastic parent's GS has fidelity 0.949 with Phi, yet the dressed
+  state is worse than the baseline (1.36e-2 vs 4.17e-3): the dressing amplifies parent errors, so C6 needs fidelity
+  -> 1 from a few-body sign-free parent, which the data rule out. The only good parent (unconstrained, cond 5,
+  fidelity 0.958, dressed E_FN 2.8e-3 < 3.6e-3) carries non-stoquastic long-range XY.
 - C2 as a trained variational layer (C2-T2 KILL, 4x6 exact optimiser, jobs 17469982/17469926, ansatz_runs/
   exact_vmc_4x6/verdict.json, verified): E_var with the H_J2 layer vs the full-H layer on the same jointly trained base:
   Jastrow 1.61e-2 vs 1.02e-2, RBM a=2 3.56e-3 vs 2.83e-3 (E_FN same direction). Check note: the J2 = 0 Marshall-

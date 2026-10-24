@@ -1,0 +1,62 @@
+{
+  "benchmark": "20-site J1-J2 at J2/J1=0.5, same fixed exact FN amplitude / post-Krylov signs",
+  "train_episodes": 18,
+  "test_episodes": 20,
+  "training_labels_per_arm": 360,
+  "pretrained_marshall_labels": 1980,
+  "seeds": [
+    19,
+    29
+  ],
+  "verifier_orbits_per_test_episode": 22,
+  "train_target": "positive single-orbit frozen-a energy gain",
+  "arms": {
+    "random": {
+      "positive_labels": 6,
+      "mean_gain": 0.0000130203712480365,
+      "within_episode_amplitude_query_sum": 175614,
+      "additional_label_amp_queries": 10559
+    },
+    "source_top": {
+      "positive_labels": 59,
+      "mean_gain": 0.00001127493691085564,
+      "within_episode_amplitude_query_sum": 176302,
+      "additional_label_amp_queries": 11247
+    },
+    "source_uncertainty": {
+      "positive_labels": 15,
+      "mean_gain": 0.000019188918400411574,
+      "within_episode_amplitude_query_sum": 176077,
+      "additional_label_amp_queries": 11022
+    },
+    "signed_bond": {
+      "positive_labels": 2,
+      "mean_gain": 0.000006650175320822996,
+      "within_episode_amplitude_query_sum": 174632,
+      "additional_label_amp_queries": 9577
+    }
+  },
+  "pairwise_uncertainty_vs_random": {
+    "wins": 30,
+    "ties": 1,
+    "losses": 9,
+    "delta_mean_gain": 0.000006168547152375077,
+    "paired_episode_bootstrap95": [
+      0.0000028469498975485625,
+      0.000009780871006092085
+    ]
+  },
+  "direct_hamiltonian_checks": {
+    "n": 40,
+    "maximum_abs_error": 2.2957947121062666e-14
+  },
+  "caveats": [
+    "Oracle exact FN amplitude arrays remain callable",
+    "Frontier is toy amplitude-tempered Metropolis, not GFMC",
+    "Same finite 20-site problem; test episodes correlated",
+    "Cumulative within-episode amplitude queries re-count across episodes",
+    "Not on-policy and not RL",
+    "Source training cost additional and excluded"
+  ],
+  "source_full_run": "avsl_transfer20_active_acquisition.py"
+}

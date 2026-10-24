@@ -1907,3 +1907,18 @@ Pre-registered before any run (lead):
   gap below).
 - Published full-projection RBM+PP -0.498886(1): ours is 2.15e-4 per site higher, the cost of dropping the point group
   (needed: the projection dominates the walker cost).
+
+#### Results: M1.3b, 8x8 (Paderborn 3832999-3833007; gfmc8_analyze.py run by the lead 2026-10-24; results/m1_8x8/)
+Guide: the 8x8 RBM+PP of M1.3a (translations x flip). Energies per site; references: published full-projection RBM+PP
+-0.498886(1), Hu p=2 -0.49886(1), Hu variance-extrapolated -0.49906(1), DMRG torus -0.4992(1).
+| quantity | E/N | status | H100-h |
+|---|---|---|---|
+| VMC p=0 | -0.498674(12) | pooled 2 seeds | (1.1 for V) |
+| VMC p=1 (one Lanczos step) | -0.498923(17) | pooled 2 seeds | |
+| FN-GFMC p=0 | -0.4987565(28) | QUOTABLE, 2 chains (diff -0.7 sigma) | 0.40 |
+| FN-GFMC p=1 | -0.4989486(68) | NOT QUOTABLE: one chain's binning error still rising; chains differ -1.3 sigma; p1_s2 drift -2.2 sigma | 4.17 |
+- Bias scans on p=0 (M 256 / 4096, dtau 0.2 / 0.4): all within 1 sigma of the reference (5-7e-6 errors); no visible
+  population or time-step bias at that level. p=1 bias chain (M 64) still running.
+- FN gain over VMC: p=0 8.3e-5, p=1 2.6e-5 per site. p=1 FN sits 6.3e-5 below the published full-projection RBM+PP
+  and 2.5e-4 above DMRG, but is not yet converged (raw curve results/m1_8x8/quotable_p1.png: no trend overall, a dip
+  in chain 1 at blocks ~250-270).

@@ -49,7 +49,7 @@ def Ht_of(a):
     for G in hb: K = (I + a * G) @ K                                 # K = G_last ... G_1
     X = H @ K
     ct, cs = 1.0 / (1 + a * J2 / 4), 1.0 / (1 - 3 * a * J2 / 4)
-    for S in SSb:                                                    # K^{-1} = G_1^{-1} ... G_last^{-1}, applied last-first
+    for S in reversed(SSb):                                          # K^{-1} = G_1^{-1} ... G_last^{-1}: apply G_last^{-1} first
         Ginv = (ct * (0.75 * I + S) + cs * (0.25 * I - S))
         X = Ginv @ X
     # check K^{-1} K = 1 on one column
@@ -75,7 +75,8 @@ for a in [-1.5, -1.0, -0.7, -0.5, -0.35, -0.25, -0.15, -0.08, 0.0, 0.08, 0.15, 0
     Ht, K = Ht_of(a)
     phi = np.linalg.solve(K, psi0)
     resid = float(np.linalg.norm(Ht @ phi - E0 * phi) / np.linalg.norm(phi))
-    rec = dict(a=a, g=g_of(Ht), W_M_phi=WM(phi), eig_resid=resid, condK=float(np.linalg.cond(K)) if D < 20000 else None)
+    rec = dict(a=a, g=g_of(Ht), W_M_phi=WM(phi), eig_resid=resid)
+    assert resid < 1e-8, f'similarity broken: resid {resid}'
     if a in (-0.5, -0.25, 0.0, 0.25): rec['hamming_profile'] = ham_profile(Ht)
     res['scan'].append(rec); log(rec)
     json.dump(res, open(OUT, 'w'), indent=1)

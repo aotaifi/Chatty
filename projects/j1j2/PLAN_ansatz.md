@@ -35,6 +35,17 @@ They are the only lattice-symmetric product rules on the square lattice, and s_N
 sits in an odd number of the three sets). Frustration = no rule cures all bonds. Exact data (T0-phys, t0phys_17410698):
 the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its J1 bonds violate Marshall.
 
+## Step back 2026-10-24 early (trigger: second failed version of C6; six candidates killed, none passed)
+1. Verdict: reframe toward what the data say, then finish. Static structure (global rules, partons + visons, local
+   frames, unfrustrated parents, stoquastic similarities) fails every time; the sign of the frustrated state is made by
+   a dynamical cancellation of exchange paths, which only a hop/Krylov construction computes. The answer to the
+   angle's question is likely "stored smooth part + computed cancellation", and C2-L is the decisive test of the best
+   stored part. Next deliverable: ANSATZ_MEMO.md with this ranked conclusion, whatever C2-L gives.
+2. Thought: the one robust positive fact (an exactly Marshall-positive pre-image under J2 operators, additive or
+   product, up to 6x6) is a statement about the ground state alone; every test that needed more (a useful layer, a
+   stoquastic parent, a stoquastic similarity) failed, because the frustration is in the dynamics.
+3. Next: C2-L-1 fits (running, <= 5 A40-h); draft the memo now; no new candidate without a cheap 4x4 kill test.
+
 ## Step back 2026-10-23 night (trigger: second failed C2 version: specificity only quantitative at 4x6, add-on fails at 4x4)
 1. Verdict: switch. C2 as an add-on layer is dead; C2 survives only as a jointly trained positive base + J2 layer,
    tested once with a shared exact optimiser that also serves C5. C3 (vison sum) becomes the lead if C3-T0-1 passes.
@@ -52,7 +63,6 @@ Live (>= 3, per the PI's guidance):
 | C2-L | store the J2 pre-image Phi (near sign-free) in the loop, compute the cancellation by the J2 layer at use time | C2-L refit tax vs G-tax 1.657e-6 | running (theorie A40) |
 | C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
 | C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
-| C6b | product of 2-site J2 gates as a non-unitary similarity: is K^{-1} H K (nearly) stoquastic? | C6b-T0 (4x4) | starting |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
 refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
 Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
@@ -270,6 +280,10 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 | C2-L (loop refit tax with stored pre-image) | worker, theorie A40 | per the rule above |
 
 ## Dead ends
+- C6b product of 2-site J2 gates as a non-unitary similarity (C6b-T0 KILL, ansatz_runs/c6b/c6b_4x4.json; first run
+  void: inverse gates in the wrong order, residual 0.3, kept as c6b_4x4_buggy_order.json): sign exponent per site
+  g(Ht(a)) >= g(H) = 0.383 for every a (0.497 at a = -0.25 where Phi is already exactly Marshall-positive; 27 at
+  a = -1.5); eigen-residual 5e-12. A sign-free ground state does not make the propagator sign-free.
 - C6 unfrustrated parent + additive J2 dressing (C6-T0 KILL, cip 17470331/2, ansatz_runs/c6_t0): the min-variance
   stoquastic parent of Phi drops every same-sublattice XY term and its GS is magnetic (fidelity 0 at 4x6); dressed
   E_var 0.82/site vs 4.06e-3 baseline. At 4x4 a stoquastic parent's GS has fidelity 0.949 with Phi, yet the dressed

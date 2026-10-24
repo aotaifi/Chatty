@@ -9,6 +9,7 @@ Ansatz (Nomura & Imada, PRX 11, 031034 (2021), arXiv:2005.14142, Sec. II A and A
 Projection (spin language, trivial characters = sector k = 0, A1 / A, spin-parity even):
   'simple' (published, Eq. (5) + (A2)): sum over 36 translations x {E, R_pi/2} x {sigma, -sigma}   (144 images)
   'full'  : the whole space group (288) x spin flip                                               (576 images)
+  'translations' : the N translations x spin flip only (2N images; 8x8: 128), no point group (cheap walkers)
   'none'  : no projection.
 psi_P(sigma) = sum_g Psi(z_g),  z_g = flip_g * sigma[IMG_g].   Variational parameters theta are REAL
 (f, Re b, Im b, Re W, Im W); O_k = d log psi_P / d theta_k is complex.
@@ -79,6 +80,8 @@ class Lattice:
                 P = np.concatenate([G[8 * t + k][None] for t in range(self.N) for k in (0, 2)])
             elif proj == 'full':
                 P = G
+            elif proj == 'translations':                    # point index 0 (E) only: N translations x spin flip (2N images)
+                P = np.stack([G[8 * t] for t in range(self.N)])
             else:
                 raise ValueError(proj)
             fl = [1.0, -1.0]

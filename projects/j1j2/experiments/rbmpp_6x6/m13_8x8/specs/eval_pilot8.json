@@ -1,0 +1,1 @@
+{"params": "/scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8/runs/pilot8_a/params_final.npz", "L": 8, "proj": "translations", "seeds": [31], "chains": 2048, "nsamp": 204800, "therm": 20, "chunk": 512}

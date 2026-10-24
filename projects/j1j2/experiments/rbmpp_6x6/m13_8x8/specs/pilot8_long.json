@@ -1,0 +1,1 @@
+{"L": 8, "proj": "translations", "rbm": true, "M": 16, "seed": 3, "steps": 850, "chains": 4096, "lr": 0.05, "lr_end": 0.05, "shift": 0.001, "max_dnorm": 0.3, "chunk": 512, "ckpt_every": 50, "therm": 20, "eval_samples": 0}

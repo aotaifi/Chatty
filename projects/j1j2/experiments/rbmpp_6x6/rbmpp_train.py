@@ -6,7 +6,9 @@ SPEC keys (defaults in brackets):
   'rbm_from_pp': true adds a fresh small random RBM to an init without one], steps [2000], chains [2048],
   sweep [N proposals per chain between samples], therm [20 sweeps], lr [0.03] (lr_end, cosine), shift [1e-3]
   (relative diagonal shift of the rescaled S, shift_end), max_dnorm [0.2] (cap on sqrt(d^T S d)), chunk [256],
-  ckpt_every [50], eval_samples [0: final high-statistics VMC energy with blocking], eval_proj [list].
+  ckpt_every [50], eval_samples [0: final high-statistics VMC energy with blocking], eval_proj [list],
+  resume [false: continue from OUT/state.npz (params, chain configurations, RNG key, step) written at every
+  checkpoint; the lr/shift schedule is a function of the step, so a resumed run follows the same schedule].
 Every step records E/N, its naive error, Var(E_loc)/N, acceptance, |d|_S, wall-clock. Parameters are saved
 every ckpt_every steps (params_XXXXX.npz, ~40 kB each) so that intermediate (moderate) checkpoints can be used.
 SR: theta real (f, Re b, Im b, Re W, Im W); O = d log psi_P / d theta (complex);
@@ -95,7 +97,9 @@ key = jax.random.PRNGKey(1000 + g('seed', 0))
 S = random_configs(N, g('chains', 2048), g('seed', 0))
 nsw = g('sweep', N)
 t0 = time.time()
-for t in range(g('therm', 20)):
+acc = jnp.nan
+_resuming = bool(g('resume')) and os.path.exists(os.path.join(OUT, 'state.npz'))
+for t in range(0 if _resuming else g('therm', 20)):
     key, k = jax.random.split(key)
     S, acc = sweep(cast(unravel(flat)), S, k, nsw)
 log(f'thermalised ({time.time() - t0:.0f}s), acc {float(acc):.3f}')
@@ -106,8 +110,25 @@ sh0, sh1 = g('shift', 1e-3), g('shift_end', g('shift', 1e-3))
 hist = []
 F = os.path.join(OUT, 'train.json')
 res = dict(spec=SPEC, nparams=int(P), nactive=int(mask.sum()), images=lat.nI, hist=hist)
-save('00000', flat)
-for it in range(1, steps + 1):
+STATE = os.path.join(OUT, 'state.npz')
+it0 = 0
+if g('resume') and os.path.exists(STATE):
+    zs = np.load(STATE)
+    flat = jnp.asarray(zs['flat']); S = jnp.asarray(zs['S']); key = jnp.asarray(zs['key'], dtype=jnp.uint32); it0 = int(zs['it'])
+    hist.extend([h for h in json.load(open(F))['hist'] if h['it'] <= it0])
+    assert len(hist) == it0, (len(hist), it0)
+    log(f'RESUMED from step {it0} (state.npz)')
+else:
+    save('00000', flat)
+
+
+def save_state(it):
+    tmp = os.path.join(OUT, 'state_tmp.npz')
+    np.savez(tmp, flat=np.asarray(flat), S=np.asarray(S), key=np.asarray(key), it=it)
+    os.replace(tmp, STATE)
+
+
+for it in range(it0 + 1, steps + 1):
     ts = time.time()
     c = 0.5 * (1 - np.cos(np.pi * (it - 1) / max(1, steps - 1)))
     lr = lr0 + (lr1 - lr0) * c; sh = np.exp(np.log(sh0) + (np.log(sh1) - np.log(sh0)) * c)
@@ -126,14 +147,14 @@ for it in range(1, steps + 1):
                t_sample=tsm, wall=time.time() - T00)
     hist.append(rec)
     if it % 10 == 0 or it <= 3:
-        log(f'it {it:5d} E/N {E / N:.6f} +- {rec["err"]:.1e} var/N {rec["var"]:.3e} acc {rec["acc"]:.2f} '
+        log(f'PROGRESS it {it:5d} E/N {E / N:.6f} +- {rec["err"]:.1e} var/N {rec["var"]:.3e} acc {rec["acc"]:.2f} '
             f'|d|_S {rec["dnorm"]:.3f} |F| {rec["gnorm"]:.2e} ({rec["t_step"]:.2f}s, sample {tsm:.2f}s)')
     if it % g('ckpt_every', 50) == 0 or it == steps:
-        save(f'{it:05d}', flat); json.dump(res, open(F, 'w'), default=float)
+        save(f'{it:05d}', flat); json.dump(res, open(F, 'w'), default=float); save_state(it)
     if not np.isfinite(E):
         log('non-finite energy, stop'); break
     if g('stop_at') and it >= g('stop_at'):                # same schedule as a 'steps' run, stopped early
-        save(f'{it:05d}', flat); log('stop_at reached'); break
+        save(f'{it:05d}', flat); save_state(it); log('stop_at reached'); break
 save('final', flat)
 res['train_sec'] = time.time() - T00
 json.dump(res, open(F, 'w'), default=float)

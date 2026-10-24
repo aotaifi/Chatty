@@ -1,0 +1,1 @@
+{"params": "/scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8/data/A_rpT4_sr2_17164867_params_final.npz", "L": 6, "proj": "translations", "seeds": [21, 22], "chains": 512, "nsamp": 800000, "therm": 100, "chunk": 128}

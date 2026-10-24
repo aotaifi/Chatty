@@ -1,0 +1,1 @@
+{"params": "@RUN@/params_final.npz", "L": 8, "proj": "translations", "seeds": [31, 32], "chains": 256, "nsamp": 25600, "therm": 5, "chunk": 256}

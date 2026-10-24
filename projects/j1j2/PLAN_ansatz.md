@@ -303,6 +303,10 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   void: inverse gates in the wrong order, residual 0.3, kept as c6b_4x4_buggy_order.json): sign exponent per site
   g(Ht(a)) >= g(H) = 0.383 for every a (0.497 at a = -0.25 where Phi is already exactly Marshall-positive; 27 at
   a = -1.5); eigen-residual 5e-12. A sign-free ground state does not make the propagator sign-free.
+- C6 re-test after review (C6-T0b KILL, 4x4, cip 17470732, ansatz_runs/c6_t0/r4x4b, verified): optimising the
+  stoquastic couplings directly for the dressed E_var, 5 starts incl. -H_J2 + H_J1, all end at 1.024e-2/site vs the
+  dressed-Marshall-FN baseline 4.17e-3 (2.45x worse); every same-sublattice XY goes to 0; GS fidelity with Phi 0.974.
+  Checks: exact H gives 2e-16, J2 XY flipped 8.7e-2. Kill sound: a sign-free few-body parent cannot carry the J2 XY.
 - C6 unfrustrated parent + additive J2 dressing (C6-T0 KILL, cip 17470331/2, ansatz_runs/c6_t0): the min-variance
   stoquastic parent of Phi drops every same-sublattice XY term and its GS is magnetic (fidelity 0 at 4x6); dressed
   E_var 0.82/site vs 4.06e-3 baseline. At 4x4 a stoquastic parent's GS has fidelity 0.949 with Phi, yet the dressed

@@ -1,0 +1,7 @@
+  A40-h: train(8192) 174 (4096: 87), eval 1.3, V 90, A 9.9, B 151
+L=10: s/wt p0 0.0318 p1 7.6; SR s/step {2048: 7.55712, 4096: 15.11424, 8192: 30.22848}; train h {2048: 9.4464, 4096: 18.8928, 8192: 37.7856}; eval h 0.18; V h 11.9 (3.03e+05 samples); A h 0.99 (450 blocks M1024); B h 19.6 (sample 15.5 + burn 4.1; 573 blocks M64)
+  A40-h: train(8192) 931 (4096: 465), eval 3.4, V 223, A 22.4, B 575
+L=12: s/wt p0 0.1275 p1 44.0; SR s/step {2048: 26.2144, 4096: 52.4288, 8192: 104.8576}; train h {2048: 32.768, 4096: 65.536, 8192: 131.072}; eval h 0.49; V h 32.8 (2.10e+05 samples); A h 2.99 (313 blocks M1024); B h 85.8 (sample 62.3 + burn 23.5; 398 blocks M64)
+sensitivity (H100-h): V at 2e-5, p1 at 2e-5, p1 with M=32 / burn 10 tau, sigma_w x1.4 (Var/N x2):
+  L=10: V 3.1; B(2e-5) 7.9; B(M32,burn10) 16.9; B sample part x2 -> 35.1
+  L=12: V 8.3; B(2e-5) 39.1; B(M32,burn10) 70.1; B sample part x2 -> 148.1

@@ -1,0 +1,145 @@
+{
+ "L": 10,
+ "train": {
+  "2048": {
+   "rc": 0,
+   "wall": 1697.948426246643,
+   "chains": 2048,
+   "steps_done": 40,
+   "t_step_first": 40.820547103881836,
+   "t_step_median": 34.93399119377136,
+   "t_sample_median": 0.003036022186279297,
+   "E_last": -0.32351616874423345,
+   "var_last": 0.1723587876509287,
+   "acc_last": 0.185791015625
+  },
+  "8192": {
+   "rc": 0,
+   "wall": 1703.3459677696228,
+   "chains": 8192,
+   "steps_done": 4,
+   "t_step_first": 140.4081506729126,
+   "t_step_median": 134.91930866241455,
+   "t_sample_median": 0.0031943321228027344,
+   "E_last": -0.15479303650346968,
+   "var_last": 0.3324438101690667,
+   "acc_last": 0.2684069871902466
+  }
+ },
+ "params": "/scratch/a/A.Otaifi/rbmppL/pilot_a40_L10_17485251/train_c2048/params_final.npz",
+ "timing": [
+  {
+   "L": 10,
+   "proj": "translations",
+   "images": 200,
+   "chunk": 64,
+   "eloc_ms": 4.663178324699402,
+   "eloc_compile_s": 2.938586950302124,
+   "eloc_full_ms": 5.652812123298645,
+   "eloc_full_compile_s": 2.7416529655456543,
+   "peak_gb": 4.493041408
+  },
+  {
+   "L": 10,
+   "proj": "translations",
+   "images": 200,
+   "chunk": 128,
+   "eloc_ms": 4.674087464809418,
+   "eloc_compile_s": 3.048358917236328,
+   "eloc_full_ms": 5.661390721797943,
+   "eloc_full_compile_s": 3.103231191635132,
+   "peak_gb": 9.998705152
+  },
+  {
+   "L": 10,
+   "proj": "translations",
+   "images": 200,
+   "chunk": 256,
+   "eloc_err": "RESOURCE_EXHAUSTED: Out of memory while trying to allocate 19.38GiB.",
+   "eloc_full_ms": 5.745277367532253,
+   "eloc_full_compile_s": 3.8410024642944336,
+   "peak_gb": 12.462948608
+  },
+  {
+   "L": 10,
+   "proj": "translations",
+   "images": 200,
+   "chunk": 512,
+   "eloc_err": "RESOURCE_EXHAUSTED: Out of memory while trying to allocate 37.59GiB.",
+   "eloc_full_err": "RESOURCE_EXHAUSTED: Out of memory while trying to allocate 37.59GiB.",
+   "peak_gb": 12.462948608
+  }
+ ],
+ "vmc": {
+  "rc": 0,
+  "wall": 866.9603133201599,
+  "info": {
+   "ratio_vs_fastupdate_maxrel": 2.275887674197769e-11,
+   "sec": 547.2598309516907,
+   "n_eval": 116024,
+   "sec_eval": 543.627423286438,
+   "samples": 512,
+   "sweeps_done": 2
+  },
+  "per_site": {
+   "E": {
+    "value": -0.3270684792285902,
+    "err": 0.002855672131600412
+   },
+   "E1": {
+    "value": -0.3572167535843687,
+    "err": 0.0023126472566116015
+   },
+   "var": {
+    "value": 0.18085026399022616,
+    "err": 0.023007306004436196
+   },
+   "var1": {
+    "value": 0.12961019046317182,
+    "err": 0.039238429546435506
+   }
+  },
+  "alpha": {
+   "value": -0.16670296017598188,
+   "err": 0.017080632016722653,
+   "jk_bias": 0.0036420517886119053
+  },
+  "check_h2": {
+   "s2_over_s2b": 0.9725213107097523,
+   "err": 0.12550129501392102
+  },
+  "sec_per_sweep": 273.62991547584534
+ },
+ "gfmc0": {
+  "rc": 0,
+  "wall": 330.15610551834106,
+  "M": 128,
+  "dtau": 0.1,
+  "blocks": 79,
+  "sec_per_block_median": 3.851388454437256,
+  "evals_per_block": 359.55696202531647,
+  "hops_per_block": 359.55696202531647,
+  "ess_mean": 111.64603348668938,
+  "elvar_per_site": 0.2106718412715259,
+  "emix_mean": -0.37425227262972066,
+  "emix_std_blocks": 0.009388318805925765,
+  "sec_per_walker_tau": 0.3008897230029106,
+  "sigma_walker_per_site_raw": 0.1062167022657808
+ },
+ "gfmc1": {
+  "rc": 0,
+  "wall": 678.5628745555878,
+  "M": 16,
+  "dtau": 0.1,
+  "blocks": 12,
+  "sec_per_block_median": 53.35997772216797,
+  "evals_per_block": 11200.25,
+  "hops_per_block": 49.25,
+  "ess_mean": 15.02462384798966,
+  "elvar_per_site": 0.0842966249006005,
+  "emix_mean": -0.3755368522767983,
+  "emix_std_blocks": 0.013365657962555285,
+  "sec_per_walker_tau": 33.34998607635498,
+  "sigma_walker_per_site_raw": 0.05346263185022114
+ }
+}

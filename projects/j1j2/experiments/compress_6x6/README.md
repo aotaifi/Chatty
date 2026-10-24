@@ -1922,3 +1922,29 @@ Guide: the 8x8 RBM+PP of M1.3a (translations x flip). Energies per site; referen
 - FN gain over VMC: p=0 8.3e-5, p=1 2.6e-5 per site. p=1 FN sits 6.3e-5 below the published full-projection RBM+PP
   and 2.5e-4 above DMRG, but is not yet converged (raw curve results/m1_8x8/quotable_p1.png: no trend overall, a dip
   in chain 1 at blocks ~250-270).
+
+#### Staged: M1 at 10x10 and 12x12 (worker, 2026-10-25; pilots measured, production NOT run; the lead reads the launchers)
+Code is unchanged (L is a spec/argument everywhere); new launchers: `rbmpp_6x6/m13_LxL/launch_rbmpp_L.sh L QOS TIME [RUN]` (training + eval), `gfmc_fn_lattice/m13b_LxL/launch_m13b_L.sh`
+(`LSZ=10|12`, stages T V A B X), both dry-run unless `GO=1`; the 8x8 launchers are untouched. Cost model and every input: `rbmpp_6x6/m13_LxL/sizing.py`; pilot summaries
+`results/m1_LxL/pilots/`. Pilots (translations x flip, short-trained guide, so only COST carries over): H100 express jobs 3860368 (L10), 3861243 (L12), 3862046 (L12, 8192 chains;
+express used 0.49 of 0.5 H100-h); full A40 jobs 17485251/17486801 (L10), 17485252/17486881 (L12).
+Measured, H100 (A40 in brackets): SR s/step at 2048 / 4096 / 8192 chains: L10 7.6 / 15.1 / (30, extrapolated) [34.9 / - / 135 at 8192 for 4 steps]; L12 26.3 / 52.3 / 104.6 [189 / 368 / OOM]; the SR step is linear in chains;
+8x8 was 3.3 s at 8192. ms per amplitude evaluation (translations, 2N images): 8x8 0.10, L10 0.61 [4.7], L12 1.70 [11.9]. VMC s per sample (p=0/1 moments, 1024-chain sweep): 8x8 0.020, L10 0.14 [1.07], L12 0.56 [3.9].
+GFMC s per walker-tau, pilot guide: p0 L10 0.026 [0.30], L12 0.117 [0.86]; p1 L10 4.2 [33.3], L12 20.1 [134.7].
+Production-guide estimates (8x8 production hops 0.42 N per walker-tau, p1 2.27 N evaluations per hop, GFMC ms/eval 1.24-1.31 x timing): p0 0.032 (L10) / 0.13 (L12) s per walker-tau, p1 7.6 / 44.
+A40 / H100 time ratio: SR 4.6 (L10), 7.1 (L12); everything else 7-10. Memory: Jacobian chunk 512 OOMs at L10 on A40 (37 GB buffer): chunk 128 (A40), 256 (H100); L12 8192 chains
+fits on the H100 only just (XLA reports 91.8 GiB wanted against 95 GB; chunk 128): fall back to chunk 64 or 4096 chains if it OOMs; eloc chunk 256 (L10) / 128 (L12).
+Cost table (H100-h; A40-h in brackets), 8x8 recipe (4500 SR steps, 8192 chains, lr 0.05 -> 0.005), errors per site: VMC E1 1e-5, FN p0 5e-6, FN p1 1e-5:
+| item | L = 10 | L = 12 |
+|---|---|---|
+| (a) RBM+PP SR training, 4500 steps, 8192 chains (4096 chains) | 38 (174) (19 / 87) | 131 (931) (66 / 465) |
+| (a) eval, 2 x 4e5 samples (error ~5e-6) | 0.2 (1.3) | 0.5 (3.4) |
+| (b) VMC p=0/1 two seeds (E1 error 1e-5; 2e-5) | 11.9 (90); 3.1 | 32.8 (223); 8.3 |
+| (c) FN p=0, two chains (5e-6) | 1.0 (10) | 3.0 (22) |
+| (d) FN p=1, two chains (1e-5; 2e-5), M=64, burn 15 tau | 19.6 (151); 7.9 | 85.8 (575); 39 |
+| bias scans X (p0) | 1.8 | 7 |
+| total (a 8192 + b + c + d) | about 71 | about 255 |
+ASSUMED, not measured: sigma_walker of the production guide = 8x8 production value x 8/L (p0 4.9e-3, p1 2.1e-3 at 8x8; Var(E_loc)/N constant); if Var/N is 2x, the sampling part of (c), (d) doubles
+(L12 p1 148 h); VMC E1 sample sd = 8x8 value x 8/L. The A40 route is only realistic for L10 with 2048 chains (44 h, fits the 2-day limit) and for pilots; L12 training on A40 is ~900 h.
+Queue (sbatch --test-only 2026-10-25, one job): cont 2026-11-07 07:36, lowcont 2026-11-07 11:14 (100 or 168 h alike); express pending 1.5-2 h per pilot.
+References: L10 per `m13b_LxL/ANALYSIS_BRIEF.md` (Nomura-Imada 2005.14142, Rende 2310.05715, Chen-Heyl 2302.01941, Hu 1304.2630); L12 only Nomura-Imada -0.496791(4) and Roth GCNN -0.496769(9) (2211.07749).

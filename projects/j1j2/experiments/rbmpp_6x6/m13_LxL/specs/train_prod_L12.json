@@ -1,0 +1,1 @@
+{"L": 12, "J2": 0.5, "proj": "translations", "rbm": true, "M": 16, "seed": 101, "steps": 4500, "chains": 8192, "lr": 0.05, "lr_end": 0.005, "shift": 0.001, "shift_end": 0.01, "max_dnorm": 0.3, "chunk": 128, "ckpt_every": 50, "therm": 20, "resume": true, "eval_samples": 0}

@@ -1,0 +1,18 @@
+{
+ "L": 12,
+ "train": {
+  "8192": {
+   "rc": 0,
+   "wall": 299.8720142841339,
+   "chains": 8192,
+   "steps_done": 2,
+   "t_step_first": 108.04779052734375,
+   "t_step_median": 104.61802196502686,
+   "t_sample_median": 0.0023407936096191406,
+   "E_last": -0.10671847959964793,
+   "var_last": 0.41567972292225247,
+   "acc_last": 0.2737867534160614
+  }
+ },
+ "params": "/scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/pilot_L12_3862046/train_c8192/params_final.npz"
+}

@@ -1898,3 +1898,12 @@ Pre-registered before any run (lead):
 - Reading: the symmetry projection, not the hop, dominates the walker cost; at 14x14 a projected guide is unusable in
   walkers. M1.3 trains the 8x8 RBM+PP with translation x spin-flip projection (128 images), and the accuracy cost of
   dropping the point group is itself measured against the published full-projection RBM+PP (-0.498886).
+
+#### Results: M1.3a, 8x8 RBM+PP VMC (Paderborn 3831844; /scratch/a/A.Otaifi/rbmpp8/rb8_prod; verified by the lead 2026-10-24)
+- RBM+PP (M 16), translations x spin-flip projection, 4500 SR steps, 8192 chains, ~4.1 H100-h. Two independent eval
+  chains: E/N = -0.498671 +- 2.8e-6 QUOTABLE (chains agree, chi2/dof 0.12; tau_int 0.5-0.6).
+- Training curve (500-step blocks): -0.498581, -0.498606, -0.498629, -0.498640, -0.498649, -0.498661, -0.498663,
+  -0.498667; still falling ~5e-6 per 1000 steps at the end: near-converged, not flat (bias <~1e-5, small against the
+  gap below).
+- Published full-projection RBM+PP -0.498886(1): ours is 2.15e-4 per site higher, the cost of dropping the point group
+  (needed: the projection dominates the walker cost).

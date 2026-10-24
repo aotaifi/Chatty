@@ -45,7 +45,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
-| M1.3a 8x8 RBM+PP VMC training, Paderborn 3831844 (express, 4500 steps, watcher -> VERDICT in delta_today.md) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8/runs/rb8_prod; local /scratch/a/A.Otaifi/rbmpp8/rb8_prod | converged (energy-vs-step flat, 2 eval chains agree) -> M1.3b: 0,1 Lanczos + FN-GFMC at 8x8 with this guide; drifting -> resume with more steps at low lr |
+| M1.3b 8x8: V 3832999 (VMC p=0/1), A 3833000/01 (GFMC p=0), B 3833002/03 (GFMC p=1), X 3833004-08 (bias scans); Paderborn express, afterok:V; setsid watchers | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/gfmc8/runs/rb8; local /scratch/a/A.Otaifi/gfmc_m13b/prod/rb8 | gfmc8_analyze.py: E_FN p=0, p=1 at 8x8 vs VMC p=0/1 and the published bars, GPU-h per number; seeds disagree -> continue chains before any fit |
 
 ## Angles
 - ansatz-pioneer (angle lead session, started 2026-10-23 at the PI's request): find a genuinely new ansatz for frustrated magnets (landscape map, >= 3 candidates with novelty checks, cheap 4x4/6x6 tests); plan file PLAN_ansatz.md, deliverable ansatz/ANSATZ_MEMO.md; normal QoS on Paderborn.

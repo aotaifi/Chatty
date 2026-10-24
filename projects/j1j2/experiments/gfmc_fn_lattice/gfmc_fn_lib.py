@@ -115,6 +115,83 @@ class RBMPPGuide(GuideBase):
         return self.finish(X, anti, wi, bi, rr)
 
 
+class RBMPPGuideG(GuideBase):
+    """General guide provider (any L and projection, complex RBM, global phase w): c(x) = Re[w psi_P(x) (1 + alpha (E_L(x) - E))].
+
+    Unlike RBMPPGuide (which assumes psi_P(x) real: its ratio drops the phase of psi_P(x)), the phase of psi_P(x) is kept:
+    ratio c(y)/c(x) = Re[w e^{l_y - Re l_x} f_y] / Re[w e^{i Im l_x} f_x],  f = 1 + alpha (E_L - E).
+    alpha == 0 (p = 0, pure RBM+PP guide Re[w psi_P]): ONE fast-update evaluation per walker gives all bond ratios
+    psi_P(y_b)/psi_P(x) (rbmpp_lib eloc_full), c(y_b)/c(x) = Re[w e^{i Im l_x} rP_b] / Re[w e^{i Im l_x}] (1 evaluation per hop).
+    alpha != 0 (p = 1): 1 + n_anti(x) evaluations per hop (E_L at x and at every antiparallel neighbour)."""
+
+    def __init__(self, params, lat, alpha, E, w=1.0, chunk=256, use_rbm=True, small_chunk=None, drop_phase=False):
+        import jax, jax.numpy as jnp
+        from rbmpp_lib import make_fns
+        self.jax, self.jnp = jax, jnp
+        self.lat = lat; self.N = lat.N; self.BI = np.asarray(lat.BI); self.BJ = np.asarray(lat.BJ)
+        self.JB = np.asarray(lat.JB, float); self.NB = lat.NB
+        self.p = {k: jnp.asarray(params[k]) for k in ('f', 'bre', 'bim', 'Wre', 'Wim')}
+        fns = make_fns(lat, jnp.float64, use_rbm)
+        self.alpha = float(alpha); self.E = float(E); self.w = complex(w)
+        self.chunk = chunk; self.small = small_chunk or max(chunk // 8, 8)
+        self._f = jax.jit(jax.vmap(fns['eloc'], in_axes=(None, 0)))
+        self._ff = jax.jit(jax.vmap(fns['eloc_full'], in_axes=(None, 0)))
+        self.drop_phase = drop_phase          # deliberately broken version for the checks (phase of psi_P(x) dropped)
+        self.max_im = 0.0; self.n_eval = 0; self.t_eval = 0.0
+
+    def _chunked(self, fn, Z, nout):
+        jnp = self.jnp
+        K = Z.shape[0]; outs = None
+        i = 0
+        t0 = time.time()
+        while i < K:
+            rem = K - i
+            c = self.chunk if rem > self.small else self.small
+            n = min(c, rem)
+            blk = Z[i:i + n]
+            if n < c:
+                blk = np.concatenate([blk, np.repeat(blk[:1], c - n, 0)])
+            o = fn(self.p, jnp.asarray(blk))
+            o = [np.asarray(a)[:n] for a in o]
+            if outs is None:
+                outs = [np.empty((K,) + a.shape[1:], a.dtype) for a in o]
+            for k in range(nout):
+                outs[k][i:i + n] = o[k]
+            i += n
+        self.n_eval += K; self.t_eval += time.time() - t0
+        return outs
+
+    def amp(self, Z):
+        """Z (K, N) float64 -> (E_L complex, log psi_P complex)."""
+        return self._chunked(self._f, Z, 2)
+
+    def rows(self, X):
+        B = X.shape[0]
+        s = X.astype(np.float64)
+        anti = X[:, self.BI] != X[:, self.BJ]
+        wi, bi = np.nonzero(anti)
+        if self.alpha == 0.0:
+            Ex, lx, rP = self._chunked(self._ff, s, 3)
+            ph = np.exp(1j * lx.imag * (0.0 if self.drop_phase else 1.0))
+            cx = (self.w * ph).real
+            cy = (self.w * ph[wi] * rP[wi, bi]).real
+            self.max_im = max(self.max_im, float(np.max(np.abs((self.w * ph).imag))))
+            return self.finish(X, anti, wi, bi, cy / cx[wi])
+        Y = s[wi].copy()
+        r = np.arange(len(wi))
+        Y[r, self.BI[bi]] = s[wi, self.BJ[bi]]; Y[r, self.BJ[bi]] = s[wi, self.BI[bi]]
+        E, l = self.amp(np.concatenate([s, Y]))
+        Ex, lx = E[:B], l[:B]; Ey, ly = E[B:], l[B:]
+        fx = 1.0 + self.alpha * (Ex - self.E)
+        fy = 1.0 + self.alpha * (Ey - self.E)
+        ph = np.exp(1j * lx.imag * (0.0 if self.drop_phase else 1.0))
+        cx = (self.w * ph * fx).real
+        cy = (self.w * np.exp(ly - lx.real[wi]) * fy).real if not self.drop_phase else \
+            (self.w * np.exp(ly - lx[wi]) * fy).real
+        self.max_im = max(self.max_im, float(np.max(np.abs((self.w * ph * fx).imag))))
+        return self.finish(X, anti, wi, bi, cy / cx[wi])
+
+
 # --------------------------------------------------------------------------------------------- walkers
 def sysres(w, rng, M):
     c = np.cumsum(w); c /= c[-1]

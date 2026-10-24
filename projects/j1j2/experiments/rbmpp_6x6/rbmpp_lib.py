@@ -197,8 +197,8 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
             ratio = ratio * jnp.exp(jnp.sum(logcosh(th[None] + dth) - logcosh(th)[None], 1))
         return lg, jnp.where(valid, ratio, 0.0)
 
-    def eloc_one(p, sigma):
-        """local energy (fast updates) and log psi_P for one configuration."""
+    def eloc_full(p, sigma):
+        """local energy (fast updates), log psi_P and the bond ratios psi_P(y_b)/psi_P(x) (0 for aligned bonds)."""
         f, b, W = parts(p)
         Z = images(sigma)
         lg, rat = jax.vmap(lambda z, ig: img_quant(f, b, W, z, ig))(Z, INV)    # (nI,), (nI, NB)
@@ -208,7 +208,12 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         s = sigma.astype(dtype)
         valid = s[BI] != s[BJ]
         off = jnp.sum(jnp.where(valid, 0.5 * JB * rP, 0.0))
-        return diag(sigma) + off, lP
+        return diag(sigma) + off, lP, rP
+
+    def eloc_one(p, sigma):
+        """local energy (fast updates) and log psi_P for one configuration."""
+        e, lP, _ = eloc_full(p, sigma)
+        return e, lP
 
     def eloc_brute(p, sigma):
         """local energy by brute force (all neighbours re-evaluated); for tests."""
@@ -222,7 +227,7 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         valid = s[BI] != s[BJ]
         return diag(sigma) + jnp.sum(jnp.where(valid, 0.5 * JB * r, 0.0)), lP
 
-    return dict(logpsi=logpsi, logpsi_ri=logpsi_ri, eloc=eloc_one, eloc_brute=eloc_brute, diag=diag,
+    return dict(logpsi=logpsi, logpsi_ri=logpsi_ri, eloc=eloc_one, eloc_full=eloc_full, eloc_brute=eloc_brute, diag=diag,
                 log_one=log_one, parts=parts)
 
 

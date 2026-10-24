@@ -99,11 +99,25 @@ class Lattice:
 F0 = jax.dtypes.float0
 def _f0(x): return np.zeros(x.shape, dtype=F0)
 
-def _off(u, nb, an, J):
+CHUNK_B = 12     # bonds (translations) per fused gather-reduce block; bounds any materialised intermediate
+
+def _off_scan(u, nb, an, J):          # reference implementation (one gather per bond)
     def body(acc, xs):
         n, a = xs
         return acc + jnp.where(a, 0.5 * J, 0.0) * u[n], None
     return lax.scan(body, jnp.zeros_like(u), (nb, an))[0]
+
+USE_FUSED = True
+def _off(u, nb, an, J):
+    if not USE_FUSED: return _off_scan(u, nb, an, J)
+    return _off_fused(u, nb, an, J)
+
+def _off_fused(u, nb, an, J):
+    """sum_b 0.5 J anti_b(x) u[nbr_b(x)] as fused gather-reduce over blocks of CHUNK_B bonds."""
+    out = jnp.zeros_like(u)
+    for k in range(0, nb.shape[0], CHUNK_B):
+        out = out + jnp.sum(jnp.where(an[k:k + CHUNK_B], 0.5 * J, 0.0) * u[nb[k:k + CHUNK_B]], axis=0)
+    return out
 
 class Ops:
     """per-bond neighbour index arrays (int32) and antiparallel masks (bool) on the device; diagonals in f64.
@@ -149,7 +163,9 @@ class Ops:
 @jax.custom_vjp
 def symsum(h, P):
     """S(h)(x) = sum_t h(P[t, x]); the translations form a group, so S is self-adjoint (VJP = S)."""
-    return lax.fori_loop(0, P.shape[0], lambda t, acc: acc + h[P[t]], jnp.zeros_like(h))
+    out = jnp.zeros_like(h)
+    for k in range(0, P.shape[0], CHUNK_B): out = out + jnp.sum(h[P[k:k + CHUNK_B]], axis=0)
+    return out
 symsum.defvjp(lambda h, P: (symsum(h, P), P), lambda P, g: (symsum(g, P), _f0(P)))
 
 def logcosh(x):
@@ -225,7 +241,7 @@ def energy_of(psi, Hmv):
     return jnp.real(jnp.vdot(psi, Hp)) / jnp.real(jnp.vdot(psi, psi))
 
 # ------------------------------------------------------------------ training
-def train(model, p0, max_steps=3000, tol_site=1e-10, window=50, progress_every=100, tag=''):
+def train(model, p0, max_steps=3000, tol_site=1e-10, window=50, progress_every=100, tag='', curve_prefix=None, deadline=None):
     N = model.lat.N; H = model.ops.H
     flat0, unravel = ravel_pytree(p0)
     opt = optax.lbfgs()
@@ -245,8 +261,11 @@ def train(model, p0, max_steps=3000, tol_site=1e-10, window=50, progress_every=1
         if not np.isfinite(val):
             log(f'PROGRESS {tag} step {k} non-finite energy; stop'); break
         curve.append(val); x, st = x_new, st_new
-        if k >= window and abs(curve[-1] - curve[-1 - window]) / N < tol_site:
+        full = (curve_prefix or []) + curve
+        if len(full) > window and abs(full[-1] - full[-1 - window]) / N < tol_site:
             conv = True; break
+        if deadline is not None and time.time() > deadline:
+            log(f'PROGRESS {tag} step {k} deadline reached'); break
         if progress_every and k % progress_every == 0:
             log(f'PROGRESS {tag} step {k} E/N {val / N:.12f} |g| {float(gn):.3e}')
     pf = unravel(x)
@@ -503,6 +522,66 @@ def run_spec(outdir, spec_path):
             f'dE_FN/N {d["dE_FN_site"]:.4e} npar {r["n_params"]} steps {r["steps"]} conv {r["converged"]} {r["sec"]:.0f}s')
     log(f'VERDICT exact_vmc spec {os.path.basename(spec_path)} done')
 
+# ------------------------------------------------------------------ continuation mode (C5-T0 continuation, PLAN_ansatz.md amendments)
+def time_variants(ops, D):
+    """time the fused and the scan off-diagonal matvec (complex vector, fwd) on this device; keep the faster."""
+    global USE_FUSED
+    c = ops.c; u = jnp.asarray(np.random.default_rng(0).standard_normal(D) * (1 + 0.5j))
+    res = {}
+    for name, flag in (('fused', True), ('scan', False)):
+        USE_FUSED = flag
+        f = jax.jit(lambda u, c: ops.H(u, c)); f(u, c).block_until_ready(); t = time.time()
+        for _ in range(10): f(u, c).block_until_ready()
+        res[name] = (time.time() - t) / 10
+    USE_FUSED = res['fused'] <= res['scan']
+    log('matvec timing', res, 'use fused', USE_FUSED)
+    return res
+
+def run_cont(outdir, spec_path):
+    spec = json.load(open(spec_path)); T_start = time.time()
+    LX, LY = spec.get('LX', 4), spec.get('LY', 6)
+    lat, ops, psi0, E0 = setup(LX, LY, spec.get('J2', 0.5), spec.get('psi0_dir', outdir))
+    if (LX, LY) == (4, 6) and abs(E0 / lat.N - E0_REF_4x6) > 1e-9:
+        log(f'ABORT E0/N {E0 / lat.N} != {E0_REF_4x6}'); sys.exit(2)
+    tv = time_variants(ops, lat.D)
+    os.makedirs(os.path.join(outdir, 'runs'), exist_ok=True)
+    total, window, tol = spec.get('total_steps', 6000), spec.get('window', 500), spec.get('tol_site', 1e-8)
+    budget = spec['budget_sec']; reserve = spec.get('reserve_sec', 45)
+    runs = spec['runs']
+    for i, job in enumerate(runs):
+        arm, seed = job['arm'], job['seed']; name = f'{arm}_s{seed}'
+        fout = os.path.join(outdir, 'runs', name + '.json')
+        if os.path.exists(fout): log('skip existing', name); continue
+        left = budget - (time.time() - T_start); share = left / (len(runs) - i) - reserve
+        if share <= 0: log(f'PROGRESS {name} no time left; not run'); continue
+        m = arm_model(lat, ops, arm); tmpl = m.init(seed)
+        prefix, prior = None, 0
+        if job.get('prior_json'):
+            pj = json.load(open(job['prior_json']))
+            prefix = pj['curve'][:-1]; prior = pj['steps']
+            _, unr = ravel_pytree(tmpl); p0 = unr(jnp.asarray(np.load(job['prior_params'])))
+            e_chk = m.energy(p0)
+            log(f'PROGRESS {name} resume from {job["prior_json"]} steps {prior} E/N {e_chk / lat.N:.12f} (file {pj["curve"][-1] / lat.N:.12f})')
+        else:
+            p0 = tmpl
+        r = train(m, p0, max_steps=total - prior, tol_site=tol, window=window, progress_every=500, tag=name,
+                  curve_prefix=prefix, deadline=time.time() + share)
+        d = diagnostics(m, r['params'], psi0, E0)
+        curve = (prefix or []) + r['curve']; steps = prior + r['steps']
+        full = curve[:-1]
+        last_dE = abs(full[-1] - full[-1 - window]) / lat.N if len(full) > window else None
+        reason = 'criterion' if r['converged'] else ('step_cap' if steps >= total else 'deadline')
+        out = dict(arm=arm, seed=seed, n_params=r['n_params'], steps=steps, new_steps=r['steps'], prior_steps=prior,
+                   converged=r['converged'], stop_reason=reason, dE_per_window_site=last_dE, sec=r['sec'],
+                   fresh=prefix is None, E0_site=E0 / lat.N, a=None, best_a0=None, **d, curve=curve)
+        json.dump(out, open(fout, 'w'), default=float)
+        np.save(os.path.join(outdir, 'runs', name + '_params.npy'), r['flat'])
+        del m; gc.collect()
+        log(f'RESULT {name} dE_var/N {d["dE_var_site"]:.4e} infid {d["infidelity"]:.4e} W_M {d["W_M"]:.4e} '
+            f'dE_FN/N {d["dE_FN_site"]:.4e} steps {steps} (+{r["steps"]}) conv {r["converged"]} ({reason}) '
+            f'dE/500/site {last_dE} {r["sec"]:.0f}s')
+    log(f'VERDICT exact_vmc cont {os.path.basename(spec_path)} done')
+
 # ------------------------------------------------------------------ verdicts
 def verdict(outdir):
     import glob
@@ -515,10 +594,11 @@ def verdict(outdir):
         dv = [d['dE_var_site'] for d in seeds.values()]
         tab[arm] = dict(nseeds=len(seeds), best_seed=best['seed'], dE_var=best['dE_var_site'], spread=max(dv) - min(dv),
                         infid=best['infidelity'], W_M=best['W_M'], dE_FN=best['dE_FN_site'], npar=best['n_params'],
-                        steps=best['steps'], conv=best['converged'], a=best['a'])
+                        steps=best['steps'], conv=best['converged'], a=best['a'],
+                        conv_all=[d['converged'] for d in seeds.values()], reason=best.get('stop_reason'))
         t = tab[arm]
         print(f'{arm:12s} n={t["nseeds"]} dE_var/N {t["dE_var"]:.4e} (spread {t["spread"]:.1e}) infid {t["infid"]:.3e} '
-              f'W_M {t["W_M"]:.3e} dE_FN/N {t["dE_FN"]:.4e} npar {t["npar"]} steps {t["steps"]} conv {t["conv"]} a {t["a"]}')
+              f'W_M {t["W_M"]:.3e} dE_FN/N {t["dE_FN"]:.4e} npar {t["npar"]} steps {t["steps"]} conv {t["conv"]} ({t["reason"]}) all_conv {t["conv_all"]} a {t["a"]}')
     out = dict(table=tab)
     # C2-T2: Pass: J2 layer E_var <= 0.5 x full-H layer for J and R2.  Kill: J2 layer >= full-H layer for both.
     if all(k in tab for k in ('J_H', 'J_HJ2', 'R2_H', 'R2_HJ2')):
@@ -550,5 +630,7 @@ if __name__ == '__main__':
         sys.exit(0 if r['all_ok'] else 3)
     elif mode == 'run':
         run_spec(outdir, sys.argv[3])
+    elif mode == 'cont':
+        run_cont(outdir, sys.argv[3])
     elif mode == 'verdict':
         verdict(outdir)

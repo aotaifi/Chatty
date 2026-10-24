@@ -1,12 +1,13 @@
 # Ansatz pioneer: what captures frustration in the J1-J2 ground state (J2/J1 = 0.5)
-Angle lead, 2026-10-23/24. Draft, revised after the adversarial review (REVIEW_adversarial.md); three re-tests running. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
+Angle lead, 2026-10-23/24. Final. Revised after an independent adversarial review (REVIEW_adversarial.md) and its re-tests. Plan, pre-registrations and dead ends: ../PLAN_ansatz.md.
 
 ## Bottom line
 None of the physics-structured ansatze tested here captures the sign of the frustrated ground state better than
 the baselines: global sign rules, Z2 partons dressed by visons, rotated local frames, an unfrustrated parent,
 stoquastic non-unitary similarities, and J2 layers (add-on, trained, or as a stored pre-image in the FN loop).
-Five kills are sound per an independent review; three (C3 vison sum, C6 parent, C5 coupled output) rested on
-tests that could not fairly succeed and are being re-tested. Black-box learned signs do capture it (CNN + MPS,
+An independent review found three tests unfair (C3 vison sum, C6 parent, C5 coupled output); the fixed re-tests
+confirmed C3 and C6 dead (vison span 1.55-2.29x worse than the repaired control; best sign-free parent 2.45x worse
+than the baseline) and left C5 without a pass in reach (ratios 0.65 / 1.02 / 0.96, bar 0.5). Black-box learned signs do capture it (CNN + MPS,
 2.3e-6/site at 6x6, arXiv:2603.14425), so the claim is about these structures, not about stored signs in general.
 Two exact facts survive: (i) Marshall violations are local and their fraction rises to ~1/2 in the deep tail;
 (ii) undoing the J2 exchange removes them: the pre-image is exactly Marshall-positive at 4x4 at moderate layers
@@ -42,10 +43,10 @@ J2 ~ 0.5; PSG inside NQS; sums over flux sectors.
 | C1 | psi = s_N A + s_X B + s_Y C, positive parts | partial (2508.09870 uses the patterns as features) | violations class-blind, R/R_null 0.99 | dead |
 | C2 add-on | (1 + a H_J2) on existing sign-free states | Sorella 2001 family | full-H layer better 4.5x/5.5x/1x (4x4) | dead |
 | C2-T2 | trained base + J2 layer (4x6) | Sorella 2001 family | J2 layer worse than full-H: 1.58x (Jastrow), 1.26x (RBM) | dead |
-| C3 | Z2 spin liquid + vison-pair sum | open part: learned local flux sums | 4x6 rank 20: vison 7.4e-4 vs random no-flux 4.1-5.7e-4 | dead |
+| C3 | Z2 spin liquid + vison-pair sum | open part: learned local flux sums | 4x6, repaired base, rank 24: vison 6.4e-4 vs random no-flux 2.8-4.1e-4 | dead |
 | C4 | positive state in the 2x2 crossed-plaquette frame | Herz et al. 2607.24679 (ladders) | no rotation beats Marshall (4x4) | dead |
-| C5 | amplitude-sign coupled output e^f tanh(g) | generic | ratios 0.73/1.30/0.97 vs standard (4x6) | parked |
-| C6 | psi0 = (1 + a H_J2) GS(H_p), H_p stoquastic | novel construction | no stoquastic parent; dressing amplifies parent error | dead |
+| C5 | amplitude-sign coupled output e^f tanh(g) | generic | continued 3 seeds: ratios 0.65/1.02/0.96 vs standard (4x6) | closed |
+| C6 | psi0 = (1 + a H_J2) GS(H_p), H_p stoquastic | novel construction | couplings optimised for dressed energy: 1.02e-2 vs baseline 4.17e-3 (4x4) | dead |
 | C6b | 2-site J2 gates as non-unitary similarity | novel | sign exponent never below H's | dead |
 | C2-L | store the Marshall-positive J2 pre-image in the FN loop | loop-specific | exact store 2.5e-7; fitted 5.7e-5 (positive RBM), 3.4e-3 (RBM+PP); bar 1.66e-6 | dead |
 
@@ -57,4 +58,4 @@ J2 ~ 0.5; PSG inside NQS; sums over flux sectors.
 3. Physics worth keeping (memo-level, not yet a paper claim): the J2 pre-image of the frustrated ground state is
    exactly Marshall-positive at 4x4 and at strong layers on 6x6, and the fraction of Marshall-violating weight rises
    to 1/2 in the deep tail. Both say the sign is "one J2 exchange deep" but only as a dynamical operation.
-4. Pending the three re-tests, do not spend more on structured signs (rules, frames, similarities are soundly dead).
+4. Do not spend more on structured signs of the kinds tested (rules, partons + visons, frames, parents, similarities).

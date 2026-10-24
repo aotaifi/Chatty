@@ -317,6 +317,9 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   exact_vmc_4x6/verdict.json, verified): E_var with the H_J2 layer vs the full-H layer on the same jointly trained base:
   Jastrow 1.61e-2 vs 1.02e-2, RBM a=2 3.56e-3 vs 2.83e-3 (E_FN same direction). Check note: the J2 = 0 Marshall-
   Jastrow sits 1.16% above E0 against my 1% bar; scipy BFGS gives the same optimum, so the bar was wrong, not the tool.
+- C5 continuation after review (cip 17470740-2, exact_vmc_4x6/cont/verdict.json, verified): coupled/standard E_var
+  0.65 (R1), 1.02 (R2), 0.96 (R4), 3 seeds each; still INCONCLUSIVE by the rule, no pass in reach (bar 0.5). The
+  standard arm never learns a sign (W_M = 0), so the R1 gain is the coupled arm flipping a few signs. Closed.
 - C5 amplitude-sign coupled output (C5-T0 INCONCLUSIVE, parked; jobs 17469983/4): coupled/standard E_var 0.73 (R1),
   1.30 (R2, one seed), 0.97 (R4, within seed spread 3e-4); no consistent advantage, pass needed <= 0.5.
 - C3 re-test after review (C3-T0-2 KILL, C3-FN KILL; cip 17470728, ansatz_runs/c3_t0_2_4x6, verified VERDICT line):
@@ -338,10 +341,12 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   (-13..-15): in the deep tail the exact sign is uncorrelated with Marshall; the node runs through the tail.
 
 ## Status
+- 2026-10-24: ANGLE CLOSED (day 2 of ~5): all candidates dead or closed after an adversarial review and re-tests;
+  memo ansatz/ANSATZ_MEMO.md; handoff handoffs/2026-10-24-ansatz-pioneer.md. Compute used ~10 A40-h, 0 H100-h, plus CPU jobs.
 - 2026-10-23: plan created; greeting with blind-spot reading and C1-C3 sent to the PI; C4 added.
 - 2026-10-23 evening: C1 dead; C2 lead (4x4, 4x6); C3 inconclusive at 4x4, 4x6 running; asked the PI what counts
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Eight structured ansatz ideas tested on exact lattices, five kills sound and three being re-tested after an adversarial review; none beats the baselines so far.
-- NEXT (open, medium): Re-test the three weak kills (spin-liquid vison sum, unfrustrated parent, coupled output), then close the angle with the memo.
+- STATUS (done, medium): Nine structured ansatz ideas tested on exact lattices and none beats the baselines; the frustrated sign is made by cancellation of exchange paths, which the loop's hops already compute.
+- NEXT (open, low): The loop could test the best published network (CNN plus MPS) as its stored part; the PI decides whether to reopen this angle.

@@ -200,3 +200,4 @@
 2026-10-25 01:30 VERDICT job 3853503: COMPLETED, not run. Bash is denied in this session (don't-ask mode), so I could not run `quotable.py` or the gate script. No verdict and no energy number to quote. [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s1/ANALYSIS.md]
 2026-10-25 02:02 VERDICT job 3853504: STALLED [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s2/ANALYSIS.md]
 - 2026-10-25 02:10 8x8 FN p=1 QUOTABLE -0.498947 +- 5.6e-6 after p1_s1 extension (3853503, 1.87 H100-h); p1_s2 extension 3853504 running (time limit cut to 2:04 to fit the express remainder; its watcher fired a false STALLED during the queue wait). 10x10/12x12 staged and sized (worker, 2359792): ~31 / ~116 H100-h at relaxed targets; awaiting PI choice of route.
+- 2026-10-25 04:00 8x8 FN p=1 final (both chains 1080 blocks; 3853504 done 1.87 H100-h): -0.498946 +- 4.6e-6 QUOTABLE, chain difference -1.2 sigma, 7.9 H100-h total for p=1. Express used ~29.6 of 30 this month.

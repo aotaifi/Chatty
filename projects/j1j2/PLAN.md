@@ -20,7 +20,7 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 - NEXT MAJOR CALCULATION approved 2026-10-23 17:40 (PI): M1 + gate, proposals/2026-10-23_next_major_calc_v2_final.md. Takeover by the lead from 17:45.
 - Gate (2026-10-23): hop is tail-specific (G-A2), N0 not by construction, fit-free signed chain 1.95e-6 -> 3.0e-9 in 6 rounds, but RBM+PP two-hop refit tax 1.66e-6 = 1.02 x the round gain: GATE SHUT, loop C not run. Storage of the node region is the blocker (ansatz angle C2-L).
 - M1.0: no Lanczos+FN, no FN/GFMC and no NQS+Lanczos at 8x8 published; M1.3 is new.
-- M1.3 (8x8, translation RBM+PP guide): FN p=0 -0.4987565(28) quotable; FN p=1 -0.498947(6) QUOTABLE (2026-10-25); VMC p=1 -0.498923(17). p=1 FN would beat published full-projection RBM+PP by 6e-5, 2.5e-4 above DMRG. And sign labels without the oracle (O3)?
+- M1.3 (8x8, translation RBM+PP guide): FN p=0 -0.4987565(28) quotable; FN p=1 -0.498946(5) QUOTABLE (2026-10-25, 2 chains x 1080 blocks); VMC p=1 -0.498923(17). p=1 FN would beat published full-projection RBM+PP by 6e-5, 2.5e-4 above DMRG. And sign labels without the oracle (O3)?
 
 ## Step back 2026-10-23 afternoon (trigger: the PI; the tail finding had not moved in weeks)
 1. Verdict: reframe. The tail is the neighbourhood of the nodal surface; its amplitude and the sign are one object (the node). We store them as two (log|a| network + discrete sign), and log|psi| is singular at a node, so the tail cannot be learned that way.

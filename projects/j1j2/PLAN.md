@@ -46,6 +46,8 @@ constant cost per round and beats brute-force NQS in GPU-h at 8x8-14x14.
 ## Running
 | job | run dir | next step per verdict |
 |---|---|---|
+| 10x10 / 12x12 RBM+PP training, Paderborn 3921516 / 3921519 (cont, 4096 chains; watchers -> VERDICT in delta_today.md) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/rbL{10,12}_prod; local /scratch/a/A.Otaifi/rbmppL/prod | converged -> VMC p=0/1 + FN p=0 (+ FN p=1 at 10x10) via gfmc_fn_lattice/m13b_LxL; drifting -> resume |
+| Test L8 (one loop round at 8x8, walkers): worker building | tbd | README 'Test L8' branches |
 | M1.3b 8x8: V 3832999 (VMC p=0/1), A 3833000/01 (GFMC p=0), B 3833002/03 (GFMC p=1), X 3833004-08 (bias scans); Paderborn express, afterok:V; setsid watchers | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/gfmc8/runs/rb8; local /scratch/a/A.Otaifi/gfmc_m13b/prod/rb8 | gfmc8_analyze.py: E_FN p=0, p=1 at 8x8 vs VMC p=0/1 and the published bars, GPU-h per number; seeds disagree -> continue chains before any fit |
 
 ## Angles

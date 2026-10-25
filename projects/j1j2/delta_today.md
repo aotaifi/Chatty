@@ -201,3 +201,4 @@
 2026-10-25 02:02 VERDICT job 3853504: STALLED [/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s2/ANALYSIS.md]
 - 2026-10-25 02:10 8x8 FN p=1 QUOTABLE -0.498947 +- 5.6e-6 after p1_s1 extension (3853503, 1.87 H100-h); p1_s2 extension 3853504 running (time limit cut to 2:04 to fit the express remainder; its watcher fired a false STALLED during the queue wait). 10x10/12x12 staged and sized (worker, 2359792): ~31 / ~116 H100-h at relaxed targets; awaiting PI choice of route.
 - 2026-10-25 04:00 8x8 FN p=1 final (both chains 1080 blocks; 3853504 done 1.87 H100-h): -0.498946 +- 4.6e-6 QUOTABLE, chain difference -1.2 sigma, 7.9 H100-h total for p=1. Express used ~29.6 of 30 this month.
+- 2026-10-25 takeover (PI: 'decide till I come back'): 10x10 and 12x12 RBM+PP trainings submitted on cont (4096 chains, 4500 steps; ~19 / ~66 H100-h): Paderborn 3921516 (rbL10_prod), 3921519 (rbL12_prod), watchers PPID 1. Test L8 (one loop round at 8x8 with walkers) pre-registered.

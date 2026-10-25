@@ -1953,3 +1953,23 @@ References: L10 per `m13b_LxL/ANALYSIS_BRIEF.md` (Nomura-Imada 2005.14142, Rende
   overlap). 6.0 H100-h for this number. p1_s2's extension (3853504) is running and will tighten it.
   Reading: one hop + FN on the 8x8 translation RBM+PP lies 6.2e-5 per site below the published full-projection RBM+PP
   (-0.498886) and 2.5e-4 above DMRG (-0.4992); FN adds 2.5e-5 over VMC with the same one-hop guide.
+
+## Test L8: one loop round at 8x8 with walkers (pre-registered 2026-10-25, lead, under takeover; before any code or run; cont QoS, <= 15 H100-h)
+**Why.** At 6x6 one refitted round returns the network to where it started (G-tax: tax 1.66e-6 = 1.02 x the round's
+gain). The PI's question is whether the balance changes with size: a fixed number of Lanczos steps weakens with N (one
+step removes 84% of the error at 6x6, 47% at 8x8), while a round of the loop (local hop + extensive fixed-node
+projection + storage) might not. This test measures the balance at 8x8.
+- **g_0:** the 8x8 RBM+PP (rb8_prod) + one signed Lanczos hop; its FN energy is -0.498946(5) (M1.3b).
+- **Refit:** the same RBM+PP class fitted to the FN solution phi_0 of g_0, using walker samples only (no exact tables):
+  maximise the fidelity |<a|phi_0>|^2 / (<a|a><phi_0|phi_0>), with <a|phi_0> estimated on the walkers' mixed
+  distribution g_0 phi_0 (weights a/g_0) and <a|a> by VMC on a (p-tVMC-style, Sinibaldi et al. 2305.14294). Start
+  from rb8_prod, fixed budget, held-out fidelity must rise. Sign: the new guide's sign is sign(a_1) x sign(hop factor).
+- **g_1:** a_1 + one signed hop; E_FN(g_1) by two walker chains as in M1.3b.
+- **Decision** (sigma = combined error, about 7e-6 per site):
+  - E_FN(g_1) < E_FN(g_0) by > 3 sigma: the loop gains at 8x8 where it did not at 6x6; the edge grows with size. Next:
+    a second round, then 10x10.
+  - Within 2 sigma: no gain, as at 6x6; the loop's future is the storage object (ansatz angle).
+  - E_FN(g_1) > E_FN(g_0) by > 3 sigma: storage loses more than the round gains at 8x8; same conclusion, stronger.
+- **Controls:** the fit with 0 steps returns rb8_prod and reproduces g_0's FN energy; the fidelity estimator checked at
+  4x4 against exact overlaps; a deliberately wrong sign in the weights must lower the fidelity.
+- Lead's prediction: within 2 sigma (~50%), gain (~30%), loss (~20%).

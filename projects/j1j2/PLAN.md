@@ -22,8 +22,8 @@ beats brute-force NQS in GPU-h at 8x8-14x14, for frustrated magnets where QMC ha
 |---|---|---|
 | 10x10 RBM+PP training, Paderborn 3921516 (cont, 4096 chains, 4500 steps, ~19 H100-h) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/rbL10_prod; local /scratch/a/A.Otaifi/rbmppL/prod/rbL10_prod (ANALYSIS_BRIEF.md) | converged -> VMC p=0/1, FN p=0, FN p=1 via experiments/gfmc_fn_lattice/m13b_LxL/launch_m13b_L.sh (LSZ=10, cont); drifting -> resume same RUN |
 | 12x12 RBM+PP training, Paderborn 3921519 (cont, 4096 chains, ~66 H100-h) | .../rbL12_prod | converged -> VMC p=0/1, FN p=0; FN p=1 (39 H100-h) only if 10x10 shows a trend worth it |
-| Test L8 (one loop round at 8x8 with walkers): Opus worker was building at migration; state in experiments/gfmc_fn_lattice/l8/STATUS.md if it wrote one | README 'Test L8' | re-brief a worker from README 'Test L8' + STATUS.md; branches in README |
-If 3921516 has not started by 2026-11-01, move it to express_hpcalot (scontrol update QOS; express resets to 30 H100-h).
+| Test L8 (one loop round at 8x8), Paderborn cont, commit e6a0456: D_s1 3923269, D_s2 3923270 (walker dump) -> F 3923271 (refit, train chain 1, held-out chain 2, early stop) -> V 3923272 -> g1 FN 3923273/3923274; ~12.5 H100-h; controls i-iv pass (l8/STATUS.md) | /scratch/hpc-prf-ppdmrg/hpcalot/l8/runs/prod; local /scratch/a/A.Otaifi/l8/prod (ANALYSIS_BRIEF.md each) | D fails -> resume D (launch_l8.sh D), re-chain F/V/G with DEP; F NO_RISE/HEALTH_STOP -> V,G auto-killed, report curve; G done -> l8_decide.py: GAIN -> second round then 10x10; NO_GAIN/LOSS -> loop future = storage object; UNDECIDED -> extend G |
+Both trainings PENDING (Priority), est. start 2026-10-31 (checked 2026-10-25). If 3921516 has not started by 2026-11-01, move it to express_hpcalot (scontrol update QOS; express resets to 30 H100-h).
 
 ## Budget (takeover decision 2026-10-25)
 <= 130 H100-h of the project allocation hpc-prf-ppdmrg for 10x10/12x12 + L8; no single job > 70 H100-h. Express
@@ -43,3 +43,8 @@ If 3921516 has not started by 2026-11-01, move it to express_hpcalot (scontrol u
 - B0 PP+3x3bf VMC: no gain over PP in 400 SR steps (Paderborn 3806793).
 - gamma-FN: 26% of the gap (g0_17411369). ViT refit: 9.2e-5. Tail-trained ViT + hop 1.52e-5.
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
+
+## Cockpit
+- STATUS (in progress, high): At 8x8 the walker method with one correction step beats the best published network energy; whether the full loop gains with lattice size is still open.
+- NEXT (in progress, high): One loop round at 8x8 is queued and decides whether the loop gains with size (start expected around 29 Oct).
+- NEXT (in progress, medium): 10x10 and 12x12 network trainings are queued (start expected around 31 Oct), then the same energy comparison there.

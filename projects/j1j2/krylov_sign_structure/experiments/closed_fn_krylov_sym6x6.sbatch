@@ -6,12 +6,12 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=100G
 #SBATCH --time=24:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_fn6x6/logs/fn6x6-%x-%j.out
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/logs/fn6x6-%x-%j.out
 # Usage: sbatch --job-name=fn6_and closed_fn_krylov_sym6x6.sbatch TAG [extra args of closed_fn_krylov_sym6x6.py ...]
 # e.g.   sbatch --job-name=fn6_and closed_fn_krylov_sym6x6.sbatch sym6x6_and_m3 --method anderson --m 3 --maxiter 400
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_fn6x6
-ED=/home/a/A.Otaifi/chatty_ed6x6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6
+ED=/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6
 cd "$BASE"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK} NUMBA_NUM_THREADS=${SLURM_CPUS_PER_TASK} OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 TAG="$1"; shift

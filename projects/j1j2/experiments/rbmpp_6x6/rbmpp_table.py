@@ -21,7 +21,7 @@ from rbmpp_lib import Lattice, make_fns
 jax.config.update("jax_enable_x64", True)
 
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr'); TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 N = 36; log = SS.log; T00 = time.time()
 tag = SPEC.get('tag', 'guide')

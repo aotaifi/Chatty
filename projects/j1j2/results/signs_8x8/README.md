@@ -2,7 +2,7 @@
 
 Pre-registration: `experiments/signs_8x8/README.md` (commit f516c94, amendment 1 in 7835f48, both before any label,
 threshold or energy from the new data). Code: `experiments/signs_8x8/`. Run data: ws1
-`/project/theorie/a/A.Otaifi/chatty_signs8/` (two-hop chunks ~0.5 GB per run; `ana/` holds the processed arrays).
+`/project/theorie/a/A.Otaifi/Chatty/runs/signs8/` (two-hop chunks ~0.5 GB per run; `ana/` holds the processed arrays).
 
 ## Verdict
 - **Arm M (from the Marshall sign): PASS.** The stored composite net plus one exact hop beats the exact one-hop

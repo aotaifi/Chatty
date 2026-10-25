@@ -12,7 +12,7 @@ code is reused read-only (`../stall_6x6/st6_sector.py`; small helpers are copied
 
 Code: `itfit_common.py` (exact sector helpers), `itfit_exact.py` (Stage 0, no training), `itfit_run.py` (Stage 1),
 `itfit.sbatch`, `specs/`, `itfit_figure.py`. Results: `results/itfit_6x6/`. ws1: code `~/chatty_itfit/code`, runs
-`/project/theorie/a/A.Otaifi/chatty_itfit/runs/`.
+`/project/theorie/a/A.Otaifi/Chatty/runs/itfit/runs/`.
 
 ## Pre-registration (written 2026-10-08, before any run of this test)
 

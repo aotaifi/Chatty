@@ -6,11 +6,11 @@
   null
  ],
  "hop": {
-  "amp": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+  "amp": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
   "T": -5.199999999999999
  },
- "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+ "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
  "name": "K2vit_rgn_comp_sign",
- "distilled_from": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/spec_it1.json",
- "sign_from": "/home/a/A.Otaifi/chatty_t3/runs/t3dist1_16852732/spec_dist1.json"
+ "distilled_from": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/spec_it1.json",
+ "sign_from": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3dist1_16852732/spec_dist1.json"
 }

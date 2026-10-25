@@ -13,7 +13,7 @@ import st6_sector as SS
 import jax, jax.numpy as jnp
 jax.config.update('jax_enable_x64', True)
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True); F = os.path.join(OUT, 'c2_t0_6x6.json'); T0 = time.time()
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 sec = SS.Sector(os.environ.get('ST6_CSR', ROOT + '/csr'), os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz'))
 D = sec.D; N = 36
 BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB)

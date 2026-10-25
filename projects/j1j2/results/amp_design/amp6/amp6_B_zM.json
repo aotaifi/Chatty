@@ -1,6 +1,6 @@
 {
  "args": {
-  "spec": "/home/a/A.Otaifi/chatty_t3/runs/a6dist_zM_16853971/spec_zM.json",
+  "spec": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/a6dist_zM_16853971/spec_zM.json",
   "init": "base",
   "out": "B_zM",
   "steps": 3,
@@ -28,9 +28,9 @@
    null
   ],
   "hop": null,
-  "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+  "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
   "name": "K2vit_rgn_comp_sign_comp",
-  "distilled_from": "/home/a/A.Otaifi/chatty_t3/runs/t3sign2_16852733/spec_sign2.json"
+  "distilled_from": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3sign2_16852733/spec_sign2.json"
  },
  "init": "base",
  "cert_start": {

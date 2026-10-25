@@ -9,7 +9,7 @@
 JOB=$1; RUN=$2; LOCAL=$3; STALL=${4:-3600}
 POLL=${POLL:-300}
 REMOTE=/scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8/runs/$RUN
-DELTA=${DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 JF=${JF:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
 SSH="ssh -o BatchMode=yes -o ConnectTimeout=30 -o HostName=login4 paderborn"
 SL='export PATH=/opt/software/slurm/25.11.8-1/bin:$PATH;'

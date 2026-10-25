@@ -1,3 +1,3 @@
-{"pool": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8pool_17092718/pool.npz", "holdout": 0.2, "split_seed": 3, "arms": [
+{"pool": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8pool_17092718/pool.npz", "holdout": 0.2, "split_seed": 3, "arms": [
  {"tag": "VMC-minSR-0.01", "kind": "vmc", "opt": "sr", "eta": 0.01, "lam": 1e-3, "max_df": 0.01, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0, "max_sec": 5400},
  {"tag": "VMC-minSR-0.003", "kind": "vmc", "opt": "sr", "eta": 0.003, "lam": 1e-3, "max_df": 0.01, "steps": 20000, "B": 256, "ckpt_every": 1000, "seed": 0, "max_sec": 5400}]}

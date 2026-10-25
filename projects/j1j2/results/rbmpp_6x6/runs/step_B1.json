@@ -396,7 +396,7 @@
    }
   ]
  },
- "guide": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabB1_17166872/sym_tables_B1.npz",
+ "guide": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabB1_17166872/sym_tables_B1.npz",
  "guide_extras": {
   "E_FN": 0.00029167471103086484,
   "w_s": 0.0003115587097258232,

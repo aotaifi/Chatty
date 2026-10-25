@@ -1,1 +1,1 @@
-{"phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "init_samples": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/rvD2_17161661/samples.npz", "psiP_sweeps": 40, "block": 4, "da_sweeps": 4, "seed": 14002, "chunk": 64, "batch": 1024}
+{"phi": 0.056006, "alpha": -0.160951, "Eref": -31.92677568, "init_samples": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/rvD2_17161661/samples.npz", "psiP_sweeps": 40, "block": 4, "da_sweeps": 4, "seed": 14002, "chunk": 64, "batch": 1024}

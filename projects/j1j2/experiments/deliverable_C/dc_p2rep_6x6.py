@@ -10,9 +10,9 @@ import jax.numpy as jnp
 import st6_sector as SS
 from lanczos_lib import lanczos_ritz, extrapolate
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
-sec = SS.Sector(os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/chatty_stall6/csr'),
-                os.environ.get('ST6_TABLE', '/home/a/A.Otaifi/chatty_stall6/data/psi0_6x6_table.npz'))
-DATA = '/project/theorie/a/A.Otaifi/chatty_stall6/data'; N = 36; E0 = sec.E0
+sec = SS.Sector(os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/csr'),
+                os.environ.get('ST6_TABLE', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/psi0_6x6_table.npz'))
+DATA = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data'; N = 36; E0 = sec.E0
 z = np.load(os.path.join(DATA, 'sym_tables.npz')); v = sec.vec(jnp.asarray(z['lP']), jnp.asarray(z['sP'].astype(np.float32)))
 
 

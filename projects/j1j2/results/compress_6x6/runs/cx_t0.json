@@ -1,8 +1,8 @@
 {
  "spec": {
-  "refresh": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/refresh_17409419",
-  "pp": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
-  "A": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz"
+  "refresh": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/refresh_17409419",
+  "pp": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
+  "A": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz"
  },
  "bases": {
   "vit": {

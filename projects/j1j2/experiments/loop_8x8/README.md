@@ -127,7 +127,7 @@ Also reported: ViT evaluations per sample for each stage. Budget <= 20 GPU-h.
 - `l8_ref.py`: stage 3.
 - `l8_eval.py`: stage 4.
 - `l8.sbatch`: job script.
-- Run data: ws1 `/project/theorie/a/A.Otaifi/chatty_loop8/runs/`.
+- Run data: ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/`.
 - Results, table and figure: `results/loop_8x8/`.
 
 ## Amendment 1 (2026-10-09 12:05, after the probe, before any pool/referee/training run): sizes and the guide decision

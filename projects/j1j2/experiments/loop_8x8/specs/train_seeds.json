@@ -1,5 +1,5 @@
 {
- "pool": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8pool_17092718/pool.npz",
+ "pool": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8pool_17092718/pool.npz",
  "holdout": 0.2,
  "split_seed": 3,
  "arms": [

@@ -12,7 +12,7 @@ JOB=$1; LOC=$2; STALL=${STALL:-2700}; POLL=${POLL:-120}; FAILSEC=${FAILSEC:-1800
 REMRUN=${F1_REMRUN:?set F1_REMRUN}
 PFX=${F1_REMOTE_PREFIX-paderborn:}
 FIN=${F1_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${F1_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${F1_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 SLURMBIN=/opt/software/slurm/25.11.8-1/bin
 rem() { if [ -n "${F1_SSH:-}" ]; then "$F1_SSH" "$1"; else ssh -o BatchMode=yes -o ConnectTimeout=30 -o HostName=login4 paderborn "$1"; fi; }
 pull() { rsync -a -e "ssh -o BatchMode=yes -o ConnectTimeout=30 -o HostName=login4" --max-size=3M \

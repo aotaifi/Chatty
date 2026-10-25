@@ -1,7 +1,7 @@
 {
  "args": {
-  "spec": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/spec_it1.json",
-  "amp": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
+  "spec": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/spec_it1.json",
+  "amp": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
   "out": "dist1",
   "beta": 0.5,
   "nchains": 1024,
@@ -28,8 +28,8 @@
    "amp": "base",
    "T": -7.736416932248442
   },
-  "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
-  "amp_from": "/home/a/A.Otaifi/chatty_t3/data/spec_G1.json"
+  "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
+  "amp_from": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/data/spec_G1.json"
  },
  "samples": {
   "accept": 0.2696874474966398,

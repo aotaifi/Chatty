@@ -2,7 +2,7 @@
  "spec": {
   "mode": "D2"
  },
- "run": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/c3s0_17165794",
+ "run": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/c3s0_17165794",
  "k": 3,
  "state": {
   "H_G3": 2.495062718427871e-05,

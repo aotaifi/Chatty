@@ -1,7 +1,7 @@
 # Write-back test (exact 6x6): residual factor + energy metric vs infidelity
 
 Design and verdict: `results/writeback/DESIGN.md`. Code: `wb_run.py` (+ `../stall_6x6/st6_sector.py`), `wb.sbatch`, `specs/`.
-ws1: code `~/chatty_writeback/code`, runs `/project/theorie/a/A.Otaifi/chatty_writeback/runs/`.
+ws1: code `~/chatty_writeback/code`, runs `/project/theorie/a/A.Otaifi/Chatty/runs/writeback/runs/`.
 
 ## Pre-registration (written 2026-10-07 before any training result)
 Start: guide (|psi_P|, s_P) = symmetrised ViT; exact phi_FN of H_FN[psi_P, s_P]. Frozen-FN gain of the ideal

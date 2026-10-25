@@ -2,7 +2,7 @@
 # Test N0 launcher (Paderborn H100, probe-sized, no training): launch_n0.sh [--submit]  (stage; with --submit also sbatch + arm the durable watcher)
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6; D=$P/data; NAME=n0; LOC=$RUNS/$NAME
 SSHO="ssh -o BatchMode=yes -o HostName=login4"
 rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $1"; }

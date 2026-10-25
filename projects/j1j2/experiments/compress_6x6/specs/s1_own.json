@@ -1,5 +1,5 @@
-{"refresh": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/refresh_17409419",
- "pp": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
+{"refresh": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/refresh_17409419",
+ "pp": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
  "sign": "own", "nround": 15, "tol": 0.02,
  "zero_ref": 4.773828268255108e-05,
  "ref_k": [1.869427258327505e-05]}

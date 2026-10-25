@@ -2,13 +2,13 @@
  "state": {
   "chain_params": [
    "base",
-   "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy"
   ],
   "Ts": [
    -14.985799779143964,
    -6.3717955103175115
   ],
-  "amp_g": "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy"
+  "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy"
  },
  "tag": "it1ba",
  "M": 128,
@@ -139,7 +139,7 @@
    "sec": 692.4988124370575,
    "amp_evals": {
     "base": 113743300,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 6022398
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 6022398
    },
    "cache_states": 2386
   },
@@ -275,7 +275,7 @@
    "sec": 613.5621185302734,
    "amp_evals": {
     "base": 203921780,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 11372144
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 11372144
    },
    "cache_states": 4599
   },
@@ -397,7 +397,7 @@
    "sec": 588.9727756977081,
    "amp_evals": {
     "base": 282523114,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 16458559
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 16458559
    },
    "cache_states": 6797
   },
@@ -531,7 +531,7 @@
    "sec": 598.2284135818481,
    "amp_evals": {
     "base": 356214669,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 21474258
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 21474258
    },
    "cache_states": 8991
   },
@@ -661,7 +661,7 @@
    "sec": 589.8856942653656,
    "amp_evals": {
     "base": 423982990,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 26352172
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 26352172
    },
    "cache_states": 11211
   },
@@ -795,7 +795,7 @@
    "sec": 560.8677079677582,
    "amp_evals": {
     "base": 483602062,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 30868096
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 30868096
    },
    "cache_states": 13312
   },
@@ -915,7 +915,7 @@
    "sec": 581.2105600833893,
    "amp_evals": {
     "base": 544953929,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 35628062
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 35628062
    },
    "cache_states": 15540
   },
@@ -1041,7 +1041,7 @@
    "sec": 557.4074544906616,
    "amp_evals": {
     "base": 598173068,
-    "/home/a/A.Otaifi/chatty_ll6/runs/it1b_16818096/it1b_params.npy": 40001076
+    "/project/theorie/a/A.Otaifi/Chatty/runs/ll6/runs/it1b_16818096/it1b_params.npy": 40001076
    },
    "cache_states": 17679
   }

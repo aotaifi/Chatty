@@ -1,8 +1,8 @@
 #!/bin/bash
 # Test O2a launcher (A40 slice via cx_slice.sbatch), modelled on launch_g1.sh. ~13 solves/round x 5 rounds (measured ~85 s per solve in O1), 2 h wall.
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6; WALL=${WALL:-02:00:00}
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6; WALL=${WALL:-02:00:00}
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_o2a.py" "$B/code/"
 sha256sum "$B/code/cx_o2a.py" "$B/code/cx_lib.py"
 for f in cx_o2a.py cx_lib.py; do cmp -s "$HERE/$f" "$B/code/$f" || { echo "copy of $f differs"; exit 1; }; done

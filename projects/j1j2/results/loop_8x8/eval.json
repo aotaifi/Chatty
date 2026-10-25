@@ -1,14 +1,14 @@
 {
  "spec": {
   "ref": [
-   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref5000_17092719/ref.npz",
-   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref6000_17093575/ref.npz",
-   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref7000_17135002/ref.npz",
-   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref8000_17135003/ref.npz"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref5000_17092719/ref.npz",
+   "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref6000_17093575/ref.npz",
+   "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref7000_17135002/ref.npz",
+   "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref8000_17135003/ref.npz"
   ],
   "runs": [
    {
-    "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+    "dir": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
     "steps": [
      "best",
      "final",
@@ -16,7 +16,7 @@
     ]
    },
    {
-    "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trF_17134891",
+    "dir": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trF_17134891",
     "steps": [
      "best",
      "final",
@@ -24,7 +24,7 @@
     ]
    },
    {
-    "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+    "dir": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
     "steps": [
      "best",
      "final",
@@ -32,7 +32,7 @@
     ]
    },
    {
-    "dir": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+    "dir": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
     "steps": [
      "best",
      "final",
@@ -112,7 +112,7 @@
    "opt": "adam",
    "step": 20000,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 36.17391014099121
   },
   {
@@ -130,7 +130,7 @@
    "opt": "adam",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.789472341537476
   },
   {
@@ -148,7 +148,7 @@
    "opt": "adam",
    "step": 20000,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 35.742470026016235
   },
   {
@@ -166,7 +166,7 @@
    "opt": "adam",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.79319977760315
   },
   {
@@ -184,7 +184,7 @@
    "opt": "adam",
    "step": 9000,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 35.780757427215576
   },
   {
@@ -202,7 +202,7 @@
    "opt": "adam",
    "step": 20000,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.840837478637695
   },
   {
@@ -220,7 +220,7 @@
    "opt": "adam",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.816150188446045
   },
   {
@@ -238,7 +238,7 @@
    "opt": "adam",
    "step": 0,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 35.76852607727051
   },
   {
@@ -256,7 +256,7 @@
    "opt": "adam",
    "step": 20000,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.81335759162903
   },
   {
@@ -274,7 +274,7 @@
    "opt": "adam",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trA_17134890",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trA_17134890",
    "sec": 34.79536747932434
   },
   {
@@ -292,7 +292,7 @@
    "opt": "sr",
    "step": 19000,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trF_17134891",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trF_17134891",
    "sec": 35.77742099761963
   },
   {
@@ -310,7 +310,7 @@
    "opt": "sr",
    "step": 20000,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trF_17134891",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trF_17134891",
    "sec": 34.79734134674072
   },
   {
@@ -328,7 +328,7 @@
    "opt": "sr",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trF_17134891",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trF_17134891",
    "sec": 34.79481339454651
   },
   {
@@ -346,7 +346,7 @@
    "opt": "sr",
    "step": 0,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 35.737549781799316
   },
   {
@@ -364,7 +364,7 @@
    "opt": "sr",
    "step": 20000,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 34.81212520599365
   },
   {
@@ -382,7 +382,7 @@
    "opt": "sr",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 34.80171871185303
   },
   {
@@ -400,7 +400,7 @@
    "opt": "sr",
    "step": 0,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 35.762118101119995
   },
   {
@@ -418,7 +418,7 @@
    "opt": "sr",
    "step": 20000,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 34.82371807098389
   },
   {
@@ -436,7 +436,7 @@
    "opt": "sr",
    "step": 10000,
    "label": "10000",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trV_17134892",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trV_17134892",
    "sec": 34.79382944107056
   },
   {
@@ -454,7 +454,7 @@
    "opt": "sr",
    "step": 70,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.73737359046936
   },
   {
@@ -472,7 +472,7 @@
    "opt": "sr",
    "step": 102,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.78985333442688
   },
   {
@@ -490,7 +490,7 @@
    "opt": "sr",
    "step": 60,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.74240446090698
   },
   {
@@ -508,7 +508,7 @@
    "opt": "sr",
    "step": 102,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.7841579914093
   },
   {
@@ -526,7 +526,7 @@
    "opt": "sr",
    "step": 102,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.72061514854431
   },
   {
@@ -544,7 +544,7 @@
    "opt": "adam",
    "step": 40,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.74082708358765
   },
   {
@@ -562,7 +562,7 @@
    "opt": "adam",
    "step": 102,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.78295302391052
   },
   {
@@ -580,7 +580,7 @@
    "opt": "adam",
    "step": 40,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.737977504730225
   },
   {
@@ -598,7 +598,7 @@
    "opt": "adam",
    "step": 102,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.78270626068115
   },
   {
@@ -616,7 +616,7 @@
    "opt": "sr",
    "step": 75,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.73156404495239
   },
   {
@@ -634,7 +634,7 @@
    "opt": "sr",
    "step": 512,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.80464005470276
   },
   {
@@ -652,7 +652,7 @@
    "opt": "adam",
    "step": 50,
    "label": "best",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 35.76476240158081
   },
   {
@@ -670,7 +670,7 @@
    "opt": "adam",
    "step": 512,
    "label": "final",
-   "run": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8trS_17135001",
+   "run": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8trS_17135001",
    "sec": 34.79682016372681
   }
  ],

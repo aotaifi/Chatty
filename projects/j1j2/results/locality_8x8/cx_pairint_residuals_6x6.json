@@ -8,8 +8,8 @@
   ],
   "n": 1024,
   "residuals": {
-   "res_PP": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
-   "res_A": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz",
+   "res_PP": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
+   "res_A": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz",
    "res_ViT": "psiP"
   }
  },

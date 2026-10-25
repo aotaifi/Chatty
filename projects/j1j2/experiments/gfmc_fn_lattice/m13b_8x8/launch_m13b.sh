@@ -19,7 +19,7 @@ set -u
 STAGE=${1:?stage T|V|A|B|X}; PARAMS=${2:?PARAMS_PATH on Paderborn}; GO=${GO:-0}; QOS=${QOS:-express_hpcalot}; CHUNK=${CHUNK:-256}; RESUME=${RESUME:-0}
 TAG=${3:-$(basename "$(dirname "$PARAMS")")}
 HERE=$(cd "$(dirname "$0")" && pwd); CODE=$HERE/..; RBMPP=$CODE/../rbmpp_6x6
-DELTA=/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md
+DELTA=/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md
 RB=/scratch/hpc-prf-ppdmrg/hpcalot/gfmc8; LOCALROOT=${LOCALROOT:-/scratch/a/A.Otaifi/gfmc_m13b/prod}; LR=$LOCALROOT/$TAG
 SSH="ssh -o BatchMode=yes -o HostName=login4"; SL=/opt/software/slurm/25.11.8-1/bin; VENV=/scratch/hpc-prf-ppdmrg/hpcalot/venv_jax_0.8.2
 RUNS=$RB/runs/$TAG

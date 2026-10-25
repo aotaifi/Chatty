@@ -1,2 +1,2 @@
-{"samples": ["/project/theorie/a/A.Otaifi/chatty_loop8/runs/rvD1_17163218/samples.npz", "/project/theorie/a/A.Otaifi/chatty_loop8/runs/rvD2_17161661/samples.npz", "/project/theorie/a/A.Otaifi/chatty_loop8/runs/rvD3_17161662/samples.npz"],
+{"samples": ["/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/rvD1_17163218/samples.npz", "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/rvD2_17161661/samples.npz", "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/rvD3_17161662/samples.npz"],
  "sweep": 12, "n": 64, "seed": 2024, "alpha": -0.160951, "Eref": -31.92677568, "phi": 0.056006, "batch": 1024}

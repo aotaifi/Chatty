@@ -1,6 +1,6 @@
 {
  "args": {
-  "out": "/home/a/A.Otaifi/ChattyRun/j1j2/sign_design_tests/runs/sdt-c6_16832568/c6.json",
+  "out": "/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/sign_design_tests/runs/sdt-c6_16832568/c6.json",
   "nchA": 512,
   "roundsA": 16,
   "nchB": 1024,

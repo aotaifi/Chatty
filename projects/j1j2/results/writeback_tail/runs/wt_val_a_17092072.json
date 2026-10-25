@@ -6,7 +6,7 @@
   "steps": 20000,
   "features": "current",
   "n_loop": 8,
-  "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+  "load_params_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtLOOP8_17090119",
   "light": true,
   "lanczos_eval": true
  },

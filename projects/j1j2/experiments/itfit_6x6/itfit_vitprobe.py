@@ -16,7 +16,7 @@ import vit_dt
 import st6_sector as SS
 jax.config.update('jax_default_matmul_precision', 'highest')
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
-CKPT = '/project/theorie/a/A.Otaifi/chatty_stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'
+CKPT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'
 N = 36
 vit_dt.set_dtype('float32')
 vit = vit_dt.make_model_6x6()

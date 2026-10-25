@@ -18,7 +18,7 @@
    "net_seed": null,
    "jac_dtype": "float32",
    "trust_adapt": 1,
-   "out": "/home/a/A.Otaifi/ChattyRun/j1j2/learning_ladder_rung2/results/prod_rw_b1e4_s1_16810015.json"
+   "out": "/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/learning_ladder_rung2/results/prod_rw_b1e4_s1_16810015.json"
   },
   "npar": 154780,
   "E0": -8.457923351394847,

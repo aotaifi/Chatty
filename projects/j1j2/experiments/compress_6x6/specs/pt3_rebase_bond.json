@@ -1,1 +1,1 @@
-{"mode": "rebase", "run_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977", "it": 6, "arms": [{"tag": "bond_30k", "net": "bond", "steps": 30000, "lr": 1e-3}]}
+{"mode": "rebase", "run_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977", "it": 6, "arms": [{"tag": "bond_30k", "net": "bond", "steps": 30000, "lr": 1e-3}]}

@@ -505,4 +505,4 @@ features again cost two hops of the base.
 ## Compute
 About 11.5 GPU-h in the first round, plus about 5 GPU-h in the follow-up (C128 1.4, C48 0.9, global GN 0.6, learnability pair 0.6, inputs/edge 0.7, expert 0.7, failures/smoke 0.1); in total (A40 and RTX 2080 Ti on ws1; within the 15 GPU-h ceiling set for the optimizer arms):
 exact projections 0.1, smoke/debug 1.6 (mostly 2080 Ti memory failures), 28k Adam arms 3.3, 111k arms 2.6, minSR 1.0,
-Gauss-Newton 1.0, ViT minSR 0.55, three-iteration fit and polish 1.3. Runs on ws1 `/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/`.
+Gauss-Newton 1.0, ViT minSR 0.55, three-iteration fit and polish 1.3. Runs on ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/`.

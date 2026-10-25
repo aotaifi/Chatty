@@ -3,7 +3,7 @@
 Question: why does the FN/Krylov loop stall at the ViT level on 6x6? Compression (ViT cannot represent a better
 amplitude), information (FN information per iteration), or optimizer/noise (sampled updates)?
 Code: `experiments/stall_6x6/`. ws1 run dir `~/chatty_stall6/` (code, logs); large data and runs on
-`/project/theorie/a/A.Otaifi/chatty_stall6/` (csr, data, runs).
+`/project/theorie/a/A.Otaifi/Chatty/runs/stall6/` (csr, data, runs).
 Budget: <= 15 GPU-h + 100 CPU-h. All energies per site; E0 = -0.50380965.
 
 ## Method (exact, no sampling in any energy)
@@ -25,7 +25,7 @@ Budget: <= 15 GPU-h + 100 CPU-h. All energies per site; E0 = -0.50380965.
 - 11:24 All full A40s are allocated to multi-day jobs (cip-cl-nv01, kng-cl-nv01/02); the first GPU job (16856428)
   sat in the queue -> cancelled; code rewritten for an 11 GB RTX 2080 Ti (upper-triangular coded H, 4.2 GB).
 - 11:27-11:33 **Home quota hit**: the 7.2 GB CSR in `~/chatty_stall6/csr` pushed `/home` over quota (writes failed
-  for ~6 min, also for other jobs writing to home). Moved to `/project/theorie/a/A.Otaifi/chatty_stall6/` (306/475 GB);
+  for ~6 min, also for other jobs writing to home). Moved to `/project/theorie/a/A.Otaifi/Chatty/runs/stall6/` (306/475 GB);
   home writable again at 11:34. All large files of this task now live on /project.
 - 11:37 Unit tests (ws1 login CPU, `test_st6_small.py`): synthetic 400-dim sector vs dense numpy: matvec 4e-15,
   FN ground state 6e-14 (vector 1e-6), Krylov threshold step = brute force over all cuts (same signs). Real 6x6

@@ -7,7 +7,7 @@
 #SBATCH --mail-type=NONE
 set -u
 JOB_TO_WATCH="$1"
-BASE=/home/a/A.Otaifi/ChattyRun/j1j2/krylov_sign_structure
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/krylov_sign_structure
 states=$(sacct -j "$JOB_TO_WATCH" -X -n -P -o State | sed '/^$/d')
 if echo "$states" | grep -Eq 'FAILED|CANCELLED|TIMEOUT|OUT_OF_MEMORY|NODE_FAIL|PREEMPTED'; then
   bad=$(echo "$states" | grep -E 'FAILED|CANCELLED|TIMEOUT|OUT_OF_MEMORY|NODE_FAIL|PREEMPTED' | head -1)

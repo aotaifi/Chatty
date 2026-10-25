@@ -75,7 +75,7 @@ assert BFW in (3, 5), BFW
 MIN_MOVE = float(SPEC.get('min_move', 1e-3))           # README amendment T1s-1
 MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
-T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
+T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t0_17410220/cx_t0.json')
 res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP,
                                                     tau=TAU, tau_min=TAU_MIN, anneal_steps=ANNEAL_STEPS, warm_theta=WARM_THETA, splice_dec=SPLICE_DEC, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
                                                     flat_tol=FLAT_TOL, bf_window=BFW, freeze_outer=FREEZE, max_steps=MAX_STEPS, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))

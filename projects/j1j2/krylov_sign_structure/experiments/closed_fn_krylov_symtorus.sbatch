@@ -6,12 +6,12 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=24G
 #SBATCH --time=24:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_fn6x6/logs/fntorus-%x-%j.out
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/logs/fntorus-%x-%j.out
 # Usage: sbatch --job-name=NAME closed_fn_krylov_symtorus.sbatch TORUS(t1x,t1y,t2x,t2y) TAGPREFIX
 # Runs Anderson(m=3) and plain loops sequentially on the tilted torus (symmetric sector k=0,A1,flip+).
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_fn6x6
-ED=/home/a/A.Otaifi/chatty_ed6x6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6
+ED=/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6
 cd "$BASE"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK} NUMBA_NUM_THREADS=${SLURM_CPUS_PER_TASK} OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 TORUS="$1"; PFX="$2"

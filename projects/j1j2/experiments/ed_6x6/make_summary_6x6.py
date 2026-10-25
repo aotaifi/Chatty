@@ -22,9 +22,9 @@ out = {
     "sectors_sorted": table,
     "postprocess": pp,
     "cluster_paths": {
-        "rundir": "ws1:/home/a/A.Otaifi/chatty_ed6x6/run_gs",
-        "vectors": "ws1:/home/a/A.Otaifi/chatty_ed6x6/run_gs/vectors_k00_A1_p.npy (3 lowest A1,+ eigvecs, ls basis order)",
-        "states": "ws1:/home/a/A.Otaifi/chatty_ed6x6/run_gs/states_k00_A1_p.npy (ls representatives = min over 576 group images)",
+        "rundir": "ws1:/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6/run_gs",
+        "vectors": "ws1:/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6/run_gs/vectors_k00_A1_p.npy (3 lowest A1,+ eigvecs, ls basis order)",
+        "states": "ws1:/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6/run_gs/states_k00_A1_p.npy (ls representatives = min over 576 group images)",
     },
 }
 json.dump(out, open(os.path.join(R, "ed6x6_summary.json"), "w"), indent=1)

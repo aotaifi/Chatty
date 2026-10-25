@@ -5,8 +5,8 @@
 # Wall: T0-phys measured ~30 s per E_FN solve on this slice (job 17410698: 918 s for 2 one-hop bases + physics). G1 = 7 one-hop runs x 15 solves
 # = ~52 min, so 1 h is not half-wall; default WALL=02:00:00 (override: WALL=01:00:00 ./launch_g1.sh). cx_g1.json is dumped after every base.
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6; WALL=${WALL:-02:00:00}
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6; WALL=${WALL:-02:00:00}
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_g1.py" "$B/code/"
 sha256sum "$B/code/cx_g1.py" "$B/code/cx_lib.py"
 for f in cx_g1.py cx_lib.py; do cmp -s "$HERE/$f" "$B/code/$f" || { echo "copy of $f differs"; exit 1; }; done

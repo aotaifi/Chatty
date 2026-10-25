@@ -92,7 +92,7 @@ Files:
 - `a8_noise.json`: noise scales.
 - `a8_run_meta.json`: grid inputs, e_bar.
 - `fig_local_krylov.{png,pdf}`.
-- Per-sample Delta matrices (28 MB): ws1 `/project/theorie/a/A.Otaifi/chatty_local_krylov/a8_delta.npz`.
+- Per-sample Delta matrices (28 MB): ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/local_krylov/a8_delta.npz`.
 
 ![fig](fig_local_krylov.png)
 (a) Exact global-rule gain per site on M decoupled 4x4 copies, relative to one copy; the local rule stays at 1.

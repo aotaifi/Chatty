@@ -171,7 +171,7 @@ Exact sector numbers at the final parameters (`runs/*.json`; figure `writeback_6
   17%), and lr 1e-2 was worse than 3e-3 (3.9%). The E-M curve flattens at 15-20k steps (figure a). What
   limits it is fitting a rough, tail-concentrated function by stochastic gradients. Extra width does not help.
 - Compute: about 4.7 GPU-h (A40 3.5, RTX 2080 Ti 1.2, mostly smoke/memory debugging on the 2080 Ti) (A40 and RTX 2080 Ti), of the 6 GPU-h budget. Runs on ws1
-  `/project/theorie/a/A.Otaifi/chatty_writeback/runs/`; code `experiments/writeback/`.
+  `/project/theorie/a/A.Otaifi/Chatty/runs/writeback/runs/`; code `experiments/writeback/`.
 
 ## 4. Next step
 1. **Stop writing FN amplitude updates back** (no loop, no 8x8 write-back run). The amplitude is obtained by ordinary

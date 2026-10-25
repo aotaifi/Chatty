@@ -6,7 +6,7 @@ to the Marshall sign; R = U / W_M against the no-information null R_null = 0.5 W
 import sys, json, time
 import numpy as np
 OUT = sys.argv[1]
-TABLE = sys.argv[2] if len(sys.argv) > 2 else '/project/theorie/a/A.Otaifi/chatty_stall6/data/psi0_6x6_table.npz'
+TABLE = sys.argv[2] if len(sys.argv) > 2 else '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/psi0_6x6_table.npz'
 L = 6; N = 36
 xs = np.arange(N) % L; ys = np.arange(N) // L
 def mask(sel): return np.uint64(sum(1 << int(i) for i in np.nonzero(sel)[0]))

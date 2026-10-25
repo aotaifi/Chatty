@@ -6,7 +6,7 @@ Files: @RUN@/cx_b0.json  control {s2 {EFN_zero_hop, EFN_one_hop}, own {...}, net
   b0_own {same, own sign; disagree = |psi0|^2 weights of sign mismatch with s0 and s_2, raw and mod global sign}; table_b0.npz (lP, sP);
   @RUN@/train/train.json  hist per step (E, err, var, t_step ...), plateau {diff, se_diff, ok}, stop ('converged' | 'budget out' | ...),
   steps_done, tail_mean_100; params_XXXXX.npz every 50 steps, params_final.npz; progress.txt (train/ and run level).
-  E_loop = best E_FN(g_k) in /project/theorie/a/A.Otaifi/chatty_compress6/runs/o2b_17431886/cx_o2b.json (rounds[k].EFN; 9.26e-6 at k=3 when this brief was written, run still going).
+  E_loop = best E_FN(g_k) in /project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/o2b_17431886/cx_o2b.json (rounds[k].EFN; 9.26e-6 at k=3 when this brief was written, run still going).
 Gate: no Markov-chain estimator enters the decision (E_FN is an exact solve of the table).  The VMC energy trace is a Markov-chain estimate; read the
   plateau record in train.json (se_diff = statistical error of the 100-step-window difference; the pre-registered tolerance is 1e-6 per site and is
   below se_diff at 2048 chains, so 'converged' can be a coincidence: judge the plateau from the energy-vs-step curve, not from the flag).  Command:

@@ -11,7 +11,7 @@ from cx_lib import *
 import flax, vit_dt
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 MODE = SPEC['mode']; EPS = 0.3
-VDIR = '/project/theorie/a/A.Otaifi/chatty_compress6/runs/ra_ms_s1_k1_17174477'
+VDIR = '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/ra_ms_s1_k1_17174477'
 F = os.path.join(OUT, f'cx_tailnet_{MODE}.json'); T00 = time.time()
 lab = Lab(); sec = lab.sec
 res = dict(spec=SPEC)

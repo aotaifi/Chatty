@@ -6,9 +6,9 @@
 # Sizing: O2a (job 17430739, same code path and hardware, A40-24Q) took 110 s per round (736 s for the control + 6 evaluations);
 #   S1 does <= 16 evaluations (15 maps) + zero-hop control: <= ~35 min, wall 1 h (<= 1 A40-h on a slice, README budget <= 2 A40-h).
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6; WALL=${WALL:-01:00:00}
-RUN=/project/theorie/a/A.Otaifi/chatty_compress6/runs/s1_own
-mkdir -p "$RUN/code" /home/a/A.Otaifi/chatty_compress6/logs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6; WALL=${WALL:-01:00:00}
+RUN=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/s1_own
+mkdir -p "$RUN/code" /project/theorie/a/A.Otaifi/Chatty/runs/compress6/logs
 # code: everything cx_lib needs comes from $B/code (as cx_slice.sbatch); cx_lib.py must equal the repo's, cx_s1.py is copied from the repo
 cp "$B"/code/*.py "$RUN/code/"; cp "$HERE/cx_s1.py" "$RUN/code/"
 cmp -s "$HERE/cx_lib.py" "$RUN/code/cx_lib.py" || { echo "cx_lib.py differs from $B/code"; exit 1; }

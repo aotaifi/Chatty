@@ -36,7 +36,7 @@ New venv (the existing venvs were not touched). It lives under /project because 
 (the default `TMPDIR` on ws1) was full when this was done; use `TMPDIR=/tmp/...` and `--no-cache-dir` for pip:
 
     PY=/software/opt/el_9/x86_64/python/3.11-2023.09/bin/python3
-    V=/project/theorie/a/A.Otaifi/a40slice/venv_jax_0.8.2
+    V=/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/venv_jax_0.8.2
     mkdir -p /tmp/${USER}_pip; $PY -m venv $V
     TMPDIR=/tmp/${USER}_pip $V/bin/pip install --no-cache-dir "jax[cuda12]==0.8.2" flax einops optax msgpack numpy scipy
 
@@ -55,7 +55,7 @@ See `a40_slice_wt.sbatch` (tested file, next to this one). Core of it:
     #SBATCH --gres=gpu:a40-24gb:1          # or gpu:a40-16gb:1 (then --mem=24G); a40-8gb only for small jobs
     #SBATCH --cpus-per-task=4
     #SBATCH --mem=38G                      # 24G on 8gb/16gb nodes
-    VENV=/project/theorie/a/A.Otaifi/a40slice/venv_jax_0.8.2
+    VENV=/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/venv_jax_0.8.2
     export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=false XLA_PYTHON_CLIENT_MEM_FRACTION=0.85
     "$VENV/bin/python" script.py ...
 
@@ -86,8 +86,8 @@ time-sliced vGPUs of one physical A40; there is no per-job isolation guarantee o
    to ~1e-7 relative. On the **8gb** slice it fails with `RESOURCE_EXHAUSTED: Out of memory while trying to allocate 241.16MiB`
    in `st6_sector.py` `Hm` (sector matrix, 7.3 GB, does not fit into 6.3 GB).
 
-Logs: `/project/theorie/a/A.Otaifi/a40slice/logs`, runs: `/project/theorie/a/A.Otaifi/a40slice/runs` and
-`/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtslice_*`.
+Logs: `/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/logs`, runs: `/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/runs` and
+`/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtslice_*`.
 
 ## Practical notes
 

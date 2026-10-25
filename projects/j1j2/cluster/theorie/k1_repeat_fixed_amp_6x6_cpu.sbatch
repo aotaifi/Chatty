@@ -6,14 +6,14 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=96G
 #SBATCH --time=12:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_k1rep/logs/k1rep-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_k1rep/logs/k1rep-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/k1rep/logs/k1rep-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/k1rep/logs/k1rep-%j.err
 # LMU theorie CPU fallback (Paderborn GPUs blocked by the Oct 5-9 shutdown).
 # Usage: sbatch [--cpus-per-task N] k1_repeat_fixed_amp_6x6_cpu.sbatch [script args...]
 # Env: ~/chatty_k1rep/venv311 = jax 0.10.2 / flax 0.12.8 / netket 3.22.4 (CPU) + nqsmagic copied from Paderborn src.
 set -euo pipefail
 module load python/3.11-2023.09
-BASE=/home/a/A.Otaifi/chatty_k1rep
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/k1rep
 OUT="$BASE/results/k1_repeat_fixed_amp_6x6_${SLURM_JOB_ID}"
 mkdir -p "$OUT"
 export JAX_PLATFORMS=cpu OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

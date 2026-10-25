@@ -4,7 +4,7 @@ Periodic 8x8 J1-J2, J2/J1 = 0.5.
 - Pre-registration: `experiments/loop_8x8/README.md`, commit c07933d; amendments 1-3 in dffc1b5 and 2217841, all made
   before any referee evaluation of a write-back.
 - Code: `experiments/loop_8x8/`.
-- Run data: ws1 `/project/theorie/a/A.Otaifi/chatty_loop8/runs/` (pool 28 MB; referee 4 x ~70 MB; parameters).
+- Run data: ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/` (pool 28 MB; referee 4 x ~70 MB; parameters).
 
 ## Verdict: INCONCLUSIVE (cause: the control is not resolved), and one Lanczos step gains 3.7x more
 - **Criterion (i) PASSES.**

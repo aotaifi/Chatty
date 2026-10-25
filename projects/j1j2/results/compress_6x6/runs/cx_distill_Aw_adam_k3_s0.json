@@ -6,7 +6,7 @@
   "steps": 4000,
   "lr": 1e-06,
   "val_every": 500,
-  "refs": "/project/theorie/a/A.Otaifi/chatty_compress6/tables/cx_replay.json",
+  "refs": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/tables/cx_replay.json",
   "save_table": true
  },
  "npar": 154980,

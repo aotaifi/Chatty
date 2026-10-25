@@ -4,7 +4,7 @@
  "K": 8,
  "lr": 0.003,
  "features": "current",
- "load_params_dir": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119",
+ "load_params_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtLOOP8_17090119",
  "ws": true,
  "light": true
 }

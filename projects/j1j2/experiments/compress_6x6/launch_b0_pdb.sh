@@ -7,9 +7,9 @@
 set -euo pipefail
 WALL_SEC=${WALL_SEC:-5200}; SBATCH_TIME=${SBATCH_TIME:-02:30:00}
 HERE=$(cd "$(dirname "$0")" && pwd)
-S1=/project/theorie/a/A.Otaifi/chatty_compress6/runs/b0_ppbf_simple               # seed 1: code, specs
+S1=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/b0_ppbf_simple               # seed 1: code, specs
 NAME=${NAME:-b0_ppbf_simple_s2}; SEED=${SEED:-2}; LR=${LR:?set LR}
-LOC=/project/theorie/a/A.Otaifi/chatty_compress6/runs/$NAME            # local: specs, brief, pulled-back small outputs
+LOC=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/$NAME            # local: specs, brief, pulled-back small outputs
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6; RUN=$P/runs/$NAME   # remote
 SSHO="ssh -o BatchMode=yes -o HostName=login4"; export PATH=$PATH
 rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $1"; }
@@ -33,7 +33,7 @@ PY
 rsync -a -e "$SSHO" "$LOC/spec_train.json" "$LOC/spec_readout.json" paderborn:$RUN/
 # 3. inputs exist (sizes printed); the PP start params must be byte-identical to seed 1's
 rem "cd $P/data; ls -l psi0_6x6_table.npz sym_tables.npz csr/{meta.json,norb.npy,up_indices.npy,up_codes.npy,up_inc.npy} refresh_17409419/s2.npy rpTabPP_17164048/sym_tables_PP.npz rpT1_pp_17163493/params_final.npz; sha256sum rpT1_pp_17163493/params_final.npz"
-sha256sum /project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpT1_pp_17163493/params_final.npz
+sha256sum /project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpT1_pp_17163493/params_final.npz
 # 4. brief
 if [ ! -f "$LOC/ANALYSIS_BRIEF.md" ]; then sed "s#@NAME@#$NAME#g; s#@SEED@#$SEED#g; s#@LR@#$LR#g" "$HERE/specs/b0_s2_ANALYSIS_BRIEF.md" > "$LOC/ANALYSIS_BRIEF.md"; fi
 echo "staged $RUN (remote) and $LOC (local); wall_sec=$WALL_SEC time=$SBATCH_TIME"

@@ -1,8 +1,8 @@
 {
  "spec": {
-  "refresh": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/refresh_17409419",
-  "la_star_s1": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/veto16_17356522/la_star.npy",
-  "A": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz"
+  "refresh": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/refresh_17409419",
+  "la_star_s1": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/veto16_17356522/la_star.npy",
+  "A": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz"
  },
  "check_s2_equals_s1_flipped_on_X": 0,
  "physics": {

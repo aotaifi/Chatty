@@ -3,12 +3,12 @@
 # Stages code like t0_17410220 / t0b_17410565 (cx.sbatch copies $B/code/*.py into the run), submits, writes ANALYSIS_BRIEF.md,
 # arms a durable setsid watcher (job_finish.sh --wake none).
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6
 cp "$HERE/cx_lib.py" "$HERE/cx_g0.py" "$B/code/"
 cd "$HERE"
 OUTL=$(sbatch --parsable --no-requeue --job-name=g0 --time=01:00:00 "$B/cx_slice.sbatch" cx_g0.py specs/g0.json)
 JOB=${OUTL%%;*}
-RUN=/project/theorie/a/A.Otaifi/chatty_compress6/runs/g0_$JOB
+RUN=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/g0_$JOB
 mkdir -p "$RUN"
 cat > "$RUN/ANALYSIS_BRIEF.md" <<EOB
 # G0 analysis brief (job $JOB, run $RUN)

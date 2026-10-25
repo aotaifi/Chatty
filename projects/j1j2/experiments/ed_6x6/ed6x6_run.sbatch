@@ -6,10 +6,10 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=110G
 #SBATCH --time=12:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_ed6x6/logs/ed6x6-%j.out
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6/logs/ed6x6-%j.out
 # Usage: sbatch ed6x6_run.sbatch OUTDIR SECTOR_SPEC [SECTOR_SPEC ...]   (see ed6x6_run.py)
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_ed6x6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6
 cd "$BASE"
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK} NUMBA_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 OUT="$1"; shift

@@ -16,7 +16,7 @@ from cx_lib import *
 
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 MODE = SPEC['mode']
-RUN = SPEC.get('run', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/c3s0_17165794')
+RUN = SPEC.get('run', '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/c3s0_17165794')
 K = 3; EPS = 0.3
 F = os.path.join(OUT, f'cx_lightcone_{MODE}.json'); T00 = time.time()
 lab = Lab(); sec = lab.sec

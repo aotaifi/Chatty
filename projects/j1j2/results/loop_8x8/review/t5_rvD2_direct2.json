@@ -4,7 +4,7 @@
   "alpha": -0.160951,
   "Eref": -31.92677568,
   "init_refs": [
-   "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref7000_17135002/ref.npz"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref7000_17135002/ref.npz"
   ],
   "nchains": 1024,
   "burn": 8,

@@ -1,7 +1,7 @@
 # FN referee calibration against exact FN energies, 6x6 J1-J2 (J2/J1 = 0.5)
 
 Date 2026-10-07. Requested by the independent review (`results/review/REVIEW_2026-10-07.md`, finding 6); thresholds pre-registered in `RESEARCH_MAP.md` section 3c.
-All energies are per site; "bias" = DMC - exact FN energy of the *same* guide, in units of 1e-6 per site. Code: `experiments/fn_calibration_6x6/`. Raw per-population data (2.6 GB): ws1 `/project/theorie/a/A.Otaifi/chatty_fncal6/runs/`.
+All energies are per site; "bias" = DMC - exact FN energy of the *same* guide, in units of 1e-6 per site. Code: `experiments/fn_calibration_6x6/`. Raw per-population data (2.6 GB): ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/fncal6/runs/`.
 
 ## Verdict
 - **Pre-registered test on the referee as used so far: FAILS.** At M = 512 the step-averaged DMC - exact FN is +0.2(1.1) / -11.2(1.1) / +18.4(0.6) for three guides. That is guide-dependent and does not shrink like 1/M (the exact-amplitude guide still has +1.7(0.5) at M = 16384).

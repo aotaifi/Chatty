@@ -3,7 +3,7 @@
 # Fires on completion, non-zero exit, disappearance, stall (cx_o1.json not touched for STALL s). Last step: job_finish.sh --wake none.
 JOB=$1; RUN=$2; STALL=${STALL:-1800}; POLL=${POLL:-60}
 SACCT=${O1_SACCT:-sacct}; FIN=${O1_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${O1_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${O1_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 t_sub=$(date +%s); miss=0
 while true; do
   st=$($SACCT -j "$JOB" -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//')

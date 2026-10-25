@@ -15,7 +15,7 @@
    "chunk": 512,
    "jac_chunk": 128,
    "net_seed": null,
-   "out": "/home/a/A.Otaifi/ChattyRun/j1j2/learning_ladder_rung2/results/pilot_b1e3_s0_16809820.json"
+   "out": "/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/learning_ladder_rung2/results/pilot_b1e3_s0_16809820.json"
   },
   "npar": 154780,
   "E0": -8.457923351394863,

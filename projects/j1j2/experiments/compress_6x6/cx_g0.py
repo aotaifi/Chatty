@@ -97,7 +97,7 @@ if __name__ == '__main__':
         a = jnp.exp(la - jnp.max(la)); return la - jnp.max(la) - 0.5 * jnp.log(jnp.sum(sec.n * a * a))
     RF = SPEC['refresh']
     s2 = jnp.asarray(np.load(os.path.join(RF, 's2.npy')).astype(np.float32))
-    T0JSON = '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json'
+    T0JSON = '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t0_17410220/cx_t0.json'
     EFN_T0 = json.load(open(T0JSON))['bases']['vit']['EFN']
     E_FN_README = 1.0186e-4
     res = dict(spec=SPEC, E_FN_t0json=EFN_T0, controls={}, grid={}); dump(F, res)

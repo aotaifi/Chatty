@@ -13,7 +13,7 @@
   "T_FN+0.25": -14.735799779143964,
   "T_FN+0.50": -14.485799779143964
  },
- "statesfile": "/home/a/A.Otaifi/chatty_fnguides/bound_check/results/gvmc_s1_16809930/guide_vmc_s1.npz",
+ "statesfile": "/project/theorie/a/A.Otaifi/Chatty/runs/fnguides/bound_check/results/gvmc_s1_16809930/guide_vmc_s1.npz",
  "phi": -0.9173483375022832,
  "g": {
   "T_FN": 1,

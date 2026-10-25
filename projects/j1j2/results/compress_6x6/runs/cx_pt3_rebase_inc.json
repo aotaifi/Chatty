@@ -1,7 +1,7 @@
 {
  "spec": {
   "mode": "rebase",
-  "run_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977",
+  "run_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977",
   "it": 6,
   "arms": [
    {
@@ -9,14 +9,14 @@
     "net": "inc",
     "steps": 20000,
     "lr": 0.001,
-    "G_ref_params": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/params_r5.npy"
+    "G_ref_params": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977/params_r5.npy"
    },
    {
     "tag": "inc_base+G5_20k",
     "net": "inc",
     "steps": 20000,
     "lr": 0.001,
-    "G_ref_params": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/params_r5.npy",
+    "G_ref_params": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977/params_r5.npy",
     "with_ref_feats": true
    }
   ]

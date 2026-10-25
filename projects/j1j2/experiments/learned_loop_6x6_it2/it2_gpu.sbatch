@@ -7,14 +7,14 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=06:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_ll6it2/logs/%x-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_ll6it2/logs/%x-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2/logs/%x-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2/logs/%x-%j.err
 # Learned loop 6x6 iterations 2-3 with stored signs (experiments/learned_loop_6x6_it2).
 # Full A40 (a40-NNgb slices and V100 fail with jax 0.10 / cuDNN); rtx2080ti works for small jobs:
 #   sbatch --partition=inter --gres=gpu:rtx2080ti:1 ...
 # Usage: sbatch --job-name=NAME it2_gpu.sbatch <script.py> <args...>   (runs in runs/NAME_JOBID)
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_ll6it2; LL6=/home/a/A.Otaifi/chatty_ll6; SS6=/home/a/A.Otaifi/chatty_ss6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2; LL6=/project/theorie/a/A.Otaifi/Chatty/runs/ll6; SS6=/project/theorie/a/A.Otaifi/Chatty/runs/ss6
 OUT="$BASE/runs/${SLURM_JOB_NAME}_${SLURM_JOB_ID}"
 mkdir -p "$OUT"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

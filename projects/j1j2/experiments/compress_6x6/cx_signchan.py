@@ -12,7 +12,7 @@ from cx_lib import *
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 MODE = SPEC['mode']; CAP = SPEC.get('cap_sec', 1680); EPS = 0.3
 F = os.path.join(OUT, f'cx_signchan_{MODE}.json')
-RUNS = '/project/theorie/a/A.Otaifi/chatty_compress6/runs'
+RUNS = '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs'
 lab = Lab(); sec = lab.sec
 res = dict(spec=SPEC, pairs={})
 

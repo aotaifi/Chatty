@@ -4,15 +4,15 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=4G
 #SBATCH --time=02:00:00
-#SBATCH --output=/home/a/A.Otaifi/ChattyRun/j1j2/stored_signs/logs/%x-%A_%a.out
-#SBATCH --error=/home/a/A.Otaifi/ChattyRun/j1j2/stored_signs/logs/%x-%A_%a.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/stored_signs/logs/%x-%A_%a.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/stored_signs/logs/%x-%A_%a.err
 # Usage: sbatch --array=0-N stored_sign_4x4_lmu.sbatch <tag> <maxiter> ; config list below (index = array id)
 set -euo pipefail
 module purge
 module load python/3.12-2024.10
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2
 TAG=$1; MAXIT=$2
-BASE=/home/a/A.Otaifi/ChattyRun/j1j2/stored_signs
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/stored_signs
 CFG=("exact|--method exact|0" "bench|--bench|0")
 for v in "symtab|--method symtab" "symtab_b0.5|--method symtab --beta 0.5" "symtabnbr|--method symtab --nbr" "symtabnbr_b0.5|--method symtab --nbr --beta 0.5" "tab|--method tab" "cnn|--method cnn" "cnn_b0.5|--method cnn --beta 0.5"; do
   for n in 1000 10000 100000; do for sd in 0 1; do CFG+=("${v%%|*}_N${n}_s${sd}|${v#*|} --nsamp $n|$sd"); done; done; done

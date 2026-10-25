@@ -1,12 +1,12 @@
 {
- "refresh": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/refresh_17409419",
+ "refresh": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/refresh_17409419",
  "bases": {
-  "t1s2_ppbf": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s2_ppbf_17418857/la_table.npy",
-  "t1s2_pp": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s2_pp_17418856/la_table.npy",
-  "t1s2_vit": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s2_vit_17418858/la_table.npy",
-  "t1s_ppbf": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s_ppbf_17412550/la_table.npy",
-  "t1s_pp": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s_pp_17412549/la_table.npy",
-  "t1s_vit": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t1s_vit_17412547/la_table.npy"
+  "t1s2_ppbf": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s2_ppbf_17418857/la_table.npy",
+  "t1s2_pp": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s2_pp_17418856/la_table.npy",
+  "t1s2_vit": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s2_vit_17418858/la_table.npy",
+  "t1s_ppbf": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s_ppbf_17412550/la_table.npy",
+  "t1s_pp": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s_pp_17412549/la_table.npy",
+  "t1s_vit": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t1s_vit_17412547/la_table.npy"
  },
- "control_ref": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0phys_17410698/cx_t0phys.json"
+ "control_ref": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/t0phys_17410698/cx_t0phys.json"
 }

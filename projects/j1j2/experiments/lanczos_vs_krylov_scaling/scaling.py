@@ -22,7 +22,7 @@ import argparse, json, os, sys, time, types
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-for p in (os.environ.get("FN_CODE", "/home/a/A.Otaifi/chatty_fn6x6/code"),
+for p in (os.environ.get("FN_CODE", "/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/code"),
           os.environ.get("LANCZOS_LIB", os.path.join(HERE, "..", "lanczos_baseline_6x6"))):
     sys.path.insert(0, p)
 import closed_fn_krylov_sym6x6 as C

@@ -6,7 +6,7 @@
 # cx_o2b.json), not the exit code. Last step: job_finish.sh --wake none.
 JOB=$1; RUN=$2; STALL=${STALL:-1800}; POLL=${POLL:-60}
 SACCT=${O2B_SACCT:-sacct}; FIN=${O2B_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${O2B_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${O2B_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 t_sub=$(date +%s); miss=0
 while true; do
   st=$($SACCT -j "$JOB" -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//')

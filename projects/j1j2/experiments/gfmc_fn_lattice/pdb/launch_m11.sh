@@ -12,7 +12,7 @@
 #   -> every chain below = 3.5e6 walker-blocks at dtau 0.2 (equal tau budget in B) = ~33-36 GPU-h, error ~5e-7 per site (9% of 5.57e-6).
 set -u
 STAGE=${1:?stage A|B|C}; GO=${GO:-0}; QOS=${QOS:-cont}; CHUNK=${CHUNK:-512}; RESUME=${RESUME:-0}
-HERE=$(cd "$(dirname "$0")" && pwd); CODE=$HERE/..; DELTA=/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md
+HERE=$(cd "$(dirname "$0")" && pwd); CODE=$HERE/..; DELTA=/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md
 RB=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_gfmc; LOCALROOT=${LOCALROOT:-/scratch/a/A.Otaifi/gfmc_m11/prod}
 SSH="ssh -o BatchMode=yes -o HostName=login4"; SL=/opt/software/slurm/25.11.8-1/bin
 case $STAGE in

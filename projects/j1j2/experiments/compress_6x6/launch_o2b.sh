@@ -6,8 +6,8 @@
 # x 110 s (o2a_17430739), fit + one step (71 s, t1s2_ppbf), table 5782 s (t1s2_ppbf, slice), fit-job overhead ~400 s.
 # Partition MaxTime cip/inter 2 days (sinfo 2026-10-22).
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_t1s.py" "$HERE/cx_o2b.py" "$HERE/../rbmpp_6x6/rbmpp_lib.py" "$B/code/"
 for f in cx_o2b.py cx_t1s.py cx_lib.py; do cmp -s "$HERE/$f" "$B/code/$f" || { echo "copy of $f differs"; exit 1; }; done
 sha256sum "$B/code/cx_o2b.py" "$B/code/cx_t1s.py" "$B/code/cx_lib.py" "$B/code/rbmpp_lib.py"

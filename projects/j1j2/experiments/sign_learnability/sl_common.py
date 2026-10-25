@@ -15,7 +15,7 @@ CLUSTERS = {
     32: dict(L=0, torus=(4, 4, -4, 4)),
     36: dict(L=6, torus=None),
 }
-ED36 = '/home/a/A.Otaifi/chatty_ed6x6/run_gs'
+ED36 = '/project/theorie/a/A.Otaifi/Chatty/runs/ed6x6/run_gs'
 
 
 def tvec(N):

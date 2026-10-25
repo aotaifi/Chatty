@@ -3,7 +3,7 @@
 set -euo pipefail
 WHICH=${1:?a2|n0c|a3}
 HERE=$(cd "$(dirname "$0")" && pwd)
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6; D=$P/data; NAME=gate_$WHICH; LOC=$RUNS/$NAME
 SSHO="ssh -o BatchMode=yes -o HostName=login4"
 rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $1"; }
@@ -15,8 +15,8 @@ rsync -a -e "$SSHO" "$HERE/../rbmpp_6x6/rbmpp_lib.py" paderborn:$P/codeGate/
 ( cd "$HERE" && sha256sum $FILES ../rbmpp_6x6/rbmpp_lib.py | sed 's#../rbmpp_6x6/##' ) > "$LOC/code_sha256.txt"
 rem "cd $P/codeGate && sha256sum $FILES rbmpp_lib.py" | diff - "$LOC/code_sha256.txt" > /dev/null || { echo "code sha256 differs"; exit 1; }
 if [ "$WHICH" = a3 ]; then
-  rsync -aL -e "$SSHO" /project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz paderborn:$D/rpTabA_17168764/
-  ( sha256sum /project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz | cut -c1-64 ) > "$LOC/sym_tables_A.sha256"
+  rsync -aL -e "$SSHO" /project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz paderborn:$D/rpTabA_17168764/
+  ( sha256sum /project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz | cut -c1-64 ) > "$LOC/sym_tables_A.sha256"
   rem "sha256sum $D/rpTabA_17168764/sym_tables_A.npz | cut -c1-64" | diff - "$LOC/sym_tables_A.sha256" || { echo "A table sha256 differs"; exit 1; }
 fi
 COMMON="{\"refresh\": \"$D/refresh_17409419\", \"o2b_table\": \"$D/o2b_r1/round_1_la_table.npy\", \"target_la\": \"$D/o2b_r1/round_1_target_la.npy\""

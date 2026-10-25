@@ -6,7 +6,7 @@
  "device": "[CudaDevice(id=0)]",
  "sec": 13.68603777885437,
  "args": {
-  "out": "/project/theorie/a/A.Otaifi/chatty_delC/runs/pr10_17184242",
+  "out": "/project/theorie/a/A.Otaifi/Chatty/runs/delC/runs/pr10_17184242",
   "mode": "probe",
   "ckpt": null,
   "symm": null,

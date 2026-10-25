@@ -23,8 +23,8 @@ from gfmc_fn_lib import RBMPPGuideG, RBMPPGuide
 from rbmpp_lib import Lattice
 N = 36
 OUT = sys.argv[1]; npair = 300; os.makedirs(OUT, exist_ok=True)
-SYMA = os.environ.get('GFMC_SYMA', '/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz')
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+SYMA = os.environ.get('GFMC_SYMA', '/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabA_17168764/sym_tables_A.npz')
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr'); TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 log = SS.log
 sec = SS.Sector(CSR, TABLE)

@@ -1,5 +1,5 @@
 # O2 design review (Fable, 2026-10-22, read-only). Tags: [M] measured from raw files, [C] read in code, [L] literature, [I] inference.
-Paths: cx = experiments/compress_6x6; runs = /project/theorie/a/A.Otaifi/chatty_compress6/runs. Energies per site above E0.
+Paths: cx = experiments/compress_6x6; runs = /project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs. Energies per site above E0.
 
 **Verdict: as written, O2 most likely ends in an ambiguous STALL, and its PASS bar is nearly unreachable for a reason that is not the loop.** [M] The fit tax alone is 6.1e-6: the best tail-trained fit of the exact phi*(s_2) plus one hop gives 7.06e-6 against the ceiling 9.15e-7 (g1_17426232). The 1e-5 bar therefore leaves 3e-6 for everything else (loop not yet converged, moving target, 40-min fits, alpha by the O1 rule instead of the exact E_FN). [M] O1 has not run (no o1_* under runs), so step (a) has no rule yet. [M] Cost per round with PP+backflow at T1s-2 speed: fit 2400 s + table 5782 s + 13 solves ~1500 s = 2.7 h, so 4 rounds + round 0 = ~12 h, above the 8 A40-h budget (t1s2_ppbf_17418857 table_sec, g1 scan 1370 s per 12 solves). Add the fit-free exact chain (point 5) and the test becomes diagnosable at +1.5 h; without it, keep the stop rule but do not read a STALL as a loop property.
 

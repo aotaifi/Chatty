@@ -7,10 +7,10 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=60G
 #SBATCH --time=03:00:00
-#SBATCH --output=/home/a/A.Otaifi/ChattyRun/j1j2/sign_design_tests/logs/%x-%j.out
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/sign_design_tests/logs/%x-%j.out
 # Full A40 only (a40-NNgb slices fail with this jax). Reuses ~/chatty_ll6 (ll6_core.py, vit_dt.py, venv_gpu, data) read-only.
 set -euo pipefail
-B=/home/a/A.Otaifi/ChattyRun/j1j2/sign_design_tests; LL6=/home/a/A.Otaifi/chatty_ll6
+B=/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/sign_design_tests; LL6=/project/theorie/a/A.Otaifi/Chatty/runs/ll6
 OUT="$B/runs/${SLURM_JOB_NAME}_${SLURM_JOB_ID}"; mkdir -p "$OUT"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 cp "$B"/c_delta_6x6.py "$LL6"/code/ll6_core.py "$LL6"/code/vit_dt.py "$OUT/"

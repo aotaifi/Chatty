@@ -15,7 +15,7 @@ import st6_sector as SS
 import jax
 import jax.numpy as jnp
 
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr')
 TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 SYM = os.environ.get('ST6_SYM', ROOT + '/data/sym_tables.npz')

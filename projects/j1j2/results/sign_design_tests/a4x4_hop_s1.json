@@ -8,7 +8,7 @@
   "cnn_steps": 400,
   "amp_floor": 1e-06,
   "tabit": "10,20,30,35,40",
-  "out": "/home/a/A.Otaifi/ChattyRun/j1j2/sign_design_tests/results/a4x4_hop_s1.json"
+  "out": "/project/theorie/a/A.Otaifi/Chatty/runs/ChattyRun/j1j2/sign_design_tests/results/a4x4_hop_s1.json"
  },
  "E0": -8.457923351394843,
  "history": [

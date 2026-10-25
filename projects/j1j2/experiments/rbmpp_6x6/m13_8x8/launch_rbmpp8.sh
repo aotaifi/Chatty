@@ -6,7 +6,7 @@
 set -euo pipefail
 QOS=${1:?qos}; TL=${2:?time limit}; RUN=${3:-rb8_prod}
 H=$(cd "$(dirname "$0")" && pwd); X=$H/..; BASE=/scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8
-LOCAL=${LOCAL_BASE:-/scratch/a/A.Otaifi/rbmpp8}/$RUN; DELTA=${DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+LOCAL=${LOCAL_BASE:-/scratch/a/A.Otaifi/rbmpp8}/$RUN; DELTA=${DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 E="ssh -o BatchMode=yes -o HostName=login4"
 # 1. sync code, specs, sbatch (code pinned by sha256 in RUN/run_metadata.txt at job start)
 rsync -a -e "$E" $X/rbmpp_lib.py $X/rbmpp_train.py $X/rbmpp_eval.py paderborn:$BASE/code/

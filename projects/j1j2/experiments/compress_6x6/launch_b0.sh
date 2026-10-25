@@ -10,8 +10,8 @@
 set -euo pipefail
 MODE=${1:-full}; STAGE_ONLY=${2:-}
 case "$MODE" in full|simple) ;; *) echo "mode full|simple"; exit 1;; esac
-HERE=$(cd "$(dirname "$0")" && pwd); EXP=$HERE/..; B=/home/a/A.Otaifi/chatty_compress6
-RUN=/project/theorie/a/A.Otaifi/chatty_compress6/runs/b0_ppbf_$MODE
+HERE=$(cd "$(dirname "$0")" && pwd); EXP=$HERE/..; B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6
+RUN=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/b0_ppbf_$MODE
 mkdir -p "$RUN/code"
 for f in cx_lib.py cx_b0.py; do cp "$HERE/$f" "$RUN/code/"; done
 for f in rbmpp_lib.py rbmpp_bf_lib.py rbmpp_bf_train.py; do cp "$EXP/rbmpp_6x6/$f" "$RUN/code/"; done

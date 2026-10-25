@@ -2,7 +2,7 @@
 
 Pre-registration and amendments: `experiments/compress_6x6/README.md` (commits 48a4b98, amendment 1, amendment 2,
 all before the P2 evaluations). Code: `experiments/compress_6x6/`. Raw results: `runs/*.json` here; full run
-directories on ws1 under `/project/theorie/a/A.Otaifi/chatty_compress6/runs/`. Figure: `fig_compress_6x6.png/.pdf`.
+directories on ws1 under `/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/`. Figure: `fig_compress_6x6.png/.pdf`.
 Exact 6x6 J1-J2, J2/J1 = 0.5, full symmetric sector (15.8M orbits). Energies per site, relative to E0.
 
 ## Verdict
@@ -1016,7 +1016,7 @@ Against the pre-registered bars:
   - bf2Ar 17356419: arm A resume, 10 rounds;
   - vetoF 17362028: flip stage, sign-aligned rerun;
   - vetoLB 17360910: L-BFGS re-run.
-  Their results land in `/project/theorie/a/A.Otaifi/chatty_compress6/runs/<job>_<id>/` and are not analysed yet.
+  Their results land in `/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/<job>_<id>/` and are not analysed yet.
 - **Bad bonds per configuration (sign s_1):**
   - 23.1 on average (median 23, 90th percentile 32) of 81.5 valid bonds, i.e. 28%;
   - identical under |psi_P|^2 and under |phi_FN|^2.

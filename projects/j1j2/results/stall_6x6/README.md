@@ -119,4 +119,4 @@ Earlier DMC oracles are confirmed within about 1σ by exact FN:
 ## Compute
 - About 4.9 GPU-h: RTX 2080 Ti 4.3 h, A40 0.63 h. Many of the 2080 Ti jobs were short memory-debugging runs; see `PROGRESS.md`.
 - 1.2 CPU-h of CPU jobs (CSR build). The GPU jobs also allocated 6 cores each (about 29 core-h).
-- Large data and runs: ws1 `/project/theorie/a/A.Otaifi/chatty_stall6/` (csr 7.2 GB, data, runs).
+- Large data and runs: ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/stall6/` (csr 7.2 GB, data, runs).

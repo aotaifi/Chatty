@@ -1,8 +1,8 @@
 #!/bin/bash
 # Test O1 launcher (A40 slice via cx_slice.sbatch), modelled on launch_g1.sh. ~6 FN solves, 1 h wall.
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6; WALL=${WALL:-01:00:00}
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6; WALL=${WALL:-01:00:00}
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_o1.py" "$B/code/"
 sha256sum "$B/code/cx_o1.py" "$B/code/cx_lib.py"
 for f in cx_o1.py cx_lib.py; do cmp -s "$HERE/$f" "$B/code/$f" || { echo "copy of $f differs"; exit 1; }; done

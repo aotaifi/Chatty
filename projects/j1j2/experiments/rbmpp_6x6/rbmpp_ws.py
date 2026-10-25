@@ -5,7 +5,7 @@ guide table's sP.
 """
 import json, os, sys
 import numpy as np
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 z = np.load(os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz'))
 v0 = z['amp'] * np.sqrt(z['orbit'].astype(np.float64)); v0 /= np.linalg.norm(v0)
 p0 = v0 ** 2; s0 = np.where(v0 >= 0, 1.0, -1.0)

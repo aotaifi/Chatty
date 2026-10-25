@@ -1,6 +1,6 @@
 {
  "args": {
-  "spec": "/home/a/A.Otaifi/chatty_t3/data/spec_G1.json",
+  "spec": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/data/spec_G1.json",
   "out": "it1",
   "steps": 3,
   "N": 8192,
@@ -30,7 +30,7 @@
  "spec_in": {
   "name": "K2vit",
   "nets": [
-   "/home/a/A.Otaifi/chatty_ss6/runs/ss6k1_L_b0.3_16830893/net1_k1_L_b0.3.pkl"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ss6/runs/ss6k1_L_b0.3_16830893/net1_k1_L_b0.3.pkl"
   ],
   "Ts_nets": [
    -14.985799779143964

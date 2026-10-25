@@ -7,13 +7,13 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=60G
 #SBATCH --time=03:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_ss6/logs/%x-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_ss6/logs/%x-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ss6/logs/%x-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/ss6/logs/%x-%j.err
 # Stored signs 6x6 (experiments/stored_signs_6x6). Full A40 only (a40-NNgb slices fail with jax 0.10).
 # Reuses ll6_core.py / vit_dt.py / venv / data of ~/chatty_ll6 read-only.
 # Usage: sbatch --job-name=NAME ss6_gpu.sbatch <script.py> <args...>
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_ss6; LL6=/home/a/A.Otaifi/chatty_ll6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ss6; LL6=/project/theorie/a/A.Otaifi/Chatty/runs/ll6
 OUT="$BASE/runs/${SLURM_JOB_NAME}_${SLURM_JOB_ID}"
 mkdir -p "$OUT"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

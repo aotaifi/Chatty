@@ -17,8 +17,8 @@
  "spec_in": {
   "name": "K2vitS",
   "nets": [
-   "/home/a/A.Otaifi/chatty_ss6/runs/ss6k2_L_b0.3_16843547/net1_k1_L_b0.3.pkl",
-   "/home/a/A.Otaifi/chatty_ss6/runs/ss6k2_L_b0.3_16843547/net2_k2_L_b0.3.pkl"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ss6/runs/ss6k2_L_b0.3_16843547/net1_k1_L_b0.3.pkl",
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ss6/runs/ss6k2_L_b0.3_16843547/net2_k2_L_b0.3.pkl"
   ],
   "Ts_nets": [
    -14.985799779143964,

@@ -3,7 +3,7 @@
   "out": "out",
   "arm": "M",
   "T": -27.614817496203827,
-  "data": "/project/theorie/a/A.Otaifi/chatty_signs8/ana/train.npz",
+  "data": "/project/theorie/a/A.Otaifi/Chatty/runs/signs8/ana/train.npz",
   "steps": 60000,
   "ch": 64,
   "depth": 6,

@@ -15,7 +15,7 @@ export XLA_FLAGS="--xla_gpu_autotune_level=0" XLA_PYTHON_CLIENT_PREALLOCATE=fals
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK} PYTHONUNBUFFERED=1
 { echo "job_id=${SLURM_JOB_ID}"; echo "host=$(hostname)"; echo "mode=$MODE spec=$SPEC"; echo "started=$(date -Is)";
   sha256sum "$RUN/code/exact_vmc.py"; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; } >> "$RUN/run_metadata.txt"
-/project/theorie/a/A.Otaifi/a40slice/venv_jax_0.8.2/bin/python "$RUN/code/exact_vmc.py" "$MODE" "$RUN" $SPEC
+/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/venv_jax_0.8.2/bin/python "$RUN/code/exact_vmc.py" "$MODE" "$RUN" $SPEC
 rc=$?
 echo "finished=$(date -Is) rc=$rc" >> "$RUN/run_metadata.txt"
 exit $rc

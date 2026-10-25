@@ -475,7 +475,7 @@ res['arms'] = []
 for arm in SPEC['arms']:
     tag = arm['tag']; t0 = time.time()
     if arm.get('model') == 'vit':
-        model = VitModel(arm.get('ckpt', '/project/theorie/a/A.Otaifi/chatty_stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'))
+        model = VitModel(arm.get('ckpt', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'))
         ii = jax.random.randint(jax.random.PRNGKey(5), (512,), 0, sec.D)
         chk = np.asarray(jax.jit(model.f)(model.flat0, bits(sec.reps[ii]), TA[ii]))
         log(f'  ViT start check: f = log|psi_P,theta0| - log a on 512 reps: mean {chk.mean():.2e} rms {chk.std():.2e} max {np.abs(chk).max():.2e}')

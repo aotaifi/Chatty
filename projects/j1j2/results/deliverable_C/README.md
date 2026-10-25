@@ -2,7 +2,7 @@
 
 Pre-registration and amendments 1-4: `PREREG.md` (each amendment was written before the run it governs).
 Literature: `LITERATURE.md`. Costed scale-up plan: `PLAN.md`. Code: `experiments/deliverable_C/`.
-Paderborn drafts (not submitted): `cluster/paderborn/deliverable_C/`. ws1 run data: `/project/theorie/a/A.Otaifi/chatty_delC/runs/`.
+Paderborn drafts (not submitted): `cluster/paderborn/deliverable_C/`. ws1 run data: `/project/theorie/a/A.Otaifi/Chatty/runs/delC/runs/`.
 
 Terms (per-site energies in units of J1, periodic 8x8, J2/J1 = 0.5):
 - **psi_P**: our 8x8 ViT projected onto the D4 x spin-flip symmetry, with its own sign made real (binarised).

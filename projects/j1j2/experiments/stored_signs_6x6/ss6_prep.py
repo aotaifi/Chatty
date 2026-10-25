@@ -33,7 +33,7 @@ for beta, d in specs.items():
         S.log('SAMPLE', beta, name, out[f'b{beta}_{name}'])
     if not pilot_only:
         np.savez_compressed(f'samples_b{beta}.npz', **arrs)
-        import shutil; shutil.copy(f'samples_b{beta}.npz', os.environ.get('SS6_DATA', '/home/a/A.Otaifi/chatty_ss6/data') + f'/samples_b{beta}.npz')
+        import shutil; shutil.copy(f'samples_b{beta}.npz', os.environ.get('SS6_DATA', '/project/theorie/a/A.Otaifi/Chatty/runs/ss6/data') + f'/samples_b{beta}.npz')
     # amplitude spread diagnostic
     la = amp(arrs['held'].reshape(-1))
     out[f'b{beta}_held_loga'] = dict(mean=float(la.mean()), std=float(la.std()), min=float(la.min()), max=float(la.max()))

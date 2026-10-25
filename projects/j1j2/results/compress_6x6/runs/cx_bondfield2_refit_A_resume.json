@@ -4,7 +4,7 @@
   "arm": "A",
   "rounds": 10,
   "steps": 30000,
-  "resume_f": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/bf2A_17354559/f_best.npy",
+  "resume_f": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/bf2A_17354559/f_best.npy",
   "save_rounds": true
  },
  "rounds": [

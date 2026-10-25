@@ -8,8 +8,8 @@ Cluster: --L 4|6 (square torus) or --torus t1x,t1y,t2x,t2y (tilted torus, torus_
 import argparse, json, os, sys, time, types
 from pathlib import Path
 import numpy as np
-sys.path.insert(0, os.environ.get("FN_CODE", "/home/a/A.Otaifi/chatty_fn6x6/code"))
-sys.path.insert(0, os.environ.get("ED_COMMON_DIR", "/home/a/A.Otaifi/chatty_fn6x6/code"))
+sys.path.insert(0, os.environ.get("FN_CODE", "/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/code"))
+sys.path.insert(0, os.environ.get("ED_COMMON_DIR", "/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/code"))
 import closed_fn_krylov_sym6x6 as C
 
 ap = argparse.ArgumentParser()

@@ -19,9 +19,9 @@ import st6_sector as SS
 from lanczos_lib import lanczos_ritz, extrapolate
 
 OUT = sys.argv[1]; os.makedirs(OUT, exist_ok=True)
-CSR = os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/chatty_stall6/csr')
-TABLE = os.environ.get('ST6_TABLE', '/home/a/A.Otaifi/chatty_stall6/data/psi0_6x6_table.npz')
-DATA = os.environ.get('ST6_DATA', '/project/theorie/a/A.Otaifi/chatty_stall6/data')
+CSR = os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/csr')
+TABLE = os.environ.get('ST6_TABLE', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/psi0_6x6_table.npz')
+DATA = os.environ.get('ST6_DATA', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data')
 log = SS.log
 N = 36
 sec = SS.Sector(CSR, TABLE)

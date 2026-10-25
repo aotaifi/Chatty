@@ -10,7 +10,7 @@ from functools import partial
 import st6_sector as SS
 import fncal_dmc as F
 
-CSR = os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/chatty_stall6/csr')
+CSR = os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/csr')
 sec = SS.Sector(CSR, os.path.join(F.DATA, 'psi0_6x6_table.npz'))
 D = sec.D
 BIG = np.int32(2 ** 31 - 1)

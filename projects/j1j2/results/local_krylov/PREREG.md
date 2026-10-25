@@ -53,7 +53,7 @@ with the reason. Code: `projects/j1j2/experiments/local_krylov/`. Results: this 
 - **Data [A3].** The loop_8x8 referee files (`ref_l8ref*.npz`) store only per-state summaries of x and its neighbours
   (E_L of the neighbours, not their bond energies), so C_w at the neighbours cannot be computed from them. The signs_8x8
   referee chunks store the guide (log a, ViT sign) on the full two-hop set {x} u N1(x) u N2(x), which gives every
-  bond energy at x and at all its neighbours. Used: ws1 `/project/theorie/a/A.Otaifi/chatty_signs8/runs/`
+  bond energy at x and at all its neighbours. Used: ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/signs8/runs/`
   s8RA_17160014 (1536 samples), s8RB1_17160055 (3072), s8RB2_17163769 (3072); x ~ a^2 (beta = 1), a = |psi_P|
   (D4 x flip projected 8x8 ViT), 3 x 1024 independent chains, 7680 samples. All three are used as one referee
   (no thresholds were chosen on them for G or C before this file).

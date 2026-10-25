@@ -13,7 +13,7 @@ REMRUN=${GATE_REMRUN:?set GATE_REMRUN}
 GATE_JSON=${GATE_JSON:?set GATE_JSON}
 PFX=${GATE_REMOTE_PREFIX-paderborn:}
 FIN=${GATE_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${GATE_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${GATE_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 SLURMBIN=/opt/software/slurm/25.11.8-1/bin
 rem() { if [ -n "${GATE_SSH:-}" ]; then "$GATE_SSH" "$1"; else ssh -o BatchMode=yes -o ConnectTimeout=30 -o HostName=login4 paderborn "$1"; fi; }
 pull() { rsync -a -e "ssh -o BatchMode=yes -o ConnectTimeout=30 -o HostName=login4" --max-size=3M \

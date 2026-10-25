@@ -5,5 +5,5 @@
  "lr5e-3_step168_E_site_262k": [-0.503622, 0.0000094],
  "lr1e-3_step168_E_site_262k": [-0.503633, 0.0000105],
  "train_gpu_h_each": 4.5, "jobs": {"lr5e-3": 16818284, "lr1e-3": 16818285, "final_evals": [16818901, 16818902, 16818903]},
- "cluster_paths": {"params": "ws1:/home/a/A.Otaifi/chatty_vmc6/runs/{lr5e-3,lr1e-3,start_eval}/final_params.mpack", "logs": "ws1:/home/a/A.Otaifi/chatty_vmc6/logs"},
+ "cluster_paths": {"params": "ws1:/project/theorie/a/A.Otaifi/Chatty/runs/vmc6/runs/{lr5e-3,lr1e-3,start_eval}/final_params.mpack", "logs": "ws1:/project/theorie/a/A.Otaifi/Chatty/runs/vmc6/logs"},
  "ref": {"ViT_old": [-0.503654, 0.000021], "ED": -0.50380965, "RBM+PP": -0.503765, "DMRG": -0.503805}}

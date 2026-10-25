@@ -1,6 +1,6 @@
 {
  "spec": {
-  "params": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpT1_pp_17163493/params_final.npz",
+  "params": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpT1_pp_17163493/params_final.npz",
   "tag": "PP",
   "batch": 256,
   "lanczos_p": 3,

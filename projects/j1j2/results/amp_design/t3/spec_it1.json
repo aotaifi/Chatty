@@ -10,6 +10,6 @@
   "amp": "base",
   "T": -7.736416932248442
  },
- "amp_g": "/home/a/A.Otaifi/chatty_t3/runs/t3it1_16852730/params_it1.npy",
- "amp_from": "/home/a/A.Otaifi/chatty_t3/data/spec_G1.json"
+ "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/runs/t3it1_16852730/params_it1.npy",
+ "amp_from": "/project/theorie/a/A.Otaifi/Chatty/runs/t3/data/spec_G1.json"
 }

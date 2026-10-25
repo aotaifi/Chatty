@@ -15,7 +15,7 @@ jax.config.update('jax_enable_x64', True)
 from rbmpp_lib import Lattice, make_fns, make_sampler, random_configs, to32
 from gfmc_fn_lib import RBMPPGuide, GFMC, blocked_error, iat
 
-PARAMS = os.environ.get('GFMC_PARAMS', '/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpT4_sr2_17164867/params_final.npz')
+PARAMS = os.environ.get('GFMC_PARAMS', '/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpT4_sr2_17164867/params_final.npz')
 TABLE_A = os.environ.get('GFMC_TABLE_A', os.path.join(HERE, '..', '..', 'results', 'rbmpp_6x6', 'runs', 'table_A.json'))
 N = 36
 

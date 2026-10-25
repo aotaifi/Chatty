@@ -9,7 +9,7 @@
   "H_target": 2.619384721056248e-05,
   "alpha": -0.15583348159177618,
   "exact_gain": 0.00010574490320220458,
-  "vit_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/ra_ms_s1_k1_17174477",
+  "vit_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/ra_ms_s1_k1_17174477",
   "vit_H": 0.00014455115899596963,
   "vit_share": -0.11927202353275809,
   "fit_c": {

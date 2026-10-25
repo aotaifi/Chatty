@@ -26,7 +26,7 @@ jax.config.update("jax_enable_x64", True)
 import jax.numpy as jnp
 
 L = 6; N = 36; J2 = 0.5
-DATA = os.environ.get('FNCAL_DATA', '/project/theorie/a/A.Otaifi/chatty_stall6/data')
+DATA = os.environ.get('FNCAL_DATA', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data')
 POOL = os.environ.get('FNCAL_POOL', os.path.expanduser('~/chatty_ll6/data/energy_krylov_vs_vit_6x6_indep.npz'))
 from fncal_common import EXACT, E0_SITE, GUIDES, window_estimates
 

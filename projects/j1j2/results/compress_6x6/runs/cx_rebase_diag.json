@@ -1,6 +1,6 @@
 {
  "spec": {
-  "run_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977",
+  "run_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977",
   "it": 6,
   "variants": [
    [
@@ -8,7 +8,7 @@
     32,
     20000,
     0.001,
-    "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/params_r5.npy"
+    "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977/params_r5.npy"
    ],
    [
     "fresh_60k_lr1e-3",
@@ -37,7 +37,7 @@
    "C": 32,
    "steps": 20000,
    "lr": 0.001,
-   "warm": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_chop_s0_17094977/params_r5.npy",
+   "warm": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_chop_s0_17094977/params_r5.npy",
    "npar": 36897,
    "H": 6.698179390449453e-05,
    "curve": [

@@ -127,7 +127,7 @@ cip queue: the verdict is fixed by the first condition (0.037 < 0.5), and at eve
 (192 steps per eta, 1.6e7 evaluations, ~1% of the ITE-Q evaluation count). A fair VMC comparison at equal evaluations
 (~3e4 minSR steps, ~8 s each on an A40 with exactly symmetrised local energies) was not affordable.
 
-## Compute (ws1, `/project/theorie/a/A.Otaifi/chatty_itfit/runs/`)
+## Compute (ws1, `/project/theorie/a/A.Otaifi/Chatty/runs/itfit/runs/`)
 9.7 GPU-h of the 15 GPU-h budget: Stage 0 0.4 (2080 Ti), exact loop reference 0.15, smokes/debugging ~1.5 (two OOMs
 on the 2080 Ti, a zero-head GN degeneracy), inner-optimiser scan 0.9, VMC scan 1.3, main arms 6.1 (A40:
 itA1 2.8, itA2 1.7, itC 1.3), ViT throughput probe 0.14. Files: `itfit_exact.json`, `itfit_exactloop.json`,

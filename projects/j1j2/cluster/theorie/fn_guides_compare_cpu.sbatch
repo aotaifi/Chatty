@@ -6,15 +6,15 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --mem=64G
 #SBATCH --time=04:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_fnguides/logs/fnguides-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_fnguides/logs/fnguides-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides/logs/fnguides-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides/logs/fnguides-%j.err
 # LMU theorie CPU fallback (Paderborn GPUs blocked by the Oct 5-9 shutdown).
 # Usage: sbatch fn_guides_compare_cpu.sbatch <fn_guides_compare.py args...>
 #   e.g. sbatch fn_guides_compare_cpu.sbatch vmc 8 256 16 3 60 20261003
 #        sbatch fn_guides_compare_cpu.sbatch fn 8 vit 128 13501 13502 --phi 0.056
 set -euo pipefail
 module load python/3.11-2023.09
-BASE=/home/a/A.Otaifi/chatty_fnguides
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides
 OUT="$BASE/results/fnguides_${SLURM_JOB_ID}"
 mkdir -p "$OUT"
 export JAX_PLATFORMS=cpu OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

@@ -1,6 +1,6 @@
 {
  "args": {
-  "out": "/project/theorie/a/A.Otaifi/chatty_delC/runs/fn8s1_17184069",
+  "out": "/project/theorie/a/A.Otaifi/Chatty/runs/delC/runs/fn8s1_17184069",
   "guide": "vit",
   "M": 512,
   "batch_pops": 4,
@@ -12,7 +12,7 @@
   "burn": 0.8,
   "tau_max": 0.025,
   "seed": 1,
-  "pool": "/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref5000_17092719/ref.npz,/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref6000_17093575/ref.npz,/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref7000_17135002/ref.npz,/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref8000_17135003/ref.npz,/project/theorie/a/A.Otaifi/chatty_loop8/runs/l8ref10000_17138729/ref.npz",
+  "pool": "/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref5000_17092719/ref.npz,/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref6000_17093575/ref.npz,/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref7000_17135002/ref.npz,/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref8000_17135003/ref.npz,/project/theorie/a/A.Otaifi/Chatty/runs/loop8/runs/l8ref10000_17138729/ref.npz",
   "phi": 0.056006,
   "ckpt": "vit_J2=0.50_N=8x8_k=0.mpack",
   "evbatch": 1024,

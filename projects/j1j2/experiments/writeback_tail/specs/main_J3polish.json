@@ -19,7 +19,7 @@
    "steps": 2,
    "warmup": 1,
    "val_every": 2,
-   "init_params": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
+   "init_params": "/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
    "tag": "J3-polish-eta2e-3",
    "polish": {
     "steps": 300,
@@ -46,7 +46,7 @@
    "steps": 2,
    "warmup": 1,
    "val_every": 2,
-   "init_params": "/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
+   "init_params": "/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtJ3_16903064/params_J3-TAX-R28a_best.npy",
    "tag": "J3-polish-eta5e-4",
    "polish": {
     "steps": 300,

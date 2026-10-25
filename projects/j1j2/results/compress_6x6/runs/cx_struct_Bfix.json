@@ -6,7 +6,7 @@
   "white": [],
   "students": [],
   "featbase": false,
-  "B_params": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cxB_k3_s0_17092988/params_final.npy",
+  "B_params": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cxB_k3_s0_17092988/params_final.npy",
   "B_scales": [
    0.03,
    0.1,

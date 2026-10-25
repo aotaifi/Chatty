@@ -68,7 +68,7 @@ RA 1.7 h, RB 3.4 h, training 2 x ~1 h, net evaluation on the two-hop sets ~1 h.
 - `s8_twohop.py`: two-hop data (GPU).  `s8_post.py`: labels (train) and per-sample/edge quantities (ref).
 - `s8_q.py`: numpy helpers (Marshall, r_b, local energies, E(T) curves).  `s8_net.py`: sign net.
 - `s8_train.py`: training.  `s8_energy.py`: thresholds, energies, disagreement, table.  `s8_figure.py`: figure.
-- `s8.sbatch`: job script. Run data: ws1 `/project/theorie/a/A.Otaifi/chatty_signs8/runs/`.
+- `s8.sbatch`: job script. Run data: ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/signs8/runs/`.
 
 ## Amendment 1 (2026-10-12 22:05, before any label, threshold or energy from the new data was computed)
 - Measured throughput: a40-16gb slices give 2.1e3 projected evaluations/s (half the a40-24gb rate); the cip QOS allows

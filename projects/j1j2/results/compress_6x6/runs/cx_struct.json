@@ -10,7 +10,7 @@
    [
     "Aw_k3",
     3,
-    "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_Aw_adam_k3_s0_17092901/la_student.npy",
+    "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_Aw_adam_k3_s0_17092901/la_student.npy",
     [
      0.1,
      0.3,
@@ -20,7 +20,7 @@
    [
     "Aw_k6",
     6,
-    "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_Aw_adam_k6_s0_17092902/la_student.npy",
+    "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_Aw_adam_k6_s0_17092902/la_student.npy",
     [
      0.1,
      0.3,
@@ -30,7 +30,7 @@
    [
     "As_k6",
     6,
-    "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cx_As_k6_s0_17092903/la_student.npy",
+    "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cx_As_k6_s0_17092903/la_student.npy",
     [
      0.01,
      0.03,
@@ -46,7 +46,7 @@
    1.0,
    2.0
   ],
-  "B_params": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/cxB_k3_s0_17092988/params_final.npy",
+  "B_params": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/cxB_k3_s0_17092988/params_final.npy",
   "B_scales": [
    0.03,
    0.1,

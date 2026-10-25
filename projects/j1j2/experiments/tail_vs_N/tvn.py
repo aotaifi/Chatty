@@ -21,8 +21,8 @@ import numpy as np
 import numba
 from numba import prange
 
-sys.path.insert(0, os.environ.get("FN_CODE", "/home/a/A.Otaifi/chatty_fn6x6/code"))
-sys.path.insert(0, os.environ.get("ED_COMMON_DIR", "/home/a/A.Otaifi/chatty_fn6x6/code"))
+sys.path.insert(0, os.environ.get("FN_CODE", "/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/code"))
+sys.path.insert(0, os.environ.get("ED_COMMON_DIR", "/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6/code"))
 import closed_fn_krylov_sym6x6 as C
 
 BPD = 8            # bins per decade of per-configuration phi^2
@@ -229,8 +229,8 @@ def main():
     ap.add_argument('--solver-tol', type=float, default=1e-10)
     ap.add_argument('--maxsweep', type=int, default=150)
     ap.add_argument('--gs-vec', default=None); ap.add_argument('--gs-states', default=None)
-    ap.add_argument('--vit-tables', default='/project/theorie/a/A.Otaifi/chatty_stall6/data/sym_tables.npz')
-    ap.add_argument('--vit-reps', default='/project/theorie/a/A.Otaifi/chatty_stall6/data/psi0_6x6_table.npz')
+    ap.add_argument('--vit-tables', default='/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/sym_tables.npz')
+    ap.add_argument('--vit-reps', default='/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/psi0_6x6_table.npz')
     ap.add_argument('--no-trunc', action='store_true')
     ap.add_argument('--diag-k', default=None, help='comma list of k with full diagnostics (default: all)')
     ap.add_argument('--trunc-step', type=int, default=1)

@@ -6,12 +6,12 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=32G
 #SBATCH --time=03:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_fnguides/bound_check/logs/fnbound-%x-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_fnguides/bound_check/logs/fnbound-%x-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides/bound_check/logs/fnbound-%x-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides/bound_check/logs/fnbound-%x-%j.err
 # Usage: sbatch --job-name=NAME bound_check.sbatch <script.py> <args...>
 set -euo pipefail
 module load python/3.11-2023.09
-BASE=/home/a/A.Otaifi/chatty_fnguides
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/fnguides
 BC=$BASE/bound_check
 OUT="$BC/results/${SLURM_JOB_NAME}_${SLURM_JOB_ID}"
 mkdir -p "$OUT"

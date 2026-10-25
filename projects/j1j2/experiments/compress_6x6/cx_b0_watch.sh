@@ -6,7 +6,7 @@
 # cx_b0.json), not the exit code. Last step: job_finish.sh --wake none.
 JOB=$1; RUN=$2; STALL=${STALL:-2700}; POLL=${POLL:-60}
 SACCT=${B0_SACCT:-sacct}; FIN=${B0_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${B0_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${B0_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 t_sub=$(date +%s); miss=0
 while true; do
   st=$($SACCT -j "$JOB" -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//')

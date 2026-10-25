@@ -13,7 +13,7 @@
 set -euo pipefail
 ARM=${ARM:?set ARM=ctl1|lvchk|rC|rD|C|D}
 HERE=$(cd "$(dirname "$0")" && pwd)
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 O2B=$RUNS/o2b_17431886                                                  # O2b: round_0/theta.npy (a_1), round_1/{target_la.npy, la_table.npy, spec_fit.json}
 NAME=f2_$ARM; LOC=$RUNS/$NAME
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6; RUN=$P/runs/$NAME; D=$P/data/o2b_r1

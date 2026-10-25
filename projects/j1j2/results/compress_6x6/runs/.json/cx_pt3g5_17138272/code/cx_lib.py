@@ -26,13 +26,13 @@ jax.config.update('jax_default_matmul_precision', 'highest')          # ViT and 
 log = SS.log
 N = 36
 f64 = jnp.float64
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr')
 TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 SYM = os.environ.get('ST6_SYM', ROOT + '/data/sym_tables.npz')
-LOOP8 = '/project/theorie/a/A.Otaifi/chatty_writeback_tail/runs/wtLOOP8_17090119'     # read-only
-TABDIR = os.environ.get('CX_TABDIR', '/project/theorie/a/A.Otaifi/chatty_compress6/tables')
-VIT_CKPT = '/project/theorie/a/A.Otaifi/chatty_stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'
+LOOP8 = '/project/theorie/a/A.Otaifi/Chatty/runs/writeback_tail/runs/wtLOOP8_17090119'     # read-only
+TABDIR = os.environ.get('CX_TABDIR', '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/tables')
+VIT_CKPT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/vit_J2=0.50_N=6x6_k=0.mpack'
 H_START = 1.3193875041276706e-4                                        # <H>(psi_P, s_P) per site, exact
 LANCZOS_P1_PSIP = 2.55e-5                                              # lanczos_baseline_6x6
 RBM_PP = 4.47e-5

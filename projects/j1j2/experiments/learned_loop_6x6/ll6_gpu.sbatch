@@ -7,12 +7,12 @@
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=40G
 #SBATCH --time=04:00:00
-#SBATCH --output=/home/a/A.Otaifi/chatty_ll6/logs/%x-%j.out
-#SBATCH --error=/home/a/A.Otaifi/chatty_ll6/logs/%x-%j.err
+#SBATCH --output=/project/theorie/a/A.Otaifi/Chatty/runs/ll6/logs/%x-%j.out
+#SBATCH --error=/project/theorie/a/A.Otaifi/Chatty/runs/ll6/logs/%x-%j.err
 # Learned FN/Krylov loop on 6x6 (experiments/learned_loop_6x6). LMU theorie full A40 (vGPU slices a40-*gb lack CUDA VMM and do not work with jax 0.10).
 # Usage: sbatch --job-name=NAME [--gres ...] ll6_gpu.sbatch <script.py> <args...>
 set -euo pipefail
-BASE=/home/a/A.Otaifi/chatty_ll6
+BASE=/project/theorie/a/A.Otaifi/Chatty/runs/ll6
 OUT="$BASE/runs/${SLURM_JOB_NAME}_${SLURM_JOB_ID}"
 mkdir -p "$OUT"
 export XLA_PYTHON_CLIENT_PREALLOCATE=false OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

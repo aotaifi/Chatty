@@ -18,8 +18,8 @@ import rbmpp_bf_lib as BF
 from cx_lib import NBR as CX_NBR
 import st6_sector as SS
 
-PP_PARAMS = '/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpT1_pp_17163493/params_final.npz'
-THETA_R1 = '/project/theorie/a/A.Otaifi/chatty_compress6/runs/o2b_17431886/round_1/theta.npy'
+PP_PARAMS = '/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpT1_pp_17163493/params_final.npz'
+THETA_R1 = '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/o2b_17431886/round_1/theta.npy'
 N = 36; NH = 18
 OUT = {}
 

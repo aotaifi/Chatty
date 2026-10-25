@@ -128,6 +128,6 @@ Perfect correction of every configuration above 1e-9 captures 4% of the ViT's ga
 ## Compute
 Exact, CPU only: ws1 login node, 8 threads (Slurm `cluster` jobs stayed pending behind fair-share priority; cancelled).
 About 12 CPU-h in total (N36: 3 runs of 30-55 min x 8 threads, mostly CSR build 5 min + FN solves 3 min each +
-Jacobi/diagnostics; N16-N32 < 0.5 CPU-h). Working data on ws1 `/project/theorie/a/A.Otaifi/chatty_tail_vs_N/` (logs, caches).
+Jacobi/diagnostics; N16-N32 < 0.5 CPU-h). Working data on ws1 `/project/theorie/a/A.Otaifi/Chatty/runs/tail_vs_N/` (logs, caches).
 Reproduce: `python tvn.py --cluster N36 --kmax 8 --vit --diag-k 1,3,8 --no-trunc ...` (N36), `--cluster N16..N32 --kmax 8` (others),
 then `analyze.py`, `make_tables.py`, `figure.py`.

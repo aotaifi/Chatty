@@ -7,7 +7,7 @@
   "lr": 0.001,
   "B": 256,
   "val_every": 2000,
-  "refs": "/project/theorie/a/A.Otaifi/chatty_compress6/tables/cx_replay.json"
+  "refs": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/tables/cx_replay.json"
  },
  "npar": 252356,
  "curve": [

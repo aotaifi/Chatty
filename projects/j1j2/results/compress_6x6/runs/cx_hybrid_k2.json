@@ -2,7 +2,7 @@
  "spec": {
   "k": 2,
   "seed": 1,
-  "prev": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/hy_k1_17179487"
+  "prev": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/hy_k1_17179487"
  },
  "prev_share": 0.9630540406499694,
  "vit_subprocess_sec": 1608.7748854160309,
@@ -12,7 +12,7 @@
   "H_target": 1.4032694760758426e-05,
   "alpha": -0.07941012150189901,
   "exact_gain": 1.6067999344985633e-05,
-  "vit_dir": "/project/theorie/a/A.Otaifi/chatty_compress6/runs/hy_k2_17179488/vit",
+  "vit_dir": "/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/hy_k2_17179488/vit",
   "vit_H": 0.00012981715836188655,
   "vit_share": -6.205904177315091,
   "fit_c": {

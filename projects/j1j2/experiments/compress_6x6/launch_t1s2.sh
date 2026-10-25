@@ -8,8 +8,8 @@
 # Stages code like launch_g0.sh (cx_slice.sbatch copies $B/code/*.py into the run), submits, writes ANALYSIS_BRIEF.md,
 # arms one durable setsid watcher per job (cx_t1s_watch.sh -> job_finish.sh --wake none).
 set -euo pipefail
-HERE=$(cd "$(dirname "$0")" && pwd); B=/home/a/A.Otaifi/chatty_compress6
-RUNS=/project/theorie/a/A.Otaifi/chatty_compress6/runs
+HERE=$(cd "$(dirname "$0")" && pwd); B=/project/theorie/a/A.Otaifi/Chatty/runs/compress6
+RUNS=/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs
 cp "$HERE/cx_lib.py" "$HERE/cx_t1s.py" "$HERE/../rbmpp_6x6/rbmpp_lib.py" "$B/code/"
 sha256sum "$B/code/cx_t1s.py" "$B/code/cx_lib.py" "$B/code/rbmpp_lib.py"
 # code drift guard: cx_slice.sbatch copies $B/code/*.py at job START; the job compares these hashes and exits 3 on a mismatch

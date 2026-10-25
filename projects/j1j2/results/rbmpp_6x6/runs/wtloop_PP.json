@@ -515,7 +515,7 @@
   ]
  },
  "rbm_pp": 4.47e-05,
- "guide_table": "/project/theorie/a/A.Otaifi/chatty_rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
+ "guide_table": "/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6/runs/rpTabPP_17164048/sym_tables_PP.npz",
  "guide_H": 6.302157047352906e-05,
  "guide_lanczos": [
   6.302157047343037e-05,

@@ -28,7 +28,7 @@ import optax
 from jax.flatten_util import ravel_pytree
 jax.config.update('jax_default_matmul_precision', 'highest')   # full fp32 (no TF32 on A40)
 
-ROOT = '/project/theorie/a/A.Otaifi/chatty_stall6'
+ROOT = '/project/theorie/a/A.Otaifi/Chatty/runs/stall6'
 CSR = os.environ.get('ST6_CSR', ROOT + '/csr')
 TABLE = os.environ.get('ST6_TABLE', ROOT + '/data/psi0_6x6_table.npz')
 SYM = os.environ.get('ST6_SYM', ROOT + '/data/sym_tables.npz')

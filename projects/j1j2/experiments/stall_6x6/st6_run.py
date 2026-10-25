@@ -12,10 +12,10 @@ import st6_net as NT
 import jax
 import jax.numpy as jnp
 
-CSR = os.environ.get('ST6_CSR', '/home/a/A.Otaifi/chatty_stall6/csr')
-TABLE = os.environ.get('ST6_TABLE', '/home/a/A.Otaifi/chatty_stall6/data/psi0_6x6_table.npz')
-CKPT = os.environ.get('ST6_CKPT', '/home/a/A.Otaifi/chatty_stall6/data/vit_J2=0.50_N=6x6_k=0.mpack')
-DATA = os.environ.get('ST6_DATA', '/project/theorie/a/A.Otaifi/chatty_stall6/data')
+CSR = os.environ.get('ST6_CSR', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/csr')
+TABLE = os.environ.get('ST6_TABLE', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/psi0_6x6_table.npz')
+CKPT = os.environ.get('ST6_CKPT', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data/vit_J2=0.50_N=6x6_k=0.mpack')
+DATA = os.environ.get('ST6_DATA', '/project/theorie/a/A.Otaifi/Chatty/runs/stall6/data')
 log = SS.log
 mode, OUT = sys.argv[1], sys.argv[2]
 os.makedirs(OUT, exist_ok=True)

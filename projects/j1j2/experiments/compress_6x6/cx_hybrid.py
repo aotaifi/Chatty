@@ -9,7 +9,7 @@ import os, sys, time, json, subprocess
 import numpy as np
 OUT = sys.argv[1]; SPEC = json.load(open(sys.argv[2])); os.makedirs(OUT, exist_ok=True)
 K_IT = int(SPEC['k']); SEED = int(SPEC.get('seed', 1))
-RUNS = '/project/theorie/a/A.Otaifi/chatty_compress6/runs'
+RUNS = '/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs'
 F = os.path.join(OUT, 'cx_hybrid.json'); T00 = time.time()
 res = dict(spec=SPEC)
 HERE = os.path.dirname(os.path.abspath(__file__))

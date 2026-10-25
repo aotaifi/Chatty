@@ -3,7 +3,7 @@
 # Fires on completion, non-zero exit, disappearance, stall (no new PROGRESS line in progress.txt for STALL s; a round takes ~2 min). Last step: job_finish.sh --wake none.
 JOB=$1; RUN=$2; STALL=${STALL:-1200}; POLL=${POLL:-60}
 SACCT=${S1_SACCT:-sacct}; FIN=${S1_FIN:-/project/theorie/a/A.Otaifi/tools/job_finish.sh}
-DELTA=${S1_DELTA:-/project/theorie/a/A.Otaifi/Chatty-organize/projects/j1j2/delta_today.md}
+DELTA=${S1_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
 t_sub=$(date +%s); miss=0
 while true; do
   st=$($SACCT -j "$JOB" -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//')

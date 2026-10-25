@@ -17,15 +17,15 @@
  "spec_in": {
   "name": "D2a2",
   "nets": [
-   "/home/a/A.Otaifi/chatty_ll6it2/runs/d2big_16844884/net1_k1_L_b0.3.pkl",
-   "/home/a/A.Otaifi/chatty_ll6it2/runs/d2big_16844884/net_d2big.pkl"
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2/runs/d2big_16844884/net1_k1_L_b0.3.pkl",
+   "/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2/runs/d2big_16844884/net_d2big.pkl"
   ],
   "Ts_nets": [
    -14.985799779143964,
    -6.3717955103175115
   ],
   "hop": null,
-  "amp_g": "/home/a/A.Otaifi/chatty_ll6it2/runs/a2small_16845080/params_a2small.npy"
+  "amp_g": "/project/theorie/a/A.Otaifi/Chatty/runs/ll6it2/runs/a2small_16845080/params_a2small.npy"
  },
  "thr_edges_sec": 2240.3107328414917,
  "threshold": {

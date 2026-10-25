@@ -11,15 +11,15 @@
   "quotable": "QUOTABLE: E_FN/N 8x8 p=0 = -0.498756 +- 2.9e-06 (2 chains, series mode)"
  },
  "p1": {
-  "E_FN_site": -0.4989486278949757,
-  "err": 6.760109911638135e-06,
+  "E_FN_site": -0.49894800714920057,
+  "err": 5.005452610941943e-06,
   "chains": [
    "p1_s1",
    "p1_s2"
   ],
-  "gpu_h": 4.171854702035586,
-  "chain_diff_sigma": -1.3109709130919656,
-  "quotable": "NOT QUOTABLE: E_FN/N 8x8 p=1: /scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/E_p1_s1.npy: binning error still rising (26% over the last 3 levels): run shorter than its correlation time"
+  "gpu_h": 6.0363534347216286,
+  "chain_diff_sigma": -1.0051487445945282,
+  "quotable": "QUOTABLE: E_FN/N 8x8 p=1 = -0.498947 +- 5.6e-06 (2 chains, series mode)"
  },
  "vmc": {
   "E0": {

@@ -14,7 +14,7 @@ frozen-FN Dirichlet metric; re-base every 2-3 accepted steps.
 
 ## Setup (all exact on the 15.8M-orbit symmetric sector; code in this directory)
 - `cx_replay.py`: replays `wtLOOP8_17090119` from its stored FEAT nets (read-only), checks every iteration against
-  the stored record, saves (la_k, s_k), k = 1..6, to `/project/theorie/a/A.Otaifi/chatty_compress6/tables/`, runs P1
+  the stored record, saves (la_k, s_k), k = 1..6, to `/project/theorie/a/A.Otaifi/Chatty/runs/compress6/tables/`, runs P1
   and computes the references at k = 3, 6 (same sign s_k throughout).
 - `cx_distill.py`: P2 students, training, exact evaluation.
 - Teacher at k: (la_k, s_k), <H> 6.29e-5 (k = 3) and 4.03e-5 (k = 6); start psi_P 1.319e-4.
@@ -106,7 +106,7 @@ conceptual limit (e.g. capacity: loss flat at a floor with held-out = training; 
 
 ## Budget
 <= 8 A40-h on ws1 (full A40, cip,inter): replay + P1 ~0.8, smoke 0.3, six ViT runs ~4.5, four B runs ~1.2, P3 ~1.
-Runs: `/project/theorie/a/A.Otaifi/chatty_compress6/runs/`. Code and specs in this directory.
+Runs: `/project/theorie/a/A.Otaifi/Chatty/runs/compress6/runs/`. Code and specs in this directory.
 
 ## Amendment 1 (2026-10-09 11:00, after smoke tests and the first P1 points, before any P2 run)
 - **P1 extension.** At iteration 1 every pre-registered eta already loses far more than 10% of the step (VW model:
@@ -1948,3 +1948,8 @@ ASSUMED, not measured: sigma_walker of the production guide = 8x8 production val
 (L12 p1 148 h); VMC E1 sample sd = 8x8 value x 8/L. The A40 route is only realistic for L10 with 2048 chains (44 h, fits the 2-day limit) and for pilots; L12 training on A40 is ~900 h.
 Queue (sbatch --test-only 2026-10-25, one job): cont 2026-11-07 07:36, lowcont 2026-11-07 11:14 (100 or 168 h alike); express pending 1.5-2 h per pilot.
 References: L10 per `m13b_LxL/ANALYSIS_BRIEF.md` (Nomura-Imada 2005.14142, Rende 2310.05715, Chen-Heyl 2302.01941, Hu 1304.2630); L12 only Nomura-Imada -0.496791(4) and Roth GCNN -0.496769(9) (2211.07749).
+- UPDATE 2026-10-25 (lead, gfmc8_analyze.py): p1_s1 extended to 1080 blocks (Paderborn 3853503): FN-GFMC p=1 =
+  -0.498947 +- 5.6e-6 QUOTABLE (2 chains, difference -1.0 sigma; raw curve results/m1_8x8/quotable_p1.png flat, chains
+  overlap). 6.0 H100-h for this number. p1_s2's extension (3853504) is running and will tighten it.
+  Reading: one hop + FN on the 8x8 translation RBM+PP lies 6.2e-5 per site below the published full-projection RBM+PP
+  (-0.498886) and 2.5e-4 above DMRG (-0.4992); FN adds 2.5e-5 over VMC with the same one-hop guide.

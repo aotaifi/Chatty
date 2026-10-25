@@ -3,7 +3,8 @@
 
   python gfmc_run.py OUT --params P.npz --consts vmc_s1.json --p 1 --L 8 --proj translations --M 512 --dtau 0.2 --blocks 200 --burn 50 --seed 1
 OUT/progress.txt (PROGRESS lines, last `GFMC_DONE ...`), OUT/ckpt.npz (walkers + block series, atomic, every --ckpt_every blocks;
---resume continues bit-identically), OUT/blocks.npz, OUT/result.json.
+--resume continues bit-identically), OUT/blocks.npz, OUT/result.json;
+--dump: OUT/dump/blk_NNNNN.npz per block (pre-resampling walkers + log-weights, for the L8 refit; RNG stream unchanged).
 --consts: json of vmc_moments.py (keys alpha.value, E, w, E_ref ...) or a small json {"alpha":.., "E":.., "w":[re,im]} (E total).
 The gfmc6_run.py path (6x6, full projection, table_A constants) is left unchanged; this script reproduces it with
 --L 6 --proj full --consts <json from table_A> (see verify_general_6x6.py).
@@ -46,6 +47,8 @@ if __name__ == '__main__':
     ap.add_argument('--seed', type=int, default=1); ap.add_argument('--chunk', type=int, default=256)
     ap.add_argument('--ckpt_every', type=int, default=10); ap.add_argument('--resume', action='store_true')
     ap.add_argument('--maxsec', type=float, default=1e18, help='stop cleanly after this many seconds (checkpoint written)')
+    ap.add_argument('--dump', action='store_true', help='write the pre-resampling walkers of every block to OUT/dump/blk_NNNNN.npz '
+                    '(X int8 (M,N), logw (M,) relative to the block start, EL (M,) FN local energy); the walk and RNG stream are unchanged (L8)')
     ap.add_argument('--ref', type=float, default=-0.498886, help='reference energy per site printed in the progress lines (published RBM+PP)')
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
@@ -75,6 +78,8 @@ if __name__ == '__main__':
         gf = GFMC(g, X0, a.dtau, a.seed)
         P(f'initial rows {a.M} walkers {g.n_eval} amplitude evaluations {g.t_eval:.0f}s')
     t_start = time.time(); tot = a.burn + a.blocks
+    if a.dump:
+        gf.keep = True; ddir = os.path.join(a.out, 'dump'); os.makedirs(ddir, exist_ok=True)
 
     def save(nb):
         tmp = ck + '.tmp.npz'
@@ -85,6 +90,10 @@ if __name__ == '__main__':
         tb = time.time(); n0 = g.n_eval
         r = gf.block(); r['sec'] = time.time() - tb; r['evals'] = g.n_eval - n0; r['block'] = b
         rec.append(r)
+        if a.dump:
+            fn = os.path.join(ddir, f'blk_{b:05d}.npz'); tmpd = fn + '.tmp.npz'
+            np.savez(tmpd, X=gf.pre['X'], logw=gf.pre['logw'], EL=gf.pre['EL'], block=b, emix=r['emix'])
+            os.replace(tmpd, fn)
         P(f'block {b + 1}/{tot} E_mix/N {r["emix"] / N:.7f} E_grow/N {r["egrow"] / N:.7f} d_ref {r["emix"] / N - a.ref:+.3e} ess {r["ess"]:.0f} '
           f'elvar {r["elvar"]:.3f} hops {r["hops"]} iters {r["iters"]} evals {r["evals"]} sec {r["sec"]:.1f} maxIm {g.max_im:.1e}')
         if (b + 1) % a.ckpt_every == 0: save(b + 1)

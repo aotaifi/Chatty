@@ -206,6 +206,8 @@ class GFMC:
         self.rate = np.zeros((self.M, guide.NB)); self.dFN = np.zeros(self.M)
         self.refresh(np.arange(self.M))
         self.nrow = 0
+        self.keep = False      # True: block() leaves the pre-resampling walkers in self.pre (X, logw, EL); no RNG use, no effect on the walk
+        self.pre = None
 
     def refresh(self, idx):
         if idx.size == 0:
@@ -245,6 +247,8 @@ class GFMC:
         egrow = float(-(mx + np.log(sw / M)) / self.dtau)
         ess = float(sw * sw / np.sum(w * w))
         elvar = float(np.sum(w * (self.EL - emix) ** 2) / sw)
+        if self.keep:
+            self.pre = dict(X=self.X.copy(), logw=logw.copy(), EL=self.EL.copy())
         idx = sysres(w, self.rng, M)
         self.X = self.X[idx]; self.rate = self.rate[idx]; self.dFN = self.dFN[idx]
         self.R = self.R[idx]; self.EL = self.EL[idx]

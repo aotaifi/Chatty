@@ -31,6 +31,7 @@ ap.add_argument('--blocks', type=int, default=300); ap.add_argument('--burn', ty
 ap.add_argument('--dtau', type=float, default=0.1); ap.add_argument('--steps', type=int, default=30); ap.add_argument('--lr', type=float, default=0.3)
 ap.add_argument('--maxn', type=float, default=0.02); ap.add_argument('--eps', default='0.1,0.3'); ap.add_argument('--vmc_sweeps', type=int, default=40)
 ap.add_argument('--skip_chains', action='store_true', help='reuse the chains already in OUT')
+ap.add_argument('--skip_ii', action='store_true', help='skip the (ii) parameter-set comparison (refit checks only)')
 args = ap.parse_args(); os.makedirs(args.out, exist_ok=True)
 PY = sys.executable
 log = lambda *a: print(time.strftime('%H:%M:%S'), *a, flush=True)
@@ -158,7 +159,7 @@ def mean_jk(r, ws):
 
 res['ii'] = []
 worst = 0.0
-for name, fl in sets:
+for name, fl in ([] if args.skip_ii else sets):
     la = model.logpsi(fl, Xf); a = (w * np.exp(la)).real
     r = WS.ratios(model.logpsi(fl, WS.X))
     m, me = mean_jk(r, WS); ex_m = (a @ phi) / (g @ phi)
@@ -180,7 +181,7 @@ for name, fl in sets:
     worst = max(worst, max(abs(x) for x in zs))
     res['ii'].append(dict(name=name, Epi=m, Epi_err=me, Epi_exact=ex_m, Q=q, Q_err=qe, Q_exact=ex_q, Ninv=ni, Ninv_err=nie, Ninv_exact=ex_ni,
                           R=R, R_err=Re_, R_exact=ex_R, z=zs, chains=pc, Q_broken=qb, R_broken=Rb))
-verdict('(ii) E_pi(a/g), Q and R = exact for 3 parameter sets (|z| < 3)', worst < 3, f'worst |z| {worst:.2f}')
+if not args.skip_ii: verdict('(ii) E_pi(a/g), Q and R = exact for 3 parameter sets (|z| < 3)', worst < 3, f'worst |z| {worst:.2f}')
 hh = WS.health(WS.r0); log(f'(ii) 4x4 weight health at theta0: {hh}')
 res['health4'] = hh
 
@@ -189,7 +190,7 @@ res['health4'] = hh
 def refit(name, extra):
     out = os.path.join(args.out, name); subprocess.run(['rm', '-rf', out])
     cmd = [PY, os.path.join(HERE, 'l8_refit.py'), out, '--params0', P0, '--consts', CJ, '--dumps', ','.join(dirs), '--L', '4', '--first_block', str(args.burn),
-           '--chains', '1024', '--seed', '5', '--lr', str(args.lr), '--maxn', str(args.maxn), '--save_every', '0', '--final_sweeps', '16'] + extra
+           '--chains', '1024', '--seed', '5', '--lr', str(args.lr), '--maxn', str(args.maxn), '--save_every', '1', '--final_sweeps', '16'] + extra
     rc = subprocess.run(cmd, env=env, stdout=open(out + '.log', 'w'), stderr=subprocess.STDOUT).returncode
     return out, rc
 
@@ -208,16 +209,23 @@ jc = json.load(open(os.path.join(oc, 'refit.json'))); jb = json.load(open(os.pat
 fc = jc['final']; fb = jb['final']
 log(f'(iii) refits ({time.time() - t0:.0f}s, rc {rcc} {rcb}): correct: exact R {Rc:.6f}, held-out estimate {fc["R_held"]:.6f} +- {fc["R_held_err"]:.1e}; '
     f'broken a/|g|: exact R {Rb:.6f}, its own held-out estimate {fb["R_held"]:.6f} +- {fb["R_held_err"]:.1e}')
-log('(iii) curve correct (it, R_held, err, exact-free): ' + ' '.join(f'{c_["it"]}:{c_["R_held"]:.5f}' for c_ in jc['curve'][::5]))
+log('(iii) held-out curve correct: ' + ' '.join(f'{c_["it"]}:{c_["R_held"]:.5f}+-{c_["R_held_err"]:.4f}' for c_ in jc['curve']))
 log('(iii) curve broken: ' + ' '.join(f'{c_["it"]}:{c_["R_held"]:.5f}' for c_ in jb['curve'][::5]))
 verdict('(iii) correct refit raises exact R; broken sign (a/|g|) ends measurably lower (gain < half)', Rc > 1 and (Rb - 1) < 0.5 * (Rc - 1),
         f'exact R correct {Rc:.6f} vs broken {Rb:.6f}')
 zf = (fc['R_held'] - Rc) / fc['R_held_err']
-verdict('(ii/iii) held-out R estimate of the correct refit = its exact R (|z| < 3)', abs(zf) < 3, f'estimate {fc["R_held"]:.6f} +- {fc["R_held_err"]:.1e} exact {Rc:.6f} z {zf:+.2f}')
+import glob as _g
+exc = [(int(os.path.basename(f_)[8:11]), exact_R(f_)) for f_ in sorted(_g.glob(os.path.join(oc, 'params_t*.npz')))]
+log('(iii) exact R per step of the correct refit: ' + ' '.join(f'{i_}:{r_:.5f}' for i_, r_ in exc))
+sel = fc['selected_step']; nst = len(jc['curve']) - 1
+best_exact = max(exc, key=lambda t: t[1]) if exc else (0, 1.0)
+log(f'(iii) selected step {sel} of {nst} (held-out curve turned down after it: {sel < nst}); exact-R maximum at step {best_exact[0]} ({best_exact[1]:.5f})')
+res['iii_exact_curve'] = exc; res['iii_selected'] = sel
+verdict('(ii/iii) chain-split held-out R at the selected step = its exact R (|z| < 2)', abs(zf) < 2, f'estimate {fc["R_held"]:.6f} +- {fc["R_held_err"]:.1e} exact {Rc:.6f} z {zf:+.2f}')
 res['iii'] = dict(R_exact_correct=Rc, R_exact_broken=Rb, final_correct=fc, final_broken=fb, curve_correct=[(c_['it'], c_['R_held'], c_['R_held_err']) for c_ in jc['curve']],
                   curve_broken=[(c_['it'], c_['R_held'], c_['R_held_err']) for c_ in jb['curve']])
 o0, rc0 = refit('refit_zero', ['--steps', '0', '--no_gate'])
-o1, rc1 = refit('refit_one', ['--steps', '1', '--no_gate'])
+o1, rc1 = refit('refit_one', ['--steps', '1', '--no_gate', '--select', 'last'])
 zz0 = np.load(os.path.join(o0, 'params_final.npz')); zz1 = np.load(os.path.join(o1, 'params_final.npz'))
 bit0 = all(np.array_equal(zz0[k], z0[k]) for k in LL.KEYS); bit1 = all(np.array_equal(zz1[k], z0[k]) for k in LL.KEYS)
 R0 = json.load(open(os.path.join(o0, 'refit.json')))['final']['R_held']; R1 = json.load(open(os.path.join(o1, 'refit.json')))['final']['R_held']

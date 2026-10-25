@@ -2,9 +2,9 @@
 # Test L8 production launcher (STAGED, NOT SUBMITTED by the builder): one loop round at 8x8 with walkers (README compress_6x6, "Test L8").
 # DRY RUN by default (prints every rsync / sbatch / watcher action, writes nothing remote).  GO=1 submits the whole chain at once:
 #   D  stage 1  walker dump: resume COPIES of M1.3b's p1_s1 / p1_s2 ckpt.npz (equilibrated, no burn) with --dump for NB_D blocks (2 jobs)
-#   F  stage 2  refit (l8_refit.py, SR on the relative fidelity R, held-out = last 20% of blocks)      afterok:D_s1:D_s2
+#   F  stage 2  refit (l8_refit.py, SR on R; train D_s1, held-out = chain D_s2; early stopping)      afterok:D_s1:D_s2
 #               exit 3 = weight-health STOP, exit 4 = held-out R did not rise by 3 sigma -> job FAILED, stage 3 never starts
-#   V  stage 3a VMC on the refitted params (vmc_moments.py: phase w, E, alpha by Ritz) -> consts.json    afterok:F
+#   V  stage 3a (V and G: --kill-on-invalid-dep=yes) VMC on the refitted params (vmc_moments.py: phase w, E, alpha by Ritz) -> consts.json    afterok:F
 #   G  stage 3b 2 p=1 FN chains with g_1 (M 256, dtau 0.1, as M1.3b)                                    afterok:V
 #   usage: [GO=1] [QOS=cont] launch_l8.sh [all|D|F|V|G]      (a single stage needs DEP=<jobid[:jobid]> for its afterok, or none)
 # Decision gate after G: python3 l8_decide.py $LOCALROOT/g1  (L8_VERDICT GAIN|NO_GAIN|LOSS|UNDECIDED|NOT_QUOTABLE).
@@ -48,8 +48,9 @@ submit() {  # name body dep -> job id
     echo "DRY: submit $name ${dep:+(afterok:$dep)} via sbatch $sb" >&2; echo "DRY_$name"
   fi
 }
-header() {  # name hours
-  echo "#!/bin/bash
+header() {  # name hours [kill: cancel the job if its afterok dependency can never be satisfied]
+  echo "#!/bin/bash${3:+
+#SBATCH --kill-on-invalid-dep=yes}
 #SBATCH --job-name=l8_${1//\//_}
 #SBATCH --account=hpc-prf-ppdmrg
 #SBATCH --partition=gpu_h100
@@ -102,7 +103,7 @@ $COMMON
 Question: walker configurations of the p=1 FN-GFMC with g_0 (mixed distribution g_0 phi_0): resume of a COPY of $SRC/p1_s$s/ckpt.npz (seed $s chain,
 equilibrated over 1080 blocks), $NB_D more blocks with --dump (pre-resampling X, logw, EL per block in dump/blk_NNNNN.npz on Paderborn: $RUNS/$name/dump).
 Files (pulled to here, dump stays remote): progress.txt (last line GFMC_DONE ... completed True|False), blocks.npz, result.json.
-Gate: the last line is 'GFMC_DONE ... completed True' and the E_mix/N of the new blocks agrees with the M1.3b p=1 value -0.498947 within 3 x its
+Gate: the last line is 'GFMC_DONE ... completed True' and the E_mix/N of the new blocks agrees with the M1.3b p=1 value -0.498946 within 3 x its
 blocking error (python3 $CODE/gfmc8_analyze.py is not needed; read result.json 'mix').  Count: ssh paderborn ls $RUNS/$name/dump | wc -l = $NB_D.
 Next: gate passes -> nothing to do, stage F (refit) is queued afterok.  completed False (maxsec) -> resubmit this stage with RESUME (rerun
 launch_l8.sh D with the same names: it resumes from \$RUN/ckpt.npz) and re-chain F/V/G with DEP.  E_mix off by > 3 sigma -> stop, report (a
@@ -114,26 +115,28 @@ if [ "$STAGE" = all ] || [ "$STAGE" = F ]; then
   name=F; dep=${JD:-${DEP:-}}
   body="$(header $name $WH_F)
 $PY l8_refit.py \$RUN --params0 $PARAMS0 --consts $V0/consts.json --dumps $RUNS/D_s1,$RUNS/D_s2 --L 8 --proj translations --steps $STEPS_F \\
-  --lr $LR_F --maxn $MAXN_F --shift 0.1 --sweeps_per_step 8 --chains 1024 --holdout 0.2 --binb 2 --seed 1 --chunk $CHUNK --gate_sigma 3 --save_every 2 --maxsec $((WH_F*3600 - 1200)) > \$RUN/stdout.txt 2>&1; rc=\$?
+  --lr $LR_F --maxn $MAXN_F --shift 0.1 --sweeps_per_step 8 --chains 1024 --holdout_chain 1 --binb 2 --seed 1 --chunk $CHUNK --gate_sigma 3 --save_every 1 --select best --maxsec $((WH_F*3600 - 1200)) > \$RUN/stdout.txt 2>&1; rc=\$?
 echo exit=\$rc finished=\$(date -Is) >> \$RUN/run_metadata.txt; exit \$rc"
   jF=$(submit $name "$body" "$dep") || exit 1
   brief $name $jF "# L8 stage 2 refit (job $jF), QoS $QOS
 $COMMON
 Question: does the refit of the same RBM+PP class to phi_0 (fidelity, walker samples only) raise the held-out relative fidelity
-R = F(v)/F(v_0) beyond its error?  $STEPS_F SR steps, lr $LR_F, |d|_S <= $MAXN_F, 1024 VMC chains, held-out = last 20% of each chain's blocks.
+R = F(v)/F(v_0) beyond its error?  $STEPS_F SR steps, lr $LR_F, |d|_S <= $MAXN_F, 1024 VMC chains x 8 sweeps per step; trained on D_s1 (all blocks),
+held-out = the independent chain D_s2 (all blocks); params_final.npz = the step with the largest held-out R (early stopping; line SELECTED step k).
 Files: progress.txt (WEIGHT_HEALTH line; one PROGRESS line per step; last line REFIT_DONE verdict PASS|NO_RISE|HEALTH_STOP), refit.json (curve:
-R_held, R_train with errors per step; final), health.json, params_final.npz (remote only: $RUNS/F/params_final.npz).
-Gate: grep REFIT_DONE progress.txt; WEIGHT_HEALTH must show neff/n >= 0.1 and max_share <= 1e-2; final R_held > 1 by > 3 sigma (the job exits 0
-only then).  Also check that R_held rises over the curve, not only at the last step.
-Next: PASS -> stage V and G run automatically (afterok).  NO_RISE (exit 4, job FAILED) -> stage 3 does not run: scancel the V and G jobs (they stay PENDING on
-DependencyNeverSatisfied; their watchers then end with FAILED); report the curve: the refit does
+R_held, R_train with errors per step; final.selected_step), health.json, params_final.npz and params_tNNN.npz (remote only: $RUNS/F/).
+Gate: grep 'SELECTED\|REFIT_DONE' progress.txt; WEIGHT_HEALTH must show neff/n >= 0.1 and max_share <= 1e-2; held-out R at the selected step > 1 by
+> 3 sigma (re-evaluated with fresh VMC samples; the job exits 0 only then).  Report the selected step and both curves (refit.json); a selected
+step that is the last one means the curve had not turned down.  Caveat: selecting the maximum of a noisy curve biases its value up (4x4 check: z in STATUS.md).
+Next: PASS -> stage V and G run automatically (afterok).  NO_RISE (exit 4, job FAILED) -> stage 3 does not run: V and G carry --kill-on-invalid-dep=yes, so Slurm
+cancels them and their watchers end with FAILED (check sacct shows them CANCELLED); report the curve: the refit does
 not gain fidelity on held-out walkers (lead decides: more dump blocks or a different lr, not a different estimator).  HEALTH_STOP (exit 3) ->
-design failure of the a/g weights at 8x8: scancel V and G, report the numbers, no retuning."
+design failure of the a/g weights at 8x8: V and G are cancelled by Slurm (kill-on-invalid-dep); report the numbers, no retuning."
   watch $name $jF REFIT_DONE
 fi
 if [ "$STAGE" = all ] || [ "$STAGE" = V ]; then
   name=V; dep=${jF:-${DEP:-}}
-  body="$(header $name $WH_V)
+  body="$(header $name $WH_V kill)
 $PY vmc_moments.py \$RUN --params $RUNS/F/params_final.npz --L 8 --proj translations $VMC --chunk $CHUNK --maxsec_seed $(( (WH_V*3600 - 1800) / 2 )) > \$RUN/stdout.txt 2>&1; rc=\$?
 sha256sum $RUNS/F/params_final.npz >> \$RUN/run_metadata.txt
 echo exit=\$rc finished=\$(date -Is) >> \$RUN/run_metadata.txt; [ \$rc = 0 ] && echo \"VMC_DONE_L8 exit=\$rc\" >> \$RUN/progress.txt; exit \$rc"
@@ -151,14 +154,14 @@ if [ "$STAGE" = all ] || [ "$STAGE" = G ]; then
   dep=${jV:-${DEP:-}}
   for s in 1 2; do
     name=g1/p1_s$s
-    body="$(header g1/p1_s$s $WH_G)
+    body="$(header g1/p1_s$s $WH_G kill)
 $PY gfmc_run.py \$RUN --params $RUNS/F/params_final.npz --consts $RUNS/V/consts.json --p 1 --L 8 --proj translations --M 256 --dtau 0.1 \\
   --blocks $NB_G --burn $BURN_G --seed $s --chunk $CHUNK --maxsec $((WH_G*3600 - 900)) --resume > \$RUN/stdout.txt 2>&1; rc=\$?
 echo exit=\$rc finished=\$(date -Is) >> \$RUN/run_metadata.txt; exit \$rc"
     jid=$(submit $name "$body" "$dep") || exit 1
     brief $name $jid "# L8 stage 3b FN chain g_1 p1_s$s (job $jid): params $RUNS/F/params_final.npz, consts $RUNS/V/consts.json, M 256, dtau 0.1, $NB_G blocks after $BURN_G burn
 $COMMON
-Question: E_FN(g_1) per site vs E_FN(g_0) = -0.498947 +- 5.6e-6 (M1.3b, 2 chains); decision rule (sigma = combined error, ~7e-6):
+Question: E_FN(g_1) per site vs E_FN(g_0) = -0.498946 +- 4.6e-6 (M1.3b p=1 final, 2 chains x 1080 blocks, QUOTABLE); decision rule (sigma = combined error, ~7e-6):
 dE < -3 sigma GAIN (loop gains at 8x8: next a second round, then 10x10); |dE| <= 2 sigma NO_GAIN (as at 6x6: the loop's future is the storage object,
 ansatz angle); dE > +3 sigma LOSS (same conclusion, stronger).
 Files (pulled to $LOCALROOT/g1/p1_s$s): progress.txt (GFMC_DONE ... completed True|False), blocks.npz, result.json.

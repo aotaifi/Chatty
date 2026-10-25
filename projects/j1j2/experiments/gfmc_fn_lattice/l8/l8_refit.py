@@ -5,6 +5,8 @@
 Writes OUT/progress.txt (PROGRESS lines; health line WEIGHT_HEALTH; last line REFIT_DONE verdict ...), OUT/refit.json (curve per step:
 R_train, R_held and errors, Q, Ninv, |d|_S, seconds), OUT/health.json, OUT/params_final.npz (same keys as params0; steps = 0 writes params0's
 arrays unchanged), OUT/params_tNNN.npz every --save_every steps.
+Held-out: default the whole second chain (--holdout_chain 1); params_final.npz = the step with the LARGEST held-out R (early stopping; refit.json
+'final.selected_step', curves R_held and R_train per step); the gate applies to that step.
 Exit codes: 0 refit done and held-out R rose by more than gate_sigma x its error (or --no_gate); 3 WEIGHT-HEALTH STOP (n_eff/n < 0.1 or a
 single weight > 1%: design failure, nothing fitted); 4 held-out R did not rise (stage 3 must not run: afterok blocks it).
 --sign_broken: weights v/|g_0| instead of v/g_0 (control iii).
@@ -28,13 +30,15 @@ if __name__ == '__main__':
     ap.add_argument('--chains', type=int, default=1024); ap.add_argument('--therm', type=int, default=50)
     ap.add_argument('--sweeps_per_step', type=int, default=8, help='VMC sweeps pooled per step (the VMC term of the gradient is a main noise source)')
     ap.add_argument('--final_sweeps', type=int, default=8, help='extra VMC sweeps for the final held-out R')
+    ap.add_argument('--holdout_chain', type=int, default=1, help='index (in --dumps) of the chain held out entirely (default 1: train on the first '
+                    'chain, hold out the second); -1: old split, last --holdout fraction of every chain')
     ap.add_argument('--holdout', type=float, default=0.2); ap.add_argument('--binb', type=int, default=2)
     ap.add_argument('--first_block', type=int, default=None, help='ignore dump files of blocks below this index')
     ap.add_argument('--seed', type=int, default=1); ap.add_argument('--chunk', type=int, default=256)
     ap.add_argument('--gate_sigma', type=float, default=3.0); ap.add_argument('--no_gate', action='store_true')
     ap.add_argument('--health_neff', type=float, default=0.1); ap.add_argument('--health_maxshare', type=float, default=0.01)
     ap.add_argument('--no_health_stop', action='store_true'); ap.add_argument('--sign_broken', action='store_true')
-    ap.add_argument('--save_every', type=int, default=10); ap.add_argument('--maxsec', type=float, default=1e18)
+    ap.add_argument('--save_every', type=int, default=1); ap.add_argument('--select', default='best', choices=['best', 'last']); ap.add_argument('--maxsec', type=float, default=1e18)
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     prog = os.path.join(a.out, 'progress.txt')
@@ -51,7 +55,9 @@ if __name__ == '__main__':
     P(f'l8_refit L {a.L} proj {a.proj} params0 {a.params0} consts {a.consts} alpha {alpha:.8f} E {E:.8f} w {w:.6f} nparams {model.P} '
       f'steps {a.steps} lr {a.lr} shift {a.shift} maxn {a.maxn} chains {a.chains} sign_broken {a.sign_broken}')
     dirs = [d for d in a.dumps.split(',') if d]
-    D = LL.load_dumps(dirs, a.holdout, a.first_block)
+    D = LL.load_dumps(dirs, a.holdout, a.first_block, None if a.holdout_chain < 0 else a.holdout_chain)
+    if a.holdout_chain >= 0 and len(dirs) < 2:
+        raise SystemExit('--holdout_chain needs >= 2 chains in --dumps (or --holdout_chain -1)')
     t = time.time(); G = LL.guide_at(model, flat0, D['X'], alpha, E, w); tg = time.time() - t
     tr = LL.WalkerSet(D, G, ~D['held'], w, a.binb, a.sign_broken); ho = LL.WalkerSet(D, G, D['held'], w, a.binb, a.sign_broken)
     al = LL.WalkerSet(D, G, np.ones(len(D['p']), bool), w, a.binb, a.sign_broken)
@@ -69,7 +75,7 @@ if __name__ == '__main__':
     if bad and not a.no_health_stop:
         P('REFIT_DONE verdict HEALTH_STOP (design failure: weights x v/g too heavy; nothing fitted)'); sys.exit(3)
     vmc = LL.VMC(model, a.chains, a.seed, therm=a.therm); rng = np.random.default_rng(1000 + a.seed)
-    flat = flat0.copy(); curve = []
+    flat = flat0.copy(); curve = []; flats = [flat0.copy()]
     for it in range(a.steps + 1):
         ts = time.time()
         S = np.concatenate([vmc.sample(flat) for _ in range(a.sweeps_per_step)]); ni, ni_err, l_s, vt_s = LL.ninv(model, flat, flat0, S, w)
@@ -84,32 +90,34 @@ if __name__ == '__main__':
                    Ninv=ni, Ninv_err=ni_err, acc=vmc.acc, health_train=tr.health(r_tr))
         if it < a.steps and time.time() - T0 < a.maxsec:
             dl, info = LL.sr_step(model, flat, S, vt_s, tr, r_tr, w, a.lr, a.shift, a.maxn, rng)
-            flat = flat + dl; rec.update(info)
+            flat = flat + dl; rec.update(info); flats.append(flat.copy())
         rec['sec'] = time.time() - ts; curve.append(rec)
         P(f'step {it}/{a.steps} R_held {Rh:.6f} +- {Rh_e:.1e} R_train {Rt:.6f} +- {Rt_e:.1e} Q_held {qh:.6f} Ninv {ni:.6f} +- {ni_err:.1e} '
           f'neff/n_train {rec["health_train"]["neff_over_n"]:.3f} |d|_S {rec.get("dnorm", 0):.3f} rms_dlogv {rec.get("rms_dlogv", 0):.3f} halv {rec.get("halvings", 0)} acc {vmc.acc:.2f} sec {rec["sec"]:.1f}')
         json.dump(dict(args=vars(a), curve=curve, health=H), open(os.path.join(a.out, 'refit.json'), 'w'), indent=1, default=float)
         if a.save_every and it and it % a.save_every == 0:
-            LL.save_params(os.path.join(a.out, f'params_t{it:03d}.npz'), model, flat, a.params0)
+            LL.save_params(os.path.join(a.out, f'params_t{it:03d}.npz'), model, flats[it], a.params0)
         if time.time() - T0 > a.maxsec:
             P(f'MAXSEC reached after step {it}'); break
-    if a.steps == 0:
-        np.savez(os.path.join(a.out, 'params_final.npz'), **{k: z[k] for k in z.files})       # zero steps: params0 unchanged, bitwise
+    # early stopping: the step with the largest held-out R (step 0 = params0, R = 1 exactly)
+    best = int(np.argmax([c_['R_held'] for c_ in curve])) if a.select == 'best' else len(curve) - 1; fbest = flats[best]
+    if best == 0:
+        np.savez(os.path.join(a.out, 'params_final.npz'), **{k: z[k] for k in z.files})       # params0 unchanged, bitwise
+        Rh, Rh_e = curve[0]['R_held'], curve[0]['R_held_err']
     else:
-        LL.save_params(os.path.join(a.out, 'params_final.npz'), model, flat, a.params0)
-    # final held-out R with more VMC samples (norm ratio) at the final parameters
-    if a.steps > 0:
-        ns = []
+        LL.save_params(os.path.join(a.out, 'params_final.npz'), model, fbest, a.params0)
+        # held-out R at the selected step with a fresh, thermalised VMC set for the norm ratio (the walker part Q is the one used to select)
+        vf = LL.VMC(model, a.chains, a.seed + 500, therm=a.therm); ns = []
         for k in range(a.final_sweeps):
-            S = vmc.sample(flat); ns.append(LL.ninv(model, flat, flat0, S, w))
+            S = vf.sample(fbest); ns.append(LL.ninv(model, fbest, flat0, S, w))
         num = np.mean([x[0] for x in ns]); err = np.std([x[0] for x in ns], ddof=1) / np.sqrt(len(ns)) if len(ns) > 1 else ns[0][1]
-        r_ho = ho.ratios(model.logpsi(flat, ho.X)); qh, qh_e = ho.Q(r_ho)
+        r_ho = ho.ratios(model.logpsi(fbest, ho.X)); qh, qh_e = ho.Q(r_ho)
         Rh = qh ** 2 * num; Rh_e = Rh * np.sqrt((2 * qh_e / qh) ** 2 + (err / num) ** 2)
-    else:
-        Rh, Rh_e = curve[-1]['R_held'], curve[-1]['R_held_err']
-    fin = dict(R_held=Rh, R_held_err=Rh_e, z=(Rh - 1) / Rh_e if Rh_e > 0 else 0.0, steps_done=len(curve) - 1, sec=time.time() - T0)
+    P(f'SELECTED step {best} of {len(curve) - 1} (largest held-out R {curve[best]["R_held"]:.6f}); curve turned down after it: '
+      f'{best < len(curve) - 1}')
+    fin = dict(selected_step=best, R_held=Rh, R_held_err=Rh_e, z=(Rh - 1) / Rh_e if Rh_e > 0 else 0.0, steps_done=len(curve) - 1, sec=time.time() - T0)
     ok = a.no_gate or fin['z'] > a.gate_sigma
     json.dump(dict(args=vars(a), curve=curve, health=H, final=fin), open(os.path.join(a.out, 'refit.json'), 'w'), indent=1, default=float)
-    P(f'REFIT_DONE verdict {"PASS" if ok else "NO_RISE"} final held-out R {Rh:.6f} +- {Rh_e:.1e} ({fin["z"]:+.1f} sigma, gate {a.gate_sigma}) '
+    P(f'REFIT_DONE verdict {"PASS" if ok else "NO_RISE"} held-out R at selected step {best} {Rh:.6f} +- {Rh_e:.1e} ({fin["z"]:+.1f} sigma, gate {a.gate_sigma}) '
       f'steps {fin["steps_done"]} {fin["sec"]:.0f}s')
     sys.exit(0 if ok else 4)

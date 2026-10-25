@@ -45,3 +45,13 @@
   The lead may prefer fewer steps (STEPS_F) before submitting; the gate's held-out R reads ~2 sigma high (4x4 caveat above).
 - Decision after G: python3 l8/l8_decide.py /scratch/a/A.Otaifi/l8/prod/g1 (L8_VERDICT GAIN | NO_GAIN | LOSS | UNDECIDED | NOT_QUOTABLE vs gfmc_m13b/prod/rb8).
 - Not checked: the production F step time with 164k walkers (bounded, not measured); l8_decide.py runs only on real chains (syntax-checked only).
+
+## Revision 2026-10-25 22:10 (lead review): chain-split held-out, early stopping, kill-on-invalid-dep, g_0 = -0.498946 +- 4.6e-6
+- l8_refit.py: --holdout_chain 1 (default; train on the first chain, hold out the whole second; --holdout_chain -1 = old split), params saved every
+  step, params_final.npz = step with the largest held-out R (--select best; refit.json final.selected_step), held-out R there re-evaluated with a fresh
+  VMC set and gated (exit codes unchanged).  launch_l8.sh: V and G carry --kill-on-invalid-dep=yes (flag accepted by sbatch --test-only on Paderborn).
+  l8_decide.py: g_0 asserted = -0.498946 with error max(inverse-variance, quotable) = 4.6e-6; thresholds GAIN < -3, |z| <= 2 NO_GAIN, LOSS > +3 sigma.
+- 4x4 rerun (/scratch/a/A.Otaifi/l8/check4x4/run3.log, 20 steps, train c1 / held-out c2; ALL PASS): selected step 16 of 20 (curve turned down after it);
+  held-out R re-evaluated there 1.0068(20) vs exact 1.00450: z +1.15.  The in-curve value at the selected step was 1.0126(36): picking the maximum of the
+  noisy curve reads ~+2 sigma high; the re-evaluation removes most of it.  Exact R per step: rises to 1.0050 at step 5, plateau 1.0039-1.0048 to step 16,
+  1.0027-1.0033 at steps 17-20.  Broken a/|g|: exact R 0.8807.

@@ -83,9 +83,10 @@ class Model:
 
 
 # ----------------------------------------------------------------------------------------------- walkers
-def load_dumps(dirs, holdout=0.2, first_block=None):
+def load_dumps(dirs, holdout=0.2, first_block=None, holdout_chain=None):
     """dirs: run dirs with dump/blk_*.npz (one per chain).  Returns dict of arrays over all walkers: X (n, N) float64, pw (n,) (block-normalised
-    weights / blocks in the same set), chain, block, held (bool: last `holdout` fraction of each chain's blocks)."""
+    weights / blocks in the same set), chain, block, held (bool).  holdout_chain = c (index in dirs): every block of chain c is held out and the
+    other chains are the training set (independent chains: no correlation between train and held-out); None: last `holdout` fraction of each chain."""
     Xs, pws, ch, bl, ho, EL = [], [], [], [], [], []
     for c, d in enumerate(dirs):
         files = sorted(glob.glob(os.path.join(d, 'dump', 'blk_*.npz')))
@@ -94,6 +95,8 @@ def load_dumps(dirs, holdout=0.2, first_block=None):
         if not files:
             raise FileNotFoundError(f'no dump files in {d}/dump')
         nb = len(files); nho = int(round(holdout * nb)); cut = nb - nho
+        if holdout_chain is not None:
+            cut = 0 if c == holdout_chain else nb
         for k, f in enumerate(files):
             z = np.load(f)
             lw = z['logw']; w = np.exp(lw - lw.max()); p = w / w.sum()

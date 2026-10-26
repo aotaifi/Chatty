@@ -34,8 +34,9 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 (personal, 30 H100-h/month) exhausted for October (29.6 used). cont/lowcont estimates say start ~Nov 7 but jobs do run.
 
 ## Angles
-- ansatz-pioneer: CLOSED 2026-10-24 (handoffs/2026-10-24-ansatz-pioneer.md; C2, C3, C5, C6 killed or inconclusive, numbers in
-  delta_today.md 2026-10-23/24). Its question to the PI (what counts as a breakthrough) is unanswered.
+- ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit
+  tax inside the loop, gate tax_2 < 0.82e-6 at 6x6); R1 4x6 PASS, R2 pre-registered (commit 2fa6644). The L8 identity (any
+  class at its own energy optimum has zero fidelity gradient toward its one-hop state) bears on that bar; not sent, PI's call.
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)

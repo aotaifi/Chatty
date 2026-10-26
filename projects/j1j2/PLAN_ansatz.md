@@ -402,6 +402,9 @@ K_k, FN; baseline tax_1 5.107e-6, tax_2 1.657e-6, gate 0.82e-6). Code ansatz/cod
   (<= 5 A40-h): PASS tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; KILL tax_B(2) >= 1.657e-6 (inconclusive only if held-out
   loss falls > 1% per 10 steps over the last 50); fit rms by decade beside the rebuilt state's log error by decade.
 - Step 3 (PASS only): rebuild cost on 8x8 walkers. Ceiling for the whole takeover: 8 A40-h, no H100.
+- Step 1 result (17510897, run_17510897/cx_gtax.json; read by the lead): CONTINUE. Exact-store tax_B1 / tax_B2: t 0.12
+  3.92e-5 / 1.47e-5; 0.16 1.96e-6 / 9.12e-7; 0.20 2.39e-8 / 2.38e-8; 0.24 3.6e-13 / 1.3e-12. t_fit 0.20 (smallest t passing
+  both bars). All controls pass and can fail. Exact storage is not the bottleneck: only the fit can kill it now.
 - Amendment after Astra round 3 (GO WITH CHANGES, before any run; adopted): fit-arm t = the SMALLEST t whose exact-store
   tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6 (else lowest tax_B(2); W_M condition dropped); same-fit sign(Phi_t) readout as a
   diagnostic only; actual-fit-error control: tax of phi_0 e^{eps}, eps = log|Phi_fit| - log|Phi_t| (no decoder), decade bins
@@ -450,7 +453,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| 17510897 C2-L-exp step 1 (exact store) | theorie cip A40, ansatz_runs/c2le_6x6/run_17510897 | KILL (tax_B2 >= 1.657e-6 at every t): close, memo, tell project lead; CONTINUE: set t_fixed = t_fit in spec_c2le1_rbm.json, read launcher, submit c2le1_rbm.sbatch; control failure: stop, diagnose |
+| 17516512 C2-L-exp step 2 (positive RBM fit at t 0.20) | theorie cip A40, ansatz_runs/c2le_6x6/run_17516512 | PASS: step 3 (8x8 rebuild cost, design first); KILL: close, memo, tell project lead; INCONCLUSIVE: read side-by-side (storage vs decoder) and decide; control failure: stop, diagnose |
 
 ## Dead ends
 - C2-L store the J2 pre-image in the FN loop (C2-L-1 KILL, theorie A40 17468620/21, ansatz_runs/c2l_6x6/run_*,

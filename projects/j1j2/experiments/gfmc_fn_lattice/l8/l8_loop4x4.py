@@ -50,9 +50,35 @@ p0 = {k: jnp.asarray(z0[k]) for k in KEYS}
 flat_g30, unrav = ravel_pytree(p0); flat_g30 = np.asarray(flat_g30); P = flat_g30.size
 fns = make_fns(lat, jnp.float64, True)
 Xj = jnp.asarray(X.astype(np.float64))
-lpv = jax.vmap(lambda fl, s: fns['logpsi'](unrav(fl), s), in_axes=(None, 0))
+lpv = jax.vmap(lambda fl, s: fns['logpsi'](unrav(fl), s), in_axes=(None, 0))   # brute force (rbmpp_lib), the reference
+from rbmpp_lib import logcosh, lse_c
+# ---- fast path: images, up/down site lists and the parity are parameter independent -> precomputed once; the part of the ansatz
+#      outside the class (MASK) is frozen at the start parameters and cached per image.  Checked against lpv below (FASTCHK).
+_IMG = np.asarray(lat.IMG); _FL = np.asarray(lat.FL)
+ZI = _FL[None, :, None] * X[:, _IMG].astype(np.float64)                     # (Dd, nI, N) images z_g of every configuration
+_ord = np.argsort(-ZI, axis=2, kind='stable'); UI = _ord[..., :N // 2]; DI = _ord[..., N // 2:]
+_up = (ZI > 0).astype(np.int64); _dn = 1 - _up; INVP = np.sum(_up * (np.cumsum(_dn, axis=2) - _dn), axis=2) % 2
+# psi_P is invariant under the projection group (translations x spin flip, trivial characters): evaluate it on one representative per
+# orbit and broadcast (REPOF).  The orbit of x = the set of its images; representative = smallest image code.  Checked by FASTCHK.
+_codes = np.sum(((ZI > 0).astype(np.int64)) << np.arange(N), axis=2); _mins = _codes.min(axis=1)
+REPS, REPOF = np.unique(_mins, return_inverse=True); _first = np.array([np.nonzero(_mins == m)[0][0] for m in REPS])
+ZI, UI, DI, INVP = ZI[_first], UI[_first], DI[_first], INVP[_first]; REPOFj = jnp.asarray(REPOF.ravel())
+ZIj = jnp.asarray(ZI); UIj = jnp.asarray(UI); DIj = jnp.asarray(DI); INVPj = jnp.asarray(INVP)
+_MASKSET = set(os.environ.get('MASK', 'f').split(','))
+def _pp(f):
+    F = f[UIj[..., :, None], DIj[..., None, :]]; sg, ld = jnp.linalg.slogdet(F)
+    return ld + 1j * jnp.pi * ((jnp.where(sg < 0, 1, 0) + INVPj) % 2)
+def _rbm(b, W): return jnp.sum(logcosh(b + ZIj.astype(jnp.complex128) @ W), axis=-1)
+_p0 = unrav(jnp.asarray(flat_g30))
+_PP0 = None if 'f' in _MASKSET else _pp(_p0['f'])
+_RB0 = _rbm(_p0['bre'] + 1j * _p0['bim'], _p0['Wre'] + 1j * _p0['Wim']) if 'f' in _MASKSET else None
+def lp_fast(fl):
+    p = unrav(fl)
+    a = _pp(p['f']) if 'f' in _MASKSET else _PP0
+    r = _RB0 if 'f' in _MASKSET else _rbm(p['bre'] + 1j * p['bim'], p['Wre'] + 1j * p['Wim'])
+    return lse_c(a + r)[REPOFj]
 def psi_all(fl):
-    l = lpv(fl, Xj); return jnp.exp(l - jnp.max(l.real))
+    l = lp_fast(fl); return jnp.exp(l - jnp.max(l.real))
 def vvec(fl, w): return jnp.real(w * psi_all(fl))
 def Ev(fl, w):
     v = vvec(fl, w); return v @ Hmv(v) / (v @ v)
@@ -134,8 +160,16 @@ def fid(v, t):
 def jd(o): return json.dumps(o, indent=1, default=lambda a: a.tolist() if isinstance(a, np.ndarray) else float(a))
 
 
+def fastchk(fl, tag):
+    a = np.asarray(lp_fast(jnp.asarray(fl))); b = np.asarray(lpv(jnp.asarray(fl), Xj))
+    d = np.max(np.abs(np.exp(a - a.real.max()) - np.exp(b - b.real.max()))); log(f'FASTCHK {tag}: max |psi_fast - psi_brute| {d:.2e}'); return d
+_d0 = fastchk(flat_g30, 'start params')
+_xp = flat_g30.copy(); _IDXc = np.concatenate([np.arange(*_off[k]) for k in os.environ.get('MASK', 'f').split(',')])
+_xp[_IDXc] += 1e-2 * np.random.default_rng(1).standard_normal(_IDXc.size); _d1 = fastchk(_xp, 'class params perturbed')
+_xq = flat_g30.copy(); _oth = np.setdiff1d(np.arange(P), _IDXc); _xq[_oth] += 1e-2; _d2 = fastchk(_xq, 'BROKEN: frozen params perturbed (must differ)')
+if not (_d0 < 1e-10 and _d1 < 1e-10 and _d2 > 1e-6): log('FASTCHK FAILED; exit 4'); sys.exit(4)
 w30 = best_w(flat_g30)
-log(f'class {MASK} params {len(IDX)} of {P}; E0/N {E0 / N:.10f}; w30 {w30}; jax {jax.__version__} devices {jax.devices()}')
+log(f'orbits {len(REPS)} of {Dd} configurations'); log(f'class {MASK} params {len(IDX)} of {P}; E0/N {E0 / N:.10f}; w30 {w30}; jax {jax.__version__} devices {jax.devices()}')
 
 if STAGE == 'time':
     t = time.time(); Ev_vg(flat_g30, w30); log(f'first eval (compile) {time.time() - t:.1f}s')

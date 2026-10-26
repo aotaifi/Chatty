@@ -214,3 +214,62 @@ Its ratio also overlays without independently identifiable local defects. Two sy
    [Derived] Changing the decoder also changes the optimal stored target: \(e^{tH_{J2}}\psi\) is the inverse image of the exponential, not of your nonlinear product.
 
 **[Opinion] The single point where you are most likely wrong:** treating the ratio-curve overlay as justification for independently multiplying local sign events. The omitted correlated exchanges are precisely the assumption R3 must test.
+---
+# Debate round 2 (cj-ab59faf861ee), 2026-10-26
+
+[Opinion] Close the angle; I would spend no further compute.  
+[Checked] R3 delivers no PASS, and its favorable 4×4 amplitude results collapse at 4×6.  
+[Derived] This rejects the tested implementations—not every pre-image representation or local evaluator.
+
+**1. R3 verdict and cause**
+
+[Opinion] Agree: \(t=0.16\) is KILL; \(t=0.20\) remains formally INCONCLUSIVE but offers insufficient reason to continue.
+
+[Checked] Your quoted energies use the appropriate solver outputs. However, [r3_local.py](/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/ansatz/code/r3_local.py) assigns the generic `E_FN_site` field to the truncated solve even when that solve fails: at 4×6, those residuals range from 0.45 to 24. The usable numbers are `E_FN_site_raw_fn_energy`, with logged residuals below \(8.1\times10^{-11}\).
+
+[Derived] Truncation does not plausibly rescue the 4×4 kill: \(\|H_{\rm off}\|\le24\), and discarded configurations have FN potentials above \(10^6\). A conservative block-matrix bound limits their energy lowering to \(3.7\times10^{-5}\)/site, versus a \(6.1\times10^{-3}\)/site margin above the kill threshold.
+
+[Derived] The denominator mechanism is real:
+\[
+\psi_L=f^{1-M}\prod_b(G_bf).
+\]
+A small denominator is reused across many factors. The approximation also discards correlated multiple-flip responses, including between disjoint bonds; overlapping-bond noncommutation is not the whole cause.
+
+[Opinion] The reversal between J1/J2 and \(t=0.16/0.20\) looks like sensitivity to where pre-image amplitudes approach zero, not robust physics. [Checked] Neither favorable 4×4 case meets the \(0.1\times\) Marshall-FN pass threshold.
+
+[Derived] Low overlap and high variational energy establish failed reconstruction; they do not alone establish unusable importance sampling. [Opinion] Rejecting these guides is reasonable, but “sampling efficiency was measured and failed” would overstate R3.
+
+**2. Role under the add-on refocus**
+
+[Checked] There is a provenance correction: the [C2-T1 JSON](/scratch/a/A.Otaifi/ansatz_runs/small/c2t1_4x4.json) tests Marshall-signed \(|\psi_0|\), a Marshall-FN state, and the ground state with J2 hopping removed—not \(|\mathrm{ViT}|\) and \(|\mathrm{PP}|\). Full-H gives approximately 4.45×, 5.55× and 1.03× smaller FN errors, respectively.
+
+[Derived] These results do not prove full-H dominance at equal cost for arbitrary \(K\): partial-H and full-H Krylov spaces differ. [Opinion] Nevertheless, R1 supplies no positive evidence that partial-H hops will win, and the available comparison points the other way.
+
+[Derived] The zero-gradient identity concerns refitting a **fixed one-hop target into the same optimized network family**. It does not eliminate Lanczos improvement. For normalized \(\psi\), let \(r=(H-E)\psi\); then
+\[
+\left.\frac{dE[\psi+\alpha r]}{d\alpha}\right|_{\alpha=0}
+=2\,\mathrm{Var}_\psi(H).
+\]
+Thus a negative step lowers energy whenever the variance is nonzero, even when every network-parameter gradient vanishes.
+
+[Opinion] Start from the best energy-optimized, callable network. The identity selects neither a positive base nor an undertrained base; undertraining merely restores an ordinary optimization gradient.
+
+**3. Close or continue**
+
+[Opinion] Agree with closure and no additional test. A 6×6 oracle point could refine the physics/scaling observation, but would not establish a learnable pre-image, a competitive evaluator, or an advantage over full-H hops. Retire the refit-tax gate under the project’s changed objective; do not retrospectively convert its failures into successes.
+
+**4. My failure / hint / insight sorting**
+
+- [Checked] **Failure—J2 specificity:** matched-fidelity advantages of approximately 1.2–2.2× fail the registered specificity test. [Opinion] Agree with dropping the privileged-J2 physics interpretation.
+
+- [Checked] **Failure—tested decoders:** additive threshold conditioning grows from \((3,4]\) to \((5,6]\); the product gives 1.34×/1.80× Marshall-FN at \(t=0.16\). [Derived] **Disagreement:** these reject two constructions, not all local reconstruction.
+
+- [Checked] **Unresolved scaling:** \(C=3.376\rightarrow4.981\), while \(C/N=0.211\rightarrow0.208\). [Derived] Two points also fit \(N^{0.96}\); “\(e^{0.067N}\)” is not an established asymptotic law.
+
+- [Checked] **Hint—suppression scale:** \(t^*\in(0.14,0.16]\) at both sizes. [Derived] Both lattices have width four; this establishes neither two-dimensional size independence nor independent local defects.
+
+- [Checked] **Insight—oracle reconstruction:** dropping the pre-image residual sign gives FN error \(1.45\times10^{-5}\)/site versus \(6.95\times10^{-3}\), about 478× smaller. [Derived] **Disagreement:** this supports approximate sign recovery with oracle magnitudes, not “fully carried” at finite \(t\), nor “difficulty entirely in evaluation.” Obtaining and learning those magnitudes remain separate problems.
+
+- [Checked] **Limited robustness hint:** smooth Jastrow perturbations give amplification \(1.15\pm0.45\rightarrow1.19\pm0.32\). [Derived] That is evidence about those perturbations, not network fitting errors near nodes.
+
+[Opinion] REMAINING DISAGREEMENT: none that changes a decision

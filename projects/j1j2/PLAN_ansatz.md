@@ -383,7 +383,13 @@ overlap | E_var/site | E_FN/site (Marshall-FN 7.27e-3 / 6.95e-3): 4x4 J2 t.16 2.
 J1 t.16 2.8e-6 | 0.418 | 9.4e-3; J1 t.20 1.8e-8 | 0.543 | 3.6e-3. Verdict: J2 t 0.16 KILL (1.34x / 1.80x Marshall-FN); t 0.20
 INCONCLUSIVE by the rule (0.385x / 0.36x) but amplitudes destroyed at 4x6 (overlap 2e-7), unusable as a guide. Cause: the
 product divides by near-zeros of |Phi| (g_b down to -928; |psi_L| spans 6e-47..0.125). Checks pass and can fail.
-Debate round 2 with Astra running (cj-ab59faf861ee): R3 verdict, role under the no-refit refocus, close or one more test.
+Debate round 2 (cj-ab59faf861ee): agrees with the R3 verdict and with closing; no remaining disagreement that changes a decision.
+Its corrections, accepted: R3 rejects two decoders (additive, independent-bond product), not every local reconstruction; the
+oracle-magnitude result is approximate sign recovery (478x below Marshall-FN), not "fully carried"; learning the magnitudes
+is a separate open problem; C ~ e^{0.067N} vs ~N undecided; my round-2 prompt misnamed the C2-T1 bases (they were
+|psi0|-Marshall, Marshall-FN, no-J2-hop GS, as in Dead ends; full-H won 4.45x / 5.55x / 1.03x). Under the no-refit refocus it
+sees no role for partial-H hops (no positive evidence) and recommends retiring the refit-tax gate.
+Recommendation to the PI: close the angle, no further compute; memo update sorted failure / hint / insight.
 
 Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM
@@ -484,5 +490,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): The sign-free pre-image is benign to store, but rebuilding the frustrated state from it by sampling costs exponentially in system size; a cheap local rebuild is being tested.
-- NEXT (open, medium): If the local rebuild reproduces the ground state at two sizes, test it at 6x6 and inside the loop; otherwise close this route with its measured cost.
+- STATUS (in progress, medium): A short filter turns the frustrated ground state into a nearly sign-free one, but no cheap way to rebuild it at a configuration was found; recommending to close the angle.
+- NEXT (open, high): PI to decide whether to close the ansatz angle (recommended, with an outside reviewer agreeing) and retire its loop-refit bar.

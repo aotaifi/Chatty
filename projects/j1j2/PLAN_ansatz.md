@@ -41,6 +41,19 @@ They are the only lattice-symmetric product rules on the square lattice, and s_N
 sits in an odd number of the three sets). Frustration = no rule cures all bonds. Exact data (T0-phys, t0phys_17410698):
 the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its J1 bonds violate Marshall.
 
+## Step back 2026-10-26 (trigger: second failed version of the stored pre-image: C2-L additive by fit amplification, exp-J2 by R2 (c))
+1. Verdict: switch the evaluator, not the stored object. R2 puts the whole difficulty in one place: evaluating exp(-t H_J2)
+   at a walker. The stored pre-image itself is benign (fit errors amplified locally, A 1.15 -> 1.19; residual sign
+   droppable at 1.45e-5/site vs Marshall-FN 6.95e-3 at 4x6), but its sampled reconstruction costs C = e^{0.067 N} (exponential by rule).
+2. Thought: this is released-node over a fixed short time (sign problem ~ e^{0.42 N t}); the O(N) way out is the one the
+   FN loop already uses for its hops: a deterministic local evaluator. exp(-t h_b) on one 2-site J2 bond is exact and local,
+   so psi_L(y) = Phi~(y) prod_b g_b(y) (independent-bond factors) costs O(N) amplitude ratios with no sign problem; its sign is a
+   product of local sign events, which is what the R1 overlay (dilute local defects) predicts. Same form as C2-loc, which
+   was only ever tried on wrong bases (|ViT|, |PP|, no-J2-hop GS), never on the true pre-image.
+3. Cheapest next test: R3, the local evaluator on the exact pre-image at 4x4 and 4x6, CPU < 1 h on ws1 (below).
+Passed over: the 6x6 GPU run (waits on R3; it would only add a third ln C/N point); p-tVMC-style refits of exp(-t H_J2)
+(they must store the final sign again: circular); Taylor truncation of exp(-t H_J2) (extensive generator, no convergence).
+
 ## Step back 2026-10-24 early (trigger: second failed version of C6; six candidates killed, none passed)
 1. Verdict: reframe toward what the data say, then finish. Static structure (global rules, partons + visons, local
    frames, unfrustrated parents, stoquastic similarities) fails every time; the sign of the frustrated state is made by
@@ -321,6 +334,32 @@ H~ = S_X H_J2 S_X (check: every off-diagonal <= 0; s_X = (-1)^{n_up on x odd}).
     vs Marshall-FN (s_N |psi0|) at both sizes. Continue to a loop-native C2-L only if, at some t, E_FN(psi_rec) <= 0.3 x
     Marshall-FN at both sizes AND (c), (d) give the bounded/local signal. Otherwise: write the ranked memo update.
 
+#### R2 result (ws1 CPU, /scratch/a/A.Otaifi/ansatz_runs/r2/r2_4x4.json, r2_4x6.json, code ansatz/code/r2_recon.py; raw JSON read by the lead)
+(a) Astra's 4x4 numbers reproduced, all within 0.2%. At t = 0.16 (4x4 / 4x6):
+| quantity | 4x4 | 4x6 | rule | verdict |
+|---|---|---|---|---|
+| W_M(J1)/W_M(J2) at matched fidelity, t 0.12-0.20 | 1.20-2.18 | 1.27-2.06 (0.39 at t 0.20) | >= 3 both | J2-specific reading FAILS |
+| ln C / N (C = E[eta^-2] = sign-cost of sampled reconstruction) | 0.0760 | 0.0669 | ratio 0.88 >= 0.8 | EXPONENTIAL |
+| ln C | 1.217 | 1.606 | ratio 1.32 > 1.3 | not bounded |
+| A, eps 0.01, 5 draws (mean +- sd) | 1.15 +- 0.45 | 1.19 +- 0.32 | ratio 1.03 <= 1.2 | LOCAL |
+| E_FN(psi_rec)/site, residual sign dropped | 6.6e-6 | 1.45e-5 (2.3e-7 at t 0.20) | <= 0.3 x Marshall-FN (7.3e-3, 6.95e-3) | PASS |
+Rule: continue to a loop-native C2-L only if (c) bounded and (d) local and (e) pass: (c) fails, so NOT continued as designed.
+Checks: s_X frame stoquastic (max off-diag -0.25; s_N +0.25 fails); round trip 7e-17 (wrong sign 0.2-0.64); FN(psi0) - E0 -3e-13.
+4x6 FN uses LOBPCG (eigsh stalled; matched eigsh to 1e-12 at 4x4). Caveats: Jastrow draws not paired across sizes (5 vs
+11 classes); 4x4 is exactly Marshall from t 0.18. Extrapolated sampled-reconstruction cost C = e^{0.067 N}: 72 (8x8), 1.5e4 (12x12), 2.6e9 (18x18).
+
+### R3 (2026-10-26, before any run): an O(N) local evaluator of psi0 from the stored pre-image (exact 4x4 + 4x6, CPU ws1, < 1 h; extends r2_recon.py)
+Stored: Phi~ = s_N |Phi_t| (residual sign dropped), t in {0.16, 0.20}. One-bond factor g_b(y) = (exp(-t h_b) Phi~)(y) / Phi~(y)
+(exact 2-site action, h_b = J2 S_i.S_j). L1: psi_L(y) = Phi~(y) prod_{b in J2} g_b(y). Cost: 2N ratio evaluations per amplitude.
+Control: the same construction for the J1 pre-image Phi_J1 = exp(-u H_J1) psi0 at matched fidelity, factors exp(+u h_b) over J1 bonds.
+Measured: sign-error weight sum_{sign psi_L != sign psi0} |psi0|^2; E_var and own-sign E_FN per site; references: exact
+reconstruction E_FN (R2 (e)) and Marshall-FN. Check that can fail: with a single bond in the product (all others g = 1) on a
+Phi~ built as exp(+t h_b) psi0 for that one bond, L1 must return psi0 to 1e-12 (and not with t of the wrong sign).
+- Pass: E_FN(psi_L) <= 0.1 x Marshall-FN at both sizes, and E_FN/site grows < 1.5x from 4x4 to 4x6. Pass makes psi_L =
+  (positive network) x (local J2 factors) the loop-native candidate: then 6x6 (GPU <= 0.5 h) and the fit-based loop tax.
+- Kill: E_FN(psi_L) >= 0.5 x Marshall-FN at both sizes: the reconstruction is non-local, the stored pre-image closes at
+  "mild exponential, C = e^{0.067 N}". Between: inconclusive, read the sign-error weight by decade.
+
 Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM
 overlap; (3) on PASS at 6x6, pre-register the loop-native C2-L: store |Phi_t| with the loop carrying the residual
@@ -420,5 +459,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Undoing the J2 exchange locally needs the same small strength at 4x4 and 4x6 (pre-registered test passed); an outside second opinion is under way before the 6x6 check.
-- NEXT (open, medium): Confirm the size-independent strength at 6x6, then test it inside the loop with the loop carrying the leftover sign.
+- STATUS (in progress, medium): The sign-free pre-image is benign to store, but rebuilding the frustrated state from it by sampling costs exponentially in system size; a cheap local rebuild is being tested.
+- NEXT (open, medium): If the local rebuild reproduces the ground state at two sizes, test it at 6x6 and inside the loop; otherwise close this route with its measured cost.

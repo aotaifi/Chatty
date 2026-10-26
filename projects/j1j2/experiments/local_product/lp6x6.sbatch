@@ -4,8 +4,8 @@
 #SBATCH --gres=gpu:a40-24gb:1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=40G
-#SBATCH --time=04:00:00
+#SBATCH --mem=16G
+#SBATCH --time=03:00:00
 #SBATCH --no-requeue
 #SBATCH --output=/scratch/a/A.Otaifi/local_product/stageA/6x6/slurm-%j.out
 # LP Stage A at 6x6 (experiments/local_product/PREREG.md + Amendment 1). Exact sector, A40 24 GB slice, jax 0.8.2 venv.

@@ -47,7 +47,7 @@ if res['psi_check']['rel'] > 1e-8: log('GUIDE MISMATCH; exit 3'); sys.exit(3)
 # ------------------------------------------------------------------ neighbour table -> OFF (D, NB) float32, VALID (D, NB) bool
 BI = jnp.asarray(SS.BI); BJ = jnp.asarray(SS.BJ); JB = jnp.asarray(SS.JB); MASKS = jnp.asarray(SS.MASKS)
 TYPE = np.asarray(SS.JB < 0.75).astype(int); TYPEj = jnp.asarray(TYPE)
-SUB = 4096; RCH = 1 << 19
+SUB = 4096; RCH = 1 << 18
 
 
 @jax.jit
@@ -139,28 +139,28 @@ for k, (r0, r1) in enumerate(CH):
     et += np.array([float(jnp.sum(jnp.where(TYPEj == t, pe, 0.0))) for t in (0, 1)])
 ETP = jnp.asarray(et / np.array([np.sum(TYPE == 0), np.sum(TYPE == 1)]))
 NEV = [0]
-GRID = np.concatenate([-np.logspace(-0.5, -3.5, 7), [0.0], np.logspace(-3.5, -0.5, 7)])
+GRID = np.concatenate([-np.logspace(-0.5, -9, 18), [0.0], np.logspace(-9, -0.5, 18)])   # job 17512344: every |a| >= 3e-4 was above psi
 if os.environ.get('LP_GRID'): GRID = np.array(json.loads(os.environ['LP_GRID']))
 
 
-def opt2(f, tag):
-    t0 = time.time(); best = (np.inf, None)
-    for a in GRID:
-        for b in GRID:
-            e = energy(f(a, b)); best = min(best, (e, (a, b)), key=lambda q: q[0])
-    log(f'{tag}: grid ({GRID.size}^2) min {dsite(best[0]):.6e} at {best[1]}  {time.time() - t0:.0f}s')
-    z0 = np.array(best[1]); hh = np.maximum(1e-3, 0.3 * np.abs(z0))
+def opt2(f, tag, z0):
+    """Nelder-Mead from z0 (the alpha_J1 = alpha_J2 optimum), simplex of half its size; keeps the start if NM does not beat it."""
+    t0 = time.time(); z0 = np.array(z0, float); e0 = energy(f(*z0)); hh = np.maximum(1e-10, 0.5 * np.abs(z0))
     r = so.minimize(lambda zz: energy(f(*zz)), z0, method='Nelder-Mead',
-                    options=dict(initial_simplex=np.array([z0, z0 + [hh[0], 0], z0 + [0, hh[1]]]), xatol=1e-6, fatol=1e-12, maxiter=300))
-    log(f'{tag}: NM {dsite(r.fun):.8e} at {r.x} ({r.nfev} evals)  {time.time() - t0:.0f}s')
-    return r.x
+                    options=dict(initial_simplex=np.array([z0, z0 + [hh[0], 0], z0 + [0, hh[1]]]), xatol=1e-12, fatol=1e-13, maxiter=200))
+    x = r.x if r.fun < e0 else z0
+    log(f'{tag}: start {z0} {dsite(e0):.10e}; NM {dsite(r.fun):.10e} at {r.x} ({r.nfev} evals) -> {x}  {time.time() - t0:.0f}s')
+    return x
 
 
 def opt1(f, tag):
+    """signed log grid (|a| 1e-9 .. 1e-2 and 0), then bounded refinement between the grid neighbours; keeps the grid point if better."""
     t0 = time.time(); es = [energy(f(a)) for a in GRID]; i = int(np.argmin(es)); lo, hi = GRID[max(i - 1, 0)], GRID[min(i + 1, GRID.size - 1)]
-    r = so.minimize_scalar(lambda a: energy(f(a)), bounds=(lo, hi), method='bounded', options=dict(xatol=1e-8))
-    log(f'{tag}: grid min {dsite(min(es)):.6e} at {GRID[i]:.3e}; refined {dsite(r.fun):.8e} at {r.x:.6e}  {time.time() - t0:.0f}s')
-    return float(r.x)
+    r = so.minimize_scalar(lambda a: energy(f(a)), bounds=(lo, hi), method='bounded', options=dict(xatol=1e-12))
+    x = float(r.x) if r.fun < es[i] else float(GRID[i])
+    log(f'{tag}: grid min {dsite(es[i]):.10e} at {GRID[i]:.3e} (grid E-E0: ' + ' '.join(f'{a:.0e}:{dsite(e):.3e}' for a, e in zip(GRID, es)) +
+        f'); refined {dsite(r.fun):.10e} at {r.x:.6e} -> {x:.6e}  {time.time() - t0:.0f}s')
+    return x
 
 
 S = {}; SG = {}
@@ -171,7 +171,9 @@ def rec(name, ls, **kw):
     fl = ls[1] != s
     d = dict(dEvmc=dsite(E), dEFN=dsite(efn), sign_flip_weight=float(jnp.sum(jnp.where(fl, p, 0.0))), fn_it=info['lobpcg_it'], fn_res=info['res'],
              fn_sec=info['sec'], **kw)
-    S[name] = d; SG[name] = ls[1]; res['states'] = S; dump()
+    S[name] = d
+    if name in ('G', 'LP'): SG[name] = ls[1]
+    res['states'] = S; dump()
     log(f'{name:14s} E_VMC-E0 {d["dEvmc"]:.6e}  E_FN-E0 {d["dEFN"]:.6e} /site  flip weight(psi^2) {d["sign_flip_weight"]:.3e}  '
         f'(lobpcg {info["lobpcg_it"]}, {info["sec"]:.0f}s) {kw}')
     return d
@@ -188,13 +190,13 @@ res['G_vs_table_A'] = dict(dEvmc=S['G']['dEvmc'], ref_var=TA['lanczos'][1]['dE_s
                            diff_FN=S['G']['dEFN'] - TA['lanczos'][1]['dE_FN_site']); dump()
 log(f'G vs table_A.json: E_FN {S["G"]["dEFN"]:.8e} vs {TA["lanczos"][1]["dE_FN_site"]:.8e} (diff {res["G_vs_table_A"]["diff_FN"]:.2e}); '
     f'E_var {S["G"]["dEvmc"]:.8e} vs {TA["lanczos"][1]["dE_site"]:.8e}')
-xa = opt2(lambda a, b: build('LP', (a, b)), 'LP'); rec('LP', build('LP', xa), alpha_J1=float(xa[0]), alpha_J2=float(xa[1]))
 ae = opt1(lambda a: build('LP', (a, a)), 'LP alpha_J1=alpha_J2'); rec('LPeq', build('LP', (ae, ae)), alpha=ae)
+xa = opt2(lambda a, b: build('LP', (a, b)), 'LP', (ae, ae)); rec('LP', build('LP', xa), alpha_J1=float(xa[0]), alpha_J2=float(xa[1]))
 asi = opt1(lambda a: build(INCj, a), 'LPs'); rec('LPs', build(INCj, asi), alpha=asi)
 apl = opt1(lambda a: build(PLQj, a), 'P_plaq'); rec('Pplaq', build(PLQj, apl), alpha=apl)
 # crossed sign/amplitude diagnostics
 lsG = sector_ls(v + alG * u1); lsL = build('LP', xa)
-rec('absG_sgnLP', (lsG[0], lsL[1])); rec('absLP_sgnG', (lsL[0], lsG[1]))
+rec('absG_sgnLP', (lsG[0], lsL[1])); rec('absLP_sgnG', (lsL[0], lsG[1])); del lsG
 # ------------------------------------------------------------------ controls
 C = res['controls'] = {}
 l0, s0_ = build('LP', (0.0, 0.0)); lb, sb = build('LP', (1e-6, 1e-6))
@@ -205,7 +207,7 @@ rec('LP_alpha1e-6_BROKEN', (lb, sb)); C['alpha0']['BROKEN_EFN_minus_psi'] = S['L
 del l0, s0_, lb, sb
 log('CONTROL alpha=0', json.dumps(C['alpha0']))
 fp = lambda a, b: build('LP', (a, b), perm=True)
-xp = opt2(fp, 'LP-perm (BROKEN: densities of an unrelated configuration)'); rec('LPperm_BROKEN', fp(*xp), alpha_J1=float(xp[0]), alpha_J2=float(xp[1]))
+ap = opt1(lambda a: fp(a, a), 'LP-perm diagonal'); xp = opt2(fp, 'LP-perm (BROKEN: densities of an unrelated configuration)', (ap, ap)); rec('LPperm_BROKEN', fp(*xp), alpha_J1=float(xp[0]), alpha_J2=float(xp[1]))
 au = opt1(unif, 'LP-unif (no locality)'); rec('LPunif', unif(au), alpha=au)
 gG = S['psi']['dEFN'] - S['G']['dEFN']
 C['locality'] = {k: dict(gain=S['psi']['dEFN'] - S[k]['dEFN'], gain_over_G=(S['psi']['dEFN'] - S[k]['dEFN']) / gG) for k in ('LP', 'LPeq', 'LPs', 'Pplaq', 'LPperm_BROKEN', 'LPunif')}

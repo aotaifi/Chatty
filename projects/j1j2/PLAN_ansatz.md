@@ -450,6 +450,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
+| 17510897 C2-L-exp step 1 (exact store) | theorie cip A40, ansatz_runs/c2le_6x6/run_17510897 | KILL (tax_B2 >= 1.657e-6 at every t): close, memo, tell project lead; CONTINUE: set t_fixed = t_fit in spec_c2le1_rbm.json, read launcher, submit c2le1_rbm.sbatch; control failure: stop, diagnose |
 
 ## Dead ends
 - C2-L store the J2 pre-image in the FN loop (C2-L-1 KILL, theorie A40 17468620/21, ansatz_runs/c2l_6x6/run_*,

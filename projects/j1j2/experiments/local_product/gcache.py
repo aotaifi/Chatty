@@ -258,6 +258,7 @@ def run_correct(out, L, R, C, ncfg, seed, res):
         st['rG'].append(rel(rG, ref['rG'])[a].max()); st['rG_b'].append(rel(rGb, ref['rG'])[a].max())
         st['ELG'].append(float(rel(ELG, ref['ELG']))); st['ELG_b'].append(float(rel(ELGb, ref['ELG'])))
         st['ELy'].append(rel(ELy, ref['ELy']).max()); st['EL'].append(float(rel(EL[k], ref['EL'])))
+        if k % 10 == 9 or L >= 16: log(out, f'correct L={L} config {k + 1}/{ncfg}: rG rel {st["rG"][-1]:.2e} (broken {st["rG_b"][-1]:.2e}), E_LG rel {st["ELG"][-1]:.2e} (broken {st["ELG_b"][-1]:.2e})')
     r = {k: dict(max=float(np.max(v)), median=float(np.median(v))) for k, v in st.items()}
     # cache consistency after cached Metropolis sweeps with acceptances
     sw = make_sweep(p, T, T['A'], alpha, E, 'cached', 64)

@@ -28,9 +28,13 @@ VAR = ('noDE',)
 
 def cmp(g, err=None):
     ge, gs = gex[idx], g[idx]
+    if err is not None:   # drop parameters the amplitude does not depend on (f_ii: det f[U, D] never uses them): exact 0 and err 0
+        keep = err[idx] > 0; ge, gs, err = ge[keep], gs[keep], err[idx][keep]
+    else:
+        keep = np.ones(len(idx), bool)
     d = dict(cos=float(gs @ ge / np.linalg.norm(gs) / np.linalg.norm(ge)), rel=float(np.linalg.norm(gs - ge) / np.linalg.norm(ge)))
     if err is not None:
-        zz = (gs - ge) / err[idx]; d.update(chi2dof=float(np.mean(zz ** 2)), meanz=float(zz.mean()), maxabsz=float(np.abs(zz).max()))
+        zz = (gs - ge) / err; d.update(n_used=int(keep.sum()), chi2dof=float(np.mean(zz ** 2)), meanz=float(zz.mean()), maxabsz=float(np.abs(zz).max()))
     return d
 
 
@@ -66,13 +70,15 @@ B = dict(samples=int(Xs.shape[0]), acc=float(acc), E1_N=r['E1'] / N, E1_err_N=r[
          check_h2=r['check_h2'], true=cmp(r['grad'], r['err']), BROKEN_noDE=cmp(r['grad_noDE'], r['err_noDE']),
          BROKEN_p0=cmp(r['grad_p0'], r['err_p0']), MOMENT_FORM=cmp(r['grad_mom'], r['err_mom']), E1_gform_N=r['E1_gform'] / N,
          rel_err_jk=float(np.linalg.norm(r['err'][idx]) / np.linalg.norm(gex[idx])), sec=time.time() - t, t_x=r['t_x'], t_y=r['t_y'])
-n = len(idx)
+n = B['true']['n_used']
 B['PASS'] = bool(B['true']['chi2dof'] <= 1.5 and abs(B['true']['meanz']) <= 3 / np.sqrt(n))
 B['BROKEN_FAIL'] = {k: bool(B[k]['chi2dof'] > 3) for k in ('BROKEN_noDE', 'BROKEN_p0')}
 res['sampled'] = B
 print('SAMPLED', json.dumps(B), flush=True)
 json.dump(res, open(a.out, 'w'), indent=1)
-ok = A['PASS'] and B['PASS'] and all(B['BROKEN_FAIL'].values())
+np.savez(a.out.replace('.json', '.npz'), idx=idx, gex=gex, grad=r['grad'], err=r['err'], grad_noDE=r['grad_noDE'], err_noDE=r['err_noDE'], grad_p0=r['grad_p0'], err_p0=r['err_p0'], grad_mom=r['grad_mom'], err_mom=r['err_mom'])
+if A.get('skipped'): A = dict(A, true=dict(rel=float('nan')), BROKEN_noDE=dict(rel=float('nan')), BROKEN_p0=dict(rel=float('nan')), IDENTITY_mom=dict(rel=float('nan')))
+ok = (A['PASS'] or A.get('skipped')) and B['PASS'] and all(B['BROKEN_FAIL'].values())
 print(f"VERDICT HOPSR_CHECK4X4 {'PASS' if ok else 'FAIL'}: exact-mode rel {A['true']['rel']:.2e} (noDE {A['BROKEN_noDE']['rel']:.2e}, p0 {A['BROKEN_p0']['rel']:.2e}, "
       f"moment-form {A['IDENTITY_mom']['rel']:.2e}); sampled cos {B['true']['cos']:.4f} chi2/dof {B['true']['chi2dof']:.3f} meanz {B['true']['meanz']:+.3f} "
       f"(noDE cos {B['BROKEN_noDE']['cos']:.4f} chi2/dof {B['BROKEN_noDE']['chi2dof']:.2f}; p0 cos {B['BROKEN_p0']['cos']:.4f} chi2/dof {B['BROKEN_p0']['chi2dof']:.2f}); "

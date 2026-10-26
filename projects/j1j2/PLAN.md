@@ -35,12 +35,8 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## Running (takeover from 2026-10-26 19:50)
-- Local-product Krylov test, experiments/local_product/PREREG.md (+ Amendment 1 after Astra: G is linear-cost on local guides):
-  Stage A (exact LP vs G, 4x4 + 6x6, worker) running. Stage A' DONE: cached G on a CNN is exact (1e-14) and linear for L >= 16
-  (exponent 0.99) but FAILED the pre-registered L=6..20 fit (1.79) because the affected set saturates only at L=16; overhead per
-  Krylov step ~|A_c| (~1000 for a 7x7 receptive field, ~240 for 3x3) vs 137 for direct RBM+PP at 8x8.
-- 10x10/12x12 trainings cancelled 2026-10-26 (PI): checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
+## Running
+Nothing (2026-10-27 00:45). Trainings cancelled 2026-10-26; checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 
 ## Budget
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
@@ -52,6 +48,10 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)
+- Local product of Krylov factors (LP, per bond / site / plaquette): 6x6 E_FN-E0 3.5247e-5 vs G 5.5738e-6 (KILL); near-node pole
+  |psi_LP/psi| 9.7e6 (local_product/stageA/6x6/lp6x6.json; report docs/reports/2026-10-27_local_product_krylov.md).
+- Exact iterated refit loop at 4x4 (refit to FN(a), node-weighted): E_FN worse every round (l8/loop4x4); hop-aware training works
+  at 4x4 (79% of the gap) but costs O(N^2) per sample on global guides (PI: closed without a test).
 - One loop round at 8x8 with same-class refit (L8): hop part has zero fidelity gradient at the energy optimum (exact 4x4,
   /scratch/a/A.Otaifi/l8/idtest4x4); beyond-hop part 2.3e-5/site, unresolved (diag 3973532, 3995351); refit F 3923271 held-out R falls.
 - Fitting the tail better, any objective: L2 (9.2e-5, refresh), decade-stratified (T1s/T1s-2 r(-11) 0.07), 13x steps
@@ -62,5 +62,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (done, high): The loop and every Krylov-based rescue are closed: storing the improvement in the network fails, and Krylov steps cost more and help less as the lattice grows. Paderborn spending stopped.
-- NEXT (open, high): PI to decide what the project does next; the only part that scales is the walker method on top of a trained network, a known method.
+- STATUS (done, high): Krylov's sign repair cannot be made local: a product of local Krylov factors blows up near nodes and keeps none of the gain at 6x6; the global step scales linearly only on local networks, at ~100-1000x the cost of plain sampling.
+- NEXT (open, high): PI to decide the project's next direction at the check-in; nothing is running.

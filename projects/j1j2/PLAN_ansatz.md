@@ -286,7 +286,42 @@ the trivial regime. Additive needs more with N. Provisional statement: psi0 = ex
 and t ~ 0.15-0.2/J1 independent of N (two sizes). Also (recheck_preimage.py, rc_4x4/4x6): undoing J2 pushes Phi toward
 the Lieb-Mattis Neel singlet; at moderate strength Phi stays psi0-like and is smoother in the tail (4x4, rms
 bond-to-bond jump of log|amp| at decade -10: Phi(cond 3) 1.6 vs psi0 3.8).
-Next, in order: (1) read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
+#### R1 verdict at 4x6 (2026-10-26, ansatz_runs/recheck/lu_4x6_fine.json, read by the lead): PASS
+W_M(Phi)/W_M(psi0), exp form, t = 0.10/0.12/0.14/0.16: 4x4 5.4e-2/2.1e-2/6.8e-3/8.8e-4; 4x6 5.2e-2/1.9e-2/5.4e-3/8.5e-4
+(curves overlay within 25% at every t; 4x4 hits exact 0 from t = 0.18, 4x6 1.1e-4, 1.7e-5 at 0.18, 0.20). t* in (0.14, 0.16]
+at both sizes (ratio <= 1.14); gates a* in (-0.19, -0.16] at both; additive cond* (3,4] -> (5,6] (grows, as predicted).
+LM overlap at t = 0.16: 0.47 / 0.16 (<= 0.7). Not yet checked: an exponential-form CONTROL (e.g. exp(-t H_J1) psi0, any
+positivity-improving local evolution at matched overlap with psi0); asked of the second-opinion review first.
+Second opinion: Codex gpt-6-astra xhigh, read-only, job cj-baa5ea3230cf (/scratch/a/A.Otaifi/codex_jobs/cj-baa5ea3230cf).
+#### Second opinion (Astra, ansatz/REVIEW_astra_2026-10-26.md) and what I take from it
+Verified by me: (i) exact identity H_J2 psi0 = (E0 - H_J1) psi0, so exp(+t H_J2) and exp(-t H_J1) change psi0 identically to
+first order: J2-specificity is second order (its 4x4 matched-fidelity J1 control is only 2.2x worse: unverified);
+(ii) global conditioning kappa(exp(-0.16 H_J2)) = exp(0.16 x bandwidth(H_J2)) = 4.95 / 10.4 / 28.7 (4x4 / 4x6 / 6x6;
+4x4 bandwidth 10 from K_{4,4} by hand): grows exponentially with N at fixed t (worst case; fit-error amplification unmeasured);
+(iii) W_M saturates at 1/2 for extensive defects, so the intensive gamma_M = -ln|1 - 2 W_M| / N is the size-safe metric.
+Taken: the crux is reconstruction (evaluating exp(-t H_J2)|Phi> at a walker) and an explicit residual-sign rule, not W_M.
+Disputed: the R1 overlay of the ratio curves (within 25% at every t) is itself evidence of dilute local defects, which
+C1 alone did not give; the 4x4 loop test it proposes would pass trivially (Phi exactly Marshall at t >= 0.18), so use 4x6.
+Kept from it: J2's real distinction from a J1 filter is structural: exp(-t H_J2) is stoquastic in the stripe frame s_X,
+so reconstruction is a positive propagator acting on a signed boundary vector, while J1's inverse exp(+u H_J1) is not.
+
+### R2 (2026-10-26, before any run): does the exp-J2 pre-image survive reconstruction and amplification? (exact 4x4 + 4x6, CPU, ws1; worker; code ansatz/code/r2_recon.py)
+t in {0.12, 0.14, 0.16, 0.18, 0.20}; control exp(-u H_J1) psi0 at matched |<psi0|Phi>|^2. Absolute kernel T = exp(-t H~),
+H~ = S_X H_J2 S_X (check: every off-diagonal <= 0; s_X = (-1)^{n_up on x odd}).
+(a) Reproduce Astra's 4x4 numbers (t* 0.15918, u* 0.19172, W_M ratios 8.80e-4 vs 1.92e-3 at F = 0.907323; eta medians 0.694
+    overall, 0.0412 for |psi0|^2 < 1e-7). Any miss > 2% is reported before (b)-(e) are read.
+(b) gamma_M for psi0, Phi_t, Phi_J1. J2-specific (physics reading kept) only if W_M(J1)/W_M(J2) at matched fidelity >= 3
+    at both sizes; else the reading is "generic Perron filter + stoquastic reconstruction frame".
+(c) Reconstruction cost: eta_y = |psi0(y)| / (T |Phi_t|)(y); C = E_{|psi0|^2}[eta^-2] (samples per unit relative accuracy).
+    Exponential signal: ln C / N at 4x6 >= 0.8 x its 4x4 value. Bounded signal: ln C at 4x6 <= 1.3 x 4x4. Between: inconclusive.
+(d) Fit-error amplification: Phi -> Phi e^{eps g}, g a random symmetric 2-body Jastrow normalised to rms 1 under |Phi|^2,
+    eps = 0.01, 0.03, 5 draws; A = (E(exp(-t H_J2) Phi e^{eps g}) - E0) / (E(psi0 e^{eps g}) - E0). Global (kills scaling):
+    A(4x6)/A(4x4) >= 1.7 (0.8 x kappa ratio 2.1). Local: <= 1.2.
+(e) Oracle-free residual sign (drop it): psi_rec = exp(-t H_J2)(s_N |Phi_t|); E_var and own-sign lattice-FN energy per site
+    vs Marshall-FN (s_N |psi0|) at both sizes. Continue to a loop-native C2-L only if, at some t, E_FN(psi_rec) <= 0.3 x
+    Marshall-FN at both sizes AND (c), (d) give the bounded/local signal. Otherwise: write the ranked memo update.
+
+Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM
 overlap; (3) on PASS at 6x6, pre-register the loop-native C2-L: store |Phi_t| with the loop carrying the residual
 sign, reconstruct psi = exp(-t H_J2)(s * |Phi_fit|) exactly, K_2 + FN, tax vs G-tax 1.657e-6, positive-RBM fit.
@@ -385,5 +420,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Reopened at the PI's request: undoing the J2 exchange locally needs the same small strength at two lattice sizes, which could make the loop's stored state smooth and nearly sign-free.
+- STATUS (in progress, medium): Undoing the J2 exchange locally needs the same small strength at 4x4 and 4x6 (pre-registered test passed); an outside second opinion is under way before the 6x6 check.
 - NEXT (open, medium): Confirm the size-independent strength at 6x6, then test it inside the loop with the loop carrying the leftover sign.

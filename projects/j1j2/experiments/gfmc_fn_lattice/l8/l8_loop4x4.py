@@ -251,7 +251,7 @@ C['zero_step'] = dict(bitwise_equal=bool(np.array_equal(x_z, x0)), max_abs_dthet
 log('CONTROL zero-step', json.dumps(C['zero_step']))
 open(F, 'w').write(jd(res))
 # broken target: flip sign on a random 1% of phi_0's weight (whole configurations, random order until 1% of sum phi^2)
-rng = np.random.default_rng(20261026); phi0 = S0[PKEY]; wt = phi0 ** 2 / (phi0 @ phi0); perm = rng.permutation(Dd)
+rng = np.random.default_rng(int(os.environ.get("BSEED", 20261026))); phi0 = S0[PKEY]; wt = phi0 ** 2 / (phi0 @ phi0); perm = rng.permutation(Dd)
 nflip = int(np.searchsorted(np.cumsum(wt[perm]), 0.01)) + 1; flip = perm[:nflip]
 phib = phi0.copy(); phib[flip] *= -1
 xb, ib = refit(x0, phib, 'refit to BROKEN target (1% weight sign-flipped)')
@@ -270,7 +270,8 @@ for k in range(1, NROUND + 1):
     if k == 1: C['broken_target']['EFN_guideN_true_round1'] = Sn[GKEY] / N
     np.save(os.path.join(OUT, f'flat_{VAR}_{k}.npy'), xn)
     x, S = xn, Sn; rec(k, x, S)
-E = [r['EFN_guideN'] for r in res['rounds']]; d = [E[i - 1] - E[i] for i in range(1, len(E))]
+if NROUND == 0: log("VERDICT CONTROLS ONLY"); sys.exit(0)
+E = [r["EFN_guideN"] for r in res["rounds"]]; d = [E[i - 1] - E[i] for i in range(1, len(E))]
 res['gains'] = d
 if d[0] <= 0: verdict = 'NO ROUND-1 GAIN'
 elif d[2] >= 0.3 * d[0] and sum(d) >= 2 * d[0]: verdict = 'KEEPS GAINING'

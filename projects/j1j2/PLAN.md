@@ -1,6 +1,7 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
-Goal: a loop (guide network + Lanczos hop -> lattice fixed node -> refit) that improves at constant cost per round and
-beats brute-force NQS in GPU-h at 8x8-14x14, for frustrated magnets where QMC has a sign problem.
+Goal (REFOCUSED by the PI 2026-10-26, after L8): network + p Lanczos hops + lattice fixed-node GFMC as an add-on to any trained
+NQS, cheaper in GPU-h than brute-force NQS at equal accuracy at 10x10-14x14, for frustrated magnets where QMC has a sign problem.
+The refit loop (store each round in the network) is closed: L8, docs/reports/2026-10-26_l8_loop_round_8x8.md.
 
 ## Where we stand (2026-10-25; energies per site; details and paths in README compress_6x6 "Results: ..." sections)
 - Physics: the energy-relevant error sits on ~0.1% of sign-violating bonds, at near-node cancellation configurations on
@@ -20,7 +21,7 @@ beats brute-force NQS in GPU-h at 8x8-14x14, for frustrated magnets where QMC ha
   the hop (fidelity gradient toward the one-hop state = alpha x dE = 0, exact 4x4 rel 5e-9; exact refit R 1.000009). Only the FN gain
   beyond the hop is storable (38% at 4x4, RBM-only), and at 8x8 it is 2.3e-5/site in total and below walker noise with 400
   blocks/chain (cross-chain cosine -0.010(35) with 131k VMC samples). The loop with same-class refit has no route to a
-  constant-cost gain per round. Recommendation to the PI: drop the refit; network + p hops + FN as an add-on, judged at 10x10/12x12.
+  constant-cost gain per round. PI decision 2026-10-26: refocus on the add-on (Goal above).
 
 ## Running (re-arm waits after a clear: until grep -q "VERDICT job <id>" delta_today.md)
 | job | run dir | next step per verdict |
@@ -36,7 +37,7 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 ## Angles
 - ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit
   tax inside the loop, gate tax_2 < 0.82e-6 at 6x6); R1 4x6 PASS, R2 pre-registered (commit 2fa6644). The L8 identity (any
-  class at its own energy optimum has zero fidelity gradient toward its one-hop state) bears on that bar; not sent, PI's call.
+  class at its own energy optimum has zero fidelity gradient toward its one-hop state) sent to the angle at the PI's request 2026-10-26.
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)
@@ -50,6 +51,5 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): At 8x8 a trained network plus one correction step plus the walker method beats the best published network energy; retraining the network after a round cannot keep the gain, so the loop as designed is closed.
-- NEXT (open, high): PI to decide whether to refocus on 'network + correction steps + walker method' as an add-on to any trained network.
-- NEXT (in progress, medium): 10x10 and 12x12 network trainings are running; then the add-on energy comparison there.
+- STATUS (in progress, high): Refocused on 'trained network + correction steps + walker method' as an add-on; at 8x8 it already beats the best published network energy of its type.
+- NEXT (in progress, high): 10x10 and 12x12 network trainings are running; then measure the add-on's energy gain and GPU cost there against published networks.

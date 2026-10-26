@@ -192,6 +192,57 @@ if STAGE == 'opt':
     log(f'VERDICT OPT DONE E_v/N {S["Ev"] / N:.10f} |grad| {info["gnorm"]:.3e} E_FN(v)/N {S["EFN_v"] / N:.10f} E_FN(g)/N {S["EFN_g"] / N:.10f}')
     sys.exit(0)
 
+# ================= hop-aware training (lead follow-up): (a) min E_VMC(a*h_a), alpha by Ritz at every evaluation; (b) min E_FN(a*h_a)
+def hopped(fl, w):
+    v = vvec(fl, w); v = v / jnp.sqrt(v @ v); Hv = Hmv(v); E = v @ Hv; u1 = Hv - E * v; u2 = Hmv(u1) - E * u1
+    mu2 = u1 @ u1; mu3 = u1 @ u2; al = (mu3 - jnp.sqrt(mu3 ** 2 + 4 * mu2 ** 3)) / (2 * mu2 ** 2)
+    return v + al * u1, E, mu2, mu3
+def Eg_ritz(fl, w):
+    """variational energy of the hopped guide = lowest Ritz value in span{v, (H-E)v}: E + (r - sqrt(r^2 + 4 mu2))/2, r = mu3/mu2."""
+    _, E, mu2, mu3 = hopped(fl, w); r = mu3 / mu2; return E + 0.5 * (r - jnp.sqrt(r * r + 4 * mu2))
+def efn_hf(fl, w, phi2, nk):
+    """Hellmann-Feynman surrogate: the a-dependent part of <phi|H_FN[g(a)]|phi> with phi (phi2 = phi^2 normalised) and the moved-bond
+    set nk (1 = sign-violating hop moved to the diagonal) frozen; value differs from E_FN by an a-independent constant, gradient = dE_FN."""
+    g, _, _, _ = hopped(fl, w); rr = g[jnb] / g[jwi]
+    return phi2 @ jax.ops.segment_sum(jK * rr * nk, jwi, num_segments=Dd)
+_Egr_vg = jax.jit(jax.value_and_grad(Eg_ritz)); _hf_vg = jax.jit(jax.value_and_grad(efn_hf))
+Egr_vg = lambda fl, w: (lambda r: (float(r[0]), np.asarray(r[1])[IDX]))(_Egr_vg(jnp.asarray(fl), w))
+def efn_vg(fl, w):
+    g, _, _, _ = hopped(jnp.asarray(fl), w); g = np.asarray(g); e, ph = fn_state(g)
+    nk = (g[nbr] / g[wi] >= 0).astype(np.float64); p2 = ph ** 2 / (ph @ ph)
+    _, gr = _hf_vg(jnp.asarray(fl), w, jnp.asarray(p2), jnp.asarray(nk)); return e, np.asarray(gr)[IDX]
+
+if STAGE in ('hopa', 'hopb', 'hopa_pert'):
+    x0 = np.load(os.path.join(OUT, 'flat_opt.npy')); MAXEV = int(os.environ.get('MAXEV_HOP', 20000)); F = os.path.join(OUT, f'{STAGE}.json')
+    S0 = state(x0, w30); res = dict(mask=MASK, stage=STAGE, E0N=E0 / N, start=dict(EvN=S0['Ev'] / N, EgN=S0['Eg'] / N, EFN_gN=S0['EFN_g'] / N))
+    c = Egr_vg(x0, w30)[0]; res['check_ritz_vs_state'] = abs(c - S0['Eg']); log(f'Ritz E_g {c / N:.12f} vs state() {S0["Eg"] / N:.12f}')
+    if STAGE == 'hopb':
+        # check the HF gradient against a central finite difference of the exact E_FN along a random class direction; broken: alpha frozen
+        rng = np.random.default_rng(7); dvec = np.zeros(P); dvec[IDX] = rng.standard_normal(len(IDX)); dvec /= np.linalg.norm(dvec)
+        _, gr = efn_vg(x0, w30); h = 1e-5
+        fd = (efn_vg(x0 + h * dvec, w30)[0] - efn_vg(x0 - h * dvec, w30)[0]) / (2 * h); an = float(gr @ dvec[IDX])
+        g0, _, _, _ = hopped(jnp.asarray(x0), w30); g0 = np.asarray(g0); _, ph = fn_state(g0); nk = (g0[nbr] / g0[wi] >= 0).astype(float)
+        al0 = S0['alpha']
+        def brk(fl):   # BROKEN: alpha held fixed at its start value (misses d alpha / d a)
+            v = vvec(fl, w30); v = v / jnp.sqrt(v @ v); Hv = Hmv(v); g = v + al0 * (Hv - (v @ Hv) * v); rr = g[jnb] / g[jwi]
+            return jnp.asarray(ph ** 2 / (ph @ ph)) @ jax.ops.segment_sum(jK * rr * jnp.asarray(nk), jwi, num_segments=Dd)
+        bk = float(np.asarray(jax.grad(brk)(jnp.asarray(x0)))[IDX] @ dvec[IDX])
+        res['hf_check'] = dict(fd=fd, hf=an, rel=abs(fd - an) / abs(fd), BROKEN_alpha_frozen=bk, BROKEN_rel=abs(fd - bk) / abs(fd))
+        log('HF gradient check', json.dumps(res['hf_check']))
+    xs = x0
+    if STAGE == 'hopa_pert':
+        r5 = np.load(os.path.join(OUT, 'flat_ii_5.npy')); dn = np.linalg.norm((r5 - x0)[IDX]); rng = np.random.default_rng(11)
+        dv = rng.standard_normal(len(IDX)); xs = x0.copy(); xs[IDX] += dn * dv / np.linalg.norm(dv); res['pert_norm'] = float(dn)
+        log(f'perturbed start |dtheta| {dn:.4e} (= |a_5(ii) - a_0|)')
+    fvg = (lambda fl: Egr_vg(fl, w30)) if STAGE != 'hopb' else (lambda fl: efn_vg(fl, w30))
+    x, info = chunked_lbfgs(fvg, xs, MAXEV, float(os.environ.get('TOL_HOP', 1e-13)), STAGE)
+    np.save(os.path.join(OUT, f'flat_{STAGE}.npy'), x); S = state(x, w30)
+    res['opt'] = dict(EvN=S['Ev'] / N, EgN=S['Eg'] / N, EFN_gN=S['EFN_g'] / N, EFN_vN=S['EFN_v'] / N, alpha=S['alpha'],
+                      evals=info['evals'], gnorm=info['gnorm'], stop=info['stop'], dtheta_from_opt=float(np.linalg.norm((x - x0)[IDX])))
+    open(F, 'w').write(jd(res))
+    log(f'VERDICT {STAGE} {MASK}: E_FN(g)/N {S["EFN_g"] / N:.10f} E_VMC(g)/N {S["Eg"] / N:.10f} E_v/N {S["Ev"] / N:.10f} evals {info["evals"]} |grad| {info["gnorm"]:.2e}')
+    sys.exit(0)
+
 VAR = {'loopi': 'i', 'loopii': 'ii', 'loopiii': 'iii'}[STAGE]
 GKEY, PKEY = ('EFN_g', 'phi_g') if VAR == 'ii' else ('EFN_v', 'phi_v')
 C0 = float(os.environ.get('NODE_C0', 0.05))

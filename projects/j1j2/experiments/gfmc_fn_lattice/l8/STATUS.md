@@ -65,3 +65,7 @@
 - Branch: DATA-STARVED (cosine within 2 sigma of 0 at every shift); (b) not run.  Data factor for a 3-sigma cosine at shift 0.1: (3/1.16)^2 = 6.6x
   (noise ~ 1/sqrt(blocks)) -> 2660 blocks per chain, +2260 per chain = 16.4 H100-h more dump at 13.1 s/block; if instead cos grows linearly with data
   (noise-dominated regime), 2.6x -> 1030 per chain, +4.6 H100-h.  Shifts 1 and 10 give no signal to extrapolate from.
+- Rerun with 8x the VMC samples (Paderborn 3995351, express, 1:49 elapsed, MaxRSS 20.8 GB; 128 sweeps x 1024 chains = 131k samples):
+  cross-chain cosine -0.010(35) / +0.007(44) / -0.029(123) and g2.d1 -2.0(5.2)e-3 / -2.0(25)e-4 / -6(830)e-6 for shift 0.1 / 1 / 10;
+  same-chain halves +0.021(37) / +0.033(38) / -0.037(102).  Pre-registered: g2.d1 within 2 sigma of 0 -> UNRESOLVED; L8 closes.
+  (The first diag's g2.d1 +3.4(1.4)e-2 at shift 0.1 did not survive more VMC samples.)

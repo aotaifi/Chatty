@@ -3,13 +3,13 @@
 set -u
 HERE=$(cd "$(dirname "$0")" && pwd); CODE=$HERE/..; RBMPP=$CODE/../rbmpp_6x6
 B=/scratch/hpc-prf-ppdmrg/hpcalot; SSH="ssh -o BatchMode=yes -o HostName=login4"; SL=/opt/software/slurm/25.11.8-1/bin
-QOS=${QOS:?}; TIME=${TIME:?}; PARTS=${PARTS:-a,b}
+QOS=${QOS:?}; TIME=${TIME:?}; PARTS=${PARTS:-a,b}; VMC_SWEEPS=${VMC_SWEEPS:-16}
 rsync -a -e "$SSH" $CODE/{gfmc_fn_lib,gfmc_run,vmc_moments}.py $HERE/{l8_lib,l8_refit,l8_vmc_prefix,l8_diag}.py $RBMPP/rbmpp_lib.py $HERE/diag_l8.sbatch paderborn:$B/l8/code/ || exit 1
-jid=$($SSH -n paderborn "export PATH=$SL:\$PATH; cd $B/l8/runs; sbatch --parsable --qos=$QOS --time=$TIME --export=ALL,PARTS=$PARTS $B/l8/code/diag_l8.sbatch")
+jid=$($SSH -n paderborn "export PATH=$SL:\$PATH; cd $B/l8/runs; sbatch --parsable --qos=$QOS --time=$TIME --export=ALL,PARTS=$PARTS,VMC_SWEEPS=${VMC_SWEEPS:-16} $B/l8/code/diag_l8.sbatch")
 [[ "$jid" =~ ^[0-9]+$ ]] || { echo "SUBMIT FAILED: '$jid'"; exit 1; }
 L=/scratch/a/A.Otaifi/l8/diag/$jid; mkdir -p $L
 cat > $L/ANALYSIS_BRIEF.md <<EOB
-# L8 refit diagnosis (Paderborn job $jid, QoS $QOS, parts $PARTS): remote $B/l8/runs/diag_$jid
+# L8 refit diagnosis (Paderborn job $jid, QoS $QOS, parts $PARTS, vmc_sweeps $VMC_SWEEPS): remote $B/l8/runs/diag_$jid
 Question: after F 3923271 (NO_RISE), is the refit step-size limited or data-starved?  (a) cross-chain S-metric cosine of the per-chain natural
 gradients at v_0 (shift 0.1, 1, 10; jackknife over 20 block groups; reference: the two halves of chain 1); (b) 5-step refits lr {0.01,0.03,0.1}
 x shift {0.1,1}, both train/held assignments.  Files: progress.txt (PROGRESS (a)/(b) lines, last DIAG_DONE), diag.json.

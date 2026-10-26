@@ -246,7 +246,7 @@ def run_correct(out, L, R, C, ncfg, seed, res):
     allc = jnp.arange(T['nb'])
     reff, ELfull_v = make_reference(p, T, alpha, E, bs=max(1, 4096 // T['nb']))
     def cached_one(TT, x, eps, el):
-        rG, ELy = jax.vmap(lambda c: ratio_G_cached(p, TT, TT['A'], x, eps, el, c, alpha, E))(allc)
+        rG, ELy = jax.lax.map(lambda c: ratio_G_cached(p, TT, TT['A'], x, eps, el, c, alpha, E), allc, batch_size=max(1, 32768 // TT['K']))
         return rG, ELy, ELG_cached(p, TT, TT['A'], x, eps, el, alpha, E, 64)
     cj = jax.jit(lambda x, eps, el: cached_one(T, x, eps, el)); cb = jax.jit(lambda x, eps, el: cached_one(Tb, x, eps, el))
     st = dict(rG=[], rG_b=[], ELG=[], ELG_b=[], ELy=[], EL=[])

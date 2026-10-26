@@ -6,7 +6,7 @@
 #SBATCH --no-requeue
 #SBATCH --hint=nomultithread
 # Stage A' (PREREG.md Amendment 1): cached-G cost test.  usage: sbatch --job-name=NAME --time=T --output=RUN/slurm-%j.out stageAprime.sbatch RUN STAGE
-# STAGE = probe | full.  Writes RUN/progress.txt (PROGRESS lines) and, at the end, 'RUN_VERDICT OK' or 'RUN_VERDICT FAIL rc'.
+# STAGE = probe | full | full_from16 (full without the L=6,8 correctness part, already in RUN/correct.json).  Writes RUN/progress.txt (PROGRESS lines) and, at the end, 'RUN_VERDICT OK' or 'RUN_VERDICT FAIL rc'.
 # XLA autotuning left ON: bench job 17513142 measured conv 0.51 vs 0.21 TFLOP/s with --xla_gpu_autotune_level=0 on the A40-16Q slice.
 set -u
 RUN=$1; STAGE=$2
@@ -21,7 +21,7 @@ rc=0
 if [ "$STAGE" = probe ]; then
   $P timing --L 8 20 --B 256 --Bel 16 --nrep 1 --tag _probe || rc=$?
 else
-  $P correct --L 6 8 16 --ncfg 100 100 10 || rc=$?
+  if [ "$STAGE" = full ]; then $P correct --L 6 8 16 --ncfg 100 100 10 || rc=$?; else $P correct --L 16 --ncfg 10 || rc=$?; fi
   [ $rc = 0 ] && { $P timing --L 6 8 12 16 20 --B 256 --Bel 16 --nrep 2 || rc=$?; }
   [ $rc = 0 ] && { $P timing --L 24 32 --B 256 --Bel 16 --nrep 2 --modes cached --tag _ext || rc=$?; }
   [ $rc = 0 ] && { $P timing --L 6 8 12 16 20 --R 1 --B 256 --Bel 16 --nrep 2 --tag _R1 || rc=$?; }

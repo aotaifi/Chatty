@@ -26,9 +26,11 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 ## Open question: can the loop be rescued? (PI 2026-10-26: 'I was hoping to rescue our loop')
 - Derived: refitting to the one-hop state is one SR step (gradient = alpha x energy gradient at any point), so a same-class loop
   gains beyond VMC only from the FN projector's information beyond the hop (2.3e-5/site at 8x8 after a hop; FN p=0 vs VMC p=0 8.3e-5).
-- Test 1 (running, worker, exact, CPU/<= 4 GPU-h): iterate guide -> exact FN -> fidelity refit, 5 rounds, 4x4 restricted classes +
-  6x6 RBM+PP, with and without a hop. KEEPS GAINING (round 3 >= 30% of round 1, 5-round sum >= 2x round 1) -> Test 2: the 8x8
-  sampling problem with p=0 walkers (140x cheaper per walker-tau than p=1). STALLS (round 2 < 10% of round 1) -> loop closed for good.
+- Test 1 DONE (exact 4x4, /scratch/a/A.Otaifi/l8/loop4x4): refit to FN(a) and node-weighted refit make E_FN WORSE every round
+  (RBM -0.5275259 -> -0.5273929); with a hop the RBM class gains 27% of the add-on-to-E0 gap in 5 rounds, but sign-broken targets
+  gain as much (control fails): the gain is E_FN(a*h_a) being non-stationary at the E_v optimum, not storage. Storage loop CLOSED.
+- Test 2 (running, worker, exact 4x4, CPU): optimise E_VMC(a*h_a) (scalable) and E_FN(a*h_a) directly; loop REDUNDANT if E_VMC(a*h_a)
+  optimisation closes >= 27% of the gap. Then the live idea is hop-aware training (check Sorella PRB 64, 024512 for prior art).
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 

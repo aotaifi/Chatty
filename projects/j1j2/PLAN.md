@@ -22,7 +22,7 @@ beats brute-force NQS in GPU-h at 8x8-14x14, for frustrated magnets where QMC ha
 |---|---|---|
 | 10x10 RBM+PP training, Paderborn 3921516 (cont, 4096 chains, 4500 steps, ~19 H100-h) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/rbL10_prod; local /scratch/a/A.Otaifi/rbmppL/prod/rbL10_prod (ANALYSIS_BRIEF.md) | converged -> VMC p=0/1, FN p=0, FN p=1 via experiments/gfmc_fn_lattice/m13b_LxL/launch_m13b_L.sh (LSZ=10, cont); drifting -> resume same RUN |
 | 12x12 RBM+PP training, Paderborn 3921519 (cont, 4096 chains, ~66 H100-h) | .../rbL12_prod | converged -> VMC p=0/1, FN p=0; FN p=1 (39 H100-h) only if 10x10 shows a trend worth it |
-| Test L8 (one loop round at 8x8), commit e6a0456: dumps D 3923269/70 PASS; refit F 3923271 NO_RISE (held-out R falls from step 1, 0.9984(7); train rises), V/G killed. Diagnostic (worker): cross-chain gradient cosine + lr x shift scan on the same dumps, <= 0.5 H100-h | /scratch/a/A.Otaifi/l8/prod; l8/STATUS.md | GO (held-out R > 1 by 3 sigma, both chain assignments) -> resubmit F/V/G; cosine ~ 0 -> data-starved: decide from the data factor (more dumps vs close L8 as NO_GAIN: walker refit cannot store the round) |
+| Test L8 (one loop round at 8x8), commit e6a0456/5235de3: INCONCLUSIVE (cause under review). Dumps PASS; refit F 3923271 NO_RISE (held-out R falls from step 1, mirror image of train; figure docs/reports/figures/2026-10-26_l8_refit.png); cross-chain gradient cosine at v_0 +0.033(29)/-0.006(41)/-0.029(99) at shift 0.1/1/10 (diag 3973532; 4x4 control +0.35(9)). L8 spent ~3.1 H100-h. Lead hypothesis: at the VMC energy optimum the fidelity gradient toward the one-hop state is alpha x energy gradient = 0, so only the FN-beyond-hop part (2.3e-5/site at 8x8) is refittable. Two Opus reviews running (independent; break the hypothesis) | /scratch/a/A.Otaifi/l8/{prod,diag}; l8/STATUS.md | hypothesis survives -> loop with same-class storage has no first-order gain from the hop: recommend re-scope to NQS + hops + FN as add-on (PI decides at check-in); breaks -> follow the reviewers' fix, pre-register, cheapest test first |
 Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 
 ## Budget (takeover decision 2026-10-25)
@@ -46,5 +46,5 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 
 ## Cockpit
 - STATUS (in progress, high): At 8x8 the walker method with one correction step beats the best published network energy; whether the full loop gains with lattice size is still open.
-- NEXT (in progress, high): One loop round at 8x8: the refit of the network to the improved state does not generalise to independent samples; a cheap check decides whether that is step size or too little data.
-- NEXT (in progress, medium): 10x10 and 12x12 network trainings are queued (start expected around 31 Oct), then the same energy comparison there.
+- NEXT (in progress, high): One loop round at 8x8: the network refit learns nothing that holds on independent samples; the likely cause is that a network at its energy optimum cannot absorb a correction step at first order. Two reviews are testing that explanation before the PI decides the loop's future.
+- NEXT (in progress, medium): 10x10 and 12x12 network trainings are running, then the same energy comparison there.

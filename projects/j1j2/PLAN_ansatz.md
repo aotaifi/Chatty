@@ -256,6 +256,18 @@ Review verdicts: C1, C2 add-on (run at 4x4, registered for 6x6), C2-T2, C2-L, C6
   RBM's fit is 2-2.4x worse than G-tax in the bulk (decades -8, -10) and better only at -12, -13; amplification by the
   layer and bulk misfit are not separated.
 
+### Re-check R1 (2026-10-26, PI asked to look again; before the 4x6 run): does a LOCAL undoing of J2 scale?
+Hypothesis: violations are local (C1-T0), so a local undoing of the J2 exchange should need an N-independent strength;
+the additive layer's growing cond (C2-T0b size trend) is its non-locality. Forms (code ansatz/code/local_undo.py):
+exponential Phi = exp(t H_J2) psi0 (psi0 = exp(-t H_J2) Phi: a sign-free state evolved for imaginary time t under
+J2), gate product Phi = prod_b (1 + a h_b)^{-1} psi0, additive as reference. Strength* = smallest strength with
+W_M(Phi) <= 1e-3 W_M(psi0). 4x4: t* in (0.1, 0.2], gates a* in (-0.25, -0.1], additive cond* in (3, 5]; LM overlap
+at threshold 0.53 / 0.59 / 0.61 (psi0: 0.24). Also checked: at strong undoing Phi becomes the Lieb-Mattis Neel singlet
+(overlap 0.96 at additive cond 30), the trivial regime the reviewer flagged.
+- Pass (local form scales): t*(4x6) <= 1.3 t*(4x4) (same for gates), LM overlap at threshold <= 0.7 at both sizes.
+  Then the exponential form at 6x6 (sector Krylov with the J2 table, GPU, <= 0.5 h).
+- Kill: t* (or a*) grows >= 1.5x from 4x4 to 4x6, or LM overlap at threshold >= 0.9.
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).

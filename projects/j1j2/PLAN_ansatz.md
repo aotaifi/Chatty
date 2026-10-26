@@ -405,6 +405,13 @@ K_k, FN; baseline tax_1 5.107e-6, tax_2 1.657e-6, gate 0.82e-6). Code ansatz/cod
 - Step 1 result (17510897, run_17510897/cx_gtax.json; read by the lead): CONTINUE. Exact-store tax_B1 / tax_B2: t 0.12
   3.92e-5 / 1.47e-5; 0.16 1.96e-6 / 9.12e-7; 0.20 2.39e-8 / 2.38e-8; 0.24 3.6e-13 / 1.3e-12. t_fit 0.20 (smallest t passing
   both bars). All controls pass and can fail. Exact storage is not the bottleneck: only the fit can kill it now.
+- Step 2 result (17516512, run_17516512/cx_gtax.json; read by the lead): KILL. Positive RBM (2442 params, 400 steps, t 0.20):
+  tax_B1 2.58e-5, tax_B2 7.40e-6 (4.5x the baseline, 9x the gate); held-out flat from step ~100 (capacity, not steps).
+  tax_B2 side by side: exact store 2.4e-8; fit readout 7.40e-6; same fit error applied to phi_0 without decoder 6.28e-5;
+  oracle sign(Phi_t) with the same fit 7.99e-6. Fit rms by |phi_0|^2 decade 0.024 (-8), 0.059 (-10), 0.139 (-13), 0.26
+  (-15); rebuilt |dlog| vs exact store 0.024, 0.070, 0.347, 0.695. Reading (hypothesis): the decoder damps the fit error
+  8.5x and the sign is not the issue; the node-free store moves phi_0's node into the decoder's cancellation, where storage
+  errors are magnified (2.5x at -13), and FN tax is set there.
 - Amendment after Astra round 3 (GO WITH CHANGES, before any run; adopted): fit-arm t = the SMALLEST t whose exact-store
   tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6 (else lowest tax_B(2); W_M condition dropped); same-fit sign(Phi_t) readout as a
   diagnostic only; actual-fit-error control: tax of phi_0 e^{eps}, eps = log|Phi_fit| - log|Phi_t| (no decoder), decade bins
@@ -453,7 +460,6 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| 17516512 C2-L-exp step 2 (positive RBM fit at t 0.20) | theorie cip A40, ansatz_runs/c2le_6x6/run_17516512 | PASS: step 3 (8x8 rebuild cost, design first); KILL: close, memo, tell project lead; INCONCLUSIVE: read side-by-side (storage vs decoder) and decide; control failure: stop, diagnose |
 
 ## Dead ends
 - C2-L store the J2 pre-image in the FN loop (C2-L-1 KILL, theorie A40 17468620/21, ansatz_runs/c2l_6x6/run_*,

@@ -211,3 +211,8 @@
 - 2026-10-26 03:10 L8 D_s1 3923269 gate by hand PASS: GFMC_DONE completed True, 400 dump files, new-block E_mix/N -0.4989563 +- 9.3e-6 (blocking, 400 blocks) vs g_0 -0.498946 (1.1 sigma); 1.46 H100-h. D_s2 3923270 still PENDING. 10x10/12x12 trainings 3921516/3921519 started early (RUNNING since ~02:00 10-26).
 2026-10-26 05:23 VERDICT job 3923270: COMPLETED, none. The gate did not run, because Bash was denied (don't-ask mode), so `quotable.py` never ran and no plot was made. [/scratch/a/A.Otaifi/l8/prod/D_s2/ANALYSIS.md]
 - 2026-10-26 05:25 L8 D_s2 3923270 gate by hand PASS: completed True, 400 dump files, new-block E_mix/N -0.4989414 +- 7.2e-6 vs g_0 -0.498946 (+0.6 sigma); D_s1 vs D_s2 new blocks differ 1.3 sigma. F 3923271 RUNNING.
+2026-10-26 05:29 VERDICT job 3923272: FAILED [/scratch/a/A.Otaifi/l8/prod/V/ANALYSIS.md]
+2026-10-26 05:29 VERDICT job 3923274: FAILED [/scratch/a/A.Otaifi/l8/prod/g1/p1_s2/ANALYSIS.md]
+2026-10-26 05:29 VERDICT job 3923273: FAILED [/scratch/a/A.Otaifi/l8/prod/g1/p1_s1/ANALYSIS.md]
+2026-10-26 05:29 VERDICT job 3923271: FAILED [/scratch/a/A.Otaifi/l8/prod/F/ANALYSIS.md]
+- 2026-10-26 05:31 L8 F 3923271 NO_RISE (read by the lead, F/progress.txt): 204800 walkers, weight health OK (neff/n 0.997, max share 4.6e-5); chain-split held-out R falls from step 1 (0.9984+-0.0007 vs train 1.0041+-0.0007) to 0.928 at step 20 (train 1.063); selected step 0; V 3923272 and G 3923273/74 auto-killed (KillOnInvalidDependent). L8 spent ~3.0 H100-h. Next (pre-registered, worker): cross-chain S-metric gradient cosine at v_0 + lr x shift scan both assignments; GO -> resubmit F/V/G; cosine within 2 sigma of 0 -> data-starved, report data factor.

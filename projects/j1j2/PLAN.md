@@ -22,7 +22,7 @@ beats brute-force NQS in GPU-h at 8x8-14x14, for frustrated magnets where QMC ha
 |---|---|---|
 | 10x10 RBM+PP training, Paderborn 3921516 (cont, 4096 chains, 4500 steps, ~19 H100-h) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/rbL10_prod; local /scratch/a/A.Otaifi/rbmppL/prod/rbL10_prod (ANALYSIS_BRIEF.md) | converged -> VMC p=0/1, FN p=0, FN p=1 via experiments/gfmc_fn_lattice/m13b_LxL/launch_m13b_L.sh (LSZ=10, cont); drifting -> resume same RUN |
 | 12x12 RBM+PP training, Paderborn 3921519 (cont, 4096 chains, ~66 H100-h) | .../rbL12_prod | converged -> VMC p=0/1, FN p=0; FN p=1 (39 H100-h) only if 10x10 shows a trend worth it |
-| Test L8 (one loop round at 8x8), Paderborn cont, commit e6a0456: D_s1 3923269, D_s2 3923270 (walker dump) -> F 3923271 (refit, train chain 1, held-out chain 2, early stop) -> V 3923272 -> g1 FN 3923273/3923274; ~12.5 H100-h; controls i-iv pass (l8/STATUS.md) | /scratch/hpc-prf-ppdmrg/hpcalot/l8/runs/prod; local /scratch/a/A.Otaifi/l8/prod (ANALYSIS_BRIEF.md each) | D fails -> resume D (launch_l8.sh D), re-chain F/V/G with DEP; F NO_RISE/HEALTH_STOP -> V,G auto-killed, report curve; G done -> l8_decide.py: GAIN -> second round then 10x10; NO_GAIN/LOSS -> loop future = storage object; UNDECIDED -> extend G |
+| Test L8 (one loop round at 8x8), commit e6a0456: dumps D 3923269/70 PASS; refit F 3923271 NO_RISE (held-out R falls from step 1, 0.9984(7); train rises), V/G killed. Diagnostic (worker): cross-chain gradient cosine + lr x shift scan on the same dumps, <= 0.5 H100-h | /scratch/a/A.Otaifi/l8/prod; l8/STATUS.md | GO (held-out R > 1 by 3 sigma, both chain assignments) -> resubmit F/V/G; cosine ~ 0 -> data-starved: decide from the data factor (more dumps vs close L8 as NO_GAIN: walker refit cannot store the round) |
 Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 
 ## Budget (takeover decision 2026-10-25)
@@ -46,5 +46,5 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 
 ## Cockpit
 - STATUS (in progress, high): At 8x8 the walker method with one correction step beats the best published network energy; whether the full loop gains with lattice size is still open.
-- NEXT (in progress, high): One loop round at 8x8 is queued and decides whether the loop gains with size (start expected around 29 Oct).
+- NEXT (in progress, high): One loop round at 8x8: the refit of the network to the improved state does not generalise to independent samples; a cheap check decides whether that is step size or too little data.
 - NEXT (in progress, medium): 10x10 and 12x12 network trainings are queued (start expected around 31 Oct), then the same energy comparison there.

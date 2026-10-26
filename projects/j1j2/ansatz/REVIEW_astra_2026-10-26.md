@@ -313,3 +313,33 @@ followed by normalization. Its spectral content matters.
 [Derived] Finally, \(C\approx70\) does not establish affordability: plain signed-path sampling needs roughly \((C-1)/\epsilon^2\), or \(6.9\times10^5\) independent paths per configuration on average at 1% relative RMS accuracy. [Opinion] Step 3 remains a separate, essential gate.
 
 GO WITH CHANGES: weakest passing filter; oracle-sign diagnostic; actual-fit-error control; numerical convergence checks; distinguish FN-target scaling from ground-state scaling.
+---
+# Debate round 4: C2-L-exp results (cj-b7e6ffa57157), 2026-10-27
+
+**1. [Opinion] Yes: robust KILL of this implementation.**
+
+[Checked] The [JSON and controls](/scratch/a/A.Otaifi/ansatz_runs/c2le_6x6/run_17516512/cx_gtax.json) support the quoted taxes; tightening FN tolerance changes them by approximately \(10^{-16}\)/site. The recorded last-50 decline is 0.428% per ten steps, below the registered exemption.
+
+[Derived] Passing requires **15.6× improvement at one hop and 9.0× at two hops**. However, “plateau = capacity” is unsupported: an unsuitable objective, optimizer or local minimum can also plateau. Similar parameter counts do not establish equal representational capacity.
+
+**2. [Opinion] Your cancellation interpretation is plausible, but (b) is too categorical and (c) overstates causal attribution.**
+
+[Checked] Before hops, decoded-fit FN error is **\(1.68\times10^{-4}\)**, versus **\(4.02\times10^{-5}\)** for the direct-error control. After two hops, their ordering reverses.
+
+[Derived] Therefore, the 8.5× advantage belongs to **decoder + reoptimized hops + FN**, not to an independently measured error contraction by the decoder. [Checked] Oracle signs give \(7.99\times10^{-6}\), versus \(7.40\times10^{-6}\): correcting residual signs does not rescue the fit.
+
+[Checked] There is also a comparison correction: your quoted `fit_rms_by_phi0_decade` and G-tax’s table **both use \(\phi_0\) bins**. The new fit’s separate `loss_dev_by_decade` uses \(\Phi_t\) bins. Moreover, you compared centered RMS with probability-weighted mean absolute error. Using the JSON’s matching `rms_n_meanremoved`, reconstruction changes **0.139 → 0.614 at −13**, and **0.263 → 1.041 at −15**.
+
+[Derived] That supports relative-error amplification near small amplitudes, but does not establish which configurations dominate the FN tax. Large logarithmic errors in tiny-weight bins are not themselves an energy attribution.
+
+[Checked] Bulk errors are already roughly twice G-tax’s. The new training loss stratifies by \(\Phi_t\) and weights bonds using its Marshall signs; G-tax uses \(\phi_0\) and its signs. [Derived] Equal marginal RMS would still leave different errors in neighbor ratios, governed by \(\epsilon(y)-\epsilon(x)\), and different nodes after Krylov reconstruction. Those differences can explain the direct-error control’s much larger tax without invoking decoder amplification. The data do not isolate one explanation.
+
+**3. [Opinion] Close; I would not assign any proposed ≤3-hour variant a ≥20% chance of passing both gates.**
+
+[Derived] At \(t=0.16\), even exact storage misses both pass bars. An intermediate \(t\) could improve the compromise, but no measured trend supports the required 9–16× fitted-tax improvement.
+
+[Derived] Weighting pre-image errors where \(\phi_0\) is small also misses the essential coupling: \(\delta\psi(y)=\sum_xF_{yx}\delta\Phi(x)\). Cancellation accuracy at \(y\) depends on errors at many \(x\).
+
+[Opinion] Close the tested stored-pre-image approach under this capacity and budget. Preserve the successful exact-store result and the unresolved optimization questions; do not turn closure into a universal impossibility claim.
+
+CLOSE

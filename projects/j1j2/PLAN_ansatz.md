@@ -462,6 +462,14 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 
 ## Dead ends
+- C2-L-exp store the exp-form pre-image exp(+t H_J2) phi_0 in the FN loop (step 2 KILL, theorie A40 17516512, ansatz_runs/
+  c2le_6x6/run_17516512, verified; Astra round 4 agrees, CLOSE): exact store passes (tax_2 2.4e-8 at t 0.20; 17510897), a
+  2442-param positive RBM does not (tax_1 2.58e-5, tax_2 7.40e-6 vs 1.657e-6); oracle residual sign no better (7.99e-6).
+  Rebuild magnifies centered log errors near small amplitudes (0.139 -> 0.614 at |phi_0|^2 decade -13); before hops the
+  decoded fit is 4.2x worse than its error on phi_0 directly, after two hops 8.5x better. Not isolated: capacity vs
+  objective/optimiser (the loss weights Phi_t, the baseline phi_0). Needed gain 9-16x: no cheap variant.
+- R3 independent-bond local rebuild (r3/, verified): E_FN 1.34x / 1.80x Marshall-FN at t 0.16; divides by near-zeros.
+- J2-specific reading of the pre-image (R2, r2/): matched-fidelity J1 filter only 1.2-2.2x worse; first-order identical.
 - C2-L store the J2 pre-image in the FN loop (C2-L-1 KILL, theorie A40 17468620/21, ansatz_runs/c2l_6x6/run_*,
   verified): H_J2 cond 30, 400 fixed steps, two-hop tax (bar 1.657e-6, gate 0.82e-6): RBM+PP 3.41e-3 (cannot fit a
   node-free target: rms 0.13 already at decade -5), positive RBM (2442 params) 5.66e-5; exact store 2.50e-7. The
@@ -511,6 +519,8 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   (-13..-15): in the deep tail the exact sign is uncorrelated with Marshall; the node runs through the tail.
 
 ## Status
+- 2026-10-27 00:45: CLOSED again after the PI-requested loop test (C2-L-exp step 2 KILL); memo updated (Reopened section);
+  takeover compute ~2.1 A40-h of 8; handoff handoffs/2026-10-27-ansatz-loop-test.md; project lead told.
 - 2026-10-26: REOPENED at the PI's request (look again, judge by the loop's bar, not one-shot sign); R1 started.
 - 2026-10-24: ANGLE CLOSED (day 2 of ~5): all candidates dead or closed after an adversarial review and re-tests;
   memo ansatz/ANSATZ_MEMO.md; handoff handoffs/2026-10-24-ansatz-pioneer.md. Compute used ~10 A40-h, 0 H100-h, plus CPU jobs.
@@ -519,5 +529,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): Reopened at the PI's request: testing whether the nearly sign-free pre-image, stored by a small positive network, makes one loop round cheaper than today's refit.
-- NEXT (in progress, medium): Exact 6x6 test without a fit first, then with the fitted network; pass means the loop gets its first working candidate.
+- STATUS (done, medium): Closed: the nearly sign-free pre-image works in the loop only if stored exactly; a network of the baseline's size stores it 4.5x too poorly.
+- NEXT (open, low): Only if a much better storage network appears (about 10x more accurate near small amplitudes) is this worth retesting.

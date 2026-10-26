@@ -1,5 +1,10 @@
 # PLAN_ansatz (angle lead "ansatz pioneer", started 2026-10-23; project lead's PLAN.md points here)
 
+## Bar under review (2026-10-26, project lead): PI refocused the main project on network + Lanczos hops + FN as an add-on,
+without the refit (L8: at a network's own energy optimum the one-hop refit gradient is exactly zero). If the refit is gone,
+the per-round refit tax below stops being the bar; candidate replacement: E_FN of (candidate guide + K hops) vs (plain network
++ K hops) at equal cost. To confirm with the PI.
+
 ## Bar for the loop (PI, 2026-10-26)
 An ansatz need not carry the whole sign in one go: the FN loop corrects the sign round by round. Judge a candidate
 by what it does inside the loop (per-round refit tax with the loop's own sign step, gate tax_2 < 0.82e-6, baseline
@@ -348,6 +353,18 @@ Checks: s_X frame stoquastic (max off-diag -0.25; s_N +0.25 fails); round trip 7
 4x6 FN uses LOBPCG (eigsh stalled; matched eigsh to 1e-12 at 4x4). Caveats: Jastrow draws not paired across sizes (5 vs
 11 classes); 4x4 is exactly Marshall from t 0.18. Extrapolated sampled-reconstruction cost C = e^{0.067 N}: 72 (8x8), 1.5e4 (12x12), 2.6e9 (18x18).
 
+#### Debate round 1 with Astra (cj-f4d4b2023b16, appended to ansatz/REVIEW_astra_2026-10-26.md): what I concede
+- WRONG (mine): "J2's reconstruction kernel is positive, J1's is not": exp(+u H_J1) is entrywise >= 0 in the Ising basis
+  (-H_J1 stoquastic). Both routes are a positive kernel on a signed boundary vector; no structural J2 advantage remains.
+- R1 overlay = an intensive suppression scale, not proof of local independent defects (a collective sector with an O(1)
+  gap gives the same overlay at width 4). Locality test: connected double-swap response vs separation.
+- R2 (c): the rule fired, but two points also fit C ~ N^0.96 (C/N 0.211 vs 0.208): exponential vs polynomial is undecided;
+  a third size (6x6) separates them (exp predicts C(36) ~ 8.9, linear ~ 7.5 at t = 0.16).
+- "Benign" narrowed to: smooth 2-body Jastrow errors amplified ~1.2x at two sizes; learnability and FN tax unmeasured.
+- R3's product decoder psi_L ~ f^{1-M} prod_b (a f + b f_b) divides by f: near-zeros of |Phi| (where the dropped residual
+  sign lives) blow up. Astra's own 4x4: t 0.16 overlap 2.3e-6, E_var 0.654/site; t 0.20 overlap 0.979, E_var 3.2e-3.
+  The R3 worker reproduces t 0.16 independently (overlap 2.2853e-6, E_var 0.65362; r3_4x4.log). J1 control: overlap 0.976.
+
 ### R3 (2026-10-26, before any run): an O(N) local evaluator of psi0 from the stored pre-image (exact 4x4 + 4x6, CPU ws1, < 1 h; extends r2_recon.py)
 Stored: Phi~ = s_N |Phi_t| (residual sign dropped), t in {0.16, 0.20}. One-bond factor g_b(y) = (exp(-t h_b) Phi~)(y) / Phi~(y)
 (exact 2-site action, h_b = J2 S_i.S_j). L1: psi_L(y) = Phi~(y) prod_{b in J2} g_b(y). Cost: 2N ratio evaluations per amplitude.
@@ -359,6 +376,14 @@ Phi~ built as exp(+t h_b) psi0 for that one bond, L1 must return psi0 to 1e-12 (
   (positive network) x (local J2 factors) the loop-native candidate: then 6x6 (GPU <= 0.5 h) and the fit-based loop tax.
 - Kill: E_FN(psi_L) >= 0.5 x Marshall-FN at both sizes: the reconstruction is non-local, the stored pre-image closes at
   "mild exponential, C = e^{0.067 N}". Between: inconclusive, read the sign-error weight by decade.
+
+#### R3 result (ws1 CPU, /scratch/a/A.Otaifi/ansatz_runs/r3/r3_4x4.json, r3_4x6.json, code ansatz/code/r3_local.py; raw JSON read by the lead)
+overlap | E_var/site | E_FN/site (Marshall-FN 7.27e-3 / 6.95e-3): 4x4 J2 t.16 2.3e-6 | 0.654 | 9.7e-3 (truncated FN); J2 t.20
+0.979 | 3.2e-3 | 2.8e-3; J1 t.16 0.976 | 4.7e-3 | 2.7e-3. 4x6 J2 t.16 2.8e-9 | 0.585 | 1.25e-2; J2 t.20 2.1e-7 | 0.460 | 2.5e-3;
+J1 t.16 2.8e-6 | 0.418 | 9.4e-3; J1 t.20 1.8e-8 | 0.543 | 3.6e-3. Verdict: J2 t 0.16 KILL (1.34x / 1.80x Marshall-FN); t 0.20
+INCONCLUSIVE by the rule (0.385x / 0.36x) but amplitudes destroyed at 4x6 (overlap 2e-7), unusable as a guide. Cause: the
+product divides by near-zeros of |Phi| (g_b down to -928; |psi_L| spans 6e-47..0.125). Checks pass and can fail.
+Debate round 2 with Astra running (cj-ab59faf861ee): R3 verdict, role under the no-refit refocus, close or one more test.
 
 Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM

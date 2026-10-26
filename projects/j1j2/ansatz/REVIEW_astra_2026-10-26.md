@@ -108,3 +108,109 @@ Asked by the ansatz angle lead after the R1 4x6 PASS. Prompt: /scratch/a/A.Otaif
 1. **[Opinion] Reconstruction remains exponentially expensive.** Test \(\eta_y\) on FN-relevant edges versus size; add the absolute-kernel exponential to the planned 6×6 calculation.
 2. **[Opinion] Residual-sign handling or refit amplification consumes the gain.** Run the exact-magnitude 4×4 loop test first, then matched fits measuring actual tax.
 3. **[Opinion] R1 measures generic filtering on narrow tori.** Run matched-fidelity J1 controls at 6×6 alongside \(\gamma_M\), sublattice order and target-weighted violations.
+---
+# Debate round 1 (Codex gpt-6-astra xhigh, job cj-f4d4b2023b16, same Codex session), 2026-10-26
+
+[Checked] R2 supports its registered classifications; it has not established a benign, learnable stored object.  
+[Derived] R3 is a nonlinear product approximation whose leading error includes correlations between disjoint bonds.  
+[Opinion] Test it, but neither its current PASS nor its failure would settle the stored-preimage route.
+
+**R-a — agree conditionally; disagree with the locality inference.**
+
+[Derived] Under your independent-defect model, \(Nq\ll1\) gives \(W_M\simeq Nq\), so the overlay supports a size-independent suppression factor. But independence and spatial locality are assumptions, not consequences of that overlay.
+
+[Derived] A nonlocal alternative is a rare collective sign sector whose weight is suppressed by an \(O(1)\) spectral separation:
+\[
+W_N(t)\simeq W_N(0)e^{-2\Delta t}.
+\]
+Its ratio also overlays without independently identifiable local defects. Two systems sharing width four cannot distinguish these mechanisms.
+
+[Opinion] Call the overlay evidence for an intensive suppression scale. Establish locality through connected double-swap responses versus separation.
+
+**R-b — agree for the oracle round trip; disagree for a genuine loop test.**
+
+[Checked] R2 confirms exact reconstruction at 4×4 for \(t\ge0.18\). [Derived] Starting from exact \(\psi_0\), retaining exact magnitudes and applying the exact inverse then makes that test tautological.
+
+[Opinion] My previous recommendation insufficiently distinguished this from testing the actual FN target, callable evaluator and fitted magnitudes. Use 4×6 for the residual-sign question; 4×4 can still decisively expose evaluator or fitting failures.
+
+1. **What does the independent-bond product approximate?**
+
+   [Derived] Let \(f=\widetilde\Phi\), \(e_b=(h_bf)/f\), and
+   \[
+   \Gamma_{bc}(y)=
+   \frac{[(h_bh_c+h_ch_b)f](y)}{2f(y)}-e_b(y)e_c(y).
+   \]
+   At fixed \(f\),
+   \[
+   \frac{\psi_L-e^{-tH_{J2}}f}{f}
+   =-t^2\sum_{b<c}\Gamma_{bc}+O(t^3).
+   \]
+   Thus it is first-order correct, but its error is **not merely a Trotter commutator**. Even disjoint, commuting bonds contribute when
+   \[
+   \frac{f(y^{bc})}{f(y)}
+   \ne
+   \frac{f(y^b)f(y^c)}{f(y)^2}.
+   \]
+
+   [Derived] Extensive \(t\|H\|\) alone does not invalidate a local expansion; absence of bounds on these connected terms does. The ground-state identity makes J1/J2 undoing identical to first order, but supplies no second-order factorization.
+
+   [Checked] I independently implemented R3 at 4×4, without reading worker outputs. Two implementations—sparse one-bond exponentials and analytic factors accumulated logarithmically—agree. Total checks used about nine CPU-seconds.
+
+   | \(t\) | \((E_{\rm var}(\psi_L)-E_0)/N\) | Squared ground-state overlap |
+   |---|---:|---:|
+   | 0.16 | 0.653620 | \(2.29\times10^{-6}\) |
+   | 0.20 | 0.00315230 | 0.978613 |
+
+   [Checked] The one-bond round-trip residual was \(2.6\times10^{-16}\); reversing the sign gave 0.0599. FN solves were numerically unreliable, so these numbers do **not** establish R3’s FN verdict.
+
+   [Derived] The instability has a concrete mechanism: for \(M\) antiparallel bonds,
+   \[
+   \psi_L\propto f^{\,1-M}\prod_b(af+bf_b).
+   \]
+   Small \(f\) can produce enormous artificial enhancements. The exact linear propagator has no such denominators.
+
+   [Opinion] The cheapest improvement to test is exact two-bond cluster factors, beginning with overlapping three-site clusters: \(O(N)\) constant-size contractions and base-ratio calls. But inspect omitted disjoint \(\Gamma_{bc}\) first; correcting **all** pairs costs \(O(N^2)\). An overlapping-only correction is uncontrolled if distant conditional correlations remain large.
+
+2. **Is the PASS rule appropriate?**
+
+   [Opinion] It is a permissive screening rule, not the PI’s loop bar.
+
+   [Derived] At 4×6, \(0.1\) times Marshall-FN allows \(6.95\times10^{-4}\)/site—847 times the numerical value of the 6×6 tax gate. These are different diagnostics, so the comparison is illustrative, but it exposes the precision gap.
+
+   [Opinion] Keep the registered classification, but require the next stage to use a common frozen \(t\), an actual FN target, and the same two-hop/FN readout as G-tax. Separate decoder error from fitting error, and match total computational cost.
+
+   [Derived] “\(O(N)\)” means \(2N\) base-network ratio evaluations **per amplitude**. It does not include the network’s own cost, neighboring amplitudes, subsequent hops or FN work. Also, each ratio may depend on every spin; a local exchange is not necessarily a local decision rule.
+
+3. **Shortest path after PASS, and interpretation after failure**
+
+   [Opinion] After PASS, use the existing 6×6 G-tax FN target. First reconstruct from exact preimage magnitudes with the proposed sign rule and local decoder, then apply \(K_2+\mathrm{FN}\). This isolates decoder error before training.
+
+   [Opinion] If that survives, run the matched positive-network fit and measure
+   \[
+   \mathrm{tax}_2=
+   E_{\rm FN}[K_2D_t(f_{\rm fit})]
+   -E_{\rm FN}[K_2\phi_{\rm FN}],
+   \]
+   retaining the \(0.82\times10^{-6}\) gate and \(1.657\times10^{-6}\) baseline. Report exact-store decoder bias separately; fitting could otherwise conceal it through accidental cancellation.
+
+   [Opinion] Most likely failure: correlated ratio errors move many factors across zero simultaneously. Near \(g_b=0\),
+   \[
+   \delta\log|g_b|\simeq\frac{bR_b}{a+bR_b}\,\delta\log R_b,
+   \]
+   so the product decoder can amplify errors that were harmless under the exact exponential.
+
+   [Derived] After failure, “this independent-bond decoder fails” is justified. “Reconstruction is nonlocal and the route costs \(e^{0.067N}\)” is not.
+
+   [Checked] At \(t=0.16\), the raw costs are \(C_{16}=3.376\), \(C_{24}=4.981\). [Derived] They also fit \(C\propto N^{0.959}\); \(C/N\) differs by only 1.6%. The registered exponential-signal rule fires, but two points identify neither an asymptotic exponent nor a lower bound for other estimators.
+
+4. **Where the step-back overreaches**
+
+   [Derived] Three statements need narrowing:
+
+   - **“The stored preimage is benign.”** Five smooth Jastrow perturbations probe a tiny error family and variational-energy response; they establish neither learnability nor FN refit tax.
+   - **“J2 has a positive reconstruction kernel whereas J1 does not.”** This is false: \(e^{+uH_{J1}}=e^{-u(-H_{J1})}\) is entrywise nonnegative in the original spin basis because \(-H_{J1}\) is stoquastic. Both constructions have signed boundary vectors.
+   - **“Taylor truncation: no convergence.”** Finite-dimensional exponentials converge. Fixed-order global truncation lacks uniform size control; that is the actual objection.
+
+   [Derived] Changing the decoder also changes the optimal stored target: \(e^{tH_{J2}}\psi\) is the inverse image of the exponential, not of your nonlinear product.
+
+**[Opinion] The single point where you are most likely wrong:** treating the ratio-curve overlay as justification for independently multiplying local sign events. The omitted correlated exchanges are precisely the assumption R3 must test.

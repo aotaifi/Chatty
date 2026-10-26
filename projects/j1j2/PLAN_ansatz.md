@@ -391,6 +391,18 @@ is a separate open problem; C ~ e^{0.067N} vs ~N undecided; my round-2 prompt mi
 sees no role for partial-H hops (no positive evidence) and recommends retiring the refit-tax gate.
 Recommendation to the PI: close the angle, no further compute; memo update sorted failure / hint / insight.
 
+### C2-L-exp (2026-10-26 18:50, before any run; PI: "go ahead and takeover"): the exp-form pre-image in the FN loop (exact 6x6, theorie A40)
+Why reopened: I stopped R1 step 3 on R2's two-point extrapolation (C/N 0.211 vs 0.208: exponential vs linear undecided;
+C ~ 70 at 8x8 even if exponential). The PI wants a loop candidate with the refit. Target and readout as C2-L (G-tax phi_0,
+K_k, FN; baseline tax_1 5.107e-6, tax_2 1.657e-6, gate 0.82e-6). Code ansatz/code/c2le_gtax.py (copy of c2l_gtax.py), runs
+/scratch/a/A.Otaifi/ansatz_runs/c2le_6x6/. Phi_t = exp(+t H_J2) phi_0, store s_N|Phi_t| (exact) or s_N e^{f_fit}; psi = exp(-t H_J2)(stored).
+- Step 0: Astra round 3 GO / NO-GO (cj-5b12c48420cc). A derived NO-GO stops it; a GO WITH CHANGES is adopted if it alters what we learn.
+- Step 1 exact store, t in {0.12, 0.16, 0.20, 0.24} (<= 1.5 A40-h): KILL if tax_B(2) >= 1.657e-6 at every t.
+- Step 2 positive RBM (2442 params, C2-L-1 arm (ii) settings) at the best t of step 1 (lowest tax_B(2) with W_M ratio <= 1e-2)
+  (<= 5 A40-h): PASS tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; KILL tax_B(2) >= 1.657e-6 (inconclusive only if held-out
+  loss falls > 1% per 10 steps over the last 50); fit rms by decade beside the rebuilt state's log error by decade.
+- Step 3 (PASS only): rebuild cost on 8x8 walkers. Ceiling for the whole takeover: 8 A40-h, no H100.
+
 Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM
 overlap; (3) on PASS at 6x6, pre-register the loop-native C2-L: store |Phi_t| with the loop carrying the residual
@@ -490,5 +502,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): A short filter turns the frustrated ground state into a nearly sign-free one, but no cheap way to rebuild it at a configuration was found; recommending to close the angle.
-- NEXT (open, high): PI to decide whether to close the ansatz angle (recommended, with an outside reviewer agreeing) and retire its loop-refit bar.
+- STATUS (in progress, medium): Reopened at the PI's request: testing whether the nearly sign-free pre-image, stored by a small positive network, makes one loop round cheaper than today's refit.
+- NEXT (in progress, medium): Exact 6x6 test without a fit first, then with the fitted network; pass means the loop gets its first working candidate.

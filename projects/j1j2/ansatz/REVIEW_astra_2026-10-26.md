@@ -273,3 +273,43 @@ Thus a negative step lowers energy whenever the variance is nonzero, even when e
 - [Checked] **Limited robustness hint:** smooth Jastrow perturbations give amplification \(1.15\pm0.45\rightarrow1.19\pm0.32\). [Derived] That is evidence about those perturbations, not network fitting errors near nodes.
 
 [Opinion] REMAINING DISAGREEMENT: none that changes a decision
+---
+# Debate round 3: GO / NO-GO on C2-L-exp (cj-5b12c48420cc), 2026-10-26
+
+[Opinion] **GO with changes.** With the FN-refit objective restored, this tests the missing claim directly. My previous closure recommendation was about priorities, not a mathematical obstruction.
+
+**1. No existing result rules out a pass.**
+
+[Checked] The old positive-RBM run had 2–2.4× larger bulk fit errors than G-tax; it did **not** isolate “30× amplification.” Its \(5.66\times10^{-5}\) tax combines fitting, reconstruction and subsequent hops/FN.
+
+[Derived] Condition numbers bound worst directions; they do not determine amplification of actual fitting errors. Writing \(F=e^{-tH_{J2}}\), the first-order reconstruction error is
+\[
+\delta\psi=F\!\left[s_N|\Phi_t|\,\delta\log|\Phi_t|\right],
+\]
+followed by normalization. Its spectral content matters.
+
+[Checked] The recorded 6×6 \(H_{J2}\) spectrum is approximately \([-11.9833,9]\). [Derived] Normalize both decoders at the upper endpoint: at the spectral midpoint, exponential \(t=0.20\) multiplies errors by **8.15**, versus **15.5** for additive cond 30. At the lower endpoint, the factors reverse to **66.46 versus 30**. Thus exponential reconstruction can suppress relevant errors better despite its larger condition number.
+
+[Checked] R2’s \(A=1.19\) measures **variational-energy** amplification for smooth Jastrow perturbations, not actual RBM errors or FN tax.
+
+[Opinion] My central estimate is \(\mathrm{tax}_B(2)\sim10^{-5}\)/site, with a broad plausible range \(10^{-6}\)–\(10^{-4}\). [Derived, heuristic] Persisting 2× bulk errors and benign amplification would suggest \(1.657\times10^{-6}\times2^2\times1.19=7.9\times10^{-6}\); transferring that estimate between targets and energy metrics is unvalidated. [Derived] L8’s one-hop identity supplies no veto: this is a transformed FN target, not the original network’s own one-hop target.
+
+**2. Changes before running**
+
+- [Opinion] **Choose the weakest adequate filter.** Use \(\{0.12,0.16,0.20,0.24\}\) within the budget; select the smallest \(t\) clearing both exact-store pass thresholds, rather than minimizing exact-store tax alone. [Derived] Increasing \(t\) can improve sign removal while worsening storage sensitivity.
+
+- [Opinion] **Keep \(s_N\) as the candidate sign.** Retain the same-fit `sign(Phi_t)` oracle readout as a diagnostic, never as a candidate pass. Keep the 2442-parameter class and 400-step protocol.
+
+- [Opinion] **Add one direct-error control:** after fitting, define \(\epsilon=\log|\Phi_{\rm fit}|-\log|\Phi_t|\), and measure the tax of \(\phi_0e^\epsilon\). Compare this with the reconstructed fit and exact-store result. [Derived] This tests the effect of the *actual* fitted error field without the decoder, separating storage error from reconstruction sensitivity more directly than two RMS tables. [Checked] Old FN readouts took about 37 seconds each; [Opinion] budget a few additional minutes, without another training run. Use common \(\phi_0\)-defined bins for the comparison.
+
+- [Opinion] Require round-trip/baseline controls and convergence of reported taxes within \(10^{-8}\)/site. [Derived] Label \(C\) and \(t^*\) as **FN-target diagnostics**: R2 used \(\psi_0\), so this is not a third matched ground-state size.
+
+**3. Probability and interpretation**
+
+[Opinion] Approximately **10% probability of satisfying both step-2 gates**, conditional on step 1 passing. That is sufficient for this bounded, directly relevant test.
+
+[Derived] A kill establishes failure of this sign rule, network class, loss, selected filter and training budget. The controls distinguish residual-sign damage, inaccurate storage and reconstruction sensitivity. It does not establish exponential complexity or rule out every pre-image representation. [Opinion] Keep the specified falling-loss exception, using a fixed held-out set.
+
+[Derived] Finally, \(C\approx70\) does not establish affordability: plain signed-path sampling needs roughly \((C-1)/\epsilon^2\), or \(6.9\times10^5\) independent paths per configuration on average at 1% relative RMS accuracy. [Opinion] Step 3 remains a separate, essential gate.
+
+GO WITH CHANGES: weakest passing filter; oracle-sign diagnostic; actual-fit-error control; numerical convergence checks; distinguish FN-target scaling from ground-state scaling.

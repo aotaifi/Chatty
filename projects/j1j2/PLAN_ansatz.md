@@ -402,6 +402,13 @@ K_k, FN; baseline tax_1 5.107e-6, tax_2 1.657e-6, gate 0.82e-6). Code ansatz/cod
   (<= 5 A40-h): PASS tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6; KILL tax_B(2) >= 1.657e-6 (inconclusive only if held-out
   loss falls > 1% per 10 steps over the last 50); fit rms by decade beside the rebuilt state's log error by decade.
 - Step 3 (PASS only): rebuild cost on 8x8 walkers. Ceiling for the whole takeover: 8 A40-h, no H100.
+- Amendment after Astra round 3 (GO WITH CHANGES, before any run; adopted): fit-arm t = the SMALLEST t whose exact-store
+  tax_B(1) < 1.657e-6 and tax_B(2) < 0.82e-6 (else lowest tax_B(2); W_M condition dropped); same-fit sign(Phi_t) readout as a
+  diagnostic only; actual-fit-error control: tax of phi_0 e^{eps}, eps = log|Phi_fit| - log|Phi_t| (no decoder), decade bins
+  by |phi_0|^2; taxes converged to 1e-8/site; W_M, t* labelled FN-target diagnostics. Astra: no derivation rules out a pass
+  (exp t 0.20 damps mid-spectrum errors 8.2x vs additive cond 30's 15.5x, reversed at the low end 66 vs 30); its central
+  estimate tax_B(2) ~ 1e-5 (range 1e-6..1e-4), P(pass) ~ 10%; mine ~25%. Conceded: C ~ 70 at 8x8 is NOT shown affordable
+  (plain signed sampling needs ~(C-1)/eps^2 ~ 7e5 paths per configuration at 1%); step 3 stays a separate gate.
 
 Next, in order: (1) [done: PASS] read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
 (sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM

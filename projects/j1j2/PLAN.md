@@ -35,12 +35,13 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## Running
-Nothing. 10x10/12x12 trainings cancelled 2026-10-26 (PI): checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn
-(resume with rbmpp_train.py 'resume' from state.npz; 10x10 at step ~4150/4500, 12x12 at ~1150/4500).
+## Running (takeover from 2026-10-26 19:50)
+- Local-product Krylov test, experiments/local_product/PREREG.md: Stage A exact 4x4 + 6x6 (worker, CPU/A40), Astra review cj-b7c4313e2b88,
+  prior-art search. PASS (6x6 LP E_FN error <= global step's) -> Stage B 8x8 on Paderborn (<= 12 H100-h); KILL (> 1.5x) -> stop.
+- 10x10/12x12 trainings cancelled 2026-10-26 (PI): checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 
 ## Budget
-Paderborn: NONE for the lead (PI 2026-10-26, after L8 and the loop tests failed). Trainings cancelled (PI).
+Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
 - ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit

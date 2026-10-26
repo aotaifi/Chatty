@@ -35,15 +35,12 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## Running (re-arm waits after a clear: until grep -q "VERDICT job <id>" delta_today.md)
-| job | run dir | next step per verdict |
-|---|---|---|
-| 10x10 RBM+PP training, Paderborn 3921516 (cont, 4096 chains, 4500 steps, ~19 H100-h) | Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/rbmppL/runs/rbL10_prod; local /scratch/a/A.Otaifi/rbmppL/prod/rbL10_prod (ANALYSIS_BRIEF.md) | converged -> VMC p=0/1, FN p=0, FN p=1 via experiments/gfmc_fn_lattice/m13b_LxL/launch_m13b_L.sh (LSZ=10, cont); drifting -> resume same RUN |
-| 12x12 RBM+PP training, Paderborn 3921519 (cont, 4096 chains, ~66 H100-h) | .../rbL12_prod | converged -> VMC p=0/1, FN p=0; FN p=1 (39 H100-h) only if 10x10 shows a trend worth it |
-Both trainings RUNNING since ~2026-10-26 02:00 (cont).
+## Running
+Nothing. 10x10/12x12 trainings cancelled 2026-10-26 (PI): checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn
+(resume with rbmpp_train.py 'resume' from state.npz; 10x10 at step ~4150/4500, 12x12 at ~1150/4500).
 
 ## Budget
-Paderborn: NONE for the lead (PI 2026-10-26, after L8 and the loop tests failed). Running trainings 3921516/3921519: PI asked.
+Paderborn: NONE for the lead (PI 2026-10-26, after L8 and the loop tests failed). Trainings cancelled (PI).
 
 ## Angles
 - ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit
@@ -62,6 +59,5 @@ Paderborn: NONE for the lead (PI 2026-10-26, after L8 and the loop tests failed)
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): The store-and-repeat loop is closed; on 4x4 exactly, training the network for its role under one correction step closes 79% of the remaining gap to exact, against 27% for the loop.
-- NEXT (in progress, high): Build this training with sampling and check whether the gain survives at 6x6 and 8x8; check the literature for prior art.
-- NEXT (in progress, medium): 10x10 and 12x12 network trainings are running for the add-on comparison.
+- STATUS (done, high): The loop and every Krylov-based rescue are closed: storing the improvement in the network fails, and Krylov steps cost more and help less as the lattice grows. Paderborn spending stopped.
+- NEXT (open, high): PI to decide what the project does next; the only part that scales is the walker method on top of a trained network, a known method.

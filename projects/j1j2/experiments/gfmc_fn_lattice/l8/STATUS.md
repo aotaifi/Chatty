@@ -55,3 +55,13 @@
   held-out R re-evaluated there 1.0068(20) vs exact 1.00450: z +1.15.  The in-curve value at the selected step was 1.0126(36): picking the maximum of the
   noisy curve reads ~+2 sigma high; the re-evaluation removes most of it.  Exact R per step: rises to 1.0050 at step 5, plateau 1.0039-1.0048 to step 16,
   1.0027-1.0033 at steps 17-20.  Broken a/|g|: exact R 0.8807.
+
+## F 3923271 NO_RISE and diagnosis 2026-10-26 (l8_diag.py, Paderborn 3973532 express, part (a) only, ~2 min)
+- F: chain-split held-out R fell from step 1 (0.9984(7) vs train 1.0041(7)); early stopping selected step 0; V/G killed by Slurm.
+- Cross-chain S-metric cosine of the per-chain natural gradients at v_0 (disjoint VMC halves, jackknife over 20 block groups, 400 blocks/chain):
+  shift 0.1: +0.033(29) (+1.2 sigma); shift 1: -0.006(41); shift 10: -0.029(99).  Same-chain halves (chain 1): +0.025(26), +0.009(35), -0.028(96).
+  Predicted held-out change g2.d1 (lr 1): +3.4(1.4)e-2 at shift 0.1, +4.7(6.9)e-3 at 1, -1.7(250)e-5 at 10.
+- 4x4 positive control (run3 dumps, 250 blocks/chain, /scratch/a/A.Otaifi/l8/diag4x4): +0.351(87) (+4.0 sigma) at shift 0.1, +0.458(137) at 1, +0.59(27) at 10.
+- Branch: DATA-STARVED (cosine within 2 sigma of 0 at every shift); (b) not run.  Data factor for a 3-sigma cosine at shift 0.1: (3/1.16)^2 = 6.6x
+  (noise ~ 1/sqrt(blocks)) -> 2660 blocks per chain, +2260 per chain = 16.4 H100-h more dump at 13.1 s/block; if instead cos grows linearly with data
+  (noise-dominated regime), 2.6x -> 1030 per chain, +4.6 H100-h.  Shifts 1 and 10 give no signal to extrapolate from.

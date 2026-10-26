@@ -29,10 +29,9 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Test 1 DONE (exact 4x4, /scratch/a/A.Otaifi/l8/loop4x4): refit to FN(a) and node-weighted refit make E_FN WORSE every round
   (RBM -0.5275259 -> -0.5273929); with a hop the RBM class gains 27% of the add-on-to-E0 gap in 5 rounds, but sign-broken targets
   gain as much (control fails): the gain is E_FN(a*h_a) being non-stationary at the E_v optimum, not storage. Storage loop CLOSED.
-- Test 2 DONE (exact 4x4): training the network for E_VMC(a*h_a) closes 79% (RBM-only) / 69% (f-only) of the add-on-to-E0 gap
-  vs 27% / 9.9% for 5 loop rounds: the loop is redundant; the live idea is HOP-AWARE TRAINING (network trained for its role under
-  one hop, then FN). Running: prior-art search; sampled SR trainer built and sized (worker, <= 3 H100-h). Gates (pre-registered):
-  6x6 E_FN(a*h_a) - E0 < 0.7 x 5.57e-6 -> 8x8; 8x8 E_FN(g) below -0.498946(5) by > 3 sigma -> GAIN.
+- Test 2 (exact 4x4): training the network for E_VMC(a*h_a) closes 79%/69% of the add-on-to-E0 gap (loop 27%/9.9%), but it is
+  CLOSED without a test (PI 2026-10-26): any explicit Krylov step over configurations needs the two-hop neighbourhood per sample
+  (137x plain sampling at 8x8, growing ~N) while its gain per site fades. Pilots 4010838/4012781 cancelled before start.
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
@@ -43,9 +42,8 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 | 12x12 RBM+PP training, Paderborn 3921519 (cont, 4096 chains, ~66 H100-h) | .../rbL12_prod | converged -> VMC p=0/1, FN p=0; FN p=1 (39 H100-h) only if 10x10 shows a trend worth it |
 Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 
-## Budget (takeover decision 2026-10-25)
-<= 130 H100-h of the project allocation hpc-prf-ppdmrg for 10x10/12x12 + L8; no single job > 70 H100-h. Express
-(personal, 30 H100-h/month) exhausted for October (29.6 used). cont/lowcont estimates say start ~Nov 7 but jobs do run.
+## Budget
+Paderborn: NONE for the lead (PI 2026-10-26, after L8 and the loop tests failed). Running trainings 3921516/3921519: PI asked.
 
 ## Angles
 - ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit

@@ -211,13 +211,14 @@ gG = S['psi']['dEFN'] - S['G']['dEFN']
 C['locality'] = {k: dict(gain=S['psi']['dEFN'] - S[k]['dEFN'], gain_over_G=(S['psi']['dEFN'] - S[k]['dEFN']) / gG) for k in ('LP', 'LPeq', 'LPs', 'Pplaq', 'LPperm_BROKEN', 'LPunif')}
 log('CONTROL locality (FN gain / G gain)', json.dumps({k: round(q['gain_over_G'], 4) for k, q in C['locality'].items()}))
 fo = {}
-for a in (1e-3, 5e-4):
+for a in (1e-3, 5e-4, 1e-6, 5e-7):
     g_ = v + a * u1; g_ = g_ / jnp.linalg.norm(g_)
     fo[str(a)] = dict(dist=float(jnp.linalg.norm(sec.vec(*build('LP', (a, a))) - g_)), BROKEN_noJ2_dist=float(jnp.linalg.norm(sec.vec(*build('LP', (a, 0.0))) - g_)))
 r1 = fo['0.001']['dist'] / fo['0.0005']['dist']; r2 = fo['0.001']['BROKEN_noJ2_dist'] / fo['0.0005']['BROKEN_noJ2_dist']
-C['first_order'] = dict(points=fo, ratio_halving=r1, BROKEN_ratio_halving=r2); dump()
+r3 = fo['1e-06']['dist'] / fo['5e-07']['dist']; r4 = fo['1e-06']['BROKEN_noJ2_dist'] / fo['5e-07']['BROKEN_noJ2_dist']
+C['first_order'] = dict(points=fo, ratio_halving=r1, BROKEN_ratio_halving=r2, ratio_halving_small=r3, BROKEN_ratio_halving_small=r4); dump()
 log(f'CONTROL first order: |n(LP(a,a)) - n(G(a))| a=1e-3, 5e-4: {fo["0.001"]["dist"]:.3e}, {fo["0.0005"]["dist"]:.3e} ratio {r1:.3f} (O(a^2): 4); '
-    f'BROKEN (no J2 factors) {fo["0.001"]["BROKEN_noJ2_dist"]:.3e}, {fo["0.0005"]["BROKEN_noJ2_dist"]:.3e} ratio {r2:.3f} (O(a): 2)')
+    f'BROKEN (no J2 factors) {fo["0.001"]["BROKEN_noJ2_dist"]:.3e}, {fo["0.0005"]["BROKEN_noJ2_dist"]:.3e} ratio {r2:.3f} (O(a): 2); at a=1e-6, 5e-7: ratio {r3:.3f}, BROKEN {r4:.3f}')
 # ------------------------------------------------------------------ N0 near-node diagnostic
 D0 = jnp.concatenate([0.25 * jnp.sum(JB) - 0.5 * jnp.sum(jnp.where(VAL[k], JB[None, :], 0.0), 1) for k in range(len(CH))])
 av = jnp.abs(v); den = sec.H(av) - D0 * av; c = jnp.abs(Hv - D0 * v) / jnp.maximum(den, 1e-300)
@@ -243,7 +244,7 @@ for thr, dd in diag.items():
     log(f'N0 c<{thr}: near-node share (psi^2) {q["near_node_share"]:.3e}; flipped by G {q["flipped_by_G"]:.3e} / by LP {q["flipped_by_LP"]:.3e}, '
         f'both {q["both"]:.3e}, Jaccard {q["jaccard"]:.3f}  [orbit-count weights: G {qn["flipped_by_G"]:.3e} LP {qn["flipped_by_LP"]:.3e} Jaccard {qn["jaccard"]:.3f}]')
 # ------------------------------------------------------------------ verdict (PREREG)
-best = min(S['LP']['dEFN'], S['LPs']['dEFN'])   # PREREG: LP or LPs (LPeq, Pplaq reported); q = best / S['G']['dEFN']
+best = min(S['LP']['dEFN'], S['LPs']['dEFN']); q = best / S['G']['dEFN']   # PREREG: LP or LPs (LPeq, Pplaq reported)
 verd = 'PASS' if q <= 1.0 else ('KILL' if q > 1.5 else 'MARGINAL')
 res['verdict'] = dict(verdict=verd, ratio_bestLP_over_G=q, gain_ratio_LP_over_G=(S['psi']['dEFN'] - best) / gG); res['sec'] = time.time() - T00; dump()
 log(f'VERDICT 6x6 RBM+PP A: {verd}  E_FN-E0 /site: psi {S["psi"]["dEFN"]:.4e} G {S["G"]["dEFN"]:.4e} LP {S["LP"]["dEFN"]:.4e} LPeq {S["LPeq"]["dEFN"]:.4e} LPs {S["LPs"]["dEFN"]:.4e} Pplaq {S["Pplaq"]["dEFN"]:.4e}  '

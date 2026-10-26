@@ -148,7 +148,7 @@ log('AMPLIFICATION |n(LP)/n(psi)|', json.dumps(res['amplification']))
 # ---------------- controls
 C = res['controls'] = {}
 u0 = LP(0.0, 0.0); ub = LP(1e-6, 1e-6)
-C['alpha0'] = dict(LP0_bitwise_equal_psi=bool(np.array_equal(u0, nrm(v))), LP0_EFN_minus_psi=(fn_state(u0)[0] - fn_state(v)[0]) / N,
+C['alpha0'] = dict(LP0_max_abs_diff=float(np.max(np.abs(u0 - nrm(v)))), LP0_bitwise_equal_psi=bool(np.array_equal(u0, nrm(v))), LP0_EFN_minus_psi=(fn_state(u0)[0] - fn_state(v)[0]) / N,
                    LPs0_bitwise=bool(np.array_equal(LPs(0.0), nrm(v))), Pplaq0_bitwise=bool(np.array_equal(PPLQ(0.0), nrm(v))),
                    BROKEN_alpha1e6_bitwise_equal=bool(np.array_equal(ub, nrm(v))), BROKEN_max_abs_diff=float(np.max(np.abs(ub - nrm(v)))))
 log('CONTROL alpha=0', json.dumps(C['alpha0']))
@@ -162,14 +162,15 @@ gG = S['psi']['dEFN'] - S['G']['dEFN']
 C['locality'] = {k: dict(gain=S['psi']['dEFN'] - S[k]['dEFN'], gain_over_G=(S['psi']['dEFN'] - S[k]['dEFN']) / gG) for k in ('LP', 'LPeq', 'LPs', 'Pplaq', 'LPperm', 'LPunif')}
 log('CONTROL locality (FN gain / G gain)', json.dumps({k: round(q['gain_over_G'], 4) for k, q in C['locality'].items()}))
 fo = {}
-for a in (1e-3, 5e-4):
+for a in (1e-3, 5e-4, 1e-6, 5e-7):
     fo[str(a)] = dict(dist=float(np.linalg.norm(LP(a, a) - Gst(a))), BROKEN_noJ2_dist=float(np.linalg.norm(LP(a, 0.0) - Gst(a))))
 r1 = fo['0.001']['dist'] / fo['0.0005']['dist']; r2 = fo['0.001']['BROKEN_noJ2_dist'] / fo['0.0005']['BROKEN_noJ2_dist']
-C['first_order'] = dict(points=fo, ratio_halving=r1, BROKEN_ratio_halving=r2)
+r3 = fo['1e-06']['dist'] / fo['5e-07']['dist']; r4 = fo['1e-06']['BROKEN_noJ2_dist'] / fo['5e-07']['BROKEN_noJ2_dist']
+C['first_order'] = dict(points=fo, ratio_halving=r1, BROKEN_ratio_halving=r2, ratio_halving_small=r3, BROKEN_ratio_halving_small=r4)
 log(f'CONTROL first order: |n(LP(a,a)) - n(G(a))| at a=1e-3, 5e-4: {fo["0.001"]["dist"]:.3e}, {fo["0.0005"]["dist"]:.3e} ratio {r1:.3f} (O(a^2): 4); '
-    f'BROKEN (J2 factors dropped) {fo["0.001"]["BROKEN_noJ2_dist"]:.3e}, {fo["0.0005"]["BROKEN_noJ2_dist"]:.3e} ratio {r2:.3f} (O(a): 2)')
+    f'BROKEN (J2 factors dropped) {fo["0.001"]["BROKEN_noJ2_dist"]:.3e}, {fo["0.0005"]["BROKEN_noJ2_dist"]:.3e} ratio {r2:.3f} (O(a): 2); at a=1e-6, 5e-7: ratio {r3:.3f}, BROKEN {r4:.3f}')
 # ---------------- verdict (PREREG rules, per guide)
-best = min(S[k]['dEFN'] for k in ('LP', 'LPs'))   # PREREG: LP or LPs (LPeq, Pplaq reported, not in the rule); q = best / S['G']['dEFN']
+best = min(S[k]['dEFN'] for k in ('LP', 'LPs')); q = best / S['G']['dEFN']   # PREREG: LP or LPs (LPeq, Pplaq reported, not in the rule)
 verd = 'PASS' if q <= 1.0 else ('KILL' if q > 1.5 else 'MARGINAL')
 res['verdict'] = dict(verdict=verd, ratio_bestLP_over_G=q, gain_ratio_LP_over_G=(S['psi']['dEFN'] - best) / gG); res['sec'] = time.time() - t00; dump()
 log(f'VERDICT 4x4 {MASK}: {verd}  E_FN-E0 /site: psi {S["psi"]["dEFN"]:.4e} G {S["G"]["dEFN"]:.4e} LP {S["LP"]["dEFN"]:.4e} LPeq {S["LPeq"]["dEFN"]:.4e} LPs {S["LPs"]["dEFN"]:.4e} Pplaq {S["Pplaq"]["dEFN"]:.4e}  '

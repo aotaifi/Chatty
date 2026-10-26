@@ -10,6 +10,7 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 from math import comb
 LX, LY, OUT = int(sys.argv[1]), int(sys.argv[2]), sys.argv[3]
+FINE = len(sys.argv) > 4 and sys.argv[4] == 'fine'
 N = LX * LY; J2 = 0.5; T0 = time.time()
 def log(*a): print(f'[{time.time() - T0:6.1f}s]', *a, flush=True)
 def site(x, y): return (x % LX) + LX * (y % LY)
@@ -39,16 +40,16 @@ def rec(phi, **kw):
     return dict(kw, ratio=WM(phi) / W0, ov_LM=float((LM @ phi) ** 2), ov_psi0=float((psi0 @ phi) ** 2))
 lmax = sla.eigsh(HJ2, k=1, which='LA', tol=1e-10)[0][0]; lmin = sla.eigsh(HJ2, k=1, which='SA', tol=1e-10)[0][0]
 out = []
-for cond in (1.5, 2, 3, 5, 10, 30):
+for cond in ((3, 4, 5, 6, 7, 8, 10) if FINE else (1.5, 2, 3, 5, 10, 30)):
     a = -(1 - 1 / cond) / (lmax - lmin / cond)
     out.append(rec(sla.minres(sp.identity(D, format='csr') + a * HJ2, psi0, tol=1e-12, maxiter=20000)[0], cond=cond, a=float(a)))
     log('add', out[-1])
 res['forms']['additive'] = out; out = []
-for t in (0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5):
+for t in ((0.1, 0.12, 0.14, 0.16, 0.18, 0.2) if FINE else (0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5)):
     out.append(rec(sla.expm_multiply(t * HJ2, psi0), t=t)); log('exp', out[-1])
 res['forms']['exponential'] = out; out = []
 I = sp.identity(D, format='csr')
-for a in (-0.1, -0.25, -0.5, -0.75, -1.0, -1.5):
+for a in ((-0.1, -0.13, -0.16, -0.19, -0.22, -0.25) if FINE else (-0.1, -0.25, -0.5, -0.75, -1.0, -1.5)):
     ct, cs = 1.0 / (1 + a * J2 / 4), 1.0 / (1 - 3 * a * J2 / 4); phi = psi0.copy()
     for h in reversed(hb):                                  # K = G_last ... G_1, K^{-1} psi0 = G_1^-1 ... G_last^-1 psi0
         S_ = h / J2; phi = (ct * (0.75 * I + S_) + cs * (0.25 * I - S_)) @ phi

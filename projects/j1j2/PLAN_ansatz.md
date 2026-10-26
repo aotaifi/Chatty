@@ -1,5 +1,11 @@
 # PLAN_ansatz (angle lead "ansatz pioneer", started 2026-10-23; project lead's PLAN.md points here)
 
+## Bar for the loop (PI, 2026-10-26)
+An ansatz need not carry the whole sign in one go: the FN loop corrects the sign round by round. Judge a candidate
+by what it does inside the loop (per-round refit tax with the loop's own sign step, gate tax_2 < 0.82e-6, baseline
+G-tax 1.657e-6), not by sign exactness. Tests C1, C2-T0, C4, C6, C6b used one-shot sign bars; C2-L stored the
+pre-image with the plain Marshall sign (one-shot by choice) and was not tested with the loop carrying the residual sign.
+
 ## How to work (PI, via the project lead, 2026-10-23)
 - Bold in ideas, prudent in compute: write what a test can teach and what kills the idea before any GPU time; a bold
   idea earns a cheap test first (4x4 exact, minutes), never a large run on hope.
@@ -268,6 +274,24 @@ at threshold 0.53 / 0.59 / 0.61 (psi0: 0.24). Also checked: at strong undoing Ph
   Then the exponential form at 6x6 (sector Krylov with the J2 table, GPU, <= 0.5 h).
 - Kill: t* (or a*) grows >= 1.5x from 4x4 to 4x6, or LM overlap at threshold >= 0.9.
 
+#### R1 results so far (2026-10-26; ansatz_runs/recheck/lu_4x4*.json, lu_4x6.json; exact; the 4x6 fine grid is running)
+Strength* for W_M(Phi) <= 1e-3 W_M(psi0):
+| form | 4x4 | 4x6 (coarse grid) |
+|---|---|---|
+| exponential exp(t H_J2), t* | (0.14, 0.16] | (0.1, 0.2] (t = 0.2: 1.7e-5) |
+| gate product, per-gate a* (gate cond 1.08-1.10) | (-0.19, -0.16] | (-0.25, -0.1] (a = -0.25: 1.7e-8) |
+| additive, cond* | (3, 4] | (5, 10] (cond 5: 1.6e-3) |
+LM overlap at threshold falls with N for the local forms (exp t = 0.2: 0.53 -> 0.20; psi0 itself 0.24 -> 0.052): not
+the trivial regime. Additive needs more with N. Provisional statement: psi0 = exp(-t H_J2) Phi_+ with Phi_+ sign-free
+and t ~ 0.15-0.2/J1 independent of N (two sizes). Also (recheck_preimage.py, rc_4x4/4x6): undoing J2 pushes Phi toward
+the Lieb-Mattis Neel singlet; at moderate strength Phi stays psi0-like and is smoother in the tail (4x4, rms
+bond-to-bond jump of log|amp| at decade -10: Phi(cond 3) 1.6 vs psi0 3.8).
+Next, in order: (1) read lu_4x6_fine.json and decide R1 by its rule; (2) on PASS, the exponential form at exact 6x6
+(sector Krylov expm with the J2 table ansatz_runs/c2_t0b_6x6/tables/nb_J2.npy and sector_ops.py; GPU <= 0.5 h): t*, LM
+overlap; (3) on PASS at 6x6, pre-register the loop-native C2-L: store |Phi_t| with the loop carrying the residual
+sign, reconstruct psi = exp(-t H_J2)(s * |Phi_fit|) exactly, K_2 + FN, tax vs G-tax 1.657e-6, positive-RBM fit.
+Open risk: applying exp(-t H_J2) to walkers at 8x8+ is not designed (a short-time sign problem or a local expansion).
+
 ### C3-T0: do vison (Z2 flux) fluctuations of a projected Z2 spin liquid carry the missing physics? (2026-10-23, before any run; exact 4x4, CPU; code ansatz/code/c3_t0.py)
 Base: Gutzwiller-projected BCS, Hu-Becca-Parola-Sorella Z2 ansatz (arXiv:1304.2630): NN hopping t = 1, NN
 d_{x2-y2} pairing D1, NNN d_xy pairing D2, chemical potential mu; spinon boundary conditions (P/A in x, y).
@@ -353,6 +377,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   (-13..-15): in the deep tail the exact sign is uncorrelated with Marshall; the node runs through the tail.
 
 ## Status
+- 2026-10-26: REOPENED at the PI's request (look again, judge by the loop's bar, not one-shot sign); R1 started.
 - 2026-10-24: ANGLE CLOSED (day 2 of ~5): all candidates dead or closed after an adversarial review and re-tests;
   memo ansatz/ANSATZ_MEMO.md; handoff handoffs/2026-10-24-ansatz-pioneer.md. Compute used ~10 A40-h, 0 H100-h, plus CPU jobs.
 - 2026-10-23: plan created; greeting with blind-spot reading and C1-C3 sent to the PI; C4 added.
@@ -360,5 +385,5 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (done, medium): Nine structured ansatz ideas tested on exact lattices and none beats the baselines; the frustrated sign is made by cancellation of exchange paths, which the loop's hops already compute.
-- NEXT (open, low): The loop could test the best published network (CNN plus MPS) as its stored part; the PI decides whether to reopen this angle.
+- STATUS (in progress, medium): Reopened at the PI's request: undoing the J2 exchange locally needs the same small strength at two lattice sizes, which could make the loop's stored state smooth and nearly sign-free.
+- NEXT (open, medium): Confirm the size-independent strength at 6x6, then test it inside the loop with the loop carrying the leftover sign.

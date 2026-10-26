@@ -212,6 +212,24 @@ def efn_vg(fl, w):
     nk = (g[nbr] / g[wi] >= 0).astype(np.float64); p2 = ph ** 2 / (ph @ ph)
     _, gr = _hf_vg(jnp.asarray(fl), w, jnp.asarray(p2), jnp.asarray(nk)); return e, np.asarray(gr)[IDX]
 
+if STAGE in ('gradref', 'evalfn'):
+    # reference for the sampled hop-aware trainer (hopsr/): exact E_1 = E_VMC(a h_a) (Ritz alpha) and its gradient (all P params, the
+    # class is IDX) at FLAT (default OUT/flat_opt.npy), w = w30; 'evalfn' also accepts a rbmpp-format params npz (FLAT=*.npz).
+    fp = os.environ.get('FLAT', os.path.join(OUT, 'flat_opt.npy'))
+    if fp.endswith('.npz'):
+        zz = np.load(fp); x = np.asarray(ravel_pytree({k: jnp.asarray(zz[k]) for k in KEYS})[0])
+    else:
+        x = np.load(fp)
+    val, gfull = _Egr_vg(jnp.asarray(x), w30); S = state(x, w30)
+    tag = os.environ.get('TAG', STAGE)
+    res = dict(flat=fp, mask=MASK, E0N=E0 / N, E1=float(val), E1N=float(val) / N, EvN=S['Ev'] / N, EgN=S['Eg'] / N, EFN_gN=S['EFN_g'] / N,
+               EFN_vN=S['EFN_v'] / N, alpha=S['alpha'], w=[float(np.real(w30)), float(np.imag(w30))], gnorm_class=float(np.linalg.norm(np.asarray(gfull)[IDX])))
+    open(os.path.join(OUT, f'{tag}.json'), 'w').write(jd(res))
+    if STAGE == 'gradref':
+        np.savez(os.path.join(OUT, f'{tag}.npz'), flat=x, w=w30, grad=np.asarray(gfull), idx=IDX, E1=float(val), Ev=S['Ev'], alpha=S['alpha'])
+    log(f'VERDICT {STAGE} {MASK}: E_1/N {float(val) / N:.12f} E_v/N {S["Ev"] / N:.12f} E_FN(g)/N {S["EFN_g"] / N:.10f} |grad_class| {res["gnorm_class"]:.4e}')
+    sys.exit(0)
+
 if STAGE in ('hopa', 'hopb', 'hopa_pert'):
     x0 = np.load(os.path.join(OUT, 'flat_opt.npy')); MAXEV = int(os.environ.get('MAXEV_HOP', 20000)); F = os.path.join(OUT, f'{STAGE}.json')
     S0 = state(x0, w30); res = dict(mask=MASK, stage=STAGE, E0N=E0 / N, start=dict(EvN=S0['Ev'] / N, EgN=S0['Eg'] / N, EFN_gN=S0['EFN_g'] / N))

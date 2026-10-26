@@ -1,0 +1,22 @@
+{
+ "L": 4,
+ "proj": "translations",
+ "init": "/scratch/hpc-prf-ppdmrg/hpcalot/hopsr/data/init4_rbmonly_opt.npz",
+ "cls": "rbm",
+ "w": [
+  -0.9998908160596172,
+  -0.014776872457757328
+ ],
+ "chains": 4096,
+ "sweeps_per_step": 4,
+ "steps": 5,
+ "therm": 50,
+ "lr": 0.02,
+ "shift": 0.01,
+ "max_dnorm": 0.05,
+ "chunk": 4096,
+ "jchunk": 1024,
+ "groups": 32,
+ "ckpt_every": 5,
+ "maxsec": 600
+}

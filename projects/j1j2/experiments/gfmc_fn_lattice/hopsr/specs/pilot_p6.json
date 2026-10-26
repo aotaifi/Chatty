@@ -1,0 +1,22 @@
+{
+ "L": 6,
+ "proj": "full",
+ "init": "/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/data/gtax/params_final.npz",
+ "cls": "all",
+ "w": [
+  1.0,
+  0.0
+ ],
+ "chains": 4096,
+ "sweeps_per_step": 1,
+ "steps": 3,
+ "therm": 30,
+ "lr": 0.002,
+ "shift": 0.01,
+ "max_dnorm": 0.02,
+ "chunk": 256,
+ "jchunk": 16,
+ "groups": 32,
+ "ckpt_every": 1,
+ "maxsec": 900
+}

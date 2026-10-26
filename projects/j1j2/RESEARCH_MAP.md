@@ -177,6 +177,11 @@ One page that holds the thread of our discussions. Details live in CLAUDE_TAKE.m
 - 12x12/14x14 plan (PLAN.md): RBM+PP guide (own JAX code) + Lanczos + FN as the cheapest decisive route; ViT as add-on.
 - H100 NVL exists on ws1 inter (2.36e4 projected evals/s, 4.5x an A40 slice); using it needs the PI's OK.
 
+## 3s. Test L8: one loop round at 8x8 with walkers (2026-10-26) — CLOSED, cause understood
+A same-class refit at the VMC energy optimum has zero fidelity gradient toward its own one-hop state (alpha x dE; exact 4x4 to 5e-9)
+and gains nothing at second order; only the FN gain beyond the hop is storable (2.3e-5/site at 8x8, unresolvable from 400 blocks/chain).
+Report: docs/reports/2026-10-26_l8_loop_round_8x8.md.
+
 ## 4. Decisions taken (and why)
 - RULE (PI, 2026-10-08): a route is declared failed only when the failure is understood and pinned to a conceptual limit that cannot be fixed. Before that: diagnose (optimizer, convergence, sampling, literature) and try the better method. Section 3e write-back verdict is downgraded to INCONCLUSIVE (cause: Adam, not converged).
 - FN = signs + referee/bound; amplitude objective = fixed-sign VMC energy with a second-order optimizer (test A, 2026-10-06).

@@ -29,8 +29,10 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Test 1 DONE (exact 4x4, /scratch/a/A.Otaifi/l8/loop4x4): refit to FN(a) and node-weighted refit make E_FN WORSE every round
   (RBM -0.5275259 -> -0.5273929); with a hop the RBM class gains 27% of the add-on-to-E0 gap in 5 rounds, but sign-broken targets
   gain as much (control fails): the gain is E_FN(a*h_a) being non-stationary at the E_v optimum, not storage. Storage loop CLOSED.
-- Test 2 (running, worker, exact 4x4, CPU): optimise E_VMC(a*h_a) (scalable) and E_FN(a*h_a) directly; loop REDUNDANT if E_VMC(a*h_a)
-  optimisation closes >= 27% of the gap. Then the live idea is hop-aware training (check Sorella PRB 64, 024512 for prior art).
+- Test 2 DONE (exact 4x4): training the network for E_VMC(a*h_a) closes 79% (RBM-only) / 69% (f-only) of the add-on-to-E0 gap
+  vs 27% / 9.9% for 5 loop rounds: the loop is redundant; the live idea is HOP-AWARE TRAINING (network trained for its role under
+  one hop, then FN). Running: prior-art search; sampled SR trainer built and sized (worker, <= 3 H100-h). Gates (pre-registered):
+  6x6 E_FN(a*h_a) - E0 < 0.7 x 5.57e-6 -> 8x8; 8x8 E_FN(g) below -0.498946(5) by > 3 sigma -> GAIN.
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
@@ -62,5 +64,6 @@ Both trainings RUNNING since ~2026-10-26 02:00 (cont).
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): Refocused on 'trained network + correction steps + walker method' as an add-on; at 8x8 it already beats the best published network energy of its type.
-- NEXT (in progress, high): 10x10 and 12x12 network trainings are running; then measure the add-on's energy gain and GPU cost there against published networks.
+- STATUS (in progress, high): The store-and-repeat loop is closed; on 4x4 exactly, training the network for its role under one correction step closes 79% of the remaining gap to exact, against 27% for the loop.
+- NEXT (in progress, high): Build this training with sampling and check whether the gain survives at 6x6 and 8x8; check the literature for prior art.
+- NEXT (in progress, medium): 10x10 and 12x12 network trainings are running for the add-on comparison.

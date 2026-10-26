@@ -36,8 +36,10 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
 ## Running (takeover from 2026-10-26 19:50)
-- Local-product Krylov test, experiments/local_product/PREREG.md: Stage A exact 4x4 + 6x6 (worker, CPU/A40), Astra review cj-b7c4313e2b88,
-  prior-art search. PASS (6x6 LP E_FN error <= global step's) -> Stage B 8x8 on Paderborn (<= 12 H100-h); KILL (> 1.5x) -> stop.
+- Local-product Krylov test, experiments/local_product/PREREG.md (+ Amendment 1 after Astra: G is linear-cost on local guides):
+  Stage A (exact LP vs G, 4x4 + 6x6, worker) running. Stage A' DONE: cached G on a CNN is exact (1e-14) and linear for L >= 16
+  (exponent 0.99) but FAILED the pre-registered L=6..20 fit (1.79) because the affected set saturates only at L=16; overhead per
+  Krylov step ~|A_c| (~1000 for a 7x7 receptive field, ~240 for 3x3) vs 137 for direct RBM+PP at 8x8.
 - 10x10/12x12 trainings cancelled 2026-10-26 (PI): checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 
 ## Budget

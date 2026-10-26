@@ -23,6 +23,14 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
   blocks/chain (cross-chain cosine -0.010(35) with 131k VMC samples). The loop with same-class refit has no route to a
   constant-cost gain per round. PI decision 2026-10-26: refocus on the add-on (Goal above).
 
+## Open question: can the loop be rescued? (PI 2026-10-26: 'I was hoping to rescue our loop')
+- Derived: refitting to the one-hop state is one SR step (gradient = alpha x energy gradient at any point), so a same-class loop
+  gains beyond VMC only from the FN projector's information beyond the hop (2.3e-5/site at 8x8 after a hop; FN p=0 vs VMC p=0 8.3e-5).
+- Test 1 (running, worker, exact, CPU/<= 4 GPU-h): iterate guide -> exact FN -> fidelity refit, 5 rounds, 4x4 restricted classes +
+  6x6 RBM+PP, with and without a hop. KEEPS GAINING (round 3 >= 30% of round 1, 5-round sum >= 2x round 1) -> Test 2: the 8x8
+  sampling problem with p=0 walkers (140x cheaper per walker-tau than p=1). STALLS (round 2 < 10% of round 1) -> loop closed for good.
+- Literature (running, worker): self-healing DMC (Reboredo-Hood-Kent 2009) is the continuum version of this loop; what limited it.
+
 ## Running (re-arm waits after a clear: until grep -q "VERDICT job <id>" delta_today.md)
 | job | run dir | next step per verdict |
 |---|---|---|

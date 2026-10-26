@@ -29,7 +29,8 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Test 1 (running, worker, exact, CPU/<= 4 GPU-h): iterate guide -> exact FN -> fidelity refit, 5 rounds, 4x4 restricted classes +
   6x6 RBM+PP, with and without a hop. KEEPS GAINING (round 3 >= 30% of round 1, 5-round sum >= 2x round 1) -> Test 2: the 8x8
   sampling problem with p=0 walkers (140x cheaper per walker-tau than p=1). STALLS (round 2 < 10% of round 1) -> loop closed for good.
-- Literature (running, worker): self-healing DMC (Reboredo-Hood-Kent 2009) is the continuum version of this loop; what limited it.
+- Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
+  the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
 ## Running (re-arm waits after a clear: until grep -q "VERDICT job <id>" delta_today.md)
 | job | run dir | next step per verdict |

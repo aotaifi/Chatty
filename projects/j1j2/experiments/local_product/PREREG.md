@@ -29,3 +29,17 @@ must lose most of the gain; the first-order identity (LP and G agree to O(alpha^
   PASS: E_FN(LP) <= -0.498946 + 2 sigma (G's value, +-4.6e-6) -> Stage C (separate pre-registration: CNN guide, O(N) cost, 10x10).
   KILL: E_FN(LP) > -0.498946 by > 3 sigma.
 Lead's prior: Stage A PASS ~45%, Stage B PASS given A ~55%.
+
+## Amendment 1 (lead, 2026-10-26 ~20:20, after Astra review cj-b7c4313e2b88; before any Stage A result)
+- Astra [derived, checked on a synthetic 144-site guide]: for a guide with strictly local ratios (log psi = sum of patch
+  functions, e.g. a CNN with finite receptive field and sum readout), the GLOBAL step G is also O(1) per proposal / O(N) per
+  sweep with cached bond densities: E_L(y) = E_L(x) + sum_{b in A_c} [eps_b(y) - eps_b(x)]. So LP has no cost advantage over G
+  on the same guide; the N^2 cost of Krylov is a property of global-ratio guides (RBM+PP, ViT), not of the Krylov step.
+- Stage A changes (pass/kill rules unchanged): (i) broken control replaced: densities from an unrelated configuration
+  (translating every bond only permutes factors, so it was not broken); (ii) added arm P_plaq = prod_p [1 + alpha sum_b w_pb
+  (eps_b - e_b)]; (iii) variant with alpha_J1 = alpha_J2 (where the first-order LP = G identity holds); (iv) crossed
+  diagnostics E_FN(|psi_G| sgn psi_LP) and E_FN(|psi_LP| sgn psi_G) to separate sign repair from amplitude damage.
+- New Stage A' (the actual scalability question): implement G with cached local energies on a finite-receptive-field CNN
+  guide; correctness: cached vs direct psi_G ratios and E_L agree to <= 1e-12 relative (broken: drop one affected bond ->
+  disagrees); cost: s/sweep at L = 6, 8, 12, 16, 20 (random weights, fixed receptive field) must scale as N^a with a <= 1.2
+  (direct evaluation, the control, must show a ~ 2). Cheap (GPU minutes); theorie A40 or Paderborn <= 0.5 H100-h.

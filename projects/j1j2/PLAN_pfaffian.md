@@ -90,8 +90,11 @@ a lattice) cut the copy's error, specifically on the bonds the real network's ow
 - Code check before production: with Im = 0 exactly, the complex code reproduces the real code's ln|A| to 1e-10 on
   1000 reps; a broken arm (Im start with sigma = 1) must change it.
 
+Budget (PI via the lead, 2026-10-27): <= 10 H100-h on Paderborn gpu_h100, account hpc-prf-ppdmrg, single job <= 6 H100-h.
+Order: CPU checks pass -> one-step rate probe -> resize if complex step > 6x real -> lead reads the launcher -> submit.
+
 ## Running
-none
+Code build + CPU checks (worker); no GPU job yet. H100-h used: 0.
 
 ## Dead ends
 none yet

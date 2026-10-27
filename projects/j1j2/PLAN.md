@@ -39,12 +39,15 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 
 ## Open: storage near the nodes (PI + ansatz lead, 2026-10-27) - PI direction: resolve storage first
 Details, cause equations, tried rows and status: STORAGE_PROBLEM.md. Three issues:
-1. Weighting: log-amplitude output and losses weight errors by psi^2; the FN energy weights pairs across a node by the big side,
-   ~ |H| psi(y)^2 (r - r*)^2 / r (near-node identity; for |r - r*| >> r* this becomes ~ |H| psi(y)^2 |r - r*|).
+1. Weighting (CORRECTED 2026-10-27, independent review verified by the ansatz lead and the lead, c2le_gtax.py l.426-464): the G-tax
+   copy loss was NOT psi^2-weighted; it draws configurations equally per decade and violating bonds proportional to |H| phi(y)/phi(x),
+   already the FN-shaped small-error weight. So weighting does not explain the G-tax. The pair loss L_fix is the exact upper bound of
+   E_FN at frozen phi, so storing with it converges to a stationary point of E_FN over the class: issues 1 and 3 are one issue.
 2. Support: walkers do not reach the node; flatter importance g = |psi_T|^beta (TRIED_IDEAS F1, parked, never run).
 3. Gradient denominator in E_FN training (C15 failed sampled at 8x8); the factorised a_k e^r is the known handle (B10/B11).
-Running (ansatz lead): T-Lfix, pre-registered in STORAGE_PROBLEM.md: same RBM+PP, log loss (c2le_gtax.py per_sample l.471-473)
-vs pair loss L_fix; exact 4x4 on ws CPU now, 6x6 launcher prepared, not submitted. Pass at 4x4 and 6x6 (tax_2 <= 0.5x) reopens
+Running (ansatz lead): T-Lfix (STORAGE_PROBLEM.md, incl. 'Independent review 2026-10-27', 61e539c). Deciding number now
+R_ceil = tax(network trained directly on exact E_FN) / tax(warm start), ceiling arm = stage (c) code (cfc2681), exact 4x4 running;
+R_ceil >= 0.7 means the network class is the floor (an ansatz question: next exp(J) x sum_k Pf[M_k]); a pass at 4x4 and 6x6 reopens
 the storage loop; kill keeps the add-on Goal. Pointers: equation board https://claude.ai/artifact/LwUGJoTxGJku3k6mTVgMVP;
 ../../handoffs/2026-10-27-fn-error-weights.md; PLAN_ansatz.md (angle record); local entry folder /project/theorie/a/A.Otaifi/j1j2/
 (CLAUDE.md; PLAN.md and delta_today.md symlink here). Candidate architecture if the loss is not enough: exp(J) x sum_k Pf[M_k]

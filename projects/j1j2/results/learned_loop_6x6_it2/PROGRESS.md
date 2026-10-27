@@ -90,6 +90,7 @@ Code: `experiments/learned_loop_6x6_it2/`; run dir ws1 `~/chatty_ll6it2/` (reuse
   it2_amp already continues after rejections (trust halved, stop after 3 consecutive or trust < 0.0025): a2small accepted 6 of 9 steps.
   On 6x6 the limit is not the optimiser but the available gain: <H>_G1 - E_FN[G1] = 2.5(5.3)e-5/site, and the ideal loop contracts by
   ~0.85-0.89/iteration (4x4 net-start, 6x6 exact loop) = ~1.5e-5/site per iteration at the ViT level, below the FN referee resolution (~2e-5).
+> CORRECTION 2026-10-27 (index): contraction superseded: stall_6x6 measured 0.64-0.87 per round (AUDIT_2026-10-21 sec 3 item 5); it2_fn DMC numbers in this log are WITHDRAWN (results/fn_calibration_6x6/README.md).
   A stronger optimiser cannot make one iteration visible here; no further amplitude variants run.
 - 2026-10-06 16:00: **FINAL**: G2 (iteration 2) E_FN -0.503687(23) (64 pops, median -0.503661, 16/64 < E0), = ViT within errors.
   K3vit M=128 -0.503725(21) (17/64 < E0) does NOT survive M=512: -0.503699(29) (42 pops, one at -0.50477), same-seed paired vs ViT guide

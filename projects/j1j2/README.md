@@ -39,8 +39,8 @@ Files are not moved between folders: many scripts hardcode absolute
 | 6x6 Krylov-FN vs Marshall-FN, 6x6 fixed point | Stable, paper Sec. III C | `experiments/gfmc_6x6_*`, `results/krylov_fn_6x6_matched_verdict_2026-09-28.md`, `results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md` |
 | 8x8 FN with Krylov vs Marshall signs | Stable, paper Fig. 4 | `results/8x8_krylov_3471544/`, `results/8x8_marshall_3471545/` |
 | Exact 4x4 MLE half-step | Stable, paper Fig. 5(a) | `experiments/fn_mle_halfstep_exact4x4*.py` |
-| 8x8 MLE + SR amplitude learning | Live / open; iteration 1 not reproduced, iteration 2 worse | `experiments/fnmle8_sr_*`, `results/fnmle_sr_closedloop_8x8_iter1_2026-10-01.md` |
-| Frozen-H_FN factorized SR | Live (current route) | `experiments/frozen_hfn_*`, `results/frozen_hfn_factorized_sr_exact4x4_2026-10-03.md` |
+| 8x8 MLE + SR amplitude learning | Live / open; iteration 1 not reproduced, iteration 2 worse | `experiments/fnmle8_sr_*`, `results/fnmle_sr_closedloop_8x8_iter1_2026-10-01.md` | -> CORRECTION 2026-10-27 (index): CLOSED, failed physically (iter 1 not reproducible, iter 2 worse; ledger rows 10-01, STATUS 10-01 'Iteration 2 physical gate FAILS'); the refit loop itself closed by L8 2026-10-26 (docs/reports/2026-10-26_l8_loop_round_8x8.md).
+| Frozen-H_FN factorized SR | Live (current route) | `experiments/frozen_hfn_*`, `results/frozen_hfn_factorized_sr_exact4x4_2026-10-03.md` | -> CORRECTION 2026-10-27 (index): DONE/CLOSED as a route: exact 4x4 99.7% (10-03), 8x8 never validated physically (OOM, ledger), storage loop CLOSED by L8 and l8/loop4x4 tests (PLAN.md 'Open question', RESEARCH_MAP 3s). Current route is PLAN.md Goal (network + hops + FN add-on, no refit).
 | Second Krylov step (K2) | Failed on 6x6, paper App. A | `experiments/k2_amplitude_distortion_*`, `results/true_k2_6x6_3471990/` |
 | Global sign models, local cavities/boundaries, CNN classifier, warm-start ViT gates, Adam MLE | Failed (see FAILED_ROUTES.md) | `experiments/global_*`, `bench_*`, `learned_fn8_*`, `warmstart_vit_*`, `train_fn_mle_vit8.py` |
 | Finite-tau CTQMC | Parked | `krylov_sign_structure/experiments/finite_tau_*`, `results/finite_tau_*` |

@@ -31,6 +31,7 @@ results/*.md and experiment headers. E_FN = fixed-node energy; a_k, s_k = curren
 - 8x8: Euclidean/Adam gradients anti-aligned across replicas (SR needed); >99% of the neighbour ratios the sign step needs are never sampled; surrogates that pass held-out gates still raise E_FN.
 - Only the frozen-H_FN objective is consistent with FN; untested end-to-end at 8x8.
 - **Never done:** a network trained on sampled data, plugged into the 4x4 loop and iterated.
+> CORRECTION 2026-10-27 (index): stale as of 2026-10-04: rung 2 was done (samples from the exact FN distribution, network + SR, iterated in the 4x4 loop): stable for every budget and seed for 150 iterations, error eps ~ N^-0.75 at fixed iteration 20 (results/learning_ladder_rung2/RUNG2_VERDICT_2026-10-04.md; AUDIT_2026-10-21 row (2)). Still never done: rung 3 (real FN walkers iterated in the 4x4 loop).
 
 ## Live / unresolved (2026-10-03)
 3565752 (8x8 chunked frozen-H_FN SR retry); 3554536, 3554836, 3554843, 3554893, 3554908 (8x8 pilots, outcome not recorded);

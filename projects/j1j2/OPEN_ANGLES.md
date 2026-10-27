@@ -16,19 +16,25 @@ These are intentionally **not part of the currently running main FN/Krylov scali
 
 4. **Node-quality diagnostics without exact ground truth**
    Develop/use FN energy, fixed-amplitude energy, K1-K2 sign changes, and stability under amplitude improvement.
+   > CORRECTION 2026-10-27 (index): DONE in use throughout (fixed-amplitude energies, FN energy referee fn_calibration_6x6/, K1-K2 sign changes true_k2_6x6_3471990, AUDIT_2026-10-21 sec 4); no separate open item.
 
 5. **Generalization beyond square-lattice J1-J2**
    Test triangular and other frustrated magnets for the same sign-reconstruction principle.
+   > CORRECTION 2026-10-27 (index): CLOSED for the triangular Krylov basin: symmetry obstruction closed 2026-09-28 (git 1d9ad2c; krylov_sign_structure/TRIANGULAR_PARITY_BASIN_2026-09-28.md). Other frustrated magnets: untested, lead's decision.
 
 6. **Finite-temperature / CTQMC analogue — PARKED at amplitude-relearning gate (2026-10-03)**
    The adaptive K1/K2 sign-update mechanism is numerically strong on the exact 20-site benchmark through beta=3, but long-beta scaling requires periodic compression of the positive amplitude. Final factorized nonlinear overlap-SR discriminator 3565142 failed promotion: only ~0.61% blind Hamiltonian-edge RMSE improvement after 20 steps while physical fidelity worsened. Do not build a finer CTQMC framework or run another finite-T compressor search yet. Reopen only when the shared FN amplitude-learning branch has a materially better scalable callable-amplitude handoff. See `results/finite_tau_amplitude_relearning_subangle_closure_2026-10-03.md`.
 
 7. **Representation / Z2-holonomy connection**
    Understand whether Krylov reconstruction is effectively learning or correcting the sign-flux obstruction found in the no-go work.
+   > CORRECTION 2026-10-27 (index): PARTLY TESTED: ansatz angle G11 (vison KILL) and the J1 note (PLAN_ansatz.md); no general statement, see TRIED_IDEAS family G.
 
 8. **Compression of the amplitude correction**
    Understand why a tiny representation (currently four static-r0 bins) captures the useful FN correction and when this representation fails.
+   > CLOSED 2026-10-27 (index): four-bin compression falsified/estimator-limited 2026-09-28 (STATUS.md 'Decisive handoff verdict', 'Controlled 4x4 diagnosis'); 8x8 four-bin handoff failed 2026-09-30 (ledger rows 09-29/30, results/8x8_krylov_fn_scaling_verdict_2026-09-30.md).
 
 ## Current main campaign — do not mix with the above
 
 The active campaign is the FN -> amplitude handoff -> Krylov loop and its size/resource scaling. Current focus: 8x8 Krylov-FN vs matched Marshall-FN, plus the already-submitted true-K2 diagnostic as a node-quality side measurement.
+
+> CORRECTION 2026-10-27 (index): stale. The FN -> amplitude handoff -> Krylov loop is CLOSED (L8 2026-10-26, docs/reports/2026-10-26_l8_loop_round_8x8.md); the 8x8 Krylov-FN vs Marshall-FN comparison and the true-K2 diagnostic are DONE (README thread table, paper Fig. 4, results/true_k2_6x6_3471990). Current focus: PLAN.md Goal.

@@ -23,6 +23,7 @@ Hard ceiling: 30 GPU-h. Stop rule: if after 2 iterations the cumulative <H> gain
   - Damping = kept-edge Laplacian + S. The trust region is checked on an independent fresh sample set, with adaptive lambda/N.
   - beta = 1/2: the 6x6 pre-check found beta = 1/2 the best tempering for the plain estimator, and beta = 1/4 worse.
 - **Referee:** `it2_fn.py`, M = 512, beta 2.4, burn 0.8, tau 0.025, seeds 72001-032 and 75001-032. These are the same seeds as the ViT-guide references -0.503654(10) and -0.503677(11), combined -0.503666(8).
+> CORRECTION 2026-10-27 (index): the it2_fn step-averaged estimator is biased -11..+25e-6 per site and guide-dependent; the DMC energies of this T3 family (ViT guide -0.503666(8), G2, K3vit, K3a1) are WITHDRAWN until re-run with the beta-time-averaged protocol (results/fn_calibration_6x6/README.md; AUDIT_2026-10-21 sec 3 item 6). Table <H> columns (VMC) are unaffected.
 
 ## Log
 - 21:38 smoke test 16851444 (2080Ti): the pipeline runs end to end.

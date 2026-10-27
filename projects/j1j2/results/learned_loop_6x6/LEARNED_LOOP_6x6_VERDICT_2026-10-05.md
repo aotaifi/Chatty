@@ -17,6 +17,7 @@ Run dir: ws1 `~/chatty_ll6/runs/` (A40, venv `~/chatty_ll6/venv_gpu`, jax 0.10.2
 - True sign error w_s: 8.0(2.0)e-5. Compare K1 1.13e-3, ViT 1.3e-4, and K2 at fixed ViT amplitude 2.4(0.35)e-4.
 - std(log a - log|psi0|) went from 0.0478 to 0.0610. The learned amplitude moved away from the exact amplitude.
 - E_FN = -0.503667(63) from 16 populations; the median is -0.50357. One population fell to -0.50435, below E0. E_FN - ViT = -1.3(6.7)e-5.
+> CORRECTION 2026-10-27 (index): step-averaged DMC estimator: WITHDRAWN as a 1e-5 number (bias -11..+25e-6, guide-dependent; results/fn_calibration_6x6/README.md; AUDIT_2026-10-21 sec 3 item 6). Also quoted in paper/main.tex line ~498, HANDOFF_2026-10-05.md, CLAUDE_TAKE.md.
 - Control, K2 sign step with no learning (job it1 16818020, T = -1.70): E_FN = -0.503596(52) from 10 populations; <H> - ViT = +5.1(4.8)e-5.
 
 ## Verdict

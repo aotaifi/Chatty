@@ -265,6 +265,7 @@ Next falsification changes population size rather than extending M=32 time. Two 
 
 ### Decisive handoff verdict — 2026-09-28
 The 6x6 1D four-bin g(r_M) density-ratio handoff is now falsified as a reproducible amplitude representation. Two M=128 independent direct-ViT Krylov-FN replicas gave g vectors [-0.09836,+0.12777,+0.00997,-0.03872] and [+0.04305,-0.02240,-0.03037,+0.00973], differing by ~0.14-0.15 in the first two bins despite 4x larger population. Do not scale this same representation further. The Krylov sign/FN physics result remains positive; the failed component is the scalar amplitude handoff. Next work should test a compact multivariate/direct correction with constant-cost evaluation.
+> CORRECTION 2026-10-27 (index): 'falsified' was superseded the same day: 'Revised bottleneck' and 'Controlled 4x4 diagnosis' below (estimator / effective-sample-size problem, not a verdict on scalar g(r_M)), then the 6x6 closed-loop result of 2026-09-29 (one handoff, g2 consistent with noise), then 8x8 failure (no bin > 2 sigma, cache wall; AMPLITUDE_LEARNING_LEDGER.md rows 09-28..09-30). Reading in force 2026-10-27: four-bin g(r) not reproducible from GFMC walkers at M<=128 (estimator-limited), 6x6 stable after one handoff, 8x8 failed; the whole four-bin handoff route is CLOSED (OPEN_ANGLES item 8).
 
 
 ### Revised bottleneck after FN convergence audit — 2026-09-28
@@ -277,6 +278,7 @@ A same-estimator 4x4 test with exact known f/q shows raw fixed-population GFMC s
 
 ### 6x6 closed-loop fixed-point verdict — 2026-09-29
 See `results/fn_krylov_closedloop_6x6_verdict_2026-09-29.md`. Paderborn H100 job 3466255 completed successfully in 29m41s. After the stable g0 handoff, the reconstructed guide had physical-weighted sign_change=0.0. The second four-bin correction was g2=[0.00378861,-0.01087963,0.00257648,0.00450005], while pairwise replica-noise estimates were [0.01067656,0.07082232,0.04207335,0.10212746]; every |g2_i|<0.36 sigma and RMS(g2)=0.00632 vs RMS(noise)=0.06582. Mean FN E=-18.11297225 with between-replica SE=0.00362079. Treat 6x6 loop as a practical fixed point in the tested regime. Do not inject noisy g2 into iteration 3. Next decisive step is 8x8 scaling of the converged protocol.
+> CORRECTION 2026-10-27 (index): 'practical fixed point' is conditional: it means g2 below the replica noise (RMS 0.0063 vs 0.0658) at M=128, beta=1.2, i.e. not resolved, not a demonstrated reproducible fixed point (compare 'Decisive handoff verdict' and 'Controlled 4x4 diagnosis' above, same estimator problem). It also did not carry to 8x8 (ledger rows 09-29/30). HANDOFF_2026-09-29.md repeats this conditional reading.
 
 
 ### 8x8 scaling campaign launched — 2026-09-29
@@ -620,6 +622,7 @@ This is the first viable production demonstration of:
 FN walkers -> MLE force -> SR amplitude update -> K1 sign refresh -> lower FN energy.
 Result: results/fnmle_sr_closedloop_8x8_iter1_2026-10-01.md
 Iteration 2 is now only a convergence/fixed-point diagnostic.
+> CORRECTION 2026-10-27 (index): WITHDRAWN. The -31.9012 (two-replica spread proxy) was not reproduced: the production SR checkpoint's closure job 3506074 gave -31.8389561 (+0.046468, worse; the next section), iteration 2 failed the physical gate (-31.815), and the independent rebuild gave -31.839 (AMPLITUDE_LEARNING_LEDGER.md row 10-01 'not reproducible'). The 8x8 MLE+SR loop is CLOSED as a physical failure; the later refit-loop closure is L8 (docs/reports/2026-10-26_l8_loop_round_8x8.md).
 
 ### 8x8 SR round-1 closed-loop energy is non-monotone / worse — 2026-10-01
 Production rep1-trained SR checkpoint (lambda=1, eta=.01) passed the held-out MLE gate and

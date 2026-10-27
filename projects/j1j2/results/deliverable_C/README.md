@@ -23,6 +23,7 @@ Terms (per-site energies in units of J1, periodic 8x8, J2/J1 = 0.5):
 | psi_P (projected ViT), 98304 samples | -0.4988474(110) | bound | ours, not a record |
 | **psi_1 = psi_P + one Lanczos step**, direct VMC, 11264 samples (review data + this round's late run) | **-0.498971(12)**; late-time only (>= 80 sweeps, 3072 samples) -0.498958(22) | bound | **yes**: 8.5e-5 below RBM+PP (late-only 7.2e-5, 3.3 SE) |
 | **FN-DMC, guide psi_P**, 8 populations x 512 walkers | **-0.498889(11)** | bound | first FN energy with a deep-NQS guide for J1-J2; equals RBM+PP, above psi_1 |
+> CORRECTION 2026-10-27 (index): PROVISIONAL: 8 populations; the calibrated referee protocol asks for >= 500 beta-time-averaged populations (AUDIT_2026-10-21 sec 1 row (1), sec 3 item 6). Quote -0.498889(11) only with this label.
 | **variance extrapolation p = 0, 1** | **-0.498992(16)(8)** (stat)(sys); late-time psi_1 only -0.498974(27) | estimate of E0 | yes; 3.4 sigma above Hu's extrapolation |
 | RBM+PP, Nomura-Imada 2021 | -0.498886(1) | bound | |
 | Hu et al. 2013, VMC p = 2 | -0.49886(1) | bound | |

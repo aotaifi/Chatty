@@ -41,6 +41,7 @@ Running at end of session: 6x6 symmetric ED (Opus), 4x4 learning-ladder rung 2 w
 - **Loop iterations vs N (exact, 16..36 sites)**: iterations to eps<1e-6 ~82-104 plain, 32-57 Anderson; to w_s<1e-8 ~89-125 plain, 28-70 Anderson. No visible growth with N. Only sign errors on configurations of weight <1e-12 take longer at larger N. (krylov_sign_structure/results/closed_fn_krylov_6x6/)
 - **6x6 baseline corrected again**: Krylov-guide FN = -0.503100(40) from 76 populations (8-population -0.503288 was low). FN lowers the guide by 2.6(6)e-4; 6e-4 above the ViT.
 - **6x6 learned loop, iteration 1**: E_FN = -0.503667(63), equal to ViT within errors; true sign error 8e-5 < ViT 1.3e-4. Control: second Krylov step alone -0.503596(52) -> most gain from the sign step.
+> CORRECTION 2026-10-27 (index): E_FN -0.503667(63) is a step-averaged DMC number, WITHDRAWN as a 1e-5 quantity (results/fn_calibration_6x6/README.md; AUDIT_2026-10-21 sec 3 item 6).
 - **Real scaling problem found**: recursive sign definition — each Krylov step adds a neighbour hop (1.3e3, 5e4, 1.2e6 configs per state), iteration 2 would cost >50 GPU-h. Fix to try: store/distill signs after each iteration (sign network or per-iteration sign table on samples) so evaluation cost stays at one hop.
 - FN at M=128 is noisy (single populations scatter ~3e-4/site, one fell below E0): need many populations or larger M for any claim.
 

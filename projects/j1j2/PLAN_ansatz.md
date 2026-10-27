@@ -87,6 +87,7 @@ Live (>= 3, per the PI's guidance):
 | C2-loc (untested beyond 4x4: the 4x6 preview stalled in ARPACK) | product of LOCAL J2 cancellation layers psi = phi_+ prod_p (1 + a e_p): scales (the additive layer's grip fades with N: 0.015 / 0.13 / 0.24 at 4x4 / 4x6 / 6x6) | 4x6 preview arms + C2-T2 | running (4x6 optimiser) |
 | C5 (parked: inconclusive, ratios ~1) | amplitude-sign coupled storage: s_N e^f tanh(g); its sinh variant = s_N (P - Q), two positive parts (J1-driven minus J2-driven amplitude, from the eigen-equation) whose level set P = Q is the node | C5-T0 (4x6), then the G-tax refit tax | running (4x6 optimiser); sinh arm to add |
 Reserve: MPS-augmented storage of the tail (CNN-MPS, arXiv:2603.14425) as the loop's refit network: tail rms and
+> CORRECTION 2026-10-27 (index): CNN-MPS has NOT been run (2026-10-27). The only storage-network failure on record is a baseline-size network (ansatz-pioneer closed 2026-10-27: fails by 4.5x, PLAN.md 'Angles'); 'about 10x more accurate near small amplitudes' (Cockpit) is therefore untested for CNN-MPS.
 refit tax vs RBM+PP on the G-tax target (literature method, not a new ansatz).
 Dead: C1 (global sign-rule interference), C3 (vison-dressed Z2 spin liquid), C4 (plaquette frame), C2 as add-on.
 
@@ -531,3 +532,4 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Cockpit
 - STATUS (done, medium): Closed: the nearly sign-free pre-image works in the loop only if stored exactly; a network of the baseline's size stores it 4.5x too poorly.
 - NEXT (open, low): Only if a much better storage network appears (about 10x more accurate near small amplitudes) is this worth retesting.
+> CORRECTION 2026-10-27 (index): still untested for CNN-MPS (see the Reserve correction); the L8 closure 2026-10-26 means a better storage network would no longer revive the refit loop (PLAN.md Goal refocused).

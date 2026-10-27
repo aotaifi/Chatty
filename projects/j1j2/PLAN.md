@@ -37,6 +37,32 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
+## ROADMAP (PI, 2026-10-27): back to basics, no brute-force testing
+Rule: understand from the code, the records and existing data first. A run only when a derivation names the outcome that would
+change a decision, and only with the PI's go. Owners: Pfaffian angle (PLAN_pfaffian.md) owns stage 1 with the PI; the ansatz
+angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.md and starts nothing on its own.
+**Stage 1 (now): copy the AMPLITUDE of the FN state** (H_FN ground state at fixed Krylov sign s2) - which network and training.
+  NOT the problem of getting sign and amplitude of the physical H. Known:
+  - Lattice E_FN is amplitude-dominated: at 6x6 the global step's amplitude with the old sign covers ~77% of its gain
+    (3.52e-5 -> 1.23e-5 of 5.57e-6; local_product/stageA/6x6/lp6x6.json; also a207289).
+  - Where the copy loses (6x6 O2b bond split, f5b7b24): 75% / 84% of the cost on pairs where the copy's SMALL side is far too small
+    (cost-weighted median log error -6.0 / -10.6, large side right); a few deep spurious zeros carry it; splicing exact values below
+    phi^2 1e-9 halves E_FN (2.98e-5 -> 1.45e-5).
+  - Pfaffian angle hypothesis (opinion, ~65%): the zeros are the network's OWN untrained node. The copy is s2|A|, A a signed sum of
+    dets; where sgn A != s2 the fit forces |A| -> 0. Derived from cx_t1s.py: the log loss is infinite at A = 0, so training can never
+    flip sgn A; the own node stays at its warm start (PP sign, A20). Consistent with F1: longer training +6%, bigger window +18%.
+  - Loss (T-Lfix 4x4, STORAGE_PROBLEM.md): FN pair loss L_fix vs log loss: zero-hop tax 6.5x lower (1.28e-5 vs 8.34e-5), after two
+    Lanczos steps only 0.77x (inconclusive); the 4x4 tax is bulk-dominated. Ceiling arm invalid (amplitudes reached 1e15).
+  - Knobs, derived before any run: log loss infinite and Jacobian d ln|A| = dA/A singular at the network's own node; learning
+    rate = damped Gauss-Newton/minSR (lambda0 0.01), nothing more derivable; more parameters cannot move an own node that the loss
+    cannot cross.
+  Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
+  forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
+  Then design the amplitude network WITHOUT a node of its own: s2 * e^J, possibly with s2's node bonds at x as inputs (untried).
+**Stage 2: division of labour.** Network = amplitude only, sign from Krylov (s2/K1). A Pfaffian for the amplitude only makes sense
+  if its node equals s2's.
+**Stage 3, only after stage 1: is the Krylov sign enough?** Prior: the energy error was amplitude, not sign.
+
 ## Open: storage near the nodes (PI + ansatz lead, 2026-10-27) - PI direction: resolve storage first
 Details, cause equations, tried rows and status: STORAGE_PROBLEM.md. Three issues:
 1. Weighting (CORRECTED 2026-10-27, independent review verified by the ansatz lead and the lead, c2le_gtax.py l.426-464): the G-tax
@@ -100,5 +126,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): The loop failed at the copying step; today's analysis traced it to how network fits weight errors next to the nodes, against how the fixed-node energy weights them.
-- NEXT (in progress, high): A matched test of a fit weighted the way the fixed-node energy weights errors (4x4 now, 6x6 next) decides whether the storage loop reopens.
+- STATUS (in progress, high): Back to basics: the next question is which network copies the fixed-node state's amplitude; current evidence points to spurious zeros from the network's own sign.
+- NEXT (open, high): A check on data we already have (minutes of CPU) tests whether those zeros come from the network's own sign; waits for the PI's go.

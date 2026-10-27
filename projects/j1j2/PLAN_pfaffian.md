@@ -93,8 +93,16 @@ a lattice) cut the copy's error, specifically on the bonds the real network's ow
 Budget (PI via the lead, 2026-10-27): <= 10 H100-h on Paderborn gpu_h100, account hpc-prf-ppdmrg, single job <= 6 H100-h.
 Order: CPU checks pass -> one-step rate probe -> resize if complex step > 6x real -> lead reads the launcher -> submit.
 
+Amendment before any production number (2026-10-28): F1 A's la_table is not on local disk, so S_x and S_rest come from
+the real arm's seed-1 final copy (la_table + t_real), which starts from F1 A and only re-confirms flatness.
+CPU checks passed (ws1, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/checks.json; code ansatz/code/cx_c1*.py, c1_mech.py):
+Im = 0 reproduces real ln|A| to 5.2e-13; broken arm (sigma 1) shifts it by 39; Im Jacobian columns exactly 0 at Im = 0;
+Jacobian vs finite differences 2.2e-7 relative; dry fits exit 0 (peak 13.7 / 19.2 GB). CPU step cost complex/real 1.37
+(B = 512). Readout, not a criterion: sigma 0.01 already lifts |A| at the costly small sides by median e^2.29 at step 0
+(held-out loss 8.7e-2 vs 1.2e-2 real), so the complex arm starts higher and must recover; sigma kept as registered.
+
 ## Running
-Code build + CPU checks (worker); no GPU job yet. H100-h used: 0.
+Paderborn rate probe (worker); no production job yet. H100-h used: 0.
 
 ## Dead ends
 none yet

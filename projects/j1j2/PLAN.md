@@ -60,7 +60,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   FIRST DISCUSSION of the next lead session (PI, 2026-10-27): how to build a network with NO sign of its own (output strictly
   positive, sign only from Krylov), so the log loss never meets a zero of the network itself.
-  Then design the amplitude network WITHOUT a node of its own: s2 * e^J, possibly with s2's node bonds at x as inputs (untried).
+  Then design the amplitude network WITHOUT a node of its own: s2 * e^J, possibly with s2's node bonds at x as inputs (node-bond inputs untried).
+  > Lead 2026-10-27 (records + code): a node-free copy EXISTS: the 6x6 ViT refit to phi*(s_2) (refresh_17409419, compress_6x6 README
+  'Amplitude refresh') has complex log-psi output (vit_dt.py l.151), so |psi| has no generic zeros; E_FN 9.16e-5 vs O2b real-PP copy
+  2.98e-5, failing at the same depths (phi^2 < 1e-9), but its fit stalled (28/200 steps) and its bulk is worse (dE_VMC 1.32e-4 vs PP 6.3e-5).
+  Removing the own node is not shown sufficient, not refuted. Derived: H_FN is stoquastic in the s2 frame, so phi = s2 u with u > 0
+  (no zeros needed). Proposed controlled test (after q): same PP, complex vs real parameters, |A| with sign s2 (cx_t1s.py l.178 is a
+  real signed sum); complex A changes sign around 0 at finite log loss. Trap: from a real warm start d ln|A|/d Im f = 0, so Im f needs a
+  small random start. Node-bond inputs set FN's own 1/(H_xx - E + V_sf) dip, but on the costly pairs ln phi - ln guide ~ 0: not the cost.
 **Stage 2: division of labour.** Network = amplitude only, sign from Krylov (s2/K1). A Pfaffian for the amplitude only makes sense
   if its node equals s2's.
 **Stage 3, only after stage 1: is the Krylov sign enough?** Prior: the energy error was amplitude, not sign.

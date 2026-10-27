@@ -28,8 +28,10 @@ Where sgn[A(x)A(y)] != s2(x)s2(y), A's own node sits at x and |A(x)| is near 0, 
 Test: q = share of the r < r*/3 cost on such pairs (forward pass of O2b round_1 theta.npy on a few thousand
 cost-sampled pairs from /scratch/a/A.Otaifi/ansatz_runs/bond_split; minutes of CPU).
 Supported if q >= 0.5; refuted if q <= 0.1; in between, inconclusive.
-If supported: wider or deeper backflow does not help until the network's own sign matches s2 (train the sign as well,
-or move the size into a positive factor e^J). If refuted: the size response itself is wrong, and the next question
+If supported: wider or deeper backflow does not help while the network has a node of its own. Training the sign is
+OUT (PI 2026-10-27: that is the hard NQS problem the project avoids; sign from Krylov, size from FN). Remedies that keep
+the division of labour (board block 21): (a) size from a positive net s2 e^J; (b) same, with the node bonds of s2 at x
+as input (they set the FN dip, block 3). TRIED_IDEAS/ledger have no row for (b). If refuted: the size response itself is wrong, and the next question
 is whether F should respond nonlinearly to z (neural backflow).
 Evidence against "window too small" at 6x6: F1 (delta_today 2026-10-23): converged 3x3 5.60e-6, converged 5x5 4.58e-6
 (25 of 36 sites seen), O2b 5.93e-6.

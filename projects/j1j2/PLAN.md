@@ -35,17 +35,14 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## Step back 2026-10-27 (PI asked)
-1. Verdict: SWITCH to training the network directly on its own lattice fixed-node energy E_FN(a) (no Krylov; cost ~ VMC per step).
-2. Thought: every failure was storage or locality of the Krylov step; the FN projector already supplies the near-node amplitudes, so
-   the network needs only right signs and small wall terms. Continuum analogue (McFarland-Manousakis 2112.14182) found no gain; the
-   lattice differs (amplitude-dependent wall term, Kairon-Clark 2609.16308).
-3. Cheapest test: exact 4x4 restricted classes, minimise E_FN(a) (worker, ~1-2 CPU-h). >= 50% of the E_FN(v_0)-to-E0 gap in both
-   classes -> design a sampled 6x6/8x8 test; < 30% -> dead.
-Scope: passed over FN on the public 10x10 ViT (benchmark, PI's call), FN + variance extrapolation (known), release-node (exponential).
+## Step back 2026-10-27: proposal RETRACTED (already tried)
+Training the network on its own lattice FN energy was done 2026-10-01/02 (STATUS.md 'Exact 4x4 E_FN Hellmann-Feynman', '8x8 mixed
+E_FN force/QGT'): exact 4x4 force works; sampled 8x8 force passed its surrogate gate (3537066) but the physical FN energy got WORSE
+(-31.8551 vs -31.9012, 3549023/24); finite-walker force SNR collapses near the fixed point (walkers for cosine 0.7: 8e4 -> 2.5e8).
+Lesson: j1j2 records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md and
+delta_today.md; check all before proposing (a tried-ideas index is being built).
 
 ## Running
-- Exact 4x4 E_FN(a) minimisation (worker, CPU).
 - Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 
 ## Budget
@@ -57,6 +54,8 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)
+- Training the guide on its lattice FN energy (sampled mixed HF force + QGT, 8x8, 2026-10-02): physical E_FN worse by +0.046 total
+  (3537066 -> 3549023/24; STATUS.md); exact 4x4 version works, the sampled force does not.
 - Local product of Krylov factors (LP, per bond / site / plaquette): 6x6 E_FN-E0 3.5247e-5 vs G 5.5738e-6 (KILL); near-node pole
   |psi_LP/psi| 9.7e6 (local_product/stageA/6x6/lp6x6.json; report docs/reports/2026-10-27_local_product_krylov.md).
 - Exact iterated refit loop at 4x4 (refit to FN(a), node-weighted): E_FN worse every round (l8/loop4x4); hop-aware training works

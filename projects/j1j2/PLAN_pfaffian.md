@@ -22,6 +22,18 @@ neural backflow, sum of Pfaffians e^J sum_k Pf[M_k], plus RBM/Jastrow factor.
 Waits on: ansatz angle's 4x4 ceiling test (R_ceil) and guide-vs-FN-vs-copy split (results into STORAGE_PROBLEM.md).
 Budget: none spent; to set with the PI when a test is proposed.
 
+## Hypothesis on the table (2026-10-27, not yet agreed with the PI; board block 19; ~35%)
+O2b copy = s2(x) |A(x)|, A = signed sum of 576 dets, trained on log|A| only, so A's own sign is uncontrolled.
+Where sgn[A(x)A(y)] != s2(x)s2(y), A's own node sits at x and |A(x)| is near 0, so r << r*.
+Test: q = share of the r < r*/3 cost on such pairs (forward pass of O2b round_1 theta.npy on a few thousand
+cost-sampled pairs from /scratch/a/A.Otaifi/ansatz_runs/bond_split; minutes of CPU).
+Supported if q >= 0.5; refuted if q <= 0.1; in between, inconclusive.
+If supported: wider or deeper backflow does not help until the network's own sign matches s2 (train the sign as well,
+or move the size into a positive factor e^J). If refuted: the size response itself is wrong, and the next question
+is whether F should respond nonlinearly to z (neural backflow).
+Evidence against "window too small" at 6x6: F1 (delta_today 2026-10-23): converged 3x3 5.60e-6, converged 5x5 4.58e-6
+(25 of 36 sites seen), O2b 5.93e-6.
+
 ## Running
 none
 

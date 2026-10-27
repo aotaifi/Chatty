@@ -37,8 +37,8 @@ Support (ansatz angle's guide split, verified from guide_split_round_{1,3}.json,
 far below phi, e_x = ln|copy| - ln|phi| cost-weighted mean -6.2 / -8.9, median -6.0 / -10.6 (rounds 1 / 3); large side right
 (e_y +0.02). Spurious deep near-zeros where phi has none, as an own node predicts. Not yet the direct check (sgn A vs s2).
 Derived (cx_t1s.py, log loss on ln|A|): the loss is infinite where A(x) = 0, so small-step training never flips sgn A at a
-sampled x; the own node is frozen at the warm start (PP's own sign, A20). Consistent with F1: longer training buys 6%,
-a wider window 18%. The q test also checks whether sgn A on the cost pairs equals the warm-start PP's sign.
+sampled x. CORRECTED by the q test: relative to the plain PP, O2b flipped sgn A at 47% of the costly small sides, so the
+node is NOT frozen at the plain PP's sign (those rare x are mostly not in the training sample, where the barrier applies).
 Evidence against "window too small" at 6x6: F1 (delta_today 2026-10-23): converged 3x3 5.60e-6, converged 5x5 4.58e-6
 (25 of 36 sites seen), O2b 5.93e-6.
 
@@ -59,8 +59,18 @@ Next per verdict (lead, 2026-10-27, PLAN.md ffd8e9d): supports -> pre-register c
 at a real warm start; kill: complex tax_0 > 0.5 x real tax_0), size on ws1/A40 and submit. Refutes -> drop the own-node
 and complex routes, report to the lead.
 
+## Result q (2026-10-27, ws1 CPU, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/q_ownnode.json; script ansatz/code/q_ownnode.py)
+INCONCLUSIVE by the rule: q = 0.424 +- 0.007, q_ref = 0.069 +- 0.004 (ratio 6.1; q < 0.5).
+Checks passed: t orbit-invariant (20 reps); ln|A| - la_table spread 8.9e-9 (broken arm 19.7); total cost 3.528e-4/site = bond_split.
+Reading: A's own node crosses the bond on 42% of the costly-class cost (= ~32% of all pair cost), 6x the accurate class.
+A real contributor, not the majority. Large side has t = -1 on 99.9% (global sign convention), so q = share with sgn A(xs)
+flipped relative to the bulk. q_any (any neighbour across A's node) does not discriminate: 0.996 vs 0.909.
+Not done: e_x split by t(xs) (t per sample was not saved); one sample seed.
+Consequence for the complex-PP test: removing own-node zeros can at most remove ~1/3 of the frozen-phi pair cost, so the
+lead's kill (complex tax_0 > 0.5 x real) would fire even if the mechanism is real; needs re-sizing before it is run.
+
 ## Running
-q test: worker, ws CPU, output /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/
+none
 
 ## Dead ends
 none yet

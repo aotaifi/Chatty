@@ -302,3 +302,4 @@
 - 2026-10-27 lead decision (PI: 'you are project lead, you decide'): Pfaffian angle told to run the q check now and, on q >= 0.5, the complex-vs-real PP copy test (msg 24f6d613); ansatz angle told to close, T-Lfix 6x6 not submitted (msg 91a98635).
 - 2026-10-27 late: ansatz angle CLOSED by the project lead (PI asked it to decide). T-Lfix 6x6 not submitted; handover in STORAGE_PROBLEM.md; stage 1 moves to the Pfaffian angle. No ansatz-angle processes or watchers running.
 - 2026-10-27 ansatz angle closed (its report; PLAN_ansatz.md Cockpit rows done, verified by the lead; no jobs).
+- 2026-10-27 Pfaffian angle test q (worker, ws1 CPU, 28 min): INCONCLUSIVE, q 0.424(7) vs control 0.069(4); own node = ~1/3 of pair cost; 'node frozen at plain PP sign' corrected (47% flipped). /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/

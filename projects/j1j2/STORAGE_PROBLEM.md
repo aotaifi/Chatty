@@ -32,3 +32,13 @@ Does flattening the walker distribution cut the walkers needed for a usable E_FN
   mean cosine 0.7 (fit over M = 1e2..1e7, 20 repeats); also effective sample size per M.
 - Pass: M_0.7(beta best) <= 0.1 x M_0.7(beta 1) at the near-fixed-point guide. Kill: >= 0.5 x. Between: inconclusive.
 - Check: beta = 1 reproduces C15's order of magnitude (8e4 early, 2.5e8 near fixed point, on that guide) or the deviation is explained.
+
+## Step back 2026-10-27 (PI: "you should excel at training networks on this")
+1. Verdict: continue the two tests, but add the missing control: an ideal ceiling arm in T-Lfix, training the same
+   network directly on the exact E_FN(K_2 fit) at 4x4 (full sum, no sampling, no loss proxy). Without it a T-Lfix
+   miss cannot tell a wrong loss from a network class that cannot represent the near-node structure.
+2. Thought that changed it: as an ML problem this is task-metric loss + coverage of a rare boundary + the right
+   inductive bias, and we never measured the class's best possible tax (representability). G1/G14 gave 7.06e-6
+   with an oracle sign at 6x6. That hints the class itself may be the floor.
+3. Cheapest test: the ceiling arm, minutes of CPU at 4x4. Independent Opus review of the logic requested by the PI.
+Literature: one arXiv query (neural guide + lattice fixed node + guiding) returned nothing; guess stands as unpublished.

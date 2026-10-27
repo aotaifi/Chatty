@@ -165,7 +165,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | F5 | Population control / referee bias at 8x8 | 10-24 | 8x8 | M=64 -0.4989467(14) vs M=256 -0.4989486(68) (0.1 sigma) | no bias visible | delta_today 10-24 |
 | F6 | gamma-FN projector release of constraint (G0) | 10-21 | 6x6 | see E13 | FAILS | |
 | F7 | Released-node feedback (non-circular QMC->NQS path) | 06 | none | no number found | DEFERRED, untested | memory file (June sign_prob) "Deferred" |
-| F8 | Local-update ("sampling-based") rebuild of exp(-t H_J2) = released node | 10-26 | 4x4, 4x6 | ln C/N 0.076 -> 0.067 (exponential by rule); C ~ 70 at 8x8 not affordable | FAILS as designed (see G9) | PLAN_ansatz.md R2 |
+| F8 | Local-update ("sampling-based") rebuild of exp(-t H_J2) = released node | 10-26 | 4x4, 4x6 | ln C/N 0.076 -> 0.067 (exponential by rule, but C ~ N fits the two points equally); C ~ 70 at 8x8 would need ~7e5 signed paths per configuration at 1% | FAILS as designed (see G9) | PLAN_ansatz.md R2 |
 
 ## G. Ansatz families
 
@@ -179,7 +179,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | G6 | Plaquette frame / 2x2 rotation (C4) | 10-23 | 4x4 | W_neg 0.012725 vs Marshall 0.012731 | KILL at 4x4 (4x6 not run) | PLAN_ansatz.md C2-T0 section |
 | G7 | J2 pre-image (1 + a H_J2)^-1 psi0 sign-free (C2-T0) | 10-23 | 4x4, 4x6, 6x6 | W_M ratio at cond 3: 0.015 / 0.13 / 0.24 (V_J2); 6x6 inconclusive | INCONCLUSIVE (grip weakens with N) | PLAN_ansatz.md C2-T0b |
 | G8 | J2 layer as add-on / trained layer (C2-T1/T2) | 10-23/24 | 4x4, 4x6 | full-H layer beats H_J2 layer 4.5x/5.5x/1x; trained E_var 1.61e-2 vs 1.02e-2 (Jastrow) | KILL | PLAN_ansatz.md Dead ends; exact_vmc_4x6/verdict.json |
-| G9 | Stored J2 pre-image in the loop (C2-L, C2-L-exp, R1-R3 local undo / decoder) | 10-23..27 | 6x6 (4x6) | exact store tax 2.4e-8 (t 0.20); positive RBM 7.4e-6 (bar 1.657e-6); R3 decoder 1.34x/1.80x Marshall-FN; R2 J1 filter only 1.2-2.2x worse | CLOSED (storage error); R1 locality PASS (t* 0.14-0.16 at both sizes) | PLAN_ansatz.md; handoffs/2026-10-27-ansatz-loop-test.md |
+| G9 | Stored J2 pre-image in the loop (C2-L, C2-L-exp, R1-R3 local undo / decoder) | 10-23..27 | 6x6 (4x6) | exact store tax 2.4e-8 (t 0.20); positive RBM 7.4e-6 (bar 1.657e-6); R3 decoder 1.34x/1.80x Marshall-FN; R2 J1 filter only 1.2-2.2x worse | CLOSED (storage error); R1 PASS = size-independent filter strength (t* 0.14-0.16 at 4x4 and 4x6), NOT proof of locality (both width 4; Astra round 1) | PLAN_ansatz.md; handoffs/2026-10-27-ansatz-loop-test.md |
 | G10 | Sign-free parent + J2 dressing (C6, C6b similarity) | 10-24 | 4x4, 4x6 | C6-T0b dressed E_var 1.02e-2 vs baseline 4.17e-3 (2.45x worse); C6b g >= 0.383 for every a | KILL | PLAN_ansatz.md Dead ends |
 | G11 | Z2 spin-liquid + vison-dressed projected BCS (C3) | 10-23/24 | 4x4, 4x6 | rank 20: V 7.36e-4 vs random R' 4.1/5.7/4.3e-4; E_FN 4.6e-4 vs 2.7-3.9e-4 | KILL at 4x6 (4x4 gain was anomaly) | PLAN_ansatz.md C3 |
 | G12 | Amplitude-sign coupled output s_N e^f tanh(g) (C5) | 10-23/24 | 4x6 | E_var coupled/standard 0.65 / 1.02 / 0.96 (R1/R2/R4) | INCONCLUSIVE then closed (no pass in reach) | PLAN_ansatz.md Dead ends |

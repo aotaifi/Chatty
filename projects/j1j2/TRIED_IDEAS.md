@@ -1,0 +1,274 @@
+# TRIED_IDEAS: index of everything tried in the j1j2 project (built 2026-10-27)
+
+HOW TO USE (5 lines)
+1. Before proposing anything, `grep -i -E "key|words|synonyms" projects/j1j2/TRIED_IDEAS.md` (try the plain name AND the file names: E_FN, HF force, write-back, refit, re-base, hop-aware, bond field, KKT, LP, pre-image, ...).
+2. If a row matches, read its pointer (file + section or commit) before arguing; PLAN.md "Dead ends" is NOT complete, this index is wider.
+3. A verdict "fails" is only as good as its cause column; "inconclusive (cause: X)" means the idea is still open once X is fixed (CLAUDE.md rule 1).
+4. Section "Contradictions" lists ideas the source files disagree on; do not trust either side without the raw file.
+5. Paths are relative to projects/j1j2/ unless absolute. Energies per site, dE = E - E0, unless "total". "no number found" = I could not pin a deciding number in the sources read. After any new test, append a row here.
+
+Sources read: PLAN.md, PLAN_ansatz.md, PLAN_conceptual.md, RESEARCH_MAP.md, STATUS.md (all 956 lines), AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md, FUTURE_ANGLES.md, OPEN_ANGLES.md, CLAUDE_TAKE.md, HANDOFF_*.md (5), delta_today.md (all), README.md, docs/reports/ (2), ../../handoffs/ (5), angles/ (2), AVSL experiment notes (git history), results/AUDIT_2026-10-21.md, results/scalable_sign_2026-10-18/, results/compress_6x6/README.md (lines 950-1150) and experiments/compress_6x6/README.md (headings only), results/fn_calibration_6x6, net_start_4x4, local_krylov (heads), `git log --all` (705 commits), memory file project_nqs_guided_fixed_node_qmc.md, /project/theorie/a/A.Otaifi/Chatty/sign_prob/ (CURRENT_FOCUS.md, docs/status.md, code/ traces). NOT read in full (rows rest on RESEARCH_MAP/CLAUDE_TAKE summaries, not the raw README): results/{bad_start,sign_learnability,stored_signs*,learned_loop_6x6*,stall_6x6,writeback*,itfit_6x6,tail_vs_N,lanczos_*,loop_8x8,signs_8x8,locality_8x8,rbmpp_6x6,deliverable_C,review,amp_design}, krylov_sign_structure/*, DESIGN_scalable_loop_2026-10-13.md, results/consult/*, ansatz/ANSATZ_MEMO.md. The file jarvis_test_run_2026-06-29.md named in the memory file was NOT found under Chatty/sign_prob (its numbers come from the memory file only).
+
+Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sign s, amplitude a); K1/K2 = first/second Krylov sign step s' = s sgn(T - E_L); hop = one application of (1 + alpha(H - E)); G-tax/tax = energy lost by refitting a stored network; w_s = wrong-sign weight; psi_P = symmetrised 6x6/8x8 ViT guide; RBM+PP = restricted Boltzmann machine x Pfaffian pair product.
+
+---------------------------------------------------------------------------------------------------------
+
+## A. Sign learning and storage (and the Krylov sign step itself)
+
+| # | Idea (plain name; names in files) | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| A1 | One Krylov sign step from Marshall (K1, "energy-optimal threshold T") | 09-27..10-03 | 4x4, 20 sites, 6x6, 8x8 | 20 sites: w_s 0.01365 -> 2.76e-4 (49.5x), eps_rel 24.1x; 6x6 w_s 2.0e-2 -> 1.1e-3 -> 2.3e-4 | WORKS (sign half, given a good amplitude) | STATUS.md 2026-10-03 exact-size K1 benchmark; HANDOFF_2026-10-05.md "Established" |
+| A2 | Label-free K1 threshold by two-means / Otsu clustering | 09-27 | 6x6, 8x8 | overlap 0.9986 (6x6), 0.9990-0.99923 (8x8); two-means leaves exact 4x4 loop stuck in the Marshall chamber (O_sign 0.9745) | WORKS for one step; FAILS for the recursive step (cause: wrong selector; energy-optimal threshold needed) | STATUS.md "Immediate next step", "Current-sign K1 implementation correction" 2026-10-01 |
+| A3 | Repeated Krylov, exact amplitude (iterated K1, "basin contraction") | 09-28 | 4x4 J2 0.4-1.0 | exact signs in 3-4 steps; depth 3 -> 6 steps for 16 -> 36 sites | WORKS | CLAUDE_TAKE.md 2026-10-03; krylov_sign_structure/ITERATED_KRYLOV_CONVERGENCE_2026-09-28.md |
+| A4 | True second Krylov step (K2) on 6x6 ViT / naive K1->K2->K3 | 09-29, 10-03 | 6x6 | fixed-amplitude E shift +0.646(0.322), +0.903(0.377), +0.960(0.381) total (3 T2 choices); 10-03 step 2 +1.7(1.8)e-4/site | FAILS (K2 distorts the modulus; K1 already at a stationary point). Correct iteration is "K1 -> FN refresh -> projected K1" | STATUS.md 2026-09-29 "True K2"; OPEN_ANGLES.md item 2; HANDOFF_2026-09-29.md |
+| A5 | Why one Krylov step works (J1/J2 competition field) | 09-30 | 6x6 | removes ~95% of wrong-sign mass in K1 | WORKS (explanation) | OPEN_ANGLES.md item 1; krylov_sign_structure/WHY_ONE_KRYLOV_STEP_VERDICT_2026-09-30.md |
+| A6 | Frustration dependence of K1 / sign-basin membership (Marshall vs stripe basin) | 09-30 | 4x4 | Marshall leaves the attraction basin between J2 0.650 and 0.655; stripe stays convergent | WORKS (explanation) | OPEN_ANGLES.md item 3; krylov_sign_structure/frustration_dependence/VERDICT_2026-09-30.md |
+| A7 | Triangular lattice / other frustrated magnets | 09-28 | triangular | "triangular Krylov basin symmetry obstruction closed" (commit 1d9ad2c); no number found | CLOSED for triangular basin; OPEN_ANGLES item 5 still lists it as open (see Contradictions) | git 1d9ad2c; krylov_sign_structure/TRIANGULAR_PARITY_BASIN_2026-09-28.md |
+| A8 | Stored recursive signs as a plain network trained on |a|^2 samples | 10-05 | 4x4 | untempered variants stall at w_s ~1e-2; a table covering 99.5% of |a|^2 weight missed 100% of the flip weight ("self-sealing") | FAILS (cause: FN suppresses wrong-sign states so |a|^2 never sees them) | CLAUDE_TAKE.md "stored signs"; results/stored_signs/PROGRESS.md |
+| A9 | Stored sign net trained on tempered samples |a|^(2 beta), beta 0.5, plus one-hop neighbours | 10-05 | 4x4: w_s 2.5e-5 (it 30) vs exact 8.9e-7; 6x6: K1 net + exact hop w_s 6.0e-5, +5.8(1.8)e-5/site better than ViT | WORKS (store the COMPOSITE sign, always keep one exact hop) | CLAUDE_TAKE.md 2026-10-05/06; results/stored_signs_6x6/ |
+| A10 | Stacked Krylov factor nets (c_k, k>=2) instead of composite signs | 10-06 | N=16..36 | c2 rel error 0.86 (unlearnable); stacked nets miss 43-44% of rare flips | FAILS (cause: factors unlearnable, composite is easy) | CLAUDE_TAKE.md takeover log 21:27; results/sign_learnability/ |
+| A11 | Sign step shape is a bottleneck? (step function) | 10-06 | 16..36 sites | exact GS sign learnable (N=36, 186k net rel 6.3e-5); one exact hop removes 96-99% of net error | NOT a bottleneck | FUTURE_ANGLES.md item 2; CLAUDE_TAKE.md angle 2 |
+| A12 | Sign net + hop at 6x6 from composite net zM (zero-hop) | 10-07 | 6x6 | w_s 2(1)e-5 vs ViT 1.3e-4 (6x better); energy tie, paired vs ViT -8.2(4.3)e-6 (1.9 sigma) | WORKS for signs, TIE in energy | results/amp_design/T3_table.md; CLAUDE_TAKE.md 06:55 T3 |
+| A13 | 8x8 stored sign net + one exact hop | 10-12/13 | 8x8 | from Marshall: beats exact K1 by -5.2(1.1)e-4/site, closes 98.5% of Marshall->ViT-sign gap vs 88%; from ViT sign +0.9(2.5)e-6 (one rare high-E_L sample dominates) | WORKS from Marshall; INCONCLUSIVE from the ViT sign (cause: one outlier) | RESEARCH_MAP.md 3p (signs_8x8); results/signs_8x8/ |
+| A14 | Sign network trained on KKT / expelled-set labels (s_2) | 10-21 | 6x6 | best stored w_s 2e-5 vs 1.2e-6 needed for s_2 (17x short); never trained | UNTESTED (AUDIT flagged: KKT labels need oracle phi*) | results/AUDIT_2026-10-21.md sec 1 (3'), sec 4 item 3 |
+| A15 | Flip the "expelled" set X_tau (KKT / switched-off rule) as the next sign step | 10-19/20 | 6x6 exact | precision 0.997 by |psi0|^2 weight, recall 0.83 (tau 0.1); ceiling 2.51e-6 -> 9.15e-7 (40 solves, 2.7x); round 2 only +4% | WORKS on exact tables only (oracle phi* needed; with ViT ratios E_FN 1.02e-4, worse than s_1 9.5e-5) | results/compress_6x6/README.md "Expulsion / veto / flip test"; STATUS n/a |
+| A16 | Walker-accessible KKT label (from the fitted amplitude, not phi*) | 10-21 | 6x6 | no number found | UNTESTED (AUDIT sec 4 item 2) | results/AUDIT_2026-10-21.md |
+| A17 | Sign-channel check (3 exact-amplitude sign steps) | 10-13 | 6x6 | step-1 bar failed; steps 2-3 with exact FN amplitudes 1.93e-5 -> 1.35e-5 -> 1.06e-5 | MIXED (works with exact amplitudes only) | compress_6x6 README "Sign-channel check"; AUDIT sec 1 |
+| A18 | Bad starts for the exact loop (excited state, wrong sector) | 10-06 | 4x4, 20 sites | any in-sector GS content -> GS (down to weight 1e-8); eigenstates are fixed points; other symmetry sectors trapped; Anderson unsafe | WORKS in-sector; FAILS across sectors | FUTURE_ANGLES.md item 1; results/bad_start/; CLAUDE_TAKE.md 22:04 |
+| A19 | Hop's discarded sign as the O3 label (conceptual D1) | 10-22 | 6x6 | no number found | PROPOSED, awaiting PI go, not run | PLAN_conceptual.md D1 |
+| A20 | PP's own sign (Pfaffian sign) vs s_2 / Marshall | 10-22 | 6x6 | one hop with own sign 1.869e-5 vs s_2 2.369e-5; wrong weight 2.38e-5 vs 1.23e-6; chain ceiling 7.0e-6 at k=12 | MIDDLE (own sign is a usable parent, not as good as s_2) | delta_today.md 10-22 (b0ctl, S1); compress_6x6 README "S1" |
+| A21 | Learned sign-correction ranker / policy (AVSL 01-05: bandit, GRPO/DAPO, learned policy 4x4, chamber transfer, active labelling) | 10-18..24 | 4x4, 20 sites | transfer Marshall->post-Krylov: learned 1.0e-6 vs signed-bond heuristic 0 vs random 3.2e-7 (fixed-a gain); active labelling uncertainty 1.47x random (1.9e-5 vs 1.3e-5) | INCONCLUSIVE/WEAK (20-site, oracle amplitudes, 2 seeds) | angles/active_verifier_guided_sign_learning/ (EXPERIMENT_01..05, HANDOFF_2026-10-19.md) |
+| A22 | AVSL-06/07 cooperative patch scout, dense process reward RL | 10-19 | 20 sites | dense signed-bond reward 21 positives vs binary RL 25, shuffled 25 | FAILS (negative for this process proxy); patch scout "negative" (no number found) | git 81ca1bd, 9a492ba; EXPERIMENT_07_DENSE_PROCESS_REWARD_RESULT_2026-10-19.md (git history, not in worktree) |
+| A23 | AVSL-08 real FN-mixed walker support + learned explorer | 10-19 | 20 sites | 198 profitable orbits carry 3.75e-5 of FN mass; 0 of 198 visited by 6 populations; learned 19 vs random 10 (equal attempts), reverses with beta | support bottleneck REAL; learned explorer no robust winner | git ec1a17b, 3fb1f35 (EXPERIMENT_08_*) |
+| A24 | AVSL-09/10: Krylov-verified composite signs, compact local sign rule | 10-19/20 | 20 sites, 4x4 | verified K1 flips lower reprojected E_FN; direct 42-feature rule changes E_FN by -0.0271 total (worse), 43-feature -0.00303 | verifier WORKS; direct learned rule FAILS (unsafe extrapolation) | git 792ddf2, e1feb3c (EXPERIMENT_09, 10) |
+| A25 | AVSL-11 FN-release certificate / amplitude-free screener | 10-21 | 4x4, 20 sites | 71 certified vs 19 frozen-a positive flips (4x4); 245 vs 198 (20 sites) | WORKS as exact audit (needs exact phi: oracle) | git 00c3360, 5a8dadc (EXPERIMENT_11) |
+| A26 | AVSL-12 spatial attention / GNN rankers of Krylov checks | 10-21 | 20 sites | held-out AP: GNN .324, bond-biased transformer .299, plain transformer .0395, MLP .116, random .0415; unchecked top-120 flips raise E_FN -10.4177 -> -10.0958 | rankers WORK behind a verifier; direct sign predictor FAILS (8/8 unchecked updates raise E_FN) | git 3e5f173; experiments/active_verifier_guided_sign_learning/CLAUDE_REPLY_AVSL12_2026-10-21.md |
+| A27 | Greedy orbit sign flips, signed-bond screening, noisy-oracle gate (20-site ChatGPT loop) | 10-18 | 20 sites | 40 orbits recover 94.4% of K1 gain; sigma 0.3 noise: 11/12 trials worsen | WORKS with exact amplitudes; FAILS under imperfect amplitudes (log-ratio precision ~2-7% needed) | results/scalable_sign_2026-10-18/README.md |
+| A28 | 20-site CNN sign classifier with FN-suppression / energy-gain sampling | 10-18 | 20 sites | fixed-a E: baseline -10.414802 vs suppression -10.414689, energy-gain -10.413679 | FAILS (no stable advantage from prioritised sampling) | results/scalable_sign_2026-10-18/j1j2_sign_research_audit_2026-10-18.md |
+| A29 | ML sign classification (GNN/transformer) alone | pre-09-27 | small | "near-random accuracy" (no number found) | FAILS as stated in FAILED_ROUTES; see Contradictions vs A11/A26 | FAILED_ROUTES.md |
+| A30 | Sign-net distillation of K1/Jacobi signs into a phase network | 10-03 | 8x8 | decision, no run | PARKED (keep analytic on-the-fly signs) | STATUS.md "Project-lead decision" 2026-10-03 |
+
+## B. Amplitude storage, learning and write-back
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| B1 | Four-bin density-ratio handoff g(r_M), eta 0.5 | 09-28..30 | 4x4, 6x6, 8x8 | 4x4 ideal samples pass (O 0.99926); 6x6 M=128 replicas differ 0.14-0.15 per bin then g2 within noise; 8x8 no bin > 2 sigma, cache 14.7M states OOM | FAILS at 8x8 (cache wall + noise); 6x6 "practical fixed point" | STATUS.md 2026-09-28..30; results/8x8_krylov_fn_scaling_verdict_2026-09-30.md |
+| B2 | Raw FN-walker histogram as the amplitude | 09-28 | 4x4 | ~1e6 ideal walkers give overlap 0.99747 vs ceiling 0.99926; sampled loop floor ~1/N | FAILS (not scalable) | STATUS.md "Fixed-node scaling test" |
+| B3 | Density-ratio CNN classifier (callable residual, eta 0.36) | 09-30 | 8x8 | cross-replica AUC 0.64; E_FN -27.42 vs -31.885 | FAILS (threshold-measure bug also found, scans 3495590/604/603 void) | results/learned_fn8_classifier_verdict_2026-09-30.md |
+| B4 | Warm-started ViT classifier (full/head/last block) | 09-30 | 8x8 | val AUC 0.45-0.53 | FAILS | AMPLITUDE_LEARNING_LEDGER.md |
+| B5 | MLE amplitude: small MLP | 09-30 | 4x4 | fidelity 0.968 -> 0.950 | FAILS (net too small) | results/fn_mle_halfstep_4x4_2026-09-30.md |
+| B6 | Walker MLE with Adam / Euclidean gradient (full ViT) | 10-01 | 8x8 | held-out log-lik -0.25..-0.29; infinitesimal step held-out -1.92e-5; replica cosine -0.853 | FAILS (optimizer geometry) | results/fnmle_vit8_gate_2026-10-01.md |
+| B7 | Walker MLE + SR (lambda 1, eta .01), iteration 1 | 10-01 | 8x8 | E_FN -31.9012 vs -31.8854 (3.35 sigma, 2 replicas); independent rebuild -31.839 (+0.046 worse) | NOT REPRODUCIBLE (STATUS headline "first viable" is superseded) | STATUS.md "FIRST VIABLE" vs "SR round-1 ... worse"; ledger |
+| B8 | MLE + SR iteration 2, trust-region scans | 10-01 | 8x8 | E_FN -31.8154; frozen-s1 -31.828; eta 3e-4/1e-3/3e-3 all worse (-31.797/-31.811/-31.846 vs -31.8968) | FAILS (cause: >99% of one-hop neighbour ratios unsupported by samples; seen/unseen edge motion 19.6x) | STATUS.md 10-01 "Iteration 2", "Neighbor-shell audit" |
+| B9 | Fixed-sign physical-energy SR (variational objective) | 10-01 | 8x8 | held-out dE -0.0394 but frozen-s1 E_FN +0.0512 worse | FAILS (variational descent != FN descent; H_FN depends on the guide) | STATUS.md 10-01 |
+| B10 | Frozen-H_FN Rayleigh objective + SR, factorised residual a_k exp(r_theta) | 10-02/03 | exact 4x4 | Adam 81-98%; SR shift 0.1: 99.7% of rebuilt E_FN refresh, fidelity 0.99999997 | WORKS exact 4x4 | results/frozen_hfn_factorized_sr_exact4x4_2026-10-03.md |
+| B11 | Same at 8x8 (sampled, chunked SR) | 10-03 | 8x8 | 2 accepted steps lowered train/val frozen energy, then OOM (3554914); retry 3565752 outcome not recorded | INCONCLUSIVE (never physically tested); by majorisation = fixed-sign VMC step to first order | STATUS.md 10-03; AUDIT sec 1 row (2) |
+| B12 | Fixed Euler target ITE (Ledinauskas-Anisimovas) with Adam | 10-03 | exact 4x4 | first Adam step lr 1e-5 raises E to -8.36867; target itself captures 76.6% | FAILS with Adam (cause: Adam overshoot near convergence); jobs 3560026/54 outcome not recorded | STATUS.md "Ledinauskas-Anisimovas" |
+| B13 | Pointwise log|R| regression / Hamiltonian-edge difference loss, Adam | 10-03 | exact 4x4 | pointwise 45.9%; physical-H edge loss 65.9% (best ckpt) then drift to 51.8%; frozen-edge 54.7% -> 18.3% | PARTIAL (edge loss better; no early stopping) | STATUS.md "4x4 Hamiltonian-edge residual result" |
+| B14 | Amplitude by 6x6 large-N steps (AMP6), zM sign, same-optimizer control | 10-07 | 6x6 | arm zM +0.67(0.90)e-5 vs ViT; control D -0.35(0.31)e-5 | FAILS (fixed-sign optimum within ~1e-5 of ViT) | results/amp_design/AMP6_table.md |
+| B15 | FN-surrogate amplitude objective vs second-order fixed-sign VMC | 10-06 | 4x4 | VMC beats surrogate 4-10x (majorise-minimise) | FAILS (no edge over VMC) | results/amp_design/DESIGN_MEMO.md |
+| B16 | Write-back of FN update into a net (zero-hop, Adam) | 10-07 | 6x6 | oracle 17%, realistic <1% | FAILED then downgraded to INCONCLUSIVE (cause: Adam, spin-only inputs) | results/writeback/DESIGN.md; RESEARCH_MAP 3e |
+| B17 | Tail write-back with one-hop inputs (log a, V wall, W kept weight) | 10-08/09 | 6x6 | oracle data 88.7%; realistic Step 2 73.4% vs VMC controls -15% | WORKS on 6x6 tables (controls later called unsound: Adam/minSR with N<<P) | RESEARCH_MAP 3i/3j; AUDIT sec 3 (3) |
+| B18 | Imaginary-time fitting with H_FN (itfit): zero-hop CNN / semi-implicit step | 10-08 | 6x6 | zero-hop <=3.7% (oracle 8.3%); semi-implicit step 87% / 97%; net+one hop 82% | INCONCLUSIVE (cause: one-hop dependence); merged into B17 | results/itfit_6x6/README.md; RESEARCH_MAP 3g |
+| B19 | Spin-only tail net / tail expert / edge sampling / global GN | 10-08, 10-13 | 6x6 | tail expert 21.3%, edge sampling 2.2%, GN 0.3%; route-B spin-only 4-5% (share -0.23/-0.25) | FAILS for spin-only inputs (cause: cannot compute one-hop quantities) | RESEARCH_MAP 3i, 3p "Route B" |
+| B20 | Distil the k-iteration stack into one net (P1/P2 pre-tests) | 10-09 | 6x6 | precision 0.003 rms per bond needed; students keep <=10% | INCONCLUSIVE (cause: optimisation + precision) | RESEARCH_MAP 3l; results/compress_6x6 |
+| B21 | Constant-hop loop with re-base into frozen-base features | 10-11 | 6x6 | 67% of table gain (bar 70%), plateau 7.0e-5 | INCONCLUSIVE (limit: base-feature information) | RESEARCH_MAP 3m |
+| B22 | Residual re-base G_{k+1} = G_k + h_k, robust (3 seeds) | 10-12 | 6x6 | 85%/86% of table gain at it 6/8; <H> 4.23-5.10e-5 at it 8 | PASSES on its bar, but loses to equal-hop Lanczos (guide+1L 1.8-2.0e-5 vs psi_P+2L 8.6e-6) | RESEARCH_MAP 3p |
+| B23 | Per-bond BondNet inputs, rolling base | 10-11/12 | 6x6 | pre-tests 0.08-0.21 | FAILS | RESEARCH_MAP 3p |
+| B24 | Rolling re-anchor of a warm ViT to the k=1 target | 10-13 | 6x6 | share -0.14/-0.12 (minSR), -0.10 (Adam); fit good for a^2>=1e-9, wrong below | FAILS (cause: tail a^2<1e-9 holds the gain) | experiments/compress_6x6/README.md "Rolling re-anchor"; AUDIT row (2') |
+| B25 | Hybrid ViT + one-hop correction | 10-13 | 6x6 | k=1 share 0.96 (E_FN 2.17e-5), k=2 0.23 (0.92 with 2nd hop) | FAILS at k>=2 | RESEARCH_MAP 3p; git 427d41d |
+| B26 | Lanczos-wrapped network (pre-test W0) | 10-13 | 6x6 | exact bulk + fit tail keeps 4-7% of gain | NOT SOUND | git 02f7c16 |
+| B27 | Step-size / clipped-Lanczos target in the callable loop | 10-12/13 | 6x6 | stage 1 matches a Lanczos step (2.62e-5, 1.16e-5, 7.06e-6, 4.91e-6); stage 2 retention 0.84/0.66/0.31/0.09 (bar 0.7) | stage 1 WORKS (tables); stage 2 FAILS (cause: re-base fixed absolute error 0.013 bond-rms) | RESEARCH_MAP 3p; compress_6x6 README "Step size" |
+| B28 | Refit/refresh of the ViT to phi*(s_2) (and Fable audit) | 10-21 | 6x6 | E_FN 9.16e-5 / 9.22e-5 vs 1e-5 bar; recall 5e-7; refit not converged (28/200 accepted) | FAILS (bar 1e-5) but audit says undertrained: route INCONCLUSIVE | delta_today 10-21; results/consult/fable_training_audit_2026-10-21.md |
+| B29 | Tail-weighted (decade-stratified) fit T1s/T1s-2 | 10-21/22 | 6x6 | E_FN 8.18e-5 (ViT), 2.82e-5 (PP), 2.96e-5 (PP+bf); T1s-2 6.89e-5/2.61e-5/2.42e-5; no arm converged, none <1e-5 | FAILS / inconclusive (budget); splice E_FN 6.0-8.2e-6 | delta_today 10-21/22; compress_6x6 README T1s |
+| B30 | Fit what FN uses (violating-bond ratio objective F2) | 10-23 | 6x6 | F2 void (optimiser); F2-1 held-out L_v 3.24e-3 -> 3.43e-3 | FAILS (tail does not generalise) | delta_today 10-23 |
+| B31 | Refit tax: capacity vs under-training (F1) | 10-23 | 6x6 | tax 3x3 5.60e-6, 5x5 4.58e-6 vs O2b 5.93e-6 | FAILS to cut tax (objective/ansatz, not capacity or time) | delta_today 10-23 F1 |
+| B32 | Second hop absorbs refit tax (H1) | 10-23 | 6x6 | tax_2/tax_1 = 0.32/0.33/0.32 | WORKS (two hops absorb ~2/3 of tax) | delta_today 10-23 H1 |
+| B33 | Stored pre-image of J2 (see G7-G10) as the stored object | 10-23..27 | 4x4..6x6 | exact store tax 2.4e-8; 2442-param RBM 7.4e-6 vs 1.657e-6 bar | FAILS (storage error) | PLAN_ansatz.md Dead ends |
+| B34 | CNN + MPS network as the loop's stored part ("reserve") | 10-24 | 6x6 | literature 2.3e-6/site (arXiv:2603.14425); no run | UNTESTED | PLAN_ansatz.md "Reserve"; handoffs/2026-10-24-ansatz-pioneer.md point 3 |
+| B35 | Walker-only NCE amplitude learning (20-site analytic Jastrow guide) | 10-18 | 20 sites | 3500 walkers: log-ratio RMS 0.18 (bulk), 0.33 on correction bonds; 128 walkers 0.557/0.638, 1/4 sign trials improve | PARTIAL; 128-walker FAILS as acceptance rule | results/scalable_sign_2026-10-18/WALKER_ONLY_NCE_*.md, WALKER_ONLY_FN_MIXED_*.md |
+| B36 | Callable 20-site CNN amplitude with edge-difference loss | 10-18 | 20 sites | 4 seeds: matched-pool +14.3% paired for edge loss; log-ratio RMSE not better (0.2884 vs 0.2927) | WEAK/INCONCLUSIVE (teacher = 49,747 exact labels) | results/scalable_sign_2026-10-18/README.md |
+| B37 | Finite-T amplitude relearning (20-site, PairGNN, overlap-SR) | 10-03 | 20 sites | edge RMSE improved 0.61% only; fidelity 0.855531 -> 0.851822 | FAILS, finite-T parked | results/finite_tau_amplitude_relearning_subangle_closure_2026-10-03.md |
+| B38 | Learning ladder rungs 1-3 (exact target + net + SR; exact-FN samples; real walkers) | 10-03 | 4x4 | rung 1 99.7%; sampled 4x4 loop stable 150 its, error ~N^-0.75 | rung 1-2 WORK; rung 3 "never done" per ledger (see Contradictions) | AMPLITUDE_LEARNING_LEDGER.md "Plan"; AUDIT row (2) |
+
+## C. Loop variants (iterate fixed node <-> sign; storage in networks)
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| C1 | Exact FN/Krylov loop (current-sign recursion) | 09-28..10-05 | 4x4, 20, 6x6, up to 36 | 4x4 exact signs at it 27 (exact amp) / 100 (J2=0 start); 6x6 from Marshall 1.0e-6 rel at it 100; iterations flat 16 -> 36 sites (Anderson 28-70) | WORKS (no stall) | STATUS.md 09-28; AUDIT sec 1 "Loop rounds"; CLAUDE_TAKE 2026-10-05 |
+| C2 | Anderson acceleration | 10-03 | 4x4, 20 | 100 -> 31 (4x4), 224 -> 59 (20 sites) | WORKS (unsafe from bad starts) | CLAUDE_TAKE.md 2026-10-03 |
+| C3 | Geometric-mean update a <- sqrt(a phi_FN) (what MLE gives) | 10-03 | exact | converges exactly 2x slower | known cost | CLAUDE_TAKE.md |
+| C4 | 4x4 loop from a VMC-trained net | 10-06 | 4x4 | net H eps 3.6e-4 -> loop 1.5e-4 vs equal-cost VMC 1.8e-4; "3.3-7.2x" claim | tie-ish; 3.3-7.2x claim withdrawn (exact sign table, 1.2-1.8x at equal steps) | results/net_start_4x4/README.md; RESEARCH_MAP 3b |
+| C5 | 6x6 learned loop it1/it2 (stored sign + hop) | 10-05/06 | 6x6 | it1 -0.503708(29) tie with ViT; it2 G2 -0.503687(23) vs ViT guide -0.503666(8), -1.7(2.5)e-5 | TIE (referee later found biased: step-averaged DMC withdrawn) | results/learned_loop_6x6_it2/IT2_VERDICT_2026-10-06.md |
+| C6 | Table loop with realistic write-back (6x6) | 10-09 | 6x6 | <H> 3.16e-5 after 8 its (< RBM+PP 4.47e-5) | WORKS only with stored tables; loses to Lanczos at equal hops | RESEARCH_MAP 3j |
+| C7 | Loop vs VMC continuation at equal GPU-h | 10-05..12 | 6x6 | VMC continuation 9 GPU-h gains -1(14)e-5 | loop not demonstrated better | HANDOFF_2026-10-05.md; delta 10-23 correction |
+| C8 | Refit loop with RBM+PP storage, gate G-tax / loop C | 10-23 | 6x6 | tax_2 1.657e-6 = 1.02 x round gain 1.629e-6 | GATE SHUT (loop C not run) | PLAN.md; compress_6x6 "G-tax" |
+| C9 | Fitted loop O2b (walker-producible target, own network) | 10-22 | 6x6 | E_FN 2.37e-5 -> 1.41e-5 -> 1.09e-5 -> 9.26e-6 (k=3) -> 9.25e-6 -> 8.42e-6; tax 5.7-6.4e-6 each round | PASS bar, viability FAIL (fixed point ~9e-6) | delta_today 10-22; compress_6x6 "O2b" |
+| C10 | Fit-free chain (O2a, G-A3 from RBM+PP) | 10-22/23 | 6x6 | 2.37e-5 -> 1.7e-6 (6 rounds); RBM+PP chain 1.95e-6 -> 3.0e-9 | WORKS (ideal map is fast) | delta_today 10-22/23 |
+| C11 | Same network by plain VMC (B0 baseline) | 10-22 | 6x6 | PP+3x3 backflow, 400 SR steps no gain (Paderborn 3806793); seed 1 +3e-5 worse | CLOSED (no resolvable VMC gain; SR noise damages tail) | delta_today 10-22; PLAN.md Dead ends |
+| C12 | One loop round at 8x8 with walkers and same-class refit (L8) | 10-25/26 | 8x8 | held-out R 0.9984(7) -> 0.928(7); cosine +0.033(29), -0.010(35) | CLOSED: hop part has zero fidelity gradient at the VMC optimum (identity to 5e-9); beyond-hop 2.3e-5/site | docs/reports/2026-10-26_l8_loop_round_8x8.md |
+| C13 | Exact iterated refit loop at 4x4, restricted classes: refit to FN(a), node-weighted refit, one-hop variant | 10-26 | 4x4 | no-hop refit raises E_FN every round (RBM -0.5275259 -> -0.5273929); one-hop RBM 27% of gap but broken-target control (1% flipped signs) gains 1.3-6.5e-5 | FAILS (storage loop closed; gain not from storing phi) | PLAN.md "Test 1"; delta_today 10-26 14:34 |
+| C14 | Hop-aware training: minimise E_VMC(a h_a) or E_FN(a h_a) | 10-26 | exact 4x4 | RBM 79% of add-on->E0 gap (loop 27%); f-only 69% (loop 9.9%); direct E_FN 86%/75% | WORKS at 4x4; CLOSED by PI for scaling (two-hop neighbourhood per sample, 137x at 8x8, ~N); pilots 4010838/4012781 cancelled | delta_today 10-26 15:58 and 19:10; commits 3929a81, cb6dfe3 |
+| C15 | Training the guide on its own lattice FN energy (E_FN Hellmann-Feynman force) | 10-01/02, retracted 10-27 | exact 4x4 force; sampled 8x8 | exact 4x4 force: 1.74x descent vs Euclidean; sampled 8x8 surrogate passed (3537066) but physical E_FN -31.8551 vs -31.9012 (+0.046, 3549023/24) | FAILS sampled (cause: finite-walker force SNR collapses near fixed point; walkers for cosine 0.7: 8e4 -> 2.5e8). 4x4 restricted-class stage (c) code exists (cfc2681), no result | STATUS.md "Exact 4x4 E_FN Hellmann-Feynman", "8x8 mixed E_FN force/QGT"; PLAN.md Dead ends; ledger rows 10-01/02 |
+| C16 | Constant-cost storage of loop steps (7 designs) | 10-13 | 6x6, 8x8 | learned bond field 1.92e-5; re-base on psi_P features 0.02; rolling -0.1; hybrid 0.23 | FAILS (non-local near-node structure) | RESEARCH_MAP 3p "Constant-hop fold-back"; PLAN.md |
+| C17 | Self-healing DMC / SHDMC-type iteration | 10-26 | literature | Reboredo-Hood-Kent 0808.3417; Caffarel 2609.01301 (noise-free FN energy rises); Kairon-Clark 2609.16308 | known prior art, explains C13 | delta_today 10-26 13:36, 19:18 |
+| C18 | Loop as network + p Lanczos hops + FN add-on (no refit) | 10-26 | 8x8, 10x10/12x12 | 8x8 FN p=1 -0.498946(5) | CURRENT GOAL; 10x10/12x12 trainings cancelled (budget) | PLAN.md Goal; Section I |
+| C19 | Bad-start/loop continuation from J2 amplitude | 10-06 | 4x4 | see A18 | see A18 | |
+
+## D. Krylov / Lanczos variants and their locality
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| D1 | One Lanczos step vs one Krylov sign step (equal hop) | 10-07 | 6x6 | psi_P 1.32e-4: Lanczos p1 2.55e-5, p2 8.6e-6; K1 1.27e-4 (Lanczos wins 20x) | sign-only add-on KILLED for good guides | results/lanczos_baseline_6x6/README.md; RESEARCH_MAP 3d |
+| D2 | Lanczos vs Krylov scaling with N | 10-07 | 16..36 sites | one Lanczos step removes fixed fraction 0.73-0.92 at every N; Krylov removes only sign part | no Krylov overtaking; Lanczos shrinkage expected only for N dE > gap (untested) | results/lanczos_vs_krylov_scaling/ |
+| D3 | Local threshold sign rule C_w (window-energy) vs global G | 10-13 | decoupled 4x4 copies, 8x8 | G/one-copy gain 0.95 (N=64) ... 0.24 (512), 0.011 (768), N_1/2 = 368; 8x8 from ViT sign all null | local rule LOST at 8x8 (window-energy noise 1.1 per 4x4 window) | results/local_krylov/README.md; RESEARCH_MAP 3p |
+| D4 | Size-consistency dilution of global Krylov/Lanczos | 10-13 | to 14x14 | ViT-quality guides r(192) 0.95-1.00; N_1/2 6e3-2.5e4 (Krylov), 4e3 to >6.5e4 (Lanczos) | NOT diluted below ~1e3-1e4 sites | RESEARCH_MAP "AMENDMENT"; local_krylov F1 (51fcbbf) |
+| D5 | Product of local Krylov factors (LP: per bond / site / plaquette) | 10-26/27 | 4x4, 6x6 | E_FN-E0 3.5247e-5 (LP) vs 5.5738e-6 (global G) vs 3.5249e-5 (none); near-node pole |psi_LP/psi| 9.7e6 | KILL (cause: divides by psi per active bond) | docs/reports/2026-10-27_local_product_krylov.md |
+| D6 | Cached global Krylov step on a finite-receptive-field CNN | 10-26 | L=6..32 | exactness 3.9e-14; cost exponent 1.79 (L 6..20, fails <=1.2), 0.99 (L 16..32); overhead 234 (L 8), 1003 (L 20) x plain | linear only for L>=16 with constant ~|A_c|; RBM+PP 8x8 137x | same report, Stage A'; experiments/local_product/gcache.py |
+| D7 | Clipped-Lanczos / SI target; Lanczos target as write-back label | 10-11..13 | 6x6 | supervised Lanczos target diverges (|1+alpha E_L| unbounded on tail) | FAILS unclipped; clipped works as target (B27) | RESEARCH_MAP 3o |
+| D8 | Hard K1 flip inside the loop then Lanczos polish | 10-13 | 6x6 | ViT amp + K1 sign: <H> 1.27e-4, +L1 3.6e-5 vs ViT+L1 2.55e-5 | bump is from the hard flip (idea: damped flip, untested) | RESEARCH_MAP 3p "Lanczos-polish bump"; git 2831641 |
+| D9 | Lanczos p=2 via repeated step f^2; three-hop E_L cost | 10-13/19 | 8x8 | 86 s/sample on a slice; Ritz not estimable from 64 samples; f^2 keeps 78% of optimal p2 gain (6x6) | cost-limited (~130 H100-h for paired SE 5e-6) | RESEARCH_MAP 3r |
+| D10 | Chebyshev-filtered Jastrow guide / SAT-style operator-word counting | 10-27 | 4x4, 4x5 open | degree-2 overlap 0.62 -> 0.918 but optimal Ritz K2 better (0.957); fails size consistency; patch version distorts tail | FAIL as scalable new solution | angles/sat_tensor_counting/CHEBYSHEV_GATE_2026-10-27.md |
+| D11 | Generic ETH / 3-SAT tensor contraction for the sign problem | 10-27 | none | paper bound exponent L^2 M/sqrt(log) vs sweep O(min(LM,L^2)) | not implemented (loses asymptotically) | angles/sat_tensor_counting/README.md |
+| D12 | Adaptive-depth guide (second hop only near nodes) | 10-13 | 6x6 | 2% of weight recovers share 0.76-0.80; branching r ~ 50 per flagged config (bar <0.5) | FAILS on cost | RESEARCH_MAP 3p; git c2261bf |
+| D13 | Residual locality (fold-back features) vs PP / RBM+PP / ViT base; light-cone | 10-13 | 6x6, 8x8, 4x6 | residual rms 0.26-0.63 at distance >=2.8; 8x8 rms 0.5-0.7 at distance 3-5; local at J2=0, near 0.3, non-local 0.4-0.5 | NOT LOCAL at J2=0.5 | results/locality_8x8/README.md; RESEARCH_MAP 3p |
+| D14 | Cheap finite-hop bond screening, region-local sign step design | 10-13 | design | no number found | design stage; local patch-wise sign update = open design problem | DESIGN_scalable_loop_2026-10-13.md; RESEARCH_MAP "DECISION 2026-10-13" |
+
+## E. Fixed-node objectives, force estimators and the FN referee
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| E1 | Exact E_FN Hellmann-Feynman force + SR (4x4) | 10-01 | 4x4 | finite-difference 7.6e-10; natural gradient -0.0607 vs plain -0.0348 (1.74x) | WORKS exact | results/efn_hf_sr_exact4x4.json |
+| E2 | Forward-walking estimator of the pure-measure force | 10-01 | 4x4 M=20000 | cosine 0.4056 -> 0.6203 (500 steps) -> 0.5913 | FAILS (noisy) | results/forward_walking_efn_gradient_exact4x4.json |
+| E3 | Mixed-walker E_FN force (g = 2<F>_mixed) + QGT/SR in NN tangent space | 10-01/02 | 4x4 exact; 8x8 | exact cosine 0.972/0.9955; walkers cosine ~0.03 at M=128; 8x8 surrogate pass then physical +0.046 | FAILS (see C15); Tim/Chatty seq48 independently: SNR collapse | STATUS.md 10-01/02 |
+| E4 | FN referee: step-averaged DMC estimator | 10-07 | 6x6 | bias -11..+25e-6, guide dependent, not 1/M | WITHDRAWN (adaptive tau weighting) | results/fn_calibration_6x6/README.md |
+| E5 | FN referee: beta-time-averaged estimator, M>=512, >=500 populations | 10-07 | 6x6 | within 3.3e-6 of exact for M>=128; 1/M bias below M=128 | WORKS (use this); median rule wrong | same; RESEARCH_MAP 4 |
+| E6 | 8x8 FN-DMC with psi_P guide | 10-19 | 8x8 | -0.498889(11) from 8 populations (protocol >=500) | PROVISIONAL | deliverable_C README; AUDIT 3.1 |
+| E7 | Lattice FN bound E0 <= E_FN <= <H>_guide check | 10-03/04 | 6x6 | possible violation E_FN[K guide] -0.502984 vs <H> ~ -0.5033; resolved by 76 populations -0.503100(40) | resolved (8-population value biased low) | CLAUDE_TAKE.md 2026-10-03, 10-05 |
+| E8 | Bond-field fixed node: ceiling with self-consistent ratios | 10-13/19 | 6x6 | s_1 ceiling 4.6e-6 (20 solves), 2.51e-6 (40 solves, Aitken 2.05e-6) | ceiling WORKS (exact, oracle) | compress_6x6 README "Bond-field fixed node" |
+| E9 | Trained bond field (zero-hop d1; one-hop d2; arm A 16 rounds) | 10-13..20 | 6x6 | d1 9.4e-5 (fails), d2 3.0e-5; arm A plateau 1.92e-5 (bar 1.0e-5); ~1+23 psi_P hops per step; error systematic (corr 0.998), NN rms 0.24 | FAILS (bar), still between psi_P+1L 1.89e-5 and +2L | same, "Bond-field round 2" |
+| E10 | Delta_B (Lanczos on the sign-free Hamiltonian, released node) | 10-13 | 6x6 | Delta_B = 0.385/site, signal exp(-27.7 tau) | DEAD | same |
+| E11 | Veto only (expel X_tau, ViT ratios) | 10-19 | 6x6 | E_FN 9.07-9.41e-5 vs 9.54e-5 | little help (bulk-ratio problem) | same "Expulsion" |
+| E12 | L-BFGS on global log-amplitude for the FN ceiling | 10-19 | 6x6 | 9.25e-5 after 20 evals vs 6.0e-5 for one fixed-point solve | FAILS (slower) | same |
+| E13 | Gamma-extrapolated FN on exact tables (G0, "gamma-FN") | 10-21 | 6x6 | min <H>_phi^gamma at gamma=0: ViT 7.57e-5 = 26% of gap | FAILS | delta_today 10-21; g0_17411369 |
+| E14 | Same-guide FN Rayleigh-release certificate (AVSL-11) | 10-21 | 4x4, 20 | see A25 | exact audit only | EXPERIMENT_11 |
+| E15 | FN with a fully stationary callable E_FN descent (ten Haaf monotonic guide update) | 10-01/02 | 8x8 | no monotonicity guarantee for repeated guide replacement | theory note | STATUS.md 10-01 "Theory clarification" |
+
+## F. Projector variants (importance function, tempering, release, gamma)
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| F1 | Tail-steered / tempered walkers (importance function flatter than guide; Chatty recipe g only for kept edges) | 10-08 | none | ESS 5% at beta=1/2 on 6x6 (noted) | PARKED, never tested (O4 "walkers instead of exact solves" pre-registered, not run) | RESEARCH_MAP 5; compress_6x6 README O3/O4 |
+| F2 | Decoupled FN amplitude guide vs MC importance (finite-T, q=1) | 09-30 | 20 sites | fidelity 0.98075 (M=8192) vs 0.94345 uniform | WORKS at 20 sites (finite-T side angle) | STATUS.md 2026-09-30 |
+| F3 | Lattice FN-DMC engine with a guide plus signed one-hop (M1.1) | 10-23 | 4x4, 6x6 | 6x6 5.99e-6 +- 1.8e-6 vs exact 5.57e-6 | WORKS (validated) | delta_today 10-23 M1.1/M1.2 |
+| F4 | FN projector p=0 / p=1 (psi_P + hop) at 8x8 | 10-24/25 | 8x8 | p=0 -0.4987565(28); p=1 -0.498946(5) QUOTABLE | WORKS (new numbers) | Section I |
+| F5 | Population control / referee bias at 8x8 | 10-24 | 8x8 | M=64 -0.4989467(14) vs M=256 -0.4989486(68) (0.1 sigma) | no bias visible | delta_today 10-24 |
+| F6 | gamma-FN projector release of constraint (G0) | 10-21 | 6x6 | see E13 | FAILS | |
+| F7 | Released-node feedback (non-circular QMC->NQS path) | 06 | none | no number found | DEFERRED, untested | memory file (June sign_prob) "Deferred" |
+| F8 | Local-update ("sampling-based") rebuild of exp(-t H_J2) = released node | 10-26 | 4x4, 4x6 | ln C/N 0.076 -> 0.067 (exponential by rule); C ~ 70 at 8x8 not affordable | FAILS as designed (see G9) | PLAN_ansatz.md R2 |
+
+## G. Ansatz families
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| G1 | ViT (translation, our nqsmagic) as guide | 09..10 | 6x6, 8x8 | 6x6 -0.503654(21); 8x8 -0.498823(35); NOT state of the art (RBM+PP better) | baseline; SOTA claim withdrawn | CLAUDE_TAKE.md 10-07 correction |
+| G2 | RBM+PP (published ansatz, own JAX, SR) | 10-13 | 6x6, 8x8 | 6x6 dE 4.74e-5 (full projection), simple projection target missed by 1.8e-5; PP alone 6.3e-5; 8x8 VMC -0.498674(12) | WORKS; the working guide | results/rbmpp_6x6/README.md; RESEARCH_MAP 3q |
+| G3 | Pfaffian/determinant + local backflow x ViT (T0/T1: PP+3x3 backflow, 5x5) | 10-21..23 | 6x6 | T0 kill rule fires (eps PP/ViT 0.78); T1s PP 2.82e-5; G1 PASS representability 7.06e-6 (oracle sign, one seed) | T0 kills FIXED PP; backflow route INCONCLUSIVE (cause: no tail-weighted training); B0 closed | delta_today 10-21/22; RESEARCH_MAP 3p |
+| G4 | PP + 3x3 backflow VMC (B0) | 10-22 | 6x6 | no gain over PP in 400 SR steps | CLOSED (no resolvable VMC gain) | PLAN.md Dead ends |
+| G5 | Global sign-rule interference (Neel/stripe, C1) | 10-23 | 6x6 | R/R_null 0.99 (violations class-blind) | KILL | PLAN_ansatz.md C1-T0 |
+| G6 | Plaquette frame / 2x2 rotation (C4) | 10-23 | 4x4 | W_neg 0.012725 vs Marshall 0.012731 | KILL at 4x4 (4x6 not run) | PLAN_ansatz.md C2-T0 section |
+| G7 | J2 pre-image (1 + a H_J2)^-1 psi0 sign-free (C2-T0) | 10-23 | 4x4, 4x6, 6x6 | W_M ratio at cond 3: 0.015 / 0.13 / 0.24 (V_J2); 6x6 inconclusive | INCONCLUSIVE (grip weakens with N) | PLAN_ansatz.md C2-T0b |
+| G8 | J2 layer as add-on / trained layer (C2-T1/T2) | 10-23/24 | 4x4, 4x6 | full-H layer beats H_J2 layer 4.5x/5.5x/1x; trained E_var 1.61e-2 vs 1.02e-2 (Jastrow) | KILL | PLAN_ansatz.md Dead ends; exact_vmc_4x6/verdict.json |
+| G9 | Stored J2 pre-image in the loop (C2-L, C2-L-exp, R1-R3 local undo / decoder) | 10-23..27 | 6x6 (4x6) | exact store tax 2.4e-8 (t 0.20); positive RBM 7.4e-6 (bar 1.657e-6); R3 decoder 1.34x/1.80x Marshall-FN; R2 J1 filter only 1.2-2.2x worse | CLOSED (storage error); R1 locality PASS (t* 0.14-0.16 at both sizes) | PLAN_ansatz.md; handoffs/2026-10-27-ansatz-loop-test.md |
+| G10 | Sign-free parent + J2 dressing (C6, C6b similarity) | 10-24 | 4x4, 4x6 | C6-T0b dressed E_var 1.02e-2 vs baseline 4.17e-3 (2.45x worse); C6b g >= 0.383 for every a | KILL | PLAN_ansatz.md Dead ends |
+| G11 | Z2 spin-liquid + vison-dressed projected BCS (C3) | 10-23/24 | 4x4, 4x6 | rank 20: V 7.36e-4 vs random R' 4.1/5.7/4.3e-4; E_FN 4.6e-4 vs 2.7-3.9e-4 | KILL at 4x6 (4x4 gain was anomaly) | PLAN_ansatz.md C3 |
+| G12 | Amplitude-sign coupled output s_N e^f tanh(g) (C5) | 10-23/24 | 4x6 | E_var coupled/standard 0.65 / 1.02 / 0.96 (R1/R2/R4) | INCONCLUSIVE then closed (no pass in reach) | PLAN_ansatz.md Dead ends |
+| G13 | Determinant "node" via Gutzwiller/HBPS Z2 BCS sign (T0-phys) | 10-21 | 6x6 | J1 Marshall violation 0.40 on X_0.1 vs 0.013 bulk; stripe/Neel 5.7x | physics diagnostic (stripe-tilted near-node set) | delta_today 10-21 |
+| G14 | PP+bf by tail-trained fit as G1 guide (see B29) | 10-22 | 6x6 | 7.06e-6 | representability only | RESEARCH_MAP 3p G1 |
+| G15 | GCNN complex, relative-position transformer, local CNN sign nets | 06 | 4x4, 6x6 | see Section K | see K | memory file |
+
+## H. Size-scaling studies
+
+| # | Study | Date | Sizes | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| H1 | Tail concentration vs N | 10-08 | 16..36 | fraction carrying half the gain flat 12-20%; orbits 82 -> 1.6e7 | no size trend in weight; count explodes (4x4 success = memorisation) | results/tail_vs_N/README.md |
+| H2 | Exact loop iterations vs N | 10-05 | 16..36 | 82-104 (plain), 32-57 (Anderson) | flat | CLAUDE_TAKE.md 2026-10-05 |
+| H3 | Sign learnability vs N | 10-06 | 16..36 | net params needed grow N32 -> 36 | see A11 | results/sign_learnability/ |
+| H4 | Jastrow-J2 layer grip vs N | 10-23 | 4x4/4x6/6x6 | 1.5% / 13% / 24% residual Marshall-violating weight | weakens with N | PLAN_ansatz.md |
+| H5 | 8x8 Krylov-FN vs Marshall-FN | 09-30 | 8x8 | -31.8854(16) vs -31.677(26) total | WORKS (first FN solve) | results/8x8_krylov_fn_scaling_verdict_2026-09-30.md |
+| H6 | Lanczos gain fraction vs N | 10-07, 10-24 | 36 sites, 6x6, 8x8 | one step removes 84% error (6x6), 47% (8x8) | fades with N at 6x6->8x8 | PLAN.md |
+| H7 | 10x10 / 12x12 RBM+PP trainings | 10-19..26 | 10x10, 12x12 | 12x12 pilot 96.6 s/SR step, ~266 H100-h; 10x10 at step ~4150/4500 E/N -0.497272; 12x12 step 1150 -0.496599 | CANCELLED by PI (no useful projected number); checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn | PLAN.md "Running"; delta_today 10-26 19:15 |
+| H8 | Public 10x10 ViT checkpoint as add-on guide | 10-07/19 | 10x10 | loader matches 434,760 params; weights not downloaded (needs OK) | UNTESTED | RESEARCH_MAP 3r |
+| H9 | Local vs 4x6 locality vs J2 | 10-13 | 4x6 | interaction rms 6-13x larger at J2 0.5 than at 0 | see D13 | RESEARCH_MAP 3p |
+
+## I. Benchmarks and literature numbers
+
+| # | Item | Date | Size | Number | Note | Pointer |
+|---|---|---|---|---|---|---|
+| I1 | 6x6 references | 10-07, 10-23 | 6x6 | exact -0.50380965; RBM+PP -0.503765(1); DMRG -0.503805; CNN-MPS -0.50380737(5) (2.3e-6 above ED) | CNN-MPS supersedes RBM+PP as variational bar | results/literature/J1J2_BENCHMARKS_COST.md; delta_today 10-23 |
+| I2 | 8x8 references | 10-07/23 | 8x8 | RBM+PP -0.498886(1); Hu VMC+Lanczos -0.49886(1), var-extrap -0.49906(1); DMRG torus -0.4992(1) | | same |
+| I3 | Our 8x8 numbers | 10-11..25 | 8x8 | psi_P+1 Lanczos direct VMC -0.498971(12); variance extrapolation -0.498992(16)(8) (3.4 sigma vs Hu); VMC p=0 -0.498674(12) / p=1 -0.498923(17); FN p=0 -0.4987565(28), p=1 -0.498946(5) | p=1 FN 6.2e-5 below RBM+PP, 2.5e-4 above DMRG; cost training 4.1 + VMC 1.1 + FN 0.4/7.9 H100-h | PLAN.md; results/m1_8x8/ |
+| I4 | 10x10 / 12x12 / 14x14 / 18x18 | 10-07 | | 10x10 record -0.4976921 (Chen-Heyl); ViT ~1.9e3-3.8e3 A100-h; 12x12-18x18 no deep-NQS results | gap | J1J2_BENCHMARKS_COST.md |
+| I5 | Reviewer thresholds (pre-registered) | 10-07 | | e.g. kill sign-only add-on if Lanczos wins >=5x | applied in D1 | RESEARCH_MAP 3c |
+| I6 | Paper numbers on withdrawn estimator | | 6x6, 8x8 | paper main.tex still quotes withdrawn step-averaged FN-DMC | to fix | AUDIT sec 3 (6) |
+
+## J. Non-ML / finite-T side angles and early routes
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| J1 | Local stoquasticization / Marshall-type gauges | pre-09-27 | | blocked by Z2 loop/sign flux | FAILS (no number) | FAILED_ROUTES.md |
+| J2 | CTQMC contour deformation of event times | pre-09-27 | | analytic block in tested sectors | FAILS | FAILED_ROUTES.md |
+| J3 | Local regrouping / low-order transport rules; operator-count compression | pre-09-27 | | falsified by explicit negative classes | FAILS | FAILED_ROUTES.md |
+| J4 | Fully pre-summed CTQMC kernel route | pre-09-27 | | not established sign-free | not main route | FAILED_ROUTES.md |
+| J5 | Finite-T adaptive K1/K2 sign update with positive amplitude blocks | 09-30..10-03 | 4x4, 20 sites | tau=0.5: sign mismatch 1.2e-6 / 2.6e-5, fidelity 0.9999922 / 0.9998929; endpoint parity rule fails with tau (error 2.41e-4 at 0.5, 1.9e-2 at 1.0) | WORKS to beta ~3 at 20 sites; PARKED at the amplitude-relearning gate (B37) | OPEN_ANGLES.md item 6; results/finite_tau_*.md |
+| J6 | Local cavity/boundary sign models, CNN sign classifier, global sign CNN | 09-27 | 6x6 | near-random; local handcrafted structure better | FAILS | FAILED_ROUTES.md; README.md thread table |
+| J7 | Z2 holonomy connection to Krylov reconstruction | | | no number found | OPEN (OPEN_ANGLES item 7) | OPEN_ANGLES.md |
+
+## K. June 2026 predecessor ("June sign_prob"): NQS sign -> fixed-node QMC for J1-J2
+
+Source: memory file project_nqs_guided_fixed_node_qmc.md; /project/theorie/a/A.Otaifi/Chatty/sign_prob/ (CURRENT_FOCUS.md steps 1-10, docs/status.md, code/step12-13*). All tagged "June sign_prob"; per-site energies unless stated. NOTE: the memory file cites /project/theorie/a/A.Otaifi/sign_prob/ and sign_prob/jarvis_test_run_2026-06-29.md; the actual directory is Chatty/sign_prob/ and I did not find the jarvis file.
+
+| # | Idea | Date | Size | Deciding number | Verdict | Pointer |
+|---|---|---|---|---|---|---|
+| K1 | NQS sign + fixed-node GFMC proof of concept (ViT sign, 4x4 J2 0.5) | 06-25 | 4x4 | sign accuracy A = 0.999995; GFMC reproduces ED with guided_sign=1 | WORKS | memory file; sign_prob CURRENT_FOCUS.md |
+| K2 | Original "no-go" Delta_FN = 1.4% with provisional NQS node | 06-09 | 4x4 | Delta_FN 0.0137622 at J2 0.5 (RBM magnitude + Marshall sign) | ARTIFACT (undertrained RBM collapsed to Marshall) | CURRENT_FOCUS.md Step 9; memory file |
+| K3 | Required sign accuracy A* for Delta_FN <= 3e-3 | 06-09 | 4x4 | A* = 0.99793 (J2 0.5), 0.99750 (0.55); Marshall A 0.974538 / 0.923332 | sign accuracy must be >>0.99 | CURRENT_FOCUS.md Step 10 |
+| K4 | GCNN supervised representability of the exact sign | 06 | 4x4 | A = 1.0, Delta_FN 0 (3x12) / 2.7e-15 (6x24) | WORKS (with complex param_dtype) | step12_gcnn_supervised_sign_representability.py; memory |
+| K5 | Real-`param_dtype` "dead-phase" GCNN (sign pinned to Marshall) | 06 | 4x4 | A = 0.974538064558 to 13 digits across 5 GPU runs | HARNESS BUG; fix param_dtype=complex128; check max|Im| nonzero | memory file caution |
+| K6 | Energy-VMC/SR complex GCNN trains the sign (no ED labels) | 06 | 4x4 | A = 0.9978, Delta_FN 0.2% | WORKS (deployment path) | memory file |
+| K7 | Step 13 6x6 sign transfer first attempt | 06-25 | 6x6 | Delta_FN ~45% | PIPELINE failure (Marshall node also 45%): underprojection + flat guide | memory file |
+| K8 | NetKet GCNN size "adapter" resize_symmetry_axis (tiling 16 -> 36) | 06-25 | 4x4 -> 6x6 | Marshall overlap 0.975 -> 0.322 | FAILS (scrambles geometry; GCNN not size-portable) | memory file |
+| K9 | 6x6 GFMC pipeline validation (J2=0 known answer) | 06-25 | 6x6 | tau -> 0 at fixed T: E(0)/N -0.679198(592) vs -0.678872 (0.55 sigma) | PASS; rule: fix total imaginary time, extrapolate tau -> 0 | memory file; sign_prob code/step13_heisenberg_marshall_known_answer*.py |
+| K10 | Marshall floor at 6x6 J2 0.5 | 06-25 | 6x6 | Delta_FN 5.84% (E_FN/N -0.474364 vs Schulz -0.503810, +-6e-5); 4x4 floor 1.4% | baseline for any transfer; same sign quality costs 4x more energy at 6x6 | memory file; sign_prob run_tracker.md |
+| K11 | Local CNN (3x12, 5x32) portable sign | 06-28 | 4x4 | converge stably to exact Marshall A 0.974538, fidelity 0.9497 = A^2 | FAILS (<0.99) in the validated smooth-fidelity harness (caveat: fidelity optimum != A optimum) | memory file |
+| K12 | Relative-position transformer (size-portable) sign at 4x4 | 06-29 | 4x4 | frozen at Marshall A 0.9745380645578998 for 17000 epochs; std_imag 7.4e-5 -> 1.07e-7 | NEGATIVE but NOT a clean representability verdict (zero-gradient Marshall saddle; init-scaling rescue failed: 0.1 damps, 0.3 chaos A=0.029); decoupled probe invalid | memory file; (jarvis_test_run_2026-06-29.md not found) |
+| K13 | Patch-ViT as portable sign net | 06 | | absolute positions are size-locked; 4x4 ViT cannot be applied at 6x6 | NOT USABLE (design note) | memory file Q2 |
+| K14 | Step 4 bare sign baseline <sign> vs (beta, J2, N) (Q1) | 06 | 4x4 | sign falls with beta, faster at larger J2 (low-spectrum baseline) | done at 4x4; Q1 mapping vs N open | CURRENT_FOCUS.md Step 4; memory Q1 |
+| K15 | July: masked GCNN sign-only guide (B2) vs analytic Marshall (B1) on the 6x6 ladder | 07-18 | 6x6 | tau 0.02/0.01/0.005: B2 -0.47310/-0.47324/-0.47457 vs B1 -0.47352/-0.47337/-0.47455 (agree 1 / 0.2 / 0.03 sigma, single seed) | B2 = Marshall floor (null); not June, tagged for completeness | sign_prob docs/status.md |
+| K16 | Learn sigma(x, L) across sizes / sign-easing basis (Troyer-Wiese NP-hard in general) | 06 | | no number found | PARKED future direction | memory file |
+| K17 | Q3 small-N-trained portable sign reproduces large-N FN in the ordered phase; Q4 J2 sweep of transfer bias vs N | 06 | | no number found | OPEN (gated on K12) | memory file |
+| K18 | Gradient training of E_FN(theta) via V_sf Hellmann-Feynman (scoping note) | 06-09 era | 4x4 | SPEC ONLY by an agent not leading; same idea as C15/E1 | later done in Chatty (see C15) | sign_prob/code/NOTE_fn_gradient_loop_scoping.md |
+
+---------------------------------------------------------------------------------------------------------
+
+## Contradictions: tried in one file, open / untested / opposite in another (the lead must fix)
+
+1. E_FN training of the guide: tried 10-01/02 (STATUS.md, ledger, PLAN Dead ends) but sign_prob NOTE_fn_gradient_loop_scoping.md says "SPEC ONLY, not run", and FUTURE_ANGLES item 3 / OPEN_ANGLES still frame amplitude learning on H_FN as open. A 4x4 restricted-class stage (c) "min E_FN(a) of the network itself" has code (cfc2681) but no result: tried at 8x8 (fails), untested in the 4x4 restricted classes.
+2. FUTURE_ANGLES.md "to discuss later": item 1 (bad start) and item 2 (sign net step function) were done on 10-06 (angles 1 and 2, CLAUDE_TAKE takeover log); item 3 answered in ledger. The file is stale.
+3. README.md (project index) lists "8x8 MLE + SR" and "frozen-H_FN factorized SR" as "Live / current route"; STATUS (10-01..03) and RESEARCH_MAP show MLE+SR failed physically and the refit loop is closed (L8, 10-26). README thread table is stale.
+4. STATUS.md 2026-10-01 headline "FIRST VIABLE 8x8 CLOSED LOOP" vs the ledger row "not reproducible" (independent rebuild -31.839) and STATUS's own later "SR round-1 ... worse".
+5. FAILED_ROUTES "Current focus is the fixed-node amplitude solve <-> sign reconstruction loop"; PLAN.md (10-26) refocused to network + hops + FN add-on without refit. FAILED_ROUTES also says "ML sign classification alone: near-random" while A11/A26 show exact GS signs learnable (rel 6.3e-5, N=36) and GNN ranker AP .324; and K12 (June) negative vs A11 positive.
+6. OPEN_ANGLES.md lists as open: item 5 (triangular lattice) - basin symmetry already closed 09-28 (git 1d9ad2c); item 8 (four-bin compression) - falsified 09-28 and 8x8 closed 09-30; item 4 (node-quality diagnostics) - used throughout; item 7 (Z2 holonomy) - partly tested by the ansatz angle (G11, vison KILL) and J1 note.
+7. STATUS.md 09-28 says the four-bin g(r) handoff is "falsified", then "revised: estimator problem", then 09-29 "practical fixed point at 6x6"; HANDOFF_2026-09-29 repeats the fixed-point reading. Three different verdicts for one test inside one file.
+8. RESEARCH_MAP: 3d "sign-only add-on KILLED" (Lanczos 20x) vs its own PI caveat (provisional) vs 8x8 sign-net PASS (A13); 3e "write-back FAILED, stop" vs the same header "INCONCLUSIVE" vs 3i/3j "SOLVED/PASSED" (controls later called unsound by AUDIT); 2026-10-13 DECISION "global-alpha Lanczos fails -> polish only" vs same-day AMENDMENT "global step NOT diluted through 14x14". RESEARCH_MAP section 2 still lists the 4x4 "3.3-7.2x at equal CPU-h" as established; 3b says do not claim it.
+9. Hop-aware training: PLAN.md says "closed without a test" (PI) and RESEARCH_MAP 3s does not list it, but delta_today 10-26 15:58 records an exact 4x4 test (79%/69% of the gap). Not run at 6x6/8x8 (pilots cancelled): tried at 4x4 only.
+10. Tail-steered FN walkers and O3/O4 (walker-accessible KKT label, walkers instead of exact solves): RESEARCH_MAP 5 "parked", AUDIT sec 4 "new and necessary", never run, while AVSL-08 and L8 used walker dumps for other purposes.
+11. CNN-MPS (arXiv:2603.14425) as the loop's stored part: recommended in handoffs/2026-10-24-ansatz-pioneer.md and PLAN_ansatz "Reserve", not run; handoffs/2026-10-27 says a baseline-size network fails, so "needs ~10x more accurate near small amplitudes" (PLAN_ansatz Cockpit) is untested for CNN-MPS.
+12. 10x10 / 12x12 add-on test: PLAN Goal (10x10-14x14) vs the same file's revoked budget and cancelled trainings (H7); delta_today lists it as the deliverable.
+13. AMPLITUDE_LEARNING_LEDGER "Never done: network trained on sampled data plugged into the 4x4 loop" vs AUDIT row (2) "4x4 sampled loop stable for 150 iterations, error ~N^-0.75" (learning_ladder_rung2) and net_start_4x4.
+14. Optimizer guidance: STATUS 10-03 "SR, no Adam" vs writeback_tail "Adam beats minSR" (AUDIT sec 3 item 4).
+15. Withdrawn estimator numbers still quoted: it2_fn step-averaged DMC family (T3, IT2_VERDICT), paper main.tex 6x6 -0.503667(63) and 8x8 M=128 values; 8x8 FN-DMC -0.498889(11) provisional (AUDIT sec 3 item 6).
+16. Per-round contraction: IT2 verdict assumed 0.85-0.89, stall_6x6 measured 0.58-0.64 early (AUDIT sec 3 item 5).
+
+## Counts (rows per family, filled by script at build time)
+Rows per family: A sign learning/storage, B amplitude storage/write-back, C loop variants, D Krylov/Lanczos and locality, E fixed-node objectives/estimators, F projector variants, G ansatz families, H size scaling, I benchmarks, J early/non-ML/finite-T, K June sign_prob. A=30 B=38 C=19 D=14 E=15 F=8 G=15 H=9 I=6 J=7 K=18 

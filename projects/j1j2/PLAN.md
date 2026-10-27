@@ -46,6 +46,7 @@ Scope: passed over FN on the public 10x10 ViT (benchmark, PI's call), FN + varia
 
 ## Running
 - Exact 4x4 E_FN(a) minimisation (worker, CPU).
+- Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 
 ## Budget
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.

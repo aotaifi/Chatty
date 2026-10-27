@@ -60,7 +60,7 @@ J2 ~ 0.5; PSG inside NQS; sums over flux sectors.
 | insight | the frustrated sign is recovered from a nearly sign-free state by a short filter, given exact magnitudes | 4x6: Marshall sign on exp(+0.16 H_J2) psi0, rebuilt: E_FN 1.45e-5 vs Marshall-FN 6.95e-3 (r2/); 6x6 loop target: exact store two-hop tax 2.4e-8 at t 0.20 (c2le_6x6/run_17510897) |
 | hint | the filter strength needed does not grow from 16 to 24 sites | t* (0.14, 0.16] at 4x4 and 4x6; ratio curves overlay within 25% (recheck/); both lattices width 4, so not proof of locality |
 | failure | J2-specific physics reading | matched-fidelity J1/J2 violating weight 1.2-2.2 (bar 3), first-order identity with J1 (r2/) |
-| failure | storing the pre-image in a network of the baseline's size | positive RBM 2442 params, t 0.20: tax_1 2.58e-5, tax_2 7.40e-6 vs baseline 5.11e-6 / 1.657e-6 (c2le_6x6/run_17516512); oracle residual sign: same (7.99e-6) |
+| inconclusive | storing the pre-image in a network of the baseline's size (cause not pinned: fit objective vs capacity) | positive RBM 2442 params, t 0.20: tax_1 2.58e-5, tax_2 7.40e-6 vs baseline 5.11e-6 / 1.657e-6 (c2le_6x6/run_17516512); oracle residual sign: same (7.99e-6) |
 | failure | cheap rebuild at a configuration | sampled: C = E[eta^-2] 3.4 -> 5.0 (16 -> 24 sites; exponential vs linear undecided); local decoders: additive loses grip with N, independent-bond product divides by near-zero amplitudes (E_FN 1.3-1.8x Marshall-FN, r3/) |
 Why the fit fails (hypothesis, not isolated): the rebuild is a cancellation near small amplitudes, so storage errors grow
 there (centered log error by |phi_0|^2 decade, fit -> rebuilt: 0.139 -> 0.614 at -13, 0.263 -> 1.041 at -15); before hops

@@ -46,6 +46,23 @@ They are the only lattice-symmetric product rules on the square lattice, and s_N
 sits in an odd number of the three sets). Frustration = no rule cures all bonds. Exact data (T0-phys, t0phys_17410698):
 the near-node set X_0.1 is stripe-tilted (M_S^2/M_N^2 5.7x bulk) and 40% of its J1 bonds violate Marshall.
 
+## Step back 2026-10-27 (PI: "step back and reread CLAUDE.md before closing")
+1. Verdict: the closure stands for the PI's aim (scale without a data centre), but my label was wrong. By research rule 1
+   the 6x6 storage result is INCONCLUSIVE (cause: fit objective vs capacity not separated), not "dead"; what closes the
+   route is the scaling wall, whose cause is pinned: any use of the pre-image needs exp(-t H_J2) at walker configurations;
+   sampled, that is released-node over a fixed time (sign cost e^{c N t}; ours C 3.4 -> 5.0 at 16 -> 24 sites), and the two
+   cheap deterministic forms fail for understood reasons (additive: grip fades with N; product: divides by near-zero amplitudes).
+2. Thought that changed the label: rule 1 plus the inverse-problem view. The fit's loss lives in pre-image space (weights
+   |Phi_t|^2) while the tax lives after the fixed operator, near phi_0's nodes; fitting before rather than through a forward
+   operator is the standard mistake. Our own B31 (baseline tax objective-limited, not capacity) points the same way.
+   Released-node scaling (Ceperley-Alder, PRL 45, 566 (1980); from memory, not re-read) favours the exponential reading of C.
+   Rule 2 check passed: the fit used damped Gauss-Newton with accept/reject (not Adam); held-out flat from step ~100.
+3. Cheapest separating test, NOT recommended unless the write-up needs it: positive RBM M = 66 at t 0.20, same protocol,
+   ~2 A40-h (tax_2 down >= 2x: capacity; < 1.3x: objective). Neither outcome removes the scaling wall.
+Passed over: a readout-space (end-to-end) loss (a full-vector exp and an 18-min full table per step at 6x6; at scale it is
+the rebuild problem again); a tensor-network rebuild (Trotter gates on an MPS/PEPS store: polynomial, but it turns the
+loop helper into a PEPS method, outside "no data centre").
+
 ## Step back 2026-10-26 (trigger: second failed version of the stored pre-image: C2-L additive by fit amplification, exp-J2 by R2 (c))
 1. Verdict: switch the evaluator, not the stored object. R2 puts the whole difficulty in one place: evaluating exp(-t H_J2)
    at a walker. The stored pre-image itself is benign (fit errors amplified locally, A 1.15 -> 1.19; residual sign
@@ -463,7 +480,8 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 |---|---|---|
 
 ## Dead ends
-- C2-L-exp store the exp-form pre-image exp(+t H_J2) phi_0 in the FN loop (step 2 KILL, theorie A40 17516512, ansatz_runs/
+- C2-L-exp store the exp-form pre-image exp(+t H_J2) phi_0 in the FN loop (step 2 KILL by the registered rule; by research
+  rule 1 INCONCLUSIVE at 6x6 (cause: objective vs capacity), CLOSED for scaling (rebuild = released-node sign problem); theorie A40 17516512, ansatz_runs/
   c2le_6x6/run_17516512, verified; Astra round 4 agrees, CLOSE): exact store passes (tax_2 2.4e-8 at t 0.20; 17510897), a
   2442-param positive RBM does not (tax_1 2.58e-5, tax_2 7.40e-6 vs 1.657e-6); oracle residual sign no better (7.99e-6).
   Rebuild magnifies centered log errors near small amplitudes (0.139 -> 0.614 at |phi_0|^2 decade -13); before hops the

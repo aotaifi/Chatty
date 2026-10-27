@@ -112,9 +112,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
-- ansatz-pioneer: CLOSED 2026-10-27 (its own report): the J2-undone pre-image passes the loop gate only with exact stored
+- ansatz-pioneer (ansatz angle, session Ansatz-angle): CLOSED 2026-10-27 (its own report): the J2-undone pre-image passes the loop gate only with exact stored
   magnitudes (tax 2.4e-8); a baseline-size network fails by 4.5x (2.58e-5 / 7.4e-6). PLAN_ansatz.md holds the record.
-- pfaffian-angle (PLAN_pfaffian.md, opened 2026-10-27 by the PI): can a pair-product network copy the FN state in rare configurations; paper discussion with the PI only, no runs yet.
+- pfaffian-angle (PLAN_pfaffian.md, opened 2026-10-27 by the PI): owns stage 1. Lead decision 2026-10-27 (PI: 'you decide'): run the q check now; if q >= 0.5, it pre-registers and runs complex vs real PP copy (kill: complex tax_0 > 0.5x real); if q <= 0.1, drop own-node and complex routes.
+- ansatz angle: told to close 2026-10-27 (T-Lfix recorded in STORAGE_PROBLEM.md; 6x6 not submitted).
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)

@@ -230,6 +230,44 @@ if STAGE in ('gradref', 'evalfn'):
     log(f'VERDICT {STAGE} {MASK}: E_1/N {float(val) / N:.12f} E_v/N {S["Ev"] / N:.12f} E_FN(g)/N {S["EFN_g"] / N:.10f} |grad_class| {res["gnorm_class"]:.4e}')
     sys.exit(0)
 
+# ================= stage (c): minimise E_FN(a) of the network itself (no hop), HF gradient
+def efn_hf0(fl, w, phi2, nk):
+    v = vvec(fl, w); rr = v[jnb] / v[jwi]; return phi2 @ jax.ops.segment_sum(jK * rr * nk, jwi, num_segments=Dd)
+_hf0_vg = jax.jit(jax.value_and_grad(efn_hf0))
+def efn0_vg(fl, w, broken=None):
+    v = vv(fl, w); e, ph = fn_state(v); nk = (v[nbr] / v[wi] >= 0).astype(np.float64); p2 = ph ** 2 / (ph @ ph)
+    if broken == 'drop': return e, np.zeros(len(IDX))                    # BROKEN: sign-flip (moved-bond) term dropped -> no gradient
+    if broken == 'mask': nk = 1.0 - nk                                     # BROKEN: wrong bond set
+    _, gr = _hf0_vg(jnp.asarray(fl), w, jnp.asarray(p2), jnp.asarray(nk)); return e, np.asarray(gr)[IDX]
+
+if STAGE in ('fnc', 'fnc_pert'):
+    x0 = np.load(os.path.join(OUT, 'flat_opt.npy')); MAXEV = int(os.environ.get('MAXEV_HOP', 20000)); F = os.path.join(OUT, f'{STAGE}.json')
+    S0 = state(x0, w30); res = dict(mask=MASK, stage=STAGE, E0N=E0 / N, start=dict(EvN=S0['Ev'] / N, EFN_vN=S0['EFN_v'] / N, EFN_gN=S0['EFN_g'] / N))
+    rng = np.random.default_rng(7); dvec = np.zeros(P); dvec[IDX] = rng.standard_normal(len(IDX)); dvec /= np.linalg.norm(dvec); h = 1e-5
+    fd = (efn0_vg(x0 + h * dvec, w30)[0] - efn0_vg(x0 - h * dvec, w30)[0]) / (2 * h)
+    chk = dict(fd=fd)
+    for b in (None, 'drop', 'mask'):
+        an = float(efn0_vg(x0, w30, b)[1] @ dvec[IDX]); chk[f'hf_{b}'] = an; chk[f'rel_{b}'] = abs(an - fd) / abs(fd)
+    res['hf_check'] = chk; log('HF gradient check (c)', json.dumps(chk))
+    if not chk['rel_None'] < 1e-2: log('HF CHECK FAILED; exit 6'); open(F, 'w').write(jd(res)); sys.exit(6)
+    xs = x0
+    if STAGE == 'fnc_pert':
+        r5 = np.load(os.path.join(OUT, 'flat_ii_5.npy')); dn = np.linalg.norm((r5 - x0)[IDX]); rng = np.random.default_rng(11)
+        dv = rng.standard_normal(len(IDX)); xs = x0.copy(); xs[IDX] += dn * dv / np.linalg.norm(dv); res['pert_norm'] = float(dn)
+        log(f'perturbed start |dtheta| {dn:.4e}')
+    x, info = chunked_lbfgs(lambda fl: efn0_vg(fl, w30), xs, MAXEV, float(os.environ.get('TOL_HOP', 1e-13)), STAGE)
+    np.save(os.path.join(OUT, f'flat_{STAGE}.npy'), x); S = state(x, w30)
+    # sign changes vs v_0, weighted by v_opt^2; agreement of the changed signs with the exact ground state
+    gs = sla.eigsh(H, k=1, which='SA', tol=1e-14)[1][:, 0]; v0 = S0['v']; v1 = S['v']; gs = gs * np.sign(gs @ v1)
+    wv = v1 ** 2 / (v1 @ v1); ch = np.sign(v1) != np.sign(v0); agree = np.sign(v1) == np.sign(gs)
+    res['opt'] = dict(EFN_vN=S['EFN_v'] / N, EvN=S['Ev'] / N, EFN_gN=S['EFN_g'] / N, evals=info['evals'], gnorm=info['gnorm'], stop=info['stop'],
+                      dtheta_from_opt=float(np.linalg.norm((x - x0)[IDX])), sign_changed_weight=float(wv[ch].sum()), n_changed=int(ch.sum()),
+                      changed_agree_gs_weight=float(wv[ch & agree].sum()), sign_wrong_vs_gs_weight_v0=float((v0 ** 2)[np.sign(v0) != np.sign(gs)].sum() / (v0 @ v0)),
+                      sign_wrong_vs_gs_weight_opt=float(wv[~agree].sum()))
+    open(F, 'w').write(jd(res))
+    log(f'VERDICT {STAGE} {MASK}: E_FN(a)/N {S["EFN_v"] / N:.10f} E_v/N {S["Ev"] / N:.10f} evals {info["evals"]} |grad| {info["gnorm"]:.2e} sign-changed weight {res["opt"]["sign_changed_weight"]:.3e}')
+    sys.exit(0)
+
 if STAGE in ('hopa', 'hopb', 'hopa_pert'):
     x0 = np.load(os.path.join(OUT, 'flat_opt.npy')); MAXEV = int(os.environ.get('MAXEV_HOP', 20000)); F = os.path.join(OUT, f'{STAGE}.json')
     S0 = state(x0, w30); res = dict(mask=MASK, stage=STAGE, E0N=E0 / N, start=dict(EvN=S0['Ev'] / N, EgN=S0['Eg'] / N, EFN_gN=S0['EFN_g'] / N))

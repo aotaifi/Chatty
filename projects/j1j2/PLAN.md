@@ -35,8 +35,17 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
+## Step back 2026-10-27 (PI asked)
+1. Verdict: SWITCH to training the network directly on its own lattice fixed-node energy E_FN(a) (no Krylov; cost ~ VMC per step).
+2. Thought: every failure was storage or locality of the Krylov step; the FN projector already supplies the near-node amplitudes, so
+   the network needs only right signs and small wall terms. Continuum analogue (McFarland-Manousakis 2112.14182) found no gain; the
+   lattice differs (amplitude-dependent wall term, Kairon-Clark 2609.16308).
+3. Cheapest test: exact 4x4 restricted classes, minimise E_FN(a) (worker, ~1-2 CPU-h). >= 50% of the E_FN(v_0)-to-E0 gap in both
+   classes -> design a sampled 6x6/8x8 test; < 30% -> dead.
+Scope: passed over FN on the public 10x10 ViT (benchmark, PI's call), FN + variance extrapolation (known), release-node (exponential).
+
 ## Running
-Nothing (2026-10-27 00:45). Trainings cancelled 2026-10-26; checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
+- Exact 4x4 E_FN(a) minimisation (worker, CPU).
 
 ## Budget
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.

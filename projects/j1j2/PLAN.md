@@ -56,7 +56,12 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   - Knobs, derived before any run: log loss infinite and Jacobian d ln|A| = dA/A singular at the network's own node; learning
     rate = damped Gauss-Newton/minSR (lambda0 0.01), nothing more derivable; more parameters cannot move an own node that the loss
     cannot cross.
-  Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
+  q RESULT 2026-10-27 (Pfaffian angle, verified by the lead from /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/q_ownnode.json): q = 0.424(7)
+  vs control 0.069(4): INCONCLUSIVE by rule; the network's own node crosses the costly bond on ~42% of the cost (6x control). The
+  'frozen at warm start' derivation is WRONG as worded: O2b's sign differs from the plain PP at 47% of the costly small sides.
+  Lead decision: complex vs real PP copy, pass tax_0 <= 0.75x AND S_x cut >= 2x S_rest cut; kill >= 0.95x or S_x cut <= S_rest;
+  3 seeds, both converged, <= 6 A40-h (PLAN_pfaffian.md).
+  (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   FIRST DISCUSSION of the next lead session (PI, 2026-10-27): how to build a network with NO sign of its own (output strictly
   positive, sign only from Krylov), so the log loss never meets a zero of the network itself.

@@ -303,3 +303,4 @@
 - 2026-10-27 late: ansatz angle CLOSED by the project lead (PI asked it to decide). T-Lfix 6x6 not submitted; handover in STORAGE_PROBLEM.md; stage 1 moves to the Pfaffian angle. No ansatz-angle processes or watchers running.
 - 2026-10-27 ansatz angle closed (its report; PLAN_ansatz.md Cockpit rows done, verified by the lead; no jobs).
 - 2026-10-27 Pfaffian angle test q (worker, ws1 CPU, 28 min): INCONCLUSIVE, q 0.424(7) vs control 0.069(4); own node = ~1/3 of pair cost; 'node frozen at plain PP sign' corrected (47% flipped). /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/
+- 2026-10-27 q test (Pfaffian angle, 60a0bc2; verified by the lead from pfaffian_q/q_ownnode.json): q 0.424(7) vs control 0.069(4), INCONCLUSIVE by rule; own node ~42% of the costly pair cost. Lead: go for complex vs real PP copy with a capacity-proof mechanism readout (S_x vs S_rest), <= 6 A40-h.

@@ -72,3 +72,10 @@ Literature: one arXiv query (neural guide + lattice fixed node + guiding) return
 - Follow-up pre-registered (2026-10-27, before results): hypothesis "FN raises the rare small sides relative to the guide and the copy
   does not follow". In the r < r*/3 class: SUPPORTED if rho_g < rho_phi for >= 70% of cost and median f < 0.5 (f = how far the copy
   moved from guide toward phi); REFUTED if rho_g >= rho_phi for >= 50% of cost or median f >= 0.8. Also which side (x or y) is wrong.
+- Follow-up RESULT (worker, raw JSON read by the lead; /scratch/a/A.Otaifi/ansatz_runs/bond_split/guide_split_round_{1,3}.json):
+  REFUTED by the pre-registered rule. In the r < r*/3 class (75% of cost in round 1, 84% in round 3) the guide does NOT sit below phi
+  (rho_g < rho_phi for only 45% / 44% of cost), and FN does not lift the rare part (ln phi - ln g ~ 0, slightly negative). The
+  error is the COPY's small side x being far below phi: e_x cost-weighted mean -6.2 (round 1), -8.9 (round 3), median -6.0 / -10.6;
+  count median only -1.6. The big side y is right (e_y ~ +0.02). So the copy makes deep spurious dips (near-zeros) at configurations
+  where phi has none. This fits the Pfaffian angle's hypothesis (board 19): the network's own sign sgn A disagrees with the imposed
+  s2 there, so |A| sits near its own node. Round 3 split: cost/measured 28.4, J1 49% / J2 51%.

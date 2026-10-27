@@ -42,8 +42,25 @@ a wider window 18%. The q test also checks whether sgn A on the cost pairs equal
 Evidence against "window too small" at 6x6: F1 (delta_today 2026-10-23): converged 3x3 5.60e-6, converged 5x5 4.58e-6
 (25 of 36 sites seen), O2b 5.93e-6.
 
+## Test q (pre-registered 2026-10-27 before any number; lead decided to run it, PI delegated)
+Per orbit rep: t(x) = sgn A(x) * s2(x), A = signed projected sum of O2b round_1 (theta.npy), s2 = refresh_17409419/s2.npy.
+t is orbit-invariant if A and s2 sit in the same symmetry sector (checked: t constant over images of 20 random x).
+On violating pairs (s2 x s2 = +1), the network's own node crosses bond {x,y} iff t(x) t(y) = -1.
+- Primary: q = cost share of class r < r*/3 with t(x)t(y) = -1 (cost as bond_split.py cost_pass; pairs sampled
+  proportional to cost, n = 5000 with replacement; error from a binomial over samples).
+- Control (predicted difference): q_ref = same share in class r*/3 < r < 3r*. The hypothesis predicts q >> q_ref.
+- Secondary: q_any = cost share where the small side has ANY neighbour z with t(z) != t(xs); share with t(xs) = -1;
+  is sgn A on those configurations equal to the warm-start PP's own sign (rpT1_pp f, u = 0)?
+- Code-ran check: ln|A| from theta minus la_table is one constant (spread < 1e-6) on the sample; e_x medians reproduce
+  guide_split_round_1.json (-6.0 cost-weighted).
+- Verdict: q >= 0.5 and q >= 3 q_ref supports the own-node cause; q <= 0.1 refutes it; otherwise inconclusive.
+Next per verdict (lead, 2026-10-27, PLAN.md ffd8e9d): supports -> pre-register complex vs real PP parameters
+(same O2b PP, |A| with sign s2, equal parameters and steps; Im f needs a small random start because d ln|A|/d Im f = 0
+at a real warm start; kill: complex tax_0 > 0.5 x real tax_0), size on ws1/A40 and submit. Refutes -> drop the own-node
+and complex routes, report to the lead.
+
 ## Running
-none
+q test: worker, ws CPU, output /scratch/a/A.Otaifi/ansatz_runs/pfaffian_q/
 
 ## Dead ends
 none yet

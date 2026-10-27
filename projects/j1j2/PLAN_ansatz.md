@@ -478,6 +478,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
+| T-Lfix 4x4 (worker, ws CPU) | /scratch/a/A.Otaifi/ansatz_runs/t_lfix/4x4 | rule in STORAGE_PROBLEM.md; pass -> read the 6x6 launcher and submit; kill -> report to PLAN.md owner |
 
 ## Dead ends
 - C2-L-exp store the exp-form pre-image exp(+t H_J2) phi_0 in the FN loop (step 2 KILL by the registered rule; by research
@@ -548,6 +549,6 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (done, medium): Closed: the nearly sign-free pre-image works in the loop only if stored exactly; a network of the baseline's size stores it 4.5x too poorly.
-- NEXT (open, low): Only if a much better storage network appears (about 10x more accurate near small amplitudes) is this worth retesting.
+- STATUS (in progress, medium): The ansatz angle now runs the storage test for the main plan (see PLAN.md, open: storage near the nodes).
+- NEXT (in progress, medium): Small exact test of the energy-weighted fit, then the 6x6 version if it passes.
 > CORRECTION 2026-10-27 (index): still untested for CNN-MPS (see the Reserve correction); the L8 closure 2026-10-26 means a better storage network would no longer revive the refit loop (PLAN.md Goal refocused).

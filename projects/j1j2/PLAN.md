@@ -7,7 +7,7 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 ## Where we stand (2026-10-25; energies per site; details and paths in README compress_6x6 "Results: ..." sections)
 - Physics: the energy-relevant error sits on ~0.1% of sign-violating bonds, at near-node cancellation configurations on
   Marshall-violating J1 bonds (N0, not by construction: G-N0c). A hop computes them exactly (G-A2: tail part 0.33 after
-  two hops, bulk part 0.86). Networks cannot learn them in any tested objective (F1, F2, T1s).
+  two hops, bulk part 0.86). Networks cannot learn them in any tested objective (F1, F2, T1s); none of those tested a log-free pair loss (see 'Open: storage near the nodes').
 - Loop at 6x6: without storage the oracle-free signed two-hop chain from RBM+PP goes 1.95e-6 -> 3.0e-9 in 6 rounds
   (G-A3). With RBM+PP storage one refit loses 1.66e-6 = 1.02 x the round gain (G-tax): GATE SHUT, loop C not run.
 - CORRECTION 2026-10-23: the fair competitor (VMC RBM+PP + same Lanczos steps + FN, own sign: 5.57e-6 at one step)
@@ -29,7 +29,7 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
   gains beyond VMC only from the FN projector's information beyond the hop (2.3e-5/site at 8x8 after a hop; FN p=0 vs VMC p=0 8.3e-5).
 - Test 1 DONE (exact 4x4, /scratch/a/A.Otaifi/l8/loop4x4): refit to FN(a) and node-weighted refit make E_FN WORSE every round
   (RBM -0.5275259 -> -0.5273929); with a hop the RBM class gains 27% of the add-on-to-E0 gap in 5 rounds, but sign-broken targets
-  gain as much (control fails): the gain is E_FN(a*h_a) being non-stationary at the E_v optimum, not storage. Storage loop CLOSED.
+  gain as much (control fails): the gain is E_FN(a*h_a) being non-stationary at the E_v optimum, not storage. Storage loop closed unless T-Lfix passes (STORAGE_PROBLEM.md).
 - Test 2 (exact 4x4): training the network for E_VMC(a*h_a) closes 79%/69% of the add-on-to-E0 gap (loop 27%/9.9%), but it is
   CLOSED without a test (PI 2026-10-26): any explicit Krylov step over configurations needs the two-hop neighbourhood per sample
   (137x plain sampling at 8x8, growing ~N) while its gain per site fades. Pilots 4010838/4012781 cancelled before start.
@@ -37,7 +37,20 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## Step back 2026-10-27 (second, with TRIED_IDEAS.md)
+## Open: storage near the nodes (PI + ansatz lead, 2026-10-27) - PI direction: resolve storage first
+Details, cause equations, tried rows and status: STORAGE_PROBLEM.md. Three issues:
+1. Weighting: log-amplitude output and losses weight errors by psi^2; the FN energy weights pairs across a node by the big side,
+   ~ |H| psi(y)^2 (r - r*)^2 / r (near-node identity; for |r - r*| >> r* this becomes ~ |H| psi(y)^2 |r - r*|).
+2. Support: walkers do not reach the node; flatter importance g = |psi_T|^beta (TRIED_IDEAS F1, parked, never run).
+3. Gradient denominator in E_FN training (C15 failed sampled at 8x8); the factorised a_k e^r is the known handle (B10/B11).
+Running (ansatz lead): T-Lfix, pre-registered in STORAGE_PROBLEM.md: same RBM+PP, log loss (c2le_gtax.py per_sample l.471-473)
+vs pair loss L_fix; exact 4x4 on ws CPU now, 6x6 launcher prepared, not submitted. Pass at 4x4 and 6x6 (tax_2 <= 0.5x) reopens
+the storage loop; kill keeps the add-on Goal. Pointers: equation board https://claude.ai/artifact/LwUGJoTxGJku3k6mTVgMVP;
+../../handoffs/2026-10-27-fn-error-weights.md; PLAN_ansatz.md (angle record); local entry folder /project/theorie/a/A.Otaifi/j1j2/
+(CLAUDE.md; PLAN.md and delta_today.md symlink here). Candidate architecture if the loss is not enough: exp(J) x sum_k Pf[M_k]
+(lead + PI, 2026-10-27; not done for spin models per literature check).
+
+## Step back 2026-10-27 (second, with TRIED_IDEAS.md) - SUPERSEDED by the PI's 'resolve storage first'
 1. Verdict: REFRAME. Stop searching for a sign-repair method; write up what the project measured: three walls that stop learned sign
    repair for J1-J2 (support, precision, generalisation), plus the 8x8 add-on number -0.498946(5).
 2. Thought: the PI's chicken-and-egg is already measured. The Hamiltonian labels a wrong sign at any configuration we check (Krylov
@@ -83,5 +96,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (done, high): Krylov's sign repair cannot be made local: a product of local Krylov factors blows up near nodes and keeps none of the gain at 6x6; the global step scales linearly only on local networks, at ~100-1000x the cost of plain sampling.
-- NEXT (open, high): PI to decide the project's next direction at the check-in; nothing is running.
+- STATUS (in progress, high): The loop failed at the copying step; today's analysis traced it to how network fits weight errors next to the nodes, against how the fixed-node energy weights them.
+- NEXT (in progress, high): A matched test of a fit weighted the way the fixed-node energy weights errors (4x4 now, 6x6 next) decides whether the storage loop reopens.

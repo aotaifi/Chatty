@@ -478,7 +478,6 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
 ## Running
 | job | where | next step per verdict |
 |---|---|---|
-| T-Lfix 4x4 (worker, ws CPU) | /scratch/a/A.Otaifi/ansatz_runs/t_lfix/4x4 | rule in STORAGE_PROBLEM.md; pass -> read the 6x6 launcher and submit; kill -> report to PLAN.md owner |
 
 ## Dead ends
 - C2-L-exp store the exp-form pre-image exp(+t H_J2) phi_0 in the FN loop (step 2 KILL by the registered rule; by research
@@ -539,6 +538,7 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   (-13..-15): in the deep tail the exact sign is uncorrelated with Marshall; the node runs through the tail.
 
 ## Status
+- 2026-10-27 late: CLOSED by the project lead (PI asked it to decide). Handover: STORAGE_PROBLEM.md (T-Lfix 4x4 result, bond splits, unsubmitted 6x6 launcher t_lfix/6x6/t_lfix6.sbatch, do not submit). Stage 1 (copying the FN amplitude) moves to the Pfaffian angle (PLAN_pfaffian.md). No jobs, no watchers.
 - 2026-10-27 00:45: CLOSED again after the PI-requested loop test (C2-L-exp step 2 KILL); memo updated (Reopened section);
   takeover compute ~2.1 A40-h of 8; handoff handoffs/2026-10-27-ansatz-loop-test.md; project lead told.
 - 2026-10-26: REOPENED at the PI's request (look again, judge by the loop's bar, not one-shot sign); R1 started.
@@ -549,6 +549,6 @@ Third live direction (C5, test to be written after C2-T0b): amplitude-sign coupl
   as a breakthrough; Paderborn gpu_h100 queue est. 5 days (QoS normal not allowed there; default cont used).
 
 ## Cockpit
-- STATUS (in progress, medium): The ansatz angle now runs the storage test for the main plan (see PLAN.md, open: storage near the nodes).
-- NEXT (in progress, medium): Small exact test of the energy-weighted fit, then the 6x6 version if it passes.
+- STATUS (done, low): Closed; its storage findings (the copy makes false deep zeros in rare configurations) are handed to the Pfaffian angle.
+- NEXT (done, low): Nothing; follow-ups live in the Pfaffian angle.
 > CORRECTION 2026-10-27 (index): still untested for CNN-MPS (see the Reserve correction); the L8 closure 2026-10-26 means a better storage network would no longer revive the refit loop (PLAN.md Goal refocused).

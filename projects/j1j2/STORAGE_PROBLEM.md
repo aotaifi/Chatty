@@ -79,3 +79,19 @@ Literature: one arXiv query (neural guide + lattice fixed node + guiding) return
   count median only -1.6. The big side y is right (e_y ~ +0.02). So the copy makes deep spurious dips (near-zeros) at configurations
   where phi has none. This fits the Pfaffian angle's hypothesis (board 19): the network's own sign sgn A disagrees with the imposed
   s2 there, so |A| sits near its own node. Round 3 split: cost/measured 28.4, J1 49% / J2 51%.
+
+## T-Lfix 4x4 result (worker; summary read by the lead: /scratch/a/A.Otaifi/ansatz_runs/t_lfix/4x4/v2/summary.txt)
+RBM+PP 392 params, target phi = FN(K_1 v_0) (C13 round 0), target sign imposed, exact full sums, LM/Gauss-Newton 400 steps, 3 seeds.
+| | tax_0 | tax_2 |
+|---|---|---|
+| warm start | 7.77e-4 | 1.24e-4 |
+| sign floor |phi| sign(v_0) | 2.01e-4 | 3.92e-5 |
+| A log loss | 8.34e-5 [7.36, 8.98] | 5.84e-5 [5.11, 6.72] |
+| B L_fix | 1.28e-5 [1.24, 1.35] | 4.51e-5 [3.32, 5.87] |
+- Registered rule (on tax_2): B/A = 0.77, between 0.5 and 0.9: INCONCLUSIVE at 4x4. On tax_0 (amended primary readout) B cuts 6.5x.
+- Reading: L_fix fixes the zero-hop FN energy strongly, but after two Lanczos steps most of the gain is gone (K_2 uses ratios
+  L_fix never sees, as the review predicted). The 4x4 tax is bulk-dominated (tail-only tax_0 ~ 0 for A, 1.1e-6 for B), so it does
+  not test the near-node story.
+- Ceiling arm D INVALID: the E_FN-trained guides reach amplitude ranges of 1e15, the FN eigensolver fails (E_FN below E0). R_ceil
+  not available; needs a convergence-checked solver or an amplitude clamp.
+- 6x6 launcher prepared (t_lfix/6x6/t_lfix6.sbatch, ~5 H100-h for A and B x 3 seeds), NOT submitted.

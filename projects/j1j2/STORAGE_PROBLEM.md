@@ -12,3 +12,13 @@ Derivation and 4x4 check: ../../handoffs/2026-10-27-fn-error-weights.md. Tried i
 Reading (lead): issue 3 is not new; the factorised residual is the known handle. Issue 1's fix and issue 3's fix
 are compatible: e^{r} J-type correction on a guide whose node (Pf) is kept, trained on E_FN with SR.
 Next decision for the PI: which of 1-3 to test first, on paper before any run.
+
+## Test T-Lfix (pre-registered 2026-10-27, PI asked; before any run)
+Does the pair loss L_fix (board 15) store the fixed-node state better than the log loss in our code (board 13), same network?
+- Target phi = exact FN state of a fixed guide (4x4: the existing exact loop targets; 6x6: the G-tax target phi_0 or an O2b round).
+- Arms, same network class (RBM+PP, has Pfaffian zeros), same parameters, same optimiser and step budget, 3 seeds:
+  (A) log loss as per_sample in ansatz/code/c2le_gtax.py l.471-473; (B) L_fix. Optional (C): L_fix on a log-only net
+  (positive RBM x Marshall sign) to separate loss from architecture.
+- Readout: tax_k = E_FN(K_k fit) - E_FN(K_k phi), k = 0, 1, 2; plus fit error by |phi|^2 decade and by pair class.
+- Pass: tax_2(B) <= 0.5 x tax_2(A) at both sizes. Kill: tax_2(B) >= 0.9 x tax_2(A) at both sizes. Between: inconclusive.
+- 4x4 on workstation CPU first. 6x6 needs a GPU job: launcher read by the lead before submission.

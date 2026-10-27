@@ -79,6 +79,7 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 ## Angles
 - ansatz-pioneer: CLOSED 2026-10-27 (its own report): the J2-undone pre-image passes the loop gate only with exact stored
   magnitudes (tax 2.4e-8); a baseline-size network fails by 4.5x (2.58e-5 / 7.4e-6). PLAN_ansatz.md holds the record.
+- pfaffian-angle (PLAN_pfaffian.md, opened 2026-10-27 by the PI): can a pair-product network copy the FN state in rare configurations; paper discussion with the PI only, no runs yet.
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)

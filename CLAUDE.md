@@ -33,3 +33,9 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 Read the section "Where everything lives now" in AGENTS.md first. Short form: all former `chatty_*` dirs are `Chatty/runs/<name>/`,
 `~/chatty_admin` is `Chatty/admin/` (the "scripts in ws1:~/chatty_admin" above means that directory now), and this worktree lives at
 `Chatty/organize/` with `~/Chatty-organize` kept as a symlink. Old-to-new paths: `Chatty/runs/PATHS_MOVED.tsv`.
+
+## Before proposing any idea (added 2026-10-27; ideas were re-proposed twice in one day)
+grep `projects/j1j2/TRIED_IDEAS.md` (index of ~180 tried ideas with deciding numbers and pointers). PLAN.md's dead-end list is not
+complete; the records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md,
+delta_today.md, experiments/compress_6x6/README.md and the June predecessor Chatty/sign_prob/. Add a row to TRIED_IDEAS.md whenever
+a test closes.

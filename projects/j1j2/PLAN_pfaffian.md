@@ -36,6 +36,9 @@ is whether F should respond nonlinearly to z (neural backflow).
 Support (ansatz angle's guide split, verified from guide_split_round_{1,3}.json, class r < r*/3): the copy's small side is
 far below phi, e_x = ln|copy| - ln|phi| cost-weighted mean -6.2 / -8.9, median -6.0 / -10.6 (rounds 1 / 3); large side right
 (e_y +0.02). Spurious deep near-zeros where phi has none, as an own node predicts. Not yet the direct check (sgn A vs s2).
+Derived (cx_t1s.py, log loss on ln|A|): the loss is infinite where A(x) = 0, so small-step training never flips sgn A at a
+sampled x; the own node is frozen at the warm start (PP's own sign, A20). Consistent with F1: longer training buys 6%,
+a wider window 18%. The q test also checks whether sgn A on the cost pairs equals the warm-start PP's sign.
 Evidence against "window too small" at 6x6: F1 (delta_today 2026-10-23): converged 3x3 5.60e-6, converged 5x5 4.58e-6
 (25 of 36 sites seen), O2b 5.93e-6.
 

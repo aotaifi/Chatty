@@ -10,7 +10,7 @@ Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGE
 5. **Fair comparisons only:** same-capacity controls at equal cost, published baselines (e.g. a Lanczos step + variance extrapolation), calibrated referees. Withdraw numbers that rest on an uncalibrated estimator.
 6. **Check the literature before any "state of the art" claim** (results/literature/J1J2_BENCHMARKS_COST.md).
 7. **Independent adversarial reviews** at decision points. The reviewer's job is to find the loopholes, ours is to fix them, not to give up.
-8. **Keep the project's core idea alive.** When a test fails, diagnose and fix rather than drifting to a different method.
+8. **Keep the project's core idea alive.** When a test fails, diagnose and fix rather than drifting to a different method. Diagnose means: write the failing term as an equation on the j1j2 equation board (artifact https://claude.ai/artifact/LwUGJoTxGJku3k6mTVgMVP) before any new method or test (2026-10-27: the root of the refit tax was one loss-weighting term, found by derivation after weeks of new methods).
 9. **Viability:** a result matters if it scales to sizes where others have no result, or is cheaper than brute-force NQS at equal accuracy, or works as an add-on that repairs other people's networks.
 
 ## Working style with the PI

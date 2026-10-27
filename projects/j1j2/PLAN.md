@@ -42,9 +42,8 @@ Nothing (2026-10-27 00:45). Trainings cancelled 2026-10-26; checkpoints in /scra
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
-- ansatz-pioneer (PLAN_ansatz.md): reopened 2026-10-26 with the PI's loop bar (judge a candidate by its per-round refit
-  tax inside the loop, gate tax_2 < 0.82e-6 at 6x6); R1 4x6 PASS, R2 pre-registered (commit 2fa6644). The L8 identity (any
-  class at its own energy optimum has zero fidelity gradient toward its one-hop state) sent to the angle at the PI's request 2026-10-26.
+- ansatz-pioneer: CLOSED 2026-10-27 (its own report): the J2-undone pre-image passes the loop gate only with exact stored
+  magnitudes (tax 2.4e-8); a baseline-size network fails by 4.5x (2.58e-5 / 7.4e-6). PLAN_ansatz.md holds the record.
 - conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
 
 ## Dead ends (number, run)

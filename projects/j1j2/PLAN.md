@@ -170,6 +170,10 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   3x3 complex network gets to that fixed point. Readout changed to E_FN of the network itself (band-fit copy 1.93e-5 mean; phi_1 as
   guide 9.85e-6; s2 floor ~0.5-0.9e-6). Prediction restated: E_FN 1.93e-5 -> 1.54-1.74e-5 (tax_0 drop 20-40%); kill < 10%.
   Caveat from the review: Test E bound shares (additive) vs Test F splice response (non-additive) are not directly comparable.
+  M-J RESULT 2026-10-28 (Pfaffian angle 86023ef; s_II verified by the lead from pfaffian_mj/mj_split.json): below phi^2 1e-11 the
+  copy's error is 98.5-98.9% the LOCAL eigen-equation violation (II), not inherited from neighbours; deep copy too small by
+  e^-0.13..e^-0.28 relative to its (correct) neighbours. Lead (takeover) approved the angle's CPU steps: (2) one oracle-free Jacobi
+  step with the copy's own V_A and E_FN (cost class: one neighbour sum per amplitude, as a Krylov s1 step), (1) per-decade offset.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

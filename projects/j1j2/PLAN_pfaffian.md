@@ -145,7 +145,18 @@ Mean complex tax_2 1.080e-6 (0.58 x F1 A), max 1.244e-6. VERDICT: PARTIAL (net g
 Derived: net gain per loop round = 1.629e-6 - tax_2 ~ +0.55e-6 (frozen round gain from C8's RBM+PP loop; not measured for this copy).
 Controls: phi1 1.99e-11, o2b_a2 <= 9.1e-12, tax_1 = cx_c1.json to 1e-10. F1A tax_2 reproduces to 6.3e-6 relative (1.2e-11
 absolute), over my registered 1e-6: the tolerance was set too tight for a difference of two E_FN values, not a physics miss.
-H100-h used in total: 5.50 of 10.
+H100-h used in total: 5.50 of 10. Key map: t2_cplx/README.md (slot "F1B" = complex copy, not the real 5x5).
+
+## Test D: where the complex copies' remaining tax sits (pre-registered 2026-10-28 before any number; lead's rule)
+Rerun the O2b bond split (ansatz/code/bond_split.py) and the guide split (bond_guide.py) on the three complex copies'
+la_tables (pfaffian_c/runs/c1_cplx_s{1,2,3}/round_1/la_table.npy), same target phi_1 and sign s2, CPU only.
+- CAPACITY (5x5 is the lever): class r < r*/3 below 40% of the cost, error spread over moderate ratios with |e_x| < 1
+  (cost-weighted median).
+- RESIDUAL DIPS (near-zeros of |A| where Re A and Im A are both small): class r < r*/3 still >= 60% of the cost, with
+  cost-weighted median e_x <= -3.
+- Otherwise inconclusive; state which class dominates. Judged on the seed mean, with all three seeds reported.
+Next: CAPACITY -> complex 5x5, 2 seeds, if it fits the remaining 4.5 H100-h (else report). RESIDUAL DIPS -> report.
+Loop C with complex copies: the PI closed the loop 2026-10-26; the lead raises it with the PI once a copy reaches the gate.
 
 ## Dead ends
 none yet

@@ -133,6 +133,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   Prediction (lead, ~55%): the cost concentrates in middle bands where cost share >= 2x fit share. Kill of the weighting cause: cost
   and fit shares agree within 1.5x in every band holding >= 10% of the cost. Caveat: c_xy is the frozen-phi bound (6-8x the true
   cost for the complex copies); shares, not totals, are compared.
+  TEST E RESULT 2026-10-28 (worker; verified by the lead from pfaffian_e/test_e.json; 151 s CPU): gate SUPPORTS the weighting
+  cause, not as predicted (lead's 'middle bands' WRONG). Pair cost by band of the smaller-phi end, mean of 3 complex seeds:
+  -11 10.9% (0.98x its fit share 1/9), -12 23.1% (2.08x), -13 27.4% (2.47x), below -13 30.4% with fit share 0.
+  Configurations with phi^2 < 1e-13 are 67.6% of all configurations (phi^2 weight 7e-5) and are never drawn as x by the fit
+  (cx_c1fit.py l.71, l.295), only as bond partners. Half-each assignment: no in-band 2x, 'below' 16.4%. e_x^2 share of the fit loss
+  ~0.21-0.26 (estimated from records). Caveat: shares are of the frozen-phi bound, which over-counts deep regions; the true share of
+  the unsampled region is not measured. Next (proposed, CPU): splice exact values (e = 0) into the configurations below 1e-13 and
+  re-solve E_FN exactly: the true cost of that region.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -180,6 +188,22 @@ E_FN force/QGT'): exact 4x4 force works; sampled 8x8 force passed its surrogate 
 (-31.8551 vs -31.9012, 3549023/24); finite-walker force SNR collapses near the fixed point (walkers for cosine 0.7: 8e4 -> 2.5e8).
 Lesson: j1j2 records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md and
 delta_today.md; check all before proposing (a tried-ideas index is being built).
+
+## What we understand (CLAUDE.md point 7; one line each, board block, evidence)
+- E_FN[A] = lowest eigenvalue of H_FN[A]; the copy enters only through V_A(x) = sum_blocked |H_xy| |A(y)|/|A(x)| (board 4).
+- <chi|H_FN|chi> - <chi|H|chi> = sum over blocked bonds of a perfect square (the double sum counts each bond twice), >= 0 (board 5).
+- Copy cost <= sum_blocked 2|H_xy| phi(x)phi(y)(cosh(e_x - e_y) - 1): only error DIFFERENCES across blocked bonds cost (board 5);
+  it is a bound on E_FN[A] - <phi|H|phi>, equal to the copy's cost only if phi is self-consistent; bound/true 17.7 (real O2b),
+  6-8 (complex) because the true FN state moves away from the copy's walls (pfaffian_d/split/*.json).
+- phi_1 is the FN ground state of the previous guide, not of H_FN[phi_1] (E 14.12e-6 vs 9.85e-6 as its own guide); the amplitude
+  loop at fixed sign converges to the self-consistent phi* (ground state of H_FN[phi*]), which is phi_G only if s2 is the exact
+  sign; 6x6 floor with s2 0.9e-6 (compress_6x6 README).
+- Complex parameters remove the network's own near-zeros: P(|A| < eps) ~ eps (real) vs eps^2 (complex) (board 6); Test D share
+  r < r*/3 75% -> 20%, copy loss 1.80e-5 -> 0.94e-5 (pfaffian_c, pfaffian_d).
+- The copy fit (cx_c1fit.py) draws equal numbers per phi^2 decade -5..-13 (our own design, T1s 2026-10-21) and never draws x below
+  1e-13 (67.6% of configurations); it also penalises e_x^2, which the energy does not see (board 8; Test E).
+- A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
+  ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
 - Sign at scale: the network stores only the amplitude, so round k's Krylov sign needs k layers of neighbours (~400^k network

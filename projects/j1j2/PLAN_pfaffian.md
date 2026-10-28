@@ -352,3 +352,10 @@ optimal coefficients (normal equations with D computed over all blocked pairs):
  L3: L2 + H_xx;  L4: f_J alone (+ constant);  L5: L3 + f_J.
 Predictions: L1 eps^2 >= 0.85 (explains the RBM's 0.93-0.95); L4 eps^2 <= 0.3 (R* is the Jacobi factor);
 L5 <= L4. Kill of "R* = Jacobi factor": L4 eps^2 >= 0.7. For the best set, one exact E_FN: tax/gain ~ eps^2 (within 2x).
+Intent if L4 passes (stated 2026-10-28 before L's numbers, lead asked): (a) with exactly ONE Jacobi round, fused with the
+Krylov sign. [derived] In the s2 frame E_L(y) = H_yy + V_A(y) - K_A(y), K_A(y) = sum_kept |H_yz||A(z)|/|A(y)|; the sign
+s2(y) = s(y) sgn(T - E_L(y)) needs E_L at every neighbour y of a walker, and f_J(y) = ln K_A(y) - ln(H_yy + V_A(y) - E')
+uses the same two sums. So one Jacobi factor adds no cost class beyond the on-the-fly Krylov sign (D6 caching applies
+to both). k > 1 rounds nest (~400^k at 14x14) and are out. One round reaches at most one exact round's gain: from phi_1
+21% of the excess (lead, delta0), so (a) alone does not reach the s2 floor; further rounds need (b) folding, i.e. the
+copy problem again for ln(phi/A_0). A pass of L is therefore a method for one round and a diagnosis beyond it.

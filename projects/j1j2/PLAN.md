@@ -194,7 +194,7 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   correction R* = ln(phi/|A|) (bond rms 0.0107): tax/gain 0.954 (alpha 4) / 0.941 (alpha 16); the stored R is ~6% of R*. The law
   tax/gain = eps^2 HOLDS (ratio 1.007 / 1.011; controls R=0 -> 1, R=R* -> 0, R=-R* -> 2.51): any storage proposal now only needs
   its eps. Angle's next (CPU, Test L): exact least squares of R* on features, 2-body vs the copy's own Jacobi factor f_J.
-  STEP BACK 2026-10-28 ~21:00 (lead, takeover; second failed version of sampled inner steps in G, probes 4049890 + 4052565,
+  STEP BACK 2026-10-28 20:27 (lead, takeover; second failed version of sampled inner steps in G, probes 4049890 + 4052565,
   0.12 H100-h; all physics controls passed, the optimiser did not: 1/20 steps significant, MM bound dE_FN +7.9e-8 +- 3.2e-7):
   1. Verdict: stop Test G (no gate, no more GPU); REFRAME proposed to the PI.
   2. Thought: by the review's majoriser result, the amplitude loop whose store step is the true-energy projection IS Test G's

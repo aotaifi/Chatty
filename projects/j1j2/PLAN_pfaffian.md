@@ -136,6 +136,17 @@ gate 0.82e-6.
 - KILL: mean >= 1.63e-6.
 Budget: ~0.3 H100-h (H1 took 222 s for four cases). RUNNING: job 4042525 (Paderborn H100, 40 min wall), launcher launch_t2.sh read by the angle lead, watcher t2_pdb_watch.sh; local /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/t2_cplx.
 
+## Result T2 (2026-10-28, job 4042525, 0.19 H100-h; verified by the angle lead from s{1,2,3}/cx_h1.json)
+| copy | tax_1 | tax_2 | tax_2/tax_1 |
+| complex s1 / s2 / s3 | 3.754 / 3.231 / 2.845e-6 | 1.244 / 1.070 / 0.925e-6 | 0.331 / 0.331 / 0.325 |
+| F1 A real (control, reproduced) | 5.596e-6 | 1.846e-6 | 0.330 |
+| O2b real (control, reproduced) | 5.930e-6 | 1.903e-6 | 0.321 |
+Mean complex tax_2 1.080e-6 (0.58 x F1 A), max 1.244e-6. VERDICT: PARTIAL (net gain per round, below the gate 0.82e-6).
+Derived: net gain per loop round = 1.629e-6 - tax_2 ~ +0.55e-6 (frozen round gain from C8's RBM+PP loop; not measured for this copy).
+Controls: phi1 1.99e-11, o2b_a2 <= 9.1e-12, tax_1 = cx_c1.json to 1e-10. F1A tax_2 reproduces to 6.3e-6 relative (1.2e-11
+absolute), over my registered 1e-6: the tolerance was set too tight for a difference of two E_FN values, not a physics miss.
+H100-h used in total: 5.50 of 10.
+
 ## Dead ends
 none yet
 

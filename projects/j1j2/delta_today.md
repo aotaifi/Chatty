@@ -308,3 +308,4 @@
 - 2026-10-27 PI approved Paderborn for test C ('go for Paderborn'): <= 10 H100-h; forwarded to the Pfaffian angle; lead reads the launcher before the full submission.
 2026-10-28 02:44 VERDICT job 4040973: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_probe/ANALYSIS.md]
 - 2026-10-28 Pfaffian test C rate probe 4040973 (H100, 0.02 H100-h): real 3.67 s/step, complex 6.68 (ratio 1.82). Production launcher submit_c1_all.sh sent to the project lead for reading.
+- 2026-10-28 lead read test C launcher chain (submit_c1_all.sh, launch_c1.sh, c1.sbatch, c1_pdb_watch.sh): approved with sizes real 00:45 / complex 02:25, max_steps 1100, worst case 9.5 H100-h; probe 4040973 real 3.67 / complex 6.68 s/step.

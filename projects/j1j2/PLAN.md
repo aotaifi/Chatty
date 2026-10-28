@@ -70,6 +70,21 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   complex copy sits under the key 'F1B'): complex tax_2 1.244 / 1.070 / 0.925e-6 (mean 1.08e-6) vs real F1 A 1.846e-6: PARTIAL, below
   the round gain 1.629e-6 for the first time, above the gate 0.82e-6. Next (lead): bond split of the complex residual on CPU; 5x5
   complex (2 seeds) only if the residual is capacity-like. Loop C needs the PI (loop closed 10-26).
+  PREDICTION for Test D (lead, 2026-10-28 09:55, written before reading any complex split file; split_s1 already on disk, unread).
+  Pair cost of the copy, frozen phi: c_xy = |H_xy| phi(y)^2 (r - r*)^2 / r, r = |A(x)/A(y)|, r* = phi(x)/phi(y).
+  Real O2b round_1 split (pfaffian_d/split/split_o2b_round_1.txt): class r < r*/3 = 0.752 of the cost, of which q = 0.424 on pairs
+  where sgn A(x)A(y) != s2(x)s2(y) (own-node crossings, q_ownnode.json) -> crossings 0.319 of the total, non-crossing dips 0.433,
+  other classes 0.248.
+  M0 (complex A removes the crossings only) predicts tax_0 ratio complex/real = 0.68; test C measured 0.52(5) (seed mean
+  0.935e-5 vs F1 A 1.80e-5): M0 is off by 3 sigma, so the complex copy also removed ~0.16 of the real cost outside the crossings.
+  M1 (lead's mechanism): a real A is small on BOTH sides of its own nodal surface; complex A has no surface (zeros codim 2), so
+  it removes the crossings and part of the non-crossing dips near them, and leaves the other classes unchanged.
+  M1 predicts for the complex split: class r < r*/3 = (0.433 - 0.16)/0.52 = 0.52 of the cost (range 0.45-0.57 for ratio
+  0.47-0.57), class 1/3-3 about 0.41. Test D verdict then INCONCLUSIVE (between 40% and 60%).
+  Rival M2 (complex = more parameters, a uniform cut): class r < r*/3 stays ~0.75 -> RESIDUAL DIPS. A share >= 0.65 refutes M1;
+  a share <= 0.40 refutes M1 too (the bulk class would have shrunk, which M1 says it does not).
+  Caveats: shares come from the frozen-phi bound formula (17.7x loose in total); q and the split are for O2b round_1, the ratio
+  is vs F1 A (O2b trained 13x longer, -6%); Test D splits tax_0, the open number is tax_2 (tax_2/tax_0 0.116 complex, 0.103 real).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

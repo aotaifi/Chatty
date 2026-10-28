@@ -174,6 +174,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   copy's error is 98.5-98.9% the LOCAL eigen-equation violation (II), not inherited from neighbours; deep copy too small by
   e^-0.13..e^-0.28 relative to its (correct) neighbours. Lead (takeover) approved the angle's CPU steps: (2) one oracle-free Jacobi
   step with the copy's own V_A and E_FN (cost class: one neighbour sum per amplitude, as a Krylov s1 step), (1) per-decade offset.
+  NOTE 2026-10-28 (lead, records check): Test G's objective is TRIED_IDEAS B10/B11 (frozen-H_FN Rayleigh with a factorised residual;
+  exact 4x4 99.7%, 8x8 sampled inconclusive, OOM), now at 6x6 with the complex PP class over the full space. Astra second opinion
+  (angle, d25fbae, ansatz/REVIEW_astra_pfaffian_2026-10-28.md): expressibility vs learnability unresolved; G success = reducible in
+  the class, G failure = no floor (both seeds share the F1 A real parent). Separator (teacher-student + constructive witness,
+  ~1.5-2 H100-h) awaits the PI's GPU go.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

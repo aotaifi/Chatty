@@ -204,4 +204,8 @@ three complex copies; s_II < 0.3 refutes M-J (then the deep error is inherited f
 Check: identity e_x = (I) + (II) to 1e-10 on all orbits (code check); a broken arm (V_g -> 0) must break it.
 Cost: CPU, existing tables (target_la, s2, guide g_1 table, nb_J1/nb_J2, complex la_tables), est. 1-3 h on ws1.
 If supported: the network fix is a local eigen-equation structure (Jacobi layer: O(N) neighbour sum per amplitude,
-the same cost class the PI closed C14 on; or a cheap surrogate). If refuted: deep error follows bulk error.
+the same cost class the PI closed C14 on; or a cheap surrogate). If refuted: deep error follows bulk error.Guide for M-J (lead 2026-10-28): g_1 = hop(a_1) is not on disk; rebuild with o2b_17431886/code/cx_o2b.py hop() l.74-100,
+a_1 = round_0/la_table.npy, alpha_V = -0.11787844532393324 (cx_o2b.json rounds[1].hop_a); control E_FN(g_1) =
+1.411883720998159e-05/site to 1e-9 rel, then FN(g_1) = round_1/target_la.npy. The identity uses V = V_{g_1}, the wall of the
+HOP guide (not a plain s2|A| guide as in the agreed pipeline); the split itself is exact either way, but the s_II number
+describes copies of a hop-guide target.

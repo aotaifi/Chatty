@@ -121,6 +121,20 @@ specific (post hoc, not a registered criterion); (3) S_x from real s1 only, whil
 (real C(S_x) 1.15e-2/4.2e-3/2.4e-3), so other seeds' node pairs sit in S_rest.
 Derived, unvalidated: H1 measured tax_2/tax_1 = 0.32 for real PP copies; if it holds for complex, tax_2 ~ 1.0e-6 vs the
 loop gate 0.82e-6 and round gain 1.63e-6 (C8). Not measured.
+Lead 2026-10-28: the cut rule is a flaw of the rule (unreachable once cut_R > 0.5), recorded as such, not as a fail. Real-arm
+rerun + per-seed mechanism sets funded only if test T2 passes.
+
+## Test T2: tax_2 of the complex copies (pre-registered 2026-10-28 before any number; lead's go and rule)
+tax_2 = E_FN(2 hops of copy) - E_FN(2 hops of phi_1), as cx_h1.py computes it (summary tax_2; code sha b555f9ba, codeH1 on
+Paderborn, unchanged). Three cx_h1 runs in one H100 job, each with o2b_table = O2b a_2, f1_table_A = F1 A, f1_table_B =
+complex copy s_k la_table (runs c1_cplx_s{1,2,3}/round_1). Controls per run: phi1, o2b_a2 and F1A reproduce h1_full
+(F1A tax_2 1.846e-6, O2b 1.903e-6) to rel < 1e-6; otherwise stop.
+Reference: F1 A converged real copy tax_2 = 1.846e-6 (h1_full/cx_h1.json). Gate numbers: 6x6 G-tax round gain 1.629e-6,
+gate 0.82e-6.
+- PASS: mean complex tax_2 <= 0.82e-6 and every seed <= 1.63e-6.
+- PARTIAL: mean in (0.82e-6, 1.63e-6): net gain per round, below the gate.
+- KILL: mean >= 1.63e-6.
+Budget: ~0.3 H100-h (H1 took 222 s for four cases).
 
 ## Dead ends
 none yet

@@ -323,3 +323,4 @@
 - 2026-10-28 T2 (Pfaffian angle 1baa881; verified by the lead): complex tax_2 1.244/1.070/0.925e-6 vs real F1A 1.846e-6, PARTIAL (below round gain 1.629e-6, above gate 0.82e-6); 5.50 of 10 H100-h. Lead: bond split of complex residual (CPU) before any 5x5 run; JSON key 'F1B' = complex copy, README asked.
 - 2026-10-28 migrate (lead): no jobs of the lead; Pfaffian angle running Test D on CPU; PLAN.md Angles + roadmap updated.
 - 2026-10-28 PI opened the how-we-work angle (session local_f1c3599f, Fable requested): discussion of method and process, reads PLAN/TRIED_IDEAS/FAILED_ROUTES/STORAGE_PROBLEM, waits for the PI; no runs.
+- 2026-10-28 Pfaffian test D (ws1 CPU): complex copies' pair cost 6.4e-5/site (O2b 3.53e-4), <1/3 class 20% (was 75%), dominant 1/3-3 66%; INCONCLUSIVE by rule (clause 2 ambiguous). Deep dips gone, moderate error remains.

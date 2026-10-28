@@ -158,6 +158,16 @@ la_tables (pfaffian_c/runs/c1_cplx_s{1,2,3}/round_1/la_table.npy), same target p
 Next: CAPACITY -> complex 5x5, 2 seeds, if it fits the remaining 4.5 H100-h (else report). RESIDUAL DIPS -> report.
 Loop C with complex copies: the PI closed the loop 2026-10-26; the lead raises it with the PI once a copy reaches the gate.
 
+## Result D (2026-10-28, ws1 CPU 2.6 h, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_d/; shares and e_x verified by the angle lead)
+Checks: O2b split reproduced (3.5284e-4/site, <1/3 share 0.752); zero-hop E_FN differences equal tax_0 to 0.03%.
+| copy | pair cost/site | <1/3 | 1/3-3 | 3-30 | >30 | <1/3 median e_x |
+| O2b real | 3.53e-4 | 75.2% | 21.3% | 1.8% | 1.7% | -6.0 |
+| complex s1/s2/s3 | 6.70/6.26/6.14e-5 | 17.8/19.6/23.1% | 68.4/66.1/63.4% | ~12% | ~1.6% | -1.91/-1.79/-1.91 |
+VERDICT: INCONCLUSIVE by the rule; dominant class 1/3-3 (66%, copy within a factor 3 of the true ratio). CAPACITY clause 1
+met (<1/3 at 20% < 40%); clause 2 as applied (median e_x of the <1/3 class, -1.87) fails |e_x| < 1. The clause did not name
+the class: my error in writing it. Far from RESIDUAL DIPS. Reading: complex parameters removed the deep dips (<1/3 median
+e_x -6.0 -> -1.9, pair cost 5.6x lower); what remains is mostly moderate error spread over ratios 0.01-1.
+
 ## Dead ends
 none yet
 

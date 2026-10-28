@@ -309,3 +309,4 @@
 2026-10-28 02:44 VERDICT job 4040973: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_probe/ANALYSIS.md]
 - 2026-10-28 Pfaffian test C rate probe 4040973 (H100, 0.02 H100-h): real 3.67 s/step, complex 6.68 (ratio 1.82). Production launcher submit_c1_all.sh sent to the project lead for reading.
 - 2026-10-28 lead read test C launcher chain (submit_c1_all.sh, launch_c1.sh, c1.sbatch, c1_pdb_watch.sh): approved with sizes real 00:45 / complex 02:25, max_steps 1100, worst case 9.5 H100-h; probe 4040973 real 3.67 / complex 6.68 s/step.
+- 2026-10-28 Test C production submitted on Paderborn gpu_h100 (account hpc-prf-ppdmrg), runs under /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs: c1_real_s1=4041269 c1_real_s2=4041272 c1_real_s3=4041274 c1_cplx_s1=4041271 c1_cplx_s2=4041273 c1_cplx_s3=4041275

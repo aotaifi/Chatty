@@ -188,3 +188,20 @@ none yet
 ## Cockpit
 - STATUS (open, medium): Discussing with the PI whether a pair-product network can copy the fixed-node state in rare configurations.
 - NEXT (open, medium): Agree on paper which Pfaffian variant to test and the test that would kill it.
+
+## Role from 2026-10-28 (lead, at the PI's request): network expert. Open question: can complex PP + 3x3 backflow hold
+the deep (near-node) corrections, and if not, which network can? Inputs (lead, verified): Test E (67.6% of configurations,
+phi^2 < 1e-13, never trained; 21-26% of the fit loss is the e_x^2 term), Test F (exact splice below 1e-11 removes 35% of
+the complex copies' tax_0, below 1e-13 11%, random bulk 0%), Test G (refit on true E_FN) running in the lead's session.
+
+## Mechanism M-J (2026-10-28, board 14; not yet run, waits for the PI)
+FN eigen-equation at x (phi = ground state of H_FN[g], E its energy, s2 frame): phi(x) = sum_kept |H_xz| phi(z) / (H_xx + V_g(x) - E).
+Exact split of the copy error: e_x = (I) ln sum_kept w_xz e^{e_z} [inherited from neighbours] + (II) rho_A(x) [local
+violation of the eigen-equation by A at x]. One Jacobi step A' = sum_kept |H||A(z)| / (H_xx + V_g - E) removes (II) exactly
+and is positive (no node of its own); the old Lanczos hop removed part of it (G-A2: 2/3 of the tail tax).
+Prediction (from G-A2, before any number): s_II = sum c_x rho_A^2 / sum c_x e_x^2 over phi^2 < 1e-11 is 0.5-0.8 for the
+three complex copies; s_II < 0.3 refutes M-J (then the deep error is inherited from neighbours, a bulk problem).
+Check: identity e_x = (I) + (II) to 1e-10 on all orbits (code check); a broken arm (V_g -> 0) must break it.
+Cost: CPU, existing tables (target_la, s2, guide g_1 table, nb_J1/nb_J2, complex la_tables), est. 1-3 h on ws1.
+If supported: the network fix is a local eigen-equation structure (Jacobi layer: O(N) neighbour sum per amplitude,
+the same cost class the PI closed C14 on; or a cheap surrogate). If refuted: deep error follows bulk error.

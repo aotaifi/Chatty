@@ -190,6 +190,10 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   from the exact target phi_1: 9.853e-6 -> 7.768e-6, Delta = 2.09e-6. Gate for G: tau_0 <= 3.9e-6. Test G's own prediction
   (tax drop 20-40% -> tau ~5.6-7.5e-6) predicts the gate FAILS (tau/Delta 0.7-1.0). Scale: near the target a round gains only
   ~2e-6, so a useful copy must lose <~1e-6, about 10x below today's 0.94e-5, not 2x.
+  M-R RESULT 2026-10-28 (angle d45c681; verified by the lead from pfaffian_mr/mr_result.json): KILL. RBM residual storing the round's
+  correction R* = ln(phi/|A|) (bond rms 0.0107): tax/gain 0.954 (alpha 4) / 0.941 (alpha 16); the stored R is ~6% of R*. The law
+  tax/gain = eps^2 HOLDS (ratio 1.007 / 1.011; controls R=0 -> 1, R=R* -> 0, R=-R* -> 2.51): any storage proposal now only needs
+  its eps. Angle's next (CPU, Test L): exact least squares of R* on features, 2-body vs the copy's own Jacobi factor f_J.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -255,6 +259,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   matter but two thirds of the loss sits in the bulk, where the fit already weights enough.
 - One exact amplitude round gains 7.8e-6 from the complex copy but only 2.1e-6 from the exact target phi_1 (delta0.json): near the
   fixed point the copy must lose <~1e-6, ~10x below today's 0.94e-5.
+- Storing a round's correction with relative error eps keeps a fraction 1 - eps^2 of the round's gain (M-R, measured ratio
+  1.01; pfaffian_mr/mr_result.json).
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

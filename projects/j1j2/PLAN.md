@@ -194,6 +194,16 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   correction R* = ln(phi/|A|) (bond rms 0.0107): tax/gain 0.954 (alpha 4) / 0.941 (alpha 16); the stored R is ~6% of R*. The law
   tax/gain = eps^2 HOLDS (ratio 1.007 / 1.011; controls R=0 -> 1, R=R* -> 0, R=-R* -> 2.51): any storage proposal now only needs
   its eps. Angle's next (CPU, Test L): exact least squares of R* on features, 2-body vs the copy's own Jacobi factor f_J.
+  STEP BACK 2026-10-28 ~21:00 (lead, takeover; second failed version of sampled inner steps in G, probes 4049890 + 4052565,
+  0.12 H100-h; all physics controls passed, the optimiser did not: 1/20 steps significant, MM bound dE_FN +7.9e-8 +- 3.2e-7):
+  1. Verdict: stop Test G (no gate, no more GPU); REFRAME proposed to the PI.
+  2. Thought: by the review's majoriser result, the amplitude loop whose store step is the true-energy projection IS Test G's
+     update, so with a FIXED network class its endpoint is a stationary point of min_theta E_FN[s2|A_theta|]; a log-copy store
+     can only end higher. A fixed-class loop cannot beat the class's best fixed-node guide; it is an optimiser for it. Only a
+     GROWING store (M-R chain, Jacobi round, L) can beat the class, at growing cost. Same SNR term as C15 (sampled HF force
+     near a stationary point).
+  3. Cheapest next test: none on GPU. CPU, existing nets: E_FN[s_k|A_VMC|] for k = 0,1,2 vs E_var of the same VMC net at 6x6
+     (the add-on value the Goal names), ~1 h CPU, partly in the records. Astra consulted on the reframe (rule 8).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

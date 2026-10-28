@@ -6,4 +6,4 @@ that rest on such a claim cite its row.
 
 | # | claim | theorem / equation | assumption | source | where used | status |
 |---|---|---|---|---|---|---|
-| F1 | Pair cost of a copy error, any size, frozen phi: c_xy = abs(H_xy) phi(y)^2 (r - r_true)^2 / r | algebraic identity from F3's diagonal term at fixed phi (delta_today 2026-10-27) | phi frozen: an UPPER BOUND on the true loss, not the loss; over-weights deep dips (bound/true 17.7 for O2b, 6.05-7.81 for complex copies; pfaffian_d/split/split_*.json) | derived here | bond splits (Test D); not to be used for shares of the true tax | read; bound only |
+| F1 | Pair cost of a copy error, any size, frozen phi: c_xy = abs(H_xy) phi(y)^2 (r - r_true)^2 / r | algebraic identity from the FN diagonal term (board 3) at fixed phi (delta_today 2026-10-27) | phi frozen: an UPPER BOUND on the true loss, not the loss; over-weights deep dips (bound/true 17.7 for O2b, 6.05-7.81 for complex copies; pfaffian_d/split/split_*.json) | derived here | bond splits (Test D); not to be used for shares of the true tax | read; bound only |

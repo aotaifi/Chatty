@@ -209,3 +209,4 @@ a_1 = round_0/la_table.npy, alpha_V = -0.11787844532393324 (cx_o2b.json rounds[1
 1.411883720998159e-05/site to 1e-9 rel, then FN(g_1) = round_1/target_la.npy. The identity uses V = V_{g_1}, the wall of the
 HOP guide (not a plain s2|A| guide as in the agreed pipeline); the split itself is exact either way, but the s_II number
 describes copies of a hop-guide target.
+PI 2026-10-28: go for the M-J CPU split; GPU hours only after clearing them with the PI (CPU is free). RUNNING: worker on ws1 CPU, output /scratch/a/A.Otaifi/ansatz_runs/pfaffian_mj/.

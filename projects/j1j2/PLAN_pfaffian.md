@@ -1,6 +1,8 @@
 # PLAN_pfaffian (angle lead "pfaffian angle", started 2026-10-27 by the ansatz angle; PI asked for it)
 
 ## Question
+Board numbering changed 2026-10-28 (version 32): old 23->4, 24->6, 8/18/19->7, 20->11, 21->12; block numbers below
+before this line are the OLD ones (full old board: version 29).
 Can a Pfaffian-type network copy the fixed-node (FN) state accurately in the rare configurations,
 where today's copies fail? Words: configuration x, neighbour y (one swap), amplitude psi(x),
 true ratio r* = phi(x)/phi(y), the copy's ratio r.

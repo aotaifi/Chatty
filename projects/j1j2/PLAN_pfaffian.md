@@ -224,3 +224,21 @@ shift with the copy's normalisation (A -> cA), rho does not; with the bulk-ancho
 (I) ~ 0. Reading: the deep error is LOCAL (rho), one-signed and smooth in depth: the copy is too small by e^-0.13..e^-0.28
 below phi^2 1e-11, ~0 above 1e-9; its neighbours are right. That pattern fits the training (no samples below 1e-13,
 Test E) more than a capacity limit; not yet separated.
+
+## Tests J and R (pre-registered 2026-10-28 before any number; lead's go, CPU only, no GPU until the PI is back)
+Copies: complex s1..s3 (pfaffian_c/runs/c1_cplx_s{k}/round_1/la_table.npy), normalised sum n A^2 = 1.
+J (Jacobi step, oracle-free): A'(x) = sum_kept |H_xz| |A(z)| / (H_xx + V_A(x) - E_FN[A]), V_A and E_FN[A] from the copy
+only (no phi); kept/blocked by s2. Denominator is > 0 by construction: E_FN[A] = lambda_min(H_FN[A]) <= every diagonal
+entry (Rayleigh quotient on a basis vector); count of <= 0 must be 0 (report it).
+- Arm (a): A' only where the copy's own |A|^2 < 1e-11, A elsewhere. Arm (b): A' everywhere.
+- Broken control: arm (a) with the denominator replaced by its c-weighted mean over the band (local diagonal removed).
+- Readout: tax_0 = E_FN - E0 per site - 9.85e-6, cut = 1 - tax_0(A')/tax_0(A), per seed.
+- Prediction: arm (a) cut 25-40% (the exact splice below 1e-11 removed 35%, Test F; Jacobi removes rho, and (I) ~ 0 there);
+  arm (b) cut >= arm (a); broken control cut < arm (a) / 2. Kill: arm (a) cut < 10%.
+- Cost at scale [derived, to be checked against code]: one A'(x) needs |A| at all neighbours of x (<= 2N bonds, 144 at
+  6x6): one local-energy-type sum. In FN every walker step needs A' at all neighbours y of x, so neighbours of neighbours:
+  the same class as evaluating the Krylov sign s'(y) = s(y) sgn(T - E_L(y)) on the fly (D6 cached global Krylov step).
+R (offset test): m_d = c-weighted mean of rho_A in phi^2 decade d (diagnostic, uses phi); R = sum_deep c (e - m_d)^2 /
+sum_deep c e^2 over phi^2 < 1e-11. Prediction R <= 0.3 (deep error = smooth depth offset). Broken control: m_d with the
+decade labels randomly permuted, R_broken must be >= 0.8. If R <= 0.3: the network needs its depth as input, e.g. a
+monotone remap of its own output, A'' = A exp(h(ln|A|)).

@@ -105,7 +105,12 @@ Jacobian vs finite differences 2.2e-7 relative; dry fits exit 0 (peak 13.7 / 19.
 Rate probe job 4040973 done (H100, B 8208, ~0.02 H100-h): real 3.67 s/step, complex 6.68 s/step (ratio 1.82); held-out
 loss at step 0 real 0.034, complex 0.089. Production launcher ansatz/code/submit_c1_all.sh (-> launch_c1.sh, c1.sbatch,
 c1_pdb_watch.sh) read by the angle lead; sizes proposed real 00:45 (fit cap 1200 s), complex 02:25 (fit cap 7200 s,
-max_steps 1100), worst case 9.5 H100-h; waiting for the project lead's read. H100-h used: 0.02.
+max_steps 1100), worst case 9.5 H100-h; approved by the project lead 2026-10-28.
+RUNNING (submitted 2026-10-28 ~02:50, Paderborn gpu_h100): real s1 4041269, s2 4041272, s3 4041274; complex s1 4041271,
+s2 4041273, s3 4041275. Local dirs /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_{real,cplx}_s{1,2,3}; watchers
+c1_pdb_watch.sh; worker waits for all six, pulls la_table/t_real, runs c1_mech.py. Next per verdict: PASS -> report to the
+lead, design the size-only follow-up (board 21) against complex PP; KILL -> own node is not the lever, report; INCONCLUSIVE
+-> state cause (unconverged run, scatter) and the cheapest fix. H100-h used: 0.02 + pending.
 
 ## Dead ends
 none yet

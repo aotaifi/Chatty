@@ -90,6 +90,11 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    The second brain (skill `second-brain`) is where a claim is found; FOUNDATIONS.md is what we work from. None of
    this goes into memory or into the root rules.
 
+8. **Second opinion below 70%** (PI 2026-10-28). On a pivotal decision where the lead's confidence that the course solves the
+   problem is under 70%, the lead consults Astra (Codex gpt-6-astra, xhigh, read-only, codex-jobs MCP) with the question and the
+   files but without its own conclusion, then decides and records both. The decision stays with the lead. Record: Astra's first
+   review (ansatz/REVIEW_astra_pfaffian_2026-10-28.md) caught five overclaims in one pass.
+
 ## What we kept
 
 Evidence (§4), statistics and jobs (§5), permissions (§6), limits (§7), communication (§3), workers and angles (§1)

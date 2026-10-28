@@ -223,6 +223,12 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   features (explains the M-R kill). Exact E_FN: A e^{1.33 f_J + small} tax/gain 0.048 (tax 3.75e-7/site); pure Jacobi A e^{f_J}
   0.257. Caveats: c = 1.34 fitted to the oracle R*; oracle sign. Next (angle, CPU): oracle-free c* by an exact line search on
   E_FN (pred. 1.2-1.5, tax/gain <= 0.08, kill > 0.2), then near the fixed point (gain 2.09e-6) against the < 1e-6 bar.
+  ONE-STEP LOCAL CORRECTIONS 2026-10-28 (angle; verified by the lead from pfaffian_c_star/ext/cstar.json and
+  pfaffian_s/cstar_lanczos.json; ORACLE s2, complex copy s1, E_FN - E0 per site): copy 2.092e-5; one exact FN round 1.310e-5;
+  copy x e^{c f_J} (Jacobi, c* = 3.92 by exact line search) 8.03e-6; copy x |1 + alpha(E_L - E)| (Lanczos, alpha* = -0.10 by the
+  same search; moment formula -0.098) 8.68e-6; s2 floor ~0.9e-6. One local-energy factor of either kind is worth ~1.7 exact FN
+  rounds (64% / 59% of the way to the floor); Jacobi beats Lanczos by 0.66e-6 (8%, weak). The rest of the way needs nested steps
+  (cost 400^k) or a stored multi-round correction ln(phi/A_0) (untested).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -292,6 +298,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   1.01; pfaffian_mr/mr_result.json).
 - One round's FN correction is ~92% one scalar times the copy's own Jacobi factor f_J (Test L, oracle sign, one round):
   computable on the fly from A with one neighbour sum, no training.
+- One local-energy factor (Jacobi e^{c f_J} or Lanczos |1+alpha(E_L-E)|, scalar by line search) on the copy is worth ~1.7 exact FN
+  rounds at oracle sign (8.0e-6 / 8.7e-6 from 2.09e-5; floor 0.9e-6).
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

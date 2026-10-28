@@ -325,3 +325,4 @@
 - 2026-10-28 PI opened the how-we-work angle (session local_f1c3599f, Fable requested): discussion of method and process, reads PLAN/TRIED_IDEAS/FAILED_ROUTES/STORAGE_PROBLEM, waits for the PI; no runs.
 - 2026-10-28 Pfaffian test D (ws1 CPU): complex copies' pair cost 6.4e-5/site (O2b 3.53e-4), <1/3 class 20% (was 75%), dominant 1/3-3 66%; INCONCLUSIVE by rule (clause 2 ambiguous). Deep dips gone, moderate error remains.
 - 2026-10-28 Test D (Pfaffian 000fd73, verified): complex copies' r<r_true/3 share 20% (O2b 75%); lead's committed prediction 0.52 refuted; failed term = bound-vs-true weighting of deep dips (bound/true 17.7 real vs ~6.9 complex). 5x5 not run (predicted 0.89e-6 vs gate 0.82e-6, undecidable at 2 seeds); budget 4.5 H100-h kept.
+- 2026-10-28 FOUNDATIONS.md started (F1 Perron-Frobenius in the s2 gauge, from the Pfaffian angle, checked on target_la.npy; F2 codim; F3 ten Haaf HYPOTHESIS unread; F4 pair-cost bound).

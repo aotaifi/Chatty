@@ -1,0 +1,10 @@
+# FOUNDATIONS: what the j1j2 project rests on (CLAUDE.md point 7)
+A row enters once the lead has read the derivation; otherwise it is marked HYPOTHESIS. Every "known" in PLAN.md and every
+mechanism on the equation board (artifact LwUGJoTxGJku3k6mTVgMVP) cites a row here.
+
+| # | claim | theorem / equation | assumption | source | where used | status |
+|---|---|---|---|---|---|---|
+| F1 | The copy's target is strictly positive in the s2 gauge: phi = s2 u, u > 0 | Perron-Frobenius for the irreducible matrix -s2 H_FN s2 with non-negative off-diagonals (stoquastic) | kept bonds connect the sector (no nodal pockets); checked: ln phi_1 finite on all 15,804,956 orbits, min -34.47, max -3.45 (pfaffian_d/o2b_round_1/target_la.npy) | Horn & Johnson, Matrix Analysis, Perron-Frobenius for irreducible non-negative matrices | the amplitude class must be zero-free (board 21, 24) | read (lead, Pfaffian angle) |
+| F2 | A real network output vanishes on a codimension-1 set, a complex one on a codimension-2 set | zero set of Re A alone vs of Re A = Im A = 0 | A generic (no symmetry that forces Im A = 0) | elementary | why complex PP removes own-node dips (board 19, 22, 24; test C, D) | read |
+| F3 | Lattice fixed node: E_FN >= E0, guide enters only via the sign-flip term on violating bonds | (H_FN)_xx = H_xx + sum_viol H_xy psi_T(y)/psi_T(x) (board 3) | real H, real guide | ten Haaf, van Bemmel, van Leeuwen, van Saarloos, Ceperley, PRB 51, 13039 (1995) | everything (board 3, 5, 22) | HYPOTHESIS: derivation not yet read by the lead or the angle |
+| F4 | Pair cost of a copy error, any size, frozen phi: c_xy = abs(H_xy) phi(y)^2 (r - r_true)^2 / r | algebraic identity from F3's diagonal term at fixed phi (delta_today 2026-10-27) | phi frozen: an UPPER BOUND on the true loss, not the loss; over-weights deep dips (bound/true 17.7 for O2b, 6.05-7.81 for complex copies; pfaffian_d/split/split_*.json) | derived here | bond splits (Test D); not to be used for shares of the true tax | read; bound only |

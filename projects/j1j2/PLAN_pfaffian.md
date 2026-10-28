@@ -392,3 +392,15 @@ Caveats: oracle sign s2; one copy (s1), one round, from far above the fixed poin
 Next (pre-registered now, before any number): oracle-free scalar. c* = argmin_c E_FN[A e^{c f_J}] (exact 1-D line search,
 CPU, ~6 solves). Prediction: c* in 1.2-1.5 and tax/gain <= 0.08; kill: tax/gain > 0.2 at c*. Then repeat from phi_1's
 neighbourhood (near the fixed point, gain 2.09e-6) to check the bar < 1e-6 where it matters.
+
+## Result c* (2026-10-28, ws1 m53 CPU 10 min, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c_star/cstar.json; ORACLE s2; verified)
+E_FN[A_s1 e^{c f_J}] - E0 per site: c 0: 2.092e-5; 1: 1.511e-5; 2: 1.106e-5; 2.5: 0.968e-5 (still falling; range edge).
+Prediction "c* in 1.2-1.5" REFUTED; kill (tax/gain > 0.2) not triggered: at c = 2.5 the copy beats the exact one-round
+FN state phi' (1.310e-5) and matches phi_1 (0.985e-5). <H> also falls (3.09e-5 -> 1.16e-5). Checks c = 0, 1 reproduce to
+2e-7, 3e-6 (LOBPCG residual ~1e-6; my 1e-8 gate was too tight).
+Mechanism of the miss [derived]: f_J ~ -(E_L - E')/K_A is a descent direction with a local step 1/K_A (an imaginary-
+time / Jacobi step); the FN round's correction R* is a short step along it (fit 1.34), while minimising E_FN picks a
+longer step: steepest descent with a line search. My prediction confused "matching one round" with "the best step".
+Next (pre-registered before any number): extend to c in [2.5, 10]. Prediction: interior minimum c* in 3-6, with
+E_FN(c*) between the s2 floor (~0.9e-6, compress_6x6 README) and 0.97e-5; I expect 4-7e-6. Kill of "one fused factor
+reaches far": E_FN(c*) > 8e-6.

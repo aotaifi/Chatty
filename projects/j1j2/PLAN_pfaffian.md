@@ -321,3 +321,11 @@ eps_C^2 = C_phi(e)/C_phi(R*).
 - Kill: tax >= 0.7 x gain, or the quadratic law off by > 3x.
 Decision (mine, PI gave me the final say): this addresses the 10x bar directly and is CPU-only; it goes before the GPU
 teacher-student test, which can only explain a 2x-scale error. Teacher-student stays pre-registered, not requested.
+M-R additions (lead 2026-10-28, pre-registered before any M-R number):
+- Error shape: with the bond form D(a,b) = sum_blocked |H| phi'(x) phi'(y) (a_x - a_y)(b_x - b_y), split e = -eps_par (R* - mean)
+  + e_perp with D(e_perp, R*) = 0. Report eps_par^2 and D(e_perp,e_perp)/D(R*,R*). Expected: tax/gain ~ eps_par^2 +
+  perp share; if the perp share dominates, a pass need not carry to the next round (reported as such).
+- Version tested: (a) keep the chain, one round. Cost [derived]: one symmetric RBM residual (alpha 16) = 576 images x
+  36 x 16 ~ 3e5 flops per amplitude vs the PP base 576 dets of 18x18 ~ 3.4e6, so ~10 stacked residuals (~10 rounds at
+  21% of the excess per round, lead's number) cost ~1 base evaluation: chain doubles the cost, does not change its class.
+  (b) folding (one net for ln(phi/A_0)) is not tested now; its readout would be fit quality of ln(phi/A_0) vs ln phi at equal capacity.

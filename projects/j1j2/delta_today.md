@@ -354,3 +354,4 @@
 - 2026-10-28 step back (Test G optimiser, second failed version): stop G, propose reframe (fixed-class loop = optimiser of the class's best FN guide; only a growing store can beat the class); no further GPU; Astra consulted.
 - 2026-10-28 20:4x Astra on the reframe: fixed-class bound holds; s2 in all stage-1 tests is an oracle expelled-set flip (cx_refresh.py l.48), not Krylov; existing ViT data: one Lanczos step + FN 1.89e-5 vs one Krylov step + FN 9.43e-5. Proposal to the PI pending; no runs.
 - 2026-10-28 angle withdrew the 'fused with Krylov sign' cost claim (oracle s2); Test L adds the Lanczos amplitude factor ln|1+alpha(E_L-E)| next to the Jacobi factor f_J (lead approved, CPU, amplitude parts only at oracle sign).
+- 2026-10-28 Pfaffian Test L (CPU, oracle s2): round's FN correction = 1.34 x copy's Jacobi factor to 92-93% (eps^2 0.079/0.068); tax/gain 0.048 (3.75e-7/site) with the fitted scalar, 0.257 pure Jacobi; 2-body features 0.973. Explains M-R kill.

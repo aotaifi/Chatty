@@ -375,3 +375,20 @@ Prediction [derived]: with E_L = H_xx + V_A - K_A (s2 frame), f_J = -ln(1 + (E_L
 same direction as the Lanczos factor but with a configuration-dependent scale 1/K_A(x) instead of a constant alpha.
 K_A varies across configurations, so f_J fits R* better: eps^2(L4) <= eps^2(L6) - 0.1 (absolute). |difference| < 0.05
 counts as no difference; between 0.05 and 0.1 as weak. Kill of this prediction: eps^2(L6) < eps^2(L4) - 0.05.
+
+## Result L (2026-10-28, ws1 CPU 2.6 h, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_l/l_result.json; ORACLE sign s2; verified by the angle lead)
+Controls: D_RR reproduced (1.761485e-4); {R*} -> eps^2 0; f_J permuted -> 0.99998; normal equations = direct pass to 1e-15;
+denominator min 9.14 > 0. (G near-singular for L1-L3/L5: exact collinear columns; eps^2 unaffected, coefficients not unique.)
+| set | eps^2 |  | copy (exact E_FN, oracle s2) | tax/site | tax/gain |
+| L1 2-body | 0.973 |  | A e^{1.33 f_J + small} (L5 fit) | 3.75e-7 | 0.048 |
+| L2/L3 +n_blocked,+H_xx | 0.944 |  | A e^{f_J} (pure Jacobi, no fit) | 2.01e-6 | 0.257 |
+| L4 f_J alone (coef 1.342) | 0.079 |  | (gain 7.825e-6; bar near fixed point < 1e-6) | | |
+| L5 L3 + f_J | 0.068 |  | | | |
+All pre-registered predictions met (L1 >= 0.85; L4 <= 0.3; L5 <= L4; tax/gain = eps^2 within 2x: 0.70 and 1.85).
+Reading: the round's FN correction is, to 92-93%, one scalar times the copy's own Jacobi factor f_J; 2-body / blocked-count /
+Ising features carry ~3-6%. This explains M-R's kill (an RBM residual at small weights is 2-body: L1 0.973 vs RBM 0.93-0.95).
+The fitted scalar (1.34) uses the oracle R*; pure Jacobi (scalar 1) loses 26% of the gain.
+Caveats: oracle sign s2; one copy (s1), one round, from far above the fixed point (gain 7.8e-6, not 2.1e-6).
+Next (pre-registered now, before any number): oracle-free scalar. c* = argmin_c E_FN[A e^{c f_J}] (exact 1-D line search,
+CPU, ~6 solves). Prediction: c* in 1.2-1.5 and tax/gain <= 0.08; kill: tax/gain > 0.2 at c*. Then repeat from phi_1's
+neighbourhood (near the fixed point, gain 2.09e-6) to check the bar < 1e-6 where it matters.

@@ -404,3 +404,10 @@ longer step: steepest descent with a line search. My prediction confused "matchi
 Next (pre-registered before any number): extend to c in [2.5, 10]. Prediction: interior minimum c* in 3-6, with
 E_FN(c*) between the s2 floor (~0.9e-6, compress_6x6 README) and 0.97e-5; I expect 4-7e-6. Kill of "one fused factor
 reaches far": E_FN(c*) > 8e-6.
+Control S (lead's request; pre-registered 2026-10-28 before any number; ORACLE s2): scanned Lanczos factor on the same copy,
+A_s1 |1 + alpha (E_L - E)|, psi = s2|A_s1|, E = <H>_psi, alpha by the same exact line search on E_FN (scan alpha in
+[-0.6, 0], refine to 0.01), same budget (~8 solves) as the Jacobi scan c in [0, 10].
+Prediction [derived]: Jacobi wins. Both factors agree to first order (f_J ~ -(E_L - E')/K_A vs alpha (E_L - E)), but
+|1 + alpha (E_L - E)| vanishes where E_L - E = -1/alpha, i.e. it creates zeros of its own at long steps (board 6), while
+e^{c f_J} stays positive; the local scale 1/K_A also fits R* better (L addendum prediction). Margin: E_FN(best Jacobi) <=
+E_FN(best Lanczos) - 1e-6 per site counts as a win; |difference| < 0.5e-6 is a tie. Kill: Lanczos lower by > 0.5e-6.

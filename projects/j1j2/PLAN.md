@@ -162,6 +162,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   Kill of 'the fit's weighting is a lever': drop < 10%. Follow-up readout: Test F splice on the new copies; deep share still ~35%
   -> the network cannot hold deep corrections (capacity, Pfaffian angle); clearly lower -> the fit captured them.
   Budget: <= 4.0 H100-h incl. rate probe, from the 4.5 left. Derivation reviewed by a worker before submission (CLAUDE.md point 6).
+  TEST G AMENDMENT 2026-10-28 (after the derivation review, reviews/2026-10-28_true_EFN_gradient_review.md, before any number):
+  scheme SOUND with conditions (conj gradient for complex parameters, blocked set from s2 only, kept-graph connectivity, float64,
+  scale as pure gauge, cap blocked-bond differences or backtrack). Key point from the review: frozen-chi* L is a majoriser of E_FN
+  (majorise-minimise, monotone), and with enough capacity the scheme converges to the SAME fixed point as the plain amplitude
+  iteration guide <- |chi*| (self-consistent phi*), at its linear rate (~0.926 per solve, cx_s2ceil). So Test G measures how close a
+  3x3 complex network gets to that fixed point. Readout changed to E_FN of the network itself (band-fit copy 1.93e-5 mean; phi_1 as
+  guide 9.85e-6; s2 floor ~0.5-0.9e-6). Prediction restated: E_FN 1.93e-5 -> 1.54-1.74e-5 (tax_0 drop 20-40%); kill < 10%.
+  Caveat from the review: Test E bound shares (additive) vs Test F splice response (non-additive) are not directly comparable.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

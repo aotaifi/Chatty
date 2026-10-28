@@ -367,3 +367,11 @@ deployable sign replaces it. Lead's reframe to the PI (PLAN.md ca56a72): deliver
 (ViT guide 6x6: FN+1 Krylov sign 9.43e-5, FN+1 signed Lanczos 1.89e-5, VMC 1.32e-4). The Jacobi factor f_J and the Lanczos
 factor 1 + alpha (E_L - E) are the same family (local-energy corrections of the amplitude, same two-hop cost class); Jacobi
 is positive, Lanczos can change sign.
+Test L addendum (lead's request; pre-registered 2026-10-28 before any L number). Sign: ORACLE s2 throughout; the table
+compares amplitude parts only (at a deployable sign the Lanczos factor's own sign flips would also matter).
+Extra feature f_L(x) = ln|1 + alpha (E_L(x) - E)|, psi = s2|A_s1|, E = <H>_psi, alpha = argmin of the exact <H> of the hop
+state (as cx_o2b.py hop(), bounded). Fits: L6 = f_L alone; L7 = f_J + f_L. Exact E_FN for A e^{f_J} and A|1 + alpha(E_L - E)|.
+Prediction [derived]: with E_L = H_xx + V_A - K_A (s2 frame), f_J = -ln(1 + (E_L - E')/K_A(x)) ~ -(E_L - E')/K_A(x): the
+same direction as the Lanczos factor but with a configuration-dependent scale 1/K_A(x) instead of a constant alpha.
+K_A varies across configurations, so f_J fits R* better: eps^2(L4) <= eps^2(L6) - 0.1 (absolute). |difference| < 0.05
+counts as no difference; between 0.05 and 0.1 as weak. Kill of this prediction: eps^2(L6) < eps^2(L4) - 0.05.

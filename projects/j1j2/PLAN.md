@@ -70,7 +70,7 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   complex copy sits under the key 'F1B'): complex tax_2 1.244 / 1.070 / 0.925e-6 (mean 1.08e-6) vs real F1 A 1.846e-6: PARTIAL, below
   the round gain 1.629e-6 for the first time, above the gate 0.82e-6. Next (lead): bond split of the complex residual on CPU; 5x5
   complex (2 seeds) only if the residual is capacity-like. Loop C needs the PI (loop closed 10-26).
-  PREDICTION for Test D (lead, 2026-10-28 09:55, written before reading any complex split file; split_s1 already on disk, unread).
+  PREDICTION for Test D (lead, committed cd68f9e 2026-10-28 09:51, written before reading any complex split file; split_s1 already on disk, unread).
   Pair cost of the copy, frozen phi: c_xy = |H_xy| phi(y)^2 (r - r*)^2 / r, r = |A(x)/A(y)|, r* = phi(x)/phi(y).
   Real O2b round_1 split (pfaffian_d/split/split_o2b_round_1.txt): class r < r*/3 = 0.752 of the cost, of which q = 0.424 on pairs
   where sgn A(x)A(y) != s2(x)s2(y) (own-node crossings, q_ownnode.json) -> crossings 0.319 of the total, non-crossing dips 0.433,

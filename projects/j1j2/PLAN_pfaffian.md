@@ -167,6 +167,18 @@ VERDICT: INCONCLUSIVE by the rule; dominant class 1/3-3 (66%, copy within a fact
 met (<1/3 at 20% < 40%); clause 2 as applied (median e_x of the <1/3 class, -1.87) fails |e_x| < 1. The clause did not name
 the class: my error in writing it. Far from RESIDUAL DIPS. Reading: complex parameters removed the deep dips (<1/3 median
 e_x -6.0 -> -1.9, pair cost 5.6x lower); what remains is mostly moderate error spread over ratios 0.01-1.
+Retracted: my "capacity-like" reading names no term (projects/j1j2/CLAUDE.md point 2). Lead's prediction M1 (share 0.52) refuted
+by 0.20; his failed term: frozen-phi bound shares read as true-tax shares (bound/true 17.7 for O2b vs ~6.9 complex).
+Lead 2026-10-28: no 5x5 run (the only number, real 3x3 -> 5x5 = -18%, predicts ~0.89e-6 vs gate 0.82e-6, inside seed
+scatter); keep the 4.5 H100-h.
+
+## Open question (2026-10-28, discussion with the PI, no run): which function class does our problem demand for the copy?
+Board 23: E_FN depends on the copy only through V_A(x) = sum_blocked |H_xy| |A(y)/A(x)|. Board 24: the target is strictly
+positive in the s2 gauge (Perron-Frobenius on the stoquastic, connected s2 H_FN s2; measured: ln phi finite on all 15.8M
+orbits, min -34.5), so the class must be zero-free; a real pair product is not (zeros on a 1-equation set), a complex one
+generically is (2 equations). Needed next, with the PI: the physics of the remaining moderate error (where s2's blocked
+bonds sit; which configurations), and which zero-free class gets r within a factor 3 at r* 0.01-1, with a mechanism.
+Tried and failed, do not re-propose without a new term: learned bond field (E9, C16: plateau 1.92e-5, non-local).
 
 ## Dead ends
 none yet

@@ -141,6 +141,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   ~0.21-0.26 (estimated from records). Caveat: shares are of the frozen-phi bound, which over-counts deep regions; the true share of
   the unsampled region is not measured. Next (proposed, CPU): splice exact values (e = 0) into the configurations below 1e-13 and
   re-solve E_FN exactly: the true cost of that region.
+  TEST F (splice, CPU; pre-registered by the lead 2026-10-28 before any number): true cost of the deep region. For each complex copy
+  (seeds 1-3) set e = 0 (|A| = phi up to the offset) on (A) configurations with phi^2 < 1e-13 (never drawn by the fit) and (B) phi^2
+  < 1e-11 (bands -12, -13 and below); re-solve E_FN exactly with sign s2 (same solver as split_*.json E_FN_copy). Reading: the
+  drop of the copy loss tax_0 (0.94e-5 mean). Prediction (lead): A removes 10-25% of tax_0 (the bound says 16-30%, and it over-
+  counts deep regions); B removes 35-60%. Kill of 'the untrained region matters': A < 5%.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

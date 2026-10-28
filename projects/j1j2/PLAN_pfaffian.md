@@ -250,3 +250,4 @@ and the fit's train / held-out orbit masks (cx_lib Lab.HO; trained decades -5..-
   systematic, from the objective or the class); held-out more negative by > 0.05 = memorisation.
 The separating test (class's best fit on the true E_FN over all configurations) is the lead's Test G, if it covers the
 full space; two seeds agreeing needed before calling its residual the expressibility floor.
+Lead 2026-10-28: Test G covers the full space (exact sums or x ~ n chi*^2 over all 15.8M orbits); its residual counts as the expressibility floor only if E_FN is flat to < 1e-8/site over 3 re-solves and two seeds from different warm starts agree.

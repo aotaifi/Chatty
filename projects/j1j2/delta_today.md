@@ -338,3 +338,4 @@
 - 2026-10-28 Test G rate probe submitted: Paderborn job 4049890 (g1_probe, gpu_h100, 00:18:00, cx_g1fit.py probe mode), local /scratch/a/A.Otaifi/ansatz_runs/pfaffian_g/runs/g1_probe; watcher pid 3094193 (g1_pdb_watch.sh). Kept-graph connectivity of H_FN(s2): 1 component (pfaffian_g/conn.json).
 - 2026-10-28 Pfaffian M-J split (ws1 CPU): deep copy error is local (rho), copy too small by e^-0.13..e^-0.28 below phi^2 1e-11, neighbours right ((I)~1e-3); s_II 0.99 vs predicted 0.5-0.8.
 - 2026-10-28 16:4x takeover: M-J verified (s_II 0.985/0.987/0.989 below 1e-11); angle's CPU steps (Jacobi step, per-decade offset) approved; no GPU for the angle until the PI is back.
+- 2026-10-28 Test G design (angle's question, expressibility vs learnability): L_chi* over ALL orbits (full sums or x ~ n chi*^2), not the band sampler; residual counts as the class floor only if converged by its stop rule and 2 seeds agree.

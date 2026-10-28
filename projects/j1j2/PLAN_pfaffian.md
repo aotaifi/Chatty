@@ -359,3 +359,11 @@ uses the same two sums. So one Jacobi factor adds no cost class beyond the on-th
 to both). k > 1 rounds nest (~400^k at 14x14) and are out. One round reaches at most one exact round's gain: from phi_1
 21% of the excess (lead, delta0), so (a) alone does not reach the s2 floor; further rounds need (b) folding, i.e. the
 copy problem again for ln(phi/A_0). A pass of L is therefore a method for one round and a diagnosis beyond it.
+CORRECTION (lead 2026-10-28, verified by him; Astra flagged it): "s2" in every stage-1 table is NOT two Krylov steps; it is
+s1 flipped on the FN expelled set X from an exact FN solve (experiments/compress_6x6/cx_refresh.py l.48): an ORACLE sign.
+All results of this angle (q, C, T2, D, M-J, M-R, J, L) are for an oracle sign. My cost argument "one Jacobi factor fused
+with the Krylov sign" holds for a deployable on-the-fly Krylov sign, not for this s2; its cost class is that of whatever
+deployable sign replaces it. Lead's reframe to the PI (PLAN.md ca56a72): deliverable = network + one Lanczos step + FN
+(ViT guide 6x6: FN+1 Krylov sign 9.43e-5, FN+1 signed Lanczos 1.89e-5, VMC 1.32e-4). The Jacobi factor f_J and the Lanczos
+factor 1 + alpha (E_L - E) are the same family (local-energy corrections of the amplitude, same two-hop cost class); Jacobi
+is positive, Lanczos can change sign.

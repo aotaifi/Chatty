@@ -301,3 +301,23 @@ E_FN[A_T]| per site vs test C seed 1's tax_0 1.107e-5; deep-band e statistics.
 separate C_phi fit with pair sampling proportional to |H| phi_x phi_y would add ~1-1.5 H100-h. Prediction if run:
 tax_0 6-7.5e-6 from s3's 7.86e-6 (20-40% cut, as Astra); refutes a floor near today's value only if tax_0 < 2e-6 and
 C_phi down 10x. Recommendation: do not fund (b) separately; read Test G with this criterion.
+
+## Bar (lead, 2026-10-28, pfaffian_g/delta0/delta0.json, exact): one exact amplitude round gains 7.82e-6/site from the
+complex copy s1 and only 2.09e-6 from phi_1; near the fixed point a useful copy must lose < ~1e-6 per round, 10x below
+today's tax_0 0.94e-5. A 2x improvement of the absolute copy is not enough.
+
+## Proposal M-R: store the round's correction, not the amplitude (2026-10-28, board 15; not run; my confidence ~60%)
+|A_{k+1}| = |A_k| e^{R_theta}, target R* = ln(phi_k/|A_k|). Storing nothing (R = 0) loses exactly the round's gain;
+in the quadratic regime with an error shaped like R*, tax/gain ~ eps^2, eps = relative error of the stored correction.
+The bar needs eps < 0.7 (tax < 1e-6 at gain 2.09e-6); the absolute copy instead needs ~10x lower absolute error.
+Records: B22 (residual re-base, old pipeline with one-hop features) kept 85% of the table loop's gain at it 6-8 (eps ~0.39);
+it was set aside only because it lost to equal-hop Lanczos, a comparison the agreed pipeline (no Lanczos) no longer makes.
+B10 (factorised residual a_k exp(r), exact 4x4) 99.7%. Risks: chain depth grows by one net per round (C16: constant-cost
+re-basing failed); at scale R* must come from walkers (board 11).
+Test (CPU, free): R* = ln(FN(A_s1)/|A_s1|) from delta0's exact FN state; fit a small symmetric positive residual (RBM-type,
+~1-2k parameters) with the same sampled GN; readouts: tax = E_FN[A_s1 e^R] - E_FN[FN(A_s1)], gain 7.82e-6, and
+eps_C^2 = C_phi(e)/C_phi(R*).
+- Prediction: tax <= 0.3 x gain (<= 2.3e-6), and tax/gain = eps_C^2 within a factor 2.
+- Kill: tax >= 0.7 x gain, or the quadratic law off by > 3x.
+Decision (mine, PI gave me the final say): this addresses the 10x bar directly and is CPU-only; it goes before the GPU
+teacher-student test, which can only explain a 2x-scale error. Teacher-student stays pre-registered, not requested.

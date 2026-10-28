@@ -329,3 +329,26 @@ M-R additions (lead 2026-10-28, pre-registered before any M-R number):
   36 x 16 ~ 3e5 flops per amplitude vs the PP base 576 dets of 18x18 ~ 3.4e6, so ~10 stacked residuals (~10 rounds at
   21% of the excess per round, lead's number) cost ~1 base evaluation: chain doubles the cost, does not change its class.
   (b) folding (one net for ln(phi/A_0)) is not tested now; its readout would be fit quality of ln(phi/A_0) vs ln phi at equal capacity.
+
+## Result M-R (2026-10-28, ws1 CPU 1.9 h, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_mr/mr_result.json; verified by the angle lead)
+Controls: E_FN[A_s1], E_FN[phi'] reproduce delta0 (rel 0, 7.5e-12); gain 7.825e-6; R = 0 -> tax/gain 1.000; R = R* -> 0;
+R = -R* -> 2.509. R* is small: rms bond difference 0.0107; D(R*,R*) = 1.76e-4 = C(R=0) (deep in the quadratic regime).
+| alpha | params | steps | tax/gain | eps_C^2 | ratio | eps_par | perp_share |
+| 4 | 148 | 100 | 0.954 | 0.948 | 1.007 | 0.941 | 0.061 |
+| 16 | 592 | 100 | 0.941 | 0.930 | 1.011 | 0.928 | 0.069 |
+VERDICT: KILL by the registered rule (tax >= 0.7 x gain); the quadratic law holds (ratio 1.01). The stored R is ~6-7%
+of R* (eps_par 0.93-0.94); the fits stopped at the flat rule while still creeping (LM at minimum damping, ~1%/step).
+Per projects/j1j2/CLAUDE.md point 2, "optimiser stalled" is not a cause. Candidate term [derived, to test]: at small
+weights an RBM residual is sum ln cosh(b + W z) ~ const + quadratic in z, i.e. a symmetric 2-body Jastrow; if R* has
+only a small projection on 2-body functions, the RBM is stuck there by expressibility, not by the optimiser.
+What R* should be [derived from board 14, first order in R*]: R*(x) ~ f_J(x) = ln[ sum_kept |H_xz||A(z)| /
+((H_xx + V_A(x) - E') |A(x)|) ], the one-Jacobi-step factor of the copy itself (E' = E_FN[A]), a local-energy-type
+quantity of A, not a 2-body function of the spins. Test J arm (b) (running) is exactly A e^{f_J}.
+
+## Test L (pre-registered 2026-10-28 before any number; CPU): what function class is R*? Convex, no optimiser.
+Exact D-norm least squares of R* on nested feature sets (all symmetric, per orbit rep), eps^2 = D(e,e)/D(R*,R*) at the
+optimal coefficients (normal equations with D computed over all blocked pairs):
+ L1: 2-body z_i z_j summed per symmetry class of displacement (9 classes);  L2: L1 + n_blocked J1, n_blocked J2 (from s2);
+ L3: L2 + H_xx;  L4: f_J alone (+ constant);  L5: L3 + f_J.
+Predictions: L1 eps^2 >= 0.85 (explains the RBM's 0.93-0.95); L4 eps^2 <= 0.3 (R* is the Jacobi factor);
+L5 <= L4. Kill of "R* = Jacobi factor": L4 eps^2 >= 0.7. For the best set, one exact E_FN: tax/gain ~ eps^2 (within 2x).

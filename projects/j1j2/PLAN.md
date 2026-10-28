@@ -66,6 +66,10 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   at 324 steps, unconverged): ratio ~0.51; one-hop tax 3.75 / 3.23 / 2.85e-6 vs F1 A 5.60e-6. Registered verdict INCONCLUSIVE (real
   arm unconverged, seed scatter 0.088 > 0.05, cut rule unreachable once cut_R > 0.5: rule flaw). Next (lead): tax_2 of the complex
   copies directly; PASS mean <= 0.82e-6, PARTIAL < 1.63e-6, KILL >= 1.63e-6. Real rerun (3.3 H100-h) only if PASS.
+  T2 RESULT 2026-10-28 (Pfaffian angle 1baa881; verified by the lead from pfaffian_c/runs/t2_cplx/s{1,2,3}/cx_h1.json, where the
+  complex copy sits under the key 'F1B'): complex tax_2 1.244 / 1.070 / 0.925e-6 (mean 1.08e-6) vs real F1 A 1.846e-6: PARTIAL, below
+  the round gain 1.629e-6 for the first time, above the gate 0.82e-6. Next (lead): bond split of the complex residual on CPU; 5x5
+  complex (2 seeds) only if the residual is capacity-like. Loop C needs the PI (loop closed 10-26).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   FIRST DISCUSSION of the next lead session (PI, 2026-10-27): how to build a network with NO sign of its own (output strictly
@@ -148,4 +152,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): A Pfaffian copy with complex parameters (no zeros of its own) halves the copy error of the real one at 6x6.
-- NEXT (in progress, high): Measure whether the complex copy is good enough after two Lanczos steps to pass the loop gate.
+- NEXT (in progress, high): The complex copy now costs less than one loop round gains, but not yet half; find where its remaining error sits before adding capacity.

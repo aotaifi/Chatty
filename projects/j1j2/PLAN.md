@@ -246,7 +246,8 @@ PI 2026-10-27 ('go for Paderborn'): test C (complex vs real PP, Pfaffian angle) 
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
-- pfaffian-angle (session local_d60cd248, PLAN_pfaffian.md): owns stage 1; lead holds authority over its decisions (PI 2026-10-27:
+- pfaffian-angle (session local_d60cd248, PLAN_pfaffian.md): the project's NETWORK EXPERT from 2026-10-28 (PI): capacity, shape,
+  function class; open: can complex PP + 3x3 backflow hold the deep corrections (Tests E-G), and if not which network. Owned stage 1; lead holds authority over its decisions (PI 2026-10-27:
   'you are project lead, you decide'). RUNNING: Test D (CPU bond split of the complex copies' residual, rule in PLAN_pfaffian.md);
   it reports to the lead. Budget left 4.5 of 10 H100-h (Paderborn, PI 2026-10-27 'go for Paderborn', test C line only).
 - how-we-work angle (session local_f1c3599f, PLAN_howwework.md once written; PI 2026-10-28): the PI's discussion of method and process

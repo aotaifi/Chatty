@@ -1,5 +1,16 @@
 # PLAN_pfaffian (angle lead "pfaffian angle", started 2026-10-27 by the ansatz angle; PI asked for it)
 
+STEP BACK 2026-10-28 (PI asked; Astra xhigh second opinion running, codex job cj-d28d6046530c):
+1. Verdict: continue, but on the right question: expressibility vs learnability is decided by the lead's full-space
+   Test G (floor) against the current copies; my J/R/M-J tests only describe the error.
+2. Thought that changed it (own guess, unpublished): the deep offset may be one scalar, a miscalibrated power,
+   |A| ~ phi^gamma with gamma slightly > 1 (copy "sharper" than phi), from an objective that fixes e's level per decade
+   while the energy sees only differences across bonds (a Dirichlet form of e). Then e_x - e_y = (gamma-1) ln r* on
+   blocked bonds, and a one-parameter remap |A|^(1/gamma) would remove it. Literature: from memory "Sobolev training"
+   (fit derivatives/differences directly), arXiv id not verified (one search, nothing found).
+3. Cheapest next test: free, from test R's arrays: c-weighted regression of e on ln phi (slope = gamma - 1) and R after
+   removing the linear trend. Prediction: |slope| 0.01-0.05 and detrended R <= 0.3; slope ~ 0 (|slope| < 0.005) kills it.
+
 ## Question
 Board numbering changed 2026-10-28 (version 32): old 23->4, 24->6, 8/18/19->7, 20->11, 21->12; block numbers below
 before this line are the OLD ones (full old board: version 29).

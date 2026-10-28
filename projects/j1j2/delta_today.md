@@ -339,3 +339,4 @@
 - 2026-10-28 Pfaffian M-J split (ws1 CPU): deep copy error is local (rho), copy too small by e^-0.13..e^-0.28 below phi^2 1e-11, neighbours right ((I)~1e-3); s_II 0.99 vs predicted 0.5-0.8.
 - 2026-10-28 16:4x takeover: M-J verified (s_II 0.985/0.987/0.989 below 1e-11); angle's CPU steps (Jacobi step, per-decade offset) approved; no GPU for the angle until the PI is back.
 - 2026-10-28 Test G design (angle's question, expressibility vs learnability): L_chi* over ALL orbits (full sums or x ~ n chi*^2), not the band sampler; residual counts as the class floor only if converged by its stop rule and 2 seeds agree.
+- 2026-10-28 Pfaffian step back (PI): continue; expressibility vs learnability decided by lead's full-space Test G; own guess: copy ~ phi^gamma (gamma > 1), free check from R arrays; Astra xhigh review cj-d28d6046530c running.

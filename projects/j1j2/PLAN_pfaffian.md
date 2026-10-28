@@ -106,11 +106,21 @@ Rate probe job 4040973 done (H100, B 8208, ~0.02 H100-h): real 3.67 s/step, comp
 loss at step 0 real 0.034, complex 0.089. Production launcher ansatz/code/submit_c1_all.sh (-> launch_c1.sh, c1.sbatch,
 c1_pdb_watch.sh) read by the angle lead; sizes proposed real 00:45 (fit cap 1200 s), complex 02:25 (fit cap 7200 s,
 max_steps 1100), worst case 9.5 H100-h; approved by the project lead 2026-10-28.
-RUNNING (submitted 2026-10-28 ~02:50, Paderborn gpu_h100): real s1 4041269, s2 4041272, s3 4041274; complex s1 4041271,
-s2 4041273, s3 4041275. Local dirs /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_{real,cplx}_s{1,2,3}; watchers
-c1_pdb_watch.sh; worker waits for all six, pulls la_table/t_real, runs c1_mech.py. Next per verdict: PASS -> report to the
-lead, design the size-only follow-up (board 21) against complex PP; KILL -> own node is not the lever, report; INCONCLUSIVE
--> state cause (unconverged run, scatter) and the cheapest fix. H100-h used: 0.02 + pending.
+## Result C (2026-10-28; verified by the angle lead from each cx_c1.json and c1_mech_out.json)
+Jobs real 4041269/4041272/4041274, complex 4041271/4041273/4041275; 5.31 H100-h incl. probe (budget 10).
+| arm | steps | converged | tax_0 | one-hop tax |
+| real s1/s2/s3 | 324 each | NO (1200 s cap; held-out change 0.21/0.42/0.035) | 1.90/1.84/1.74e-5 | 6.03/5.69/5.23e-6 |
+| complex s1/s2/s3 | 280/720/710 | yes | 1.107/0.912/0.786e-5 | 3.75/3.23/2.85e-6 |
+| F1 A (start, converged, 1070 steps) | | yes | 1.80e-5 | 5.60e-6 |
+tax_0 ratio complex/real 0.51 (per seed 0.61/0.50/0.43, std 0.088 > 0.05). Every complex seed is below every real seed and F1 A.
+Mechanism (sets from real s1): cut_X 0.973, cut_R 0.832; remaining cost complex/real 0.027 on S_x vs 0.168 on S_rest.
+VERDICT: INCONCLUSIVE by the registered rule (real arm unconverged; seed scatter 0.088 > 0.05; cut_X < 2 cut_R).
+Causes: (1) my sizing: restarting from F1 A re-anneals tau from 0.05, so the real arm drifts instead of settling; (2) the
+cut rule saturates: with cut_R = 0.83, cut_X >= 2 cut_R is unreachable (cut <= 1); on remaining-cost ratios S_x is 6x more
+specific (post hoc, not a registered criterion); (3) S_x from real s1 only, while each real seed's own node moves
+(real C(S_x) 1.15e-2/4.2e-3/2.4e-3), so other seeds' node pairs sit in S_rest.
+Derived, unvalidated: H1 measured tax_2/tax_1 = 0.32 for real PP copies; if it holds for complex, tax_2 ~ 1.0e-6 vs the
+loop gate 0.82e-6 and round gain 1.63e-6 (C8). Not measured.
 
 ## Dead ends
 none yet

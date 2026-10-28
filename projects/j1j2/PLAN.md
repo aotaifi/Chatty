@@ -312,6 +312,14 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Krylov cost at scale: s2 needs neighbours of neighbours (~1e5 evaluations per configuration at 14x14, s1 ~400); choosing T needs
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
+- Sign gap as a size-converging correction (PI + lead 2026-10-29): E0(L) = E_B(L) + N delta(L), E_B = ground energy of the
+  Marshall-gauge sign-free partner (sign-free QMC at any L), delta = (E0 - E_B)/N from exact small clusters. Mechanism:
+  delta(L) = delta_inf + (c0 - c_B)/L^3, finite-size terms cancel if c0 ~ c_B. Data: delta 0.38321 (4x4 ED,
+  /scratch/a/A.Otaifi/ansatz_runs/deff/ed4.json), 0.385 (6x6, TRIED E10, 3 digits) vs E0 change 2.5e-2 => c0 - c_B ~ -0.16,
+  predicted delta(8x8) ~ 0.3854, delta_inf ~ 0.3858. Term that breaks it: partner is easy-plane Neel, J1-J2 at 0.5 likely
+  non-magnetic, so c0 - c_B need not be small at larger L. Lead ~20%. Kill test (positive control J2 0.3; fit N <= 32, predict
+  36/40 within 1e-4; beat direct E0 extrapolation 5x; 8x8 below FN bound -0.498946 and within 2e-4 of DMRG; 10x10 vs best
+  published NQS). PI asked to run it; proposed as an angle (independent of the storage question).
 
 ## Running
 - Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.

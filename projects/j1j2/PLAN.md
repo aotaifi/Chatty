@@ -85,6 +85,16 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   a share <= 0.40 refutes M1 too (the bulk class would have shrunk, which M1 says it does not).
   Caveats: shares come from the frozen-phi bound formula (17.7x loose in total); q and the split are for O2b round_1, the ratio
   is vs F1 A (O2b trained 13x longer, -6%); Test D splits tax_0, the open number is tax_2 (tax_2/tax_0 0.116 complex, 0.103 real).
+  TEST D RESULT 2026-10-28 (Pfaffian angle 000fd73; verified by the lead from pfaffian_d/split/split_s{1,2,3}.{txt,json}):
+  class r < r_true/3 = 17.8 / 19.6 / 23.1% of the complex copies' cost (mean 20%; O2b 75%), class 1/3-3 = 68 / 66 / 63%.
+  MY PREDICTION (M1, 0.52) IS REFUTED (rule: <= 0.40 refutes); M2 (0.75) too. Failed term: I used shares of the frozen-phi
+  bound c_xy as shares of the true tax. The bound over-weights deep dips (c ~ r_true^2/r as r -> 0, unbounded) while the true
+  E_FN loss saturates (a dip only raises the wall |H_xy|/r at x): bound/true = 17.7 for O2b (dip-dominated), 6.05/6.87/7.81 for
+  the complex copies (split_*.json ratio_cost_over_dE). So the dips were a smaller part of the real tax than 75%, and removing
+  them took ~half the tax, not a quarter. Open: a saturating cost formula (true dE per pair) before any further split-based prediction.
+  5x5 complex NOT run (lead): the only number we have is the real 3x3 -> 5x5 gain (F1 A -> F1 B one-hop tax -18%), which
+  predicts complex tax_2 ~0.89e-6 vs gate 0.82e-6, a gap below one seed's scatter (~0.1e-6): two seeds could not decide.
+  Budget 4.5 H100-h kept. Stage 1 continues as the ansatz-choice question (Pfaffian angle with the PI, msg f71485ee).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

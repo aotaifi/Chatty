@@ -102,7 +102,7 @@ Jacobian vs finite differences 2.2e-7 relative; dry fits exit 0 (peak 13.7 / 19.
 (held-out loss 8.7e-2 vs 1.2e-2 real), so the complex arm starts higher and must recover; sigma kept as registered.
 
 ## Running
-Paderborn rate probe (worker); no production job yet. H100-h used: 0.
+Paderborn rate probe job 4040973 (submitted 2026-10-28 00:40, both arms, 3 steps, <= 45 min; run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_probe; watcher c1_pdb_watch.sh). No production job yet. H100-h used: probe only (pending).
 
 ## Dead ends
 none yet

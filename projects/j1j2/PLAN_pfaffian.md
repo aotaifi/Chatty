@@ -279,3 +279,25 @@ Expressibility failure can only be certified by a lower bound over the class; no
 Class suggestion: positive guide-relative Jastrow A = g exp(R_theta) (factorised residual, B10/B11 exist), O(NM) per
 amplitude; a Jacobi layer is O(N^2) per walker step. Refs (Astra [Checked], not read by me): Gispen-Lamacraft
 arXiv:2012.07063 (same log eigen-equation), Carleo-Troyer arXiv:1606.02318.
+Concessions accepted by the lead 2026-10-28.
+
+## Separator tests (pre-registered 2026-10-28 before any number; GPU waits for the PI, lead puts it to him at 19:30)
+(a) TEACHER-STUDENT (learnability). Teacher: the complex copy s3's own table A_T (pfaffian_c/runs/c1_cplx_s3/round_1/
+la_table.npy), exactly representable by this class (theta_T exists), same dynamic range as phi (it copies phi).
+Student: identical to test C complex seed 1 (cx_c1fit, band sampler, log loss, F1 A real theta + Im 0.01, flatness rule,
+max_steps 1100), target A_T instead of phi; sign s2 for both.
+Readout: C_T = frozen-target pair cost of the student against A_T (bond_split cost_pass with A_T as target), compared
+with C_phi of test C seed 1 against phi (6.70e-5/site, Test D); ratio rho_a = C_T / C_phi. Secondary: |E_FN[student] -
+E_FN[A_T]| per site vs test C seed 1's tax_0 1.107e-5; deep-band e statistics.
+- Learnability dominant: rho_a >= 0.5 (training cannot reproduce even an expressible target of this shape).
+- Target-specific / expressibility: rho_a <= 0.1 (training reproduces an expressible target; phi's error is phi's).
+- Between: mixed.  My prediction: rho_a = 0.4 (0.2-0.7). Kill of the learnability lean: rho_a <= 0.1.
+- Caveat written now: student and teacher share the F1 A parent, so the test is generous to training; a failure to
+  recover is strong evidence, a success is weak. Second-basin variant (if funded): student from the plain PP
+  (rpT1 f, u = 0) + Im 0.01.
+- Cost (measured, test C complex: 6.68 s/step on H100, 280-720 steps, 41-91 min wall incl. table and E_FN): <= 1.5
+  H100-h for one seed; a second seed only if rho_a lands within 1.5x of 0.1 or 0.5.
+(b) CONSTRUCTIVE WITNESS (Astra): mostly covered by the lead's full-space Test G (same class, true E_FN, all edges); a
+separate C_phi fit with pair sampling proportional to |H| phi_x phi_y would add ~1-1.5 H100-h. Prediction if run:
+tax_0 6-7.5e-6 from s3's 7.86e-6 (20-40% cut, as Astra); refutes a floor near today's value only if tax_0 < 2e-6 and
+C_phi down 10x. Recommendation: do not fund (b) separately; read Test G with this criterion.

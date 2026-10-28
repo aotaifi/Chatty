@@ -242,3 +242,11 @@ R (offset test): m_d = c-weighted mean of rho_A in phi^2 decade d (diagnostic, u
 sum_deep c e^2 over phi^2 < 1e-11. Prediction R <= 0.3 (deep error = smooth depth offset). Broken control: m_d with the
 decade labels randomly permuted, R_broken must be >= 0.8. If R <= 0.3: the network needs its depth as input, e.g. a
 monotone remap of its own output, A'' = A exp(h(ln|A|)).
+R addendum (pre-registered 2026-10-28 before R's numbers; PI asked: expressibility or learnability?): from m_d per decade
+and the fit's train / held-out orbit masks (cx_lib Lab.HO; trained decades -5..-13):
+- coverage (learnability) predicts |m_d| for d <= -14 (never sampled) >= 2 x |m_d| for -13 <= d <= -9 (sampled);
+  a ratio < 1.3 (flat across the training edge) says the offset is not caused by missing samples.
+- within sampled decades, mean rho on held-out orbits vs trained orbits: equal within 0.02 = no overfitting (the offset is
+  systematic, from the objective or the class); held-out more negative by > 0.05 = memorisation.
+The separating test (class's best fit on the true E_FN over all configurations) is the lead's Test G, if it covers the
+full space; two seeds agreeing needed before calling its residual the expressibility floor.

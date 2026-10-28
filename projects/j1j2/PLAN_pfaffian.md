@@ -411,3 +411,9 @@ Prediction [derived]: Jacobi wins. Both factors agree to first order (f_J ~ -(E_
 |1 + alpha (E_L - E)| vanishes where E_L - E = -1/alpha, i.e. it creates zeros of its own at long steps (board 6), while
 e^{c f_J} stays positive; the local scale 1/K_A also fits R* better (L addendum prediction). Margin: E_FN(best Jacobi) <=
 E_FN(best Lanczos) - 1e-6 per site counts as a win; |difference| < 0.5e-6 is a tie. Kill: Lanczos lower by > 0.5e-6.
+Result c* extension (2026-10-28, m53 12 min, pfaffian_c_star/ext/cstar.json; ORACLE s2; verified): interior minimum
+c* = 3.92, E_FN - E0 = 8.026e-6/site (c 4: 8.031e-6; 6: 1.156e-5; 8: 2.158e-5; 10: 3.816e-5). <H> 1.131e-5 at c*.
+Large factors (c*|f_J| > 5) on 6e-5 of orbits, 1e-11 of psi^2: no dominance by a few configurations.
+VERDICT by the rule: c* in 3-6 MET; E_FN 4-7e-6 MISSED; kill "> 8e-6" FIRES by 0.3% (8.026e-6). So "one fused factor
+reaches far" is killed as registered. What it does reach: from 2.092e-5 to 0.803e-5, 64% of the way to the s2 floor
+(~0.9e-6), vs 37% for one exact FN round from the same copy (1.310e-5): about 1.7 rounds' worth, not the 10 rounds needed.

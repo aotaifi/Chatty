@@ -179,6 +179,12 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   (angle, d25fbae, ansatz/REVIEW_astra_pfaffian_2026-10-28.md): expressibility vs learnability unresolved; G success = reducible in
   the class, G failure = no floor (both seeds share the F1 A real parent). Separator (teacher-student + constructive witness,
   ~1.5-2 H100-h) awaits the PI's GPU go.
+  TEST G AMENDMENT 2 2026-10-28 (lead, after Astra xhigh, codex job cj-34203b7a8e09; lead's prior confidence in G ~65%): G becomes
+  a single-seed GATE, <= 0.75 H100-h: one frozen-chi* block from c1_cplx_s1. Readout per round k: Delta_k = E_FN[A_k] - E_FN[chi_k]
+  (exact one-round opportunity, chi_k = FN[A_k] as guide) and tau_k = E_FN[A_{k+1}] - E_FN[chi_k] (storage penalty); realised gain
+  = Delta_k - tau_k. Continue (fund more rounds / a second seed) only if tau_0 <= 0.5 Delta_0; capture < 10% -> stop and diagnose.
+  Reasons: a full G costs ~4.4 H100-h per seed in tables alone (532.6 s per table, 0.926 per solve); the teacher-student test T
+  reuses the band sampler and a shared parent and decides neither branch (deferred). T and any budget increase stay with the PI.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

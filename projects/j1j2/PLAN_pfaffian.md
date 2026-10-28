@@ -417,3 +417,11 @@ Large factors (c*|f_J| > 5) on 6e-5 of orbits, 1e-11 of psi^2: no dominance by a
 VERDICT by the rule: c* in 3-6 MET; E_FN 4-7e-6 MISSED; kill "> 8e-6" FIRES by 0.3% (8.026e-6). So "one fused factor
 reaches far" is killed as registered. What it does reach: from 2.092e-5 to 0.803e-5, 64% of the way to the s2 floor
 (~0.9e-6), vs 37% for one exact FN round from the same copy (1.310e-5): about 1.7 rounds' worth, not the 10 rounds needed.
+Result S (2026-10-28, ws1 m42 22 min, pfaffian_s/cstar_lanczos.json + extra/; ORACLE s2; verified): scanned Lanczos factor
+A_s1|1 + alpha(E_L - E)|: alpha* = -0.10 (moment formula -0.098 agrees), E_FN - E0 = 8.683e-6/site (alpha -0.08: 9.08e-6,
+-0.12: 9.00e-6, -0.2: 1.68e-5, -0.6: 1.84e-4). 150-190k orbits have |factor| < 0.05 (own near-zeros), yet it works.
+Best Jacobi 8.026e-6 vs best Lanczos 8.683e-6: Jacobi lower by 0.66e-6 (8%). VERDICT: between "tie" (< 0.5e-6) and
+"win" (>= 1e-6): weak Jacobi advantage, as registered; not a kill.
+Reading: at the oracle sign, the amplitude part of the reframe (network + one Lanczos step + FN) is within 8% of the best
+single local-energy factor we found; its moment alpha is already the E_FN-optimal step. One local factor of either kind
+is worth ~1.7 exact FN rounds from this copy, not the ~10 to the s2 floor.

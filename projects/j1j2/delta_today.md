@@ -321,3 +321,4 @@
 2026-10-28 07:28 VERDICT job 4042525: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/t2_cplx/ANALYSIS.md]
 - 2026-10-28 Pfaffian T2 (job 4042525, 0.19 H100-h): complex PP copies tax_2 mean 1.080e-6 (seeds 1.244/1.070/0.925e-6) vs real F1 A 1.846e-6; PARTIAL (below round gain 1.629e-6, above gate 0.82e-6). H100-h total 5.50/10.
 - 2026-10-28 T2 (Pfaffian angle 1baa881; verified by the lead): complex tax_2 1.244/1.070/0.925e-6 vs real F1A 1.846e-6, PARTIAL (below round gain 1.629e-6, above gate 0.82e-6); 5.50 of 10 H100-h. Lead: bond split of complex residual (CPU) before any 5x5 run; JSON key 'F1B' = complex copy, README asked.
+- 2026-10-28 migrate (lead): no jobs of the lead; Pfaffian angle running Test D on CPU; PLAN.md Angles + roadmap updated.

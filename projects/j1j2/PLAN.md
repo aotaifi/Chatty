@@ -72,8 +72,7 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   complex (2 seeds) only if the residual is capacity-like. Loop C needs the PI (loop closed 10-26).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
-  FIRST DISCUSSION of the next lead session (PI, 2026-10-27): how to build a network with NO sign of its own (output strictly
-  positive, sign only from Krylov), so the log loss never meets a zero of the network itself.
+  (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
   Then design the amplitude network WITHOUT a node of its own: s2 * e^J, possibly with s2's node bonds at x as inputs (node-bond inputs untried).
   > Lead 2026-10-27 (records + code): a node-free copy EXISTS: the 6x6 ViT refit to phi*(s_2) (refresh_17409419, compress_6x6 README
   'Amplitude refresh') has complex log-psi output (vit_dt.py l.151), so |psi| has no generic zeros; E_FN 9.16e-5 vs O2b real-PP copy
@@ -127,11 +126,10 @@ PI 2026-10-27 ('go for Paderborn'): test C (complex vs real PP, Pfaffian angle) 
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
-- ansatz-pioneer (ansatz angle, session Ansatz-angle): CLOSED 2026-10-27 (its own report): the J2-undone pre-image passes the loop gate only with exact stored
-  magnitudes (tax 2.4e-8); a baseline-size network fails by 4.5x (2.58e-5 / 7.4e-6). PLAN_ansatz.md holds the record.
-- pfaffian-angle (PLAN_pfaffian.md, opened 2026-10-27 by the PI): owns stage 1. Lead decision 2026-10-27 (PI: 'you decide'): run the q check now; if q >= 0.5, it pre-registers and runs complex vs real PP copy (kill: complex tax_0 > 0.5x real); if q <= 0.1, drop own-node and complex routes.
-- ansatz angle: told to close 2026-10-27 (T-Lfix recorded in STORAGE_PROBLEM.md; 6x6 not submitted).
-- conceptual (PLAN_conceptual.md): waiting for the PI's go on the hop-sign check.
+- pfaffian-angle (session local_d60cd248, PLAN_pfaffian.md): owns stage 1; lead holds authority over its decisions (PI 2026-10-27:
+  'you are project lead, you decide'). RUNNING: Test D (CPU bond split of the complex copies' residual, rule in PLAN_pfaffian.md);
+  it reports to the lead. Budget left 4.5 of 10 H100-h (Paderborn, PI 2026-10-27 'go for Paderborn', test C line only).
+- ansatz angle (session local_5c701cde): CLOSED 2026-10-27 (no jobs); session can be archived. conceptual: archived.
 
 ## Dead ends (number, run)
 - Training the guide on its lattice FN energy (sampled mixed HF force + QGT, 8x8, 2026-10-02): physical E_FN worse by +0.046 total

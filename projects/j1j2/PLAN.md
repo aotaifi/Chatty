@@ -61,6 +61,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   'frozen at warm start' derivation is WRONG as worded: O2b's sign differs from the plain PP at 47% of the costly small sides.
   Lead decision: complex vs real PP copy, pass tax_0 <= 0.75x AND S_x cut >= 2x S_rest cut; kill >= 0.95x or S_x cut <= S_rest;
   3 seeds, both converged, <= 6 A40-h (PLAN_pfaffian.md).
+  TEST C RESULT 2026-10-28 (Pfaffian angle 332186c; 5.31 H100-h; verified by the lead from pfaffian_c/runs/c1_*/cx_c1.json):
+  complex PP copy tax_0 1.107 / 0.912 / 0.786e-5 (converged, 3 seeds) vs converged real F1 A 1.80e-5 (real reruns 1.74-1.90e-5, capped
+  at 324 steps, unconverged): ratio ~0.51; one-hop tax 3.75 / 3.23 / 2.85e-6 vs F1 A 5.60e-6. Registered verdict INCONCLUSIVE (real
+  arm unconverged, seed scatter 0.088 > 0.05, cut rule unreachable once cut_R > 0.5: rule flaw). Next (lead): tax_2 of the complex
+  copies directly; PASS mean <= 0.82e-6, PARTIAL < 1.63e-6, KILL >= 1.63e-6. Real rerun (3.3 H100-h) only if PASS.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   FIRST DISCUSSION of the next lead session (PI, 2026-10-27): how to build a network with NO sign of its own (output strictly
@@ -142,5 +147,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): Back to basics: the next question is which network copies the fixed-node state's amplitude; current evidence points to spurious zeros from the network's own sign.
-- NEXT (open, high): A check on data we already have (minutes of CPU) tests whether those zeros come from the network's own sign; waits for the PI's go.
+- STATUS (in progress, high): A Pfaffian copy with complex parameters (no zeros of its own) halves the copy error of the real one at 6x6.
+- NEXT (in progress, high): Measure whether the complex copy is good enough after two Lanczos steps to pass the loop gate.

@@ -306,3 +306,5 @@
 - 2026-10-27 q test (Pfaffian angle, 60a0bc2; verified by the lead from pfaffian_q/q_ownnode.json): q 0.424(7) vs control 0.069(4), INCONCLUSIVE by rule; own node ~42% of the costly pair cost. Lead: go for complex vs real PP copy with a capacity-proof mechanism readout (S_x vs S_rest), <= 6 A40-h.
 - 2026-10-27 test C (complex vs real PP, a2ceb91): 6 A40-h cannot hold it (fp64 A40 ~8x slower than H100: 30 vs 3.66 s/step); angle estimates 5-8 H100-h for 3+3 seeds. Lead asked the PI for <= 10 H100-h on Paderborn (re-opened only for LP); CPU build proceeds meanwhile.
 - 2026-10-27 PI approved Paderborn for test C ('go for Paderborn'): <= 10 H100-h; forwarded to the Pfaffian angle; lead reads the launcher before the full submission.
+2026-10-28 02:44 VERDICT job 4040973: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_probe/ANALYSIS.md]
+- 2026-10-28 Pfaffian test C rate probe 4040973 (H100, 0.02 H100-h): real 3.67 s/step, complex 6.68 (ratio 1.82). Production launcher submit_c1_all.sh sent to the project lead for reading.

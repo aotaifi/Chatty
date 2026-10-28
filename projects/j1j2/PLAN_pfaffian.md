@@ -102,7 +102,10 @@ Jacobian vs finite differences 2.2e-7 relative; dry fits exit 0 (peak 13.7 / 19.
 (held-out loss 8.7e-2 vs 1.2e-2 real), so the complex arm starts higher and must recover; sigma kept as registered.
 
 ## Running
-Paderborn rate probe job 4040973 (submitted 2026-10-28 00:40, both arms, 3 steps, <= 45 min; run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/c1_probe; watcher c1_pdb_watch.sh). No production job yet. H100-h used: probe only (pending).
+Rate probe job 4040973 done (H100, B 8208, ~0.02 H100-h): real 3.67 s/step, complex 6.68 s/step (ratio 1.82); held-out
+loss at step 0 real 0.034, complex 0.089. Production launcher ansatz/code/submit_c1_all.sh (-> launch_c1.sh, c1.sbatch,
+c1_pdb_watch.sh) read by the angle lead; sizes proposed real 00:45 (fit cap 1200 s), complex 02:25 (fit cap 7200 s,
+max_steps 1100), worst case 9.5 H100-h; waiting for the project lead's read. H100-h used: 0.02.
 
 ## Dead ends
 none yet

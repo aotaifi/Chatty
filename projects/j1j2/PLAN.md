@@ -146,6 +146,12 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   < 1e-11 (bands -12, -13 and below); re-solve E_FN exactly with sign s2 (same solver as split_*.json E_FN_copy). Reading: the
   drop of the copy loss tax_0 (0.94e-5 mean). Prediction (lead): A removes 10-25% of tax_0 (the bound says 16-30%, and it over-
   counts deep regions); B removes 35-60%. Kill of 'the untrained region matters': A < 5%.
+  TEST F RESULT 2026-10-28 (worker; read by the lead from pfaffian_f/test_f.log; controls reproduce split_s*.json E_FN exactly):
+  exact values spliced into (A) phi^2 < 1e-13 remove 10.3 / 10.7 / 10.8% of tax_0 (mean 10.6%), (B) phi^2 < 1e-11 remove 36.5 /
+  34.9 / 33.7% (mean 35.0%); random bulk splice of A's size removes 0.002% (seed 1). Both inside the prediction (low ends).
+  Reading: the fit's deep-band weighting explains at most ~1/3 of the copy loss; ~2/3 sits in phi^2 >= 1e-11, where the fit's
+  weight is already >= the cost share (Test E). Scale: tax_0 0.94e-5 is about the whole gap of phi_1 above the s2 floor
+  (9.85e-6 - ~0.9e-6 = 8.9e-6), so the copy must improve several-fold, not 1.5x, for the amplitude loop to gain.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -207,6 +213,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   r < r*/3 75% -> 20%, copy loss 1.80e-5 -> 0.94e-5 (pfaffian_c, pfaffian_d).
 - The copy fit (cx_c1fit.py) draws equal numbers per phi^2 decade -5..-13 (our own design, T1s 2026-10-21) and never draws x below
   1e-13 (67.6% of configurations); it also penalises e_x^2, which the energy does not see (board 8; Test E).
+- Exact values in phi^2 < 1e-11 remove 35% of the complex copy's loss, below 1e-13 11% (Test F, pfaffian_f): the deep bands
+  matter but two thirds of the loss sits in the bulk, where the fit already weights enough.
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

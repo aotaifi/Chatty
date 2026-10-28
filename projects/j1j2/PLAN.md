@@ -204,6 +204,19 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
      near a stationary point).
   3. Cheapest next test: none on GPU. CPU, existing nets: E_FN[s_k|A_VMC|] for k = 0,1,2 vs E_var of the same VMC net at 6x6
      (the add-on value the Goal names), ~1 h CPU, partly in the records. Astra consulted on the reframe (rule 8).
+  ASTRA ON THE REFRAME 2026-10-28 (cj-e4f141f630b1; load-bearing items re-read by the lead):
+  - Fixed-class bound correct (as an infimum): no fixed-class loop ends below inf_theta E_FN[s2|A_theta|]; the true-energy store
+    makes the loop an optimiser for it (MM), not a route beyond it. 'Only a growing store beats it' is too strong (any change of
+    class, e.g. a fixed-depth correction, also escapes).
+  - LABEL ERROR (verified, experiments/compress_6x6/cx_refresh.py l.48): the 's2' used in all stage-1 tests is s1 flipped on the
+    FN expelled set X (an oracle flip from an exact FN solve), NOT two Krylov steps. Every 'Krylov sign s2' in this plan, on the
+    board and in today's explanations to the PI means this oracle sign. Deployable claims must exclude it.
+  - Existing data (verified, results/lanczos_baseline_6x6/lanczos_baseline_6x6.json, ViT guide psi_P, per site): VMC 1.319e-4;
+    FN with own sign 1.018e-4; FN with one Krylov sign step 9.43e-5 (-7%); FN with one signed Lanczos step 1.887e-5 (5.4x lower
+    than one Krylov step). One Lanczos step costs one neighbour sum per configuration (as a Krylov step) when alpha is chosen by
+    a scan like T; the amplitude change, not the sign, carries most of the gain.
+  Lead's proposal to the PI (not acted on): the Goal's deliverable is network + one signed Lanczos step + FN as an add-on; stage 1
+  (storage) becomes optional; the Krylov-only restriction of 2026-10-28 costs ~5x at 6x6 on this evidence.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -318,5 +331,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): Complex network parameters remove the near-zero copy errors and halve the copy's energy loss at 6x6.
-- NEXT (open, high): Agree with the PI on the exact pipeline (Krylov sign, network amplitude, fixed node, fit from walkers) before judging whether the copy is good enough.
+- STATUS (in progress, high): Storing the fixed-node state in a fixed network cannot beat that network's best fixed-node guide, and the sign used in the storage tests was an oracle, not a Krylov sign.
+- NEXT (open, high): PI to decide whether the deliverable becomes network + one Lanczos step + fixed node as an add-on (5x better than the Krylov sign alone at 6x6 in existing data).

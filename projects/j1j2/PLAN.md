@@ -173,6 +173,16 @@ E_FN force/QGT'): exact 4x4 force works; sampled 8x8 force passed its surrogate 
 Lesson: j1j2 records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md and
 delta_today.md; check all before proposing (a tried-ideas index is being built).
 
+## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Sign at scale: the network stores only the amplitude, so round k's Krylov sign needs k layers of neighbours (~400^k network
+  evaluations per configuration at 14x14): a block for a loop that updates the sign. Options: fix the sign at s2 (current design,
+  6x6 cap 0.9e-6), store the sign in a second network (tried: A9/A12/A13 work for the sign when trained on the composite sign with
+  flattened |a|^(2 beta) samples; A8 naive fails, 'self-sealing'; A10 per-step factors fail; energy a tie at 6x6), or cache along
+  walker paths (untried). Lead's view: two networks, to keep the amplitude network free of a node of its own. (PI + lead 2026-10-28)
+- Krylov cost at scale: s2 needs neighbours of neighbours (~1e5 evaluations per configuration at 14x14, s1 ~400); choosing T needs
+  E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
+- Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
+
 ## Running
 - Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
 

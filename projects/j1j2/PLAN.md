@@ -188,5 +188,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): A Pfaffian copy with complex parameters (no zeros of its own) halves the copy error of the real one at 6x6.
-- NEXT (in progress, high): The complex copy now costs less than one loop round gains, but not yet half; find where its remaining error sits before adding capacity.
+- STATUS (in progress, high): A Pfaffian copy with complex parameters removes the false zeros and halves the storage loss, but a loop built on it is predicted to stop near the no-loop result at 6x6.
+- NEXT (open, high): Decide with the PI whether the storage loss must fall another 1.5-2x before the loop is worth running, and which network could do that.

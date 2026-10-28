@@ -120,6 +120,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   competitor. Kill: tax_2 >= 1.63e-6 (no edge at round 1). 2x edge at round 1 needs tax_2 <= 0.66e-6. Cost: one complex copy
   per seed (test C rate ~1.5 H100-h) + T2 readout 0.2: 2 seeds ~3.2 of the 4.5 H100-h left. NOT submitted (takeover: no spend);
   PI decides at the check-in.
+  WITHDRAWN 2026-10-28 12:20 (PI): the loop prediction, its correction and the proposed phi_0 tax run above all used tax_2 (two
+  signed LANCZOS steps on the copy), i.e. the old pipeline. The agreed method (Stage 1/2) is: sign from the Krylov step s2, amplitude
+  from the network, fixed node. Its storage loss is tax_0 = E_FN(s2|copy|) - E_FN(s2|phi_1|): complex 1.107/0.912/0.786e-5 (mean
+  0.94e-5) vs real F1 A 1.80e-5, against the target's own 0.985e-5 (test C). The 6x6 table is a best case: at scale the network must
+  be fitted to H_FN's ground state from walkers (board 14, open). No run proposed until the PI and lead agree on the pipeline.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -201,5 +206,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): A Pfaffian copy with complex parameters halves the storage loss; on paper a loop with it beats the no-loop pipeline by about 1.4x at 6x6.
-- NEXT (open, high): PI to decide whether to measure the complex copy's storage loss on the no-oracle target (about 3 H100-h), which settles whether the loop is worth reopening.
+- STATUS (in progress, high): Complex network parameters remove the near-zero copy errors and halve the copy's energy loss at 6x6.
+- NEXT (open, high): Agree with the PI on the exact pipeline (Krylov sign, network amplitude, fixed node, fit from walkers) before judging whether the copy is good enough.

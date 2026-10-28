@@ -95,6 +95,18 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   5x5 complex NOT run (lead): the only number we have is the real 3x3 -> 5x5 gain (F1 A -> F1 B one-hop tax -18%), which
   predicts complex tax_2 ~0.89e-6 vs gate 0.82e-6, a gap below one seed's scatter (~0.1e-6): two seeds could not decide.
   Budget 4.5 H100-h kept. Stage 1 continues as the ansatz-choice question (Pfaffian angle with the PI, msg f71485ee).
+  LOOP C PREDICTION (lead, takeover 2026-10-28, derivation only, no run; board block 25; under worker review):
+  Map with storage: E_{k+1} = r E_k + T (E = E_FN of the round's target, r = exact two-hop contraction, T = tax_2, constant).
+  T constant per round is MEASURED for the real one-hop loop: O2b rounds 0-4 tax 6.01/5.93/5.69/6.35/5.88e-6 (README
+  compress_6x6 'Results: O2b'); tax_2/tax_1 = 0.32-0.33 for every copy (t2_cplx cx_h1.json). Fixed point E* = T / (1 - r).
+  Complex copies, O2b chain: T = 1.08e-6; r from phi_1: E_FN(K2(phi_1)) / E_FN(phi_1) = 3.24e-6 / 9.85e-6 = 0.33
+  (G-A3 chain: r 0.16 -> 0.49 as E falls; range 0.26-0.5) -> E* = 1.6e-6 (range 1.5-2.2e-6).
+  Rounds: E(phi_2) = 4.32e-6 (already measured: the complex copies' two-hop E_FN, 4.17-4.49e-6), then ~2.5-3.0e-6, ~1.9-2.4e-6.
+  Competitor (no loop, RBM+PP VMC + two signed hops + FN): 1.95e-6 (G-A3 round 0). Prediction: loop C with complex PP+3x3bf
+  copies gains NO accuracy edge at 6x6 (E*/competitor 0.8-1.1). Derived gate (replaces 'half the round gain'): a 2x edge needs
+  E* <= 1e-6, i.e. T <= (1 - r) x 1e-6 = 0.5-0.7e-6, a further 1.5-2x cut of the storage tax.
+  Caveats: competitor and loop are on different chains (RBM+PP own sign vs O2b with the s2 sign); r taken from one target;
+  T assumed to transfer between targets (real copies: 1.66e-6 on the RBM+PP target vs 1.85e-6 on phi_1, so roughly).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

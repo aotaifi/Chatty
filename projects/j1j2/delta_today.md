@@ -334,3 +334,4 @@
 - 2026-10-28 board version 41: new block 10 (fit the true E_FN, Hellmann-Feynman with chi*), old 10-12 -> 11-13; block 9 relabelled as the frozen-phi bound. Block-9 refit NOT submitted: the bound over-weights the deep region (bound share below 1e-11 52-81% vs true 35%, Tests E/F).
 - 2026-10-28 Pfaffian angle proposed mechanism M-J (board 14; PLAN_pfaffian.md, 2dd77be): deep error = inherited (I) + local eigen-equation violation (II); CPU split, taking it to the PI. Lead pointed it to guide g_1 = hop(o2b round_0 a_1), alpha_V -0.117878, E_FN(g_1) 1.41188e-5 (cx_o2b.json).
 - 2026-10-28 PI: go for Pfaffian M-J CPU split (eigen-equation decomposition of the complex copies' error); GPU hours to be cleared with the PI first.
+- 2026-10-28 Pfaffian angle M-J split running on ws1 CPU with the PI's go (pfaffian_mj/, plan 007b779); g_1 rebuilt with controls (E_FN(g_1) to 1e-9, FN(g_1) = target_la). PI: GPU hours for the angle cleared with him first.

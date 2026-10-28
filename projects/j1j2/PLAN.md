@@ -152,6 +152,16 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   Reading: the fit's deep-band weighting explains at most ~1/3 of the copy loss; ~2/3 sits in phi^2 >= 1e-11, where the fit's
   weight is already >= the cost share (Test E). Scale: tax_0 0.94e-5 is about the whole gap of phi_1 above the s2 floor
   (9.85e-6 - ~0.9e-6 = 8.9e-6), so the copy must improve several-fold, not 1.5x, for the amplitude loop to gain.
+  TEST G (pre-registered by the lead 2026-10-28 before any code or number; PI go 'submit the true energy fit'; board block 10):
+  Mechanism: the band fit mis-weights (Test E/F: true cost 35% deep / 65% bulk; band fit draws no x below 1e-13 and spends ~21-26% of
+  its loss on e_x^2, which the energy does not see). Fitting the TRUE E_FN (Hellmann-Feynman: gradient of L_chi* with chi* = exact
+  ground state of H_FN[A], re-solved every few steps) gives every region its true weight.
+  Setup: complex PP + 3x3 backflow, warm start = the converged band-fit copies c1_cplx_s1 and s2; same sign s2, target-free (phi only
+  for readout); exact chi* solves; guards: fixed sum phi^2 ln|A| (E_FN is scale-invariant), cap |d ln|A|| per step; stop on E_FN flat.
+  Prediction: tax_0 0.94e-5 (s1 1.107e-5, s2 0.911e-5) falls 20-40%, to 0.55-0.75e-5; E_FN decreases monotonically (exact gradient).
+  Kill of 'the fit's weighting is a lever': drop < 10%. Follow-up readout: Test F splice on the new copies; deep share still ~35%
+  -> the network cannot hold deep corrections (capacity, Pfaffian angle); clearly lower -> the fit captured them.
+  Budget: <= 4.0 H100-h incl. rate probe, from the 4.5 left. Derivation reviewed by a worker before submission (CLAUDE.md point 6).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

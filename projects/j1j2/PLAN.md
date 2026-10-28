@@ -125,6 +125,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   from the network, fixed node. Its storage loss is tax_0 = E_FN(s2|copy|) - E_FN(s2|phi_1|): complex 1.107/0.912/0.786e-5 (mean
   0.94e-5) vs real F1 A 1.80e-5, against the target's own 0.985e-5 (test C). The 6x6 table is a best case: at scale the network must
   be fitted to H_FN's ground state from walkers (board 14, open). No run proposed until the PI and lead agree on the pipeline.
+  TEST E (CPU, existing data; pre-registered by the lead 2026-10-28 before any number; board blocks 5, 8):
+  Question: does the complex copies' remaining cost sit where the fit (cx_c1fit.py: equal weight per phi^2 decade -5..-13 plus an
+  e_x^2 term) puts little weight? Per decade band of x: fit weight share vs share of the pair cost
+  c_xy = 2|H_xy| phi(x)phi(y)(cosh(e_x - e_y) - 1) of the complex copies (seeds 1-3); also configurations outside -5..-13 and the
+  e_x^2 share of the converged fit loss.
+  Prediction (lead, ~55%): the cost concentrates in middle bands where cost share >= 2x fit share. Kill of the weighting cause: cost
+  and fit shares agree within 1.5x in every band holding >= 10% of the cost. Caveat: c_xy is the frozen-phi bound (6-8x the true
+  cost for the complex copies); shares, not totals, are compared.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

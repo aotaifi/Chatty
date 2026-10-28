@@ -79,7 +79,8 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    (psi^2-weighted loss) was wrong on reading the code, and it had gated a test.
 
 7. **Understanding lives where it survives a clear**, in three places, read before proposing anything:
-   - `FOUNDATIONS.md`: what the project rests on, one row per claim: claim | theorem or equation | its assumption |
+   - `FOUNDATIONS.md`: the non-obvious claims the project rests on (PI 2026-10-28: textbook results such as the FN bound or
+     Perron-Frobenius get no row; only what is subtle or worked out here), one row per claim: claim | theorem or equation | its assumption |
      source (arXiv id, equation or page) | where we use it. A row enters once the lead has read the derivation,
      never on ingestion. A published method whose assumption our problem breaks gets a row saying so. Every
      "known" in PLAN.md and every mechanism on the board cites a row; a claim without one is a hypothesis.

@@ -107,6 +107,19 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   E* <= 1e-6, i.e. T <= (1 - r) x 1e-6 = 0.5-0.7e-6, a further 1.5-2x cut of the storage tax.
   Caveats: competitor and loop are on different chains (RBM+PP own sign vs O2b with the s2 sign); r taken from one target;
   T assumed to transfer between targets (real copies: 1.66e-6 on the RBM+PP target vs 1.85e-6 on phi_1, so roughly).
+  CORRECTION 2026-10-28 (worker review, reviews/2026-10-28_loop_fixed_point_review.md; load-bearing numbers re-read by the lead
+  from compress_6x6 README 'Results: O2b' and 'Results: G-tax'): the LOOP C PREDICTION above is WRONG in two terms.
+  (a) r had the wrong denominator: the recursion carries phi_1's FN energy 14.12e-6 (E_FN(g_1)), not its zero-hop 9.85e-6, so
+  r = 3.24/14.12 = 0.23 on the s2 chain. (b) The competitor comparison was across chains. On the competitor's own (own-sign,
+  RBM+PP) chain, G-tax gives round 1 = E_FN(K2(phi_0)) + T = 0.318e-6 + T: real copy 1.975e-6 vs no-loop 1.947e-6 (no edge,
+  as measured); complex T 1.08e-6 would give 1.40e-6 = 0.72x the competitor (0.66-0.80 over the seeds). On the s2 chain the
+  fixed-sign floor F = 0.915e-6 (itself unconverged) keeps E* >= F + T ~ 2e-6, which is why that chain showed no edge.
+  Also: r is not a function of E (O2b rounds 3-4 same E, next target 12% lower): the loop has memory; linear map is approximate.
+  DECISIVE OPEN NUMBER: tax_2 of a complex PP + 3x3 backflow copy of the own-sign target phi_0 = FN(K2(A)) (the G-tax target).
+  Prediction (real copies transferred at 0.87-0.90x from phi_1 to phi_0): 0.94-0.97e-6 -> round 1 at 1.26-1.29e-6, 0.65x the
+  competitor. Kill: tax_2 >= 1.63e-6 (no edge at round 1). 2x edge at round 1 needs tax_2 <= 0.66e-6. Cost: one complex copy
+  per seed (test C rate ~1.5 H100-h) + T2 readout 0.2: 2 seeds ~3.2 of the 4.5 H100-h left. NOT submitted (takeover: no spend);
+  PI decides at the check-in.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -188,5 +201,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
 
 ## Cockpit
-- STATUS (in progress, high): A Pfaffian copy with complex parameters removes the false zeros and halves the storage loss, but a loop built on it is predicted to stop near the no-loop result at 6x6.
-- NEXT (open, high): Decide with the PI whether the storage loss must fall another 1.5-2x before the loop is worth running, and which network could do that.
+- STATUS (in progress, high): A Pfaffian copy with complex parameters halves the storage loss; on paper a loop with it beats the no-loop pipeline by about 1.4x at 6x6.
+- NEXT (open, high): PI to decide whether to measure the complex copy's storage loss on the no-oracle target (about 3 H100-h), which settles whether the loop is worth reopening.

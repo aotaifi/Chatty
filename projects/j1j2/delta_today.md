@@ -335,3 +335,5 @@
 - 2026-10-28 Pfaffian angle proposed mechanism M-J (board 14; PLAN_pfaffian.md, 2dd77be): deep error = inherited (I) + local eigen-equation violation (II); CPU split, taking it to the PI. Lead pointed it to guide g_1 = hop(o2b round_0 a_1), alpha_V -0.117878, E_FN(g_1) 1.41188e-5 (cx_o2b.json).
 - 2026-10-28 PI: go for Pfaffian M-J CPU split (eigen-equation decomposition of the complex copies' error); GPU hours to be cleared with the PI first.
 - 2026-10-28 Pfaffian angle M-J split running on ws1 CPU with the PI's go (pfaffian_mj/, plan 007b779); g_1 rebuilt with controls (E_FN(g_1) to 1e-9, FN(g_1) = target_la). PI: GPU hours for the angle cleared with him first.
+- 2026-10-28 Test G rate probe submitted: Paderborn job 4049890 (g1_probe, gpu_h100, 00:18:00, cx_g1fit.py probe mode), local /scratch/a/A.Otaifi/ansatz_runs/pfaffian_g/runs/g1_probe; watcher pid 3094193 (g1_pdb_watch.sh). Kept-graph connectivity of H_FN(s2): 1 component (pfaffian_g/conn.json).
+- 2026-10-28 Pfaffian M-J split (ws1 CPU): deep copy error is local (rho), copy too small by e^-0.13..e^-0.28 below phi^2 1e-11, neighbours right ((I)~1e-3); s_II 0.99 vs predicted 0.5-0.8.

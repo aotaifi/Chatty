@@ -209,4 +209,18 @@ a_1 = round_0/la_table.npy, alpha_V = -0.11787844532393324 (cx_o2b.json rounds[1
 1.411883720998159e-05/site to 1e-9 rel, then FN(g_1) = round_1/target_la.npy. The identity uses V = V_{g_1}, the wall of the
 HOP guide (not a plain s2|A| guide as in the agreed pipeline); the split itself is exact either way, but the s_II number
 describes copies of a hop-guide target.
-PI 2026-10-28: go for the M-J CPU split; GPU hours only after clearing them with the PI (CPU is free). RUNNING: worker on ws1 CPU, output /scratch/a/A.Otaifi/ansatz_runs/pfaffian_mj/.
+PI 2026-10-28: go for the M-J CPU split; GPU hours only after clearing them with the PI (CPU is free).
+
+## Result M-J (2026-10-28, ws1 CPU 29 min; /scratch/a/A.Otaifi/ansatz_runs/pfaffian_mj/mj_split.json; verified by the angle lead)
+Controls: E_FN(g_1) to 2.8e-11 rel; FN(g_1) = target to 1.6e-10 rms; broken arm (V_g = 0) rho_phi up to 16.3.
+rho_phi and the identity hold to 1e-11 for phi^2 >= 1e-11 but only to 7e-7 deep (LOBPCG residual is absolute): misses my
+1e-10 tolerance, 1e5 below the signal (|rho| ~ 0.1); tolerance was mis-set, not a physics miss.
+| band phi^2 | share of orbits | s_II (s1/s2/s3) | mean e | mean (I) | mean rho |
+| < 1e-11 | 92% | 0.985/0.987/0.989 | -0.133/-0.123/-0.279 | ~1e-3 | = mean e |
+| 1e-11..1e-9 | 7% | 0.974/0.981/0.983 | -0.10 (s1) | ~1e-3 | ~ mean e |
+| >= 1e-9 | 0.7% | 0.47/0.44/0.46 | ~0 | ~0 | ~0 |
+VERDICT: outside the predicted band on the high side (0.99 vs 0.5-0.8); M-J not refuted. Flaw in my metric: e and (I)
+shift with the copy's normalisation (A -> cA), rho does not; with the bulk-anchored normalisation (sum n A^2 = 1),
+(I) ~ 0. Reading: the deep error is LOCAL (rho), one-signed and smooth in depth: the copy is too small by e^-0.13..e^-0.28
+below phi^2 1e-11, ~0 above 1e-9; its neighbours are right. That pattern fits the training (no samples below 1e-13,
+Test E) more than a capacity limit; not yet separated.

@@ -134,7 +134,7 @@ gate 0.82e-6.
 - PASS: mean complex tax_2 <= 0.82e-6 and every seed <= 1.63e-6.
 - PARTIAL: mean in (0.82e-6, 1.63e-6): net gain per round, below the gate.
 - KILL: mean >= 1.63e-6.
-Budget: ~0.3 H100-h (H1 took 222 s for four cases).
+Budget: ~0.3 H100-h (H1 took 222 s for four cases). RUNNING: job 4042525 (Paderborn H100, 40 min wall), launcher launch_t2.sh read by the angle lead, watcher t2_pdb_watch.sh; local /scratch/a/A.Otaifi/ansatz_runs/pfaffian_c/runs/t2_cplx.
 
 ## Dead ends
 none yet

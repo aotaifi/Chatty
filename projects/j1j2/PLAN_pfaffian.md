@@ -523,3 +523,19 @@ Pass: g2 >= m (m = max(1e-6, 2 x seed std of augmented E_FN; 3 seeds of test C/T
 fires: each round removes a fixed fraction of the excess, the fixed-class bound one level up. Kill: g2 <= 0 (no progress).
 Cost (measured rate test C 6.68 s/step complex PP+bf; no backflow is cheaper): 3 fits <= 1.5 H100-h each, <= 4.5 H100-h,
 plus a code change (complex RBM x PP model block in a copy of cx_c1fit.py; CPU-checked as test C was).
+
+## Lead decision 2026-10-29 after Astra (codex cj-6e37615f546c): T3' GPU DEFERRED; exact-table screen first (CPU, s1).
+Stall rule g2 < 0.5 g1 WITHDRAWN (Astra derived: g1, g2 are not comparable successive gains; geometric convergence to the
+s1 floor would give g2/g1 ~0.35 while useful). New criteria, pre-registered before any screen number:
+ Delta = E_FN[A_1] - E_FN[phi_2] (the exact round-2 gain), tau = E_FN[A_2] - E_FN[phi_2] (storage loss after augmentation).
+ Trained round useful: tau/Delta <= 0.5 AND paired-control advantage E_FN[A_c] - E_FN[A_2] >= m. Weak: 0.5 < tau/Delta <= 1.
+ Storage costs more than the round: tau/Delta > 1. GPU (R1 only) released if the replay screen gives tau/Delta <= 0.7.
+## Screen (pre-registered; s1, CPU, no training)
+S1: phi_2 = FN(A_1), A_1 = A_s1 e^{3.9 f_J[A_s1]} (Z). Prediction: E_FN[phi_2] 0.70-0.80e-5; Delta 2.2-3.2e-6.
+S2 (zero copy error): phi_2 e^{c f_J[phi_2]}, c scan incl. 0. Prediction: c* 2-4, min E_FN 0.45-0.60e-5 (Astra's
+    geometric estimate 4.9-5.1e-6). A reference, not a bound on a trained round.
+S3 (storage-error replay): B_2 = phi_2 e^{e_1}, e_1 = ln|A_s1| - ln phi_1 (round-1 copy error, normalised), then
+    B_2 e^{c f_J[B_2]}, c scan incl. 0. Prediction: E_FN[B_2] - E_FN[phi_2] 1.0-1.5e-5; min augmented 0.70-0.95e-5;
+    tau/Delta 0-0.7.
+Queue (no run): Astra's retained dictionary A_K = |P_0| exp(sum_j c_j f_J[|P_j|]), backflow-free PP features; prediction
+3 features eps^2 <= 0.30 on round 2's correction; kill eps^2 >= 0.70 or walker cost > 20x plain.

@@ -274,6 +274,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   >= 0.70), tau/Delta 0.947; feature cosines 0.65-0.82. Reading: each round's correction is the CURRENT guide's own Jacobi factor;
   a dictionary of other networks' factors cannot hold it. K3 (running): R*_2 ~ c f_J[A_1]. If so, only nesting (cost) or a refit
   carries rounds forward: R1's refit quality decides.
+  K3 RESULT 2026-10-29 (angle a6e123b; sign s1): round 2's correction R*_2 on the augmented guide's own factor f_J[A_1]: eps^2
+  0.058 (coefficient 1.085; + primitive best 3: 0.056; cosines with primitive factors 0.01-0.09). Two nested levels
+  A_1 e^{2.4 f_J[A_1]}: E_FN 7.22e-6 < phi_2's 7.98e-6. Mechanism, measured in two rounds: each round's FN correction is
+  ~1.1-1.3 x the CURRENT guide's own Jacobi factor (eps^2 0.078, 0.058). Fixed dictionary cannot hold it (K); nesting holds it at
+  one level per round (cost); a per-round refit of the base is the cheap route = what R1/R2 measure.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -345,6 +350,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   computable on the fly from A with one neighbour sum, no training.
 - One local-energy factor (Jacobi e^{c f_J} or Lanczos |1+alpha(E_L-E)|, scalar by line search) on the copy is worth ~1.7 exact FN
   rounds at oracle sign (8.0e-6 / 8.7e-6 from 2.09e-5; floor 0.9e-6).
+- Each round's FN correction is ~1.1-1.3 x the current guide's own Jacobi factor (eps^2 0.078 round 1, 0.058 round 2; Tests L,
+  K3, sign s1/s2): a fixed dictionary of other networks' factors cannot hold it (Test K).
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

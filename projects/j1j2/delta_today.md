@@ -393,3 +393,4 @@
 - 2026-10-29 20:06 R1 job 4058165: qos express_hpcalot tried (blocked: QOSGrpGRESMinutes, h100 budget 1785/1800 min used, NoDecay), reverted to cont; PENDING Priority, est. start 2026-10-31T17:30
 - 2026-10-29 R1 A40 copy submitted (theorie 17600579, pending; full A40, wall 9 h, same code af662d3); Paderborn 4058165 still queued (est. start 2026-10-31). /scratch at 948.9/972.8 G (CRIT): raised with the PI.
 - 2026-10-29 Pfaffian K3 (CPU, s1): round-2 correction = 1.085 f_J[A_1] (eps^2 0.058), orthogonal to primitive features; mechanism: each round's correction is the current guide's own Jacobi factor; cheap storage needs a refit per round (R1/R2).
+- 2026-10-29 cleanup (PI): j1j2 has no deletable data by the rubric (all < 14 days or cited; owns ~25 GB of 995 GB /scratch); foreign rows added to /project/theorie/a/A.Otaifi/CLEANUP_ACTIONS.md; manifest docs/cleanup_manifest_2026-10-29.md.

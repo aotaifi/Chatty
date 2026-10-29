@@ -446,3 +446,14 @@ test C (1 seed, <= 1.5 H100-h); c* by line search (CPU). Pass: E_FN(A_aug,2) - E
 E_FN(A_aug,1) - 0.5e-6 (the loop progresses). Kill: loss >= 2e-6 or no progress. Prediction: loss -1e-6..0, progress 1-2e-6.
 Second arm of T3 (lead/PI): the refit with bands extended to phi^2 ~ 1e-30; ceiling ~11% of the bare-copy loss (Test F);
 readout also the bulk e rms for phi^2 >= 1e-9 against the standard-band arm (shared-capacity trade-off). +<= 1.5 H100-h.
+PI 2026-10-29 (via the lead, his words "I agree you can go ahead"): T3 and the deep-band arm approved, <= 1.5 H100-h each,
+<= 3.0 total of the 4.3 left, CONDITIONAL on T2 passing (rank low, exact to 1e-8, timing as predicted); if T2 fails, report,
+run nothing. Launcher read by me against this pre-registration; job ids recorded here.
+At scale without the table (PI's question), per ingredient of A e^{c f_J}:
+- f_J(x): from A's own ratios at x (determinant lemma), no table.
+- E' = E_FN[A]: the FN-GFMC energy of guide A (mixed estimator), a standard output of the run.
+- c: 1-D line search on the sampled FN energy of A e^{c f_J} (a few FN runs), or on VMC <H> as a cheaper proxy (6x6:
+  <H>-optimal c ~3.4-3.9 vs E_FN-optimal 3.92); risk: noise in a flat minimum.
+- base refit labels phi_k: NOT available without the table; at scale they must come from walkers (board 11), the open
+  storage problem itself. This proposal does not solve that part.
+- sign s2: oracle here; at scale a deployable sign, cost class of that sign.

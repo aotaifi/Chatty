@@ -607,3 +607,23 @@ a store of fixed primitive features cannot hold round k's correction (Test K); n
 costs a level per round (T2: two levels ~1e3-1e4 x plain). The only cheap route is to REFIT the base network each round
 to the augmented target (fold), which is what R1/R2 measure.
 PI 2026-10-29 via the lead, his words: "cancel yes once the first one starts, you are lead". Race watcher (r1_race_watch.sh, setsid) cancels the copy that has not started once the other shows a logged fit step; both in one window -> keep Paderborn 4058165, cancel A40 17600579. Log: /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/race.log and a [pfaffian R1 race] line in delta_today.md.
+
+## R1 readout AMENDED (2026-10-29, before any R1 number; Astra cj-ff745902d93d via the lead; sign s1)
+Flaw found by Astra: the unchanged copy plus its own Jacobi factor already gives tau/Delta = -0.658, so the augmented gate
+passes without storing anything. New deciding number: the BARE post-fit E_FN of the refit, e(B).
+Storage recovered r = (e(copy) - e(B)) / (e(copy) - e(phi'')) = (2.503e-5 - e(B)) / 0.895e-5.
+Pass: r >= 0.5 (e(B) <= 2.055e-5). Kill: r <= 0 (e(B) >= 2.503e-5). Between: weak.
+Prediction [derived from the class's measured absolute tax ~0.9-1.1e-5 vs a gap of 0.895e-5]: r = -0.2..0.3, i.e. the
+bare refit will probably NOT store the round (the class's own copy error is as large as one round's gain).
+Augmented numbers (B e^{c f_J[B]}, c rescanned, and the copy at the same depth) are reported separately, never as the gate.
+Correction to "Result K3": R1 fits phi'', not an augmented target ("refit the base network each round to the augmented
+target" there should read "to the round's FN state").
+
+## Label-free arm L-SWO (prepared 2026-10-29; NOT to run until the PI's answer via the lead; sign s1)
+Same architecture (complex RBM x PP, no backflow), warm start, optimiser, seed and budget as R1, but the target is
+T = A e^{c f_J[A]} with c = 3.9 (Z; e(T) = 1.018e-5), computable per configuration from A's own neighbour ratios, with the
+samples and weights generated from T (not phi''). This is supervised wavefunction optimisation (Kochkov-Clark,
+arXiv:1811.12423; failure modes in Astra's note cj-ff745902d93d).
+Delta_J = e(A) - e(T) = 1.485e-5; tau_J = e(fit(T)) - e(T). Screen pass: tau_J/Delta_J <= 0.5 (e(fit) <= 1.761e-5).
+Kill: tau_J/Delta_J >= 1 (e(fit) >= 2.503e-5). Prediction: e(fit) 1.9-2.1e-5 (tau_J/Delta_J 0.6-0.75: between), from the
+same class tax. Cost: one fit, <= 1.5 H100-h (or ~8 A40-h).

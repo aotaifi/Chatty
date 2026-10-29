@@ -312,14 +312,6 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Krylov cost at scale: s2 needs neighbours of neighbours (~1e5 evaluations per configuration at 14x14, s1 ~400); choosing T needs
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
-- Sign gap as a size-converging correction (PI + lead 2026-10-29): E0(L) = E_B(L) + N delta(L), E_B = ground energy of the
-  Marshall-gauge sign-free partner (sign-free QMC at any L), delta = (E0 - E_B)/N from exact small clusters. Mechanism:
-  delta(L) = delta_inf + (c0 - c_B)/L^3, finite-size terms cancel if c0 ~ c_B. Data: delta 0.38321 (4x4 ED,
-  /scratch/a/A.Otaifi/ansatz_runs/deff/ed4.json), 0.385 (6x6, TRIED E10, 3 digits) vs E0 change 2.5e-2 => c0 - c_B ~ -0.16,
-  predicted delta(8x8) ~ 0.3854, delta_inf ~ 0.3858. Term that breaks it: partner is easy-plane Neel, J1-J2 at 0.5 likely
-  non-magnetic, so c0 - c_B need not be small at larger L. Lead ~20%. Kill test (positive control J2 0.3; fit N <= 32, predict
-  36/40 within 1e-4; beat direct E0 extrapolation 5x; 8x8 below FN bound -0.498946 and within 2e-4 of DMRG; 10x10 vs best
-  published NQS). PI asked to run it; proposed as an angle (independent of the storage question).
 
 ## Running
 - Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
@@ -336,6 +328,7 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - how-we-work angle (session local_f1c3599f, PLAN_howwework.md once written; PI 2026-10-28): the PI's discussion of method and process
   with a Fable session; no runs; waits for the PI.
 - ansatz angle (session local_5c701cde): CLOSED 2026-10-27 (no jobs); session can be archived. conceptual: archived.
+- sign-gap angle (session local_6ef8717c, PLAN_signgap.md): CLOSED 2026-10-29, KILL at stage A (see Dead ends); no jobs.
 
 ## Dead ends (number, run)
 - Training the guide on its lattice FN energy (sampled mixed HF force + QGT, 8x8, 2026-10-02): physical E_FN worse by +0.046 total
@@ -353,6 +346,9 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - B0 PP+3x3bf VMC: no gain over PP in 400 SR steps (Paderborn 3806793).
 - gamma-FN: 26% of the gap (g0_17411369). ViT refit: 9.2e-5. Tail-trained ViT + hop 1.52e-5.
 - Constant-cost storage of loop steps: 7 designs (RESEARCH_MAP 2026-10-13); learned bond field 1.92e-5.
+- Sign gap delta = (E0 - E_B)/N as a size-converging correction (TRIED J8): fit N <= 32, holdout N = 34/36 misses 5.5e-3 / 1.1e-2
+  per site at J2 0.5, same as fitting E0 directly (bar 1e-4); E_B/N is smooth (residual 2e-4), E0/N carries the cluster-shape
+  scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
 - STATUS (in progress, high): Storing the fixed-node state in a fixed network cannot beat that network's best fixed-node guide, and the sign used in the storage tests was an oracle, not a Krylov sign.

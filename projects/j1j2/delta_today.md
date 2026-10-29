@@ -395,3 +395,4 @@
 - 2026-10-29 Pfaffian K3 (CPU, s1): round-2 correction = 1.085 f_J[A_1] (eps^2 0.058), orthogonal to primitive features; mechanism: each round's correction is the current guide's own Jacobi factor; cheap storage needs a refit per round (R1/R2).
 - 2026-10-29 cleanup (PI): j1j2 has no deletable data by the rubric (all < 14 days or cited; owns ~25 GB of 995 GB /scratch); foreign rows added to /project/theorie/a/A.Otaifi/CLEANUP_ACTIONS.md; manifest docs/cleanup_manifest_2026-10-29.md.
 - 2026-10-29 R1 readout amended (angle): bare e(B), storage recovered r = (2.503e-5 - e(B))/0.895e-5, pass r >= 0.5, kill r <= 0; angle predicts r = -0.2..0.3 (class tax ~0.9-1.1e-5 ~ one round's gain). L-SWO prepared: pass e(fit) <= 1.761e-5, kill >= 2.503e-5, predicted 1.9-2.1e-5; awaits PI. Race watcher PID 341828.
+- 2026-10-29 PI 'Yes': paired label-free arm L-SWO approved (angle submits; pass e(fit) <= 1.761e-5, kill >= 2.503e-5, predicted 1.9-2.1e-5).

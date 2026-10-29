@@ -596,3 +596,13 @@ features cannot hold it, only nesting (cost) or a fitted network can.
 Test K3 (pre-registered now): eps^2 of R*_2 on f_J[A_1] alone (f_J of the augmented table, E' = E_FN[A_1] = 1.0185e-5).
 Prediction eps^2 <= 0.15; kill of the hypothesis >= 0.5.
 RUNNING R1 on theorie A40 (lead-approved parallel copy): job 17600579 (cip,inter, full A40, wall 09:00, fit_sec 25200 = the only non-path spec change; same code af662d3, seed 1); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40; launcher launch_r1_a40.sh read by the angle lead; watcher r1_a40_watch.sh. Paderborn 4058165 stays queued (ETA 2026-10-31 17:30); no cancel without the PI's pre-approval. Cost ~8 A40-h. /scratch at 948.9/972.8 G (CRIT): R1 output ~130 MB.
+
+## Result K3 (2026-10-29, ws1 m42 CPU, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_k/k3_result.json; sign s1; verified)
+R*_2 on f_J[A_1] alone: eps^2 0.058 (coef 1.085); + K2's best 3: 0.056. Cosine of f_J[A_1] with the primitive features
+0.01-0.09. Controls: R* -> 0, permuted -> 1.0000. PASS (prediction <= 0.15, kill >= 0.5).
+E_FN[A_1 e^{c f_J[A_1]}]: min 7.219e-6 at c 2.4 (two nested Jacobi levels), below E_FN[phi_2] 7.978e-6.
+UNDERSTOOD (mechanism, both rounds): each round's FN correction is ~1.1-1.3 x the CURRENT guide's own Jacobi factor
+(eps^2 0.078 round 1, 0.058 round 2), and it is nearly orthogonal to the Jacobi factors of other networks. Consequences:
+a store of fixed primitive features cannot hold round k's correction (Test K); nesting the factor holds it exactly but
+costs a level per round (T2: two levels ~1e3-1e4 x plain). The only cheap route is to REFIT the base network each round
+to the augmented target (fold), which is what R1/R2 measure.

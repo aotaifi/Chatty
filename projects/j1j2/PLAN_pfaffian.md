@@ -658,3 +658,23 @@ Proposals (nothing runs before the PI agrees):
     nets, exact), 6x6 from R1.
 Recommendation: (b) first: cheap, and it decides whether the loop can matter at 10x10+ at all; (a) only if (b) shows T
 grows slower than the FN gain.
+AMENDMENT to "Expert view" (2026-10-29, Astra cj-6168204a40dd via the lead; I accept both):
+- My "eps^2 ~0.95 for this class" is NOT established. M-R/L/K cover only small-weight two-body residuals and one
+  primitive dictionary. Counter-record: O2b round 1 had T/g = 0.386 ((23.692 - 15.586 + 6.013)e-6 = 14.119e-6 tax, g as
+  recorded). Corrected statement: eps^2 of the round correction is measured high for 2-body/small-weight residuals and
+  primitive-PP dictionaries; for other classes it is open.
+- My "f falls with depth" mixed guides and signs; along one guide family (O2b) g/(E - F) ROSE 0.684 -> 0.805. Withdrawn.
+- Proposal (b) is deferred as a class-specific diagnostic; the next test is Test N (PI "Go").
+
+## Test N: capacity of finite-weight RBM features (pre-registered 2026-10-29 before any number; CPU, sign s1)
+Bank: frozen symmetric features h_j(x) = sum over the 576 images g of ln cosh(b_j + sum_i W_j(i) z_{g(i)}), W_j(i) ~
+N(0, sigma^2/36), b_j ~ N(0, sigma^2), sigma in {1, 2} (nonlinear regime; field std ~sigma), 3 bank seeds. Nested sizes
+M = 16, 32, 64, 128 (walker-cost cap: 576 x 36 x M flops <= the PP base's ~576 x 18^3, so M <= ~160; with cached angles
+ratios cost O(M) per swap). Linear readout, exact D-metric least squares (L/K machinery, D weighted by the target).
+Targets: (i) R*_1 = ln(phi''/|A_s1|); (ii) R*_2 = ln(phi_2/|A_1|) (K3); (iii) cumulative ln(phi_2/|A_s1|).
+Controls: {R*} -> 0; permuted bank -> ~1; the bank plus L1's 2-body features reported next to L1 alone.
+Grade: for the best bank on each target, exact E_FN[s1] of base x e^{s sum c_j h_j}, s by line search; bare-guide
+tax/gain = (E_FN - E_FN[target]) / (E_FN[base] - E_FN[target]).
+Predictions: Astra (low confidence): eps^2 <= 0.2 on (i) and (ii). Mine: eps^2 0.6-0.85 at M = 128 on (i) and (ii)
+(the correction is a local-energy quantity of the guide, f_J, not a spin-pattern function; L: 2-body 0.97), (iii) similar.
+Promote: tax/gain <= 0.3 at cost <= 2x base. Kill this family: eps^2 >= 0.7 at the cap, or tax/gain >= 1.

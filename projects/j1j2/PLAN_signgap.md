@@ -26,21 +26,34 @@ becomes J2[SzSz - SxSx - SySy], easy-plane Neel).
 - 10x10: best variational -0.4976921(4) (Chen-Heyl arXiv:2302.01941); extrapolations ZVE -0.497715(9) and Hu var-extrap
   -0.49781(2) disagree by ~1e-4 (results/literature/J1J2_BENCHMARKS_COST.md section 1.3).
 
-## Kill test (DRAFT, pending blind review cj-438ea329c07d; frozen before any fit is run)
-Clusters (periodic, J2 along (+-1,+-1)): N = 16 (4x4), 18, 20, 26, 32, 34, 36 (6x6), 40 (tilted, Richter-Schulenburg).
-Fit set N in {16, 18, 20, 26, 32}; predicted N in {36, 40}. Primary form F1: delta_inf + a N^-3/2. Secondary: F2 = F1 +
-b N^-5/2; F3 = delta_inf + a N^-1.
-- (a) J2 0.3 (both Neel): F1 predicts 36 and 40 within 1e-4/site.
-- (b) J2 0.5: F1 predicts 36 and 40 within 1e-4/site, and F1-F3 predictions agree within 1e-4.
-- (c) Control: the same forms on E0/N; max |miss| of E0 fit >= 5x max |miss| of delta fit, at each J2.
-- (d) 8x8: E_B(QMC) + 64 delta(64) below -0.498946 and within 2e-4 of -0.4992.
-- (e) 10x10: prediction below -0.4976921 (an exact energy must lie below a variational one) and inside
-  [-0.49790, -0.49765].
-Verdicts: (a) fails -> KILL, cause = cluster-shape scatter in delta (not the phase). (a) passes, (b) fails -> KILL,
-cause = the board-18 term. (a)-(c) pass -> stage B. (d) or (e) fails -> KILL at scale, cause named from the 8x8 miss.
+## Kill test (FROZEN 2026-10-29, after Astra review reviews/REVIEW_astra_signgap_2026-10-29.md; before any fit)
+Identity (review, exact): with the same fit operator P, r_a = P[e_a] - e_a(N*), the delta route misses by r0 - r_B, the direct
+route by r0. The method works only if the finite-size residuals of E0 and E_B are correlated across clusters.
+Clusters (periodic, J2 along (+-1,+-1), same cluster and checked sector for E0 and E_B): N = 16, 18, 20, 26, 32 (fit),
+34, 40 (clean holdouts), 36 (holdout reported but contaminated: delta(6x6) informed the proposal).
+Forms: F1 = d + a N^-3/2 (primary); F2 = F1 + b N^-2 (the O(n) L^-4 term, Hasenfratz-Niedermayer hep-lat/9212022 Eq. 2.18);
+F3 = d + a N^-1. Weights equal; no exclusions after seeing data.
+- (0) J2 = 0: delta = 0 on every cluster (identity; worker check).
+- (a) J2 = 0.3, comparison regime (NOT a guaranteed positive control: c0 - c_B = -0.719(2 v0 - v_B), no symmetry fixes it):
+  F1 misses at 34 and 40 <= 1e-4/site.
+- (b) J2 = 0.5: F1 misses at 34 and 40 <= 1e-4/site, AND the spread of F1-F3 (fit on all N <= 40) at N = 64 and 100 <= 1e-4
+  (catches the review's counterexample: an omitted 0.5 L^-4 term passes 36/40 and misses 64/100 by 1.5-2.2e-4).
+- (c) Control at each J2: max holdout |r0 - r_B| <= max |r0| / 5 (same forms on E0/N directly).
+- (d) 8x8: E_B/N (QMC, stat error) + delta(64) with total error (form spread (+) stat) <= 1e-4 and centre in
+  [-0.4994, -0.4990] (DMRG -0.4992(1), itself an extrapolation). The FN-bound inequality is dropped: the window lies below it.
+- (e) 10x10: refutation only. Refuted if the prediction lies above the best variational energy (CNN-MPS -0.4976939(2),
+  arXiv:2603.14425 Table 1 per Astra, not yet read by me; else Chen-Heyl -0.4976921(4)) by more than its error. Agreement
+  establishes no accuracy: a prediction is neither a state nor a bound.
+Order: E_B(40) is not in the stage-A ED budget; it comes first in stage B (SSE, validated against exact E_B at N <= 36).
+Until then (a)-(c) are judged at N = 34 alone, provisionally; the verdict needs 40.
+Verdicts: (0) fails -> code bug, fix. (a) fails -> KILL, cause = cluster-shape/sector scatter of delta. (a) passes, (b) fails ->
+KILL, cause = board-18 term (non-cancelling finite-size forms). (c) fails -> KILL, cause = residuals uncorrelated (delta no better
+than E0). (a)-(c) pass -> stage B. (d) fails -> KILL at scale, cause from the size of the miss vs form spread.
+Value if it passes (review point 5): a cheap energy estimator with validated error, not a variational result; the project lead
+judges whether that serves the goal.
 
 ## Running
-- Blind review: Astra cj-438ea329c07d (submitted 2026-10-29).
+- Blind review done (cj-438ea329c07d): kill test refined and frozen. Worker A0 (ED, N=16..36): running.
 
 ## Dead ends
 (none yet)

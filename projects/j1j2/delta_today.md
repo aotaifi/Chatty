@@ -366,3 +366,4 @@
 - Opened PLAN_signgap.md (draft kill test). Board blocks 16-18 added (artifact version 44): partner H_B, delta(N), HF path identity, mechanism, breaking term.
 - Literature: N=40 exact E0 (arXiv:0909.3723 Table 1): J2 0.3 -22.42728643, J2 0.5 -19.96304839 total. 10x10 refs from results/literature/J1J2_BENCHMARKS_COST.md 1.3.
 - Blind review: Astra codex job cj-438ea329c07d. Worker A0 (ED energies of H, H_B, N=16..36): brief /scratch/a/A.Otaifi/ansatz_runs/signgap/A0_ed/BRIEF.md.
+- Astra review (reviews/REVIEW_astra_signgap_2026-10-29.md): L^-3 not guaranteed (O(n) L^-4 term, shape/sector), J2 0.3 not a true positive control, delta route misses by r0-r_B, near holdouts can pass while 64/100 fail, (d) FN inequality redundant, prediction is not a bound. Kill test refined and frozen in PLAN_signgap.md (holdouts 34, 40; form-spread test at 64/100).

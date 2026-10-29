@@ -361,3 +361,8 @@
 - 2026-10-28 Pfaffian control S (CPU, oracle s2): scanned Lanczos factor best 8.68e-6/site at alpha -0.10 (= moment alpha) vs Jacobi^3.92 8.03e-6: Jacobi 8% better, between tie and win. One local factor ~1.7 FN rounds.
 - 2026-10-29 D_eff step (PARTIAL, worker; /scratch/a/A.Otaifi/ansatz_runs/deff/): exact ground state J2=0.5 S2/N = 0.3445 (6x6, D_eff 2.43e5, exact6.json), 0.3622 (4x4, D_eff 329); exact 6x6 RBM+PP guide A (full proj) S2/N 0.3443, D_eff 2.41e5 (exact6_guideA_full.json). 8x8 TI NOT done, kill rule undecided; TI validation runs (4x4 CPU, 6x6 GPU) still running at handback.
 2026-10-29 00:22 lead: D_eff (guided-annihilation kill test) exact: 6x6 J2=0.5 GS 2.43e5 (S2/N 0.3445), RBM+PP guide 2.41e5, 4x4 GS 329, 4x4 sign-free partner 7404 (/scratch/a/A.Otaifi/ansatz_runs/deff/). Fit S2=aN+ln N+b on 4x4,6x6: a=0.290; 8x8 ~1.4e9 (below 1e10 kill, unmeasured), 10x10 ~8e13. TI validation runs (run6, run4, pilot8) left running on the workstation without watcher; 8x8 TI not launched.
+
+## 2026-10-29 sign-gap angle (angle lead)
+- Opened PLAN_signgap.md (draft kill test). Board blocks 16-18 added (artifact version 44): partner H_B, delta(N), HF path identity, mechanism, breaking term.
+- Literature: N=40 exact E0 (arXiv:0909.3723 Table 1): J2 0.3 -22.42728643, J2 0.5 -19.96304839 total. 10x10 refs from results/literature/J1J2_BENCHMARKS_COST.md 1.3.
+- Blind review: Astra codex job cj-438ea329c07d. Worker A0 (ED energies of H, H_B, N=16..36): brief /scratch/a/A.Otaifi/ansatz_runs/signgap/A0_ed/BRIEF.md.

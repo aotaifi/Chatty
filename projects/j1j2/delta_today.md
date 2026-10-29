@@ -390,3 +390,5 @@
 - 2026-10-29 13:17 R1 SUBMITTED job 4058165 (Paderborn gpu_h100, wall 01:30:00, fit_sec 3600, code af662d3 sha 5ebae9d8/09f66f19); watcher pid 2954272 (PPID 1); run /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run
 - 2026-10-29 R1 job 4058165 (angle; fit_sec 3600 under 1:30 wall; code af662d3; watcher armed). Test K pre-registered (0b605fd, CPU, s1): dictionary of f_J from copies s1/s2/s3 + rpT1_pp; K1 round-1 target best-3 eps^2 <= 0.10; K2 round-2 correction best-3 0.4-0.7 (shared parent). Test W (lead, CPU) running.
 - 2026-10-29 Pfaffian Test K (CPU, s1): round-2 correction not spanned by primitive PP Jacobi features (best 3 eps^2 0.97, KILL); round 1 0.078. K3 pre-registered: R*_2 vs the augmented guide's own f_J.
+- 2026-10-29 20:06 R1 job 4058165: qos express_hpcalot tried (blocked: QOSGrpGRESMinutes, h100 budget 1785/1800 min used, NoDecay), reverted to cont; PENDING Priority, est. start 2026-10-31T17:30
+- 2026-10-29 R1 A40 copy submitted (theorie 17600579, pending; full A40, wall 9 h, same code af662d3); Paderborn 4058165 still queued (est. start 2026-10-31). /scratch at 948.9/972.8 G (CRIT): raised with the PI.

@@ -568,3 +568,16 @@ tau is not fidelity); zero-error reference 0.75-0.95e-5; tau_ref/Delta 0.1-0.5. 
 tau_ref/Delta > 1.
 Cost: fit capped at 4200 s (step rate measured in the job; complex PP+bf was 6.68 s/step) + table; one H100 job <= 1.5 h.
 RUNNING R1: Paderborn job 4058165 (gpu_h100, wall 01:30, fit_sec 3600, max_steps 1100; launcher launch_r1.sh / r1.sbatch read by the angle lead; code af662d3; watcher r1_pdb_watch.sh); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run. Cost <= 1.5 H100-h.
+
+## Test K: growing store screen (PI "both go" via the lead; pre-registered 2026-10-29 before any number; CPU, sign s1)
+Dictionary features f_J[|P_j|] at s1 (each with its own E'_j = E_FN[P_j, s1]) from different pair products: complex copies
+s1, s2, s3 (all three share the F1 A parent), the plain PP start rpT1_pp (sym_tables_PP lP); real F1 A only if its
+la_table is reachable (not local). Exact D-norm least squares (Test L machinery, D weighted by the target), greedy 1-2-3.
+ K1: round-1 correction R*_1 = ln(phi''/|A_s1|). Prediction: f_J[A_s1] alone eps^2 0.05-0.15 (Test L at s2: 0.079);
+     best 3 <= 0.10; other features add <= 0.03 (shared parent).
+ K2 (Astra's actual target): round-2 correction R*_2 = ln(phi_2/|A_1|), A_1 = A_s1 e^{3.9 f_J[A_s1]}, phi_2 from the screen
+     (pfaffian_screen/ln_phi2.npy). Prediction: best 3 eps^2 0.4-0.7 (near the kill: the features are near-collinear).
+     Queue's rule: pass eps^2 <= 0.30; kill >= 0.70.
+Independence readout: D-norm cosines between the features (prediction: s1-s2-s3 >= 0.9; rpT1_pp lower).
+Exact E_FN (s1) for the best 3-feature store in each of K1, K2: least-squares c_j times one scalar s, s by line search
+(about 5 solves each). For K2 also tau = E_FN - E_FN[phi_2] and tau/Delta (Delta 2.207e-6), next to S2's zero-error 5.6e-6.

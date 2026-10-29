@@ -627,3 +627,34 @@ arXiv:1811.12423; failure modes in Astra's note cj-ff745902d93d).
 Delta_J = e(A) - e(T) = 1.485e-5; tau_J = e(fit(T)) - e(T). Screen pass: tau_J/Delta_J <= 0.5 (e(fit) <= 1.761e-5).
 Kill: tau_J/Delta_J >= 1 (e(fit) >= 2.503e-5). Prediction: e(fit) 1.9-2.1e-5 (tau_J/Delta_J 0.6-0.75: between), from the
 same class tax. Cost: one fit, <= 1.5 H100-h (or ~8 A40-h).
+
+## Expert view on the loop's resting point (2026-10-29, PI's question via the lead; no run; sign s1)
+Model (PI/lead): E_{k+1} - F = (1 - f)(E_k - F) + T  =>  E* = F + T/f. With f 0.39, T 1e-5, F 0.2e-5: E* ~ 2.8e-5; our copy
+sits at 2.5e-5, so R1/L-SWO start at the resting point and are predicted not to move. I agree with the picture (~70%) as
+the leading-order description, with two corrections that both RAISE E* or slow the approach:
+1. T is not a constant. [measured identity, M-R: tax/gain = eps^2 to 1%] A warm-started refit loses T = T_abs + eps^2 g_k:
+   T_abs = the class's misfit of the FN-state family (what does not change round to round), eps^2 g_k = the misfit of this
+   round's correction g_k. For this class eps^2 on the correction is ~0.95 (M-R RBM, 2-body; L: 2-body 0.97), so the
+   correction is essentially not stored: T ~ T_abs + 0.95 g_k. Then E_{k+1} - F ~ (1 - 0.05 f)(E_k - F) + T_abs: the
+   loop barely contracts at all unless the class can represent the Jacobi-shaped correction (eps^2 small).
+2. f falls with depth. [measured, s1] from the copy: 8.96e-6 of 2.28e-5 excess (f 0.39); from A_1: 2.21e-6 of 7.9e-6
+   (0.28); [s2] from phi_1: 0.21. The ceiling iteration record (compress_6x6, s_1) shows ratio 0.53 -> 0.65 per 5 solves:
+   sub-geometric. E* with constant f is an underestimate.
+So the loop's value is to repair guides worse than E*, and its reach is set by T_abs and eps^2 of the class, not by f alone.
+Scaling of T with N (what is known): no clean exact-size series of T in the records. Proxy: the class's variational error
+per site grows with N: RBM+PP 4.5e-5 at 6x6 (I1: -0.503765 vs exact -0.50380965) vs ~2-3e-4 at 8x8 (I2: -0.498886 vs
+DMRG -0.4992(1), var-extrap -0.49906): x5-7 from 36 to 64 sites. If T_abs tracks it at the 6x6 ratio (T ~1e-5 vs 4.5e-5,
+~0.2) then T_abs(8x8) ~5e-5/site, against a measured FN gain at 8x8 of 8.3e-5/site (I3: VMC p=0 -0.498674 -> FN
+-0.4987565): the loop's resting point would sit ~1.5e-4 above the sign floor at 8x8. [derived, unvalidated proxy]
+Proposals (nothing runs before the PI agrees):
+(a) Bad-start descent, 6x6, s1: start = plain complex PP (rpT1_pp, E_FN[s1] 5.72e-5), 4 exact-label rounds (FN exact on
+    CPU, refit warm-started, same class as R1). Fixed-T model predicts 4.56 -> 3.86 -> 3.43 -> ~3.1e-5 (E* 2.8e-5);
+    my corrected model (eps^2 ~0.95) predicts much smaller steps: <= 0.3e-5 per round after round 1. Kill of "the loop
+    repairs bad guides": round 1 bare refit E_FN >= 5.0e-5. Cost: 4 refits x <= 1.5 H100-h (+ queue) + CPU FN.
+(b) T(N) on exact sizes instead of 8x8 (8x8 T needs walker labels, the open board-11 problem): same class at 4x4, 4x6
+    (exact tables exist), 6x6 (R1): T per site and eps^2 of the round correction at each N, one round from the class's own
+    variational guide. Prediction: T/site grows with N (x2-4 from 16 to 36 sites); eps^2 of the correction stays >= 0.9 for
+    a 2-body-like class. Kill of "T grows": T/site flat within 30% over 16-36 sites. Cost: CPU for 4x4/4x6 fits (small
+    nets, exact), 6x6 from R1.
+Recommendation: (b) first: cheap, and it decides whether the loop can matter at 10x10+ at all; (a) only if (b) shows T
+grows slower than the FN gain.

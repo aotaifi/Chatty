@@ -678,3 +678,4 @@ tax/gain = (E_FN - E_FN[target]) / (E_FN[base] - E_FN[target]).
 Predictions: Astra (low confidence): eps^2 <= 0.2 on (i) and (ii). Mine: eps^2 0.6-0.85 at M = 128 on (i) and (ii)
 (the correction is a local-energy quantity of the guide, f_J, not a spin-pattern function; L: 2-body 0.97), (iii) similar.
 Promote: tax/gain <= 0.3 at cost <= 2x base. Kill this family: eps^2 >= 0.7 at the cap, or tax/gain >= 1.
+RUNNING L-SWO (PI 'Yes' via lead): paderborn=4062263 a40=17601653  ; launchers launch_lswo.sh / launch_lswo_a40.sh read by the angle lead (only target_la differs from R1); race watcher lswo_race_watch.sh (first logged step wins, else keep Paderborn). Cost <= 1.5 H100-h or ~8 A40-h.

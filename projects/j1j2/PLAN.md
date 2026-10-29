@@ -269,6 +269,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   Decision: (a) >= 50% at 1e6 -> walker labels are not the 6x6 bottleneck; (b) < 20% at 1e8 -> finite-sample labels cannot carry
   a round, and the estimator (not the network) is the next open problem. Raw labels without a network fit: tests label information,
   not generalisation.
+  TEST K RESULT 2026-10-29 (angle a9cf9f4; sign s1): growing store of primitive PP Jacobi features KILLED on round 2. Round 1:
+  f_J[A_s1] eps^2 0.078 (best 3: 0.0776). Round 2 correction ln(phi_2/|A_1|): single features 0.989-1.000, best 3 0.9705 (kill
+  >= 0.70), tau/Delta 0.947; feature cosines 0.65-0.82. Reading: each round's correction is the CURRENT guide's own Jacobi factor;
+  a dictionary of other networks' factors cannot hold it. K3 (running): R*_2 ~ c f_J[A_1]. If so, only nesting (cost) or a refit
+  carries rounds forward: R1's refit quality decides.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -344,7 +349,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
-- Growing store (Astra cj-6e37615f546c): retained dictionary A_K = |P_0| exp(sum_j c_j f_J[|P_j|]) of independent backflow-free PP
+- [KILLED by Test K 2026-10-29] Growing store (Astra cj-6e37615f546c): retained dictionary A_K = |P_0| exp(sum_j c_j f_J[|P_j|]) of independent backflow-free PP
   Jacobi features, walker cost linear in K, cap K. Prediction: 3 features eps^2 <= 0.30 on round 2's correction; kill eps^2 >= 0.70
   or walker cost > 20x plain. After the T3' screen.
 - Sign at scale: the network stores only the amplitude, so round k's Krylov sign needs k layers of neighbours (~400^k network

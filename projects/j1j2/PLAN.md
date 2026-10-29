@@ -37,6 +37,15 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
+## OPEN QUESTION (the one, CLAUDE.md point 4; set by the PI 2026-10-29)
+Can the stored network carry the local, Jacobi-shaped correction cheaply, so that the copy loses < ~1e-6/site per loop round
+near the fixed point (today 9.4e-6)? The loop stays the method (PI): stored sign + amplitude keep the walker cost at plain-network
+level while the gains add up over rounds; a step at walker time nests (400^k).
+- Mechanism (measured, oracle s2): the deep third of the copy loss is a local eigen-equation violation (M-J, s_II 0.985-0.989);
+  one round's correction is ~92% c x f_J, the copy's own Jacobi factor (Test L); the bulk two thirds are moderate errors.
+- Owner: Pfaffian angle (network expert); prediction and ending test to be written by the angle before any run.
+- Constraint: a feature that needs neighbour sums at walker time is not cheap (it nests like a step).
+
 ## ROADMAP (PI, 2026-10-27): back to basics, no brute-force testing
 Rule: understand from the code, the records and existing data first. A run only when a derivation names the outcome that would
 change a decision, and only with the PI's go. Owners: Pfaffian angle (PLAN_pfaffian.md) owns stage 1 with the PI; the ansatz
@@ -351,5 +360,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): Storing the fixed-node state in a fixed network cannot beat that network's best fixed-node guide, and the sign used in the storage tests was an oracle, not a Krylov sign.
-- NEXT (open, high): PI to decide whether the deliverable becomes network + one Lanczos step + fixed node as an add-on (5x better than the Krylov sign alone at 6x6 in existing data).
+- STATUS (in progress, high): The copy loses about 9x more per loop round than the loop can afford; a third of that loss is a local correction the network could in principle compute.
+- NEXT (open, high): Find a network that carries that local correction cheaply, so the copy loses under about 1e-6 per round.

@@ -581,3 +581,17 @@ la_table is reachable (not local). Exact D-norm least squares (Test L machinery,
 Independence readout: D-norm cosines between the features (prediction: s1-s2-s3 >= 0.9; rpT1_pp lower).
 Exact E_FN (s1) for the best 3-feature store in each of K1, K2: least-squares c_j times one scalar s, s by line search
 (about 5 solves each). For K2 also tau = E_FN - E_FN[phi_2] and tau/Delta (Delta 2.207e-6), next to S2's zero-error 5.6e-6.
+
+## Result K (2026-10-29, ws1 m42 CPU 52 min, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_k/k_result.json; sign s1; verified)
+Controls: {R*} -> 0; permuted feature -> 1.0000; f_J[A_s1] = Z's to 1.8e-15. Features: copies s1, s2, s3, rpT1_pp.
+K1 (round-1 correction): single eps^2 A_s1 0.078 / s2 0.375 / s3 0.422 / rpT1 0.510; best 3 0.0776 (others add 1e-4).
+    Predictions met. Best-3 store with line-searched scale: E_FN 1.018e-5 (same as A e^{3.9 f_J}).
+K2 (round-2 correction ln(phi_2/|A_1|)): single eps^2 1.000 / 0.996 / 0.994 / 0.989; best 3 0.9705.
+    KILL (>= 0.70); prediction 0.4-0.7 missed. Best-3 store on A_1: E_FN 1.0069e-5; tau/Delta 0.947.
+Cosines between features 0.65-0.82 (prediction s1-s3 >= 0.9 missed): not collinear, yet they do not span R*_2.
+Reading: round 1's correction is the current guide's own Jacobi factor (0.078); round 2's correction is orthogonal to the
+Jacobi factors of the PRIMITIVE networks (eps^2 ~ 1). Hypothesis (to test, CPU): R*_2 ~ c f_J[A_1], the Jacobi factor of
+the AUGMENTED guide itself, i.e. each round's correction is the current guide's own Jacobi factor; a store of primitive
+features cannot hold it, only nesting (cost) or a fitted network can.
+Test K3 (pre-registered now): eps^2 of R*_2 on f_J[A_1] alone (f_J of the augmented table, E' = E_FN[A_1] = 1.0185e-5).
+Prediction eps^2 <= 0.15; kill of the hypothesis >= 0.5.

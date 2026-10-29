@@ -495,3 +495,31 @@ ceiling 7.0e-6 (A20) is worse, so s1 is the best oracle-free sign on record.
 Decision this informs: if E_FN(c*) at s1 sits >= 3x above the s1 floor (> 6e-6), the copy, not the sign, is still what
 binds, and the per-round bar stays (~1e-6 until within ~2e-6 of the floor). If (b)/(c) land within 2x of 2.5e-6, the sign
 floor binds and T3' must aim at the sign, not the copy. Kill of "copy binds": E_FN(c*) < 5e-6 at s1.
+
+## Result Z (2026-10-29, ws1 m42 CPU 22 min, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_z/z_result.json; sign s1, ORACLE-FREE; verified)
+s1 reproduced: s2 = s1 flipped on X exactly (9.28% of orbits, 0 mismatches); E_FN[|psi_P|, s1] 9.54e-5 = record.
+| E_FN - E0 per site, sign s1 | value | prediction |
+| copy A_s1 | 2.503e-5 | 2.2-2.6e-5 |
+| its one exact FN round phi'' | 1.608e-5 (gain 8.96e-6) | gain 7-9e-6 |
+| A e^{c f_J}, c* = 3.9 | 1.018e-5 | c* 3-5, 0.9-1.1e-5 |
+| s1 floor (record) | 2.05-2.5e-6 | |
+All predictions met. VERDICT: the copy binds (1.02e-5 is ~4x the s1 floor; kill "< 5e-6" not met). The oracle-free sign
+moves every number by ~2e-6 (the floor difference) and changes no conclusion. One orbit (n = 12, no kept hops) has f_J = -inf
+at s1, set to 0. From here on T3' uses the oracle-free sign s1.
+
+## T3' (pre-registered 2026-10-29; GPU only after the lead's Astra consult; sign s1 throughout)
+Class: B = e^{R(x)} x PP(x), PP complex (f 36x36), R a real symmetric RBM (alpha 4, ln cosh, 576 images), NO backflow:
+one-swap ratios = RBM ratio (cached angles) x rank-2 PP ratio, two-swap = RBM x rank-4 (T2: 5.4x plain at 6x6).
+Augmented copy A = B e^{c f_J[B]}, c rescanned each round on exact E_FN (CPU).
+Steps (each fit as test C: cx_c1fit pipeline, log loss, band sampler, flatness rule, max_steps 1100, same seed):
+ R1: fit B_1 to phi'' (= FN(A_s1, s1), E 1.608e-5); A_1 = B_1 e^{c1 f_J[B_1]}.
+ R2: phi_2 = FN(A_1, s1) (CPU); fit B_2 to phi_2 (warm start B_1); A_2 = B_2 e^{c2 f_J[B_2]}.
+ Control R2c: fit B_c to phi'' again with R2's budget, steps, warm start (B_1) and seed; A_c = B_c e^{cc f_J[B_c]}.
+Readouts (bare and augmented separately): E_FN[B_k], E_FN[A_k], c_k, E_FN[phi_k].
+Predictions: E_FN[B_1] 1.8-3.0e-5 (no backflow; unverified class); E_FN[A_1] 0.9-1.3e-5; E_FN[A_c] within 1e-6 of E_FN[A_1];
+E_FN[A_2] 0.5-0.9e-5. Round-1 gain g1 = 2.503e-5 - E_FN[A_1]; round-2 gain over control g2 = E_FN[A_c] - E_FN[A_2].
+Pass: g2 >= m (m = max(1e-6, 2 x seed std of augmented E_FN; 3 seeds of test C/T1 give it)) AND E_FN[A_2] - E_FN[phi_2]
+< 1e-6. Stall rule (lead): stop the loop if g2 < 0.5 x g1. My prediction: g2/g1 = 0.3-0.5, i.e. the stall rule likely
+fires: each round removes a fixed fraction of the excess, the fixed-class bound one level up. Kill: g2 <= 0 (no progress).
+Cost (measured rate test C 6.68 s/step complex PP+bf; no backflow is cheaper): 3 fits <= 1.5 H100-h each, <= 4.5 H100-h,
+plus a code change (complex RBM x PP model block in a copy of cx_c1fit.py; CPU-checked as test C was).

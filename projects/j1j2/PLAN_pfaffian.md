@@ -466,3 +466,4 @@ T3 amendments (Astra xhigh review cj-44177b7587f9 via the lead, 2026-10-29; writ
 - c is rescanned in every round and reported; c* = 3.92 is not transferable.
 - T2's timing is labelled "6x6, oracle sign"; it cannot establish the 14x14 deployable cost.
 - Order: T3 and T3c first (T3c budget ~1.3-1.5 H100-h awaits the PI); the deep-band arm waits for the PI's answer.
+PI 2026-10-29 (via the lead, his words: "GPU budget is agreed open from now on until further notice but wisely spent, no grind as we agreed, just sensible testing grounded in reasoning."): T3c approved; deep-band arm mine to schedule after T3/T3c only if its question still matters; every GPU job needs a written mechanism + predicted number first, sized from measured rates, cost recorded here; spend reported to the lead with each verdict.

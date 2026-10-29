@@ -595,3 +595,4 @@ the AUGMENTED guide itself, i.e. each round's correction is the current guide's 
 features cannot hold it, only nesting (cost) or a fitted network can.
 Test K3 (pre-registered now): eps^2 of R*_2 on f_J[A_1] alone (f_J of the augmented table, E' = E_FN[A_1] = 1.0185e-5).
 Prediction eps^2 <= 0.15; kill of the hypothesis >= 0.5.
+RUNNING R1 on theorie A40 (lead-approved parallel copy): job 17600579 (cip,inter, full A40, wall 09:00, fit_sec 25200 = the only non-path spec change; same code af662d3, seed 1); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40; launcher launch_r1_a40.sh read by the angle lead; watcher r1_a40_watch.sh. Paderborn 4058165 stays queued (ETA 2026-10-31 17:30); no cancel without the PI's pre-approval. Cost ~8 A40-h. /scratch at 948.9/972.8 G (CRIT): R1 output ~130 MB.

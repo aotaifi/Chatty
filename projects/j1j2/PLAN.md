@@ -245,6 +245,10 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   same search; moment formula -0.098) 8.68e-6; s2 floor ~0.9e-6. One local-energy factor of either kind is worth ~1.7 exact FN
   rounds (64% / 59% of the way to the floor); Jacobi beats Lanczos by 0.66e-6 (8%, weak). The rest of the way needs nested steps
   (cost 400^k) or a stored multi-round correction ln(phi/A_0) (untested).
+  TEST Z RESULT 2026-10-29 (angle; verified by the lead from pfaffian_z/z_result.json): at the ORACLE-FREE sign s1 (K1 sign of
+  psi_P; s2 = s1 flipped on X, 9.28% of orbits, 0 mismatches): copy 2.503e-5, one exact FN round 1.608e-5 (gain 8.96e-6),
+  A e^{3.9 f_J} 1.018e-5; s1 floor 2.05-2.5e-6. The copy, not the sign, binds (~4x the floor); conclusions unchanged by the
+  oracle. Angle's T3' (complex RBM x PP, paired control, stall rule) predicts g2/g1 = 0.3-0.5; Astra consulted before any GPU.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

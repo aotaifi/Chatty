@@ -252,6 +252,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   T3' DEFERRED 2026-10-29 (lead, after Astra cj-6e37615f546c): its stall rule mixes non-comparable gains (geometric convergence to
   the s1 floor would give g2/g1 ~0.35 and still be useful). First the CPU screen: phi_2 = FN(A_1) from Z's A_1, rescan c (with c=0),
   replay saved copy errors; judge by tau/Delta and the paired-control advantage. GPU (R1 first) only if the screen leaves headroom.
+  T3' SCREEN RESULT 2026-10-29 (angle cb311ca; verified by the lead from pfaffian_screen/screen_result.json; sign s1):
+  S1 one exact round from A_1 = A e^{3.9 f_J}: 1.018e-5 -> 7.98e-6 (Delta 2.21e-6). S2 zero copy error: phi_2 e^{c f_J} reaches
+  5.60e-6 at c = 5, still falling: with a perfect copy round 2 keeps moving toward the s1 floor (~2.2e-6). S3 (replayed copy
+  error, tau/Delta 19.9) INVALID: it transplanted the s2-target copy error onto an s1 target (error rms 1.06 on the flip set X vs
+  0.010 off it). Lead: R1 approved (<= 1.5 H100-h), judged by the SAME rule on a valid measurement (tau/Delta <= 0.7 vs S2).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

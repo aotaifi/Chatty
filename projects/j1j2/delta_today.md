@@ -381,3 +381,7 @@
 - 2026-10-29 Test Z pre-registered (angle 3c34f7f, CPU): sign s1 = K1 sign of psi_P (oracle-free; self-consistent ceiling 2.51e-6, Aitken 2.05e-6); predictions E_FN[A,s1] 2.2-2.6e-5, one-round gain 7-9e-6, c* 3-5 with E_FN 0.9-1.1e-5; copy binds if E_FN(c*) > 6e-6, sign binds if within 2x of 2.5e-6.
 - 2026-10-29 Pfaffian Test Z (CPU, oracle-free s1): A e^{3.9 f_J} 1.02e-5/site vs s1 floor 2-2.5e-6: copy binds; T3' (complex RBM x PP, no backflow, sign s1, paired control, stall rule) pre-registered, GPU after Astra consult.
 - 2026-10-29 T3' screen pre-registered (angle c66e513, CPU, s1): S1 E_FN[phi_2] 0.70-0.80e-5; S2 zero-copy-error c* 2-4, min 0.45-0.60e-5; S3 replayed copy error tau/Delta 0-0.7; GPU R1 released if tau/Delta <= 0.7.
+2026-10-29 11:45 VERDICT job screen_s123_m42: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/ANALYSIS.md]
+2026-10-29 12:30 VERDICT job screen_s123_m42: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/ANALYSIS.md]
+2026-10-29 12:37 VERDICT job screen_s123_m42: COMPLETED, no gate ran (brief names none, no chains, so quotable.py and the plot were not run). Values below are read from screen_result.json (status DONE, exit_code 0). [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/ANALYSIS.md]
+- 2026-10-29 Pfaffian screen (CPU, s1): Delta 2.21e-6; zero-error round 2 phi_2 e^{5 f_J} 5.6e-6 (still falling); replay S3 tau/Delta 19.9 -> GPU rule not met; S3 transplanted an s2-target error field (rms 1.06 on X): design flaw.

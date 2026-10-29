@@ -539,3 +539,15 @@ S3 (storage-error replay): B_2 = phi_2 e^{e_1}, e_1 = ln|A_s1| - ln phi_1 (round
     tau/Delta 0-0.7.
 Queue (no run): Astra's retained dictionary A_K = |P_0| exp(sum_j c_j f_J[|P_j|]), backflow-free PP features; prediction
 3 features eps^2 <= 0.30 on round 2's correction; kill eps^2 >= 0.70 or walker cost > 20x plain.
+
+## Result screen (2026-10-29, ws1 m42 CPU 48 min, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/screen_result.json; sign s1)
+S1: E_FN[A_1] = 1.018474e-5 (= Z); E_FN[phi_2] = 7.978e-6; Delta = 2.207e-6 (prediction 2.2-3.2e-6: met, lower edge).
+S2 (zero copy error): phi_2 e^{c f_J}: c 0: 7.98e-6; 2: 6.45e-6; 4: 5.69e-6; 5: 5.605e-6 (range edge, still falling).
+    Min <= 5.605e-6: met (0.45-0.60e-5); c* 2-4: missed (>= 5). With a perfect copy round 2 gains another 2.4e-6+.
+S3 (replay): E_FN[B_2] = 1.294e-4 (prediction phi_2 + 1.0-1.5e-5: missed 10x); best augmented 5.18e-5 at c 0.7;
+    tau/Delta = 19.9 (prediction 0-0.7: missed). By the registered rule the GPU R1 release is NOT met.
+Diagnosis of the S3 miss [measured, angle lead, from e1.npy, s1, s2]: e_1 is the round-1 copy's error against phi_1, an
+s2-based target. On the flip set X (9.3% of orbits, 8e-7 of phi_2^2) e_1 has n-mean 0.59 and phi_2-weighted rms 1.06,
+vs 0.11 and 0.010 elsewhere: the replayed field carries the structure where phi_1 and phi_2 differ by construction (the
+sign change), so S3 measured a transplant mismatch, not the storage error a copy of phi_2 at s1 would make. My
+pre-registration of S3 was the flaw (no s1-fitted copy exists to replay).

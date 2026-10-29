@@ -481,3 +481,17 @@ Mechanism of the miss: backflow makes every F entry within the 3x3 window of a s
 Redesign [proposal, not run]: keep the base low-rank: A = e^{J_RBM(x)} x PP (complex RBM+PP, no backflow; Nomura-Imada form,
 our G2 guide). RBM ratios cost O(M) per swap (cached angles), the PP part stays rank 2/4, so A_aug stays ~5x plain. Copy
 quality of that class is comparable on record (C8 RBM+PP storage tax_2 1.657e-6 vs F1 A PP+bf 1.846e-6, different setups).
+
+## Test Z: the same numbers at an ORACLE-FREE sign (pre-registered 2026-10-29 before any number; lead's order; CPU only)
+Sign: s1 = one Krylov (clipped-Lanczos) step of psi_P, as computed in experiments/compress_6x6/cx_refresh.py l.30-38
+(the parent of the oracle s2 = s1 flipped on the FN expelled set X, l.46-48). Records: its self-consistent ceiling (exact
+amplitude floor) 2.509e-6/site at 40 solves, Aitken 2.05e-6 (results/compress_6x6/README "Ceiling ... s_1"); own-PP sign
+ceiling 7.0e-6 (A20) is worse, so s1 is the best oracle-free sign on record.
+(a) floor at s1: taken from the record (2.05-2.5e-6); not re-run unless (b)/(c) land within 2x of it.
+(b) Delta_0 at s1: E_FN[A_s1 copy, sign s1] and E_FN of its exact FN state phi'' (one round): prediction E_FN[A] 2.2-2.6e-5,
+    gain 7-9e-6 (as at s2: 2.092e-5 -> 1.310e-5).
+(c) c* scan of A e^{c f_J} at s1 (f_J recomputed with s1's blocked bonds and E' = E_FN[A, s1]): prediction c* 3-5,
+    E_FN(c*) 0.9-1.1e-5 (s2: 0.803e-5 at 3.92, plus the ~1.2-1.6e-6 higher floor).
+Decision this informs: if E_FN(c*) at s1 sits >= 3x above the s1 floor (> 6e-6), the copy, not the sign, is still what
+binds, and the per-round bar stays (~1e-6 until within ~2e-6 of the floor). If (b)/(c) land within 2x of 2.5e-6, the sign
+floor binds and T3' must aim at the sign, not the copy. Kill of "copy binds": E_FN(c*) < 5e-6 at s1.

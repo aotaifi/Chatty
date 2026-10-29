@@ -249,6 +249,9 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   psi_P; s2 = s1 flipped on X, 9.28% of orbits, 0 mismatches): copy 2.503e-5, one exact FN round 1.608e-5 (gain 8.96e-6),
   A e^{3.9 f_J} 1.018e-5; s1 floor 2.05-2.5e-6. The copy, not the sign, binds (~4x the floor); conclusions unchanged by the
   oracle. Angle's T3' (complex RBM x PP, paired control, stall rule) predicts g2/g1 = 0.3-0.5; Astra consulted before any GPU.
+  T3' DEFERRED 2026-10-29 (lead, after Astra cj-6e37615f546c): its stall rule mixes non-comparable gains (geometric convergence to
+  the s1 floor would give g2/g1 ~0.35 and still be useful). First the CPU screen: phi_2 = FN(A_1) from Z's A_1, rescan c (with c=0),
+  replay saved copy errors; judge by tau/Delta and the paired-control advantage. GPU (R1 first) only if the screen leaves headroom.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -324,6 +327,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Growing store (Astra cj-6e37615f546c): retained dictionary A_K = |P_0| exp(sum_j c_j f_J[|P_j|]) of independent backflow-free PP
+  Jacobi features, walker cost linear in K, cap K. Prediction: 3 features eps^2 <= 0.30 on round 2's correction; kill eps^2 >= 0.70
+  or walker cost > 20x plain. After the T3' screen.
 - Sign at scale: the network stores only the amplitude, so round k's Krylov sign needs k layers of neighbours (~400^k network
   evaluations per configuration at 14x14): a block for a loop that updates the sign. Options: fix the sign at s2 (current design,
   6x6 cap 0.9e-6), store the sign in a second network (tried: A9/A12/A13 work for the sign when trained on the composite sign with

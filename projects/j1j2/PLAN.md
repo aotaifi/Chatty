@@ -279,6 +279,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   A_1 e^{2.4 f_J[A_1]}: E_FN 7.22e-6 < phi_2's 7.98e-6. Mechanism, measured in two rounds: each round's FN correction is
   ~1.1-1.3 x the CURRENT guide's own Jacobi factor (eps^2 0.078, 0.058). Fixed dictionary cannot hold it (K); nesting holds it at
   one level per round (cost); a per-round refit of the base is the cheap route = what R1/R2 measure.
+  TEST W RESULT 2026-10-29 (worker, ~1.9 h CPU; verified by the lead from pfaffian_w/w_result.json; sign s1): decision rule
+  '(b) < 20% at 1e8' FIRES. Raw finite-sample labels (count ratio of mixed vs reference ideal samples, no network) destroy the
+  round: retained (a) -1482 / -262 at N = 1e6 / 1e8 (seeds agree within 0.8%), (b) with the Jacobi factor -301 / -37; controls
+  exact h -> 1.0000, shuffled h -> -12788. Mechanism (measured): the label is tiny, rms ln(phi''/g) = 0.0059 (phi''^2-weighted),
+  while per-orbit count noise is 0.40 (1e6) / 0.13 (1e8): 20-70x the signal; coverage is not the limit (visited orbits hold 0.995
+  of phi''^2 at 1e8); noise = signal only near N ~ 5e10. Prediction (a) <= 30% at 1e6 held; (a) 30-70% at 1e8 missed.
+  Reading: pointwise walker labels cannot carry a round; any walker-trained store must average label noise over many
+  configurations, or avoid labels. Note: g e^{3.9 f_J[g]} needs NO labels and retains 1.66 x Delta (Test Z).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -352,6 +360,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   rounds at oracle sign (8.0e-6 / 8.7e-6 from 2.09e-5; floor 0.9e-6).
 - Each round's FN correction is ~1.1-1.3 x the current guide's own Jacobi factor (eps^2 0.078 round 1, 0.058 round 2; Tests L,
   K3, sign s1/s2): a fixed dictionary of other networks' factors cannot hold it (Test K).
+- Pointwise labels from finite walker samples are 20-70x noisier than one round's correction (Test W): a round's label signal
+  is rms 0.006 in ln phi; the Jacobi correction needs no labels.
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

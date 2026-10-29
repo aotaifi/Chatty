@@ -467,3 +467,17 @@ T3 amendments (Astra xhigh review cj-44177b7587f9 via the lead, 2026-10-29; writ
 - T2's timing is labelled "6x6, oracle sign"; it cannot establish the 14x14 deployable cost.
 - Order: T3 and T3c first (T3c budget ~1.3-1.5 H100-h awaits the PI); the deep-band arm waits for the PI's answer.
 PI 2026-10-29 (via the lead, his words: "GPU budget is agreed open from now on until further notice but wisely spent, no grind as we agreed, just sensible testing grounded in reasoning."): T3c approved; deep-band arm mine to schedule after T3/T3c only if its question still matters; every GPU job needs a written mechanism + predicted number first, sized from measured rates, cost recorded here; spend reported to the lead with each verdict.
+
+## Result T2 (2026-10-29, ws1 m42 CPU, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_t2/t2_result.json; 6x6, oracle sign; verified)
+Exactness PASS: lemma vs direct ratios 1.1e-11 (backflow) / 1.0e-11 (plain); f_J from lemma vs table 8.3e-14; two-swap
+ratios 4.1e-10 / 1.9e-11; broken arms fail (rank-2 assumed for backflow: >= 0.13).
+Rank: plain PP exactly 2 per swap, 4 per two-swap. Backflow PP: 12 (J1) / 14 (J2) per swap (every site whose 3x3 window
+holds a swapped site), two-swap 16-18 = full rank at n = 18: the lemma saves nothing.
+Cost per walker step, aug vs plain (one core; oracle-sign orbit lookup 0.36 s excluded, it would dominate):
+plain PP 5.4x (op model 10.6; needs a small C kernel, numpy 55x); backflow PP 36.5x (op model 36.7).
+VERDICT: the cost claim HOLDS for the plain PP (rank 2/4, 5.4x <= 20) and FAILS its prediction for the backflow copy s1
+(36.5x > 20, below the 50 kill). T3 as registered (backflow base) does not run (PI's condition: T2 must pass).
+Mechanism of the miss: backflow makes every F entry within the 3x3 window of a swapped site change, so rank ~ window size.
+Redesign [proposal, not run]: keep the base low-rank: A = e^{J_RBM(x)} x PP (complex RBM+PP, no backflow; Nomura-Imada form,
+our G2 guide). RBM ratios cost O(M) per swap (cached angles), the PP part stays rank 2/4, so A_aug stays ~5x plain. Copy
+quality of that class is comparable on record (C8 RBM+PP storage tax_2 1.657e-6 vs F1 A PP+bf 1.846e-6, different setups).

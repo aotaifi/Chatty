@@ -376,3 +376,4 @@
 - 2026-10-29 PI: 'I agree you can go ahead' -> angle T3 + deep-band arm approved, <= 3.0 H100-h total, conditional on T2 (CPU) passing.
 - 2026-10-29 angle pre-registered T3 amendments: paired control T3c (refit phi_1, same budget/steps/start/seed); T3 counts if E_FN(A_aug,T3) <= E_FN(A_aug,T3c) - max(1e-6, 2 x seed std from T1); bare and augmented reported separately; c rescanned. T3c's GPU awaits the PI; deep-band arm on hold.
 - 2026-10-29 PI: GPU budget open until further notice, spent wisely, no grind, grounded in reasoning. T3c approved under it.
+- 2026-10-29 Pfaffian T2 (CPU, 6x6 oracle sign): lemma exact; plain PP rank 2/4, aug step 5.4x plain (cheap); backflow PP rank 12-14 (two-swap full), 36.5x: claim fails for the backflow copy, T3 as registered not run; redesign proposed: complex RBM+PP base.

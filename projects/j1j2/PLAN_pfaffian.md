@@ -567,3 +567,4 @@ Predictions: E_FN[B_1] 2.0-3.0e-5 (class untested); E_FN[A_1'] 0.9-1.3e-5, so ta
 tau is not fidelity); zero-error reference 0.75-0.95e-5; tau_ref/Delta 0.1-0.5. Kill of the class: E_FN[B_1] > 4e-5 or
 tau_ref/Delta > 1.
 Cost: fit capped at 4200 s (step rate measured in the job; complex PP+bf was 6.68 s/step) + table; one H100 job <= 1.5 h.
+RUNNING R1: Paderborn job 4058165 (gpu_h100, wall 01:30, fit_sec 3600, max_steps 1100; launcher launch_r1.sh / r1.sbatch read by the angle lead; code af662d3; watcher r1_pdb_watch.sh); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run. Cost <= 1.5 H100-h.

@@ -287,6 +287,13 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   of phi''^2 at 1e8); noise = signal only near N ~ 5e10. Prediction (a) <= 30% at 1e6 held; (a) 30-70% at 1e8 missed.
   Reading: pointwise walker labels cannot carry a round; any walker-trained store must average label noise over many
   configurations, or avoid labels. Note: g e^{3.9 f_J[g]} needs NO labels and retains 1.66 x Delta (Test Z).
+  LABEL-FREE LOOP (lead's idea after Test W; Astra cj-ff745902d93d): refit the base each round to T = A e^{c f_J[A]} (exact at any
+  sampled x, no labels; walkers only for E_FN and c). Astra: sound, convergence unproved; it is Kochkov-Clark SWO (1811.12423) with
+  nonlinear Jacobi targets and an FN line search (known failures: non-monotone fits, trapping on unrepresentable intermediates,
+  small amplitudes hard to sample). Fixed-class bound unchanged. ALSO: R1's augmented-energy gate is void (the unchanged guide plus
+  its own factor already gives tau/Delta -0.658): R1 is judged by the BARE post-fit E_FN (angle told). Proposed paired label-free
+  arm (same architecture/start/optimiser/seeds/budget; samples and weights without phi''): screen e(fit(T)) <= 1.761e-5 per site
+  (tau_J/Delta_J <= 0.5), kill tau_J/Delta_J >= 1. Awaits the PI's go (loop change).
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

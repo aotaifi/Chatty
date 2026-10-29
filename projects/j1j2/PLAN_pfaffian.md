@@ -606,3 +606,4 @@ UNDERSTOOD (mechanism, both rounds): each round's FN correction is ~1.1-1.3 x th
 a store of fixed primitive features cannot hold round k's correction (Test K); nesting the factor holds it exactly but
 costs a level per round (T2: two levels ~1e3-1e4 x plain). The only cheap route is to REFIT the base network each round
 to the augmented target (fold), which is what R1/R2 measure.
+PI 2026-10-29 via the lead, his words: "cancel yes once the first one starts, you are lead". Race watcher (r1_race_watch.sh, setsid) cancels the copy that has not started once the other shows a logged fit step; both in one window -> keep Paderborn 4058165, cancel A40 17600579. Log: /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/race.log and a [pfaffian R1 race] line in delta_today.md.

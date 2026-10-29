@@ -294,6 +294,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   its own factor already gives tau/Delta -0.658): R1 is judged by the BARE post-fit E_FN (angle told). Proposed paired label-free
   arm (same architecture/start/optimiser/seeds/budget; samples and weights without phi''): screen e(fit(T)) <= 1.761e-5 per site
   (tau_J/Delta_J <= 0.5), kill tau_J/Delta_J >= 1. Awaits the PI's go (loop change).
+  NEXT TEST N (PI 'Go' 2026-10-29, after Astra cj-6168204a40dd; angle runs, CPU): can a cheap NONLINEAR feature bank hold the
+  round correction? Frozen symmetric finite-weight RBM features + linear readout, exact least squares in the bond metric on round
+  1, round 2 and the cumulative correction (s1), graded by exact E_FN. Prediction (Astra, low conf.) eps^2 <= 0.2; promote at bare
+  tax/gain <= 0.3 and cost <= 2x base; kill eps^2 >= 0.7. Astra corrections: 'eps^2 ~0.95 for any class' NOT established (O2b
+  round 1 T/g = 0.386; M-R/L/K = small-weight 2-body and one dictionary only); the 4x4-6x6 T(N) test is class-specific, deferred.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

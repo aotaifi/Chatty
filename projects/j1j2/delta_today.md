@@ -385,3 +385,4 @@
 2026-10-29 12:30 VERDICT job screen_s123_m42: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/ANALYSIS.md]
 2026-10-29 12:37 VERDICT job screen_s123_m42: COMPLETED, no gate ran (brief names none, no chains, so quotable.py and the plot were not run). Values below are read from screen_result.json (status DONE, exit_code 0). [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen/ANALYSIS.md]
 - 2026-10-29 Pfaffian screen (CPU, s1): Delta 2.21e-6; zero-error round 2 phi_2 e^{5 f_J} 5.6e-6 (still falling); replay S3 tau/Delta 19.9 -> GPU rule not met; S3 transplanted an s2-target error field (rms 1.06 on X): design flaw.
+- 2026-10-29 R1 pre-registered (angle af3f734): complex RBM x PP, no backflow, fit to phi'' (s1), cap 4200 s, wall <= 1.5 h; gate tau/Delta <= 0.7 (Delta 8.957e-6, round 1 at s1); predictions bare 2.0-3.0e-5, augmented 0.9-1.3e-5, reference 0.75-0.95e-5, tau_ref/Delta 0.1-0.5; class kill bare > 4e-5 or tau_ref/Delta > 1.

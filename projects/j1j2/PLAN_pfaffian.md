@@ -551,3 +551,19 @@ s2-based target. On the flip set X (9.3% of orbits, 8e-7 of phi_2^2) e_1 has n-m
 vs 0.11 and 0.010 elsewhere: the replayed field carries the structure where phi_1 and phi_2 differ by construction (the
 sign change), so S3 measured a transplant mismatch, not the storage error a copy of phi_2 at s1 would make. My
 pre-registration of S3 was the flaw (no s1-fitted copy exists to replay).
+Lead 2026-10-29: S3 is recorded as INVALID (neither failed nor passed): it transplanted a copy error made against an
+s2-based target onto an s1 target (rms 1.06 on X vs 0.010 off it). S2 is the reference: with a perfect copy round 2 still
+gains >= 2.4e-6 at s1.
+
+## R1 (approved by the lead 2026-10-29, <= 1.5 H100-h; pre-registered before submission; sign s1 throughout)
+Fit B_1 = e^{R} x PP (complex PP f, real symmetric RBM alpha 4, no backflow) to phi'' = FN(A_s1, s1) (E_FN[phi''] =
+1.608e-5), with the test-C pipeline switched to sign s1 everywhere (target, bad-bond sampling); warm start: PP f from the
+complex copy s1's f block, RBM weights 0, Im of f as in s1's theta. Readouts on CPU afterwards (sign s1): E_FN[B_1] (bare),
+c scan of A_1' = B_1 e^{c f_J[B_1]} (c 0..6, refined to 0.1), and the zero-error reference phi'' e^{c f_J[phi'']} (c scan).
+Criterion (unchanged from "Lead decision 2026-10-29"): tau = E_FN[A_1'] - E_FN[phi''], Delta = E_FN[A_s1] - E_FN[phi'']
+= 8.957e-6; R2/R2c released only if tau/Delta <= 0.7. Also reported (fidelity, not the gate): tau_ref = E_FN[A_1'] -
+min_c E_FN[phi'' e^{c f_J[phi'']}] (augmentation on both sides), and tau_ref/Delta.
+Predictions: E_FN[B_1] 2.0-3.0e-5 (class untested); E_FN[A_1'] 0.9-1.3e-5, so tau/Delta < 0 (gate passes; a negative
+tau is not fidelity); zero-error reference 0.75-0.95e-5; tau_ref/Delta 0.1-0.5. Kill of the class: E_FN[B_1] > 4e-5 or
+tau_ref/Delta > 1.
+Cost: fit capped at 4200 s (step rate measured in the job; complex PP+bf was 6.68 s/step) + table; one H100 job <= 1.5 h.

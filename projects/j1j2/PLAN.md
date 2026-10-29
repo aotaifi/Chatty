@@ -257,6 +257,18 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   5.60e-6 at c = 5, still falling: with a perfect copy round 2 keeps moving toward the s1 floor (~2.2e-6). S3 (replayed copy
   error, tau/Delta 19.9) INVALID: it transplanted the s2-target copy error onto an s1 target (error rms 1.06 on the flip set X vs
   0.010 off it). Lead: R1 approved (<= 1.5 H100-h), judged by the SAME rule on a valid measurement (tau/Delta <= 0.7 vs S2).
+  TEST W (PI go 2026-10-29 'both go'; queued question 'labels from walkers'; pre-registered by the lead before any number; CPU):
+  Can one round's gain survive labels estimated from FINITE samples instead of the exact table? Setup at sign s1 (Test Z): guide
+  g = s1|A| (complex PP copy s1, E_FN 2.503e-5); exact next guide phi'' (E_FN 1.608e-5); Delta = 8.957e-6. Draw N independent
+  samples from the mixed distribution n_x |g(x)| phi''(x) and N from n_x g(x)^2 (ideal walkers, optimistic: no correlation, no
+  population bias); estimate h(x) = phi''/g from the count ratio on visited orbits, h = 1 (keep g) elsewhere, normalised; guide
+  phi_hat = g h. Arms: (a) raw phi_hat; (b) phi_hat x e^{c f_J[phi_hat]} with c by exact line search. N = 1e5, 1e6, 1e7, 1e8.
+  Readout: retained = (E_FN[g] - E_FN[phi_hat]) / Delta per N and arm; per-band share of what is lost.
+  Prediction (lead, ~50%): arm (a) retains <= 30% at 1e6 and 30-70% at 1e8 (raw counts miss the near-node cost); arm (b) retains
+  more than arm (a) at every N, because the Jacobi factor fills unvisited configurations from visited neighbours.
+  Decision: (a) >= 50% at 1e6 -> walker labels are not the 6x6 bottleneck; (b) < 20% at 1e8 -> finite-sample labels cannot carry
+  a round, and the estimator (not the network) is the next open problem. Raw labels without a network fit: tests label information,
+  not generalisation.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

@@ -425,3 +425,24 @@ Best Jacobi 8.026e-6 vs best Lanczos 8.683e-6: Jacobi lower by 0.66e-6 (8%). VER
 Reading: at the oracle sign, the amplitude part of the reframe (network + one Lanczos step + FN) is within 8% of the best
 single local-energy factor we found; its moment alpha is already the E_FN-optimal step. One local factor of either kind
 is worth ~1.7 exact FN rounds from this copy, not the ~10 to the s2 floor.
+
+## OPEN QUESTION (PI, 2026-10-29, PLAN.md): can the stored network carry the Jacobi-shaped correction cheaply, so that the copy
+loses < ~1e-6/site per round near the fixed point? Proposal OQ (board 20; written before any run; ORACLE s2 throughout).
+Mechanism [derived]: for a pair product A = sum_g det M_g(x), a one-swap ratio is a rank-2 update of the same inverse
+G_g(x) = M_g(x)^-1 (matrix determinant lemma), and a two-swap ratio a rank-4 update of it. So one Jacobi level
+A_aug = A e^{c f_J[A]} lives inside the stored network: its ratios at all neighbours of a walker need n^3 + N^2 4x4 dets per
+image vs n^3 + N 2x2 dets for plain A: ~15x plain at 6x6, ~3x at 14x14 (n = N/2), same O(N^3) class. Two levels would need
+N^3 6x6 dets (~1e3-1e4 x): out. Over rounds nothing nests: each round refits the BASE PP to phi_k and recomputes f_J of the
+new base; the stored object per round is (PP_k, c_k).
+Where I disagree with the stated constraint: "a feature that needs neighbour sums at walker time is not cheap" holds for a
+generic network, not for one level on a determinant/Pfaffian base; the low-rank update is the reason this family fits.
+Measured, round 1: bare copy 2.092e-5, its target phi_1 0.985e-5, A_aug (c* 3.92) 0.803e-5: the stored augmented copy beats
+its own target by 1.8e-6 (far from the fixed point).
+T1 (CPU, now): seeds s2, s3. Prediction: both augmented copies beat phi_1 (E_FN < 0.985e-5), c* in 3-5. Kill: either > 1.1e-5.
+T2 (CPU, now): f_J through the determinant lemma on the complex PP (all 576 images) for 1000 random x equals the table f_J to
+1e-8; time per walker step (all neighbour ratios of A_aug) vs plain at 6x6. Prediction: ratio <= 20. Kill of "cheap": > 50.
+T3 (ending test, GPU, needs the PI): round 2. phi_2 = FN(A_aug of s1) (exact, CPU); refit the bare complex PP to phi_2 as in
+test C (1 seed, <= 1.5 H100-h); c* by line search (CPU). Pass: E_FN(A_aug,2) - E_FN(phi_2) < 1e-6/site AND E_FN(A_aug,2) <
+E_FN(A_aug,1) - 0.5e-6 (the loop progresses). Kill: loss >= 2e-6 or no progress. Prediction: loss -1e-6..0, progress 1-2e-6.
+Second arm of T3 (lead/PI): the refit with bands extended to phi^2 ~ 1e-30; ceiling ~11% of the bare-copy loss (Test F);
+readout also the bulk e rms for phi^2 >= 1e-9 against the standard-band arm (shared-capacity trade-off). +<= 1.5 H100-h.

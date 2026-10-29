@@ -457,3 +457,12 @@ At scale without the table (PI's question), per ingredient of A e^{c f_J}:
 - base refit labels phi_k: NOT available without the table; at scale they must come from walkers (board 11), the open
   storage problem itself. This proposal does not solve that part.
 - sign s2: oracle here; at scale a deployable sign, cost class of that sign.
+T3 amendments (Astra xhigh review cj-44177b7587f9 via the lead, 2026-10-29; written before any T1/T2/T3 number is read):
+- Control T3c: refit the PREVIOUS target phi_1 again with T3's exact budget, steps, warm start and seed (paired), then the same
+  augmentation and c-scan. Excludes "fresh Jacobi improvement compensating an inaccurate refit" being read as stored FN information.
+- T3 counts only if E_FN(A_aug, T3) <= E_FN(A_aug, T3c) - m, with margin m = max(1e-6, 2 x the seed scatter (std) of the
+  augmented E_FN over s1-s3) per site; the scatter comes from T1 (s2, s3) plus s1's 0.803e-5.
+- Report the bare refit E_FN and the augmented E_FN separately; a negative "copy loss" is not fidelity.
+- c is rescanned in every round and reported; c* = 3.92 is not transferable.
+- T2's timing is labelled "6x6, oracle sign"; it cannot establish the 14x14 deployable cost.
+- Order: T3 and T3c first (T3c budget ~1.3-1.5 H100-h awaits the PI); the deep-band arm waits for the PI's answer.

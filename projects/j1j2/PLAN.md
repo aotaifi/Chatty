@@ -45,6 +45,13 @@ level while the gains add up over rounds; a step at walker time nests (400^k).
   one round's correction is ~92% c x f_J, the copy's own Jacobi factor (Test L); the bulk two thirds are moderate errors.
 - Owner: Pfaffian angle (network expert); prediction and ending test to be written by the angle before any run.
 - Constraint: a feature that needs neighbour sums at walker time is not cheap (it nests like a step).
+- Candidate (angle, board 20-21): A_aug = A e^{c f_J} = A^(1-c) A'^c, A' one Jacobi step of the FN equation with the copy's own
+  walls; O(N^3) per walker step via rank-2/4 updates (plain PP; backflow raises the rank; T2 measures, oracle sign).
+- Astra xhigh (cj-44177b7587f9; lead's confidence ~45% before): nonlinear Jacobi over-relaxation in log amplitude, no SOR
+  guarantee; c* not transferable (rescan each round). T3 (loop round 2) is a fair best-case test IF it beats an equal-budget
+  control (refit the previous target, same augmentation and c-scan): otherwise fresh Jacobi improvement masks a bad refit.
+  Most fragile at scale: labels from finite walkers near nodes with a deployable sign; cheapest falsification = 6x6
+  finite-sample replay on exact tables (deployable sign, hidden labels, exact grading), CPU.
 
 ## ROADMAP (PI, 2026-10-27): back to basics, no brute-force testing
 Rule: understand from the code, the records and existing data first. A run only when a derivation names the outcome that would

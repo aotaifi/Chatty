@@ -52,12 +52,28 @@ than E0). (a)-(c) pass -> stage B. (d) fails -> KILL at scale, cause from the si
 Value if it passes (review point 5): a cheap energy estimator with validated error, not a variational result; the project lead
 judges whether that serves the goal.
 
-## Running
-- Blind review done (cj-438ea329c07d): kill test refined and frozen. Worker A0 (ED, N=16..36): running.
+## VERDICT 2026-10-29: KILL at stage A (no QMC spent)
+Exact E0, E_B on N = 16, 18, 20, 26, 32, 34, 36 (A0_ed/energies.json; 6x6 E0 matches published to 4e-9; J2 = 0 gives delta = 0 to 1e-13).
+Fits (A1_fits/fits.py, fits.out), misses per site at N = 34 / 36:
+
+| J2 | form | delta miss | E0-direct miss | ratio |
+|---|---|---|---|---|
+| 0.3 | F1 | 1.47e-3 / 2.87e-3 | 1.74e-3 / 3.21e-3 | 1.12 |
+| 0.3 | F2 | -1.93e-3 / -1.63e-3 | -2.11e-3 / -1.87e-3 | 1.09 |
+| 0.5 | F1 | 5.47e-3 / 1.10e-2 | 5.68e-3 / 1.12e-2 | 1.02 |
+| 0.5 | F2 | -4.97e-3 / -2.78e-3 | -4.92e-3 / -2.78e-3 | 0.99 |
+
+(a), (b), (c) all fail, by 15-110x the 1e-4 bar; the form spread of delta at N = 64 is 1e-2 (J2 0.3) and 3e-2 (J2 0.5).
+A failure at N = 34 is decisive without N = 40 (a pass needed every holdout). Mechanism: r_delta = r0 - r_B with r_B ~ 2e-4 while
+r0 ~ 1e-2: the partner's energy is smooth in N, the frustrated E0 carries the cluster-to-cluster scatter, so delta inherits it
+whole; it fails equally at J2 0.3 (both Neel), so the cause is not the non-magnetic phase named on board 18. Squares alone
+(4x4 0.383212, 6x6 0.385308) give no holdout, and two-point L^-3 vs L^-4 forms differ by 1.6e-4 at 8x8. Stage B not run.
+Hypothesis, untested: in delta = (1/N) int <V>_lambda dlambda the shape-sensitive part sits at lambda > 1/2, where V's J2
+hops turn positive (the frustrated half of the path).
 
 ## Dead ends
-(none yet)
+- Sign gap as a size-converging correction: KILL, see VERDICT (A1_fits/fits.out).
 
 ## Cockpit
-- STATUS (in progress, medium): Testing whether the sign-gap per site converges with cluster size fast enough to predict 8x8 and 10x10 energies.
-- NEXT (open, medium): Exact energies of both Hamiltonians on clusters up to 36 sites, then the pre-registered fits.
+- STATUS (done, low): The sign gap per site does not converge with cluster size: it inherits the full cluster-to-cluster scatter of the exact energy, so it cannot predict 8x8 or 10x10.
+- NEXT (done, low): Angle closed; nothing to run.

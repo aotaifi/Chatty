@@ -457,3 +457,4 @@
 - 2026-10-30 PI: profile worker + Astra decide whether a walker-code speed-up (fast det-ratio updates / fusion fix) is worth building; output gpu_profile/DECISION.md; code reading + CPU only.
 2026-10-30 14:49 VERDICT job testn3_m53: COMPLETED, NO GATE RUN. The brief names no gate command and no MC chains for quotable.py (deterministic least squares), so I ran nothing and printed no verdict. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 - 2026-10-30 GPU-profile follow-up: speed-up decision BUILD (determinant-contraction rewrite, est 2.4x walker-tau/s at 8x8 and 10x10, 3 days); /scratch/a/A.Otaifi/ansatz_runs/gpu_profile/DECISION.md
+- 2026-10-30 PI 'approved': walker speed-up build started (Sonnet worker; fast path behind a flag on the launched M1 code; gates: fast=ref 1e-10, near-node 1e-6, >= 2x at 10x10; <= 0.2 GPU-h, 3 days). Round 2 still in CPU prep (fJ_G built 15:02), not yet on GPU.

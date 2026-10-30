@@ -853,3 +853,18 @@ also in-sample. Controls pass (J v_1 -> 1.000000; noise in-sample 0.04-0.13, hel
 The learnability law is NOT judged. A valid version needs a held-out C(P) at N_p >> P^2/... in practice ~1M pairs per
 candidate (~2M J evaluations at ~80 conf/s ~ 7 h CPU per candidate) or exact sums. Proposal, not run: L-SWO (b) and
 fixed-init (e) only, N_p = 2 x 524288, held-out C(P) and C_GN; cost ~2 x 7 h CPU.
+Θ v1 status: INVALID (design fault: no held-out score, too few pairs); it is not a result.
+
+## Test Θ v2 (lead GO 2026-10-30; pre-registered before any number; CPU only; sign s1)
+Candidates: (b) L-SWO fit; (e) (b) with the fixed RBM init (W, b ~ N(0, 0.01^2), seed 0); calibration (f) M-R RBM alpha 16.
+Pairs: two independent D-sampled sets A, B of 524288 blocked pairs each (target-phi weights as in v1).
+Estimators (all with coefficients fitted on one set and scored on the other, both directions A->B and B->A):
+ C_ho(P)  : ridge with lambda = 1e-6 tr(G)/P (near min-norm);  C_ho(GN): ridge with lambda = lam_rel tr(G)/P (the fit's
+ final damping, b: 0.0625; e: 1e-2); C_ho(200): least squares on the top-200 eigenvectors of G_train.
+ C_ho = 1 - D_test(R - J c_train) / D_test(R). In-sample values are reported but marked "overfit, not quotable".
+Calibration gate (must pass before any PP number counts): C_ho(P) of (f) on R*_1 within 0.02 of the exact L1 value 0.023.
+Targets: R*_1 primary; R*_2 and f_J[A_s1] secondary.
+Verdict (R*_1, both directions): C_ho(P) <= 0.1 -> missing direction (expressibility of the correction);
+ C_ho(P) >= 0.5 AND (C_ho(200) or C_ho(GN)) <= C_ho(P)/2 -> slow learning (spectral bias); else inconclusive.
+Prediction (mine, ~70%): missing direction for (b) (C_ho(P) <= 0.1); (e) at most 0.05 higher. Lead/Astra prior: spectral bias.
+Cost: ~2M J evaluations per candidate at ~80 conf/s ~ 7 h, (b) and (e) in parallel on two ws nodes, (f) minutes.

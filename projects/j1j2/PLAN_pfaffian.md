@@ -905,3 +905,17 @@ s_G (stated confound), 6x6 only, s_G is the competitor's own sign. Equal-cost: w
 (T2, plain PP) vs one Lanczos step (same two-hop class); training 2 label-free rounds (0.58 H100-h + 7.6 A40-h) vs the
 competitor's VMC training (not counted here).
 Candidate (1) (backflow-free PP + Jacobi head, refit per round) SURVIVES its kill in both arms.
+
+## R2G-conv: round 2 under s_G to convergence, 2 seeds (lead/PI takeover approval 2026-10-31; pre-registered before any number)
+Same as the s_G arm (target T_G = B_1 e^{4.0 f_J^G[B_1]}, warm B_1 theta, class unchanged, sign s_G), seeds 1 and 2 (sampler),
+convergence rule as R1b (flatness < 0.02, max_steps 3000). Paderborn H100 cont (fit_sec 9000, wall 03:00) raced against a
+theorie A40 copy per seed (fit_sec 43200, wall 13:00, so ~1600 steps can converge); first logged step wins, loser cancelled
+(PI pre-approval). Readout as round 2 (bare e at s_G, drop vs 1.5453e-5; augmented c scan 0..7 with 3.5/4.5 filled).
+Predictions: converged bare e(B_2^G) 1.36-1.42e-5 per seed; augmented minima 5.2-5.5e-6; seed spread <= 0.15e-6.
+QUOTABLE RULE for the bar crossing: BOTH seeds' augmented minima < 5.574e-6 AND |seed difference| < 5.574e-6 - max(minima).
+Kill of candidate (1) at convergence: bare drop <= 0.5e-6 in either seed.
+Then (only after this reads out): round 3 from the better converged seed under s_G, <= 1 H100-h. Lead's stretch ceiling
+4 H100-h total. Full-Lanczos-factor arm deferred (budget).
+Equal-cost note (training): competitor RBM+PP 6x6 guide training 14.3 GPU-h (RTX 2080 Ti / A40 slices) of which ~6.5 h on
+plateaued runs (results/rbmpp_6x6/README.md section 4). Ours on top of a PP start that came from that project (rpT1_pp):
+F1 A real fit ~1.2 H100-h, complex copy (test C) ~0.7 H100-h, L-SWO round 1 0.58 H100-h, round 2 7.6 A40-h (unconverged).

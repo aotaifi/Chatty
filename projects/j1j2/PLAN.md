@@ -411,7 +411,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Label-free storage beats exact labels (R1b vs L-SWO, both converged, complex PP RBM inactive, s1): bare 2.373e-5 vs 1.957e-5,
   augmented 9.64e-6 vs 8.34e-6; one stored round keeps 15% (labels) vs 37% (Jacobi target) (pfaffian_r1/readout_b, pfaffian_lswo/readout).
 - Two label-free rounds keep improving (L-SWO round 2, unconverged, one seed): bare drop 1.26e-6 (s1) / 1.27e-6 (s_G); with the
-  Lanczos sign s_G the augmented guide reaches 5.39e-6 at c=4 (scan not bracketed) vs competitor 5.574e-6: first guide at the bar,
+  Lanczos sign s_G the augmented guide reaches 5.39e-6 at c*=4 (bracketed: c=3 5.92e-6, c=5 5.95e-6) vs competitor 5.574e-6: first guide at the bar,
   not yet quotable (pfaffian_lswo2/readout/sG/readout.json). Converged 2-seed rerun running.
 - Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
   competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). s_G is better for both magnitudes, but the gain depends on the magnitude

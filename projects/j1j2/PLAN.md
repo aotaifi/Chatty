@@ -304,6 +304,14 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   <= 1.761e-5, kill >= 2.503e-5; predicted 1.9-2.1e-5), tau_J/Delta_J 0.632: stores 37% of the Jacobi gain without any FN labels.
   Re-augmented: fit e^{4.0 f_J[fit]} 8.34e-6 vs A_s1 e^{3.9 f_J} 1.018e-5 = the augmented guide moved 1.84e-6 in one label-free
   round (perfect-copy reference S2: 5.60e-6, so ~40% of the ideal progress). Copy error vs T: 76% of pair cost moderate.
+  LEAD'S DERIVATION 'label-free round = fixed-sign VMC step' (board 22) PARTLY WRONG (Astra cj-d0bc7446d51c): steps (1)-(3) hold
+  (f_J ~ -(E_L - E')/K_A to 5.7% in the bond norm, not uniformly: r spans -0.82..29.9; E' = E_FN, not E_var). Step (4)-(5) fails:
+  the fit weights are band-uniform over decades -5..-13 with blocked-bond terms (~120x more weight in decade -13 than |A|^2), so the
+  fixed point is Cov_q(O, f_J) + sum_blocked (q b / Wbar)(O_x - O_y)(f_J,x - f_J,y) = 0: neither VMC nor E_FN stationarity. L-SWO may
+  beat the VMC optimum in E_FN by fixing blocked-bond ratios in low-|A|^2 regions; not guaranteed. Decisive test (later): converged
+  L-SWO vs SR-VMC, same class, sign s1, equal cost, same augmentation.
+  CODE FINDING: cx_r1fit.py zero-initialises the RBM block, whose gradients then vanish; L-SWO's 148 RBM parameters stayed 0. L-SWO
+  and R1 fit a plain complex PP (no RBM, no backflow), not 'RBM x PP'. Their pairing stays valid; labels corrected; fix for future runs.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

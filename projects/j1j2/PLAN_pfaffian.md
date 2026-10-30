@@ -891,3 +891,4 @@ New reference: C_exact = the exact D-norm projection share of R*_1 onto the alph
 (0.069, 0.065), AND C_exact >= max(C_ho(P)_f) (my bias argument: a held-out score is biased low; if this fails the argument
 is wrong too). Pass -> the v2 PP numbers count under v2's verdict rule with no rerun. Fail -> Θ closed as unmeasurable
 with this estimator. Prediction: C_exact 0.07-0.12.
+L-SWO round 2 fits (2026-10-30/31): A40 copies won both races at 15:24 (Paderborn 4077957/58 cancelled before start); s1 17614777 and sG 17614778: 935 steps each, NOT converged (A40 budget 25200 s; held-out change 0.0086 / 0.0748 vs 0.02; sG held-out loss ended above its start), 7.64 A40-h each; la_tables run_s1_a40 / run_sG_a40 (sha 283576f9 / 69b22a28). CPU readout running.

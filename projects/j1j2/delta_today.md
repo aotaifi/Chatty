@@ -420,3 +420,4 @@
 - 2026-10-30 PI: rerun R1 on Paderborn H100 to convergence (same rule as L-SWO, same class), default GPU = Paderborn; A40 only if Paderborn ETA > ~1 day.
 2026-10-30 07:02 [pfaffian R1b] Paderborn H100 job 4070227 submitted (wall 03:00:00, max_steps 3000, fit_sec 9000, seed 1, s1); job_id.txt in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_b; watcher pid 3498966; remote /scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/runs/r1b
 - 2026-10-30 07:15 migrate (lead): Test X running detached on m52 (PID 3279912); angle runs R1 rerun (Paderborn) and Test N; sign angle card task_150a60d8 pending; board at v50 (blocks 1-23).
+- 2026-10-30 PI: 'laws of learnability' parked in PLAN.md Queue for a future angle.

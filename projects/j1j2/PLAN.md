@@ -415,6 +415,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Laws of learnability (PI 2026-10-30, parked for its own angle): why an architecture or input embedding learns a target better.
+  Theory exists: NTK eigenspectrum vs target alignment (1806.07572, 2006.13198), spectral bias (1806.08734), embeddings reshape
+  that spectrum (Fourier features 2006.10739); NQS sign generalization (1907.08186). Ids from memory, unread here. Our use: predict
+  which network stores f_J (spectral-bias guess ~55%, delta 2026-10-29) before training it.
 - Loop value vs guide quality and size (PI 2026-10-29): the loop settles at E* ~ floor + T/f (T copy tax per round, f fraction
   of the excess one round removes; O2b: E* ~9e-6 = tax/(1-r), measured). At 6x6 our guides already sit near E* (~2.8e-5 for
   the complex class at s1), so R1/L-SWO cannot gain; at 14x14 trained nets err 1e-4-1e-3/site, so the loop helps if T/site stays

@@ -414,3 +414,4 @@
 2026-10-30 01:05 VERDICT job 4062263: COMPLETED, FIT OK [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo/run/ANALYSIS.md]
 - 2026-10-30 Pfaffian L-SWO readout (CPU, s1): label-free fit e(fit) 1.957e-5 (between; pred 1.9-2.1 met), recovers 37% of the Jacobi gain without phi''; augmented 8.34e-6 vs 1.018e-5 (not the gate). 0.58 H100-h.
 - 2026-10-30 Pfaffian correction: R1/L-SWO RBM block inactive (zero init is a stationary point of ln cosh; L-SWO theta RBM block exactly 0). Relabelled 'complex PP, no backflow, RBM inactive'; paired comparison stands; init fix noted for future runs.
+- 2026-10-30 RBM zero-init bug verified by the angle (W = b = 0 is a stationary point of ln cosh; spec fault; CPU Jacobian check ran at nonzero W). R1 (17603167) and L-SWO relabelled 'complex PP, no backflow, RBM inactive' (2592 active parameters); pairing stands. Fix: W, b ~ N(0, 0.01^2) + nonzero-Jacobian CPU check.

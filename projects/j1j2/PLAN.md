@@ -442,6 +442,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
 ## Running (2026-10-30)
+- Worker (Sonnet): GPU load profile of 8x8 FN-GFMC walkers, /scratch/a/A.Otaifi/ansatz_runs/gpu_profile; staged then waits for the lead's "submit"; verdict feeding-limited / partly / GPU-bound -> if feeding-limited, fix before any 10x10 run.
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
 - Sign-storage angle (session local_3026e44f, started 2026-10-30 on the PI's "start the sign angle", detached; PLAN_sign.md): can a second network store each round's Lanczos sign; sent Test X + R1b results.

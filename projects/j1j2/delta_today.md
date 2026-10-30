@@ -447,3 +447,9 @@
 - 2026-10-30 Pfaffian angle answered the PI's network questions on paper (PLAN_pfaffian.md last section): fits already use damped Gauss-Newton (minSR in sample space), keep it; init rule = nonzero Jacobian columns in every block at step 0; no parameter noise (limit is a missing direction); architecture ranked: PP + explicit Jacobi head refit each round ~45%, + Jastrow/RBM bulk ~35%, richer backflow ~20%. Proposes L-SWO round 2 (~0.6 H100-h) as candidate (1)'s kill test.
 - 2026-10-30 PI 'go': L-SWO round 2, two arms (s1 = candidate (1) kill test, bare gain > 0.5e-6; s_G = Lanczos sign), ~1.2 H100-h, Pfaffian angle pre-registers and submits.
 - 2026-10-30 L-SWO round 2 pre-registered (angle e1e37fe): s1 arm bare 1.45-1.75e-5, aug 6.5-7.8e-6; s_G arm (single round from B_1, confound stated) bare 1.3-1.6e-5, aug 5.8-7.0e-6 vs bar 5.6e-6; kill bare drop <= 0.5e-6 each; launch_lswo2.sh staging.
+2026-10-30 14:04 VERDICT job testn2_m47: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 14:05 VERDICT job testn2_m53: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 14:06 VERDICT job testn3_m53: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 14:06 VERDICT job testn3_m47: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 14:11 VERDICT job 4075217: COMPLETED, all six precision/dataset pairs "not usable": f32/met (max err 1.74e+00 on lowest 1% |c(x)|, 0 flips there, 18 flips over all pairs), f32/uni (1.89e+00, 1 flip), tf32 and bf16 (errors up to 6.3e+03, ~460 flips on lowest 1%). [/scratch/a/A.Otaifi/ansatz_runs/gpu_profile/ANALYSIS.md]
+- 2026-10-30 GPU profile job 4075217 analysed (PROFILE.md in /scratch/a/A.Otaifi/ansatz_runs/gpu_profile/): GPU-bound, util 96.6% mean, 0.46 GPU-h; f32 2.1x faster but all precisions not usable.

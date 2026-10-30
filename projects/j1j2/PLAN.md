@@ -422,6 +422,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Walker-code speed (GPU profile 4075217, gpu_profile/PROFILE.md): 8x8 FN-GFMC is GPU-bound (sm 96.6%), 98.3% network compute,
+  dominated by XLA reduce/transpose fusions, not matmul/solves; bigger GPU batches do not help; f32/tf32/bf16 not usable near nodes
+  (f32 18 sign flips / 1.44M pairs). Next lever (hypothesis): find the line behind input_reduce_fusion_2 (12 of 25 s) and use
+  fast determinant-ratio updates per hop; before the 10x10 stage. Repo gfmc_run.py/gfmc_fn_lib.py differ from launched M1 code.
 - Sampling engineering for the 10x10 stage (PI list 2026-10-30): convergence watcher, resetting stuck chains, larger proposals for
   acceptance near nodes, chains per sample, NetKet / NVIDIA samplers vs our code; opens as an angle with the 10x10 test, first
   input = GPU profile (Paderborn 4075217). Optimizer fixed by the PI: SR / minSR, no optimizer comparison.
@@ -448,7 +452,6 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 
 ## Running (2026-10-30)
 - Pfaffian angle: L-SWO round 2 (PI go), arms s1 and s_G, ~1.2 H100-h; kill: round 2 lowers bare B by <= 0.5e-6 -> change the network (Test N / Theta); pass -> round 3 and the scale question.
-- Worker (Sonnet): GPU load profile of 8x8 FN-GFMC walkers, /scratch/a/A.Otaifi/ansatz_runs/gpu_profile; staged then waits for the lead's "submit"; verdict feeding-limited / partly / GPU-bound -> if feeding-limited, fix before any 10x10 run.
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
 - Sign-storage angle (session local_3026e44f, started 2026-10-30 on the PI's "start the sign angle", detached; PLAN_sign.md): can a second network store each round's Lanczos sign; sent Test X + R1b results.

@@ -483,3 +483,4 @@
 2026-10-30 18:00 VERDICT job thetaho_m53: COMPLETED, NO GATE RAN. The brief names no gate, and `quotable.py` doesn't apply because this job has no MC chains. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta/ANALYSIS.md]
 - 2026-10-30 Pfaffian Test Θ (CPU, s1): INVALID as designed: in-sample C(P) 0.63-0.86 overfits (held-out < 0 at 32768 pairs vs rank ~3000); law not judged; held-out redesign at ~1M pairs proposed (~7 h CPU per candidate).
 - 2026-10-30 Test Theta v1 INVALID (angle): in-sample C(P) 0.63-0.86 overfits (rank ~2400-3500 vs 32768 pairs); held-out C(P) < 0 for all PP; calibration M-R RBM in-sample 0.11 vs held-out 0.055 vs exact 0.023. Lead GO: held-out Theta on L-SWO + fixed-init, 2 x 524288 pairs, ~14 CPU-h, calibration gate within 0.02 of exact.
+- 2026-10-30 Theta v2 pre-registered (angle 3321122) and running on CPU (~7 h/candidate): held-out C only, calibration gate M-R RBM within 0.02 of 0.023; angle predicts missing direction (~70%).

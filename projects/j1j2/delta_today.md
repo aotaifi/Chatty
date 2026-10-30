@@ -437,3 +437,4 @@
 - 2026-10-30 sign angle: PLAN_sign.md written (mechanism: bond-product cost 2B, step repairs isolated errors not walls; predictions P1-P3; tests S1 CPU injected errors, S2 complex-PP phase net); Astra cj-34b8f6b3a4c9 asked blind. No runs.
 - 2026-10-30 sign angle: S1 designed (stores the sign of the same step whose magnitude is stored; adds G_relax at self-consistent magnitudes), Astra cj-34b8f6b3a4c9 reviewing blind; awaits the PI's go (PLAN_sign.md).
 - 2026-10-30 PI: GPU load profile of the 8x8 FN-GFMC walker code (p=1 production config; GPU busy fraction, phase split, walkers-per-GPU scan; <= 0.5 GPU-h) given to a Sonnet worker; run dir /scratch/a/A.Otaifi/ansatz_runs/gpu_profile; lead reads the launcher before submission.
+- 2026-10-30 PI: precision arm added to the GPU profile (f32 / TF32 / bf16 vs f64: throughput + near-node ratio accuracy on 1e4 configs and hops; usable iff near-node ratio error < 1e-6 and no sign flips).

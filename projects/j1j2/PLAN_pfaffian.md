@@ -755,3 +755,15 @@ Competitor bar (reference): 5.6e-6; best augmented so far 8.34e-6 (L-SWO). To be
 4070227) reads out. Note: L-SWO (label-free, converged) e 1.957e-5 is below R1 (exact labels, unconverged) 2.391e-5; the
 pair is not comparable until R1b converges.
 R1b fit done (Paderborn 4070227, 2026-10-30 08:20): 1390 steps, CONVERGED (held-out change 0.0043 < 0.02 from step 1110), 2.99 s/step, 1.30 H100-h; la_table run_b/round_1/la_table.npy (sha f3c19d8a). CPU readout running. The A40 R1 result is now 'unconverged, superseded' pending this readout.
+
+## Result R1b (Paderborn 4070227, CONVERGED 1390 steps, 1.30 H100-h; class complex PP, no backflow, RBM inactive; sign s1;
+/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/readout_b/readout.json; verified). R1 (A40) is now "unconverged, superseded".
+e(B) = 2.373e-5/site, r = 0.146: BETWEEN (prediction -0.2..0.3 met). The converged exact-label refit stores 15% of one
+FN round's gain; converging moved r from 0.126 to 0.146. Pair cost vs phi'' 2.04e-5/site, 86% moderate class.
+Not the gate: augmented 9.64e-6 (c* 4.0); zero-error reference 7.18e-6; tau_ref/Delta +0.275. Competitor bar 5.6e-6.
+PAIRED with L-SWO (same class, both converged): label-free fit to T = A e^{3.9 f_J} reaches e 1.957e-5, better than the
+exact-label fit to phi'' (2.373e-5) by 0.42e-5; augmented 8.34e-6 vs 9.64e-6. Exact labels do not beat the label-free
+Jacobi target in this class.
+Reading: in this class one stored round keeps ~15% (exact labels) to ~37% (Jacobi target) of the available improvement; the
+loop's per-round storage loss is most of the gain (T/g ~ 0.85 for exact labels). Consistent with L/K: the class lacks the
+Jacobi-shaped direction. Test Θ (kernel) is the next step to say whether that is expressibility or spectral bias.

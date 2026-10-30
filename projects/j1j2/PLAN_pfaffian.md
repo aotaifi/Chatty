@@ -767,3 +767,44 @@ Jacobi target in this class.
 Reading: in this class one stored round keeps ~15% (exact labels) to ~37% (Jacobi target) of the available improvement; the
 loop's per-round storage loss is most of the gain (T/g ~ 0.85 for exact labels). Consistent with L/K: the class lacks the
 Jacobi-shaped direction. Test Θ (kernel) is the next step to say whether that is expressibility or spectral bias.
+
+## Network questions from the PI (2026-10-30, on paper; [lit] = literature, [mem] = id from memory, not re-checked;
+[judg] = my judgment). Search budget: 3 arXiv queries; only arXiv:2302.01941 (Chen-Heyl, minSR) verified by title.
+0. Premise correction: our storage fits are NOT first-order: cx_*fit.py uses damped Gauss-Newton (minSR in sample space
+   when rows <= params), i.e. second order in the fit's own metric (docstring "Optimiser damped Gauss-Newton").
+1. Initialisation. [judg, derived] Under GN/SR the update solves (J^T J + lambda) d = J^T r, so a block whose Jacobian
+   columns vanish never moves, whatever the loss curvature: ln cosh at W = b = 0 (all derivatives tanh(0) = 0), and Im f at
+   a real warm start (d ln|A| / d Im f = 0), are frozen points for any GN-type optimiser. Rule: every block must start
+   with nonzero Jacobian columns; check rank(J_block) at step 0 on CPU. Because SR/GN are invariant to linear
+   rescaling of parameters, the scale matters little once it is nonzero: RBM W, b ~ N(0, 0.01^2..0.05^2), Im f ~ 1% of
+   |Re f|, PP f from the previous round (or a mean-field pairing). [mem] Nomura et al. arXiv:1709.06475 and Nomura-Imada
+   arXiv:2005.14142 start the PP from a mean-field (Hartree-Fock/BCS-type) pairing and the RBM small and random; the
+   assumption is that the PP carries the sign/node structure and the RBM a small correction (not checked in the text).
+2. Optimiser. [judg] For a least-squares storage fit, Gauss-Newton in the loss's own metric IS the natural method; SR with
+   the |psi|^2 QGT would weight by the model's own distribution (the bulk), the opposite of what storage needs (the tail).
+   So: keep GN/minSR, but in the fit's metric (as now). [mem] Fidelity-based fits with natural-gradient preconditioning:
+   projected time-dependent VMC (Sinibaldi et al., arXiv:2305.14294), SWO (Kochkov-Clark arXiv:1811.12423); not re-read.
+   Spectral bias under GN: preconditioning by (J^T J + lambda)^-1 equalises the learning speed of all kernel directions
+   with eigenvalue >> lambda; only directions below the damping stay slow. So Θ must report, besides plain C(k), the GN
+   version C_GN(lambda) = share of R on kernel eigen-directions with eigenvalue > lambda_used (our lam_rel x tr(J^TJ)/P),
+   and C(P). Expectation [judg]: under GN, "spectral bias" reduces to "below the damping"; if C(P) is low, the class lacks
+   the direction (expressibility of the correction) and no optimiser fixes it.
+3. Parameter noise / Langevin SR. [mem] Noise provably escapes strict saddles (Ge et al. arXiv:1503.02101) but not true
+   minima; Langevin dynamics samples rather than optimises. [judg] For the zero-init case the cure is the init (item 1),
+   not noise. Our fits are not noise- or plateau-limited in the usual sense (acceptance ~1.0, held-out plateau, M-R's
+   quadratic law): L/K/K3 point to a missing direction, which noise cannot create. I would not add noise.
+4. Architecture for holding the Jacobi-shaped correction at constant-factor walker cost (ranked):
+   (1) ~45%: backflow-free pair product with an explicit Jacobi head, guide = B e^{c f_J[B]}; each round refits B to the
+       previous augmented guide (L-SWO: 37% of the Jacobi gain kept, guide 8.34e-6). Mechanism: the round correction IS
+       the guide's own f_J (L 0.078, K3 0.058); one swap is rank 2 and two swaps rank 4 of the same inverse, so the head
+       costs n^3 + N^2 4x4 dets vs n^3 + N 2x2: ratio ~ 1 + c/N (5.4x at 6x6 measured, T2; falling with N). Kill: a
+       second label-free round does not lower the bare B by > 0.5e-6 (the refit stops absorbing), or op-count > 20x
+       plain at 10x10.
+   (2) ~35%: (1) plus a two-body Jastrow e^{J2} (or an RBM with the fixed init) on B for the bulk; Jastrow ratios for one
+       and two swaps are O(1) with cached fields, so the cost class is unchanged. Kill: no gain in bare e(B) over (1) at
+       equal steps (bulk not the limiter).
+   (3) ~20%: richer backflow (neural or windowed) inside the determinant. Every swap then changes ~window entries
+       (T2: rank 12-14 for a 3x3 window, two-swap full rank), so the Jacobi head costs ~window-fold more (36.5x measured)
+       and the advantage over Lanczos-type steps disappears. Kill: any measured head cost > 20x plain at the target size.
+   Note [judg]: the determinant structure is what makes the head cheap; an RBM-only base has O(M) per swap but N^2 two-swap
+   configurations, a ratio ~N that grows with size.

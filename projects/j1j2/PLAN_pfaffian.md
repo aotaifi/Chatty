@@ -832,3 +832,4 @@ MISSED low, i.e. better): E_FN[B_1, s_G] = 1.545e-5 (predicted 1.7-1.9e-5); c_G 
 at s_G = 6.069e-6 (predicted 7.0-7.5e-6): without any new training, 0.47e-6 above the competitor bar 5.6e-6 at the same sign.
 Queues (--test-only, 13:35): Paderborn ~50 h, theorie A40 ~38 h -> both copies of each arm submitted, race rule as before
 (A40 copy capped at ~840 steps; L-SWO round 1 converged at 520).
+RUNNING L-SWO round 2 (race per arm, PI rule): s1 4077957 2026-10-30T15:14:11+01:00 sG 4077958 2026-10-30T15:14:14+01:00 s1-a40 17614777 2026-10-30T15:14:29+01:00 sG-a40 17614778 2026-10-30T15:14:30+01:00 ; launchers launch_lswo2.sh / launch_lswo2_a40.sh read by the angle lead; race watchers lswo2_race_watch.sh.

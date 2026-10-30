@@ -444,7 +444,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 ## Running (2026-10-30)
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
-- Proposed, not started: sign-storage angle (card task_150a60d8, brief in the card; PI said "Start it", app refused a direct start).
+- Sign-storage angle (session local_3026e44f, started 2026-10-30 on the PI's "start the sign angle", detached; PLAN_<angle>.md in this dir): can a second network store each round's Lanczos sign; sent Test X + R1b results.
 
 ## Budget
 PI 2026-10-29: GPU budget OPEN until further notice, "wisely spent, no grind": every run follows a written mechanism with a

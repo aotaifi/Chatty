@@ -418,3 +418,5 @@
 2026-10-30 06:53 VERDICT job 17603167: COMPLETED, FIT OK (budget-limited: 935 steps, converged False, held-out loss 2.2730e-02 -> 3.6402e-03 at step 930) [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40/ANALYSIS.md]
 - 2026-10-30 R1 (A40 17603167) finished 06:53 NOT converged (budget-limited at 935 steps, held-out change 0.0426 > 0.02, 26.8 s/step, ~7.6 A40-h); readout running with the unconverged label. Pairing with L-SWO (converged, 520 steps) is unequal in convergence: note in the verdict.
 - 2026-10-30 PI: rerun R1 on Paderborn H100 to convergence (same rule as L-SWO, same class), default GPU = Paderborn; A40 only if Paderborn ETA > ~1 day.
+2026-10-30 07:02 [pfaffian R1b] Paderborn H100 job 4070227 submitted (wall 03:00:00, max_steps 3000, fit_sec 9000, seed 1, s1); job_id.txt in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_b; watcher pid 3498966; remote /scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/runs/r1b
+- 2026-10-30 07:15 migrate (lead): Test X running detached on m52 (PID 3279912); angle runs R1 rerun (Paderborn) and Test N; sign angle card task_150a60d8 pending; board at v50 (blocks 1-23).

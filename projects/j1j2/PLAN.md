@@ -428,8 +428,12 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running
-- Nothing on Paderborn. Cancelled 10x10/12x12 trainings: checkpoints in /scratch/a/A.Otaifi/rbmppL/prod/rbL{10,12}_prod/backup_paderborn.
+## Running (2026-10-30 07:15)
+- Lead: TEST X (crossed signs), CPU, th-ws-7010m52 PID 3279912 (setsid, PPID 1), run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_x
+  (ANALYSIS_BRIEF.md with the gate; result x_result.json + x.log; exit_code when done). No watcher: read the files.
+- Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
+  PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
+- Proposed, not started: sign-storage angle (card task_150a60d8, brief in the card; PI said "Start it", app refused a direct start).
 
 ## Budget
 PI 2026-10-29: GPU budget OPEN until further notice, "wisely spent, no grind": every run follows a written mechanism with a
@@ -468,5 +472,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): The copy loses about 9x more per loop round than the loop can afford; a third of that loss is a local correction the network could in principle compute.
-- NEXT (open, high): Find a network that carries that local correction cheaply, so the copy loses under about 1e-6 per round.
+- STATUS (in progress, high): A label-free loop round (network refit to its own Jacobi-corrected version) made progress at 6x6, but storage keeps only ~37% of each step and it is still behind one Lanczos step.
+- NEXT (in progress, high): Read the crossed-sign check and the converged round-1 rerun, then decide the network (Test N) and start the sign-storage angle.

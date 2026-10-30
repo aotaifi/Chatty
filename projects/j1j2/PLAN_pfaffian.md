@@ -754,3 +754,4 @@ Not the gate: B e^{4.0 f_J[B]} 9.72e-6; zero-error reference phi'' e^{5.3 f_J} 7
 Competitor bar (reference): 5.6e-6; best augmented so far 8.34e-6 (L-SWO). To be marked superseded once R1b (converged,
 4070227) reads out. Note: L-SWO (label-free, converged) e 1.957e-5 is below R1 (exact labels, unconverged) 2.391e-5; the
 pair is not comparable until R1b converges.
+R1b fit done (Paderborn 4070227, 2026-10-30 08:20): 1390 steps, CONVERGED (held-out change 0.0043 < 0.02 from step 1110), 2.99 s/step, 1.30 H100-h; la_table run_b/round_1/la_table.npy (sha f3c19d8a). CPU readout running. The A40 R1 result is now 'unconverged, superseded' pending this readout.

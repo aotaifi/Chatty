@@ -427,3 +427,4 @@
 2026-10-30 07:32 VERDICT job testn_m47: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 2026-10-30 07:32 VERDICT job testn_m53: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 - 2026-10-30 Pfaffian R1 readout (A40, unconverged, s1): e(B) 2.39e-5, r 0.126 (between); augmented 9.72e-6 vs zero-error ref 7.18e-6. R1b (converged rerun, 4070227) pending.
+- 2026-10-30 R1 readout (A40, unconverged, complex PP RBM inactive, s1; lead verified pfaffian_r1/readout/readout.json): e(B) 2.391e-5, r 0.126 (BETWEEN, pred -0.2..0.3), augmented 9.72e-6 vs reference 7.18e-6; superseded when R1b 4070227 converges.

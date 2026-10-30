@@ -833,3 +833,11 @@ at s_G = 6.069e-6 (predicted 7.0-7.5e-6): without any new training, 0.47e-6 abov
 Queues (--test-only, 13:35): Paderborn ~50 h, theorie A40 ~38 h -> both copies of each arm submitted, race rule as before
 (A40 copy capped at ~840 steps; L-SWO round 1 converged at 520).
 RUNNING L-SWO round 2 (race per arm, PI rule): s1 4077957 2026-10-30T15:14:11+01:00 sG 4077958 2026-10-30T15:14:14+01:00 s1-a40 17614777 2026-10-30T15:14:29+01:00 sG-a40 17614778 2026-10-30T15:14:30+01:00 ; launchers launch_lswo2.sh / launch_lswo2_a40.sh read by the angle lead; race watchers lswo2_race_watch.sh.
+
+## Result N (2026-10-30, ws1 CPU ~4 h/bank after a thread-oversubscription restart; /scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/;
+sign s1; verified grade_result.json): KILLED. Finite-weight symmetric RBM feature banks (sigma 1, 2; 3 seeds; M <= 128):
+eps^2 at M = 128: (i) R*_1 0.954-0.959, (ii) R*_2 0.972-0.975, (iii) cumulative 0.984-0.986; seed scatter <= 0.004;
+L1 (2-body) alone 0.977 / 0.983 / 0.993: the bank adds 2-3% over 2-body. Controls: R* -> 0; permuted bank -> 0.999.
+Graded exact E_FN: tax/gain 0.958 / 0.971 / 0.978 (kill >= 1 nearly; eps^2 >= 0.7 fires). Predictions: Astra (<= 0.2)
+refuted; mine (0.6-0.85) also too optimistic. The correction is not a spin-pattern function at any order this bank reaches;
+consistent with L/K/K3 (it is the guide's own f_J). This feature family is closed.

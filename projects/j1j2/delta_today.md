@@ -462,3 +462,8 @@
 - 2026-10-30 15:15 L-SWO round 2 submitted (worker, PI/lead 'submit'; Paderborn --test-only ETA 2026-11-01 15:55 >24 h so A40 copies too): Paderborn s1 4077957, sG 4077958 (gpu_h100, 03:00:00); theorie A40 s1 17614777, sG 17614778 (cip,inter, 09:00:00); watchers + race watchers (lswo2_race_watch.sh) armed, PPID 1; ids in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/job_ids.txt; prep /scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/prep_result.json (E_FN[T2,s1] 8.33757e-6; E_FN[B_1,s_G] 1.5453e-5; c_G 4.0, e(T_G,s_G) 6.069e-6).
 - 2026-10-30 queues: Paderborn express h100 1785/1800 min (NoDecay, unusable); theorie inter V100/A100/H100/H200 est. 8-10 Nov; round-2 Paderborn 4077957/58 est. 10-31 19:40/20:05. Angle asked to probe CPU fit rate on workstations and race CPU copies if <= ~40 s/step.
 - 2026-10-30 CPU racer dropped: measured CPU f64 52.7-64.7 s/step at B=512 on ws1 (pfaffian_r1/cpu) -> ~800-1000 s/step at production B=8208, ~20x over the 40 s/step gate. Round 2 race stays Paderborn (~29 h) vs A40 (~38 h).
+2026-10-30 15:24 [pfaffian L-SWO2 race s1] 17614777 started (step 10) -> cancelled 4077957 (PI pre-approval via lead)
+2026-10-30 15:24 [pfaffian L-SWO2 race sG] 17614778 started (step 10) -> cancelled 4077958 (PI pre-approval via lead)
+2026-10-30 15:26 VERDICT job 4077957: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/run_s1/ANALYSIS.md]
+2026-10-30 15:26 VERDICT job 4077958: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/run_sG/ANALYSIS.md]
+- 2026-10-30 Pfaffian Test N (CPU, s1): RBM feature banks M<=128 capture 2-5% of the round correction (eps^2 0.95-0.99), tax/gain 0.96-0.98: KILL; Astra's and my predictions both too optimistic.

@@ -41,6 +41,11 @@ errors sit in the |psi|^2 < 1e-9 tail; tempered beta 0.5 + one-hop neighbours es
   5.574e-6 control). Inject (i) isolated tail errors (orbits drawn ~|G|, no two adjacent), (ii) one wall (flip the orbits
   satisfying a local predicate), each at 2B/N ~ 5e-6. Read delta E_0, G1 (step alpha* of the reference and line-searched),
   B, B_wall, w. ~8 FN solves (~2 min each) + steps.
+  Added 2026-10-30 after the lead's Test X note (a sign is judged with an amplitude refitted under it): third readout
+  G_relax = floor(S) - floor(s), floor = E_FN at the self-consistent magnitude under that sign (iterated exact FN, as for the
+  s1 floor). The fixed-magnitude delta E_0 is the upper bound for a storage error, G_relax the lower; the loop's refit sits
+  between. Prediction: G_relax/delta E_0 <= 0.5 for isolated errors (the refit can push phi(x) down at x in F), >= 0.7 for
+  walls [50%]. If G_relax already passes the bar where G1 fails, the grade in S2 becomes the refitted one.
   Decision: P1 outside [0.4, 1.5] -> mechanism wrong, re-derive, no network. Isolated G1/dE_0 <= 0.3 and walls >= 0.7 ->
   S2 loss carries a bond-product term; budget B_wall/N < 0.25e-6. Isolated G1/dE_0 > 0.7 -> the step does not repair; need
   B/N < 0.25e-6 bare, beyond any tested net at 36 sites (best composite w ~1e-6..1e-5): kill S2 as specified; next is a

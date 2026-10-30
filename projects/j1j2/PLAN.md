@@ -447,6 +447,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
 ## Running (2026-10-30)
+- Pfaffian angle: L-SWO round 2 (PI go), arms s1 and s_G, ~1.2 H100-h; kill: round 2 lowers bare B by <= 0.5e-6 -> change the network (Test N / Theta); pass -> round 3 and the scale question.
 - Worker (Sonnet): GPU load profile of 8x8 FN-GFMC walkers, /scratch/a/A.Otaifi/ansatz_runs/gpu_profile; staged then waits for the lead's "submit"; verdict feeding-limited / partly / GPU-bound -> if feeding-limited, fix before any 10x10 run.
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.

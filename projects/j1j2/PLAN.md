@@ -422,6 +422,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Sampling engineering for the 10x10 stage (PI list 2026-10-30): convergence watcher, resetting stuck chains, larger proposals for
+  acceptance near nodes, chains per sample, NetKet / NVIDIA samplers vs our code; opens as an angle with the 10x10 test, first
+  input = GPU profile (Paderborn 4075217). Optimizer fixed by the PI: SR / minSR, no optimizer comparison.
 - Laws of learnability (PI 2026-10-30, parked for its own angle): why an architecture or input embedding learns a target better.
   Theory exists: NTK eigenspectrum vs target alignment (1806.07572, 2006.13198), spectral bias (1806.08734), embeddings reshape
   that spectrum (Fourier features 2006.10739); NQS sign generalization (1907.08186). Ids from memory, unread here. Our use: predict

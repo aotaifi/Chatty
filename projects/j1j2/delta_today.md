@@ -453,3 +453,5 @@
 2026-10-30 14:06 VERDICT job testn3_m47: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 2026-10-30 14:11 VERDICT job 4075217: COMPLETED, all six precision/dataset pairs "not usable": f32/met (max err 1.74e+00 on lowest 1% |c(x)|, 0 flips there, 18 flips over all pairs), f32/uni (1.89e+00, 1 flip), tf32 and bf16 (errors up to 6.3e+03, ~460 flips on lowest 1%). [/scratch/a/A.Otaifi/ansatz_runs/gpu_profile/ANALYSIS.md]
 - 2026-10-30 GPU profile job 4075217 analysed (PROFILE.md in /scratch/a/A.Otaifi/ansatz_runs/gpu_profile/): GPU-bound, util 96.6% mean, 0.46 GPU-h; f32 2.1x faster but all precisions not usable.
+2026-10-30 14:28 VERDICT job testn3_m47: COMPLETED, NO GATE RUN: the brief names no gate command and no Monte Carlo chains, so I ran nothing. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+- 2026-10-30 PI: profile worker + Astra decide whether a walker-code speed-up (fast det-ratio updates / fusion fix) is worth building; output gpu_profile/DECISION.md; code reading + CPU only.

@@ -510,3 +510,4 @@
 2026-10-31 00:16 VERDICT job 4079209: COMPLETED, FIT OK. Steps 950, converged True, 2.99 s/step, fit_sec 2934.7, table_sec 191.2, total 3189.7 s (~0.89 h). [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s2/ANALYSIS.md]
 2026-10-31 00:41 VERDICT job theta2calib_m42: COMPLETED: C_exact 0.0821 L1eps2 0.97718 L1gate True GATE_PASS True [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/calib]
 - 2026-10-31 pfaffian: Θ v2 calibration GATE PASSES (C_exact 0.0821 vs 0.069/0.065, pfaffian_theta2/calib); PP tangent space holds 0-4% of the round residual: missing direction (P16).
+- 2026-10-31 Theta v2 calibration gate PASSES (lead verified pfaffian_theta2 theta_f.json: C_exact 0.0821 at ridge 1e-10, held-out 0.069/0.065; L1 control 0.0228, permuted 3.5e-5). Caveat: C_exact moves 0.064-0.082 with ridge/truncation; 'exact >= held-out' holds only for ridge <= 1e-8. Verdict: complex PP tangent space holds 0-4% of the round correction (missing direction, not slow learning).

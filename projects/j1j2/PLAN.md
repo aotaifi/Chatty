@@ -413,6 +413,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Two label-free rounds keep improving (L-SWO round 2, unconverged, one seed): bare drop 1.26e-6 (s1) / 1.27e-6 (s_G); with the
   Lanczos sign s_G the augmented guide reaches 5.39e-6 at c*=4 (bracketed: c=3 5.92e-6, c=5 5.95e-6) vs competitor 5.574e-6: first guide at the bar,
   not yet quotable (pfaffian_lswo2/readout/sG/readout.json). Converged 2-seed rerun running.
+- The round correction is a MISSING direction for the complex PP, not slow learning (Test Theta v2, held-out, calibrated: C_GN
+  -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
+  refit, so the explicit Jacobi factor must carry it (consistent with K, K3, N). Linearised class at the trained point only.
 - Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
   competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). s_G is better for both magnitudes, but the gain depends on the magnitude
   (0.95e-6 for |L|, 4.45e-6 for |G|), and the magnitude ranking flips with the sign (s1: |L| better by 1.68e-6; s_G: |G| better

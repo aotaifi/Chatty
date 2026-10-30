@@ -119,7 +119,14 @@ def lse_c(l, axis=-1):
 
 
 # ------------------------------------------------------------------------------------------ amplitudes
-def make_fns(lat, dtype=jnp.float64, use_rbm=True):
+def make_fns(lat, dtype=jnp.float64, use_rbm=True, ratio='ref', _break=None, kappa_max=1e12):
+    """ratio = 'ref' (default, the launched production code: rank-2 update with the V array and two bond reductions) or
+    'fast' (determinant contraction: batched n x n GEMMs P = A G, Q = G B, S = P B and the table
+    D = P*Q + G*(C - S), A = f[D,D], B = f[U,U], C = f[D,U], G = F^-1; psi_PP(z')/psi_PP(z) = -D[b,a]; exactly singular
+    images (non-finite, or 1-norm condition estimate ||F||_1 ||G||_1 > kappa_max: there the rank-2 / contraction formulas lose eps*kappa digits)
+    are flagged by eloc_flag / eloc_full_flag and the whole configuration is re-evaluated directly by eloc_full_direct, outside the jitted batch)."""
+    assert ratio in ('ref', 'fast') and _break in (None, 'sign', 'noCS')   # _break: deliberately broken fast variants, for the agreement test only
+    fast = ratio == 'fast'
     N = lat.N; n = N // 2
     cdt = jnp.complex128 if dtype == jnp.float64 else jnp.complex64
     IMG, FL, INV = lat.IMG, lat.FL.astype(dtype), lat.INV
@@ -163,7 +170,7 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         s = sigma.astype(dtype)
         return 0.25 * jnp.sum(JB * s[BI] * s[BJ])
 
-    def img_quant(f, b, W, z, inv_g):
+    def img_quant_k(f, b, W, z, inv_g):
         """per image: log Psi(z) and the ratios Psi(z with bond b swapped)/Psi(z) for all bonds (0 if aligned)."""
         order = jnp.argsort(-z, stable=True)
         U = order[:n]; D = order[n:]
@@ -180,22 +187,36 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         valid = zi != zj
         p_ = jnp.where(zi > 0, si, sj); q_ = jnp.where(zi > 0, sj, si)   # p up, q down
         a_ = pos[p_]; bc = pos[q_]
-        R = f[:, D] @ Gm                                     # (N, n)
-        fU = f[U]                                            # (n, N)
-        V = fU[:, p_] - fU[:, q_]                            # (n, NB)
-        ar = jnp.arange(lat.NB)
-        V = V.at[a_, ar].set(f[q_, p_] - f[q_, q_])
-        Gb = Gm[bc]                                          # (NB, n)
-        Rq = R[q_]                                           # (NB, n)
-        Gv = jnp.sum(Gb * V.T, 1); rGv = jnp.sum(Rq * V.T, 1)
-        rdet = Rq[ar, a_] * (1.0 + Gv) - Gb[ar, a_] * (rGv - V[a_, ar])
-        ratio = -rdet.astype(cdt)
+        if fast:
+            # determinant contraction (DECISION.md): ratio = -D[b,a], D = P*Q + G*(C - S); rows of F = U (sorted), columns D (sorted);
+            # G[b,a] is (D index, U index); a = position of the up site p in U, b = position of the down site q in D.
+            fD = f[D]                                        # (n, N)
+            Am = fD[:, D]; Cm = fD[:, U]; Bm = f[U][:, U]    # f[D,D], f[D,U], f[U,U]
+            Pm = Am @ Gm; Qm = Gm @ Bm; Sm = Pm @ Bm         # three n x n GEMMs
+            ii = (bc, a_)                                    # gather the NB needed entries before the elementwise arithmetic
+            rdet = Pm[ii] * Qm[ii] + Gm[ii] * ((Cm[ii] - Sm[ii]) if _break != 'noCS' else 0.0)
+            ratio = (-rdet if _break != 'sign' else rdet).astype(cdt)
+        else:
+            R = f[:, D] @ Gm                                 # (N, n)
+            fU = f[U]                                        # (n, N)
+            V = fU[:, p_] - fU[:, q_]                        # (n, NB)
+            ar = jnp.arange(lat.NB)
+            V = V.at[a_, ar].set(f[q_, p_] - f[q_, q_])
+            Gb = Gm[bc]                                      # (NB, n)
+            Rq = R[q_]                                       # (NB, n)
+            Gv = jnp.sum(Gb * V.T, 1); rGv = jnp.sum(Rq * V.T, 1)
+            rdet = Rq[ar, a_] * (1.0 + Gv) - Gb[ar, a_] * (rGv - V[a_, ar])
+            ratio = -rdet.astype(cdt)
         if use_rbm:
             th = b + z.astype(cdt) @ W                       # (M,)
             dth = -2.0 * W[p_] + 2.0 * W[q_]                 # (NB, M)
             lg = lg + jnp.sum(logcosh(th))
             ratio = ratio * jnp.exp(jnp.sum(logcosh(th[None] + dth) - logcosh(th)[None], 1))
-        return lg, jnp.where(valid, ratio, 0.0)
+        kap = jnp.max(jnp.sum(jnp.abs(F), 0)) * jnp.max(jnp.sum(jnp.abs(Gm), 0))     # 1-norm condition estimate (G = F^-1)
+        return lg, jnp.where(valid, ratio, 0.0), kap
+
+    def img_quant(f, b, W, z, inv_g):
+        return img_quant_k(f, b, W, z, inv_g)[:2]
 
     def eloc_full(p, sigma):
         """local energy (fast updates), log psi_P and the bond ratios psi_P(y_b)/psi_P(x) (0 for aligned bonds)."""
@@ -209,6 +230,36 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         valid = s[BI] != s[BJ]
         off = jnp.sum(jnp.where(valid, 0.5 * JB * rP, 0.0))
         return diag(sigma) + off, lP, rP
+
+    def eloc_full_flag(p, sigma):
+        """eloc_full plus bad = any image with non-finite log Psi (singular F) or non-finite bond ratio (needs the direct fallback)."""
+        f, b, W = parts(p)
+        Z = images(sigma)
+        lg, rat, kap = jax.vmap(lambda z, ig: img_quant_k(f, b, W, z, ig))(Z, INV)
+        bad = jnp.any(~jnp.isfinite(lg.real)) | jnp.any(~jnp.isfinite(rat.real)) | jnp.any(~jnp.isfinite(rat.imag)) | jnp.any(~(kap <= kappa_max))
+        lP = lse_c(lg)
+        w = jnp.exp(lg - lP)
+        rP = w @ rat
+        s = sigma.astype(dtype)
+        valid = s[BI] != s[BJ]
+        off = jnp.sum(jnp.where(valid, 0.5 * JB * rP, 0.0))
+        return diag(sigma) + off, lP, rP, bad
+
+    def eloc_flag(p, sigma):
+        e, lP, _, bad = eloc_full_flag(p, sigma)
+        return e, lP, bad
+
+    def eloc_full_direct(p, sigma):
+        """same outputs as eloc_full, every neighbour re-evaluated with its own slogdets (all images); exact for singular images."""
+        lP = logpsi(p, sigma)
+        s = sigma.astype(dtype)
+
+        def nb(k):
+            y = s.at[BI[k]].set(s[BJ[k]]).at[BJ[k]].set(s[BI[k]])
+            return jnp.exp(logpsi(p, y) - lP)
+        valid = s[BI] != s[BJ]
+        rP = jnp.where(valid, jax.lax.map(nb, jnp.arange(lat.NB)), 0.0)
+        return diag(sigma) + jnp.sum(jnp.where(valid, 0.5 * JB * rP, 0.0)), lP, rP
 
     def eloc_one(p, sigma):
         """local energy (fast updates) and log psi_P for one configuration."""
@@ -227,7 +278,8 @@ def make_fns(lat, dtype=jnp.float64, use_rbm=True):
         valid = s[BI] != s[BJ]
         return diag(sigma) + jnp.sum(jnp.where(valid, 0.5 * JB * r, 0.0)), lP
 
-    return dict(logpsi=logpsi, logpsi_ri=logpsi_ri, eloc=eloc_one, eloc_full=eloc_full, eloc_brute=eloc_brute, diag=diag,
+    return dict(logpsi=logpsi, logpsi_ri=logpsi_ri, eloc=eloc_one, eloc_full=eloc_full, eloc_brute=eloc_brute, eloc_flag=eloc_flag, eloc_full_flag=eloc_full_flag,
+                eloc_full_direct=eloc_full_direct, img_quant=img_quant, img_quant_k=img_quant_k, diag=diag,
                 log_one=log_one, parts=parts)
 
 

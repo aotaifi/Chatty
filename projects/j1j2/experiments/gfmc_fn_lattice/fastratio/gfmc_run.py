@@ -11,7 +11,7 @@ The gfmc6_run.py path (6x6, full projection, table_A constants) is left unchange
 import argparse, json, os, sys, time, pickle
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE); sys.path.insert(0, os.path.join(HERE, '..', 'rbmpp_6x6'))
+sys.path.insert(0, os.path.join(HERE, '..', 'rbmpp_6x6')); sys.path.insert(0, HERE)   # fastratio: the local rbmpp_lib (with --ratio) wins
 import jax, jax.numpy as jnp
 jax.config.update('jax_enable_x64', True)
 from rbmpp_lib import Lattice, make_fns, make_sampler, random_configs, to32
@@ -44,6 +44,7 @@ if __name__ == '__main__':
     ap.add_argument('--M', type=int, default=512); ap.add_argument('--dtau', type=float, default=0.2)
     ap.add_argument('--blocks', type=int, default=200); ap.add_argument('--burn', type=int, default=50)
     ap.add_argument('--seed', type=int, default=1); ap.add_argument('--chunk', type=int, default=256)
+    ap.add_argument('--ratio', default='ref', choices=['ref', 'fast'], help="bond-ratio kernel: ref = launched production code (default), fast = determinant contraction")
     ap.add_argument('--ckpt_every', type=int, default=10); ap.add_argument('--resume', action='store_true')
     ap.add_argument('--maxsec', type=float, default=1e18, help='stop cleanly after this many seconds (checkpoint written)')
     ap.add_argument('--ref', type=float, default=-0.498886, help='reference energy per site printed in the progress lines (published RBM+PP)')
@@ -58,9 +59,9 @@ if __name__ == '__main__':
     z = np.load(a.params); use_rbm = bool(z['rbm']) if 'rbm' in z.files else True
     lat = Lattice(a.L, 0.5, a.proj); N = lat.N
     c = load_consts(a.consts, a.p)
-    g = RBMPPGuideG({k: z[k] for k in ('f', 'bre', 'bim', 'Wre', 'Wim')}, lat, c['alpha'], c['E'], w=c['w'], chunk=a.chunk, use_rbm=use_rbm)
+    g = RBMPPGuideG({k: z[k] for k in ('f', 'bre', 'bim', 'Wre', 'Wim')}, lat, c['alpha'], c['E'], w=c['w'], chunk=a.chunk, use_rbm=use_rbm, ratio=a.ratio)
     P(f'guide L {a.L} proj {a.proj} images {lat.nI} p {a.p} alpha {c["alpha"]:.8f} E/N {c["E"] / N:.10f} w {c["w"]:.6f} params {a.params} consts {a.consts} '
-      f'M {a.M} dtau {a.dtau} seed {a.seed}')
+      f'M {a.M} dtau {a.dtau} seed {a.seed}' + (f' ratio {a.ratio}' if a.ratio != 'ref' else ''))
     ck = os.path.join(a.out, 'ckpt.npz')
     rec = []; b0 = 0
     if a.resume and os.path.exists(ck):
@@ -86,7 +87,7 @@ if __name__ == '__main__':
         r = gf.block(); r['sec'] = time.time() - tb; r['evals'] = g.n_eval - n0; r['block'] = b
         rec.append(r)
         P(f'block {b + 1}/{tot} E_mix/N {r["emix"] / N:.7f} E_grow/N {r["egrow"] / N:.7f} d_ref {r["emix"] / N - a.ref:+.3e} ess {r["ess"]:.0f} '
-          f'elvar {r["elvar"]:.3f} hops {r["hops"]} iters {r["iters"]} evals {r["evals"]} sec {r["sec"]:.1f} maxIm {g.max_im:.1e}')
+          f'elvar {r["elvar"]:.3f} hops {r["hops"]} iters {r["iters"]} evals {r["evals"]} sec {r["sec"]:.1f} maxIm {g.max_im:.1e}' + (f' fallback {g.n_fallback}' if a.ratio != 'ref' else ''))
         if (b + 1) % a.ckpt_every == 0: save(b + 1)
         if time.time() - t_start > a.maxsec:
             save(b + 1); stopped = True; P(f'MAXSEC reached at block {b + 1}'); break

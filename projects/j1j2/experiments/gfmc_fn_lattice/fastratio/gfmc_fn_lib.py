@@ -124,23 +124,32 @@ class RBMPPGuideG(GuideBase):
     psi_P(y_b)/psi_P(x) (rbmpp_lib eloc_full), c(y_b)/c(x) = Re[w e^{i Im l_x} rP_b] / Re[w e^{i Im l_x}] (1 evaluation per hop).
     alpha != 0 (p = 1): 1 + n_anti(x) evaluations per hop (E_L at x and at every antiparallel neighbour)."""
 
-    def __init__(self, params, lat, alpha, E, w=1.0, chunk=256, use_rbm=True, small_chunk=None, drop_phase=False):
+    def __init__(self, params, lat, alpha, E, w=1.0, chunk=256, use_rbm=True, small_chunk=None, drop_phase=False, ratio='ref'):
         import jax, jax.numpy as jnp
         from rbmpp_lib import make_fns
         self.jax, self.jnp = jax, jnp
         self.lat = lat; self.N = lat.N; self.BI = np.asarray(lat.BI); self.BJ = np.asarray(lat.BJ)
         self.JB = np.asarray(lat.JB, float); self.NB = lat.NB
         self.p = {k: jnp.asarray(params[k]) for k in ('f', 'bre', 'bim', 'Wre', 'Wim')}
-        fns = make_fns(lat, jnp.float64, use_rbm)
+        self.ratio = ratio
+        fns = make_fns(lat, jnp.float64, use_rbm, ratio=ratio)
         self.alpha = float(alpha); self.E = float(E); self.w = complex(w)
         self.chunk = chunk; self.small = small_chunk or max(chunk // 8, 8)
-        self._f = jax.jit(jax.vmap(fns['eloc'], in_axes=(None, 0)))
-        self._ff = jax.jit(jax.vmap(fns['eloc_full'], in_axes=(None, 0)))
+        if ratio == 'fast':
+            # flagged batch (last output = bad image) + direct slogdet fallback for the flagged configurations only (separate jit, never in the batch)
+            self._f = jax.jit(jax.vmap(fns['eloc_flag'], in_axes=(None, 0)))
+            self._ff = jax.jit(jax.vmap(fns['eloc_full_flag'], in_axes=(None, 0)))
+            self._d = {2: jax.jit(lambda p, z: fns['eloc_full_direct'](p, z)[:2]), 3: jax.jit(fns['eloc_full_direct'])}
+        else:
+            self._f = jax.jit(jax.vmap(fns['eloc'], in_axes=(None, 0)))
+            self._ff = jax.jit(jax.vmap(fns['eloc_full'], in_axes=(None, 0)))
         self.drop_phase = drop_phase          # deliberately broken version for the checks (phase of psi_P(x) dropped)
-        self.max_im = 0.0; self.n_eval = 0; self.t_eval = 0.0
+        self.max_im = 0.0; self.n_eval = 0; self.t_eval = 0.0; self.n_fallback = 0
 
     def _chunked(self, fn, Z, nout):
         jnp = self.jnp
+        fast = self.ratio == 'fast'
+        nall = nout + 1 if fast else nout
         K = Z.shape[0]; outs = None
         i = 0
         t0 = time.time()
@@ -155,9 +164,17 @@ class RBMPPGuideG(GuideBase):
             o = [np.asarray(a)[:n] for a in o]
             if outs is None:
                 outs = [np.empty((K,) + a.shape[1:], a.dtype) for a in o]
-            for k in range(nout):
+            for k in range(nall):
                 outs[k][i:i + n] = o[k]
             i += n
+        if fast:
+            bad = np.nonzero(outs[nout])[0]
+            for j in bad:                         # rare: singular image(s); direct evaluation of this configuration
+                o = self._d[nout](self.p, jnp.asarray(Z[j]))
+                for k in range(nout):
+                    outs[k][j] = np.asarray(o[k])
+            self.n_fallback += len(bad)
+            outs = outs[:nout]
         self.n_eval += K; self.t_eval += time.time() - t0
         return outs
 

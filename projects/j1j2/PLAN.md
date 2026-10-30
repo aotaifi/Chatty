@@ -411,8 +411,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Label-free storage beats exact labels (R1b vs L-SWO, both converged, complex PP RBM inactive, s1): bare 2.373e-5 vs 1.957e-5,
   augmented 9.64e-6 vs 8.34e-6; one stored round keeps 15% (labels) vs 37% (Jacobi target) (pfaffian_r1/readout_b, pfaffian_lswo/readout).
 - Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
-  competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). Each magnitude is best with the sign it was built with (its walls), so
-  the 2.76e-6 deficit has no sign/amplitude split; at the common sign s_G the loop magnitude is 1.8e-6 worse.
+  competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). s_G is better for both magnitudes, but the gain depends on the magnitude
+  (0.95e-6 for |L|, 4.45e-6 for |G|), and the magnitude ranking flips with the sign (s1: |L| better by 1.68e-6; s_G: |G| better
+  by 1.82e-6). No additive sign/amplitude split of the 2.76e-6 deficit; at s_G the loop magnitude is 1.8e-6 worse.
+  (Corrected 2026-10-30, sign angle + Astra cj-344a55c0d108: not "each magnitude is best with its own sign".)
 - Cost of one Lanczos/Jacobi step per walker move (derived, board 23): needs ~d^2 = 4N^2 two-swap ratios. Determinant networks
   with fast updates: O(N^2 det4) per image, a CONSTANT factor over plain (measured 5.4x at 6x6); backflow grows ~N^2 (36.5x at 6x6);
   generic NNs pay a factor d ~ 2N (~400 at 14x14). So 'one step is cheap at any size' holds only for determinant-type networks.

@@ -477,6 +477,8 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - sign-gap angle (session local_6ef8717c, PLAN_signgap.md): CLOSED 2026-10-29, KILL at stage A (see Dead ends); no jobs.
 
 ## Dead ends (number, run)
+- Nonlinear spin-pattern feature bank (Test N, finite-weight RBM features, M <= 128) for the round correction: eps^2 0.95-0.98,
+  only 2-3% beyond 2-body; the correction is not a spin-pattern function at reachable order (pfaffian_n/grade_result.json).
 - Training the guide on its lattice FN energy (sampled mixed HF force + QGT, 8x8, 2026-10-02): physical E_FN worse by +0.046 total
   (3537066 -> 3549023/24; STATUS.md); exact 4x4 version works, the sampled force does not.
 - Local product of Krylov factors (LP, per bond / site / plaquette): 6x6 E_FN-E0 3.5247e-5 vs G 5.5738e-6 (KILL); near-node pole

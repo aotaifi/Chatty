@@ -467,3 +467,4 @@
 2026-10-30 15:26 VERDICT job 4077957: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/run_s1/ANALYSIS.md]
 2026-10-30 15:26 VERDICT job 4077958: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/run_sG/ANALYSIS.md]
 - 2026-10-30 Pfaffian Test N (CPU, s1): RBM feature banks M<=128 capture 2-5% of the round correction (eps^2 0.95-0.99), tax/gain 0.96-0.98: KILL; Astra's and my predictions both too optimistic.
+- 2026-10-30 Test N KILLED (angle c40e644; lead verified pfaffian_n/grade_result.json): finite-weight RBM feature bank M=128 eps^2 0.953/0.972/0.984 (round 1/2/cumulative) vs 2-body alone 0.977/0.983/0.993; tax/gain 0.958/0.971/0.978. Test Theta running (CPU, 2 pair samples). Round 2 racers: Paderborn 4077957/58, A40 17614777/78.

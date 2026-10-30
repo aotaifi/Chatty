@@ -299,6 +299,11 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   1, round 2 and the cumulative correction (s1), graded by exact E_FN. Prediction (Astra, low conf.) eps^2 <= 0.2; promote at bare
   tax/gain <= 0.3 and cost <= 2x base; kill eps^2 >= 0.7. Astra corrections: 'eps^2 ~0.95 for any class' NOT established (O2b
   round 1 T/g = 0.386; M-R/L/K = small-weight 2-body and one dictionary only); the 4x4-6x6 T(N) test is class-specific, deferred.
+  L-SWO RESULT 2026-10-30 (angle 55910d9; Paderborn 4062263, 520 steps converged, 0.58 H100-h; e(fit) and tau/Delta verified by the
+  lead from pfaffian_lswo/readout/readout.json; sign s1): BETWEEN. Label-free refit to T = A e^{3.9 f_J}: bare e(fit) 1.957e-5 (pass
+  <= 1.761e-5, kill >= 2.503e-5; predicted 1.9-2.1e-5), tau_J/Delta_J 0.632: stores 37% of the Jacobi gain without any FN labels.
+  Re-augmented: fit e^{4.0 f_J[fit]} 8.34e-6 vs A_s1 e^{3.9 f_J} 1.018e-5 = the augmented guide moved 1.84e-6 in one label-free
+  round (perfect-copy reference S2: 5.60e-6, so ~40% of the ideal progress). Copy error vs T: 76% of pair cost moderate.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)
@@ -374,6 +379,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   K3, sign s1/s2): a fixed dictionary of other networks' factors cannot hold it (Test K).
 - Pointwise labels from finite walker samples are 20-70x noisier than one round's correction (Test W): a round's label signal
   is rms 0.006 in ln phi; the Jacobi correction needs no labels.
+- One LABEL-FREE loop round (refit to A e^{c f_J}, re-augment) moved the augmented guide 1.018e-5 -> 8.34e-6 (L-SWO, s1): the
+  loop can progress without FN labels; storage keeps ~37-40% of the ideal step.
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

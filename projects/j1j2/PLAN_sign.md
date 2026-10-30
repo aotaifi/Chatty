@@ -59,7 +59,14 @@ errors sit in the |psi|^2 < 1e-9 tail; tempered beta 0.5 + one-hop neighbours es
   Grade: exact G1 and delta E_0. Kill: G1 >= 2e-6 converged, 2 seeds agree.
 
 ## Running
-- Astra cj-34b8f6b3a4c9 (xhigh, blind derivation of 1-4 above). Nothing on the cluster.
+- Astra cj-34b8f6b3a4c9 (xhigh, blind derivation of 1-4 above): stopped at the Codex usage limit 10:14; resume after 11:36
+  (codex session 01a18c0d-d25b-70c1-b260-5512e8cd8aec). Partial CPU checks, /scratch/a/A.Otaifi/astra/sign_angle/check_sign_identities.json
+  (read, not yet verified by me; predictions above NOT changed after seeing them):
+  toy ring, equal w = 0.25: isolated error first-order 2.0, exact FN 0.586; connected 1.0, 0.268; global flip 0 (bond picture
+  holds; relaxation 0.27-0.29 x first order, below my P1 band). Repair threshold K > 1/(2|alpha|) = 2.73, exact magnitude at
+  K = 1/|alpha| = 5.45 (alpha -0.183). sign_learnability nets, N=36, exact amplitude, variational sign error per site:
+  m2 M net 6.6e-5 -> 1.08e-6 after one sign hop; gs L 1.9e-6 -> 3.9e-9; gs XL 6.9e-7 -> 9.0e-10.
+  Nothing on the cluster.
 
 ## Dead ends
 (none yet)

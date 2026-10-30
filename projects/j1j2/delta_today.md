@@ -423,3 +423,7 @@
 - 2026-10-30 PI: 'laws of learnability' parked in PLAN.md Queue for a future angle.
 - 2026-10-30 lead -> Pfaffian angle (PI 'send it'): learnability prediction before the next fit; empirical NTK at init, alignment C(k) of round corrections and f_J; ending test = does the C(k) ranking predict the measured storage of existing fits; CPU, after R1 converged and Test N.
 - 2026-10-30 Pfaffian angle: Test Theta pre-registered (PLAN_pfaffian.md): Jacobian Gram of ln|A| in the fit's D metric; C(P) low = missing directions, C(P) high & C(k) low = spectral bias (angle prior 40%); ending test C(200) ranking vs measured storage on >= 3 points, transfer Spearman >= 0.7; ~1 h CPU/candidate after R1b (Paderborn 4070227) and Test N. Test N feature pass 0/3859 chunks after ~9.7 h: angle applying its 10 h rule.
+2026-10-30 07:32 VERDICT job testn_m42: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 07:32 VERDICT job testn_m47: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-30 07:32 VERDICT job testn_m53: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+- 2026-10-30 Pfaffian R1 readout (A40, unconverged, s1): e(B) 2.39e-5, r 0.126 (between); augmented 9.72e-6 vs zero-error ref 7.18e-6. R1b (converged rerun, 4070227) pending.

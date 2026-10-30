@@ -746,3 +746,11 @@ points with no inversion; it is DROPPED on an inversion between points whose mea
 Ranking stability: Spearman correlation of the per-direction weights of R*_1 vs R*_2 under each kernel; >= 0.7 = transfers.
 Cost: J at ~16k sampled configurations x <= 3888 parameters per candidate on CPU (JAX), eigen-decomposition P x P; ~1 h per
 candidate on one ws node. Runs after R1b reads out and Test N's capacity question is settled (lead's order).
+
+## Result R1 (A40 17603167; NOT converged, budget-limited at 935 steps; class complex PP, no backflow, RBM inactive; sign s1;
+/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/readout/readout.json; verified)
+e(B) = 2.391e-5/site, r = 0.126: BETWEEN (prediction -0.2..0.3 met). Bond split vs phi'': 1.99e-5/site, 86% moderate class.
+Not the gate: B e^{4.0 f_J[B]} 9.72e-6; zero-error reference phi'' e^{5.3 f_J} 7.18e-6; tau_ref/Delta = +0.28.
+Competitor bar (reference): 5.6e-6; best augmented so far 8.34e-6 (L-SWO). To be marked superseded once R1b (converged,
+4070227) reads out. Note: L-SWO (label-free, converged) e 1.957e-5 is below R1 (exact labels, unconverged) 2.391e-5; the
+pair is not comparable until R1b converges.

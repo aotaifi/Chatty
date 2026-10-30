@@ -434,3 +434,4 @@
 - 2026-10-30 Pfaffian R1b readout (converged, s1): e(B) 2.373e-5, r 0.146 (between); paired L-SWO 1.957e-5 is better; class stores 15-37% of a round. 1.30 H100-h. R1 A40 superseded.
 - 2026-10-30 R1b readout (Paderborn 4070227, converged 1390 steps, 1.30 H100-h; lead verified pfaffian_r1/readout_b/readout.json): e(B) 2.373e-5, r 0.146 BETWEEN; augmented 9.64e-6 vs L-SWO 8.34e-6; label-free fit beats exact-label fit by 0.42e-5 bare, same class, both converged.
 - 2026-10-30 PI 'start the sign angle': session local_3026e44f started from card task_150a60d8, detached; Test X and R1b results sent to it.
+- 2026-10-30 sign angle: PLAN_sign.md written (mechanism: bond-product cost 2B, step repairs isolated errors not walls; predictions P1-P3; tests S1 CPU injected errors, S2 complex-PP phase net); Astra cj-34b8f6b3a4c9 asked blind. No runs.

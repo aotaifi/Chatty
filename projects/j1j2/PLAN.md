@@ -404,6 +404,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   is rms 0.006 in ln phi; the Jacobi correction needs no labels.
 - One LABEL-FREE loop round (refit to A e^{c f_J}, re-augment) moved the augmented guide 1.018e-5 -> 8.34e-6 (L-SWO, s1): the
   loop can progress without FN labels; storage keeps ~37-40% of the ideal step.
+- Cost of one Lanczos/Jacobi step per walker move (derived, board 23): needs ~d^2 = 4N^2 two-swap ratios. Determinant networks
+  with fast updates: O(N^2 det4) per image, a CONSTANT factor over plain (measured 5.4x at 6x6); backflow grows ~N^2 (36.5x at 6x6);
+  generic NNs pay a factor d ~ 2N (~400 at 14x14). So 'one step is cheap at any size' holds only for determinant-type networks.
 - A Krylov step costs one H application per configuration; s2 costs neighbours of neighbours; recomputing the sign each round costs
   ~400^k at 14x14 (Queue).
 

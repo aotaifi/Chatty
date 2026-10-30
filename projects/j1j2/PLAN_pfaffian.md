@@ -704,3 +704,13 @@ columns are nonzero at the start.
 Astra, also recorded: the fit's convergence flag is a 1.47% held-out-loss plateau, not a vanishing gradient; its fixed point
 is neither VMC nor E_FN stationarity (band-uniform weights put ~120x more weight on decade -13 than |A|^2; exact condition
 in the note).
+
+## Competitor bar (PI via the lead 2026-10-30; a REFERENCE in every readout, not a kill)
+RBM+PP VMC + one signed Lanczos step + FN, own sign, 6x6: 5.6e-6/site; same walker-cost class as network + one Jacobi factor.
+Our best so far: 8.34e-6 (one label-free round, complex PP no backflow RBM inactive, + e^{4.0 f_J}, sign s1) = 1.5x the bar.
+Every augmented E_FN is reported against it with equal-cost accounting: factor evaluations per walker step (one level =
+~5.4x plain at 6x6 for a plain PP, T2) and the training cost of label-free rounds (L-SWO: 0.58 H100-h per round).
+The scale claim (loop stores rounds at one-level walker cost while k Lanczos steps nest) is testable only by an equal-cost
+comparison at >= 8x8; 6x6 favours Lanczos.
+R1 A40 17603167 done 2026-10-30 06:53: 935 steps, NOT converged (budget; held-out change 0.0426 > 0.02), 26.8 s/step,
+7.6 h wall (~7.6 A40-h); la_table run_a40/round_1/la_table.npy (sha fae7af85). CPU readout running.

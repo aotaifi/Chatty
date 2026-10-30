@@ -714,3 +714,12 @@ The scale claim (loop stores rounds at one-level walker cost while k Lanczos ste
 comparison at >= 8x8; 6x6 favours Lanczos.
 R1 A40 17603167 done 2026-10-30 06:53: 935 steps, NOT converged (budget; held-out change 0.0426 > 0.02), 26.8 s/step,
 7.6 h wall (~7.6 A40-h); la_table run_a40/round_1/la_table.npy (sha fae7af85). CPU readout running.
+
+## R1b: R1 rerun on Paderborn H100 to convergence (PI via the lead 2026-10-30; pre-registered before submission)
+Same class as L-SWO (complex PP, no backflow, RBM inactive), same spec, seed 1, from scratch (same warm start as R1, not
+the unconverged A40 theta), same convergence rule (flatness: held-out change < 0.02 over the window), which stopped L-SWO
+at 520 steps. Only the caps change: max_steps 3000, fit_sec 9000 (measured ~3 s/step on H100), hard wall 03:00:00
+(<= 3 H100-h). Readout and gate as "R1 readout AMENDED" (bare e(B), r = (2.503377e-5 - e(B))/0.895711e-5, pass >= 0.5,
+kill <= 0; prediction r -0.2..0.3) plus the competitor-bar reference. The A40 R1 result is marked "unconverged,
+superseded" once R1b reads out. Default from now: Paderborn H100; a theorie A40 race only if Paderborn's estimated start
+is > ~1 day away. The fixed RBM init is used only in new arms.

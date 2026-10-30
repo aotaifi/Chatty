@@ -410,6 +410,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   loop can progress without FN labels; storage keeps ~37-40% of the ideal step.
 - Label-free storage beats exact labels (R1b vs L-SWO, both converged, complex PP RBM inactive, s1): bare 2.373e-5 vs 1.957e-5,
   augmented 9.64e-6 vs 8.34e-6; one stored round keeps 15% (labels) vs 37% (Jacobi target) (pfaffian_r1/readout_b, pfaffian_lswo/readout).
+- Two label-free rounds keep improving (L-SWO round 2, unconverged, one seed): bare drop 1.26e-6 (s1) / 1.27e-6 (s_G); with the
+  Lanczos sign s_G the augmented guide reaches 5.39e-6 at c=4 (scan not bracketed) vs competitor 5.574e-6: first guide at the bar,
+  not yet quotable (pfaffian_lswo2/readout/sG/readout.json). Converged 2-seed rerun running.
 - Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
   competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). s_G is better for both magnitudes, but the gain depends on the magnitude
   (0.95e-6 for |L|, 4.45e-6 for |G|), and the magnitude ranking flips with the sign (s1: |L| better by 1.68e-6; s_G: |G| better
@@ -501,5 +504,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): A label-free loop round (network refit to its own Jacobi-corrected version) made progress at 6x6, but storage keeps only ~37% of each step and it is still behind one Lanczos step.
-- NEXT (in progress, high): Read the crossed-sign check and the converged round-1 rerun, then decide the network (Test N) and start the sign-storage angle.
+- STATUS (in progress, high): Two label-free loop rounds with the Lanczos sign bring the 6x6 guide to the one-Lanczos-step competitor (5.39e-6 vs 5.57e-6 per site), not yet confirmed (one unconverged fit).
+- NEXT (in progress, high): Confirm the crossing with two converged fits, then run round 3 to see whether the gain per round holds.

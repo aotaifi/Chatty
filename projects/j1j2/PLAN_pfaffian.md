@@ -724,3 +724,25 @@ kill <= 0; prediction r -0.2..0.3) plus the competitor-bar reference. The A40 R1
 superseded" once R1b reads out. Default from now: Paderborn H100; a theorie A40 race only if Paderborn's estimated start
 is > ~1 day away. The fixed RBM init is used only in new arms.
 RUNNING R1b: Paderborn job 4070227 (wall 03:00, fit_sec 9000, max_steps 3000; launcher launch_r1b.sh read by the angle lead; watcher r1b_pdb_watch.sh); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_b. Cost <= 3 H100-h.
+
+## Test Θ: a learnability law from the network's tangent kernel (PI via the lead 2026-10-30; pre-registered; CPU, no training)
+Linearised fit: ln|A_{θ+δ}| ~ ln|A_θ| + J δ, J = d ln|A| / dθ per configuration. In the fit's own metric the storable part of a
+target correction R is its projection onto span(J); finite training reaches only the top eigen-directions of the Jacobian Gram
+(spectral bias; kernel learnability: Canatar-Bordelon-Pehlevan arXiv:2006.13198, Rahaman et al. arXiv:1806.08734, abstracts
+only). Computed on blocked pairs sampled by the D weights (as Test K), metric D:
+ G = sum_pairs w (J_x - J_y)(J_x - J_y)^T  (P x P),  v_i = eigenvectors,  C(k) = sum_{i <= k} (proj of R on v_i)^2 / D(R,R).
+ C(P) = full linearised storable fraction; 1 - C(P) = linear eps^2.
+Candidates (existing checkpoints): (a) complex PP+bf copy s1 (theta, 3888); (b) L-SWO fit (complex PP, RBM inactive, 2592);
+(c) R1 A40 fit (same class, unconverged); (d) R1b when done; (e) same class with the FIXED RBM init (W, b ~ N(0, 0.01^2));
+(f) small-weight RBM residual of M-R (alpha 16; its kernel is the 2-body span, cross-check against L1's 0.973).
+Targets: R*_1 = ln(phi''/|A_s1|), R*_2 = ln(phi_2/|A_1|), f_J[A_s1]; all at s1.
+Diagnostic it adds: C(P) low -> the class lacks the correction's directions (expressibility of the correction);
+C(P) high but C(k ~ steps) low -> spectral bias (learnability). Prior: lead ~55% spectral bias; mine ~40% (I expect C(P)
+itself low for f_J-shaped targets, as L1/K showed for 2-body and primitive features).
+Ending test: rank the candidates with a measured storage on a common target by C(k = 200), and compare with the measured
+order. The measured points that exist: M-R RBM eps^2 0.93-0.95 (R*_1 at s2); L-SWO kept 37% of the Jacobi gain; R1/R1b r;
+Test N bank eps^2 (if it finishes). The law WORKS if the C-ranking reproduces the measured order on >= 3 comparable
+points with no inversion; it is DROPPED on an inversion between points whose measured gap is > 2x their uncertainty.
+Ranking stability: Spearman correlation of the per-direction weights of R*_1 vs R*_2 under each kernel; >= 0.7 = transfers.
+Cost: J at ~16k sampled configurations x <= 3888 parameters per candidate on CPU (JAX), eigen-decomposition P x P; ~1 h per
+candidate on one ws node. Runs after R1b reads out and Test N's capacity question is settled (lead's order).

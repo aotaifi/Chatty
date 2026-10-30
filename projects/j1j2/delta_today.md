@@ -507,3 +507,6 @@
 2026-10-30 23:26 VERDICT job 17623357: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s1_a40/ANALYSIS.md]
 2026-10-30 23:26 VERDICT job 17623358: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s2_a40/ANALYSIS.md]
 - 2026-10-30 pfaffian: L-SWO round-2 c-fill verified (readout/{s1,sG}/readout.json): c* bracketed at 4.0 both arms; aug min s1 7.742e-6, s_G 5.391e-6 (bar 5.574e-6). One chain per arm; R2G-conv seeds decide quotability.
+2026-10-31 00:16 VERDICT job 4079209: COMPLETED, FIT OK. Steps 950, converged True, 2.99 s/step, fit_sec 2934.7, table_sec 191.2, total 3189.7 s (~0.89 h). [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s2/ANALYSIS.md]
+2026-10-31 00:41 VERDICT job theta2calib_m42: COMPLETED: C_exact 0.0821 L1eps2 0.97718 L1gate True GATE_PASS True [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/calib]
+- 2026-10-31 pfaffian: Θ v2 calibration GATE PASSES (C_exact 0.0821 vs 0.069/0.065, pfaffian_theta2/calib); PP tangent space holds 0-4% of the round residual: missing direction (P16).

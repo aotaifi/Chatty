@@ -920,3 +920,14 @@ Equal-cost note (training): competitor RBM+PP 6x6 guide training 14.3 GPU-h (RTX
 plateaued runs (results/rbmpp_6x6/README.md section 4). Ours on top of a PP start that came from that project (rpT1_pp):
 F1 A real fit ~1.2 H100-h, complex copy (test C) ~0.7 H100-h, L-SWO round 1 0.58 H100-h, round 2 7.6 A40-h (unconverged).
 RUNNING R2G-conv: s1 4079208 2026-10-30T23:20:50+01:00 s2 4079209 2026-10-30T23:20:52+01:00 s1-a40 17623357 2026-10-30T23:20:57+01:00 s2-a40 17623358 2026-10-30T23:20:57+01:00 ; launchers launch_r2g.sh / launch_r2g_a40.sh read by the angle lead; race watchers r2g_race_watch.sh per seed.
+
+## Result Θ v2 calibration (2026-10-31; ws1 m42 CPU 2.7 h; /scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/calib/calib_result.json; verified)
+C_exact = 0.0821 (ridge 1e-10; 1e-12 0.0822, 1e-8 0.0780) on all 519,978,046 blocked pairs; prediction 0.07-0.12: inside.
+|C_ho(P)_f - C_exact| = 0.013 / 0.017 <= 0.02 and C_exact >= 0.069: GATE PASSES. Controls: L1 eps^2 0.977183 vs pfaffian_n
+0.9771831; permuted L1 C 3.5e-5 (fails as designed); D_RR equal to pfaffian_n to 4e-12; J vs finite differences 4.4e-8
+(perturbed-theta control 6.7e-3).
+=> Θ v2 PP numbers count. VERDICT (linear tangent space of the complex PP at B_1, s1): MISSING DIRECTION for both
+candidates b and e: held-out C(GN) -0.023..0.016, C(200) 0.001..0.041, so the tangent space holds 0-4% of the round
+residual R*_1. Scope: linearised at the trained point, not the nonlinear refit; C_ho(P) < 0 is overfit of the near-min-norm fit.
+Reading: storage of the Jacobi correction by local refit is not available to this class; the explicit Jacobi head carries it
+(consistent with K/K3/N: round correction orthogonal to features, eps^2 0.95-0.98).

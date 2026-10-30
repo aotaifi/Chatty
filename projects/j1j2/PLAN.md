@@ -45,6 +45,10 @@ level while the gains add up over rounds; a step at walker time nests (400^k).
   one round's correction is ~92% c x f_J, the copy's own Jacobi factor (Test L); the bulk two thirds are moderate errors.
 - Owner: Pfaffian angle (network expert); prediction and ending test to be written by the angle before any run.
 - Constraint: a feature that needs neighbour sums at walker time is not cheap (it nests like a step).
+- Candidate loop (PI 2026-10-30, pending: multi-round progress, Test N, the sign stage): guide -> one signed Lanczos step (its sign
+  flips = the Krylov step, its size ~ the Jacobi factor, Control S within 8%) -> FN -> label-free refit of the amplitude AND a
+  stored sign network -> repeat. Condition (PI's 'iff'): one step must be cheap at the target size; board 23: true for
+  determinant-type networks with fast updates (constant factor in N), false for backflow (~N^2) and generic NNs (~2N).
 - Competitor bar (PI 2026-10-30, reference, NOT a kill at 6x6): RBM+PP VMC + one signed Lanczos step + FN, own sign, 5.6e-6/site
   (same walker-cost class as network + one Jacobi factor); two steps 1.95e-6 (nested, out at scale). Our best now: 8.3e-6 (one
   label-free round, plain PP, s1; s1 floor 2.2e-6). PI's hypothesis: the advantage is at large sizes, where k Lanczos steps nest

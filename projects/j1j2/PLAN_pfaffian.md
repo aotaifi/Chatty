@@ -892,3 +892,16 @@ New reference: C_exact = the exact D-norm projection share of R*_1 onto the alph
 is wrong too). Pass -> the v2 PP numbers count under v2's verdict rule with no rerun. Fail -> Θ closed as unmeasurable
 with this estimator. Prediction: C_exact 0.07-0.12.
 L-SWO round 2 fits (2026-10-30/31): A40 copies won both races at 15:24 (Paderborn 4077957/58 cancelled before start); s1 17614777 and sG 17614778: 935 steps each, NOT converged (A40 budget 25200 s; held-out change 0.0086 / 0.0748 vs 0.02; sG held-out loss ended above its start), 7.64 A40-h each; la_tables run_s1_a40 / run_sG_a40 (sha 283576f9 / 69b22a28). CPU readout running.
+
+## Result L-SWO round 2 (2026-10-31; A40 fits 17614777 / 17614778, 935 steps, NOT converged; class complex PP, no backflow,
+RBM inactive; /scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/readout/{s1,sG}/readout.json; verified)
+| arm (sign) | bare before | bare after | drop | kill <= 0.5e-6 | augmented min (c*) | prediction aug |
+| s1  | 1.957e-5 | 1.831e-5 | 1.26e-6 | not killed | 7.74e-6 (4.0) | 6.5-7.8e-6: inside |
+| s_G | 1.545e-5 | 1.418e-5 | 1.27e-6 | not killed | 5.391e-6 (4.0) | 5.8-7.0e-6: beaten |
+Bare predictions: s1 1.45-1.75e-5 MISSED high (kept ~11% of Delta_J2 = 1.12e-5); s_G 1.3-1.6e-5 inside.
+Competitor bar at s_G (RBM+PP VMC + one signed Lanczos step + FN; Test X x_result.json 5.574e-6): our augmented round-2
+guide 5.391e-6 is 0.18e-6 BELOW it. Caveats: one seed, fits not converged (budget-limited), round 1 under s1 / round 2 under
+s_G (stated confound), 6x6 only, s_G is the competitor's own sign. Equal-cost: walker cost one Jacobi level ~5.4x plain
+(T2, plain PP) vs one Lanczos step (same two-hop class); training 2 label-free rounds (0.58 H100-h + 7.6 A40-h) vs the
+competitor's VMC training (not counted here).
+Candidate (1) (backflow-free PP + Jacobi head, refit per round) SURVIVES its kill in both arms.

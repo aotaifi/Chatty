@@ -417,3 +417,4 @@
 - 2026-10-30 RBM zero-init bug verified by the angle (W = b = 0 is a stationary point of ln cosh; spec fault; CPU Jacobian check ran at nonzero W). R1 (17603167) and L-SWO relabelled 'complex PP, no backflow, RBM inactive' (2592 active parameters); pairing stands. Fix: W, b ~ N(0, 0.01^2) + nonzero-Jacobian CPU check.
 2026-10-30 06:53 VERDICT job 17603167: COMPLETED, FIT OK (budget-limited: 935 steps, converged False, held-out loss 2.2730e-02 -> 3.6402e-03 at step 930) [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40/ANALYSIS.md]
 - 2026-10-30 R1 (A40 17603167) finished 06:53 NOT converged (budget-limited at 935 steps, held-out change 0.0426 > 0.02, 26.8 s/step, ~7.6 A40-h); readout running with the unconverged label. Pairing with L-SWO (converged, 520 steps) is unequal in convergence: note in the verdict.
+- 2026-10-30 PI: rerun R1 on Paderborn H100 to convergence (same rule as L-SWO, same class), default GPU = Paderborn; A40 only if Paderborn ETA > ~1 day.

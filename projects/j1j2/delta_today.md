@@ -501,3 +501,9 @@
 - 2026-10-30 L-SWO round 2 (A40, unconverged 935 steps, one seed; lead verified readout/{s1,sG}/readout.json): s1 bare 1.957->1.831e-5, aug 7.74e-6 (c* 4); s_G bare 1.545->1.418e-5, aug 5.391e-6 at c=4.0 with the scan still falling (min not bracketed) vs competitor 5.574e-6. Candidate (1) survives kill in both arms. Lead (takeover): extend c scans (CPU); converged s_G reruns 2 seeds (~3 H100-h, A40 racers); round 3 after; full-Lanczos arm deferred for budget.
 - 2026-10-30 CORRECTION (lead): the round-2 s_G c-scan WAS bracketed (readout.log: c=5 5.946e-6, c=6 7.571e-6; vertex ~3.99); min 5.39e-6 stands. readout.json lacks those keys and lswo2_cfill.py crashed (KeyError 'done'); angle told. R2G-conv pre-registered (7d1463c): 2 seeds, H100 vs A40 races; pred aug 5.2-5.5e-6, spread <= 0.15e-6.
 - 2026-10-30 R2G-conv submitted by the angle (launch_r2g.sh / launch_r2g_a40.sh, race watcher); test-only ETAs Paderborn ~11-02 22:07, A40 ~11-03 12:49 (A40 estimates were pessimistic before). Lead check-in moved: result likely 11-01..11-03, not 10-31 22:00.
+2026-10-30 23:21 [pfaffian R2G-conv] submitted: Paderborn s1 4079208, s2 4079209; A40 s1 17623357, s2 17623358 (ids in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/job_ids.txt); race + job watchers armed
+2026-10-30 23:26 [pfaffian R2G race 1] 4079208 started (step 60) -> cancelled 17623357 (PI pre-approval via lead)
+2026-10-30 23:26 [pfaffian R2G race 2] 4079209 started (step 60) -> cancelled 17623358 (PI pre-approval via lead)
+2026-10-30 23:26 VERDICT job 17623357: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s1_a40/ANALYSIS.md]
+2026-10-30 23:26 VERDICT job 17623358: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/run_s2_a40/ANALYSIS.md]
+- 2026-10-30 pfaffian: L-SWO round-2 c-fill verified (readout/{s1,sG}/readout.json): c* bracketed at 4.0 both arms; aug min s1 7.742e-6, s_G 5.391e-6 (bar 5.574e-6). One chain per arm; R2G-conv seeds decide quotability.

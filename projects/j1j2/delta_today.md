@@ -397,3 +397,19 @@
 - 2026-10-29 R1 readout amended (angle): bare e(B), storage recovered r = (2.503e-5 - e(B))/0.895e-5, pass r >= 0.5, kill r <= 0; angle predicts r = -0.2..0.3 (class tax ~0.9-1.1e-5 ~ one round's gain). L-SWO prepared: pass e(fit) <= 1.761e-5, kill >= 2.503e-5, predicted 1.9-2.1e-5; awaits PI. Race watcher PID 341828.
 - 2026-10-29 PI 'Yes': paired label-free arm L-SWO approved (angle submits; pass e(fit) <= 1.761e-5, kill >= 2.503e-5, predicted 1.9-2.1e-5).
 - 2026-10-29 Test N running (angle, CPU; bank sigma 1/2, M 16-128, cap <= PP base cost); predictions Astra eps^2 <= 0.2 vs angle 0.6-0.85 at M 128. L-SWO submitted: Paderborn 4062263 + A40 17601653 (race watcher). R1 4058165 / 17600579 pending. Angle amended expert view (c54aea2).
+2026-10-29 21:47 VERDICT job testn_m42: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-29 21:47 VERDICT job testn_m47: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-29 21:47 VERDICT job testn_m53: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+2026-10-29 23:10 VERDICT job 17600579: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40/ANALYSIS.md]
+2026-10-29 23:10 VERDICT job 17601653: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo/run_a40/ANALYSIS.md]
+2026-10-29 23:13 [pfaffian R1 race] job(s) ended before the race was decided: A40 17600579 FAILED (step none), Paderborn 4058165 PENDING (step none); nothing cancelled, race watcher exits
+2026-10-29 23:13 [pfaffian L-SWO race] job(s) ended before the race was decided: A40 17601653 FAILED (step none), Paderborn 4062263 PENDING (step none); nothing cancelled, race watcher exits
+2026-10-29 23:14 L-SWO A40 17601653 FAILED at startup (ModuleNotFoundError st6_sector; PYTHONPATH missing); fixed lswo_a40.sbatch (PYTHONPATH=.../compress6/code, imports dry-run ok), resubmitted as A40 17603168; Paderborn 4062263 untouched; race watcher re-armed with the new id.
+2026-10-29 23:14 [pfaffian R1 A40 resubmit] job 17603167 (job_id.txt in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_a40); first A40 job 17600579 failed on ModuleNotFoundError st6_sector, fixed by PYTHONPATH=compress6/code in r1_a40.sbatch; race watcher r1_race_watch_17603167.sh pid 2055869
+2026-10-29 23:21 Paderborn codeR1 fix (shared by R1 4058165 and L-SWO 4062263; jobs cd into codeR1): added st6_sector.py (sha 711b7afb59e2) and vit_dt.py (sha 5476fff3f393) copied from codeC1, equal to local compress6/code; the 4 pinned files unchanged (5ebae9d8/09f66f19/f320a095/6d09da06); login-node dry-run (JAX_PLATFORMS=cpu) import cx_lib + flax/optax/scipy OK; no job touched.
+2026-10-29 23:24 [pfaffian R1 race] 17603167 started (step 10) -> cancelled 4058165 (PI pre-approval via lead)
+2026-10-29 23:24 VERDICT job 4058165: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run/ANALYSIS.md]
+2026-10-30 00:35 [pfaffian L-SWO race] 4062263 started (step 30) -> cancelled 17603168 (PI pre-approval via lead)
+2026-10-30 00:36 VERDICT job 17603168: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo/run_a40/ANALYSIS.md]
+2026-10-30 01:05 VERDICT job 4062263: COMPLETED, FIT OK [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo/run/ANALYSIS.md]
+- 2026-10-30 Pfaffian L-SWO readout (CPU, s1): label-free fit e(fit) 1.957e-5 (between; pred 1.9-2.1 met), recovers 37% of the Jacobi gain without phi''; augmented 8.34e-6 vs 1.018e-5 (not the gate). 0.58 H100-h.

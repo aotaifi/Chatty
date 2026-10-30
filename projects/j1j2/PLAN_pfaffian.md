@@ -682,3 +682,13 @@ RUNNING L-SWO (PI 'Yes' via lead): paderborn=4062263 a40=17601653  ; launchers l
 R1 status 2026-10-29 23:24: first A40 copy 17600579 FAILED at startup (ModuleNotFoundError st6_sector; fixed by PYTHONPATH); resubmitted A40 17603167 STARTED (step 10) -> race watcher cancelled Paderborn 4058165 (PI pre-approval via lead). Paderborn codeR1 got st6_sector.py/vit_dt.py (sha-checked) for L-SWO 4062263. L-SWO: Paderborn 4062263 + A40 17603168 pending, race watcher re-armed.
 L-SWO status 2026-10-30 00:35: Paderborn 4062263 STARTED (step 30) -> race watcher cancelled A40 17603168 (PI pre-approval). Running: R1 A40 17603167, L-SWO Paderborn 4062263.
 L-SWO fit done (Paderborn 4062263, 2026-10-30 01:05): 520 steps, converged (held-out change 0.0147 < 0.02), 2.99 s/step, 0.58 H100-h; la_table pfaffian_lswo/run/round_1/la_table.npy (sha b65ab273). CPU readout e(fit) running. R1 A40 17603167 running.
+
+## Result L-SWO (2026-10-30; fit Paderborn 4062263, 520 steps, converged, 0.58 H100-h; CPU readout
+/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo/readout/readout.json; sign s1; verified)
+e(fit) = 1.957e-5/site: BETWEEN (pass <= 1.761e-5, kill >= 2.503e-5); prediction 1.9-2.1e-5 MET; tau_J/Delta_J = 0.632
+(prediction 0.6-0.75 met). The label-free fit recovers (2.503 - 1.957)/(2.503 - 1.018) = 37% of the Jacobi gain, without phi''.
+Copy error vs T: pair cost 5.28e-5/site, 76% in the moderate class (r within 3x), deep band 72% of cost, median e +0.05.
+Augmented, NOT the gate: fit e^{4.0 f_J[fit]} 8.34e-6 vs A_s1 e^{3.9 f_J} 1.018e-5: one label-free round + augmentation
+lowered the augmented guide by 1.84e-6. <H>(fit) 2.83e-5.
+Reading: the class stores ~37% of a round's Jacobi improvement label-free; bare e(fit) 1.96e-5 is above one exact FN round
+from the copy (phi'' 1.608e-5) but well below the copy (2.503e-5).

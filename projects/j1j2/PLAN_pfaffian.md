@@ -841,3 +841,15 @@ L1 (2-body) alone 0.977 / 0.983 / 0.993: the bank adds 2-3% over 2-body. Control
 Graded exact E_FN: tax/gain 0.958 / 0.971 / 0.978 (kill >= 1 nearly; eps^2 >= 0.7 fires). Predictions: Astra (<= 0.2)
 refuted; mine (0.6-0.85) also too optimistic. The correction is not a spin-pattern function at any order this bank reaches;
 consistent with L/K/K3 (it is the guide's own f_J). This feature family is closed.
+
+## Result Θ (2026-10-30, ws1 CPU ~5 h, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta/; sign s1): INVALID as designed
+Contract estimator (32768 D-sampled pairs, 2 seeds): C(P) 0.63-0.86 for every pair-product candidate, C(200) 0.16-0.38,
+C_GN 0.17-0.67; M-R RBM C(P) 0.06-0.12. Read literally that is "spectral bias". It is not trustworthy: [measured, the
+worker's held-out diagnostic] coefficients fitted on one pair sample and scored on the other give C(P) < 0 for all PP
+candidates (min-norm -0.8..-24; GN-damped -0.01..-1.7), and for the M-R RBM in-sample 0.11 vs held-out 0.055 and exact L1
+0.023 (5x overstatement). With rank 2376-3494 against 32768 heavy-tailed pairs the in-sample projection overfits. My
+pre-registration's flaw: no held-out score and too few pairs for P ~ 3000. Transfer Spearman 0.11-0.23 (far below 0.7),
+also in-sample. Controls pass (J v_1 -> 1.000000; noise in-sample 0.04-0.13, held-out <= 0; J vs finite differences 4e-8).
+The learnability law is NOT judged. A valid version needs a held-out C(P) at N_p >> P^2/... in practice ~1M pairs per
+candidate (~2M J evaluations at ~80 conf/s ~ 7 h CPU per candidate) or exact sums. Proposal, not run: L-SWO (b) and
+fixed-init (e) only, N_p = 2 x 524288, held-out C(P) and C_GN; cost ~2 x 7 h CPU.

@@ -455,3 +455,5 @@
 - 2026-10-30 GPU profile job 4075217 analysed (PROFILE.md in /scratch/a/A.Otaifi/ansatz_runs/gpu_profile/): GPU-bound, util 96.6% mean, 0.46 GPU-h; f32 2.1x faster but all precisions not usable.
 2026-10-30 14:28 VERDICT job testn3_m47: COMPLETED, NO GATE RUN: the brief names no gate command and no Monte Carlo chains, so I ran nothing. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 - 2026-10-30 PI: profile worker + Astra decide whether a walker-code speed-up (fast det-ratio updates / fusion fix) is worth building; output gpu_profile/DECISION.md; code reading + CPU only.
+2026-10-30 14:49 VERDICT job testn3_m53: COMPLETED, NO GATE RUN. The brief names no gate command and no MC chains for quotable.py (deterministic least squares), so I ran nothing and printed no verdict. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
+- 2026-10-30 GPU-profile follow-up: speed-up decision BUILD (determinant-contraction rewrite, est 2.4x walker-tau/s at 8x8 and 10x10, 3 days); /scratch/a/A.Otaifi/ansatz_runs/gpu_profile/DECISION.md

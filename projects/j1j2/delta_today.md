@@ -428,3 +428,6 @@
 2026-10-30 07:32 VERDICT job testn_m53: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n/ANALYSIS.md]
 - 2026-10-30 Pfaffian R1 readout (A40, unconverged, s1): e(B) 2.39e-5, r 0.126 (between); augmented 9.72e-6 vs zero-error ref 7.18e-6. R1b (converged rerun, 4070227) pending.
 - 2026-10-30 R1 readout (A40, unconverged, complex PP RBM inactive, s1; lead verified pfaffian_r1/readout/readout.json): e(B) 2.391e-5, r 0.126 (BETWEEN, pred -0.2..0.3), augmented 9.72e-6 vs reference 7.18e-6; superseded when R1b 4070227 converges.
+2026-10-30 08:22 VERDICT job 4070227: COMPLETED, FIT OK (steps 1390, converged True, s/step 2.993; held-out loss 2.2730e-02 -> 3.9788e-03, held-out change 0.0043 < 0.02 from step 1110) [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_b/ANALYSIS.md]
+- 2026-10-30 Test N: the 'VERDICT job testn_*' DISAPPEARED lines above (21:47, 07:32) are false: watcher checked the remote PID locally; runs were alive. Watchers re-armed as testn2_*. (pfaffian_n)
+- 2026-10-30 TEST X (crossed signs, exact FN, 6x6, pfaffian_x/x_result.json): controls pass (L 8.33757e-6 rel 1.2e-11, G 5.57383e-6 rel 1.9e-10); (a) |L| x s_G 7.38996e-6 (-9.48e-7 vs L, threshold -1e-6: miss by 5.2e-8); (b) |G| x s1 1.00203e-5 (> 8.34e-6). Pre-registered verdict NEITHER. Factorial: sign effect 0.95e-6 at |L|, 4.45e-6 at |G|; amplitude and sign interact.

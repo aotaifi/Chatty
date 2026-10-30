@@ -408,6 +408,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   is rms 0.006 in ln phi; the Jacobi correction needs no labels.
 - One LABEL-FREE loop round (refit to A e^{c f_J}, re-augment) moved the augmented guide 1.018e-5 -> 8.34e-6 (L-SWO, s1): the
   loop can progress without FN labels; storage keeps ~37-40% of the ideal step.
+- Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
+  competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). Each magnitude is best with the sign it was built with (its walls), so
+  the 2.76e-6 deficit has no sign/amplitude split; at the common sign s_G the loop magnitude is 1.8e-6 worse.
 - Cost of one Lanczos/Jacobi step per walker move (derived, board 23): needs ~d^2 = 4N^2 two-swap ratios. Determinant networks
   with fast updates: O(N^2 det4) per image, a CONSTANT factor over plain (measured 5.4x at 6x6); backflow grows ~N^2 (36.5x at 6x6);
   generic NNs pay a factor d ~ 2N (~400 at 14x14). So 'one step is cheap at any size' holds only for determinant-type networks.
@@ -436,9 +439,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-10-30 07:15)
-- Lead: TEST X (crossed signs), CPU, th-ws-7010m52 PID 3279912 (setsid, PPID 1), run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_x
-  (ANALYSIS_BRIEF.md with the gate; result x_result.json + x.log; exit_code when done). No watcher: read the files.
+## Running (2026-10-30)
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
 - Proposed, not started: sign-storage angle (card task_150a60d8, brief in the card; PI said "Start it", app refused a direct start).

@@ -826,3 +826,9 @@ judged on bare B_2^G vs bare B_1, both at s_G.
  Prediction: e(B_1, s_G) 1.7-1.9e-5; e(T_G) 7.0-7.5e-6; bare e(B_2^G) 1.3-1.6e-5; augmented 5.8-7.0e-6.
  KILL: e(B_1, s_G) - e(B_2^G, s_G) <= 0.5e-6. Competitor bar 5.6e-6 (s_G) as the reference for the augmented number.
 Cost: 2 fits x ~0.6 H100-h (L-SWO took 0.58) + CPU prep and readouts.
+Round-2 prep (2026-10-30, CPU, pfaffian_lswo2/prep_result.json; verified by the worker's controls): E_FN[T2, s1] 8.3376e-6;
+s_G rebuilt (controls rel <= 1e-11; 9.92% of orbits differ from s1; sha 94eb19c9). Arm s_G start points (predictions
+MISSED low, i.e. better): E_FN[B_1, s_G] = 1.545e-5 (predicted 1.7-1.9e-5); c_G = 4.0, e(T_G) = B_1 e^{4.0 f_J^G[B_1]}
+at s_G = 6.069e-6 (predicted 7.0-7.5e-6): without any new training, 0.47e-6 above the competitor bar 5.6e-6 at the same sign.
+Queues (--test-only, 13:35): Paderborn ~50 h, theorie A40 ~38 h -> both copies of each arm submitted, race rule as before
+(A40 copy capped at ~840 steps; L-SWO round 1 converged at 520).

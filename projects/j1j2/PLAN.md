@@ -428,7 +428,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   fast determinant-ratio updates per hop; before the 10x10 stage. Repo gfmc_run.py/gfmc_fn_lib.py differ from launched M1 code.
   DECISION (worker + Astra cj-a27475bc4afa, gpu_profile/DECISION.md): BUILD the determinant-contraction rewrite (rbmpp_lib.py l.183-190
   bond sums over a 2 GiB V array = 49% of GPU time -> batched GEMMs), expected 2.4x (1.8-3.0) at 8x8 and 10x10, 3 days, gated on
-  measured >= 2x at 10x10 + near-node accuracy; PI approved 2026-10-30; worker building (flagged fast path, default ref).
+  measured >= 2x at 10x10 + near-node accuracy; PI approved 2026-10-30. BUILT (ec94679, --ratio fast, default ref): accuracy no worse
+  than ref vs 50-digit truth, walker energies equal to 8e-14; A40 speed 1.39x (8x8) / 1.17x (10x10), A40 f64 GEMMs weak; H100 bench
+  pending (Paderborn cont). Before production use: j1j2 has no ed_cases.json (root CLAUDE.md §4), write one.
 - Sampling engineering for the 10x10 stage (PI list 2026-10-30): convergence watcher, resetting stuck chains, larger proposals for
   acceptance near nodes, chains per sample, NetKet / NVIDIA samplers vs our code; opens as an angle with the 10x10 test, first
   input = GPU profile (Paderborn 4075217). Optimizer fixed by the PI: SR / minSR, no optimizer comparison.

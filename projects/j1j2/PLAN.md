@@ -45,6 +45,11 @@ level while the gains add up over rounds; a step at walker time nests (400^k).
   one round's correction is ~92% c x f_J, the copy's own Jacobi factor (Test L); the bulk two thirds are moderate errors.
 - Owner: Pfaffian angle (network expert); prediction and ending test to be written by the angle before any run.
 - Constraint: a feature that needs neighbour sums at walker time is not cheap (it nests like a step).
+- Competitor bar (PI 2026-10-30, reference, NOT a kill at 6x6): RBM+PP VMC + one signed Lanczos step + FN, own sign, 5.6e-6/site
+  (same walker-cost class as network + one Jacobi factor); two steps 1.95e-6 (nested, out at scale). Our best now: 8.3e-6 (one
+  label-free round, plain PP, s1; s1 floor 2.2e-6). PI's hypothesis: the advantage is at large sizes, where k Lanczos steps nest
+  (400^k) while the loop stores rounds in the network at one-level walker cost; 6x6 favours Lanczos. Report every result against
+  this bar; the scale claim is tested only by an equal-cost comparison at >= 8x8.
 - Candidate (angle, board 20-21): A_aug = A e^{c f_J} = A^(1-c) A'^c, A' one Jacobi step of the FN equation with the copy's own
   walls; O(N^3) per walker step via rank-2/4 updates (plain PP; backflow raises the rank; T2 measures, oracle sign).
 - Astra xhigh (cj-44177b7587f9; lead's confidence ~45% before): nonlinear Jacobi over-relaxation in log amplitude, no SOR

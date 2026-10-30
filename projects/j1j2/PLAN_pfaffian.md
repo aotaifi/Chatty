@@ -808,3 +808,21 @@ Jacobi-shaped direction. Test Θ (kernel) is the next step to say whether that i
        and the advantage over Lanczos-type steps disappears. Kill: any measured head cost > 20x plain at the target size.
    Note [judg]: the determinant structure is what makes the head cheap; an RBM-only base has O(M) per swap but N^2 two-swap
    configurations, a ratio ~N that grows with size.
+
+## L-SWO round 2 (PI GO via the lead 2026-10-30; pre-registered before any number; class as L-SWO: complex PP, no backflow,
+RBM inactive; Paderborn H100; label-free; ~1.2 H100-h)
+Base B_1 = L-SWO fit (pfaffian_lswo/run/round_1/la_table.npy, theta.npy), e(B_1, s1) = 1.957e-5; f_J[B_1] at s1 =
+pfaffian_lswo/readout/fJ_fit.npy; augmented guide A_1' = B_1 e^{4.0 f_J} = 8.34e-6 (s1).
+ARM s1: target T2 = A_1' (ln T2 = ln B_1 + 4.0 f_J[B_1], normalised); fit B_2 warm-started from B_1's theta (same spec,
+seed 1, flatness rule, max_steps 3000, fit_sec 9000), sign s1. Delta_J2 = e(B_1) - e(T2) = 1.12e-5.
+ Prediction: bare e(B_2) 1.45-1.75e-5 (keeps ~20-45% of Delta_J2, as round 1's 37%); augmented B_2 e^{c f_J[B_2]}:
+ c* 3.5-4.5, 6.5-7.8e-6. KILL (candidate (1)): e(B_1) - e(B_2) <= 0.5e-6.
+ARM s_G (single round 2 from B_1 under the competitor's signed-Lanczos sign s_G, rebuilt as in ansatz/code/test_x.py and
+saved): f_J^G[B_1] with s_G's blocked bonds and E'_G = E_FN[B_1, s_G]; c_G by an exact line search under s_G (CPU);
+target T_G = B_1 e^{c_G f_J^G}; fit as arm s1 but sign_path = s_G. Confound (stated now): B_1 was trained under s1, so this
+arm is "round 1 under s1, round 2 under s_G"; its gain mixes the sign switch with the round. Separation: the zero-training
+start point E_FN[B_1 e^{c f_J^G[B_1]}, s_G] (Test X gave 7.39e-6 at c 4.0 with s1's f_J) is reported, and the round is
+judged on bare B_2^G vs bare B_1, both at s_G.
+ Prediction: e(B_1, s_G) 1.7-1.9e-5; e(T_G) 7.0-7.5e-6; bare e(B_2^G) 1.3-1.6e-5; augmented 5.8-7.0e-6.
+ KILL: e(B_1, s_G) - e(B_2^G, s_G) <= 0.5e-6. Competitor bar 5.6e-6 (s_G) as the reference for the augmented number.
+Cost: 2 fits x ~0.6 H100-h (L-SWO took 0.58) + CPU prep and readouts.

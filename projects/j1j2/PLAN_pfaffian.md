@@ -919,3 +919,4 @@ Then (only after this reads out): round 3 from the better converged seed under s
 Equal-cost note (training): competitor RBM+PP 6x6 guide training 14.3 GPU-h (RTX 2080 Ti / A40 slices) of which ~6.5 h on
 plateaued runs (results/rbmpp_6x6/README.md section 4). Ours on top of a PP start that came from that project (rpT1_pp):
 F1 A real fit ~1.2 H100-h, complex copy (test C) ~0.7 H100-h, L-SWO round 1 0.58 H100-h, round 2 7.6 A40-h (unconverged).
+RUNNING R2G-conv: s1 4079208 2026-10-30T23:20:50+01:00 s2 4079209 2026-10-30T23:20:52+01:00 s1-a40 17623357 2026-10-30T23:20:57+01:00 s2-a40 17623358 2026-10-30T23:20:57+01:00 ; launchers launch_r2g.sh / launch_r2g_a40.sh read by the angle lead; race watchers r2g_race_watch.sh per seed.

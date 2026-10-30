@@ -881,3 +881,13 @@ Provisional reading (if the gate is re-ruled): the tangent space of the trained 
 correction under any regularised fit (C_GN, C_200), the near-min-norm fit overfits (negative), and the fixed RBM init adds
 nothing: "missing direction" at the linear level (my prediction), not spectral bias. Caveat: this is the linearised class at
 the trained point; the trained fits (R1b, L-SWO) stored 15-37% by moving nonlinearly.
+Θ v2 status (lead's ruling 2026-10-31): "calibration gate FAILED; provisional reading 'missing direction' (PP C_ho(GN)
+-0.02..0.02, C_ho(200) 0.00..0.04), not established". The gate is NOT re-ruled.
+
+## Θ v2 calibration check (pre-registered 2026-10-31 before any number; CPU; sign s1)
+New reference: C_exact = the exact D-norm projection share of R*_1 onto the alpha-16 M-R RBM's own 592 Jacobian columns
+(d R_theta / d theta at theta_a16), with D summed over ALL blocked pairs at s1 (phi'' weights), C_exact = b^T G^+ b / D_RR
+(ridge 1e-10 tr(G)/P for numerical rank). Gate passes only if BOTH: |C_ho(P)_f - C_exact| <= 0.02 for both directions
+(0.069, 0.065), AND C_exact >= max(C_ho(P)_f) (my bias argument: a held-out score is biased low; if this fails the argument
+is wrong too). Pass -> the v2 PP numbers count under v2's verdict rule with no rerun. Fail -> Θ closed as unmeasurable
+with this estimator. Prediction: C_exact 0.07-0.12.

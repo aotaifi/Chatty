@@ -484,3 +484,11 @@
 - 2026-10-30 Pfaffian Test Θ (CPU, s1): INVALID as designed: in-sample C(P) 0.63-0.86 overfits (held-out < 0 at 32768 pairs vs rank ~3000); law not judged; held-out redesign at ~1M pairs proposed (~7 h CPU per candidate).
 - 2026-10-30 Test Theta v1 INVALID (angle): in-sample C(P) 0.63-0.86 overfits (rank ~2400-3500 vs 32768 pairs); held-out C(P) < 0 for all PP; calibration M-R RBM in-sample 0.11 vs held-out 0.055 vs exact 0.023. Lead GO: held-out Theta on L-SWO + fixed-init, 2 x 524288 pairs, ~14 CPU-h, calibration gate within 0.02 of exact.
 - 2026-10-30 Theta v2 pre-registered (angle 3321122) and running on CPU (~7 h/candidate): held-out C only, calibration gate M-R RBM within 0.02 of 0.023; angle predicts missing direction (~70%).
+2026-10-30 18:07 VERDICT job thetav2_m42: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+2026-10-30 18:07 VERDICT job thetav2_m47: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+2026-10-30 18:08 VERDICT job thetav2_m53: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+2026-10-30 18:10 CORRECTION: the three 'VERDICT job thetav2_m42/m47/m53: DISAPPEARED' lines above are false (watcher pid files held a dead ssh-shell pid; jobs are running; pid files fixed, watchers re-armed) [pfaffian_theta2]
+2026-10-30 18:13 VERDICT job thetav2_m53: COMPLETED, NO GATE RUN. The brief names no gate command and no chains, so quotable.py had nothing to run on, and there is no plot. Only `f` is DONE. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+2026-10-30 21:32 VERDICT job thetav2_m42: COMPLETED, no gate script ran. The brief names none and there are no chains for quotable.py. I read the three JSONs directly, and the calibration gate fails. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+2026-10-30 21:33 VERDICT job thetav2_m47: COMPLETED, no gate script exists for this job, and the calibration gate fails. f R1 C_P_heldout is 0.0689 (A→B) and 0.0654 (B→A), against 0.023 ± 0.02. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/ANALYSIS.md]
+- 2026-10-31 Pfaffian Θ v2 (CPU, s1): calibration gate failed (f: 0.067 vs 0.023 +- 0.02; reference likely mis-specified, held-out is biased low); PP held-out C_GN, C_200 in -0.02..0.04, C_P negative: provisional 'missing direction', pending the lead's ruling.

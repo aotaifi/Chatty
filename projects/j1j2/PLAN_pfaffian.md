@@ -868,3 +868,16 @@ Verdict (R*_1, both directions): C_ho(P) <= 0.1 -> missing direction (expressibi
  C_ho(P) >= 0.5 AND (C_ho(200) or C_ho(GN)) <= C_ho(P)/2 -> slow learning (spectral bias); else inconclusive.
 Prediction (mine, ~70%): missing direction for (b) (C_ho(P) <= 0.1); (e) at most 0.05 higher. Lead/Astra prior: spectral bias.
 Cost: ~2M J evaluations per candidate at ~80 conf/s ~ 7 h, (b) and (e) in parallel on two ws nodes, (f) minutes.
+
+## Result Θ v2 (2026-10-30/31, ws1 CPU 3.4 h per PP candidate, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_theta2/; sign s1)
+CALIBRATION GATE FAILED as registered: (f) M-R RBM on R*_1 C_ho(P) = 0.069 / 0.065 against 0.023 +- 0.02 (C_ho(GN) 0.024 /
+0.022 does match). So by the contract no PP number counts. My reading of the failure [derived, unvalidated]: a held-out
+score of a fitted model is biased LOW, not high, so 0.067 > 0.023 says the reference is mis-specified, not the sample:
+the alpha-16 RBM's linear span (592 columns, 1- and 2-body terms with finite b) is larger than L1's 9 symmetric 2-body
+features, so 0.023 was the wrong yardstick for (f). Needs the lead's ruling.
+Held-out on R*_1 (A->B / B->A): b C_ho(P) -0.48/-0.37, C_ho(GN) -0.009/0.016, C_ho(200) 0.007/0.021;
+ e -0.55/-0.38, -0.023/-0.006, 0.001/0.041. f_J and R*_2 the same picture (GN, 200 in -0.11..0.10).
+Provisional reading (if the gate is re-ruled): the tangent space of the trained PP class holds ~0-4% of the round
+correction under any regularised fit (C_GN, C_200), the near-min-norm fit overfits (negative), and the fixed RBM init adds
+nothing: "missing direction" at the linear level (my prediction), not spectral bias. Caveat: this is the linearised class at
+the trained point; the trained fits (R1b, L-SWO) stored 15-37% by moving nonlinearly.

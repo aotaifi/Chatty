@@ -692,3 +692,15 @@ Augmented, NOT the gate: fit e^{4.0 f_J[fit]} 8.34e-6 vs A_s1 e^{3.9 f_J} 1.018e
 lowered the augmented guide by 1.84e-6. <H>(fit) 2.83e-5.
 Reading: the class stores ~37% of a round's Jacobi improvement label-free; bare e(fit) 1.96e-5 is above one exact FN round
 from the copy (phi'' 1.608e-5) but well below the copy (2.503e-5).
+
+## CORRECTION 2026-10-30 (Astra cj-d0bc7446d51c via the lead; verified by the angle lead): the RBM was INACTIVE
+cx_r1fit.py l.196/260 start the RBM block at W = 0, b = 0. For R = sum ln cosh(b + W z) both derivatives are tanh(.) x (z or 1)
+= 0 there, a stationary point, so the block never moves: L-SWO's saved theta has the last 148 entries exactly 0 (max |.| 0.0).
+My spec ("RBM weights W = 0, b = 0") caused it; the CPU Jacobian check ran at W, b != 0 and could not catch it.
+RELABEL: R1 (A40 17603167) and L-SWO (4062263) both fit "complex PP, no backflow, RBM inactive" (2592 active parameters).
+They remain a valid PAIRED comparison of that class; every number above under "R1"/"L-SWO" refers to it.
+Fix for any future run: small random RBM init (W ~ N(0, 0.01^2), b ~ N(0, 0.01^2)) with a CPU check that the RBM Jacobian
+columns are nonzero at the start.
+Astra, also recorded: the fit's convergence flag is a 1.47% held-out-loss plateau, not a vanishing gradient; its fixed point
+is neither VMC nor E_FN stationarity (band-uniform weights put ~120x more weight on decade -13 than |A|^2; exact condition
+in the note).

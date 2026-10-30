@@ -723,3 +723,4 @@ at 520 steps. Only the caps change: max_steps 3000, fit_sec 9000 (measured ~3 s/
 kill <= 0; prediction r -0.2..0.3) plus the competitor-bar reference. The A40 R1 result is marked "unconverged,
 superseded" once R1b reads out. Default from now: Paderborn H100; a theorie A40 race only if Paderborn's estimated start
 is > ~1 day away. The fixed RBM init is used only in new arms.
+RUNNING R1b: Paderborn job 4070227 (wall 03:00, fit_sec 9000, max_steps 3000; launcher launch_r1b.sh read by the angle lead; watcher r1b_pdb_watch.sh); run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run_b. Cost <= 3 H100-h.

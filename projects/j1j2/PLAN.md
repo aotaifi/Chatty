@@ -317,6 +317,16 @@ angle closes after handing over T-Lfix; the lead keeps PLAN.md and TRIED_IDEAS.m
   L-SWO vs SR-VMC, same class, sign s1, equal cost, same augmentation.
   CODE FINDING: cx_r1fit.py zero-initialises the RBM block, whose gradients then vanish; L-SWO's 148 RBM parameters stayed 0. L-SWO
   and R1 fit a plain complex PP (no RBM, no backflow), not 'RBM x PP'. Their pairing stays valid; labels corrected; fix for future runs.
+  ASTRA CAMPAIGN AUDIT 2026-10-30 (cj-040b53cdc8c3): demonstrated so far = a compression mechanism, not an equal-cost advantage.
+  Risks ranked: (1) no advantage over one-step Lanczos at equal total cost (8.34e-6 + 0.58 H100-h vs 5.57e-6); (2) deployable walker
+  cost (backflow 36.5x; sign lookup excluded); (3) storage and sampling with size (the label-free fit still samples from enumerated
+  target tables, cx_r1fit.py l.368; one round; RBM inactive); (4) sign choice (s1 was compared with the unstepped PP sign, not the
+  competitor's signed-Lanczos sign); (5) stored-sign stage untested in this loop; (6) E', c noise. Structural: versus network + ONE
+  Lanczos step both keep one correction level, so the loop has NO neighbour-depth advantage, only possibly better quality per
+  training cost; its depth advantage is only against several nested steps. Next (lead, CPU): TEST X crossed signs, pre-registered:
+  loop magnitude (L-SWO fit x e^{4.0 f_J}) with the competitor's signed-Lanczos sign, and the competitor's magnitude with s1; 2 exact
+  FN solves. Prediction (Astra, low conf.): the competitor's sign lowers the loop's E_FN by >= 1e-6/site. If so, the sign choice is
+  material to the 2.8e-6 deficit; if not and Lanczos still wins at common s1, the deficit is amplitude.
   (Old) Next: the q check on EXISTING data (Pfaffian angle): share q of the near-node cost on pairs with sgn[A(x)A(y)] != s2(x)s2(y),
   forward pass of saved round_1 theta, CPU minutes; q >= 0.5 confirms the own-node cause, q <= 0.1 kills it. Waits for the PI's go.
   (Done 2026-10-27/28: no-own-sign network = complex-parameter PP |A| x s2; tests q, C, T2 below; Test D running.)

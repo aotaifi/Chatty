@@ -1017,3 +1017,4 @@ Verdicts:
 Predictions: A (55%) falls, more slowly, to 1.18-1.22e-5 at global 2100. B falls slowly to 1.24-1.29e-5 at 2100
 (H_u true) and stays above A. Training loss in A: falls while held-out rises (60%).
 Cost ~1.25 H100-h fits + ~0.4 H100-h for 8 table builds + ~2 h CPU.
+R3-cont staging notes (verified by the angle lead): A lam0 = 0.03125 (the code's lam_rel at step 1500; the collapse low was 2.44e-4 at steps 1301-1400 and the default floor never bound); B lam0 = lam_floor = 0.0078125; cx_r1fit.py sha 41f766cc (lam_floor + fixed training batch L_tr; the broken-version check fails as it should). Submitting via launch_r3c_pdb.sh; ids go to pfaffian_r3c/job_ids.txt.

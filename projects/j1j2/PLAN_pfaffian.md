@@ -29,6 +29,10 @@ true ratio r* = phi(x)/phi(y), the copy's ratio r.
   D13 (residual over PP is not local at J2 = 0.5). Pass: G14/G1 7.06e-6 with oracle sign (one seed).
 - Published: RBM+PP (Nomura-Imada arXiv:2005.14142); neural backflow (Luo-Clark 2019).
 
+## What we understand (one line each; evidence)
+- Round stop = fixed step budget + Polyak averaging of the tail iterates: at a fixed target E_FN walks 0.1-0.2e-6 per 150 steps (noise in copy-loss-flat directions); the 6-checkpoint mean beat the best iterate by 0.35e-6 (1.252e-5 vs 1.287e-5; pfaffian_r3avg/readout/readout.json, P19).
+- The PP's linear tangent space at B_1 holds 0-4% of the round residual (Θ v2, calibrated: C_exact 0.082 vs held-out 0.069/0.065; P16); the nonlinear refit still stores r = 0.11-0.18 of each round's Jacobi gain under s_G (P15-P19). Whether r declines per round is NOT established (q 0.63-0.95 single-iterate; averaged r_3 0.178 >= r_2 0.145).
+
 ## Scope
 Paper discussion with the PI first; no run until he agrees. Candidates: PP + linear backflow (what we used),
 neural backflow, sum of Pfaffians e^J sum_k Pf[M_k], plus RBM/Jastrow factor.

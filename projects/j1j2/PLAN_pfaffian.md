@@ -1045,3 +1045,4 @@ STEP BACK (second failed version of the stop-rule design):
    (a selection, labelled as such).
 Also now (CPU, free): the augmented scan at theta(1200) gives the official round-3 augmented number. Prediction 4.6-4.9e-6
 (all 3 trajectory points measured so far are 4.52-4.71e-6).
+RUNNING averaging test: Paderborn table 4081131 (theta_bar sha 1ec8f715) + theorie CPU readout 17632500 (controls, aug at theta(1200), then theta_bar); pfaffian_r3avg/.

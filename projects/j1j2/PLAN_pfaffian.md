@@ -966,3 +966,4 @@ fit_sec 41000, wall 13 h; theta saved at steps 900 and 1200 (small spec option i
 builds the two checkpoint tables; CPU readout of e at 900, 1200, 1500 (bare) and the augmented scan at 1500.
 Converged iff |e(1500) - e(1200)| < 0.05e-6; otherwise "not converged", reported with the slope per 300 steps.
 Cost: ~12 h + ~1.2 h A40, ~1 h CPU. Queue: submit even if ETA > 1 day.
+Hardware change (lead 2026-10-31, PI lifted the H100 ceiling): round 3 also staged on Paderborn H100 (same spec, fit_sec 9000, wall 3 h) and raced against the A40 copy; first copy to log a step wins. Pre-registration unchanged.

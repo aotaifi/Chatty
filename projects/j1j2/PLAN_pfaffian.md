@@ -990,3 +990,30 @@ one seed, not converged by the E_FN rule. Spend: 1.33 H100-h plus 14 min CPU.
 Proposed next (awaiting the lead): continue from the step-1500 theta for 600 steps with checkpoints every 150 (~0.5 H100-h plus
 4 tables plus ~1 h CPU). Prediction (55%): E_FN keeps falling, more slowly, and flattens at 1.18-1.22e-5. Kill of "systematic
 drop": E_FN rises by > 0.1e-6 at any checkpoint, which would make the late drop a walk; round 3 then counts at e(1200).
+
+## R3-cont: continuation + damping control (lead GO 2026-10-31; pre-registered before any number)
+Mechanism under test (hypothesis H_u): the Gauss-Newton step is dtheta = (S + lam I)^{-1} g, where S is the copy-loss Gram
+matrix. As lam -> 0 the step is dominated by the small-sigma eigenvectors of S. The copy loss is nearly blind to those
+directions, but E_FN (through V_A on blocked pairs) is not, so the 1200->1500 drop came from the collapsed damping.
+Arms (Paderborn H100, run in parallel; same class, target T_3, sign s_G; tau = tau_min = 0.01, no anneal; min = max steps):
+ A: warm theta(1500), seed 2, lam0 = the fit's final lam_rel, default floor 1e-6; 600 steps; theta saved every 150
+    (global 1650/1800/1950/2100).
+ B: warm theta(1200), seed 1, lam0 = lam floor = 7.8e-3 (no collapse); 900 steps; theta saved every 150
+    (global 1350...2100).
+Logged at every held-out evaluation, next to the held-out loss: the TRAINING copy loss on one fixed batch drawn from the
+training orbits (B_ho configurations, separate key). Code change: a spec key lam_floor (default 1e-6 = old LAM_MIN) and the
+fixed training batch; nothing else.
+Readout: bare e at every checkpoint (one CPU job, K/Vm built once); augmented c scan at the two arm ends.
+Definitions: "falls" = e(end) - e(start) <= -0.2e-6 with no checkpoint rising > 0.1e-6; "flat" = |e(end) - e(start)| < 0.2e-6;
+a rise > 0.1e-6 at any checkpoint = the kill rule.
+Verdicts:
+ - A falls and B is flat or falls at most at the old slow rate (<= 0.26e-6 per 300 steps): H_u supported; the next step is
+   the step/stop design, worked out on the board first.
+ - Both fall comparably (B reaches within 0.1e-6 of A at an equal global step): just more training; round 3 counts at the
+   arm that meets the E_FN convergence rule.
+ - A rises > 0.1e-6 at a checkpoint and B is flat: the drop was a walk; round 3 counts at e(1200) = 1.313e-5.
+ - Overfit flag: if in A the training loss falls while the held-out loss rises, the A-arm fall is labelled
+   "overfit-driven, unconfirmed" and needs a seed replicate before it counts.
+Predictions: A (55%) falls, more slowly, to 1.18-1.22e-5 at global 2100. B falls slowly to 1.24-1.29e-5 at 2100
+(H_u true) and stays above A. Training loss in A: falls while held-out rises (60%).
+Cost ~1.25 H100-h fits + ~0.4 H100-h for 8 table builds + ~2 h CPU.

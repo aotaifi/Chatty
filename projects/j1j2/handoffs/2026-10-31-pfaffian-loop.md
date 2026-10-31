@@ -34,7 +34,7 @@
    kept 0.178. Round 4 (averaged, about 1.5 H100-h) would settle it; its prediction is in the report.
 3. On equal cost at 6x6:
    - training ties or loses: 4.4 H100-h on top of the competitor's PP start, against their 1.6-7 H100-h;
-   - the walker step wins only by derivation, since the competitor's cost is unmeasured;
+   - the walker step is unresolved: the competitor's RBM part decides it, and it is unmeasured;
    - the exact FN solves used for E' and c* exist only at 6x6.
 
 ## State at handoff

@@ -39,5 +39,6 @@
 
 ## State at handoff
 - No jobs running and no workers.
-- The lead (FN-loop lead) chose to stop rounds at 6x6 and is closing the open question at the PI's check-in.
-- I sent two disagreements on how the question is worded: "diminishing r" is unproven, and "cannot store" is too strong.
+- The lead accepted both wording corrections and gave a GO for round 4 (averaged protocol, about 1.5 H100-h). It is
+  pre-registered in PLAN_pfaffian.md under "Round 4" and NOT yet staged. Its q decides whether the loop is worth scaling.
+- The walker-step cost against the competitor is unresolved until measured.

@@ -1,0 +1,66 @@
+"""r2g_readout.py: R2G-conv readout, arm g1 or g2. CPU numpy, one solve at a time. usage: python3 r2g_readout.py ARM(g1|g2) OUTDIR
+Solver/f_J as lswo_readout.py (bond_split.build + delta0.efn_vec)."""
+import os, sys, json, time, hashlib
+import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import bond_split as BS
+import delta0 as D0M
+ARM = sys.argv[1]; OUT = sys.argv[2]; os.makedirs(OUT, exist_ok=True); T0 = time.time()
+def log(m): print(f'[{time.time() - T0:7.0f}s] {m}', flush=True)
+R2 = '/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2'; RG = '/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g'
+CFG = dict(g1=dict(S=f'{R2}/s_G.npy', FIT=f'{RG}/run_s1/round_1/la_table.npy', TGT=f'{R2}/target_TG_sG.npy', fsha='9be6a663', base=1.5453e-5, label='NOT CONVERGED (H100, 2926 steps, out of budget)'),
+           g2=dict(S=f'{R2}/s_G.npy', FIT=f'{RG}/run_s2/round_1/la_table.npy', TGT=f'{R2}/target_TG_sG.npy', fsha='b00dd2da', base=1.5453e-5, label='CONVERGED (H100, 950 steps)'))[ARM]
+S1, FIT, TGT = CFG['S'], CFG['FIT'], CFG['TGT']
+sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
+RJ = f'{OUT}/readout.json'; res = json.load(open(RJ)) if os.path.exists(RJ) else {}
+res.update(arm=ARM, host=os.uname().nodename, sign=ARM, s1=S1, s1_sha256=sha(S1), fit=FIT, fit_sha256=sha(FIT), target=TGT, target_sha256=sha(TGT), E0=BS.E0, base_e=CFG['base'], label=CFG['label'])
+def dump(): res['sec'] = time.time() - T0; json.dump(res, open(RJ, 'w'), indent=1, default=float)
+assert res['fit_sha256'].startswith(CFG['fsha'])
+n = np.load(f'{BS.CSRD}/norb.npy').astype(np.float64); D = len(n); assert n.sum() == 9075135300
+s1 = np.load(S1).astype(np.float64); assert set(np.unique(s1)) <= {-1.0, 1.0}
+lF = np.load(FIT).astype(np.float64); lT = np.load(TGT).astype(np.float64); assert lF.shape == lT.shape == (D,) and np.isfinite(lF).all() and np.isfinite(lT).all()
+K, Vm, D0 = BS.build(n, s1); log('built K,Vm (s1)')
+# 1. gate
+r = res['E_FN_fit'] if 'E_FN_fit' in res else D0M.efn_vec(K, Vm, D0, n, lF)[0]; eF = r['dE_site']; res['E_FN_fit'] = r; res['e_fit_site'] = eF
+res['drop'] = CFG['base'] - eF; res['kill'] = 'KILL' if res['drop'] <= 0.5e-6 else 'NOT KILLED'; dump()
+log(f'1. e(B_2) = {eF:.6e}  drop {res["drop"]:.4e} {res["kill"]}  it {r["iters"]} res {r["res"]:.1e}')
+EP = r['E']
+# 4. variational <H> of fit at s1 (E_guide_var = <a|H_FN|a> = <H>(s1 a), violating hops enter the diagonal with their true sign)
+res['H_var_fit_site'] = (r['E_guide_var'] - BS.E0) / BS.NS; dump(); log(f'4. <H>(fit,s1) per site {res["H_var_fit_site"]:.6e}')
+# 2. copy error vs T
+cp = BS.cost_pass(n, s1, lT, lF); tot = cp['total_site']
+res['bond_split'] = dict(cost_site=tot, npairs=cp['npairs'], J1=cp['by_class'][0] / cp['total'], J2=cp['by_class'][1] / cp['total'],
+    hist_share=(cp['hist'] / cp['total']).tolist(), ratio_bins=BS.QB, dec_labels=BS.DEC.tolist(),
+    col_share=(cp['hist'].sum(0) / cp['total']).tolist(), by_phi2_decade_share={int(d - 39): float(v / cp['total']) for d, v in enumerate(cp['by_phi2_decade']) if v > 0}); dump()
+log(f'2. cost/site {tot:.4e}  J1 {res["bond_split"]["J1"]:.3f} J2 {res["bond_split"]["J2"]:.3f}  ratio-bin shares {res["bond_split"]["col_share"]}')
+t1 = np.load(f'{BS.TAB}/nb_J1.npy', mmap_mode='r'); t2 = np.load(f'{BS.TAB}/nb_J2.npy', mmap_mode='r')
+# 3. augmented: f_J[fit] with E' = E_FN[fit], s1 blocked bonds (as test_z.py (c))
+fJ = np.empty(D); nbad = 0; dmin = np.inf
+for i0 in range(0, D, 65536):
+    i1 = min(D, i0 + 65536); t = np.concatenate([t1[i0:i1], t2[i0:i1]], 1); valid = t >= 0; tt = np.where(valid, t, 0)
+    ss = s1[i0:i1, None] * s1[tt]; blk = valid & (ss > 0); kpt = valid & (ss < 0)
+    ratio = np.exp(np.clip((lF - lF.max())[tt] - (lF - lF.max())[i0:i1, None], -700, 700))
+    VA = (blk * BS.HW[None, :] * ratio).sum(1); SK = (kpt * BS.HW[None, :] * ratio).sum(1)
+    den = 27.0 - 0.5 * (valid * BS.JW[None, :]).sum(1) + VA - EP; dmin = min(dmin, float(den.min())); nbad += int((den <= 0).sum() + (SK <= 0).sum())
+    with np.errstate(divide='ignore', invalid='ignore'): fJ[i0:i1] = np.log(SK) - np.log(den)
+bad = np.nonzero(~np.isfinite(fJ))[0]; res['fJ'] = dict(den_min=dmin, n_bad=nbad, bad_rows=[int(i) for i in bad]); assert len(bad) <= 3 and dmin > 0
+fJ[bad] = 0.0; np.save(f'{OUT}/fJ_fit.npy', fJ); dump(); log(f'fJ[fit] {res["fJ"]}')
+cache = {0.0: eF}; res['scan'] = {'0.0': eF}
+def solve(c):
+    c = round(float(c), 6)
+    if c in cache: return cache[c]
+    r, _ = D0M.efn_vec(K, Vm, D0, n, lF + c * fJ); cache[c] = r['dE_site']; res['scan'][str(c)] = r['dE_site']; dump()
+    log(f'3. c={c:.3f} e {r["dE_site"]:.6e} it {r["iters"]} res {r["res"]:.1e}'); return r['dE_site']
+for c in (1.0, 2.0, 3.0, 4.0, 5.0, 6.0): solve(c)
+for it in range(8):
+    b = min(cache, key=cache.get)
+    if b >= 6.0: res['status'] = 'MIN AT UPPER EDGE'; break
+    if b <= 0.0: res['status'] = 'MIN AT c=0'; break
+    cs = sorted(cache); i = cs.index(b); trio = cs[i - 1:i + 2]
+    p = np.polyfit(trio, [cache[c] for c in trio], 2)
+    if p[0] <= 0: res['status'] = 'NOT CONVEX'; break
+    cv = round(float(np.clip(-p[1] / (2 * p[0]), 0, 6)) / 0.1) * 0.1; log(f'iter {it}: trio {trio} vertex-> {cv:.2f}')
+    if round(cv, 6) in cache: break
+    solve(cv)
+cst = min(cache, key=cache.get); res['cstar'] = cst; res['e_aug_min_site'] = cache[cst]; res.setdefault('status', 'DONE'); res['done'] = True; dump()
+log(f'3. c* {cst} e_aug {cache[cst]:.6e}  DONE')

@@ -936,3 +936,15 @@ NOT converged (out of 9000 s budget; flatness 0.0088 from step 2340), 2.57 H100-
 (flatness 0.0070), 0.89 H100-h. Held-out loss ROSE in both (5.30->5.54e-3, 5.56->6.95e-3): watch whether bare e still drops.
 Stretch spend 3.46 of 4 H100-h, so round 3 (<= 1 H100-h) would exceed the ceiling by ~0.5 h: needs the lead's OK.
 CPU readout running (r2g_readout.py, readout/{g1,g2}).
+
+## Result R2G-conv (2026-10-31; H100 fits 4079208 / 4079209; CPU readout /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r2g/readout/{g1,g2}/readout.json; verified)
+| seed | fit | bare e | drop vs 1.5453e-5 | aug min (c*) |
+| 1 | 2926 steps, NOT converged (budget), sha 9be6a663 | 1.3839e-5 | 1.61e-6 | 5.207e-6 (3.98) |
+| 2 | 950 steps, converged, sha b00dd2da | 1.4090e-5 | 1.36e-6 | 5.290e-6 (3.99) |
+All three predictions hit (bare 1.36-1.42e-5; aug 5.2-5.5e-6; spread 0.083e-6 <= 0.15e-6). Kill not fired.
+QUOTABLE RULE MET: both minima < 5.574e-6; |diff| 0.083e-6 < 5.574e-6 - 5.290e-6 = 0.284e-6. Bar margin 0.28-0.37e-6 (5-7%).
+Caveats (stand): seeds share warm start B_1 and target T_G, so the spread measures the optimiser path only, not independence;
+s_G is the competitor's sign; walker cost ~5.4x plain PP vs one Lanczos step; 6x6 only. Held-out copy loss ROSE in both fits
+while E_FN fell: the copy loss does not track the FN energy (the known weighting mismatch), so convergence by loss is a weak criterion.
+Code check: r2g_readout.py reproduces the round-2 sG bare e to 4e-11 relative. Spend 3.46 H100-h of the 4 H100-h stretch.
+Round 3 (pre-registration: from the converged seed 2) waits on the lead's OK for ~0.5 H100-h above the ceiling.

@@ -948,3 +948,21 @@ s_G is the competitor's sign; walker cost ~5.4x plain PP vs one Lanczos step; 6x
 while E_FN fell: the copy loss does not track the FN energy (the known weighting mismatch), so convergence by loss is a weak criterion.
 Code check: r2g_readout.py reproduces the round-2 sG bare e to 4e-11 relative. Spend 3.46 H100-h of the 4 H100-h stretch.
 Round 3 (pre-registration: from the converged seed 2) waits on the lead's OK for ~0.5 H100-h above the ceiling.
+
+## Round 3 under s_G (lead GO 2026-10-31: theorie A40 only, no Paderborn copy, H100 ceiling fixed; pre-registered before any number)
+Start: B_2 = R2G seed 2 (converged, la sha b00dd2da, theta run_s2/round_1/theta.npy). Target T_3 = B_2 e^{4.0 f_J^G[B_2]}
+(c 4.0 = c* 3.99), built as lswo2_prep.py built T_G; control: E_FN[T_3, s_G] must equal the g2 readout's c=4 point 5.2902e-6
+(rel 1e-6). Class and spec as R2G seed 2 (complex PP, RBM inactive, seed 2), sign s_G.
+Mechanism (eq. 20 loop): each round stores a fraction r of the available Jacobi gain g = e(B) - e(B e^{c f_J}) in the base, and
+the augmented guide improves by about half the bare drop. Measured under s_G round 2: r = 1.36/9.38 = 0.145 (seed 2), aug/bare
+drop ratio 0.53-0.57; under s1 r fell 0.37 -> 0.11 from round 1 to 2. Θ v2 (P16): tangent space holds 0-4%, so storage is
+nonlinear and r should keep falling. Round 3: g = 1.409e-5 - 0.529e-5 = 0.880e-5; r 0.08-0.16.
+PREDICTIONS: bare e(B_3) 1.27-1.34e-5 (drop 0.7-1.4e-6); augmented min 4.6-5.0e-6 at c* 3.5-4.5. The term that is wrong if
+it misses: r (storage fraction per round).
+STALL RULE: bare drop <= 0.5e-6 (r <= 0.057) -> the loop stalls at this class; the next step is then the class, not more rounds.
+STOP RULE (E_FN, not loss): an in-loop E_FN stop is too costly on A40 (26.8 s/step; one table build 2085 s plus a ~15 min CPU
+solve per readout). Fixed budget instead: exactly 1500 steps (min_steps = max_steps = 1500, so loss flatness cannot stop it),
+fit_sec 41000, wall 13 h; theta saved at steps 900 and 1200 (small spec option in cx_r1fit.py). Afterwards one short A40 job
+builds the two checkpoint tables; CPU readout of e at 900, 1200, 1500 (bare) and the augmented scan at 1500.
+Converged iff |e(1500) - e(1200)| < 0.05e-6; otherwise "not converged", reported with the slope per 300 steps.
+Cost: ~12 h + ~1.2 h A40, ~1 h CPU. Queue: submit even if ETA > 1 day.

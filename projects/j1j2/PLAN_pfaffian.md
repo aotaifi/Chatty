@@ -967,3 +967,4 @@ builds the two checkpoint tables; CPU readout of e at 900, 1200, 1500 (bare) and
 Converged iff |e(1500) - e(1200)| < 0.05e-6; otherwise "not converged", reported with the slope per 300 steps.
 Cost: ~12 h + ~1.2 h A40, ~1 h CPU. Queue: submit even if ETA > 1 day.
 Hardware change (lead 2026-10-31, PI lifted the H100 ceiling): round 3 also staged on Paderborn H100 (same spec, fit_sec 9000, wall 3 h) and raced against the A40 copy; first copy to log a step wins. Pre-registration unchanged.
+RUNNING round 3 (race): Paderborn fit 4079680 + tabs 4079681 (afterok); A40 fit 17625929 + tabs 17625930 (afterok); A40 fit_sec 42500; launchers launch_r3_pdb.sh / launch_r3_a40.sh read by the angle lead; ids in pfaffian_r3/job_ids.txt.

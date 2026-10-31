@@ -413,12 +413,13 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Two label-free rounds under the Lanczos sign beat one Lanczos step at 6x6 (R2G-conv, 2 seeds, exact FN): augmented guide
   5.207e-6 / 5.290e-6 vs competitor 5.574e-6 (same sign s_G; spread 0.08e-6 < margin 0.28e-6; pfaffian_r2g/readout/g{1,2}).
   Caveats: seeds share warm start and target; s_G is the competitor's sign; walker step ~5.4x plain; 6x6 only; equal-cost not shown.
-- Round 3 under s_G keeps gaining but less (r 0.145 -> 0.11; bare 1.418 -> 1.313e-5 at step 1200; official aug 4.786e-6 at c* 3.9;
+- Round 3 under s_G keeps gaining (single-iterate r 0.145 -> 0.11, but averaged r_3 0.178 and seed spread make the decline NOT
+  established, q 0.63-0.95; bare 1.418 -> 1.313e-5 at step 1200; official aug 4.786e-6 at c* 3.9;
   Polyak average of tail checkpoints 1.252e-5 bare / 4.644e-6 aug, better than every single iterate; pfaffian_r3avg). At a fixed target E_FN walks +-0.2e-6 per 150 fit steps (copy loss flat there): fit-to-fit
   scatter of that size limits any single-fit number (pfaffian_r3, pfaffian_r3c).
-- The round correction is a MISSING direction for the complex PP, not slow learning (Test Theta v2, held-out, calibrated: C_GN
+- The round correction is not in the complex PP's tangent space, so a local refit cannot absorb it (not slow learning) (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
-  refit, so the explicit Jacobi factor must carry it (consistent with K, K3, N). Linearised class at the trained point only.
+  refit, so the explicit Jacobi factor carries it; the nonlinear label-free refit still banks 11-18% per round (consistent with K, K3, N).
 - Sign and amplitude do not separate (TEST X, exact FN, pfaffian_x/x_result.json): loop |L| 8.34e-6 (s1) -> 7.39e-6 (s_G);
   competitor |G| 5.57e-6 (s_G) -> 1.00e-5 (s1). s_G is better for both magnitudes, but the gain depends on the magnitude
   (0.95e-6 for |L|, 4.45e-6 for |G|), and the magnitude ranking flips with the sign (s1: |L| better by 1.68e-6; s_G: |G| better
@@ -464,7 +465,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-10-30)
+## Running (2026-10-31)
+- Pfaffian angle: ROUND 4 (lead GO 2026-10-31), averaged protocol from theta-bar, s_G, ~1.5 H100-h; pred r_4 0.11-0.15, bare 1.13-1.17e-5,
+  aug 4.0-4.3e-6; r_4 >= 0.178 kills the decline, bare drop <= 0.5e-6 kills progress. Equal cost at 6x6: training tie/lose, walker step unresolved
+  (Jacobi 5.4x measured; Lanczos 36x by op count vs constant factor on board 23), accuracy ours (4.79 vs 5.57e-6); docs/reports/2026-10-31_label_free_loop_6x6.md.
 - Pfaffian angle: L-SWO round 2 (PI go), arms s1 and s_G, ~1.2 H100-h; kill: round 2 lowers bare B by <= 0.5e-6 -> change the network (Test N / Theta); pass -> round 3 and the scale question.
 - Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
   PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.

@@ -410,9 +410,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   loop can progress without FN labels; storage keeps ~37-40% of the ideal step.
 - Label-free storage beats exact labels (R1b vs L-SWO, both converged, complex PP RBM inactive, s1): bare 2.373e-5 vs 1.957e-5,
   augmented 9.64e-6 vs 8.34e-6; one stored round keeps 15% (labels) vs 37% (Jacobi target) (pfaffian_r1/readout_b, pfaffian_lswo/readout).
-- Two label-free rounds keep improving (L-SWO round 2, unconverged, one seed): bare drop 1.26e-6 (s1) / 1.27e-6 (s_G); with the
-  Lanczos sign s_G the augmented guide reaches 5.39e-6 at c*=4 (bracketed: c=3 5.92e-6, c=5 5.95e-6) vs competitor 5.574e-6: first guide at the bar,
-  not yet quotable (pfaffian_lswo2/readout/sG/readout.json). Converged 2-seed rerun running.
+- Two label-free rounds under the Lanczos sign beat one Lanczos step at 6x6 (R2G-conv, 2 seeds, exact FN): augmented guide
+  5.207e-6 / 5.290e-6 vs competitor 5.574e-6 (same sign s_G; spread 0.08e-6 < margin 0.28e-6; pfaffian_r2g/readout/g{1,2}).
+  Caveats: seeds share warm start and target; s_G is the competitor's sign; walker step ~5.4x plain; 6x6 only; equal-cost not shown.
 - The round correction is a MISSING direction for the complex PP, not slow learning (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
   refit, so the explicit Jacobi factor must carry it (consistent with K, K3, N). Linearised class at the trained point only.
@@ -507,5 +507,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): Two label-free loop rounds with the Lanczos sign bring the 6x6 guide to the one-Lanczos-step competitor (5.39e-6 vs 5.57e-6 per site), not yet confirmed (one unconverged fit).
-- NEXT (in progress, high): Confirm the crossing with two converged fits, then run round 3 to see whether the gain per round holds.
+- STATUS (in progress, high): At 6x6, two label-free loop rounds with the Lanczos sign beat the one-Lanczos-step competitor (5.2-5.3e-6 vs 5.57e-6 per site, two seeds).
+- NEXT (in progress, high): Round 3 tests whether the gain per round holds; then decide the scale test (8x8 or the 10x10 add-on).

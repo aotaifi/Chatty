@@ -931,3 +931,8 @@ candidates b and e: held-out C(GN) -0.023..0.016, C(200) 0.001..0.041, so the ta
 residual R*_1. Scope: linearised at the trained point, not the nonlinear refit; C_ho(P) < 0 is overfit of the near-min-norm fit.
 Reading: storage of the Jacobi correction by local refit is not available to this class; the explicit Jacobi head carries it
 (consistent with K/K3/N: round correction orthogonal to features, eps^2 0.95-0.98).
+R2G-conv fits done (2026-10-31): Paderborn won both races (A40 17623357/58 cancelled at step 60). Seed 1 job 4079208: 2926 steps,
+NOT converged (out of 9000 s budget; flatness 0.0088 from step 2340), 2.57 H100-h. Seed 2 job 4079209: 950 steps, converged
+(flatness 0.0070), 0.89 H100-h. Held-out loss ROSE in both (5.30->5.54e-3, 5.56->6.95e-3): watch whether bare e still drops.
+Stretch spend 3.46 of 4 H100-h, so round 3 (<= 1 H100-h) would exceed the ceiling by ~0.5 h: needs the lead's OK.
+CPU readout running (r2g_readout.py, readout/{g1,g2}).

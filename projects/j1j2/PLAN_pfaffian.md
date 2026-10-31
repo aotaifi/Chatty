@@ -1019,3 +1019,29 @@ Predictions: A (55%) falls, more slowly, to 1.18-1.22e-5 at global 2100. B falls
 Cost ~1.25 H100-h fits + ~0.4 H100-h for 8 table builds + ~2 h CPU.
 R3-cont staging notes (verified by the angle lead): A lam0 = 0.03125 (the code's lam_rel at step 1500; the collapse low was 2.44e-4 at steps 1301-1400 and the default floor never bound); B lam0 = lam_floor = 0.0078125; cx_r1fit.py sha 41f766cc (lam_floor + fixed training batch L_tr; the broken-version check fails as it should). Submitting via launch_r3c_pdb.sh; ids go to pfaffian_r3c/job_ids.txt.
 RUNNING R3-cont: A fit 4081019 + tabs 4081020; B fit 4081021 + tabs 4081022 (Paderborn); CPU readout submitted later by r3c_chain.sh.
+
+## Result R3-cont (2026-10-31; Paderborn 4081019-22, CPU 17630898; pfaffian_r3c/readout/readout.json; verified; 1.94 H100-h)
+Bare e per site (s_G) at each global step:
+| step | 1200 | 1350 | 1500 | 1650 | 1800 | 1950 | 2100 |
+| round-3 fit | 1.3133 | - | 1.2311 | | | | |
+| A (from 1500, seed 2) | | | 1.2311 | 1.2341 | 1.2401 | 1.2467 | 1.2592 |
+| B (from 1200, seed 1, lam floor 7.8e-3) | 1.3133 | 1.3015 | 1.2872 | 1.2895 | 1.2901 | 1.3084 | 1.2885 |
+(all e-5). Augmented minima: A end 4.614e-6 (c* 4.0), B end 4.708e-6 (c* 3.9); round 3 at 1500 was 4.520e-6.
+Gate: UNCLASSIFIED; KILL RULE fired (A +0.125e-6 at 2100, B +0.18e-6 at 1950). Overfit flag false (L_tr and L_ho flat in A).
+H_u is NOT tested: A's lam never re-collapsed (median 0.031). The step-1500 low was not a stable gain: continuing from it lost
+0.28e-6 monotonically.
+=> By the pre-registered kill rule, round 3 counts at e(1200) = 1.3133e-5 (drop 0.96e-6, r = 0.96/8.80 = 0.11, inside the
+predicted 0.08-0.16; r per round under s_G 0.145 -> 0.11).
+STEP BACK (second failed version of the stop-rule design):
+1. Verdict: the loop works and r falls about 25% per round. The E_FN stop rule as designed is ill-posed.
+2. The thought that changed it: along a fit at a FIXED target, E_FN walks by 0.1-0.2e-6 per 150 steps (B: +0.18 then -0.20), which
+   is 2-4x the 0.05e-6 tolerance. Optimiser noise lives in directions the copy loss is flat in (S has small sigma there) but E_FN
+   is not. This is the same mismatch as before, now acting as noise rather than drift. The textbook remedy for stochastic-
+   iterate noise in flat directions is iterate averaging (Polyak-Juditsky 1992, SIAM J. Control Optim. 30, 838; from memory,
+   not re-read).
+3. Cheapest next test: Polyak average of B's six saved thetas (global 1350-2100, one basin, one run): 1 table (~3 min H100)
+   + 1 CPU solve. Prediction: e(theta_bar) <= 1.285e-5, i.e. below B's checkpoint mean 1.293e-5 and at or below its best,
+   1.287e-5. Miss = averaging does not remove the walk; then the stop is a fixed step budget plus the min over saved checkpoints
+   (a selection, labelled as such).
+Also now (CPU, free): the augmented scan at theta(1200) gives the official round-3 augmented number. Prediction 4.6-4.9e-6
+(all 3 trajectory points measured so far are 4.52-4.71e-6).

@@ -81,7 +81,8 @@ DECS = list(range(-5, -14, -1)); ND = len(DECS)
 B = int(SPEC.get('B', 2048)); K = int(SPEC.get('K', 2))
 B_ACC = int(SPEC.get('B_acc', B)); B_HO = int(SPEC.get('B_ho', 4096))
 LAM_B = float(SPEC.get('lam_b', 1.0)); FIT_SEC = float(SPEC.get('fit_sec', 1800)); MAX_STEPS = int(SPEC.get('max_steps', 10 ** 9))
-LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0)); LAM_MIN = 1e-6
+LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0)); LAM_MIN = float(SPEC.get('lam_floor', 1e-6))   # R3-cont: lam_floor (default 1e-6 = old constant)
+assert 0 < LAM_MIN <= LAM_CAP, (LAM_MIN, LAM_CAP)
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
 # T1s-2 (README "Test T1s-2"): tau anneal TAU -> TAU_MIN, halved each time the held-out loss is flat (< FLAT_TOL) over
 # ANNEAL_STEPS steps (and >= ANNEAL_STEPS steps since the last change); convergence additionally needs tau == TAU_MIN.
@@ -96,7 +97,7 @@ SAVE_AT = {int(q) for q in SPEC.get('save_theta_at', [])}   # round 3: steps at 
 MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
 T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
-res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP,
+res = dict(spec=SPEC, arm=ARM, dry=DRY, design=dict(B=B, K=K, B_acc=B_ACC, B_ho=B_HO, lam_b=LAM_B, lam0=LAM0, lam_cap=LAM_CAP, lam_floor=LAM_MIN,
                                                     tau=TAU, tau_min=TAU_MIN, anneal_steps=ANNEAL_STEPS, warm_theta=WARM_THETA, splice_dec=SPLICE_DEC, z_acc=Z_ACC, ho_every=HO_EVERY, min_steps=MIN_STEPS,
                                                     flat_tol=FLAT_TOL, bf_window=BFW, freeze_outer=FREEZE, max_steps=MAX_STEPS, min_move=MIN_MOVE, min_window=MIN_WINDOW, fit_sec=FIT_SEC, decades=DECS, stratified=STRAT))
 
@@ -594,6 +595,9 @@ WBAR = wbar_of(Sampler(~ho_h, 3000 + SEED, STRAT), k1, NW)
 res['Wbar'] = WBAR.tolist(); progress(f'[wbar] {np.array2string(WBAR, precision=3)}')
 key, k1 = jax.random.split(key)
 HOB = make_batch(S_ho, B_HO, k1, WBAR)                 # fixed held-out batch
+# R3-cont: ONE fixed batch from the TRAINING orbits, same size/construction as HOB; own sampler (seed 7000+SEED) and own key (fold_in), so the
+# training sampler and the key stream of the fit loop are untouched.  L_tr is evaluated wherever L_ho is, with the same batch_loss and offset c.
+TRB = make_batch(Sampler(~ho_h, 7000 + SEED, STRAT), B_HO, jax.random.fold_in(key, 777), WBAR)
 # warm network vs warm table on the held-out sample (control 2, second half)
 Sw = fwd(theta0, HOB['x']); dw = np.asarray(Sw - WARM[jnp.asarray(HOB['idx'])]); dw = dw - dw.mean()
 res['control2']['warm_net_vs_table_rms'] = float(np.sqrt(np.mean(dw ** 2)))
@@ -603,11 +607,12 @@ theta = theta_start
 if WARM_THETA:
     c = float(np.mean(np.asarray(fwd(theta, HOB['x'])) - np.asarray(HOB['lx'])))
 L_ho0, ex, db = batch_loss(theta, c, HOB); L_ho0 = float(jnp.mean(L_ho0))
-curve = [dict(step=0, t=0.0, L_ho=L_ho0, c=c, by_decade=decade_diag(HOB, ex, db))]
-progress(f'[fit {ARM}] start held-out loss {L_ho0:.4e}  warm net vs table rms {res["control2"]["warm_net_vs_table_rms"]:.2e}')
+L_tr0 = float(jnp.mean(batch_loss(theta, c, TRB)[0]))
+curve = [dict(step=0, t=0.0, L_ho=L_ho0, L_tr=L_tr0, c=c, by_decade=decade_diag(HOB, ex, db))]
+progress(f'[fit {ARM}] start held-out loss {L_ho0:.4e}  train(fixed batch) loss {L_tr0:.4e}  warm net vs table rms {res["control2"]["warm_net_vs_table_rms"]:.2e}')
 tau = TAU; tau_changed = 0; tau_hist = [dict(step=0, tau=tau)]
 if DRY: res['dense_check_maxdiff'] = dense_check(); progress(f'[dry] gather-vs-dense T check {res["dense_check_maxdiff"]}')
-hist = []; lam_rel = LAM0; n = 0; t0 = time.time(); conv = dict(converged=False, reason='not checked')
+hist = []; lam_rel = max(LAM0, LAM_MIN); n = 0; t0 = time.time(); conv = dict(converged=False, reason='not checked')
 sec.offload()
 
 
@@ -664,10 +669,11 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
                      sec=time.time() - ts))
     if n % HO_EVERY == 0:
         Lh, ex, db = batch_loss(theta, c, HOB)
-        curve.append(dict(step=n, t=time.time() - t0, L_ho=float(jnp.mean(Lh)), c=c, by_decade=decade_diag(HOB, ex, db)))
+        Ltr = float(jnp.mean(batch_loss(theta, c, TRB)[0]))
+        curve.append(dict(step=n, t=time.time() - t0, L_ho=float(jnp.mean(Lh)), L_tr=Ltr, c=c, by_decade=decade_diag(HOB, ex, db)))
         acc10 = np.mean([h['ok'] for h in hist[-HO_EVERY:]])
         d11 = curve[-1]['by_decade'].get('-11', {}).get('rms_e')
-        progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e}  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
+        progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e}  train {curve[-1]["L_tr"]:.4e}  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
                  f'tau {tau:.4f} trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
         if tau > TAU_MIN and n - tau_changed >= ANNEAL_STEPS:          # T1s-2 anneal
             cb = [q for q in curve if q['step'] <= n - ANNEAL_STEPS]

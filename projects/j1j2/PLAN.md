@@ -468,6 +468,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Sign-storage angle (session local_3026e44f, started 2026-10-30 on the PI's "start the sign angle", detached; PLAN_sign.md): can a second network store each round's Lanczos sign; sent Test X + R1b results.
 
 ## Budget
+PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.
 PI 2026-10-29: GPU budget OPEN until further notice, "wisely spent, no grind": every run follows a written mechanism with a
 predicted number (CLAUDE.md points 1, 8); sized from measured rates; reported per test.
 PI 2026-10-27 ('go for Paderborn'): test C (complex vs real PP, Pfaffian angle) <= 10 H100-h, single job <= 6 H100-h; rate probe first.

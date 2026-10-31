@@ -413,6 +413,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Two label-free rounds under the Lanczos sign beat one Lanczos step at 6x6 (R2G-conv, 2 seeds, exact FN): augmented guide
   5.207e-6 / 5.290e-6 vs competitor 5.574e-6 (same sign s_G; spread 0.08e-6 < margin 0.28e-6; pfaffian_r2g/readout/g{1,2}).
   Caveats: seeds share warm start and target; s_G is the competitor's sign; walker step ~5.4x plain; 6x6 only; equal-cost not shown.
+- Round 3 under s_G keeps gaining but less (r 0.145 -> 0.11; bare 1.418 -> 1.313e-5 at step 1200; aug 4.5-4.7e-6 along the
+  trajectory, official scan pending). At a fixed target E_FN walks +-0.2e-6 per 150 fit steps (copy loss flat there): fit-to-fit
+  scatter of that size limits any single-fit number (pfaffian_r3, pfaffian_r3c).
 - The round correction is a MISSING direction for the complex PP, not slow learning (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
   refit, so the explicit Jacobi factor must carry it (consistent with K, K3, N). Linearised class at the trained point only.

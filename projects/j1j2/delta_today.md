@@ -517,3 +517,4 @@
 - 2026-10-31 R2G-conv (lead verified pfaffian_r2g/readout/g{1,2}/readout.json): round 2 under s_G, augmented 5.207e-6 (seed 1, 2926 steps, budget-limited) / 5.290e-6 (seed 2, converged 950 steps) vs competitor 5.574e-6; spread 0.083e-6 < margin 0.284e-6 -> QUOTABLE per pre-registered rule. 3.46 of 4 H100-h used. Round 3 approved on A40 only (ceiling kept).
 - 2026-10-31 round 3 pre-registered (angle 5453cc4): A40 only, fixed 1500 steps, E_FN read at 900/1200/1500 (converged iff |e1500-e1200| < 0.05e-6); pred bare 1.27-1.34e-5, aug 4.6-5.0e-6; stall if bare drop <= 0.5e-6 -> different class; ~13 A40-h, 0 H100.
 - 2026-10-31 PI: H100 ceiling lifted ('use it'); round 3 gets a Paderborn H100 racer, identical spec.
+- 2026-10-31 round 3 submitted as race (launch_r3_pdb.sh 3 h + tables; launch_r3_a40.sh 13 h, fit_sec 42500; r3_race_watch.sh); target control E_FN[T_3,s_G] 5.29020e-6 = g2 c=4 (4e-11); ETA Paderborn ~11-01 00:10.

@@ -984,3 +984,9 @@ describe this segment. Kill test: E_FN at intermediate checkpoints (e.g. 1300, 1
 upward while the loss keeps rising, the drop was a lucky walk; a monotone fall would mean the loss is a poor proxy and E_FN
 should drive the stop or the step.
 Augmented scan at 1500 (incomplete): c 3.0 4.951e-6, 3.5 4.614e-6, still falling; minimum pending (Slurm CPU readout).
+Round 3 augmented scan at 1500 (Slurm CPU 17629941, readout/r3_1500/readout.json, done True, verified): minimum 4.520e-6 at c* 3.9
+(parabola 3.94, 4.5195e-6). This is BELOW the prediction 4.6-5.0e-6, and 1.05e-6 below the competitor's 5.574e-6. NOT QUOTABLE:
+one seed, not converged by the E_FN rule. Spend: 1.33 H100-h plus 14 min CPU.
+Proposed next (awaiting the lead): continue from the step-1500 theta for 600 steps with checkpoints every 150 (~0.5 H100-h plus
+4 tables plus ~1 h CPU). Prediction (55%): E_FN keeps falling, more slowly, and flattens at 1.18-1.22e-5. Kill of "systematic
+drop": E_FN rises by > 0.1e-6 at any checkpoint, which would make the late drop a walk; round 3 then counts at e(1200).

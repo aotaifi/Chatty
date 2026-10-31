@@ -92,6 +92,7 @@ HO_EVERY = int(SPEC.get('ho_every', 10)); MIN_STEPS = int(SPEC.get('min_steps', 
 BFW = int(SPEC.get('bf_window', 3)); FREEZE = bool(SPEC.get('freeze_outer', False)); RATE_ONLY = bool(SPEC.get('rate_only', False))
 assert BFW in (3, 5), BFW
 MIN_MOVE = float(SPEC.get('min_move', 1e-3))           # README amendment T1s-1
+SAVE_AT = {int(q) for q in SPEC.get('save_theta_at', [])}   # round 3: steps at which theta / offset c are saved (OUT/theta_step{N}.npy, offset_c_step{N}.npy)
 MIN_WINDOW = int(SPEC.get('min_window', 50))          # amendment T1s-1: the window is the last 20% of steps, at least 50
 NW = int(SPEC.get('n_wbar', 8192))                    # samples per decade for Wbar_d
 T0JSON = SPEC.get('t0json', '/project/theorie/a/A.Otaifi/chatty_compress6/runs/t0_17410220/cx_t0.json')
@@ -657,6 +658,7 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
     else:
         ok = True; verdict = 'noise'
     if ok: theta = cand; c = c + dc
+    if n in SAVE_AT: np.save(os.path.join(OUT, f'theta_step{n}.npy'), np.asarray(theta)); np.save(os.path.join(OUT, f'offset_c_step{n}.npy'), np.asarray(c))
     hist.append(dict(step=n, ok=ok, verdict=verdict, lam_rel=lam_used, lam_next=lam_rel, L_acc_old=float(jnp.mean(L_old)),
                      dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
                      sec=time.time() - ts))

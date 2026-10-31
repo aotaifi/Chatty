@@ -518,3 +518,11 @@
 - 2026-10-31 round 3 pre-registered (angle 5453cc4): A40 only, fixed 1500 steps, E_FN read at 900/1200/1500 (converged iff |e1500-e1200| < 0.05e-6); pred bare 1.27-1.34e-5, aug 4.6-5.0e-6; stall if bare drop <= 0.5e-6 -> different class; ~13 A40-h, 0 H100.
 - 2026-10-31 PI: H100 ceiling lifted ('use it'); round 3 gets a Paderborn H100 racer, identical spec.
 - 2026-10-31 round 3 submitted as race (launch_r3_pdb.sh 3 h + tables; launch_r3_a40.sh 13 h, fit_sec 42500; r3_race_watch.sh); target control E_FN[T_3,s_G] 5.29020e-6 = g2 c=4 (4e-11); ETA Paderborn ~11-01 00:10.
+2026-10-31 03:06 [pfaffian R3] submitted round 3 (s_G, T_3 sha 4e2d542e, spec seed 2, 1500 steps, save_theta_at 900/1200): Paderborn fit 4079680 (03:00:00, fit_sec 9000) + tabs 4079681 afterok; A40 fit 17625929 (13:00:00, fit_sec 42500) + tabs 17625930 afterok; race watcher pid 582844; watchers (all PPID 1): 581366 581395 582840 582843; ids in /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/job_ids.txt
+2026-10-31 03:11 [pfaffian R3 race] 4079680 started (step 90) -> cancelled 17625929 (PI pre-approval via lead)
+2026-10-31 03:12 VERDICT job 17625930: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/tabs/ANALYSIS.md]
+2026-10-31 03:12 VERDICT job 17625929: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/fit/ANALYSIS.md]
+2026-10-31 04:28 VERDICT job 4079680: COMPLETED, none. The gate command crashed with `FileNotFoundError: .../pdb_fit/tab_900/cx_r1.json`, so it printed no verdict line. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/pdb_fit/ANALYSIS.md]
+2026-10-31 04:36 VERDICT job 4079681: COMPLETED, R3 OK (tab_900 and tab_1200: FIT OK, both tables built from the checkpoints with 0 steps). [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/pdb_tabs/ANALYSIS.md]
+2026-10-31 07:40 [pfaffian R3] step-1500 CPU readout submitted: job 17629941 (cluster, 96G, 8 cpus, 6 h, resume from readout.json); watcher pid 1683105; run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/readout/r3_1500
+2026-10-31 07:56 VERDICT job 17629941: COMPLETED, READOUT OK. Bare e 1.2311e-5, drop 1.779e-6 from 1.4090e-5 (NOT STALLED). Versus e(1200) = 1.31334e-5 the diff is -8.2251e-7, over the 0.05e-6 limit. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/readout/r3_1500/ANALYSIS.md]

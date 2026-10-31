@@ -1046,3 +1046,15 @@ STEP BACK (second failed version of the stop-rule design):
 Also now (CPU, free): the augmented scan at theta(1200) gives the official round-3 augmented number. Prediction 4.6-4.9e-6
 (all 3 trajectory points measured so far are 4.52-4.71e-6).
 RUNNING averaging test: Paderborn table 4081131 (theta_bar sha 1ec8f715) + theorie CPU readout 17632500 (controls, aug at theta(1200), then theta_bar); pfaffian_r3avg/.
+
+## Result averaging test (2026-10-31; Paderborn 4081131, CPU 17632500; pfaffian_r3avg/readout/readout.json; verified; ~0.1 H100-h)
+| guide (s_G) | bare e | aug min (c*) |
+| theta(1200), round 3 by the kill rule | 1.3133e-5 | 4.786e-6 (3.9) |
+| B checkpoints 1350-2100 | mean 1.293e-5, best 1.287e-5 | B end 4.708e-6 |
+| theta_bar = mean of B's 6 thetas | 1.2522e-5 | 4.644e-6 (4.0) |
+Controls: B final rel 0, tab_1200 rel 4.5e-11. Predictions: e(theta_bar) <= 1.285e-5 HIT, 0.35e-6 below B's best checkpoint;
+aug(1200) 4.6-4.9e-6 HIT.
+Mechanism confirmed at this level: E_FN's walk along the fit is iterate noise in copy-loss-flat directions, and E_FN is convex
+enough there that the average beats every iterate. Polyak-Juditsky averaging of the tail is the stop for future rounds.
+Official round 3 (s_G): bare 1.313e-5 (r 0.11), augmented 4.786e-6 = 0.79e-6 below the competitor's 5.574e-6 (one seed).
+With averaging: 4.644e-6 (one run's checkpoints).

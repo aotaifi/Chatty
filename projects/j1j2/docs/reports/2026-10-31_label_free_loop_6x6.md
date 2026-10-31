@@ -52,7 +52,7 @@ round-4 prediction (1.17-1.21e-5), which applied the single-iterate r to an aver
 
 | cost | ours (PP + one Jacobi factor) | competitor (RBM+PP + one signed Lanczos step) | status |
 |---|---|---|---|
-| walker step vs its own plain network | 5.4x a plain PP (measured, T2, pfaffian_t2/t2_result.json; C kernel; op model 10.6x) | ~N = 36x by op count: two-swap ratios for all N^2 neighbour pairs, each with an O(M) RBM update (derived from the same lemma; not measured) | ours cheaper by derivation only |
+| walker step vs its own plain network | 5.4x a plain PP (measured, T2, pfaffian_t2/t2_result.json; C kernel; op model 10.6x) | 25-36x by op count IF the RBM dominates: the d^2 ~ 1300 two-swap ratios each cost O(M) (M = alpha N hidden units, alpha 4 assumed), with no shared-inverse saving, giving (n^3 + d^2 (64 + M)) / (n^3 + d M) ~ 25x. For the PP part alone it is the same constant class as ours (board 23). Not measured | UNRESOLVED until measured |
 | network training | 4.4 H100-h on top of the competitor's PP start (rpT1_pp): F1 real fit 1.2 + complex copy 0.7 + round 1 0.58 + round 2 0.89 + round 3 (to step 1200) ~1.0 | 14.3 GPU-h on RTX 2080 Ti / A40 slices (results/rbmpp_6x6/README.md section 4; 6.5 h of it on plateaued runs) | see below |
 | exact FN solves for E', c* and readout | ~1 CPU-h per round (15.8M orbits; only possible at 6x6) | one FN solve | not counted for either |
 
@@ -60,7 +60,7 @@ Conversion: our own code measured 26.8 s/step on an A40 vs 2.99 s/step on an H10
 Typical fp32 throughput gives 2-3x. So the competitor's 14.3 GPU-h is 1.6-7 H100-h.
 **Verdict at 6x6:**
 - Training: tie or lose, ours 4.4 H100-h plus their PP start against their 1.6-7 H100-h in total.
-- Walker step: win by derivation only. It is unmeasured for the competitor.
+- Walker step: unresolved. The RBM part decides it, and it is unmeasured.
 - Accuracy: win, 4.79e-6 vs 5.57e-6.
 - No equal-cost accuracy comparison has been made.
 The rounds would also need FN-QMC runs for E' and c* at scale. They are free here only because 6x6 allows exact solves.

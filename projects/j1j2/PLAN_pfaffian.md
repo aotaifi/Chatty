@@ -1062,3 +1062,14 @@ Mechanism confirmed at this level: E_FN's walk along the fit is iterate noise in
 enough there that the average beats every iterate. Polyak-Juditsky averaging of the tail is the stop for future rounds.
 Official round 3 (s_G): bare 1.313e-5 (r 0.11), augmented 4.786e-6 = 0.79e-6 below the competitor's 5.574e-6 (one seed).
 With averaging: 4.644e-6 (one run's checkpoints).
+
+## Round 4 (lead GO 2026-10-31; ~1.5 H100-h; pre-registered before any number; NOT YET STAGED: the fresh session starts here)
+Protocol: averaged. Start theta_bar (pfaffian_r3avg/theta_bar.npy, sha 1ec8f715; table pfaffian_r3avg/tabs/tab_bar). Target
+T_4 = B_bar e^{c f_J^G[B_bar]} at c = 4.0 (c* of theta_bar), built as r3_prep.py built T_3. Control: E_FN[T_4, s_G] equals
+theta_bar's c=4 point 4.6438e-6 (rel 1e-6). Fit: class and spec as round 3 (sign s_G, seed 2, tau 0.01 after the anneal as
+round 3); fixed 1500 steps; save theta every 150 from step 600; theta_4 = mean of the saved thetas at 600..1500 (7 iterates).
+Paderborn H100 (codeR3c, cx_r1fit.py sha 41f766cc), with an A40 race copy only if the Paderborn ETA is > 1 day.
+Readout (CPU Slurm, K/Vm once): bare e and the augmented scan for theta_4; bare e at each checkpoint for the record.
+Predictions: r_4 = (1.2522e-5 - e(theta_4)) / 0.7878e-5 = 0.11-0.15; bare 1.13-1.17e-5; aug 4.0-4.3e-6.
+Kills: r_4 >= 0.178 kills the DECLINE (H_q); a bare drop <= 0.5e-6 kills PROGRESS. q = r_4 / 0.178 is the number the
+lead uses to decide whether the loop is worth scaling. Templates: launch_r3c_pdb.sh, r3c_bare.py, r3avg_bare.py, r3_prep.py.

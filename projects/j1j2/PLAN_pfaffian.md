@@ -968,3 +968,19 @@ Converged iff |e(1500) - e(1200)| < 0.05e-6; otherwise "not converged", reported
 Cost: ~12 h + ~1.2 h A40, ~1 h CPU. Queue: submit even if ETA > 1 day.
 Hardware change (lead 2026-10-31, PI lifted the H100 ceiling): round 3 also staged on Paderborn H100 (same spec, fit_sec 9000, wall 3 h) and raced against the A40 copy; first copy to log a step wins. Pre-registration unchanged.
 RUNNING round 3 (race): Paderborn fit 4079680 + tabs 4079681 (afterok); A40 fit 17625929 + tabs 17625930 (afterok); A40 fit_sec 42500; launchers launch_r3_pdb.sh / launch_r3_a40.sh read by the angle lead; ids in pfaffian_r3/job_ids.txt.
+
+## Result round 3, partial (2026-10-31; Paderborn fit 4079680 won the race, 1500 steps, 1.33 H100-h; tables 4079681;
+readout /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3/readout/{r3_900,r3_1200,r3_1500}/readout.json; verified)
+| step | bare e (s_G) | drop vs 1.4090e-5 | held-out copy loss | |dtheta| over previous 300 |
+| 900  | 1.3390e-5 | 0.70e-6 | 7.3e-3 | |
+| 1200 | 1.3133e-5 | 0.96e-6 | 8.2e-3 | 0.137 |
+| 1500 | 1.2311e-5 | 1.78e-6 | 1.65e-2 | 1.33 |
+E_FN convergence rule FAILS: e(1500) - e(1200) = -0.82e-6 (limit 0.05e-6). NOT converged; not stalled.
+The bare prediction 1.27-1.34e-5 held at 900 and 1200. Between 1200 and 1500, though, the damping lam_rel collapsed from 7.8e-3
+to 2.4e-4. Theta then moved 10x further, the held-out copy loss doubled, and E_FN still fell 0.82e-6.
+Hypothesis (not established): the late drop is undamped Gauss-Newton steps that move away from the target T_3 in directions the
+copy loss penalises but E_FN rewards. This is the copy-loss / E_FN mismatch again, so the stored-fraction model (r) does not
+describe this segment. Kill test: E_FN at intermediate checkpoints (e.g. 1300, 1400) plus a continuation run. If E_FN reverses
+upward while the loss keeps rising, the drop was a lucky walk; a monotone fall would mean the loss is a poor proxy and E_FN
+should drive the stop or the step.
+Augmented scan at 1500 (incomplete): c 3.0 4.951e-6, 3.5 4.614e-6, still falling; minimum pending (Slurm CPU readout).

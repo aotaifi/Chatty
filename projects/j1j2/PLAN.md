@@ -413,8 +413,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Two label-free rounds under the Lanczos sign beat one Lanczos step at 6x6 (R2G-conv, 2 seeds, exact FN): augmented guide
   5.207e-6 / 5.290e-6 vs competitor 5.574e-6 (same sign s_G; spread 0.08e-6 < margin 0.28e-6; pfaffian_r2g/readout/g{1,2}).
   Caveats: seeds share warm start and target; s_G is the competitor's sign; walker step ~5.4x plain; 6x6 only; equal-cost not shown.
-- Round 3 under s_G keeps gaining but less (r 0.145 -> 0.11; bare 1.418 -> 1.313e-5 at step 1200; aug 4.5-4.7e-6 along the
-  trajectory, official scan pending). At a fixed target E_FN walks +-0.2e-6 per 150 fit steps (copy loss flat there): fit-to-fit
+- Round 3 under s_G keeps gaining but less (r 0.145 -> 0.11; bare 1.418 -> 1.313e-5 at step 1200; official aug 4.786e-6 at c* 3.9;
+  Polyak average of tail checkpoints 1.252e-5 bare / 4.644e-6 aug, better than every single iterate; pfaffian_r3avg). At a fixed target E_FN walks +-0.2e-6 per 150 fit steps (copy loss flat there): fit-to-fit
   scatter of that size limits any single-fit number (pfaffian_r3, pfaffian_r3c).
 - The round correction is a MISSING direction for the complex PP, not slow learning (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
@@ -511,5 +511,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6, two label-free loop rounds with the Lanczos sign beat the one-Lanczos-step competitor (5.2-5.3e-6 vs 5.57e-6 per site, two seeds).
-- NEXT (in progress, high): Round 3 tests whether the gain per round holds; then decide the scale test (8x8 or the 10x10 add-on).
+- STATUS (in progress, high): At 6x6 the label-free loop with the Lanczos sign beats one Lanczos step and keeps gaining, more slowly each round (4.8e-6 after round 3 vs 5.57e-6).
+- NEXT (open, high): Write up the per-round gain and the equal-cost comparison at 6x6; then the PI picks the scale test (8x8 loop or the 10x10 add-on).

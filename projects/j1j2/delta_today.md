@@ -565,3 +565,4 @@
 2026-11-01 15:18 VERDICT job 17640421: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_r1/ANALYSIS.md]
 - 2026-11-01 sign angle R1 (17640421/2): Jacobi-loop stored sign XL 3.56e-7/site (passes 5e-7, best case); repair-aware Lanczos rejected (competitor 1.394e-5 vs 5.574e-6); S2 proposed to lead.
 - 2026-11-01 sign angle R1c PASS (lead verified sign_r1/r1_result.json): stored XL sign (wrong weight 4.4e-7) inside the Jacobi guide S a0 e^{c f_J[S]} costs 3.56e-7/site at c=4 (bar 0.5e-6), m2 2.29e-5 fails; tax ~0.8 x wrong-sign weight. Repair-aware Lanczos step rejected (1.394e-5 vs 5.574e-6). Lead: GO CPU value check (loop guide under sgn(psi_P) and s1 vs s_G); S2 (<= 3 H100-h) only if s_G's gain > 2e-6.
+- 2026-11-01 sign V1 running (2853fe1, CPU): store iff E(sgn psi_P) - E(s_G) > 2e-6; s1 is not free (Krylov step, three swaps with Jacobi walls); pred sgn psi_P 1.0-2.5e-5 -> store (70%).

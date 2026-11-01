@@ -417,6 +417,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   established, q 0.63-0.95; bare 1.418 -> 1.313e-5 at step 1200; official aug 4.786e-6 at c* 3.9;
   Polyak average of tail checkpoints 1.252e-5 bare / 4.644e-6 aug, better than every single iterate; pfaffian_r3avg). At a fixed target E_FN walks +-0.2e-6 per 150 fit steps (copy loss flat there): fit-to-fit
   scatter of that size limits any single-fit number (pfaffian_r3, pfaffian_r3c).
+- Deployable loop guide = S B e^{c f_J[B;S]} with a STORED sign S (sign angle 2026-11-01): computing the Lanczos sign at walker time
+  and feeding it into the Jacobi walls costs d^3 (three swaps), so s_G must be learned offline. The plain Lanczos magnitude fails with a
+  stored sign (R0: 1.50e-6/site from rho = 2|alpha|kappa - 1); the Jacobi magnitude does not carry that term.
 - The round correction is not in the complex PP's tangent space, so a local refit cannot absorb it (not slow learning) (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
   refit, so the explicit Jacobi factor carries it; the nonlinear label-free refit still banks 11-18% per round (consistent with K, K3, N).

@@ -581,3 +581,4 @@
 2026-11-01 17:31 VERDICT job 17641160: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
 2026-11-01 18:13 VERDICT job 17641316: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
 - 2026-11-01 sign angle S2a (Paderborn 4085740): XL CNN stores s_G, loop-guide tax 4.25e-7/site (passes 5e-7, one seed); stored loop 5.07e-6 < competitor 5.57e-6. Seed 2 next.
+- 2026-11-01 sign S2a PASS, one seed (lead verified sign_s2/v2_S.json): XL CNN storing s_G inside the loop guide 5.068e-6 (theta-bar) / 5.216e-6 (theta 1200) vs 4.644/4.786e-6 exact s_G: tax 4.25e-7 (bar 5e-7); stored loop still below competitor 5.57e-6. 0.28 H100-h (Paderborn 4085740). Seed 2 running. XL CNN not deployable at scale; complex-PP phase net next, on paper.

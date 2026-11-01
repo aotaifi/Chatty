@@ -188,6 +188,20 @@ Decision: (i) or (ii) tax <= 0.5e-6 -> the deployable stored sign exists at 6x6;
 is 8x8. Both tax >= 4.1e-6 -> no deployable class beats the free sign: the loop's scale claim must use sgn psi_P or a faster
 sign class (name the term first). Between -> storage pays with a tax; report the trade to the lead.
 
+## S2b RESULT 2026-11-02 (Paderborn 4086773 PP, 4086774/4086902 RBM, 0.99 H100-h; LMU 17641815, 17642239; /scratch/a/A.Otaifi/ansatz_runs/sign_s2b; verified by me)
+(i) complex-PP phase, 2593 params (full f, no translation tying), Marshall explicit: w_T 2.92e-6, C_F 2.69e-5/site; loop grade
+theta_bar 6.271e-6 (tax 1.63e-6), theta(1200) 6.450e-6 (tax 1.66e-6), c* 4.0. BETWEEN: fails 0.5e-6, beats the free sign (8.76e-6) by 2.5e-6,
+but the stored loop (6.27e-6) is ABOVE the competitor's 5.57e-6. Held-out loss still falling 4% over the last 20% of a schedule that
+reached lr 0: the measurement is not at plateau. Slope tax/w_T 0.56 (XL 0.40): the named term is w_T, the class's tail error.
+(ii) conv complex RBM (k 5, C 32, 1665 params): did not train (accuracy 0.500, two runs, lr 3e-3); NOT MEASURED, not a capacity result.
+Predictions: (i) tax 1-8e-6 held, pass 15% did not pass; w_T band just missed (better).
+## S2b' (completing the measurement; inside S2 budget, 1.45 H100-h left; pre-registered before any number)
+(i') warm continuation of the PP to a held-out plateau (change < 1% over 20% of steps), <= 0.5 H100-h: predicted tax 1.2-1.6e-6 [70%].
+(ii') conv RBM at lr 3e-4, otherwise as (ii), <= 0.15 H100-h: predicted trains (accuracy > 0.9) [60%], tax 2-8e-6 if it trains.
+Decision after S2b': best deployable tax <= 0.5e-6 -> pass; else the deployable stored sign costs ~1.5e-6/site at 6x6, which erases
+the loop's 6x6 margin over the competitor: report to the lead with the trade, and the next term to change is the class capacity on
+the tail (a fast class with more tail resolution: PP x conv-RBM phase product, both O(1) updates), proposed, not run.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

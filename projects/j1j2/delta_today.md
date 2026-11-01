@@ -587,3 +587,11 @@
 2026-11-01 19:39 VERDICT job 17641651: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
 - 2026-11-01 sign angle S2a seed 2 (Paderborn 4085913): tax 4.20e-7/site, agrees with seed 0 to 5e-9. S2b (deployable PP-phase / conv-RBM phase) started.
 - 2026-11-01 sign S2a seed 2 (sign_s2/v2_S_seed1.json, Paderborn 4085913): tax 4.20e-7 / 4.26e-7, agrees with seed 0 to 5e-9; S2a 0.56 H100-h. S2b running (<= 1.8 H100-h): deployable sign classes (complex-PP phase, conv complex-RBM phase); pred PP tax 1-8e-6, pass 15%.
+2026-11-01 20:34 VERDICT job 4086405: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-01 20:43 VERDICT job 17641815: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-01 20:45 VERDICT job 4086774: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-01 21:15 VERDICT job 4086773: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-01 21:24 VERDICT job 4086902: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-01 22:23 VERDICT job 17642239: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+- 2026-11-01 sign S2b (sign_s2b, Paderborn 4086773/4086774/4086902, LMU 17641815/17642239): complex-PP phase (2593 par) w_T 2.92e-6, tax 1.63e-6 (theta_bar, c* 4.0) / 1.66e-6 (1200); conv-RBM phase (1665 par) did not train (held-out acc 0.50, w_T 0.49), ungraded. 0.99 H100-h.
+- 2026-11-02 sign angle S2b: PP-phase deployable sign tax 1.63e-6/site (loop 6.27e-6 > competitor 5.57e-6), not at plateau; conv-RBM did not train. S2b' (PP to plateau, RBM lr 3e-4) started.

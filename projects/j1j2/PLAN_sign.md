@@ -165,14 +165,14 @@ uses sgn psi_P and the angle closes on storage.
 XL CNN trained on s_G, samples from the loop's augmented theta_bar guide. Orbit order identical to the loop tables (E_var check 4e-16).
 w_T 1.07e-6 (6.5% of orbits wrong, all in the tail); C_F 1.08e-5/site. Loop guide S B e^{c* f_J[B;S]} vs s_G, per site:
 theta_bar 5.068e-6 vs 4.644e-6 (tax 4.25e-7, c* 4.0); theta(1200) 5.216e-6 vs 4.786e-6 (tax 4.30e-7, c* 3.9).
-PASSES the 0.5e-6 bar by 15%, ONE seed. Predictions: w_T 2-8e-6 missed (better); tax 1-4e-6 missed (better); tax < 4.1e-6 held.
+PASSES the 0.5e-6 bar by 15%. SEED 2 (Paderborn 4085913, new init and samples; v2_S_seed1.json, verified): tax 4.20e-7 / 4.26e-7, w_T 1.12e-6; seeds agree to 5e-9 in energy. Predictions: w_T 2-8e-6 missed (better); tax 1-4e-6 missed (better); tax < 4.1e-6 held.
 Slope tax/w_T = 0.40 (R1c XL 0.82, m2 0.44). Worker's note, not verified by me: s_G = -sgn psi0 up to weight 8.4e-7, so the
 competitor's one-step sign is nearly the exact ground-state sign, and this target is ground-state-like (cf. sign_learnability gs vs m2).
 The stored loop at 6x6 (one seed) is 5.07e-6, still below the competitor's 5.57e-6.
-Next: (1) seed 2 (same protocol, init_seed 1) before the claim; (2) the deployable class (complex-PP phase, fast det4 updates),
+Next: (1) seed 2 DONE, agrees; (2) the deployable class (complex-PP phase, fast det4 updates),
 designed on paper first; the XL CNN is the accuracy reference, not deployable at 14x14 (board 23).
 
-## S2b (design on paper, 2026-11-01; runs after seed 2 confirms S2a; inside the lead's S2 budget, ~2.4 H100-h left)
+## S2b (RUNNING from 2026-11-01, worker; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_s2b; inside the lead's S2 budget, ~2.4 H100-h left)
 Why: the Jacobi guide needs S at every two-swap configuration z (walls of f_J at each neighbour y), d^2 ~ 1.5e5 per walker move at
 14x14; an XL CNN evaluation there is ~1.7e8 MAC (no cone saving: a 6-layer 3x3 cone covers the 14x14 torus), so ~3e13 MAC per move.
 The deployable class needs O(1)-in-N two-swap updates (board 23; Astra eq 17-18):

@@ -50,7 +50,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A31 | Stored sign + one full signed Lanczos step, exact replay of frozen N=36 sign nets (R0, sign angle) | 11-01 | 6x6 exact | gs XL: tau 1.50e-6/site (no step 6.0e-7; sign part 7e-9); m2 M 7.6e-5 | FAILS bar 5e-7 (cause: magnitude overshoot rho = 2|alpha|kappa - 1 at repaired tail configurations, board 25) | PLAN_sign.md "R0 RESULT"; /scratch/a/A.Otaifi/ansatz_runs/sign_r0/r0_result.json |
 | A32 | Stored sign in the Jacobi loop: S a e^{c f_J[S walls]}, no walker-time step (R1c) | 11-01 | 6x6 exact replay | gs XL 3.56e-7/site at c=4 (bare 6.0e-7, floor bound 1.73e-7); m2 M 2.29e-5 | WORKS best case (exact teacher, gs-quality sign w 4.4e-7); composite/deployable untested | PLAN_sign.md "R1 RESULT" |
 | A33 | Repair-aware signed Lanczos step (magnitude from the flipped orbit's local energy 2H_xx - E_L) | 11-01 | 6x6 exact | stored XL 2.23e-7 (plain 1.50e-6) but competitor guide 1.394e-5 vs plain 5.574e-6 | FAILS (cause: same rule overshoots genuine flips, magnitude ratio 8.2) | PLAN_sign.md "R1 RESULT" |
-| A34 | XL CNN stores the loop sign s_G; graded inside the round-3 Jacobi loop guide (S2a) | 11-01 | 6x6 exact | tax 4.25e-7/site (theta_bar), 4.30e-7 (theta(1200)); w_T 1.07e-6; 0.28 H100-h | WORKS (one seed; class not deployable at scale) | PLAN_sign.md "S2a RESULT" |
+| A34 | XL CNN stores the loop sign s_G; graded inside the round-3 Jacobi loop guide (S2a) | 11-01 | 6x6 exact | tax 4.25e-7/site (theta_bar), 4.30e-7 (theta(1200)); w_T 1.07e-6; 0.28 H100-h | WORKS (2 seeds agree to 5e-9; class not deployable at scale) | PLAN_sign.md "S2a RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

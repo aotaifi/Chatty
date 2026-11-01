@@ -428,7 +428,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   and feeding it into the Jacobi walls costs d^3 (three swaps), so s_G must be learned offline. The plain Lanczos magnitude fails with a
   stored sign (R0: 1.50e-6/site from rho = 2|alpha|kappa - 1); the Jacobi magnitude does not carry that term.
 - The loop's advantage needs a stored sign (sign V1): with the free one-level sign sgn(psi_P) the best loop guide is 8.76e-6, above the
-  competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a: an XL CNN storing s_G costs 4.25e-7 (one seed;
+  competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a: an XL CNN storing s_G costs 4.2-4.3e-7 (two seeds;
   sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6; the deployable sign class is untested.
 - The round correction is not in the complex PP's tangent space, so a local refit cannot absorb it (not slow learning) (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local

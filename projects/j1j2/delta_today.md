@@ -586,3 +586,4 @@
 2026-11-01 18:37 VERDICT job 4085913: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
 2026-11-01 19:39 VERDICT job 17641651: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
 - 2026-11-01 sign angle S2a seed 2 (Paderborn 4085913): tax 4.20e-7/site, agrees with seed 0 to 5e-9. S2b (deployable PP-phase / conv-RBM phase) started.
+- 2026-11-01 sign S2a seed 2 (sign_s2/v2_S_seed1.json, Paderborn 4085913): tax 4.20e-7 / 4.26e-7, agrees with seed 0 to 5e-9; S2a 0.56 H100-h. S2b running (<= 1.8 H100-h): deployable sign classes (complex-PP phase, conv complex-RBM phase); pred PP tax 1-8e-6, pass 15%.

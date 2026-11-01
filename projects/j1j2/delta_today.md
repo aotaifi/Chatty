@@ -546,3 +546,8 @@
 - 2026-11-01 sign angle R0 worker: job 17639767 submitted (/scratch/a/A.Otaifi/ansatz_runs/sign_r0/r0.sbatch, 16 cpu, 100G, cluster), watcher armed (/scratch/a/A.Otaifi/ansatz_runs/sign_r0/watcher.sh, ppid 1 expected); env extracted from _packed/ed6x6.tar.zst into /scratch/a/A.Otaifi/ansatz_runs/sign_r0/env (original ls_env path was packed).
 2026-11-01 12:59 [pfaffian R4 submit] pdb_fit 4085199, pdb_tabs 4085200 (afterok), a40 fit 17639808, a40 tabs 17639809 (afterok); watchers+race+r4_chain PPID 1; run dir /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4; T4 sha e2d6fc72, control rel 4.3e-11
 - 2026-11-01 round 4 submitted (angle e6a77ef): Paderborn 4085199 (+tabs 4085200), A40 17639808 (+tabs 17639809), race watcher + auto readout; target check E_FN[T_4,s_G] 4.6438e-6 (4e-11). both fits RUNNING since 13:00 (estimates wrong); lead asked the angle to cancel the A40 loser; H100 readout expected this evening.
+2026-11-01 13:04 [pfaffian R4 race] 4085199 started (step 70) -> cancelled 17639808 (PI pre-approval via lead)
+2026-11-01 13:05 VERDICT job 17639808: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4/fit/ANALYSIS.md]
+2026-11-01 13:05 VERDICT job 17639809: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4/tabs/ANALYSIS.md]
+2026-11-01 13:55 VERDICT job 17639767: STALLED [/scratch/a/A.Otaifi/ansatz_runs/sign_r0/ANALYSIS.md]
+- 2026-11-01 sign angle: R0 job 17639767 stalled in control C3; C3 premise was my error (meta steps[1].E is E_var, not E_FN; worker's N=16 smoke). C1 passed (E_FN-E0 2e-16/site). Worker told: cancel, C3 -> E_var check + lobpcg/ARPACK agreement, lobpcg for all arms, resubmit.

@@ -1073,3 +1073,4 @@ Readout (CPU Slurm, K/Vm once): bare e and the augmented scan for theta_4; bare 
 Predictions: r_4 = (1.2522e-5 - e(theta_4)) / 0.7878e-5 = 0.11-0.15; bare 1.13-1.17e-5; aug 4.0-4.3e-6.
 Kills: r_4 >= 0.178 kills the DECLINE (H_q); a bare drop <= 0.5e-6 kills PROGRESS. q = r_4 / 0.178 is the number the
 lead uses to decide whether the loop is worth scaling. Templates: launch_r3c_pdb.sh, r3c_bare.py, r3avg_bare.py, r3_prep.py.
+RUNNING round 4 (race): Paderborn fit 4085199 + tabs 4085200; A40 fit 17639808 + tabs 17639809; readout chained by r4_chain.sh; target T_4 control rel 4.3e-11 (pfaffian_r4/prep_result.json); launchers launch_r4_pdb.sh / launch_r4_a40.sh read by the angle lead. ETAs A40 ~2 Nov 20:34, Paderborn ~6 Nov.

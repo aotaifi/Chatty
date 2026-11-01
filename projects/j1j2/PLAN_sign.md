@@ -202,6 +202,21 @@ Decision after S2b': best deployable tax <= 0.5e-6 -> pass; else the deployable 
 the loop's 6x6 margin over the competitor: report to the lead with the trade, and the next term to change is the class capacity on
 the tail (a fast class with more tail resolution: PP x conv-RBM phase product, both O(1) updates), proposed, not run.
 
+## STEP-BACK 2026-11-02 (PI request via the lead; Astra cj-ffe80dbfda01, /scratch/a/A.Otaifi/astra/signstep/EVIDENCE.md, read)
+Astra: continue; change the TRAINING before the class. The PP was under-trained (lr -> 0 while the held-out loss was still falling).
+The loss was a uniform per-configuration BCE, not the edge loss of Astra's eq 19 (mine: S2b brief specified it that way, my error);
+60% of the PP's wrong weight sits outside the training set. No representability barrier is shown.
+Two tests, pre-registered here before any number:
+T-OTF (lead's idea; CPU; runs first): do not store s_G; compute it at the walker's neighbours (d^2, fast det updates of psi_P), with
+the Jacobi walls from the free sign sgn psi_P (no d^3). Guide = s_G B e^{c f_J[B; sgn psi_P walls]}, theta_bar and theta(1200), c rescanned.
+Predictions: lead 5.0-6.0e-6; mine 5.5-7.0e-6 (central 6.2e-6: the walls of sgn psi_P differ from s_G's on 11.6% of orbits; V1 showed
+the walls carry ~4e-6 between the two signs). Useful iff < 5.57e-6 (beats the competitor) at no storage.
+T-EDGE (Astra rank 1; GPU <= 0.5 H100-h per arm): edge loss L = sum_pairs w_xy softplus(-4 y_x y_y cos(phi_x - phi_y)) / sum w
++ 0.1 * mean_x softplus(-4 y_x cos(phi_x - theta0)), w_xy = |H_xy| a_x a_y / q_x for x ~ q (tempered teacher, beta 0.5), y in x's shell;
+refreshed teacher samples (new seed); warm start from the S2b PP; constant lr 3e-4 then a short decay. CONTROL = S2b' (i'): the same
+start, loss and schedule, uniform BCE, matched budget. Predictions: Astra tax 0.4-0.9e-6; mine 0.8-1.4e-6; edge beats the control by
+>= 0.2e-6 [55%]. Kill (lead's): no gain over the control, or settled tax >= 0.93e-6.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

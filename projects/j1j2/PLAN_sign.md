@@ -172,6 +172,22 @@ The stored loop at 6x6 (one seed) is 5.07e-6, still below the competitor's 5.57e
 Next: (1) seed 2 (same protocol, init_seed 1) before the claim; (2) the deployable class (complex-PP phase, fast det4 updates),
 designed on paper first; the XL CNN is the accuracy reference, not deployable at 14x14 (board 23).
 
+## S2b (design on paper, 2026-11-01; runs after seed 2 confirms S2a; inside the lead's S2 budget, ~2.4 H100-h left)
+Why: the Jacobi guide needs S at every two-swap configuration z (walls of f_J at each neighbour y), d^2 ~ 1.5e5 per walker move at
+14x14; an XL CNN evaluation there is ~1.7e8 MAC (no cone saving: a 6-layer 3x3 cone covers the 14x14 torus), so ~3e13 MAC per move.
+The deployable class needs O(1)-in-N two-swap updates (board 23; Astra eq 17-18):
+ (i) complex-PP phase: S = M sgn Re(e^{-i theta0} P/|P|), P = sum over the 576 images of Pf[F(gx)], F complex, no backflow, own
+     parameters (independent of the amplitude net); two-swap ratio via det4 with the cached inverse, same cost class as the amplitude.
+ (ii) one-layer convolutional complex RBM phase, Im log R = sum over windows: a two-swap updates O(C k^2) hidden fields.
+Training as S2a (teacher samples, beta 0.5, one-swap neighbours, logistic loss on the margin s_G(x) Re(e^{-i theta0} P)/|P|),
+complex random init (Astra: a real init sits at a zero-gradient extremum). Graded as S2a.
+Prediction (before any number): (i) w_T 3e-6-2e-5, tax 1-8e-6 [central 3e-6; passes 0.5e-6: 15%]; (ii) worse than (i) unless
+C >= 32 channels with k = 5 [30%]. Evidence: A20 (VMC-trained PP sign, w 2.4e-5 vs exact), sign_learnability (gs at N36 to 1e-3
+relative needs ~30k CNN parameters; the PP has ~2.6k).
+Decision: (i) or (ii) tax <= 0.5e-6 -> the deployable stored sign exists at 6x6; report and close the angle at this size, next
+is 8x8. Both tax >= 4.1e-6 -> no deployable class beats the free sign: the loop's scale claim must use sgn psi_P or a faster
+sign class (name the term first). Between -> storage pays with a tax; report the trade to the lead.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

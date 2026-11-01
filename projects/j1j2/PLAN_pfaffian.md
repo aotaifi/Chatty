@@ -1087,3 +1087,29 @@ The term that missed is r, the per-round storage of the nonlinear refit, which s
 (complex PP, no backflow, RBM inactive).
 Loop limit with q = 0.35: bare about 1.20e-5, augmented about 4.3e-6. By the pre-registered stall rule the next step is
 the class, not more rounds.
+
+## PROPOSAL for the PI: what comes after the stall (2026-11-01; paper only, nothing runs without the PI)
+The stall: the refit's per-round storage r fell 0.145 -> 0.109 -> 0.043, and the one-level augmented guide sits at 4.37e-6.
+To get below 4.0e-6 with one more matched round, a class needs r > ~0.09 (Astra's eq. 2, assuming the augmented guide gains
+half the bare drop; unestablished).
+Ranking criterion: P(augmented 6x6 < 4.0e-6 AND walker cost <= 20x plain PP at 10x10). Astra (gpt-6-astra xhigh, blind to my
+ranking): ansatz/REVIEW_astra_after_stall_2026-11-01.md. My blind ranking, written before reading it:
+ansatz/lead_blind_ranking_after_stall_2026-11-01.md.
+| option | mechanism (term changed) | walker / plain at 10x10 (derived, Astra eq. 7-9) | prediction | kill test, cost | Astra | me (blind -> after) |
+| (d) B = abs(P_1 + lambda P_2), two jointly refit PPs, one Jacobi level | new interference direction Re P_2/(P_1+lambda P_2) outside the PP tangent space; rank 2/4 per component kept | 11x | r 0.16, aug 3.7e-6 | two matched seed pairs vs single-PP continuation from B_4, fixed steps + averaging: r <= 0.05 and aug >= 4.2e-6 in both kills it; ~12 H100-h | 35% | not considered -> 25% |
+| (a) active RBM (m = 4 prototypes per image, nonzero init), joint refit; small fields ~ a two-body Jastrow | bulk ratio corrections in K_B and V_B; the explicit level keeps the hard part | 7.7x (chi = 8 assumed) | r 0.08, aug 4.05e-6 | active vs inactive from B_4, 2 seeds: r <= 0.05 and aug gain < 0.1e-6 kills it; ~8 H100-h | 20% | 20% (Jastrow) / 10% (RBM) -> 20% |
+| (c) second explicit Jacobi level G_2 = G_1 e^{c2 f_J[G_1]} | adds exactly the missing direction (K3), with r = 0 | ~650x (three-shell endpoints) | aug ~3.5e-6 (s1 analogue: 10.2 -> 7.2e-6) | exact c2 scan on existing tables, <= 16 CPU core-h; cost already fails | <1% | 15% -> <1% |
+| (b) 3x3 backflow PP | pairing depends on the spin environment | ~4300x | r 0.15, aug 3.8e-6 (weak) | 10x10 kernel timing, 2 CPU core-h; fails at once | <1% | 5% -> <1% |
+Records corrected by Astra:
+- T2's 36.5x was backflow-augmented over backflow-bare. Against plain PP it is ~800x by op count (2842x in raw timing, with
+  unmatched walker counts).
+- My blind cost for (a), "1 + 32 alpha", wrongly assumed M = alpha N hidden units per image. The code has m = 4 prototypes per
+  image, which gives 7.7x at 10x10.
+- The plan's "falling ~1 + c/N" for the plain head is replaced by Astra's model: 5.5x at 10x10 and 3.8x at 14x14 (derived).
+My recommendation, at about 45% that it crosses 4.0e-6: (d), then (a) as its cheaper fallback.
+- (c) is not deployable, but its exact c2 scan (CPU only, free) gives the accuracy ceiling of explicit levels. I would run it
+  only as a reference line for the paper.
+- (d)'s collision risk is that the second PP lands in the same tangent neighbourhood (P16). G11 (a rank-20 vison/BCS sum,
+  killed at 4x6) is the closest dead end. (d) differs in that it is refit to the Jacobi target rather than a variational energy.
+Cost of the PI's choice: (d) ~12 H100-h, (a) ~8 H100-h, (c) reference 16 CPU core-h. Each would be pre-registered as above
+before it runs.

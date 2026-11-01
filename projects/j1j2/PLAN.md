@@ -37,7 +37,14 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## OPEN QUESTION (the one, CLAUDE.md point 4; set by the PI 2026-10-29)
+## OPEN QUESTION: CLOSED 2026-11-01 (answer below); the PI picks the next one from the Queue / scale designs
+ANSWER: the stored network cannot carry the Jacobi correction in its tangent space (Theta v2: 0-4%); with the Jacobi factor kept as an
+explicit one-level layer and label-free refits under the Lanczos sign, the loop banks ~3 rounds and saturates (round 4 drop 0.34e-6,
+kill fired). Best one-level guide at 6x6: 4.37e-6/site (aug, theta_4 averaged; pfaffian_r4) vs competitor 5.57e-6 at the same sign;
+deployable only with a stored sign (sign angle: XL-class stored sign costs 3.6e-7 inside this guide; V1 decides whether to store).
+Report: docs/reports/2026-10-31_label_free_loop_6x6.md.
+
+## (closed) OPEN QUESTION (the one, CLAUDE.md point 4; set by the PI 2026-10-29)
 Can the stored network carry the local, Jacobi-shaped correction cheaply, so that the copy loses < ~1e-6/site per loop round
 near the fixed point (today 9.4e-6)? The loop stays the method (PI): stored sign + amplitude keep the walker cost at plain-network
 level while the gains add up over rounds; a step at walker time nests (400^k).
@@ -518,5 +525,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 the label-free loop with the Lanczos sign beats one Lanczos step and keeps gaining, more slowly each round (4.8e-6 after round 3 vs 5.57e-6).
-- NEXT (open, high): Write up the per-round gain and the equal-cost comparison at 6x6; then the PI picks the scale test (8x8 loop or the 10x10 add-on).
+- STATUS (in progress, high): At 6x6 the label-free loop beats one Lanczos step by 22% (4.37e-6 vs 5.57e-6 per site) and then stalls after about three rounds with this network.
+- NEXT (open, high): The PI picks the next step: a richer network for the loop, an 8x8 loop test, or the 10x10 add-on test.

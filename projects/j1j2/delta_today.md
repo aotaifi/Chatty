@@ -542,3 +542,4 @@
 - 2026-10-31 angle corrections accepted (decline of r not established: averaged r_3 0.178; 'cannot store' -> 'not in tangent space'); equal-cost at 6x6: training tie/lose, walker step unresolved, accuracy ours. Lead GO round 4 averaged (~1.5 H100-h).
 - 2026-10-31 angle: walker-cost '36x' assumed RBM-dominated two-swap ratios (~25x); PP part same constant class as ours (board 23); report reads UNRESOLVED. Round 4 pre-registered (6171234: from theta-bar, T_4 at c=4, 1500 steps, theta_4 = mean of 7 checkpoints 600-1500); angle clearing, fresh session stages it.
 - 2026-11-01 12:40 lead (takeover): no j1j2 work had moved since 10-31 (lead did not act after posting the takeover plan); Paderborn VPN was down, restarted via pc2-vpn-start (ssh login4 OK); Pfaffian angle told to restart and submit round 4; sign angle told to run R0 (lead default).
+- 2026-11-01 sign angle: R0 worker started (lead's go under takeover), /scratch/a/A.Otaifi/ansatz_runs/sign_r0.

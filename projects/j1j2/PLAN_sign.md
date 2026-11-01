@@ -73,7 +73,8 @@ errors sit in the |psi|^2 < 1e-9 tail; tempered beta 0.5 + one-hop neighbours es
   updates); conv complex RBM phase also O(1) per two-swap (Astra eq 18); generic CNN excluded at 14x14.
 
 ## Running
-- Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0 awaits the PI's go.
+- Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0 RUNNING (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
+- Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.
 - Astra cj-34b8f6b3a4c9 stopped at the Codex usage limit 10:14; resume after 11:36
   (codex session 01a18c0d-d25b-70c1-b260-5512e8cd8aec). Partial CPU checks, /scratch/a/A.Otaifi/astra/sign_angle/check_sign_identities.json
   (read, not yet verified by me; predictions above NOT changed after seeing them):

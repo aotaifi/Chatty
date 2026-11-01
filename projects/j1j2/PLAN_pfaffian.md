@@ -1074,3 +1074,16 @@ Predictions: r_4 = (1.2522e-5 - e(theta_4)) / 0.7878e-5 = 0.11-0.15; bare 1.13-1
 Kills: r_4 >= 0.178 kills the DECLINE (H_q); a bare drop <= 0.5e-6 kills PROGRESS. q = r_4 / 0.178 is the number the
 lead uses to decide whether the loop is worth scaling. Templates: launch_r3c_pdb.sh, r3c_bare.py, r3avg_bare.py, r3_prep.py.
 RUNNING round 4 (race): Paderborn fit 4085199 + tabs 4085200; A40 fit 17639808 + tabs 17639809; readout chained by r4_chain.sh; target T_4 control rel 4.3e-11 (pfaffian_r4/prep_result.json); launchers launch_r4_pdb.sh / launch_r4_a40.sh read by the angle lead. ETAs A40 ~2 Nov 20:34, Paderborn ~6 Nov.
+
+## Result round 4 (2026-11-01; Paderborn 4085199/4085200 won the race, A40 17639808/09 cancelled at 13:04; CPU 17640414;
+pfaffian_r4/readout/readout.json; verified; ~1.8 H100-h)
+theta_4 = mean of the 7 iterates at 600..1500: bare 1.2184e-5 (theta_bar 1.2522e-5), drop 0.337e-6, r_4 = 0.043;
+augmented 4.367e-6 (c* 4.0). Iterates 1.240-1.266e-5 (scatter 0.25e-6); the average beats every one of them again.
+Predictions MISSED: r_4 0.11-0.15, bare 1.13-1.17e-5. Augmented 4.0-4.3e-6: just above the range.
+VERDICT: the PROGRESS kill fired (drop <= 0.5e-6); the decline kill did not (r_4 < 0.178).
+Matched protocol: round 3's averaged r = 0.178 included a one-off averaging bonus (single-iterate to average, 0.35e-6, about
+0.04 of g). From one average to the next, r_4 = 0.043 against single-iterate r_3 = 0.109, so q is about 0.3-0.4, not 0.75.
+The term that missed is r, the per-round storage of the nonlinear refit, which saturates by round 4 at this class
+(complex PP, no backflow, RBM inactive).
+Loop limit with q = 0.35: bare about 1.20e-5, augmented about 4.3e-6. By the pre-registered stall rule the next step is
+the class, not more rounds.

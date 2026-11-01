@@ -21,7 +21,10 @@ All energies are exact fixed-node values (6x6, J2 = 0.5), per site above E0. No 
 - **Round 3 (added 2026-10-31):** the official value (the pre-registered kill rule, theta at step 1200) is augmented 4.786e-6,
   0.79e-6 below the competitor; averaging the fit's tail checkpoints gives 4.644e-6 (pfaffian_r3avg/readout/readout.json).
   One seed. The per-round law and the equal-cost comparison follow.
-- **Next:** no round 4 (lead, 2026-10-31). The scale test needs the cost law below.
+- **Round 4 (added 2026-11-01): the loop stalls at this class.** Averaged round 4: bare 1.252 -> 1.218e-5, a drop of
+  0.34e-6 (r_4 = 0.043, predicted 0.11-0.15), so the pre-registered progress kill fired. Augmented 4.367e-6, 1.21e-6 below the
+  competitor. Under a matched protocol q is about 0.3-0.4, so the loop's limit at this class is about 4.3e-6 augmented
+  (pfaffian_r4/readout/readout.json).
 
 ## Per-round table under s_G (exact FN, per site above E0)
 
@@ -41,7 +44,7 @@ The augmented guide gains about half the bare drop per round (ratio 0.57, 0.53, 
 round 3 stored r = 0.178, as much as round 2 without it. So **a declining r is not established**: the decline is the
 same size as the protocol and noise difference. Under s1, r fell 0.37 -> 0.11, but its round 2 was unconverged (A40, 935 steps).
 
-**Hypothesis H_q (not established):** under one protocol (averaged fits), r_{k+1} = 0.75 r_k and the augmented gain stays
+**Hypothesis H_q (tested by round 4: q = 0.75 REFUTED, measured 0.3-0.4):** under one protocol (averaged fits), r_{k+1} = 0.75 r_k and the augmented gain stays
 half the bare drop. From theta_bar, the loop would then close 30% of the remaining bare error (1.25 -> 0.88e-5) and 41% of the
 augmented error (4.64 -> 2.8e-6) over all further rounds; with q = 0.5 only 11% / 15%. The prediction for round 4 (averaged,
 from theta_bar) is r_4 = 0.11-0.15, bare 1.13-1.17e-5, augmented 4.0-4.3e-6. It kills H_q if r_4 >= 0.178 (no decline, the

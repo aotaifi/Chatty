@@ -1,0 +1,1470 @@
+{
+  "args": {
+    "data": "/tmp/avsl05-20site-structural-data/sign20_training_data.npz",
+    "policy": "/tmp/avsl_mixed20_budget_adjusted.json",
+    "out": "/tmp/avsl09_k1_fn_full.json",
+    "root_prefix": "/tmp/avsl_mixed20_budget_adjusted",
+    "seed": 28019,
+    "budget": 160,
+    "test_seeds": 6,
+    "threshold": 0.0,
+    "walkers": 128,
+    "beta": 10.0,
+    "burn": 4.0
+  },
+  "base_FN_energy": -10.417697678503282,
+  "base_FN_residual": 8.827979007762529e-09,
+  "runs": [
+    {
+      "block": 0,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 92,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 92,
+            "unique_guide_amplitudes": 3083,
+            "amplitude_requests": 4292,
+            "unique_sign_requests": 3083,
+            "neighbor_probes": 7360,
+            "symmetry_members_expanded": 3532
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 138,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 138,
+            "unique_guide_amplitudes": 4707,
+            "amplitude_requests": 6338,
+            "unique_sign_requests": 4707,
+            "neighbor_probes": 11040,
+            "symmetry_members_expanded": 5470
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7278,
+            "n_distinct_feature_sites": 5544,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 3,
+          "selected_representatives": [
+            87613,
+            92597,
+            113754
+          ],
+          "selected_local_fields": {
+            "87613": 0.2549120867797381,
+            "92597": 0.4590034014375346,
+            "113754": 5.071616055457803
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 128,
+            "n_predicted_flips": 3,
+            "n_diagonal_calls": 128,
+            "unique_guide_amplitudes": 4492,
+            "amplitude_requests": 5998,
+            "unique_sign_requests": 4492,
+            "neighbor_probes": 10240,
+            "symmetry_members_expanded": 5000
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7308,
+            "n_distinct_feature_sites": 5569,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417834522402082,
+          "reprojected_FN_gain": 0.00013684389879919934,
+          "frozen_a_joint_energy_gain": 0.00011539469833543641,
+          "fraction_states_sign_changed": 0.0006495052934681418,
+          "changed_a2_weight": 4.794405214455228e-06,
+          "FN_residual": 2.535262445940536e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            88637
+          ],
+          "selected_local_fields": {
+            "88637": 5.0716160554577625
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 120,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 120,
+            "unique_guide_amplitudes": 4199,
+            "amplitude_requests": 5520,
+            "unique_sign_requests": 4199,
+            "neighbor_probes": 9600,
+            "symmetry_members_expanded": 4732
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7296,
+            "n_distinct_feature_sites": 5489,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417816783144124,
+          "reprojected_FN_gain": 0.0001191046408415275,
+          "frozen_a_joint_energy_gain": 0.00010478425416238269,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 3.45977177768997e-06,
+          "FN_residual": 2.765353545964239e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            77031
+          ],
+          "selected_local_fields": {
+            "77031": 3.4509460740063695
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 145,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 145,
+            "unique_guide_amplitudes": 5237,
+            "amplitude_requests": 6645,
+            "unique_sign_requests": 5237,
+            "neighbor_probes": 11600,
+            "symmetry_members_expanded": 5700
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14554,
+            "n_distinct_feature_sites": 10592,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417698209192611,
+          "reprojected_FN_gain": 5.306893289258596e-07,
+          "frozen_a_joint_energy_gain": 3.280663385396579e-07,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 2.3766405822370457e-08,
+          "FN_residual": 2.433319532644741e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 3,
+          "selected_representatives": [
+            81077,
+            89149,
+            113722
+          ],
+          "selected_local_fields": {
+            "89149": 3.0845521953941466,
+            "113722": 3.084552195394143,
+            "81077": 0.4590034014375277
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 154,
+            "n_predicted_flips": 3,
+            "n_diagonal_calls": 154,
+            "unique_guide_amplitudes": 5498,
+            "amplitude_requests": 6998,
+            "unique_sign_requests": 5498,
+            "neighbor_probes": 12320,
+            "symmetry_members_expanded": 6050
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14606,
+            "n_distinct_feature_sites": 11331,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.41784383863212,
+          "reprojected_FN_gain": 0.00014616012883728047,
+          "frozen_a_joint_energy_gain": 0.00011750679487754262,
+          "fraction_states_sign_changed": 0.0006495052934681418,
+          "changed_a2_weight": 5.507121981373464e-06,
+          "FN_residual": 3.0454700636488475e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    },
+    {
+      "block": 1,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 85,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 85,
+            "unique_guide_amplitudes": 2845,
+            "amplitude_requests": 4019,
+            "unique_sign_requests": 2845,
+            "neighbor_probes": 6800,
+            "symmetry_members_expanded": 3252
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 137,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 137,
+            "unique_guide_amplitudes": 4655,
+            "amplitude_requests": 6365,
+            "unique_sign_requests": 4655,
+            "neighbor_probes": 10960,
+            "symmetry_members_expanded": 5322
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7374,
+            "n_distinct_feature_sites": 5769,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 138,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 138,
+            "unique_guide_amplitudes": 4712,
+            "amplitude_requests": 6454,
+            "unique_sign_requests": 4712,
+            "neighbor_probes": 11040,
+            "symmetry_members_expanded": 5490
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7330,
+            "n_distinct_feature_sites": 5660,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 139,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 139,
+            "unique_guide_amplitudes": 4671,
+            "amplitude_requests": 6329,
+            "unique_sign_requests": 4671,
+            "neighbor_probes": 11120,
+            "symmetry_members_expanded": 5522
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7258,
+            "n_distinct_feature_sites": 5414,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 5,
+          "selected_representatives": [
+            88533,
+            88637,
+            88938,
+            91610,
+            106029
+          ],
+          "selected_local_fields": {
+            "91610": 3.5173827640890862,
+            "106029": 3.781418313637362,
+            "88533": 0.08228219369781531,
+            "88637": 5.0716160554577625,
+            "88938": 5.3948091822375845
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 154,
+            "n_predicted_flips": 5,
+            "n_diagonal_calls": 154,
+            "unique_guide_amplitudes": 5527,
+            "amplitude_requests": 6972,
+            "unique_sign_requests": 5527,
+            "neighbor_probes": 12320,
+            "symmetry_members_expanded": 6140
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14562,
+            "n_distinct_feature_sites": 11006,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417837865078893,
+          "reprojected_FN_gain": 0.00014018657561010173,
+          "frozen_a_joint_energy_gain": 0.00012236558186273834,
+          "fraction_states_sign_changed": 0.001082508822446903,
+          "changed_a2_weight": 4.229680633825888e-06,
+          "FN_residual": 2.6536682485100693e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 4,
+          "selected_representatives": [
+            92597,
+            93782,
+            96349,
+            105898
+          ],
+          "selected_local_fields": {
+            "96349": 2.825968770734022,
+            "92597": 0.4590034014375346,
+            "105898": 12.480941118465868,
+            "93782": 2.289950239239375
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 148,
+            "n_predicted_flips": 4,
+            "n_diagonal_calls": 148,
+            "unique_guide_amplitudes": 5363,
+            "amplitude_requests": 6678,
+            "unique_sign_requests": 5363,
+            "neighbor_probes": 11840,
+            "symmetry_members_expanded": 5820
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14550,
+            "n_distinct_feature_sites": 11238,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417726968093422,
+          "reprojected_FN_gain": 2.9289590139924826e-05,
+          "frozen_a_joint_energy_gain": 2.44276615788409e-05,
+          "fraction_states_sign_changed": 0.0008660070579575224,
+          "changed_a2_weight": 1.3691804903554814e-06,
+          "FN_residual": 2.460410618714421e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    },
+    {
+      "block": 2,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 100,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 100,
+            "unique_guide_amplitudes": 3340,
+            "amplitude_requests": 4686,
+            "unique_sign_requests": 3340,
+            "neighbor_probes": 8000,
+            "symmetry_members_expanded": 3792
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            87770,
+            113754
+          ],
+          "selected_local_fields": {
+            "87770": 5.394809182238189,
+            "113754": 5.071616055457803
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 135,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 135,
+            "unique_guide_amplitudes": 4512,
+            "amplitude_requests": 6221,
+            "unique_sign_requests": 4512,
+            "neighbor_probes": 10800,
+            "symmetry_members_expanded": 5320
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7316,
+            "n_distinct_feature_sites": 5824,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417824269107307,
+          "reprojected_FN_gain": 0.00012659060402420153,
+          "frozen_a_joint_energy_gain": 0.00011149719487413326,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 3.67234628578742e-06,
+          "FN_residual": 2.703657783974562e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            89149,
+            113754
+          ],
+          "selected_local_fields": {
+            "113754": 5.071616055457803,
+            "89149": 3.0845521953941466
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 132,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 132,
+            "unique_guide_amplitudes": 4515,
+            "amplitude_requests": 6136,
+            "unique_sign_requests": 4515,
+            "neighbor_probes": 10560,
+            "symmetry_members_expanded": 5250
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7390,
+            "n_distinct_feature_sites": 5688,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417886423915103,
+          "reprojected_FN_gain": 0.00018874541182078985,
+          "frozen_a_joint_energy_gain": 0.00016136921276022133,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 5.9928736549172445e-06,
+          "FN_residual": 2.385599417393911e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            75719,
+            92509
+          ],
+          "selected_local_fields": {
+            "75719": 4.421393820269739,
+            "92509": 3.0154847643450626
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 137,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 137,
+            "unique_guide_amplitudes": 4672,
+            "amplitude_requests": 6255,
+            "unique_sign_requests": 4672,
+            "neighbor_probes": 10960,
+            "symmetry_members_expanded": 5410
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7318,
+            "n_distinct_feature_sites": 5560,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.41776787653532,
+          "reprojected_FN_gain": 7.019803203789365e-05,
+          "frozen_a_joint_energy_gain": 5.8441352463134666e-05,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 2.6291438170535795e-06,
+          "FN_residual": 2.544362885879254e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            92902,
+            106029
+          ],
+          "selected_local_fields": {
+            "106029": 3.781418313637362,
+            "92902": 0.9837183325337608
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 148,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 148,
+            "unique_guide_amplitudes": 5314,
+            "amplitude_requests": 6710,
+            "unique_sign_requests": 5314,
+            "neighbor_probes": 11840,
+            "symmetry_members_expanded": 5820
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14514,
+            "n_distinct_feature_sites": 10852,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417705913948343,
+          "reprojected_FN_gain": 8.23544506012297e-06,
+          "frozen_a_joint_energy_gain": 5.093575985881692e-06,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 3.7666347307518385e-07,
+          "FN_residual": 2.476357068561762e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            72509
+          ],
+          "selected_local_fields": {
+            "72509": 1929.9611313855785
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 151,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 151,
+            "unique_guide_amplitudes": 5361,
+            "amplitude_requests": 6871,
+            "unique_sign_requests": 5361,
+            "neighbor_probes": 12080,
+            "symmetry_members_expanded": 6020
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14526,
+            "n_distinct_feature_sites": 11038,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697680209246,
+          "reprojected_FN_gain": 1.7059633705684973e-09,
+          "frozen_a_joint_energy_gain": 1.0995258037382928e-09,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 1.4250244626546242e-13,
+          "FN_residual": 2.4478730003819617e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    },
+    {
+      "block": 3,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 82,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 82,
+            "unique_guide_amplitudes": 2805,
+            "amplitude_requests": 3810,
+            "unique_sign_requests": 2805,
+            "neighbor_probes": 6560,
+            "symmetry_members_expanded": 3092
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            14142,
+            89149
+          ],
+          "selected_local_fields": {
+            "89149": 3.0845521953941466,
+            "14142": 5.99762395859705
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 132,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 132,
+            "unique_guide_amplitudes": 4452,
+            "amplitude_requests": 6054,
+            "unique_sign_requests": 4452,
+            "neighbor_probes": 10560,
+            "symmetry_members_expanded": 5230
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7350,
+            "n_distinct_feature_sites": 5787,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417767264322759,
+          "reprojected_FN_gain": 6.958581947635878e-05,
+          "frozen_a_joint_energy_gain": 5.668748692855298e-05,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 2.5377642700379313e-06,
+          "FN_residual": 2.864527081853733e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 136,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 136,
+            "unique_guide_amplitudes": 4660,
+            "amplitude_requests": 6410,
+            "unique_sign_requests": 4660,
+            "neighbor_probes": 10880,
+            "symmetry_members_expanded": 5320
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7352,
+            "n_distinct_feature_sites": 5601,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 133,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 133,
+            "unique_guide_amplitudes": 4500,
+            "amplitude_requests": 6155,
+            "unique_sign_requests": 4500,
+            "neighbor_probes": 10640,
+            "symmetry_members_expanded": 5300
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7352,
+            "n_distinct_feature_sites": 5279,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            88533
+          ],
+          "selected_local_fields": {
+            "88533": 0.08228219369781531
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 147,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 147,
+            "unique_guide_amplitudes": 5318,
+            "amplitude_requests": 6667,
+            "unique_sign_requests": 5318,
+            "neighbor_probes": 11760,
+            "symmetry_members_expanded": 5880
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14618,
+            "n_distinct_feature_sites": 11095,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.41769955318157,
+          "reprojected_FN_gain": 1.8746782881606805e-06,
+          "frozen_a_joint_energy_gain": 7.816227007850817e-07,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 1.234960970216928e-07,
+          "FN_residual": 2.43572917389558e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 6,
+          "selected_representatives": [
+            23403,
+            75581,
+            75693,
+            88009,
+            88909,
+            113770
+          ],
+          "selected_local_fields": {
+            "88909": 2.825968770733862,
+            "23403": 0.4865708373368136,
+            "75693": 119.00745312352154,
+            "113770": 0.25491208677989924,
+            "75581": 133.34116273197384,
+            "88009": 0.017750915050790184
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 148,
+            "n_predicted_flips": 6,
+            "n_diagonal_calls": 148,
+            "unique_guide_amplitudes": 5226,
+            "amplitude_requests": 6720,
+            "unique_sign_requests": 5226,
+            "neighbor_probes": 11840,
+            "symmetry_members_expanded": 5820
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14572,
+            "n_distinct_feature_sites": 10950,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417727840930347,
+          "reprojected_FN_gain": 3.0162427064439612e-05,
+          "frozen_a_joint_energy_gain": 2.1983728194285937e-05,
+          "fraction_states_sign_changed": 0.0012990105869362836,
+          "changed_a2_weight": 1.711277791240845e-06,
+          "FN_residual": 2.6130060484778984e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    },
+    {
+      "block": 4,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 72,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 72,
+            "unique_guide_amplitudes": 2452,
+            "amplitude_requests": 3350,
+            "unique_sign_requests": 2452,
+            "neighbor_probes": 5760,
+            "symmetry_members_expanded": 2762
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            87017,
+            111737
+          ],
+          "selected_local_fields": {
+            "111737": 3.7814183136372512,
+            "87017": 0.9837183325337779
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 132,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 132,
+            "unique_guide_amplitudes": 4469,
+            "amplitude_requests": 6104,
+            "unique_sign_requests": 4469,
+            "neighbor_probes": 10560,
+            "symmetry_members_expanded": 5220
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7368,
+            "n_distinct_feature_sites": 5812,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417705913948346,
+          "reprojected_FN_gain": 8.235445063675684e-06,
+          "frozen_a_joint_energy_gain": 5.093575987658049e-06,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 3.7666347307518236e-07,
+          "FN_residual": 2.476357085481231e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            88429
+          ],
+          "selected_local_fields": {
+            "88429": 3.0154847643449596
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 126,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 126,
+            "unique_guide_amplitudes": 4326,
+            "amplitude_requests": 5918,
+            "unique_sign_requests": 4326,
+            "neighbor_probes": 10080,
+            "symmetry_members_expanded": 5010
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7382,
+            "n_distinct_feature_sites": 5581,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417760211685524,
+          "reprojected_FN_gain": 6.253318224125337e-05,
+          "frozen_a_joint_energy_gain": 5.206141836211508e-05,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 2.3597843428958555e-06,
+          "FN_residual": 2.852201575097283e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 133,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 133,
+            "unique_guide_amplitudes": 4601,
+            "amplitude_requests": 6131,
+            "unique_sign_requests": 4601,
+            "neighbor_probes": 10640,
+            "symmetry_members_expanded": 5290
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7318,
+            "n_distinct_feature_sites": 5700,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 151,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 151,
+            "unique_guide_amplitudes": 5351,
+            "amplitude_requests": 6905,
+            "unique_sign_requests": 5351,
+            "neighbor_probes": 12080,
+            "symmetry_members_expanded": 5942
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14506,
+            "n_distinct_feature_sites": 10808,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            79322
+          ],
+          "selected_local_fields": {
+            "79322": 22.342989952338357
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 148,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 148,
+            "unique_guide_amplitudes": 5197,
+            "amplitude_requests": 6738,
+            "unique_sign_requests": 5197,
+            "neighbor_probes": 11840,
+            "symmetry_members_expanded": 5880
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14508,
+            "n_distinct_feature_sites": 10807,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417702168184803,
+          "reprojected_FN_gain": 4.489681520780664e-06,
+          "frozen_a_joint_energy_gain": 3.8656237553169764e-06,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 4.0532078415514924e-08,
+          "FN_residual": 2.433747588445294e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    },
+    {
+      "block": 5,
+      "roots_source": "archived_AVSL08_genuine_FN_roots",
+      "root_FN_cost": {
+        "archived_roots": 1280
+      },
+      "arms": {
+        "walker": {
+          "method": "walker",
+          "threshold": 0.0,
+          "n_selected_orbits": 0,
+          "selected_representatives": [],
+          "selected_local_fields": {},
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 91,
+            "n_predicted_flips": 0,
+            "n_diagonal_calls": 91,
+            "unique_guide_amplitudes": 3047,
+            "amplitude_requests": 4261,
+            "unique_sign_requests": 3047,
+            "neighbor_probes": 7280,
+            "symmetry_members_expanded": 3492
+          },
+          "proposal_cost": {
+            "n_hops": 0,
+            "n_feature_queries": 0,
+            "n_distinct_feature_sites": 0,
+            "neighbor_probes": 0,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417697678503279,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "fraction_states_sign_changed": 0.0,
+          "changed_a2_weight": 0.0,
+          "FN_residual": 2.447930281694993e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random1": {
+          "method": "random1",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            113754
+          ],
+          "selected_local_fields": {
+            "113754": 5.071616055457803
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 132,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 132,
+            "unique_guide_amplitudes": 4538,
+            "amplitude_requests": 6038,
+            "unique_sign_requests": 4538,
+            "neighbor_probes": 10560,
+            "symmetry_members_expanded": 5210
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7304,
+            "n_distinct_feature_sites": 5487,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417816783144126,
+          "reprojected_FN_gain": 0.00011910464084330386,
+          "frozen_a_joint_energy_gain": 0.00010478425415882997,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 3.459771777689977e-06,
+          "FN_residual": 2.765353539760539e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "geometry1": {
+          "method": "geometry1",
+          "threshold": 0.0,
+          "n_selected_orbits": 2,
+          "selected_representatives": [
+            87613,
+            92509
+          ],
+          "selected_local_fields": {
+            "87613": 0.2549120867797381,
+            "92509": 3.0154847643450626
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 139,
+            "n_predicted_flips": 2,
+            "n_diagonal_calls": 139,
+            "unique_guide_amplitudes": 4797,
+            "amplitude_requests": 6509,
+            "unique_sign_requests": 4797,
+            "neighbor_probes": 11120,
+            "symmetry_members_expanded": 5480
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7368,
+            "n_distinct_feature_sites": 5723,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417771365885548,
+          "reprojected_FN_gain": 7.368738226531946e-05,
+          "frozen_a_joint_energy_gain": 5.83349848568562e-05,
+          "fraction_states_sign_changed": 0.0004330035289787612,
+          "changed_a2_weight": 3.2534995527421816e-06,
+          "FN_residual": 2.997209932684774e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned1": {
+          "method": "learned1",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            105893
+          ],
+          "selected_local_fields": {
+            "105893": 6.799647200473119
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 140,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 140,
+            "unique_guide_amplitudes": 4731,
+            "amplitude_requests": 6416,
+            "unique_sign_requests": 4731,
+            "neighbor_probes": 11200,
+            "symmetry_members_expanded": 5600
+          },
+          "proposal_cost": {
+            "n_hops": 160,
+            "n_feature_queries": 7328,
+            "n_distinct_feature_sites": 5743,
+            "neighbor_probes": 12800,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417699203520735,
+          "reprojected_FN_gain": 1.5250174527636773e-06,
+          "frozen_a_joint_energy_gain": 1.4114684816490867e-06,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 4.52414207417652e-08,
+          "FN_residual": 2.433332933920036e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "random2": {
+          "method": "random2",
+          "threshold": 0.0,
+          "n_selected_orbits": 1,
+          "selected_representatives": [
+            87770
+          ],
+          "selected_local_fields": {
+            "87770": 5.394809182238189
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 154,
+            "n_predicted_flips": 1,
+            "n_diagonal_calls": 154,
+            "unique_guide_amplitudes": 5498,
+            "amplitude_requests": 6966,
+            "unique_sign_requests": 5498,
+            "neighbor_probes": 12320,
+            "symmetry_members_expanded": 6062
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14488,
+            "n_distinct_feature_sites": 10761,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417705160827898,
+          "reprojected_FN_gain": 7.482324615892821e-06,
+          "frozen_a_joint_energy_gain": 6.712940711750576e-06,
+          "fraction_states_sign_changed": 0.0002165017644893806,
+          "changed_a2_weight": 2.1257450809744217e-07,
+          "FN_residual": 2.3621300437521602e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        },
+        "learned2": {
+          "method": "learned2",
+          "threshold": 0.0,
+          "n_selected_orbits": 5,
+          "selected_representatives": [
+            72541,
+            77286,
+            81077,
+            89149,
+            113754
+          ],
+          "selected_local_fields": {
+            "113754": 5.071616055457803,
+            "72541": 2026.548633581366,
+            "89149": 3.0845521953941466,
+            "81077": 0.4590034014375277,
+            "77286": 3.4509460740061364
+          },
+          "k1_cost": {
+            "n_attempted": 160,
+            "n_distinct_k1_verifications": 151,
+            "n_predicted_flips": 5,
+            "n_diagonal_calls": 151,
+            "unique_guide_amplitudes": 5423,
+            "amplitude_requests": 6817,
+            "unique_sign_requests": 5423,
+            "neighbor_probes": 12080,
+            "symmetry_members_expanded": 5980
+          },
+          "proposal_cost": {
+            "n_hops": 320,
+            "n_feature_queries": 14386,
+            "n_distinct_feature_sites": 10429,
+            "neighbor_probes": 25600,
+            "orbit_expansions": 0
+          },
+          "final_FN_energy": -10.417893601522117,
+          "reprojected_FN_gain": 0.00019592301883442076,
+          "frozen_a_joint_energy_gain": 0.00016603909061174775,
+          "fraction_states_sign_changed": 0.001082508822446903,
+          "changed_a2_weight": 6.457558896308363e-06,
+          "FN_residual": 2.8045089045878756e-07,
+          "FN_preconditioner_iterations": 17,
+          "FN_negative_mass": 0.0
+        }
+      }
+    }
+  ],
+  "seconds": 33.01029399968684,
+  "summary": {
+    "walker": {
+      "avg_number_selected": 0.0,
+      "avg_reprojected_FN_gain": -3.552713678800501e-15,
+      "number_positive_FN_blocks": 0,
+      "avg_guide_configs": 2928.6666666666665,
+      "avg_K1_checks": 87.0,
+      "avg_proposal_edges": 0.0,
+      "avg_phys_Fn_resid": 2.4479302816949927e-07
+    },
+    "random1": {
+      "avg_number_selected": 1.1666666666666667,
+      "avg_reprojected_FN_gain": 5.3919418233405736e-05,
+      "number_positive_FN_blocks": 4,
+      "avg_guide_configs": 4555.5,
+      "avg_K1_checks": 134.33333333333334,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.617626009076675e-07
+    },
+    "geometry1": {
+      "avg_number_selected": 1.3333333333333333,
+      "avg_reprojected_FN_gain": 7.696831251990943e-05,
+      "number_positive_FN_blocks": 4,
+      "avg_guide_configs": 4583.666666666667,
+      "avg_K1_checks": 133.16666666666666,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.611022322417749e-07
+    },
+    "learned1": {
+      "avg_number_selected": 0.6666666666666666,
+      "avg_reprojected_FN_gain": 3.180461505358778e-05,
+      "number_positive_FN_blocks": 3,
+      "avg_guide_configs": 4562.333333333333,
+      "avg_K1_checks": 133.66666666666666,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.514473368474751e-07
+    },
+    "random2": {
+      "avg_number_selected": 1.6666666666666667,
+      "avg_reprojected_FN_gain": 2.6384952149941892e-05,
+      "number_positive_FN_blocks": 5,
+      "avg_guide_configs": 5374.166666666667,
+      "avg_K1_checks": 149.83333333333334,
+      "avg_proposal_edges": 25600.0,
+      "avg_phys_Fn_resid": 2.468189058176551e-07
+    },
+    "learned2": {
+      "avg_number_selected": 3.3333333333333335,
+      "avg_reprojected_FN_gain": 6.767109206003614e-05,
+      "number_positive_FN_blocks": 5,
+      "avg_guide_configs": 5344.666666666667,
+      "avg_K1_checks": 150.0,
+      "avg_proposal_edges": 25600.0,
+      "avg_phys_Fn_resid": 2.634169370709383e-07
+    }
+  },
+  "limitations": [
+    "Prior RL policy trained on the same fixed amplitude/sign chamber, using individual-orbit exact gain labels, not K1 labels; source training + FN roots have substantial additional cost.",
+    "One-hop policy reuses two-hop-trained theta; this is a deliberate zero-shot ablation.",
+    "FN roots are real mixed-population draws; output sign representation is a finite 20-site orbit exception list, and is not yet scalable NQS.",
+    "Threshold T=0 was fixed in script as a conservative baseline, but selected after an exploratory diagnostic; do not make confirmatory significance claims.",
+    "Krylov local verifier is actual local energy r(x)=H(s*a)/(s*a) using physical H and guide neighbor ratios. It is NOT the exact single orbit gain.",
+    "Reference amplitudes and signs are 20-site exact arrays; FN reprojection is independent full-basis heldout eigensolve.",
+    "Same guide and sign chamber across FN populations; cross-iteration frozen policy transfer untested.",
+    "Count overhead from large-system callable neural nets and source RL training separately from exact tiny reference FN reprojector."
+  ]
+}

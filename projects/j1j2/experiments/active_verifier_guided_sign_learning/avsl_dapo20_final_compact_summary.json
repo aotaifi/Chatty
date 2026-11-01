@@ -1,0 +1,1252 @@
+{
+  "date": "2026-10-19",
+  "experiment": "AVSL-06 exploration pilot",
+  "seeds": [
+    10019,
+    10020,
+    10021,
+    10022,
+    10023,
+    10024
+  ],
+  "train_chambers": [
+    "marshall",
+    "post_krylov"
+  ],
+  "n_train_attempts_per_policy_seed": 2000,
+  "n_eval_attempts_per_policy_seed": 160,
+  "reward": "binary indicator of exact 20-site frozen-a positive single-orbit gain >1e-12",
+  "group_size": 4,
+  "rollout_depth": 2,
+  "policy": "9-feature linear softmax with 15% uniform exploration; 4 trajectories grouped per root",
+  "control": "Random, geometry, novelty, and signed-edge weighted softmax",
+  "scope": "Oracle-backed 20-site tilted torus. Metropolis roots pi~a, NOT FN mixed walkers.",
+  "limitation": "DAPO and GRPO names implement same group standardized reward update, separate policy seeds; no clipping, no token-level DAPO loss, no gain from filtering homogeneous groups at same attempted-query budget.",
+  "limitation2": "Same frozen exact FN amplitude vector across Marshall and post-Krylov sign chambers; no reprojected FN or statewise learned sign model.",
+  "limitation3": "Terminal score is single symmetry-orbit fixed-guide marginal gain; summed positive gains are NOT joint physical energy gains.",
+  "limitation4": "6 independent train/root/test seed blocks per chamber; t intervals descriptive with tiny n, not proof of transfer.",
+  "raw_run_sha256": {
+    "avsl_dapo20_final_marshall_10019.json": "4bb22f538ebb246cc5fc8a82bec5767edfb28efe4368b1f27e10bc3263b71f1c",
+    "avsl_dapo20_final_marshall_10020.json": "0be0cf6c4d4e95135238b6df8988c40271f43eed16b578e2d5837f0a95b8b421",
+    "avsl_dapo20_final_marshall_10021.json": "561c35d057db6f3ced1c71c5f4b64979e84a81730068b21a7c939332abb12f32",
+    "avsl_dapo20_final_marshall_10022.json": "2eff282cc3825fb342dee71e617932106e3726637395b3ce3d2d2a3e00b5c6b5",
+    "avsl_dapo20_final_marshall_10023.json": "685db724ce8beb9151ef0e3eaee8820792d1138d32f8da7327758c46c61d7fe6",
+    "avsl_dapo20_final_marshall_10024.json": "3f92d8801f6ea688cfb5cfb504e52fad523b7a0e95b3d9cb6c16bc9f1eb4010d",
+    "avsl_dapo20_final_post_krylov_10019.json": "69e4f14934cf3af0f636fdb5d4f6818f879190c112424326ea096b407d51528d",
+    "avsl_dapo20_final_post_krylov_10020.json": "8ea3aa838afdd5e54ba4d0535a685052e2ade78c668ff742c7a6c49817080a67",
+    "avsl_dapo20_final_post_krylov_10021.json": "d473f25c0cd1745e30c33c633347af82875103c15fe323593192462283fe9765",
+    "avsl_dapo20_final_post_krylov_10022.json": "07e7136e602e7d9d25c96ab644457449b0102001b80f798734b999aa612f767e",
+    "avsl_dapo20_final_post_krylov_10023.json": "5576aa4392831c8d12c57951929fd86785f6823f0719329ced38be2664e1d71a",
+    "avsl_dapo20_final_post_krylov_10024.json": "8c9800e48acd4d99bd2c446b5203116f04c32637e82be25dedcdcf67988f0754"
+  },
+  "summary": {
+    "marshall": {
+      "marshall": {
+        "dapo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 264,
+          "counts_by_seed": [
+            46,
+            46,
+            40,
+            42,
+            40,
+            50
+          ],
+          "unique_orbits": 942,
+          "mean_best_independently_verifiable_single_gain": 0.0005798194294352255,
+          "best_gain_by_seed": [
+            0.0006810210851575648,
+            0.0005521823107773859,
+            0.00030223122434215534,
+            0.0007910516090329932,
+            0.0006810210851575648,
+            0.00047140926214368886
+          ],
+          "summed_positive_single_opportunity": 0.010726521885611856,
+          "mean_eval_unique_amplitude_queries": 5784.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38160.0,
+          "mean_eval_features": 14249.0,
+          "mean_eval_score_oracle_calls": 157.0,
+          "paired_difference_vs_random": {
+            "mean": 13.0,
+            "counts_diff": [
+              20,
+              15,
+              1,
+              9,
+              12,
+              21
+            ],
+            "student_t_95_ci": [
+              5.174840383545873,
+              20.825159616454126
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 0.00020317730938850223,
+            "student_t_95_ci": [
+              -0.00013899516777539614,
+              0.0005453497865524006
+            ]
+          }
+        },
+        "grpo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 236,
+          "counts_by_seed": [
+            48,
+            39,
+            38,
+            26,
+            43,
+            42
+          ],
+          "unique_orbits": 944,
+          "mean_best_independently_verifiable_single_gain": 0.0006257054756303301,
+          "best_gain_by_seed": [
+            0.00047140926214368886,
+            0.00024477041108946786,
+            0.00022008682190091878,
+            0.0006810210851575648,
+            0.0018921748624008727,
+            0.00024477041108946786
+          ],
+          "summed_positive_single_opportunity": 0.008147328544715293,
+          "mean_eval_unique_amplitude_queries": 5780.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38186.666666666664,
+          "mean_eval_features": 14251.333333333334,
+          "mean_eval_score_oracle_calls": 157.33333333333334,
+          "paired_difference_vs_random": {
+            "mean": 8.333333333333334,
+            "counts_diff": [
+              22,
+              8,
+              -1,
+              -7,
+              15,
+              13
+            ],
+            "student_t_95_ci": [
+              -2.9238716782788607,
+              19.59053834494553
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 0.0002490633555836069,
+            "student_t_95_ci": [
+              -0.0002918334474953606,
+              0.0007899601586625743
+            ]
+          }
+        },
+        "keep_relative": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 249,
+          "counts_by_seed": [
+            36,
+            46,
+            46,
+            37,
+            39,
+            45
+          ],
+          "unique_orbits": 939,
+          "mean_best_independently_verifiable_single_gain": 0.0002934307076958043,
+          "best_gain_by_seed": [
+            0.000189532205240546,
+            0.00017792701930192365,
+            0.0005521823107773859,
+            0.0004152817451276475,
+            0.00022008682190091878,
+            0.00020557414382640403
+          ],
+          "summed_positive_single_opportunity": 0.007249212901985702,
+          "mean_eval_unique_amplitude_queries": 5758.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38120.0,
+          "mean_eval_features": 14245.333333333334,
+          "mean_eval_score_oracle_calls": 156.5,
+          "paired_difference_vs_random": {
+            "mean": 10.5,
+            "counts_diff": [
+              10,
+              15,
+              7,
+              4,
+              11,
+              16
+            ],
+            "student_t_95_ci": [
+              5.679445060556808,
+              15.320554939443191
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": -8.32114123509189e-05,
+            "student_t_95_ci": [
+              -0.0004648938876968838,
+              0.000298471062995046
+            ]
+          }
+        },
+        "random": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 186,
+          "counts_by_seed": [
+            26,
+            31,
+            39,
+            33,
+            28,
+            29
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 0.0003766421200467232,
+          "best_gain_by_seed": [
+            0.0001489527041124591,
+            0.00018837454678636735,
+            0.00020568236410148713,
+            0.00024477041108946786,
+            0.0007910516090329932,
+            0.0006810210851575648
+          ],
+          "summed_positive_single_opportunity": 0.006422789931946578,
+          "mean_eval_unique_amplitude_queries": 5785.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14313.0,
+          "mean_eval_score_oracle_calls": 155.66666666666666
+        },
+        "geometry": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 155,
+          "counts_by_seed": [
+            31,
+            22,
+            30,
+            19,
+            27,
+            26
+          ],
+          "unique_orbits": 914,
+          "mean_best_independently_verifiable_single_gain": 0.00028998897310628606,
+          "best_gain_by_seed": [
+            0.0007910516090329932,
+            0.00018953220524054322,
+            0.0002056823641014839,
+            0.00024477041108946786,
+            0.0001239491328772779,
+            0.00018494811629595048
+          ],
+          "summed_positive_single_opportunity": 0.004834322256757996,
+          "mean_eval_unique_amplitude_queries": 5619.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 37786.666666666664,
+          "mean_eval_features": 14454.666666666666,
+          "mean_eval_score_oracle_calls": 152.33333333333334
+        },
+        "novelty": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 151,
+          "counts_by_seed": [
+            17,
+            27,
+            25,
+            24,
+            22,
+            36
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 0.000632853071240206,
+          "best_gain_by_seed": [
+            0.0001489527041124591,
+            0.0006810210851575648,
+            0.00020557414382640763,
+            0.00018837454678636664,
+            0.0006810210851575648,
+            0.0018921748624008727
+          ],
+          "summed_positive_single_opportunity": 0.007729122089090892,
+          "mean_eval_unique_amplitude_queries": 5735.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14377.333333333334,
+          "mean_eval_score_oracle_calls": 155.33333333333334
+        },
+        "signed_bond": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 47,
+          "counts_by_seed": [
+            15,
+            7,
+            5,
+            6,
+            3,
+            11
+          ],
+          "unique_orbits": 820,
+          "mean_best_independently_verifiable_single_gain": 0.00046129340383824647,
+          "best_gain_by_seed": [
+            0.00018494811629595048,
+            0.0006810210851575654,
+            0.00018494811629595048,
+            0.00024477041108946786,
+            0.0007910516090329799,
+            0.0006810210851575648
+          ],
+          "summed_positive_single_opportunity": 0.0052790013657052345,
+          "mean_eval_unique_amplitude_queries": 16017.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 36533.333333333336,
+          "mean_eval_features": 14439.0,
+          "mean_eval_score_oracle_calls": 136.66666666666666
+        }
+      },
+      "post_krylov": {
+        "dapo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 33,
+          "counts_by_seed": [
+            8,
+            10,
+            3,
+            3,
+            3,
+            6
+          ],
+          "unique_orbits": 942,
+          "mean_best_independently_verifiable_single_gain": 1.5720760051823936e-05,
+          "best_gain_by_seed": [
+            1.449086754935403e-05,
+            1.4490867549354118e-05,
+            5.5196953587739985e-05,
+            9.231946916532799e-07,
+            1.6871831580970774e-06,
+            7.535493774745114e-06
+          ],
+          "summed_positive_single_opportunity": 0.0001346300124864917,
+          "mean_eval_unique_amplitude_queries": 5784.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38160.0,
+          "mean_eval_features": 14249.0,
+          "mean_eval_score_oracle_calls": 157.0,
+          "paired_difference_vs_random": {
+            "mean": 2.1666666666666665,
+            "counts_diff": [
+              4,
+              8,
+              -2,
+              0,
+              0,
+              3
+            ],
+            "student_t_95_ci": [
+              -1.6122732116962002,
+              5.945606545029533
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": -1.0913337910454515e-06,
+            "student_t_95_ci": [
+              -3.6707687444335634e-05,
+              3.4525019862244735e-05
+            ]
+          }
+        },
+        "grpo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 35,
+          "counts_by_seed": [
+            8,
+            2,
+            6,
+            7,
+            5,
+            7
+          ],
+          "unique_orbits": 944,
+          "mean_best_independently_verifiable_single_gain": 3.172615346361475e-05,
+          "best_gain_by_seed": [
+            0.00010478425416071066,
+            6.379934102834627e-06,
+            5.814125955354949e-07,
+            5.6584958598508554e-05,
+            7.535493774745042e-06,
+            1.4490867549354118e-05
+          ],
+          "summed_positive_single_opportunity": 0.00022165701618540964,
+          "mean_eval_unique_amplitude_queries": 5780.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38186.666666666664,
+          "mean_eval_features": 14251.333333333334,
+          "mean_eval_score_oracle_calls": 157.33333333333334,
+          "paired_difference_vs_random": {
+            "mean": 2.5,
+            "counts_diff": [
+              4,
+              0,
+              1,
+              4,
+              2,
+              4
+            ],
+            "student_t_95_ci": [
+              0.652277888025347,
+              4.347722111974653
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 1.4914059620745366e-05,
+            "student_t_95_ci": [
+              -2.432668854580113e-05,
+              5.415480778729186e-05
+            ]
+          }
+        },
+        "keep_relative": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 33,
+          "counts_by_seed": [
+            1,
+            8,
+            10,
+            5,
+            2,
+            7
+          ],
+          "unique_orbits": 939,
+          "mean_best_independently_verifiable_single_gain": 4.683014273288764e-05,
+          "best_gain_by_seed": [
+            7.723261678912745e-07,
+            0.00010478425416071066,
+            5.658495859850749e-05,
+            7.057405283968967e-06,
+            5.5196953587739985e-05,
+            5.658495859850749e-05
+          ],
+          "summed_positive_single_opportunity": 0.00055757258781873,
+          "mean_eval_unique_amplitude_queries": 5758.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38120.0,
+          "mean_eval_features": 14245.333333333334,
+          "mean_eval_score_oracle_calls": 156.5,
+          "paired_difference_vs_random": {
+            "mean": 2.1666666666666665,
+            "counts_diff": [
+              -3,
+              6,
+              5,
+              2,
+              -1,
+              4
+            ],
+            "student_t_95_ci": [
+              -1.553529637208655,
+              5.886862970541988
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 3.0018048890018254e-05,
+            "student_t_95_ci": [
+              -2.3916852345768234e-05,
+              8.395295012580475e-05
+            ]
+          }
+        },
+        "random": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 20,
+          "counts_by_seed": [
+            4,
+            2,
+            5,
+            3,
+            3,
+            3
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 1.6812093842869386e-05,
+          "best_gain_by_seed": [
+            1.449086754935403e-05,
+            1.449086754935403e-05,
+            3.865623753634053e-06,
+            5.658495859850749e-05,
+            6.712940713749642e-06,
+            4.727304892617068e-06
+          ],
+          "summed_positive_single_opportunity": 0.00014076990062108233,
+          "mean_eval_unique_amplitude_queries": 5785.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14313.0,
+          "mean_eval_score_oracle_calls": 155.66666666666666
+        },
+        "geometry": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 15,
+          "counts_by_seed": [
+            4,
+            4,
+            1,
+            1,
+            4,
+            1
+          ],
+          "unique_orbits": 914,
+          "mean_best_independently_verifiable_single_gain": 3.7031899965374954e-05,
+          "best_gain_by_seed": [
+            4.727304892617129e-06,
+            5.206141836152849e-05,
+            5.6584958598508554e-05,
+            1.713409795592396e-07,
+            5.658495859850749e-05,
+            5.20614183615288e-05
+          ],
+          "summed_positive_single_opportunity": 0.00024207032135465853,
+          "mean_eval_unique_amplitude_queries": 5619.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 37786.666666666664,
+          "mean_eval_features": 14454.666666666666,
+          "mean_eval_score_oracle_calls": 152.33333333333334
+        },
+        "novelty": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 20,
+          "counts_by_seed": [
+            3,
+            4,
+            1,
+            7,
+            2,
+            3
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 3.282983009630025e-05,
+          "best_gain_by_seed": [
+            0.00010478425416071066,
+            2.8572774712581684e-05,
+            1.2149088130991036e-08,
+            5.658495859850749e-05,
+            7.512775222778567e-07,
+            6.273566495592835e-06
+          ],
+          "summed_positive_single_opportunity": 0.0003320281701856904,
+          "mean_eval_unique_amplitude_queries": 5735.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14377.333333333334,
+          "mean_eval_score_oracle_calls": 155.33333333333334
+        },
+        "signed_bond": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 7,
+          "counts_by_seed": [
+            1,
+            2,
+            0,
+            2,
+            0,
+            2
+          ],
+          "unique_orbits": 830,
+          "mean_best_independently_verifiable_single_gain": 4.5025650484412425e-05,
+          "best_gain_by_seed": [
+            0.00010478425416071066,
+            5.388440997313262e-06,
+            0.0,
+            5.5196953587739985e-05,
+            0.0,
+            0.00010478425416071066
+          ],
+          "summed_positive_single_opportunity": 0.0002869467269642092,
+          "mean_eval_unique_amplitude_queries": 16076.333333333334,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 36666.666666666664,
+          "mean_eval_features": 14432.666666666666,
+          "mean_eval_score_oracle_calls": 138.33333333333334
+        }
+      },
+      "training_costs": {
+        "dapo": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8853,
+          "train_mixed_groups": 1904,
+          "train_all_failed_groups": 1082,
+          "train_successful_proposals": 2804,
+          "mean_train_unique_guide_amplitudes": 26658.5,
+          "mean_train_neighbor_probes": 438040.0
+        },
+        "grpo": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8795,
+          "train_mixed_groups": 1913,
+          "train_all_failed_groups": 1074,
+          "train_successful_proposals": 2857,
+          "mean_train_unique_guide_amplitudes": 26672.666666666668,
+          "mean_train_neighbor_probes": 437266.6666666667
+        },
+        "keep_relative": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8813,
+          "train_mixed_groups": 1822,
+          "train_all_failed_groups": 1165,
+          "train_successful_proposals": 2710,
+          "mean_train_unique_guide_amplitudes": 26619.833333333332,
+          "mean_train_neighbor_probes": 437506.6666666667
+        }
+      }
+    },
+    "post_krylov": {
+      "marshall": {
+        "dapo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 184,
+          "counts_by_seed": [
+            31,
+            26,
+            30,
+            34,
+            32,
+            31
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 0.000871631795344279,
+          "best_gain_by_seed": [
+            0.000189532205240546,
+            0.0007910516090329932,
+            0.00024477041108947117,
+            0.00022008682190091878,
+            0.0018921748624008727,
+            0.0018921748624008727
+          ],
+          "summed_positive_single_opportunity": 0.010332775016215262,
+          "mean_eval_unique_amplitude_queries": 5705.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14297.666666666666,
+          "mean_eval_score_oracle_calls": 155.33333333333334,
+          "paired_difference_vs_random": {
+            "mean": -0.3333333333333333,
+            "counts_diff": [
+              5,
+              -5,
+              -9,
+              1,
+              4,
+              2
+            ],
+            "student_t_95_ci": [
+              -6.1068191878057005,
+              5.4401525211390345
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 0.0004949896752975559,
+            "student_t_95_ci": [
+              -9.424403855354366e-05,
+              0.0010842233891486554
+            ]
+          }
+        },
+        "grpo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 170,
+          "counts_by_seed": [
+            24,
+            30,
+            34,
+            27,
+            25,
+            30
+          ],
+          "unique_orbits": 936,
+          "mean_best_independently_verifiable_single_gain": 0.0005946456071132909,
+          "best_gain_by_seed": [
+            0.00020557414382640763,
+            0.000189532205240546,
+            0.0007910516090329799,
+            0.00024477041108946786,
+            0.00024477041108947117,
+            0.0018921748624008727
+          ],
+          "summed_positive_single_opportunity": 0.00933075648431809,
+          "mean_eval_unique_amplitude_queries": 5755.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38080.0,
+          "mean_eval_features": 14314.333333333334,
+          "mean_eval_score_oracle_calls": 156.0,
+          "paired_difference_vs_random": {
+            "mean": -2.6666666666666665,
+            "counts_diff": [
+              -2,
+              -1,
+              -5,
+              -6,
+              -3,
+              1
+            ],
+            "student_t_95_ci": [
+              -5.376297837489114,
+              0.04296450415578068
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 0.00021800348706656764,
+            "student_t_95_ci": [
+              -0.0004161940056007622,
+              0.0008522009797338975
+            ]
+          }
+        },
+        "keep_relative": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 189,
+          "counts_by_seed": [
+            38,
+            21,
+            27,
+            31,
+            35,
+            37
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 0.0008581226891325448,
+          "best_gain_by_seed": [
+            0.00020557414382640403,
+            0.00022008682190091878,
+            0.0018921748624008727,
+            0.0007910516090329932,
+            0.0018921748624008727,
+            0.00014767383523320751
+          ],
+          "summed_positive_single_opportunity": 0.009270478631991468,
+          "mean_eval_unique_amplitude_queries": 5778.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14302.666666666666,
+          "mean_eval_score_oracle_calls": 155.66666666666666,
+          "paired_difference_vs_random": {
+            "mean": 0.5,
+            "counts_diff": [
+              12,
+              -10,
+              -12,
+              -2,
+              7,
+              8
+            ],
+            "student_t_95_ci": [
+              -10.031022592416566,
+              11.031022592416566
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 0.00048148056908582155,
+            "student_t_95_ci": [
+              -0.0003649765790693287,
+              0.0013279377172409719
+            ]
+          }
+        },
+        "random": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 186,
+          "counts_by_seed": [
+            26,
+            31,
+            39,
+            33,
+            28,
+            29
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 0.0003766421200467232,
+          "best_gain_by_seed": [
+            0.0001489527041124591,
+            0.00018837454678636735,
+            0.00020568236410148713,
+            0.00024477041108946786,
+            0.0007910516090329932,
+            0.0006810210851575648
+          ],
+          "summed_positive_single_opportunity": 0.006422789931946578,
+          "mean_eval_unique_amplitude_queries": 5785.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14313.0,
+          "mean_eval_score_oracle_calls": 155.66666666666666
+        },
+        "geometry": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 155,
+          "counts_by_seed": [
+            31,
+            22,
+            30,
+            19,
+            27,
+            26
+          ],
+          "unique_orbits": 914,
+          "mean_best_independently_verifiable_single_gain": 0.00028998897310628606,
+          "best_gain_by_seed": [
+            0.0007910516090329932,
+            0.00018953220524054322,
+            0.0002056823641014839,
+            0.00024477041108946786,
+            0.0001239491328772779,
+            0.00018494811629595048
+          ],
+          "summed_positive_single_opportunity": 0.004834322256757996,
+          "mean_eval_unique_amplitude_queries": 5619.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 37786.666666666664,
+          "mean_eval_features": 14454.666666666666,
+          "mean_eval_score_oracle_calls": 152.33333333333334
+        },
+        "novelty": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 151,
+          "counts_by_seed": [
+            17,
+            27,
+            25,
+            24,
+            22,
+            36
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 0.000632853071240206,
+          "best_gain_by_seed": [
+            0.0001489527041124591,
+            0.0006810210851575648,
+            0.00020557414382640763,
+            0.00018837454678636664,
+            0.0006810210851575648,
+            0.0018921748624008727
+          ],
+          "summed_positive_single_opportunity": 0.007729122089090892,
+          "mean_eval_unique_amplitude_queries": 5735.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14377.333333333334,
+          "mean_eval_score_oracle_calls": 155.33333333333334
+        },
+        "signed_bond": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 47,
+          "counts_by_seed": [
+            15,
+            7,
+            5,
+            6,
+            3,
+            11
+          ],
+          "unique_orbits": 820,
+          "mean_best_independently_verifiable_single_gain": 0.00046129340383824647,
+          "best_gain_by_seed": [
+            0.00018494811629595048,
+            0.0006810210851575654,
+            0.00018494811629595048,
+            0.00024477041108946786,
+            0.0007910516090329799,
+            0.0006810210851575648
+          ],
+          "summed_positive_single_opportunity": 0.0052790013657052345,
+          "mean_eval_unique_amplitude_queries": 16017.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 36533.333333333336,
+          "mean_eval_features": 14439.0,
+          "mean_eval_score_oracle_calls": 136.66666666666666
+        }
+      },
+      "post_krylov": {
+        "dapo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 25,
+          "counts_by_seed": [
+            4,
+            5,
+            2,
+            4,
+            5,
+            5
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 3.205106042939971e-05,
+          "best_gain_by_seed": [
+            0.00010478425416070911,
+            5.5196953587739985e-05,
+            5.38844099731311e-06,
+            5.38844099731311e-06,
+            7.057405283968967e-06,
+            1.449086754935403e-05
+          ],
+          "summed_positive_single_opportunity": 0.0002794443449283938,
+          "mean_eval_unique_amplitude_queries": 5705.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14297.666666666666,
+          "mean_eval_score_oracle_calls": 155.33333333333334,
+          "paired_difference_vs_random": {
+            "mean": 0.8333333333333334,
+            "counts_diff": [
+              0,
+              3,
+              -3,
+              1,
+              2,
+              2
+            ],
+            "student_t_95_ci": [
+              -1.409285502112505,
+              3.075952168779172
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 1.5238966586530337e-05,
+            "student_t_95_ci": [
+              -3.4285885316482126e-05,
+              6.47638184895428e-05
+            ]
+          }
+        },
+        "grpo": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 30,
+          "counts_by_seed": [
+            5,
+            6,
+            3,
+            2,
+            6,
+            8
+          ],
+          "unique_orbits": 936,
+          "mean_best_independently_verifiable_single_gain": 4.546481427585719e-05,
+          "best_gain_by_seed": [
+            5.20614183615288e-05,
+            5.519695358773996e-05,
+            1.6871831580970583e-06,
+            5.6584958598508554e-05,
+            5.20614183615288e-05,
+            5.519695358773996e-05
+          ],
+          "summed_positive_single_opportunity": 0.0003589366850063068,
+          "mean_eval_unique_amplitude_queries": 5755.833333333333,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38080.0,
+          "mean_eval_features": 14314.333333333334,
+          "mean_eval_score_oracle_calls": 156.0,
+          "paired_difference_vs_random": {
+            "mean": 1.6666666666666667,
+            "counts_diff": [
+              1,
+              4,
+              -2,
+              -1,
+              3,
+              5
+            ],
+            "student_t_95_ci": [
+              -1.2767461954091417,
+              4.610079528742475
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 2.8652720432987802e-05,
+            "student_t_95_ci": [
+              4.0364548075223215e-06,
+              5.326898605845328e-05
+            ]
+          }
+        },
+        "keep_relative": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 26,
+          "counts_by_seed": [
+            3,
+            4,
+            5,
+            6,
+            4,
+            4
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 3.0172221547429973e-05,
+          "best_gain_by_seed": [
+            7.057405283968958e-06,
+            5.658495859850749e-05,
+            7.057405283968958e-06,
+            5.6584958598508554e-05,
+            5.20614183615288e-05,
+            1.6871831580970774e-06
+          ],
+          "summed_positive_single_opportunity": 0.00021496167160217977,
+          "mean_eval_unique_amplitude_queries": 5778.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14302.666666666666,
+          "mean_eval_score_oracle_calls": 155.66666666666666,
+          "paired_difference_vs_random": {
+            "mean": 1.0,
+            "counts_diff": [
+              -1,
+              2,
+              0,
+              3,
+              1,
+              1
+            ],
+            "student_t_95_ci": [
+              -0.48412611477858847,
+              2.4841261147785882
+            ]
+          },
+          "paired_best_single_gain_difference_vs_random": {
+            "mean": 1.3360127704560586e-05,
+            "student_t_95_ci": [
+              -1.1616109920924885e-05,
+              3.8336365330046055e-05
+            ]
+          }
+        },
+        "random": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 20,
+          "counts_by_seed": [
+            4,
+            2,
+            5,
+            3,
+            3,
+            3
+          ],
+          "unique_orbits": 934,
+          "mean_best_independently_verifiable_single_gain": 1.6812093842869386e-05,
+          "best_gain_by_seed": [
+            1.449086754935403e-05,
+            1.449086754935403e-05,
+            3.865623753634053e-06,
+            5.658495859850749e-05,
+            6.712940713749642e-06,
+            4.727304892617068e-06
+          ],
+          "summed_positive_single_opportunity": 0.00014076990062108233,
+          "mean_eval_unique_amplitude_queries": 5785.0,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38053.333333333336,
+          "mean_eval_features": 14313.0,
+          "mean_eval_score_oracle_calls": 155.66666666666666
+        },
+        "geometry": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 15,
+          "counts_by_seed": [
+            4,
+            4,
+            1,
+            1,
+            4,
+            1
+          ],
+          "unique_orbits": 914,
+          "mean_best_independently_verifiable_single_gain": 3.7031899965374954e-05,
+          "best_gain_by_seed": [
+            4.727304892617129e-06,
+            5.206141836152849e-05,
+            5.6584958598508554e-05,
+            1.713409795592396e-07,
+            5.658495859850749e-05,
+            5.20614183615288e-05
+          ],
+          "summed_positive_single_opportunity": 0.00024207032135465853,
+          "mean_eval_unique_amplitude_queries": 5619.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 37786.666666666664,
+          "mean_eval_features": 14454.666666666666,
+          "mean_eval_score_oracle_calls": 152.33333333333334
+        },
+        "novelty": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 20,
+          "counts_by_seed": [
+            3,
+            4,
+            1,
+            7,
+            2,
+            3
+          ],
+          "unique_orbits": 932,
+          "mean_best_independently_verifiable_single_gain": 3.282983009630025e-05,
+          "best_gain_by_seed": [
+            0.00010478425416071066,
+            2.8572774712581684e-05,
+            1.2149088130991036e-08,
+            5.658495859850749e-05,
+            7.512775222778567e-07,
+            6.273566495592835e-06
+          ],
+          "summed_positive_single_opportunity": 0.0003320281701856904,
+          "mean_eval_unique_amplitude_queries": 5735.5,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 38026.666666666664,
+          "mean_eval_features": 14377.333333333334,
+          "mean_eval_score_oracle_calls": 155.33333333333334
+        },
+        "signed_bond": {
+          "n_independent_test_root_groups": 6,
+          "attempted": 960,
+          "positives": 7,
+          "counts_by_seed": [
+            1,
+            2,
+            0,
+            2,
+            0,
+            2
+          ],
+          "unique_orbits": 830,
+          "mean_best_independently_verifiable_single_gain": 4.5025650484412425e-05,
+          "best_gain_by_seed": [
+            0.00010478425416071066,
+            5.388440997313262e-06,
+            0.0,
+            5.5196953587739985e-05,
+            0.0,
+            0.00010478425416071066
+          ],
+          "summed_positive_single_opportunity": 0.0002869467269642092,
+          "mean_eval_unique_amplitude_queries": 16076.333333333334,
+          "mean_eval_orbit_calls": 160.0,
+          "mean_eval_neighbor_probes": 36666.666666666664,
+          "mean_eval_features": 14432.666666666666,
+          "mean_eval_score_oracle_calls": 138.33333333333334
+        }
+      },
+      "training_costs": {
+        "dapo": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8620,
+          "train_mixed_groups": 299,
+          "train_all_failed_groups": 2701,
+          "train_successful_proposals": 319,
+          "mean_train_unique_guide_amplitudes": 26252.0,
+          "mean_train_neighbor_probes": 434933.3333333333
+        },
+        "grpo": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8610,
+          "train_mixed_groups": 284,
+          "train_all_failed_groups": 2716,
+          "train_successful_proposals": 296,
+          "mean_train_unique_guide_amplitudes": 26230.666666666668,
+          "mean_train_neighbor_probes": 434800.0
+        },
+        "keep_relative": {
+          "train_attempted": 12000,
+          "train_scored_unique_orbits": 8598,
+          "train_mixed_groups": 307,
+          "train_all_failed_groups": 2693,
+          "train_successful_proposals": 316,
+          "mean_train_unique_guide_amplitudes": 26177.5,
+          "mean_train_neighbor_probes": 434640.0
+        }
+      }
+    }
+  },
+  "individual_runs": [
+    {
+      "chamber": "marshall",
+      "seed": 10019,
+      "run_sha256": "4bb22f538ebb246cc5fc8a82bec5767edfb28efe4368b1f27e10bc3263b71f1c"
+    },
+    {
+      "chamber": "marshall",
+      "seed": 10020,
+      "run_sha256": "0be0cf6c4d4e95135238b6df8988c40271f43eed16b578e2d5837f0a95b8b421"
+    },
+    {
+      "chamber": "marshall",
+      "seed": 10021,
+      "run_sha256": "561c35d057db6f3ced1c71c5f4b64979e84a81730068b21a7c939332abb12f32"
+    },
+    {
+      "chamber": "marshall",
+      "seed": 10022,
+      "run_sha256": "2eff282cc3825fb342dee71e617932106e3726637395b3ce3d2d2a3e00b5c6b5"
+    },
+    {
+      "chamber": "marshall",
+      "seed": 10023,
+      "run_sha256": "685db724ce8beb9151ef0e3eaee8820792d1138d32f8da7327758c46c61d7fe6"
+    },
+    {
+      "chamber": "marshall",
+      "seed": 10024,
+      "run_sha256": "3f92d8801f6ea688cfb5cfb504e52fad523b7a0e95b3d9cb6c16bc9f1eb4010d"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10019,
+      "run_sha256": "69e4f14934cf3af0f636fdb5d4f6818f879190c112424326ea096b407d51528d"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10020,
+      "run_sha256": "8ea3aa838afdd5e54ba4d0535a685052e2ade78c668ff742c7a6c49817080a67"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10021,
+      "run_sha256": "d473f25c0cd1745e30c33c633347af82875103c15fe323593192462283fe9765"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10022,
+      "run_sha256": "07e7136e602e7d9d25c96ab644457449b0102001b80f798734b999aa612f767e"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10023,
+      "run_sha256": "5576aa4392831c8d12c57951929fd86785f6823f0719329ced38be2664e1d71a"
+    },
+    {
+      "chamber": "post_krylov",
+      "seed": 10024,
+      "run_sha256": "8c9800e48acd4d99bd2c446b5203116f04c32637e82be25dedcdcf67988f0754"
+    }
+  ]
+}

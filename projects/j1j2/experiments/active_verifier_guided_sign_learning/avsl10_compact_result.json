@@ -1,0 +1,211 @@
+{
+  "date": "2026-10-19",
+  "experiment": "AVSL10 compact motif corrector vs costed Krylov-verifier ranking",
+  "training": {
+    "unique_labels": 1214,
+    "positive_labels": 18,
+    "attempted_queries": 2640,
+    "stagewise_verifications": 2246,
+    "stagewise_unique_amplitudes": 74203,
+    "source_fn_blocks": [
+      0,
+      1,
+      2
+    ],
+    "old_RL_policy_additional_labels": 400
+  },
+  "direct_flips": {
+    "local": {
+      "physics": {
+        "fn_energy": -10.3906026038866,
+        "post_FN_energy_gain": -0.027095074616681813,
+        "fixed_a_joint_gain": -0.05569308189206647,
+        "n_flip_states": 2324,
+        "n_flip_symmetry_orbits": 62,
+        "flipped_a2_weight": 0.001625335423353453,
+        "fn_residual": 1.7864376357483712e-08
+      },
+      "posthoc": {
+        "n_all_orbits": 4654,
+        "n_predicted_orbits": 62,
+        "n_predicted_unseen_training_orbits": 54,
+        "K1_pos_predicted_unseen": 6,
+        "K1_neg_predicted_unseen": 48,
+        "K1_unseen_precision": 0.1111111111111111,
+        "K1_unseen_recall": 0.03428571428571429,
+        "n_positive_train_orbits": 18
+      }
+    },
+    "local_guide": {
+      "physics": {
+        "fn_energy": -10.41466731194583,
+        "post_FN_energy_gain": -0.0030303665574518135,
+        "fixed_a_joint_gain": -0.0058819142936723775,
+        "n_flip_states": 11324,
+        "n_flip_symmetry_orbits": 286,
+        "flipped_a2_weight": 0.00017247210009575613,
+        "fn_residual": 1.2974748680580543e-08
+      },
+      "posthoc": {
+        "n_all_orbits": 4654,
+        "n_predicted_orbits": 286,
+        "n_predicted_unseen_training_orbits": 277,
+        "K1_pos_predicted_unseen": 75,
+        "K1_neg_predicted_unseen": 202,
+        "K1_unseen_precision": 0.27075812274368233,
+        "K1_unseen_recall": 0.42857142857142855,
+        "n_positive_train_orbits": 18
+      }
+    },
+    "guide_abstention": [
+      {
+        "negative_quantile": 0.995,
+        "train_precision": 0.3333333333333333,
+        "post_FN_energy_gain": -0.0030303665574518135,
+        "n_flip_symmetry_orbits": 286
+      },
+      {
+        "negative_quantile": 0.999,
+        "train_precision": 0.5,
+        "post_FN_energy_gain": -0.000252996431008512,
+        "n_flip_symmetry_orbits": 151
+      },
+      {
+        "negative_quantile": 0.9995,
+        "train_precision": 0.5,
+        "post_FN_energy_gain": -0.0002485773927158874,
+        "n_flip_symmetry_orbits": 120
+      },
+      {
+        "negative_quantile": 0.9999,
+        "train_precision": 0.5,
+        "post_FN_energy_gain": -0.00024837186357729024,
+        "n_flip_symmetry_orbits": 115
+      },
+      {
+        "negative_quantile": 1.0,
+        "train_precision": 1.0,
+        "post_FN_energy_gain": -0.00024886893535658317,
+        "n_flip_symmetry_orbits": 112
+      }
+    ]
+  },
+  "heldout_same_chamber": {
+    "random": {
+      "mean_FN_gain": 0.0001157980577257689,
+      "n_positive_energy_blocks": 3,
+      "mean_K1_checks": 105.66666666666667,
+      "mean_K1_positive": 1.6666666666666667,
+      "mean_unique_guide": 4012.6666666666665
+    },
+    "geometry_rank": {
+      "mean_FN_gain": -3.552713678800501e-15,
+      "n_positive_energy_blocks": 0,
+      "mean_K1_checks": 119.66666666666667,
+      "mean_K1_positive": 0.0,
+      "mean_unique_guide": 4016.6666666666665
+    },
+    "amplitude_rare": {
+      "mean_FN_gain": 0.0003442033549602523,
+      "n_positive_energy_blocks": 3,
+      "mean_K1_checks": 96.66666666666667,
+      "mean_K1_positive": 7.333333333333333,
+      "mean_unique_guide": 4017.6666666666665
+    },
+    "amplitude_common": {
+      "mean_FN_gain": -3.552713678800501e-15,
+      "n_positive_energy_blocks": 0,
+      "mean_K1_checks": 133.0,
+      "mean_K1_positive": 0.0,
+      "mean_unique_guide": 4008.3333333333335
+    },
+    "local_motif_rank": {
+      "mean_FN_gain": 0.00025304562141551895,
+      "n_positive_energy_blocks": 3,
+      "mean_K1_checks": 117.33333333333333,
+      "mean_K1_positive": 3.6666666666666665,
+      "mean_unique_guide": 4024.6666666666665
+    },
+    "local_motif_plus_guide_rank": {
+      "mean_FN_gain": 0.0004260503681129772,
+      "n_positive_energy_blocks": 3,
+      "mean_K1_checks": 102.33333333333333,
+      "mean_K1_positive": 8.0,
+      "mean_unique_guide": 4019.6666666666665
+    }
+  },
+  "changed_chambers": {
+    "random": {
+      "n_runs": 6,
+      "n_distinct_FN_sign_chambers": 3,
+      "mean_sign_only_FN_gain": 6.856723234586563e-05,
+      "per_run": [
+        0.00013349906747350815,
+        0.00010105895809786603,
+        0.00011115236353553826,
+        5.8800205161801955e-05,
+        -1.2434497875801753e-14,
+        6.892799818913886e-06
+      ]
+    },
+    "amplitude_rare": {
+      "n_runs": 6,
+      "n_distinct_FN_sign_chambers": 3,
+      "mean_sign_only_FN_gain": 0.000389907023918686,
+      "per_run": [
+        0.0005954343441825216,
+        0.00010868022808097066,
+        0.0003875183624089118,
+        0.0004499755790998705,
+        0.00021882803610751012,
+        0.0005790055936323313
+      ]
+    },
+    "local_motif_rank": {
+      "n_runs": 6,
+      "n_distinct_FN_sign_chambers": 3,
+      "mean_sign_only_FN_gain": 0.00036208785842628544,
+      "per_run": [
+        0.0003441255643803487,
+        0.00019078994076515698,
+        0.0005133675151665074,
+        0.00037611553656269336,
+        0.00025203437794374395,
+        0.0004960942157392623
+      ]
+    },
+    "local_motif_plus_guide_rank": {
+      "n_runs": 6,
+      "n_distinct_FN_sign_chambers": 3,
+      "mean_sign_only_FN_gain": 0.00047025485250410765,
+      "per_run": [
+        0.0005945706098220427,
+        0.0002978058381106763,
+        0.0005808587546312083,
+        0.0004499755790998705,
+        0.0003193127397285167,
+        0.0005790055936323313
+      ]
+    }
+  },
+  "guide_coef": -1.0876207988680215,
+  "guide_coef_fraction_norm_squared": 0.6961248343853926,
+  "interpretation": "Direct 42/43-feature sign-rule extrapolation harmed FN energy. As ranking inputs to an independently charged actual Krylov verifier, motif+guide helped over random but most gain came from simple smallest-amplitude-first ranking. Training not amortized, no scalable sign representation.",
+  "caveats": [
+    "No ED labels used during training. Full oracle K1 checks on all orbits occur only in posthoc audit.",
+    "Train source FN populations 0,1,2; first heldout original populations 3,4,5 same sign chamber.",
+    "Changed FN chambers 0,2,5 repeated with two independent walker/proposal RNGs but only three distinct changed sign fields.",
+    "All arms bounded to ~4000 unique amplitude configurations including scoring; other proposal, training, sampler and FN costs not equalized.",
+    "Original 400 AVSL08 reward training and FN population also excluded from current source labels.",
+    "Accepted sign output in exact 20-site evaluation is still a finite list of symmetry orbits, not a learned globally callable correction.",
+    "The 6x6-size feature routine is callable O(N), but no 6x6 FN or ML results."
+  ],
+  "raw_sha256": {
+    "avsl10_localrule20.json": "2a4ad44da85b49c158a466ef269d67d3d222cd00f1bd5c40a68359c68dc7c151",
+    "avsl10_localrule20_guide.json": "83afc28302f9c9bfdc030f822f49ab16d3a2ca163950a3e9bc8656cfcc820bd7",
+    "avsl10_abstention_guide.json": "e731b25946fb32a9b17a4b1fcacf0daf1529b35e7dc88ea2936cfff37920f324",
+    "avsl10_costed_ranker20_with_amp_baselines.json": "e871683f8d872a37c3c5da7ffc075de65eecf6675d02f61d5b595776521e5cbd",
+    "avsl10_cross_chamber20.json": "7fef32f19c9cb52c273861399c089847dd86dd0feb1afe80042d517ca14454b9",
+    "avsl10_cross_chamber20_rep2.json": "9fd0a87e0c9a380fb60c767679da10ee5cfa04227a2116f289ddbf5d3263c452"
+  }
+}

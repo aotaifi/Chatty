@@ -1,0 +1,477 @@
+{
+  "title": "AVSL09 genuine costed local K1 sign checks and independently reprojected FN: 20-site pilot",
+  "date": "2026-10-19",
+  "physics": {
+    "J2_over_J1": 0.5,
+    "sites": 20,
+    "FN_initial_energy": -10.417697678503282,
+    "threshold_T": 0.0,
+    "n_independent_FN_root_populations": 6,
+    "proposals_per_method_per_population": 160
+  },
+  "k1_global_threshold_posthoc_reference": {
+    "n_orbits": 4654,
+    "n_positive_singles": 198,
+    "best_single_K1_threshold": -2.496800368834635,
+    "best_K1_joint_gain": 0.000963542597086384,
+    "best_K1_n_flips": 264,
+    "best_K1_positive_single_overlap": 198
+  },
+  "k1_T0_posthoc_reference": {
+    "T": 0,
+    "n_k1": 193,
+    "positive_single_overlap": 177,
+    "gain_if_flip_all": 0.0007226411844297657
+  },
+  "first_stage": {
+    "walker": {
+      "avg_number_selected": 0.0,
+      "avg_reprojected_FN_gain": -3.552713678800501e-15,
+      "number_positive_FN_blocks": 0,
+      "avg_guide_configs": 2928.6666666666665,
+      "avg_K1_checks": 87.0,
+      "avg_proposal_edges": 0.0,
+      "avg_phys_Fn_resid": 2.4479302816949927e-07
+    },
+    "random1": {
+      "avg_number_selected": 1.1666666666666667,
+      "avg_reprojected_FN_gain": 5.3919418233405736e-05,
+      "number_positive_FN_blocks": 4,
+      "avg_guide_configs": 4555.5,
+      "avg_K1_checks": 134.33333333333334,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.617626009076675e-07
+    },
+    "geometry1": {
+      "avg_number_selected": 1.3333333333333333,
+      "avg_reprojected_FN_gain": 7.696831251990943e-05,
+      "number_positive_FN_blocks": 4,
+      "avg_guide_configs": 4583.666666666667,
+      "avg_K1_checks": 133.16666666666666,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.611022322417749e-07
+    },
+    "learned1": {
+      "avg_number_selected": 0.6666666666666666,
+      "avg_reprojected_FN_gain": 3.180461505358778e-05,
+      "number_positive_FN_blocks": 3,
+      "avg_guide_configs": 4562.333333333333,
+      "avg_K1_checks": 133.66666666666666,
+      "avg_proposal_edges": 12800.0,
+      "avg_phys_Fn_resid": 2.514473368474751e-07
+    },
+    "random2": {
+      "avg_number_selected": 1.6666666666666667,
+      "avg_reprojected_FN_gain": 2.6384952149941892e-05,
+      "number_positive_FN_blocks": 5,
+      "avg_guide_configs": 5374.166666666667,
+      "avg_K1_checks": 149.83333333333334,
+      "avg_proposal_edges": 25600.0,
+      "avg_phys_Fn_resid": 2.468189058176551e-07
+    },
+    "learned2": {
+      "avg_number_selected": 3.3333333333333335,
+      "avg_reprojected_FN_gain": 6.767109206003614e-05,
+      "number_positive_FN_blocks": 5,
+      "avg_guide_configs": 5344.666666666667,
+      "avg_K1_checks": 150.0,
+      "avg_proposal_edges": 25600.0,
+      "avg_phys_Fn_resid": 2.634169370709383e-07
+    }
+  },
+  "paired_first_stage": [
+    {
+      "block": 0,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 3,
+          "reprojected_FN_gain": 0.00013684389879919934,
+          "frozen_a_joint_energy_gain": 0.00011539469833543641,
+          "final_FN_energy": -10.417834522402082,
+          "FN_residual": 2.535262445940536e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 0.0001191046408415275,
+          "frozen_a_joint_energy_gain": 0.00010478425416238269,
+          "final_FN_energy": -10.417816783144124,
+          "FN_residual": 2.765353545964239e-07
+        },
+        "random2": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 5.306893289258596e-07,
+          "frozen_a_joint_energy_gain": 3.280663385396579e-07,
+          "final_FN_energy": -10.417698209192611,
+          "FN_residual": 2.433319532644741e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 3,
+          "reprojected_FN_gain": 0.00014616012883728047,
+          "frozen_a_joint_energy_gain": 0.00011750679487754262,
+          "final_FN_energy": -10.41784383863212,
+          "FN_residual": 3.0454700636488475e-07
+        }
+      }
+    },
+    {
+      "block": 1,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random2": {
+          "n_selected_orbits": 5,
+          "reprojected_FN_gain": 0.00014018657561010173,
+          "frozen_a_joint_energy_gain": 0.00012236558186273834,
+          "final_FN_energy": -10.417837865078893,
+          "FN_residual": 2.6536682485100693e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 4,
+          "reprojected_FN_gain": 2.9289590139924826e-05,
+          "frozen_a_joint_energy_gain": 2.44276615788409e-05,
+          "final_FN_energy": -10.417726968093422,
+          "FN_residual": 2.460410618714421e-07
+        }
+      }
+    },
+    {
+      "block": 2,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 0.00012659060402420153,
+          "frozen_a_joint_energy_gain": 0.00011149719487413326,
+          "final_FN_energy": -10.417824269107307,
+          "FN_residual": 2.703657783974562e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 0.00018874541182078985,
+          "frozen_a_joint_energy_gain": 0.00016136921276022133,
+          "final_FN_energy": -10.417886423915103,
+          "FN_residual": 2.385599417393911e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 7.019803203789365e-05,
+          "frozen_a_joint_energy_gain": 5.8441352463134666e-05,
+          "final_FN_energy": -10.41776787653532,
+          "FN_residual": 2.544362885879254e-07
+        },
+        "random2": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 8.23544506012297e-06,
+          "frozen_a_joint_energy_gain": 5.093575985881692e-06,
+          "final_FN_energy": -10.417705913948343,
+          "FN_residual": 2.476357068561762e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 1.7059633705684973e-09,
+          "frozen_a_joint_energy_gain": 1.0995258037382928e-09,
+          "final_FN_energy": -10.417697680209246,
+          "FN_residual": 2.4478730003819617e-07
+        }
+      }
+    },
+    {
+      "block": 3,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 6.958581947635878e-05,
+          "frozen_a_joint_energy_gain": 5.668748692855298e-05,
+          "final_FN_energy": -10.417767264322759,
+          "FN_residual": 2.864527081853733e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random2": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 1.8746782881606805e-06,
+          "frozen_a_joint_energy_gain": 7.816227007850817e-07,
+          "final_FN_energy": -10.41769955318157,
+          "FN_residual": 2.43572917389558e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 6,
+          "reprojected_FN_gain": 3.0162427064439612e-05,
+          "frozen_a_joint_energy_gain": 2.1983728194285937e-05,
+          "final_FN_energy": -10.417727840930347,
+          "FN_residual": 2.6130060484778984e-07
+        }
+      }
+    },
+    {
+      "block": 4,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 8.235445063675684e-06,
+          "frozen_a_joint_energy_gain": 5.093575987658049e-06,
+          "final_FN_energy": -10.417705913948346,
+          "FN_residual": 2.476357085481231e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 6.253318224125337e-05,
+          "frozen_a_joint_energy_gain": 5.206141836211508e-05,
+          "final_FN_energy": -10.417760211685524,
+          "FN_residual": 2.852201575097283e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random2": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 4.489681520780664e-06,
+          "frozen_a_joint_energy_gain": 3.8656237553169764e-06,
+          "final_FN_energy": -10.417702168184803,
+          "FN_residual": 2.433747588445294e-07
+        }
+      }
+    },
+    {
+      "block": 5,
+      "methods": {
+        "walker": {
+          "n_selected_orbits": 0,
+          "reprojected_FN_gain": -3.552713678800501e-15,
+          "frozen_a_joint_energy_gain": 0.0,
+          "final_FN_energy": -10.417697678503279,
+          "FN_residual": 2.447930281694993e-07
+        },
+        "random1": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 0.00011910464084330386,
+          "frozen_a_joint_energy_gain": 0.00010478425415882997,
+          "final_FN_energy": -10.417816783144126,
+          "FN_residual": 2.765353539760539e-07
+        },
+        "geometry1": {
+          "n_selected_orbits": 2,
+          "reprojected_FN_gain": 7.368738226531946e-05,
+          "frozen_a_joint_energy_gain": 5.83349848568562e-05,
+          "final_FN_energy": -10.417771365885548,
+          "FN_residual": 2.997209932684774e-07
+        },
+        "learned1": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 1.5250174527636773e-06,
+          "frozen_a_joint_energy_gain": 1.4114684816490867e-06,
+          "final_FN_energy": -10.417699203520735,
+          "FN_residual": 2.433332933920036e-07
+        },
+        "random2": {
+          "n_selected_orbits": 1,
+          "reprojected_FN_gain": 7.482324615892821e-06,
+          "frozen_a_joint_energy_gain": 6.712940711750576e-06,
+          "final_FN_energy": -10.417705160827898,
+          "FN_residual": 2.3621300437521602e-07
+        },
+        "learned2": {
+          "n_selected_orbits": 5,
+          "reprojected_FN_gain": 0.00019592301883442076,
+          "frozen_a_joint_energy_gain": 0.00016603909061174775,
+          "final_FN_energy": -10.417893601522117,
+          "FN_residual": 2.8045089045878756e-07
+        }
+      }
+    }
+  ],
+  "second_stage": {
+    "random1": {
+      "blocks": [
+        0,
+        2,
+        5
+      ],
+      "first_FN_gains": [
+        0.0,
+        0.00012659060403130695,
+        0.00011910464085218564
+      ],
+      "guide_only_gains": [
+        0.005572136133197958,
+        0.005591961105784193,
+        0.005590698867651511
+      ],
+      "K1_only_second_gains": [
+        0.00010778544118750233,
+        6.555936660745942e-05,
+        0.0
+      ],
+      "mean_K1_only_second_gain": 5.778160259832058e-05,
+      "mean_guide_only_gain": 0.005584932035544554,
+      "n_second_K1_flips": [
+        1,
+        1,
+        0
+      ],
+      "FN_max_residual": 1.254168945550202e-08
+    },
+    "geometry1": {
+      "blocks": [
+        0,
+        2,
+        5
+      ],
+      "first_FN_gains": [
+        0.0001368438988134102,
+        0.00018874541182789528,
+        7.368738226531946e-05
+      ],
+      "guide_only_gains": [
+        0.005598816964091924,
+        0.00560535307048049,
+        0.005589863681322527
+      ],
+      "K1_only_second_gains": [
+        0.0001303019021570151,
+        5.7922310343627714e-06,
+        9.314971688567653e-05
+      ],
+      "mean_K1_only_second_gain": 7.641461669235146e-05,
+      "mean_guide_only_gain": 0.0055980112386316465,
+      "n_second_K1_flips": [
+        2,
+        1,
+        1
+      ],
+      "FN_max_residual": 1.502173926190049e-08
+    },
+    "learned2": {
+      "blocks": [
+        0,
+        2,
+        5
+      ],
+      "first_FN_gains": [
+        0.00014616012884616225,
+        1.705961594211658e-09,
+        0.00019592301884152619
+      ],
+      "guide_only_gains": [
+        0.005603886938427394,
+        0.005572137520548637,
+        0.005608224280500451
+      ],
+      "K1_only_second_gains": [
+        0.00010121089470160882,
+        1.1351310588381125e-05,
+        0.00013327805535823245
+      ],
+      "mean_K1_only_second_gain": 8.194675354940746e-05,
+      "mean_guide_only_gain": 0.005594749579825494,
+      "n_second_K1_flips": [
+        4,
+        2,
+        6
+      ],
+      "FN_max_residual": 1.4597769927478758e-08
+    }
+  },
+  "methodological_caveats": [
+    "One-step K1 check uses local field r=H(sa)/(sa) at a selected symmetry-orbit representative; threshold T=0 was an exploratory fixed choice, not pre-registered.",
+    "Input amplitude/sign guide at 20sites is a precomputed exact-reference lookup callable; not a scalable or learned NQS.",
+    "Proposals use pre-trained same-chamber AVSL08 9-feature geometry-only policy with 400 prior single-orbit energy-label training checks; 160 attempts per arm are not training-cost-equivalent.",
+    "First-state FN walker roots reused from genuine mixed FN branching simulation; no direct FN sampler restart in first stage.",
+    "Finite list of exception-orbit sign flips is globally callable only because symmetry enumeration is affordable at 20 sites.",
+    "Second-stage uses exact phi_FN for guide refresh; this creates a separate guide-only energy improvement ~5.6e-3 that MUST NOT be attributed to the second sign change.",
+    "Three second-step cases do not show robust transfer or amortization; no 6x6 result, and no region-component C_w implemented."
+  ],
+  "raw_sha256": {
+    "avsl09_k1_fn_full.json": "894839b456a65e0eea19c506dd28e61776a34737ff521c7d955215bce7381baf",
+    "avsl09_two_iteration20_controlled.json": "41f39985745c2d63106653f86b8e2ee4e35a37024b4aa56a7e4090a85757b1b3",
+    "avsl09_k1_diag.json": "b22460b63ced4460931262d53836c721826c3313d023afc9f8e4e639c6c11bbd"
+  },
+  "source_training_budget": {
+    "AVSL08_400_energy_labels": 400,
+    "separate_training_FN_walker_population": true,
+    "not_amortized": true
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "result_type": "synthetic_interface_validation_NOT_real_NQS",
+  "code_sha256": "d4620e492af7b27f8f335e1266464281e80eb16bc5eb87dfccaa8c84dad656b9",
+  "params": {
+    "out": "/tmp/avsl05_stage0_synthetic_smoke_seed240519",
+    "seed": 240519,
+    "L": 6,
+    "J2": 0.5,
+    "M": 128,
+    "chains": 4,
+    "draws": 16,
+    "burn": 32,
+    "thin": 2,
+    "fn_beta_target": 0.025,
+    "tau_max": 0.025
+  },
+  "fn": {
+    "n_time_slices": 1,
+    "M": 128,
+    "n_mixed_snapshots": 128,
+    "n_unique_mixed_states": 95,
+    "guide_misses_during_FN": 352978,
+    "runtime_s": 9.729278500191867,
+    "raw_E_mean": -9.055769836113807,
+    "raw_E_final": -9.055769836113807,
+    "warning": "Projector beta intentionally tiny, not converged. Mixed snapshots are not a2 samples."
+  },
+  "threshold": {
+    "value": -13.05209398606484,
+    "n_training_roots": 64,
+    "k1_disagreement_fraction_with_marshall": 0.5625,
+    "fit_time_s": 0.1665118746459484,
+    "quantiles": [
+      -19.238205995517237,
+      -17.127731986244058,
+      -12.395756870670828,
+      -7.211619443664699,
+      -5.712928273799735
+    ]
+  },
+  "paired": {
+    "keep": {
+      "delta_energy": 0.0,
+      "stderr_energy": 0.0,
+      "delta_energy_per_site": 0.0,
+      "stderr_per_site": 0.0,
+      "independent_chains": 4,
+      "total_samples": 64
+    },
+    "global_sign": {
+      "delta_energy": 0.0,
+      "stderr_energy": 0.0,
+      "delta_energy_per_site": 0.0,
+      "stderr_per_site": 0.0,
+      "independent_chains": 4,
+      "total_samples": 64
+    },
+    "K1_to_Marshall": {
+      "delta_energy": 4.0488733422346215,
+      "stderr_energy": 1.1346697924176576,
+      "delta_energy_per_site": 0.1124687039509617,
+      "stderr_per_site": 0.03151860534493493,
+      "independent_chains": 4,
+      "total_samples": 64
+    }
+  },
+  "chains": {
+    "n_chains": 4,
+    "n_samples_per_chain": 16,
+    "threshold_acceptance_per_chain": [
+      0.53125,
+      0.40625,
+      0.46875,
+      0.359375
+    ],
+    "verifier_acceptance_per_chain": [
+      0.46875,
+      0.5,
+      0.5,
+      0.484375
+    ],
+    "seeds_threshold": [
+      241719,
+      241720,
+      241721,
+      241722
+    ],
+    "seeds_verifier": [
+      330519,
+      330520,
+      330521,
+      330522
+    ],
+    "warning": "No integrated autocorrelation or equilibrium diagnostic; SE provisional."
+  },
+  "costs": {
+    "model_calls": 3756,
+    "model_distinct_configs": 356475,
+    "model_requests": 357569,
+    "sign_model_calls": 3501,
+    "sign_distinct_configs": 3501,
+    "lat_neigh_calls": 11229,
+    "lat_neigh_edges": 857260,
+    "fn_wall_s": 9.729278500191867,
+    "total_wall_s": 16.606500000227243
+  },
+  "device": "Darwin-arm64-Python3.13.7",
+  "limitations": [
+    "Synthetic analytic log-amplitudes, NOT checkpoint NQS. No NQS inference timing.",
+    "FN mixed walkers used only as projector smoke check.",
+    "Independent a2 VMC samples have no burn/thinning autocorrelation proof.",
+    "K1 to Marshall is a reversible reference candidate, not a learned improvement.",
+    "Short beta no physical convergence or FN accuracy."
+  ]
+}

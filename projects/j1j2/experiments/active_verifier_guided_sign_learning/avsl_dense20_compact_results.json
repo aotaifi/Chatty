@@ -1,0 +1,676 @@
+{
+  "experiment": "AVSL-07 20-site dense intermediate signed-edge process reward",
+  "date": "2026-10-19",
+  "train_chamber": "post_krylov",
+  "seeds": [
+    10019,
+    10020,
+    10021,
+    10022,
+    10023,
+    10024
+  ],
+  "train_attempts_per_seed_arm": 1200,
+  "heldout_attempts_per_seed_arm": 160,
+  "group_size": 4,
+  "hop_depth": 2,
+  "signed_process_edges": 4,
+  "all_input_sha256": "5d15ad5ce2cc0f2b5dd9ba41c4c14d9f4b63d1dca5004acf85cd15509b1e208f",
+  "full_run_sha256": {
+    "avsl_dense20_post_seed10019.json": "fe0d82dc1f657a487c3fc4fa4543b52de9db46fcdd0f816914cf40ef79e9d9cc",
+    "avsl_dense20_post_seed10020.json": "c00470f494dd5305e376434ac3f38b22858915dc12346644ae4ed9bd334acc91",
+    "avsl_dense20_post_seed10021.json": "ffbad0c91dc159bc55e1438d394146b170f9b13db94f8dea2dae3b76916a1404",
+    "avsl_dense20_post_seed10022.json": "129070bcb96e225795c16859d29ef72aa18f9c5d1d6f573a734d24cb1fce5056",
+    "avsl_dense20_post_seed10023.json": "74efb1a8a5dea756e965671e9a3ffdef177ce581ee798516363166ae80936800",
+    "avsl_dense20_post_seed10024.json": "a84c8fcf15db3fbb1c23099c15dc08661bc805b43bf3bbc2e3762b73e041ce05"
+  },
+  "calibration_sha256": "3ba5d78c2469f50226461dcf9df3e12282bf02e9ed24fc74aad9a9ec2884d9b4",
+  "calibration_summary": {
+    "n": 512,
+    "n_first_positive": 11,
+    "n_terminal_positive": 10,
+    "first_auc": 0.4692433315187806,
+    "terminal_auc": 0.6225099601593626,
+    "proxy_spearman_first_gain": 0.02871893880284519,
+    "proxy_spearman_terminal_gain": 0.05979138702173771,
+    "sanity_local_unbiased": [
+      {
+        "x": 786815,
+        "full_local_mean": -1.0258282803565055,
+        "draw_mean": -1.2120724298054413,
+        "standard_error": 0.13746646108994548,
+        "z": -1.3548333751537738
+      },
+      {
+        "x": 41407,
+        "full_local_mean": -1.191602419077021,
+        "draw_mean": -1.356874807357521,
+        "standard_error": 0.1305393167184169,
+        "z": -1.2660736430619213
+      },
+      {
+        "x": 20959,
+        "full_local_mean": -0.4234745247151343,
+        "draw_mean": -0.42659384663497624,
+        "standard_error": 0.04462603720488672,
+        "z": -0.06989914666902926
+      }
+    ],
+    "seeds": [
+      81001,
+      81002,
+      81003,
+      81004
+    ]
+  },
+  "methods": {
+    "binary": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 25,
+      "positives_per_seed": [
+        7,
+        2,
+        7,
+        1,
+        3,
+        5
+      ],
+      "mean_best_single_energy_gain": 2.4416144598946255e-05,
+      "best_gain_per_seed": [
+        5.519695358773996e-05,
+        2.551270511376798e-06,
+        4.727304892617129e-06,
+        2.8572774712581684e-05,
+        2.5161030162203553e-07,
+        5.519695358773996e-05
+      ],
+      "mean_heldout_unique_amp": 5766.666666666667,
+      "mean_heldout_scored_orbits": 156.0,
+      "training": {
+        "n_attempted": 7200,
+        "n_positive": 180,
+        "n_mixed_groups": 171,
+        "n_all_negative_groups": 1629,
+        "n_nonzero_process_groups": 0,
+        "n_policy_updates": 171,
+        "n_sampled_process_bonds": 0,
+        "mean_unique_amp_per_seed": 21060.5,
+        "mean_train_wall_s": 0.8685398885669807,
+        "mean_score_oracle_calls": 976.0,
+        "mean_neighbor_probes": 270080.0,
+        "train_calibration": [
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.025833333333333333
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.030833333333333334
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.025833333333333333
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.029166666666666667
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.015833333333333335
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.0225
+          }
+        ]
+      },
+      "vs_random": {
+        "paired_diff_by_seed": [
+          3.0,
+          -2.0,
+          2.0,
+          -7.0,
+          -2.0,
+          0.0
+        ],
+        "mean_diff": -1.0,
+        "descriptive_t95": [
+          -4.754575086109458,
+          2.754575086109458
+        ]
+      }
+    },
+    "dense_signed": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 21,
+      "positives_per_seed": [
+        1,
+        4,
+        3,
+        7,
+        3,
+        3
+      ],
+      "mean_best_single_energy_gain": 8.079044360020369e-06,
+      "best_gain_per_seed": [
+        2.542305474549006e-06,
+        7.057405283968967e-06,
+        5.246409456942114e-06,
+        4.727304892617068e-06,
+        2.8572774712581274e-05,
+        3.280663394637831e-07
+      ],
+      "mean_heldout_unique_amp": 5760.833333333333,
+      "mean_heldout_scored_orbits": 156.0,
+      "training": {
+        "n_attempted": 7200,
+        "n_positive": 184,
+        "n_mixed_groups": 180,
+        "n_all_negative_groups": 1620,
+        "n_nonzero_process_groups": 1800,
+        "n_policy_updates": 1800,
+        "n_sampled_process_bonds": 28800,
+        "mean_unique_amp_per_seed": 25642.333333333332,
+        "mean_train_wall_s": 0.9326766390198221,
+        "mean_score_oracle_calls": 970.5,
+        "mean_neighbor_probes": 365640.0,
+        "train_calibration": [
+          {
+            "mean_process_if_failed": -0.46817694479180194,
+            "mean_process_if_succeeded": -0.5396970033656463,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.025
+          },
+          {
+            "mean_process_if_failed": -0.43854482582668736,
+            "mean_process_if_succeeded": -0.757545855542728,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0325
+          },
+          {
+            "mean_process_if_failed": -0.09467541923911309,
+            "mean_process_if_succeeded": -0.8624672208695883,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0225
+          },
+          {
+            "mean_process_if_failed": -0.31378213058584337,
+            "mean_process_if_succeeded": 0.12143818272938338,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0225
+          },
+          {
+            "mean_process_if_failed": -0.39684426914893944,
+            "mean_process_if_succeeded": -0.7437087314473431,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0225
+          },
+          {
+            "mean_process_if_failed": -0.37137348309015294,
+            "mean_process_if_succeeded": 0.07575140928492452,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.028333333333333332
+          }
+        ]
+      },
+      "vs_random": {
+        "paired_diff_by_seed": [
+          -3.0,
+          0.0,
+          -2.0,
+          -1.0,
+          -2.0,
+          -2.0
+        ],
+        "mean_diff": -1.6666666666666667,
+        "descriptive_t95": [
+          -2.7505191349956455,
+          -0.582814198337688
+        ]
+      },
+      "vs_binary": {
+        "paired_diff_by_seed": [
+          -6.0,
+          2.0,
+          -4.0,
+          6.0,
+          0.0,
+          -2.0
+        ],
+        "mean_diff": -0.6666666666666666,
+        "descriptive_t95": [
+          -5.2007468412224,
+          3.8674135078890663
+        ]
+      }
+    },
+    "dense_shuffled": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 25,
+      "positives_per_seed": [
+        4,
+        4,
+        4,
+        7,
+        4,
+        2
+      ],
+      "mean_best_single_energy_gain": 4.5208222132046994e-05,
+      "best_gain_per_seed": [
+        9.345649256998107e-07,
+        5.519695358773996e-05,
+        0.00010478425416070911,
+        5.658495859850749e-05,
+        1.6871831580970774e-06,
+        5.206141836152849e-05
+      ],
+      "mean_heldout_unique_amp": 5679.333333333333,
+      "mean_heldout_scored_orbits": 153.16666666666666,
+      "training": {
+        "n_attempted": 7200,
+        "n_positive": 183,
+        "n_mixed_groups": 178,
+        "n_all_negative_groups": 1622,
+        "n_nonzero_process_groups": 1800,
+        "n_policy_updates": 1800,
+        "n_sampled_process_bonds": 28800,
+        "mean_unique_amp_per_seed": 25558.833333333332,
+        "mean_train_wall_s": 0.9408959374607851,
+        "mean_score_oracle_calls": 969.5,
+        "mean_neighbor_probes": 365560.0,
+        "train_calibration": [
+          {
+            "mean_process_if_failed": -0.3980685037395038,
+            "mean_process_if_succeeded": -0.5395437130230519,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.019166666666666665
+          },
+          {
+            "mean_process_if_failed": -0.4133935138585911,
+            "mean_process_if_succeeded": -0.8312248037228395,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.023333333333333334
+          },
+          {
+            "mean_process_if_failed": -0.21193119934207513,
+            "mean_process_if_succeeded": -0.47228681420986723,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0225
+          },
+          {
+            "mean_process_if_failed": -0.37213997954272754,
+            "mean_process_if_succeeded": -0.5653034721272966,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0325
+          },
+          {
+            "mean_process_if_failed": -0.39113117406028597,
+            "mean_process_if_succeeded": -1.5539891750426873,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0375
+          },
+          {
+            "mean_process_if_failed": -0.270884114557397,
+            "mean_process_if_succeeded": 0.42572387802832407,
+            "nonzero_process_fraction": 1.0,
+            "p_success": 0.0175
+          }
+        ]
+      },
+      "vs_random": {
+        "paired_diff_by_seed": [
+          0.0,
+          0.0,
+          -1.0,
+          -1.0,
+          -1.0,
+          -3.0
+        ],
+        "mean_diff": -1.0,
+        "descriptive_t95": [
+          -2.149599145241798,
+          0.14959914524179796
+        ]
+      },
+      "vs_binary": {
+        "paired_diff_by_seed": [
+          -3.0,
+          2.0,
+          -3.0,
+          6.0,
+          1.0,
+          -3.0
+        ],
+        "mean_diff": 0.0,
+        "descriptive_t95": [
+          -3.8701274148354545,
+          3.8701274148354545
+        ]
+      }
+    },
+    "dense_geometry": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 23,
+      "positives_per_seed": [
+        3,
+        5,
+        5,
+        5,
+        3,
+        2
+      ],
+      "mean_best_single_energy_gain": 2.3425576992197697e-05,
+      "best_gain_per_seed": [
+        1.4490867549354118e-05,
+        5.5196953587739985e-05,
+        6.712940713750039e-06,
+        5.658495859850749e-05,
+        7.535493774745114e-06,
+        3.224772908942064e-08
+      ],
+      "mean_heldout_unique_amp": 5685.0,
+      "mean_heldout_scored_orbits": 154.83333333333334,
+      "training": {
+        "n_attempted": 7200,
+        "n_positive": 167,
+        "n_mixed_groups": 157,
+        "n_all_negative_groups": 1643,
+        "n_nonzero_process_groups": 1733,
+        "n_policy_updates": 1800,
+        "n_sampled_process_bonds": 0,
+        "mean_unique_amp_per_seed": 21275.333333333332,
+        "mean_train_wall_s": 0.9008677289045105,
+        "mean_score_oracle_calls": 984.0,
+        "mean_neighbor_probes": 270720.0,
+        "train_calibration": [
+          {
+            "mean_process_if_failed": 0.03916737468139337,
+            "mean_process_if_succeeded": 0.12608695652173912,
+            "nonzero_process_fraction": 0.6541666666666667,
+            "p_success": 0.019166666666666665
+          },
+          {
+            "mean_process_if_failed": 0.03877901977644024,
+            "mean_process_if_succeeded": 0.06486486486486487,
+            "nonzero_process_fraction": 0.7058333333333333,
+            "p_success": 0.030833333333333334
+          },
+          {
+            "mean_process_if_failed": 0.061130136986301375,
+            "mean_process_if_succeeded": 0.128125,
+            "nonzero_process_fraction": 0.6983333333333334,
+            "p_success": 0.02666666666666667
+          },
+          {
+            "mean_process_if_failed": 0.0575085324232082,
+            "mean_process_if_succeeded": 0.03928571428571429,
+            "nonzero_process_fraction": 0.6983333333333334,
+            "p_success": 0.023333333333333334
+          },
+          {
+            "mean_process_if_failed": 0.057386848847139196,
+            "mean_process_if_succeeded": 0.04827586206896552,
+            "nonzero_process_fraction": 0.68,
+            "p_success": 0.024166666666666666
+          },
+          {
+            "mean_process_if_failed": 0.05609137055837563,
+            "mean_process_if_succeeded": 1.5419764230904951e-18,
+            "nonzero_process_fraction": 0.6733333333333333,
+            "p_success": 0.015
+          }
+        ]
+      },
+      "vs_random": {
+        "paired_diff_by_seed": [
+          -1.0,
+          1.0,
+          0.0,
+          -3.0,
+          -2.0,
+          -3.0
+        ],
+        "mean_diff": -1.3333333333333333,
+        "descriptive_t95": [
+          -3.047054557090876,
+          0.3803878904242095
+        ]
+      },
+      "vs_binary": {
+        "paired_diff_by_seed": [
+          -4.0,
+          3.0,
+          -2.0,
+          4.0,
+          0.0,
+          -3.0
+        ],
+        "mean_diff": -0.3333333333333333,
+        "descriptive_t95": [
+          -3.760775780848419,
+          3.094109114181752
+        ]
+      }
+    },
+    "keep_relative": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 30,
+      "positives_per_seed": [
+        3,
+        4,
+        4,
+        11,
+        3,
+        5
+      ],
+      "mean_best_single_energy_gain": 4.704601919554972e-05,
+      "best_gain_per_seed": [
+        5.206141836152849e-05,
+        5.519695358773996e-05,
+        5.20614183615288e-05,
+        0.00010478425416071066,
+        3.6812031524363257e-06,
+        1.4490867549354118e-05
+      ],
+      "mean_heldout_unique_amp": 5753.666666666667,
+      "mean_heldout_scored_orbits": 155.16666666666666,
+      "training": {
+        "n_attempted": 7200,
+        "n_positive": 186,
+        "n_mixed_groups": 179,
+        "n_all_negative_groups": 1621,
+        "n_nonzero_process_groups": 0,
+        "n_policy_updates": 1800,
+        "n_sampled_process_bonds": 0,
+        "mean_unique_amp_per_seed": 21001.333333333332,
+        "mean_train_wall_s": 0.8619606181358298,
+        "mean_score_oracle_calls": 970.5,
+        "mean_neighbor_probes": 269640.0,
+        "train_calibration": [
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.0225
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.023333333333333334
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.029166666666666667
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.0325
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.0175
+          },
+          {
+            "mean_process_if_failed": 0.0,
+            "mean_process_if_succeeded": 0.0,
+            "nonzero_process_fraction": 0.0,
+            "p_success": 0.03
+          }
+        ]
+      },
+      "vs_random": {
+        "paired_diff_by_seed": [
+          -1.0,
+          0.0,
+          -1.0,
+          3.0,
+          -2.0,
+          0.0
+        ],
+        "mean_diff": -0.16666666666666666,
+        "descriptive_t95": [
+          -1.974216107606587,
+          1.6408827742732535
+        ]
+      },
+      "vs_binary": {
+        "paired_diff_by_seed": [
+          -4.0,
+          2.0,
+          -3.0,
+          10.0,
+          0.0,
+          0.0
+        ],
+        "mean_diff": 0.8333333333333334,
+        "descriptive_t95": [
+          -4.410345580529326,
+          6.077012247195992
+        ]
+      }
+    },
+    "random": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 31,
+      "positives_per_seed": [
+        4,
+        4,
+        5,
+        8,
+        5,
+        5
+      ],
+      "mean_best_single_energy_gain": 3.18532670471874e-05,
+      "best_gain_per_seed": [
+        5.246409456942114e-06,
+        5.519695358773996e-05,
+        7.535493774745042e-06,
+        3.865623753634147e-06,
+        1.449086754935403e-05,
+        0.00010478425416070911
+      ],
+      "mean_heldout_unique_amp": 5770.666666666667,
+      "mean_heldout_scored_orbits": 155.5
+    },
+    "geometry": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 19,
+      "positives_per_seed": [
+        3,
+        5,
+        1,
+        4,
+        2,
+        4
+      ],
+      "mean_best_single_energy_gain": 1.3928773802007272e-05,
+      "best_gain_per_seed": [
+        1.6871831580970774e-06,
+        1.4490867549354118e-05,
+        2.551270511376798e-06,
+        7.535493774745042e-06,
+        5.246409456942114e-06,
+        5.206141836152849e-05
+      ],
+      "mean_heldout_unique_amp": 5656.0,
+      "mean_heldout_scored_orbits": 154.33333333333334
+    },
+    "novelty": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 18,
+      "positives_per_seed": [
+        4,
+        1,
+        5,
+        2,
+        2,
+        4
+      ],
+      "mean_best_single_energy_gain": 2.0535138096086425e-05,
+      "best_gain_per_seed": [
+        5.2464094569421665e-06,
+        7.512775222778567e-07,
+        5.5196953587739985e-05,
+        6.273566495593419e-06,
+        5.20614183615288e-05,
+        3.6812031524363257e-06
+      ],
+      "mean_heldout_unique_amp": 5734.666666666667,
+      "mean_heldout_scored_orbits": 154.33333333333334
+    },
+    "signed_bond": {
+      "n_heldout_attempts": 960,
+      "n_distinct_positive": 5,
+      "positives_per_seed": [
+        1,
+        2,
+        0,
+        0,
+        1,
+        1
+      ],
+      "mean_best_single_energy_gain": 4.386931678614784e-05,
+      "best_gain_per_seed": [
+        0.00010478425416071066,
+        5.206141836152849e-05,
+        0.0,
+        0.0,
+        0.00010478425416071066,
+        1.5859740339372456e-06
+      ],
+      "mean_heldout_unique_amp": 16220.333333333334,
+      "mean_heldout_scored_orbits": 139.83333333333334
+    }
+  },
+  "limitations": [
+    "Exact 20-site post-Krylov FN amplitude/sign oracle used in terminal reward and in process proxy; not a learned FN guide.",
+    "Per-step process proxy is NOT a certified full-orbit energy gain or post-FN energy decrease.",
+    "Toy pi~a root sampler is not FN mixed walkers; sign policy cannot be deployed on 6x6.",
+    "All heldout trajectories use disjoint root RNG seeds but not disjoint symmetry-orbit identities.",
+    "Per-group gradient uses randomized 4-edge local-energy process proxy; loss is inspired by process supervision but is NOT OpenAI PRM, full GRPO, or DAPO.",
+    "Learned policies trained using 1200 terminal oracle labels per seed; random and geometry baselines have no training cost. Evaluating 960 attempts alone understates learning cost.",
+    "Proxy calibration has few positives and descriptive metrics only; no robust statistical inference.",
+    "No joint accepted sign function or reprojected FN energy was computed."
+  ],
+  "signed_extra_train_amp_fraction_over_binary": 0.2175557718635992
+}

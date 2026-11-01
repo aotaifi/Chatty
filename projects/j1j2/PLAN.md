@@ -427,6 +427,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Deployable loop guide = S B e^{c f_J[B;S]} with a STORED sign S (sign angle 2026-11-01): computing the Lanczos sign at walker time
   and feeding it into the Jacobi walls costs d^3 (three swaps), so s_G must be learned offline. The plain Lanczos magnitude fails with a
   stored sign (R0: 1.50e-6/site from rho = 2|alpha|kappa - 1); the Jacobi magnitude does not carry that term.
+- The loop's advantage needs a stored sign (sign V1): with the free one-level sign sgn(psi_P) the best loop guide is 8.76e-6, above the
+  competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a tests storing s_G in a network (bar: tax <= 0.5e-6).
 - The round correction is not in the complex PP's tangent space, so a local refit cannot absorb it (not slow learning) (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
   refit, so the explicit Jacobi factor carries it; the nonlinear label-free refit still banks 11-18% per round (consistent with K, K3, N).

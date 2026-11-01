@@ -140,6 +140,13 @@ vs the same with s_G (4.786e-6), c rescanned; bar +0.5e-6. Prediction (before an
 [50%]; PP phase worse. Value check first (CPU, minutes): the same loop guide under the FREE one-level sign sgn(psi_P) sets what
 storing s_G is worth; if s_G's advantage over sgn(psi_P) is < the expected tax, do not store, and use the free sign.
 
+## V1 (lead's GO 2026-11-01, CPU; pre-registered before any number): what storing s_G is worth
+Round-3 guide (theta(1200), theta_bar) as sigma B e^{c f_J[B; sigma]} with sigma in {s_G (control), sgn psi_P, s1}, c rescanned.
+Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_v1. Only sgn(psi_P) is one-level free: s1 is a Krylov step of psi_P, which with Jacobi
+walls needs three swaps, as s_G does. Prediction: sgn psi_P 1.0-2.5e-5, s1 6-10e-6 (B was trained under s_G, so both lose more
+than the sign alone) [70%]. Decision (lead's rule): store iff E(sgn psi_P) - E(s_G) > 2e-6 -> then S2 (<= 3 H100-h, lead-approved);
+else the deployable loop uses sgn psi_P and S2 is not run.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

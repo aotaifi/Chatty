@@ -595,3 +595,4 @@
 2026-11-01 22:23 VERDICT job 17642239: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
 - 2026-11-01 sign S2b (sign_s2b, Paderborn 4086773/4086774/4086902, LMU 17641815/17642239): complex-PP phase (2593 par) w_T 2.92e-6, tax 1.63e-6 (theta_bar, c* 4.0) / 1.66e-6 (1200); conv-RBM phase (1665 par) did not train (held-out acc 0.50, w_T 0.49), ungraded. 0.99 H100-h.
 - 2026-11-02 sign angle S2b: PP-phase deployable sign tax 1.63e-6/site (loop 6.27e-6 > competitor 5.57e-6), not at plateau; conv-RBM did not train. S2b' (PP to plateau, RBM lr 3e-4) started.
+- 2026-11-01 sign S2b (lead verified sign_s2b/v2_S_pp.json): deployable complex-PP phase sign (2593 params, det4 updates) tax 1.63e-6: loop guide 6.271e-6 (theta-bar) / 6.450e-6 vs competitor 5.57e-6 -> with a deployable sign the 6x6 margin is GONE (still 2.5e-6 better than the free sign). PP fit unconverged; conv RBM phase did not train. S2b' (PP to plateau, RBM lr 3e-4; <= 0.65 H100-h) running.

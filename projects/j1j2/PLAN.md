@@ -429,7 +429,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   stored sign (R0: 1.50e-6/site from rho = 2|alpha|kappa - 1); the Jacobi magnitude does not carry that term.
 - The loop's advantage needs a stored sign (sign V1): with the free one-level sign sgn(psi_P) the best loop guide is 8.76e-6, above the
   competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a: an XL CNN storing s_G costs 4.2-4.3e-7 (two seeds;
-  sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6; the deployable sign class is untested.
+  sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6. DEPLOYABLE sign (complex-PP phase, det4 updates):
+  tax 1.63e-6 -> loop 6.27e-6, ABOVE the competitor (S2b, unconverged; S2b' to plateau running).
 - The round correction is not in the complex PP's tangent space, so a local refit cannot absorb it (not slow learning) (Test Theta v2, held-out, calibrated: C_GN
   -0.02..0.02, C_200 0.00..0.04; gate C_exact 0.082 vs held-out 0.065-0.069; pfaffian_theta2): the base cannot absorb it by a local
   refit, so the explicit Jacobi factor carries it; the nonlinear label-free refit still banks 11-18% per round (consistent with K, K3, N).
@@ -528,5 +529,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 the label-free loop beats one Lanczos step by 22% (4.37e-6 vs 5.57e-6 per site) and then stalls after about three rounds with this network.
+- STATUS (in progress, high): At 6x6 the loop beats one Lanczos step with an exactly known sign (4.4e-6 vs 5.6e-6), but with a sign network cheap enough for large lattices it falls behind (6.3e-6).
 - NEXT (open, high): The PI picks the next step: a richer network for the loop, an 8x8 loop test, or the 10x10 add-on test.

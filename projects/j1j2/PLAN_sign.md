@@ -97,6 +97,22 @@ For an isolated error with an eigenstate teacher this gives rho = 1 exactly.
   gain? Plain 5.574e-6 (control); prediction: within +-1e-6 of it [55%]. Adopt the rule only if R1b <= 5.574e-6 + 0.3e-6
   and R1a XL passes. The loop's step is the lead's call; R1 only measures.
 
+## R1c (added 2026-11-01 on the lead's question; pre-registered before any number): stored sign in the JACOBI loop
+Deployable Jacobi guide: psi(x) = S(x) B(x) e^{c f_J[B; S](x)}, f_J with S's OWN walls; no sign step at walker time.
+(a) No rho term: the magnitude never comes from |1 + alpha(E_L - E)|. (b) A walker-time sign step S_h feeding the Jacobi
+walls is NOT one-level: psi(y) needs f_J(y), i.e. S_h at y's neighbours z, and S_h(z) needs E_L at z, i.e. the guide at w ~ z:
+three swaps from the walker, cost d^3. (The same holds for R2G's s_G, computed from psi_P: it must be stored to be one-level.)
+So the sign update happens offline (training labels), and the walker uses S directly.
+Mechanism: at a wrong-sign x, S blocks the bonds that s kept, so f_J(x) = ln[K_S/(H_xx + V_S - E')] ~ ln(small/2 kappa) << 0 and
+e^{c f_J} expels x; neighbours shift by c f_J(y) ~ -2c|H_xy| (a_x/a_y)/K(y), small for tail x. The guide approaches 'delete F',
+whose energy is the floor bound of block 24.
+Replay (N=36, exact teacher, B = a0, E' = E0, c in {2, 4, 8}; c = 0 is R0's tau_bare 6.0e-7):
+  XL: tau_J(c=4) in [0.8, 2.5]e-7, i.e. near the floor bound 1.73e-7, PASS [55%]; decreasing in c from 6.0e-7 toward the bound.
+  m2: tau_J(c=4) in [1, 3]e-5 (floor bound 1.66e-5), fail.
+Decision: XL pass -> the Jacobi loop's storage tax at the best tested sign accuracy is below the bar; S2 then trains on s_G and
+is graded in the loop's own guide (refit magnitude), bar: keep 4.79e-6 within 0.5e-6. XL fail with tau_J >> bound -> the
+neighbour term (c f_J at y) is mispredicted: re-derive before S2.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0 RUNNING (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

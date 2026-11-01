@@ -47,6 +47,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A28 | 20-site CNN sign classifier with FN-suppression / energy-gain sampling | 10-18 | 20 sites | fixed-a E: baseline -10.414802 vs suppression -10.414689, energy-gain -10.413679 | FAILS (no stable advantage from prioritised sampling) | results/scalable_sign_2026-10-18/j1j2_sign_research_audit_2026-10-18.md |
 | A29 | ML sign classification (GNN/transformer) alone | pre-09-27 | small | "near-random accuracy" (no number found) | FAILS as stated in FAILED_ROUTES; see Contradictions vs A11/A26 | FAILED_ROUTES.md |
 | A30 | Sign-net distillation of K1/Jacobi signs into a phase network | 10-03 | 8x8 | decision, no run | PARKED (keep analytic on-the-fly signs) | STATUS.md "Project-lead decision" 2026-10-03 |
+| A31 | Stored sign + one full signed Lanczos step, exact replay of frozen N=36 sign nets (R0, sign angle) | 11-01 | 6x6 exact | gs XL: tau 1.50e-6/site (no step 6.0e-7; sign part 7e-9); m2 M 7.6e-5 | FAILS bar 5e-7 (cause: magnitude overshoot rho = 2|alpha|kappa - 1 at repaired tail configurations, board 25) | PLAN_sign.md "R0 RESULT"; /scratch/a/A.Otaifi/ansatz_runs/sign_r0/r0_result.json |
 
 ## B. Amplitude storage, learning and write-back
 

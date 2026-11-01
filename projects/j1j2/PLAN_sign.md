@@ -72,6 +72,31 @@ errors sit in the |psi|^2 < 1e-9 tail; tempered beta 0.5 + one-hop neighbours es
   and the floor difference. Kill: tau >= 2e-6 converged, 2 seeds. Walker cost (board 23): ~2x the amplitude's (fast det4
   updates); conv complex RBM phase also O(1) per two-swap (Astra eq 18); generic CNN excluded at 14x14.
 
+## R0 RESULT 2026-11-01 (job 17640186, /scratch/a/A.Otaifi/ansatz_runs/sign_r0/r0_result.json; verified by me from the json)
+Exact psi0 teacher, alpha = -0.18338 fixed, E = E0, per site; controls C1, C2, C3a, C4 pass, lobpcg residuals <= 3.6e-10,
+E0 <= E_FN <= E_var for every solve; C3b (ARPACK cross-check) timed out.
+| net | w before | w after step | tau_bare (no step) | tau (full step) | tau_sign | tau - tau_sign | floor bound after step |
+|---|---|---|---|---|---|---|---|
+| gs XL | 4.37e-7 | 4.95e-9 | 6.00e-7 | 1.498e-6 | 7.4e-9 | 1.490e-6 | 2.3e-9 |
+| m2 M | 5.16e-5 | 6.13e-6 | 4.88e-5 | 7.57e-5 | 6.39e-6 | 6.93e-5 | 2.5e-6 |
+Predictions: XL tau 2-8e-8 MISSED (1.50e-6, 20-75x); m2 tau 1.5-6e-6 MISSED (7.6e-5); m2 magnitude share >= 0.6 HELD (0.92).
+Reading: the step repairs the sign (w 4.4e-7 -> 5e-9, sign-only part 7e-9) but its magnitude at repaired configurations
+costs 1.49e-6, 2.5x MORE than not stepping (6.0e-7). Named term: rho_x = 2|alpha| kappa_x - 1 (board 25). My coefficient for
+it was 10-30x low: per unit repaired weight the cost is ~124 (total energy), not ~1.4-4, because the network's errors sit in the
+tail at large kappa (rho >> 1) and blocked-bond cost grows as cosh(ln rho), not quadratically.
+Consequence: stored sign + the loop's plain signed Lanczos step fails the 0.5e-6 bar even for the best stored sign; the
+failure is the step's magnitude rule, not storage (floor after the step 2.3e-9).
+
+## R1 (next; CPU; changes rho)
+Repair-aware step: where the step flips the stored sign, take the magnitude from the local energy of the REPAIRED sign,
+which is exact from data already computed: flipping only S(x) gives E_L' (x) = 2 H_xx - E_L^S(x). Guide:
+psi''(x) = S_h(x)|A(x)| |1 + alpha (E_L^{S_h}(x) - E)|, S_h = S sgn(T - E_L^S), T = E + 1/|alpha| (same d^2 cost as the step).
+For an isolated error with an eigenstate teacher this gives rho = 1 exactly.
+- R1a (N=36 replay, as R0): predicted XL tau <= 3e-8 (pass), m2 tau 6-15e-6 (fail, unrepaired errors). [60%]
+- R1b (Test X basis, competitor guide psi_P, no stored sign): does the repair-aware rule keep the competitor's one-step
+  gain? Plain 5.574e-6 (control); prediction: within +-1e-6 of it [55%]. Adopt the rule only if R1b <= 5.574e-6 + 0.3e-6
+  and R1a XL passes. The loop's step is the lead's call; R1 only measures.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0 RUNNING (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

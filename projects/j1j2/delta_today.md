@@ -551,3 +551,8 @@
 2026-11-01 13:05 VERDICT job 17639809: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4/tabs/ANALYSIS.md]
 2026-11-01 13:55 VERDICT job 17639767: STALLED [/scratch/a/A.Otaifi/ansatz_runs/sign_r0/ANALYSIS.md]
 - 2026-11-01 sign angle: R0 job 17639767 stalled in control C3; C3 premise was my error (meta steps[1].E is E_var, not E_FN; worker's N=16 smoke). C1 passed (E_FN-E0 2e-16/site). Worker told: cancel, C3 -> E_var check + lobpcg/ARPACK agreement, lobpcg for all arms, resubmit.
+- 2026-11-01 sign angle R0 worker: job 17639767 cancelled by sign angle lead: stalled in C3, whose premise (steps[1].E = E_FN) was wrong; resubmitted with lobpcg
+- 2026-11-01 sign angle R0 worker: resubmitted as job 17640186 (lobpcg for all FN solves, C3 replaced per lead), watcher armed (/scratch/a/A.Otaifi/ansatz_runs/sign_r0/watcher.sh); previous attempt logs r0_job17639767.*
+2026-11-01 14:20 VERDICT job 4085199: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4/pdb_fit/ANALYSIS.md]
+2026-11-01 14:47 VERDICT job 17640186: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_r0/ANALYSIS.md]
+- 2026-11-01 sign angle R0 (17640186): stored sign + plain signed Lanczos step, best net XL tau 1.50e-6/site (fails 5e-7; 99.5% magnitude at repaired configs; no-step 6.0e-7); predictions missed; R1 repair-aware step pre-registered (PLAN_sign.md).

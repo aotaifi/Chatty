@@ -20,7 +20,7 @@
 - Label-free targets store more than exact labels: 37% (L-SWO) against 15% (R1b) in round 1.
 
 ## Rejected, and why
-- Backflow base: it makes the Jacobi factor cost 36.5x a plain PP (T2), because each swap becomes rank 12-14.
+- Backflow base: each swap becomes rank 12-14, so the Jacobi factor costs ~800x a plain PP by op count. T2's 36.5x was backflow-augmented over backflow-bare (Astra 2026-11-01).
 - RBM residual banks and a feature dictionary: ε² 0.95-0.98 (tests N and K). They miss the direction.
 - A stop rule on loss flatness: in R2G and round 3 the held-out loss rose while E_FN fell.
 - A stop rule on an E_FN tolerance: at a fixed target, E_FN walks 0.1-0.2e-6 per 150 steps.

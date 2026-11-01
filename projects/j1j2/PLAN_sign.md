@@ -161,6 +161,17 @@ Decision: tax <= 0.5e-6 -> next the deployable class (complex-PP phase) on the s
 but is taxed: next changes the measured error term (boundary weight C_F via the edge loss, Astra eq 19); tax >= 4.1e-6 -> the loop
 uses sgn psi_P and the angle closes on storage.
 
+## S2a RESULT 2026-11-01 (Paderborn 4085740, 0.28 H100-h; CPU 17641159/60, 17641316; /scratch/a/A.Otaifi/ansatz_runs/sign_s2/; verified by me)
+XL CNN trained on s_G, samples from the loop's augmented theta_bar guide. Orbit order identical to the loop tables (E_var check 4e-16).
+w_T 1.07e-6 (6.5% of orbits wrong, all in the tail); C_F 1.08e-5/site. Loop guide S B e^{c* f_J[B;S]} vs s_G, per site:
+theta_bar 5.068e-6 vs 4.644e-6 (tax 4.25e-7, c* 4.0); theta(1200) 5.216e-6 vs 4.786e-6 (tax 4.30e-7, c* 3.9).
+PASSES the 0.5e-6 bar by 15%, ONE seed. Predictions: w_T 2-8e-6 missed (better); tax 1-4e-6 missed (better); tax < 4.1e-6 held.
+Slope tax/w_T = 0.40 (R1c XL 0.82, m2 0.44). Worker's note, not verified by me: s_G = -sgn psi0 up to weight 8.4e-7, so the
+competitor's one-step sign is nearly the exact ground-state sign, and this target is ground-state-like (cf. sign_learnability gs vs m2).
+The stored loop at 6x6 (one seed) is 5.07e-6, still below the competitor's 5.57e-6.
+Next: (1) seed 2 (same protocol, init_seed 1) before the claim; (2) the deployable class (complex-PP phase, fast det4 updates),
+designed on paper first; the XL CNN is the accuracy reference, not deployable at 14x14 (board 23).
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

@@ -576,3 +576,8 @@
 2026-11-01 16:27 VERDICT job 17640515: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_v1/ANALYSIS.md]
 - 2026-11-01 sign angle V1 (17640513-15): s_G worth 4.1e-6/site over free sgn(psi_P) (8.76e-6 vs 4.64e-6, theta_bar) -> store; S2a (XL CNN on s_G, graded in loop guide) pre-registered and started.
 - 2026-11-01 sign V1 (lead verified sign_v1/v1_{sG,sP,s1}.json): loop guide at c* under s_G 4.644e-6 (theta-bar) / 4.786e-6 (theta 1200); free sign sgn psi_P 8.755e-6 / 8.965e-6; s1 7.133e-6 / 7.278e-6. s_G worth 4.1e-6 > 2e-6 -> STORE. The free sign loses the whole margin over the competitor. S2a started (XL CNN on s_G, graded in the loop guide, <= 3 H100-h; pred tax 1-4e-6).
+2026-11-01 16:39 VERDICT job 17641159: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
+2026-11-01 17:01 VERDICT job 4085740: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
+2026-11-01 17:31 VERDICT job 17641160: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
+2026-11-01 18:13 VERDICT job 17641316: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS.md]
+- 2026-11-01 sign angle S2a (Paderborn 4085740): XL CNN stores s_G, loop-guide tax 4.25e-7/site (passes 5e-7, one seed); stored loop 5.07e-6 < competitor 5.57e-6. Seed 2 next.

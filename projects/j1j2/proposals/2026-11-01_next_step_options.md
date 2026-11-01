@@ -31,4 +31,4 @@ pilot. Our own checkpoint is not strong enough. Candidate guide (hypothesis, unc
 huggingface nqs-models/j1j2_square_10x10_05 (-0.497676, results/literature/J1J2_BENCHMARKS_COST.md l.68): the add-on applied
 to someone else's network is exactly the project's viability case 3. Its walker cost per hop is a full ViT pass (no fast
 update), so start with FN p=0 (no Lanczos step): at 8x8 FN p=0 alone gained 8.3e-5 over VMC p=0, which here would land below
--0.4976921 if even a third of it survives. Kill: FN p=0 from the ViT not below -0.497692 at two-chain error <= 1e-5.
+-0.4976921 if even a third of it survives. Kill: FN p=0 from the ViT not below -0.497692 by 2 sigma at two-chain error <= 5e-6 (the ViT starts only 1.6e-5 above the bar).

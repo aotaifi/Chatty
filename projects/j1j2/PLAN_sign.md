@@ -147,6 +147,20 @@ walls needs three swaps, as s_G does. Prediction: sgn psi_P 1.0-2.5e-5, s1 6-10e
 than the sign alone) [70%]. Decision (lead's rule): store iff E(sgn psi_P) - E(s_G) > 2e-6 -> then S2 (<= 3 H100-h, lead-approved);
 else the deployable loop uses sgn psi_P and S2 is not run.
 
+## V1 RESULT 2026-11-01 (jobs 17640513-15; /scratch/a/A.Otaifi/ansatz_runs/sign_v1/v1_*.json; verified by me)
+Round-3 loop guide sigma B e^{c* f_J[B; sigma]}, per site above E0 (c*): theta(1200): s_G 4.786e-6 (3.9), sgn psi_P 8.965e-6 (4.0),
+s1 7.278e-6 (3.9); theta_bar: s_G 4.644e-6 (4.0), sgn psi_P 8.755e-6 (4.0), s1 7.133e-6 (3.9). Controls reproduce the readouts
+(<= 5e-5 relative); orbit mismatch sgn psi_P vs s_G 0.1163 = Test X. Predictions: sgn psi_P band 1.0-2.5e-5 MISSED (8.8-9.0e-6;
+I mixed bare and augmented: bare is 1.9-2.0e-5); s1 held. Decision (lead's rule): s_G's value over the free sign = 4.1-4.2e-6 > 2e-6
+-> STORE; S2 approved by the lead under the takeover (<= 3 H100-h).
+## S2a (RUNNING; pre-registered in /scratch/a/A.Otaifi/ansatz_runs/sign_s2/ANALYSIS_BRIEF.md before any number)
+XL CNN (tested class, accuracy reference, not deployable at scale) trained on s_G with samples from the loop's own augmented guide
+(not psi0, not an FN state built with S). Graded inside the loop: tax = E(S B e^{c f_J[B;S]}) - E(s_G ...), c rescanned.
+Prediction: w_T 2-8e-6; tax 1-4e-6 (fails 0.5e-6) [50%]; tax < 4.1e-6 (beats the free sign) [65%].
+Decision: tax <= 0.5e-6 -> next the deployable class (complex-PP phase) on the same target; 0.5e-6 < tax < 4.1e-6 -> storage pays
+but is taxed: next changes the measured error term (boundary weight C_F via the edge loss, Astra eq 19); tax >= 4.1e-6 -> the loop
+uses sgn psi_P and the angle closes on storage.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

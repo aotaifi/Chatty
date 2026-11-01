@@ -571,3 +571,7 @@
 - 2026-11-01 round 4 (lead verified pfaffian_r4/readout/readout.json): theta_4 (mean of 7 iterates) bare 1.2184e-5 (drop 0.337e-6 <= 0.5e-6: PROGRESS KILL fired), aug 4.367e-6 at c* 4.0, 1.21e-6 below competitor. r_4 0.043; q ~0.3-0.4. Loop saturates at this class (~bare 1.20e-5, aug 4.3e-6). Lead: 6x6 rounds closed; angle writes an Astra-reviewed class proposal on paper for the PI; open question closed.
 - 2026-11-01 lead: next-step options written (proposals/2026-11-01_next_step_options.md: A 10x10 add-on, B 8x8 loop, C class); lead recommends A at ~50% -> Astra blind review cj-782e689682e8 (CLAUDE.md point 8).
 - 2026-11-01 Pfaffian angle class proposal for the PI (819813d): (d) two-PP sum ~11x, pred 4.0->3.7e-6 (Astra 35%); (a) active RBM 7.7x (20%); (c)/(b) not deployable (650x/4300x). Correction: backflow 36.5x was bf-aug/bf-bare; vs plain PP ~800x. Angle waits for the PI.
+2026-11-01 16:16 VERDICT job 17640513: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_v1/ANALYSIS.md]
+2026-11-01 16:25 VERDICT job 17640514: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_v1/ANALYSIS.md]
+2026-11-01 16:27 VERDICT job 17640515: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_v1/ANALYSIS.md]
+- 2026-11-01 sign angle V1 (17640513-15): s_G worth 4.1e-6/site over free sgn(psi_P) (8.76e-6 vs 4.64e-6, theta_bar) -> store; S2a (XL CNN on s_G, graded in loop guide) pre-registered and started.

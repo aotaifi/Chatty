@@ -32,3 +32,10 @@ huggingface nqs-models/j1j2_square_10x10_05 (-0.497676, results/literature/J1J2_
 to someone else's network is exactly the project's viability case 3. Its walker cost per hop is a full ViT pass (no fast
 update), so start with FN p=0 (no Lanczos step): at 8x8 FN p=0 alone gained 8.3e-5 over VMC p=0, which here would land below
 -0.4976921 if even a third of it survives. Kill: FN p=0 from the ViT not below -0.497692 by 2 sigma at two-chain error <= 5e-6 (the ViT starts only 1.6e-5 above the bar).
+
+## Option C detail (Pfaffian angle + Astra, PLAN_pfaffian.md "PROPOSAL for the PI", 819813d)
+- (d) two jointly refit PPs |P_1 + lambda P_2| + one Jacobi level: ~11x plain at 10x10, predicted aug 3.7e-6 (Astra 35%); ~12 H100-h.
+- (a) active RBM bulk (4 hidden units per image): 7.7x, predicted aug 4.05e-6 (Astra 20%); ~8 H100-h.
+- (c) second explicit level ~650x, (b) backflow ~4300x at 10x10: not deployable. Correction: T2's 36.5x was backflow-augmented over
+  backflow-bare; against a plain PP it is ~800x by op count.
+- Angle: ~45% that (d) or (a) crosses 4.0e-6 at 6x6.

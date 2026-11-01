@@ -1,4 +1,4 @@
-# Three label-free loop rounds beat one Lanczos step at 6x6 by 0.79e-6 (same sign); the cost does not yet win
+# Label-free loop at 6x6: one-level augmented guide 4.37e-6, 1.21e-6 below one Lanczos step (same sign); the loop saturates after ~3 rounds at this class
 
 All energies are exact fixed-node values (6x6, J2 = 0.5), per site above E0. No Monte Carlo.
 

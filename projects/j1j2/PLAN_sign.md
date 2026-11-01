@@ -113,8 +113,35 @@ Decision: XL pass -> the Jacobi loop's storage tax at the best tested sign accur
 is graded in the loop's own guide (refit magnitude), bar: keep 4.79e-6 within 0.5e-6. XL fail with tau_J >> bound -> the
 neighbour term (c f_J at y) is mispredicted: re-derive before S2.
 
+## R1 RESULT 2026-11-01 (jobs 17640421, 17640422; /scratch/a/A.Otaifi/ansatz_runs/sign_r1/r1_result.json, r1b_result.json; verified by me)
+Per site above E0; lobpcg residuals <= 6.7e-10, E0 <= E_FN <= E_var for all solves; plain arms reproduce R0 and Test X G (3.5e-10).
+Control miss: fJ(s0) max 1.16e-7 instead of < 1e-10. My threshold was set below the stored a0's accuracy on tiny orbits
+(max|f - 1| 1.3e-4 there). The effect on the energy is second order (~1e-14), so the readouts stand.
+| guide | XL (w 4.4e-7) | m2 (w 5.2e-5) |
+|---|---|---|
+| S a0, no step (R0) | 6.00e-7 | 4.88e-5 |
+| S a0 e^{c f_J[S walls]}, c = 2 / 4 / 8 (R1c) | 4.20e-7 / 3.56e-7 / 4.09e-7 | 2.69e-5 / 2.29e-5 / 3.49e-5 |
+| plain signed step (R0) | 1.50e-6 | 7.57e-5 |
+| repair-aware step (R1a) | 2.23e-7 | 3.45e-5 |
+R1b: repair-aware step on the competitor guide 1.394e-5 vs plain 5.574e-6. It destroys the genuine flips' magnitudes
+(repaired/plain magnitude 8.2 on the f < 0 orbits): REJECTED for the Lanczos loop.
+Predictions: R1c XL [0.8, 2.5]e-7 MISSED (3.56e-7; still below the 5e-7 bar); m2 held; R1a both missed (XL 2.2e-7 vs <= 3e-8);
+R1b missed. Reading of R1c: the cost falls from bare toward the floor bound (1.73e-7) up to c ~4, then rises at c = 8, because the
+neighbour term c f_J(y) grows with c. I underestimated that term (cost at c = 4 is 2.1x the bound, not ~1x).
+CLOSED (best case): in the deployable Jacobi loop (stored sign used directly, f_J with its own walls, no walker-time step,
+one-level cost), a stored sign with ground-state-net accuracy costs 3.6e-7/site with an exact teacher: PASSES the 0.5e-6 bar.
+Measured slope tau ~ 0.8 w (XL) / 0.44 w (m2), so the bar needs w <~ 6e-7 against the teacher.
+Not shown: (1) a composite loop sign (s_G) stored to w ~6e-7 (the M net on a composite reached 5e-5; XL on a composite untested);
+(2) the deployable class (the XL CNN costs ~d full evaluations per two-swap shell at 14x14); (3) a non-eigenstate teacher.
+## S2 (proposal, GPU; the lead decides spend under takeover)
+Train sign networks on s_G (the 6x6 loop's sign) with the edge-weighted loss (Astra eq 19), tempered samples from the teacher plus
+neighbours; two classes: XL CNN (accuracy reference) and complex-PP phase (deployable). Grade: E_FN[S B_3 e^{c f_J[B_3; S]}]
+vs the same with s_G (4.786e-6), c rescanned; bar +0.5e-6. Prediction (before any run): XL CNN w 2-8e-6, tax 1-4e-6 (fails)
+[50%]; PP phase worse. Value check first (CPU, minutes): the same loop guide under the FREE one-level sign sgn(psi_P) sets what
+storing s_G is worth; if s_G's advantage over sgn(psi_P) is < the expected tax, do not store, and use the free sign.
+
 ## Running
-- Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0 RUNNING (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
+- Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.
 - Astra cj-34b8f6b3a4c9 stopped at the Codex usage limit 10:14; resume after 11:36
   (codex session 01a18c0d-d25b-70c1-b260-5512e8cd8aec). Partial CPU checks, /scratch/a/A.Otaifi/astra/sign_angle/check_sign_identities.json

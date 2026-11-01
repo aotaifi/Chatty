@@ -386,6 +386,15 @@ E_FN force/QGT'): exact 4x4 force works; sampled 8x8 force passed its surrogate 
 Lesson: j1j2 records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md and
 delta_today.md; check all before proposing (a tried-ideas index is being built).
 
+## Step back 2026-11-01 (stored sign; PI request)
+1. Verdict: continue, change the TRAINING before the class: the deployable PP phase is under-trained and trained on a misaligned
+   objective (uniform BCE vs FN tax weighting blocked pairs; 60% of its wrong-sign weight lies outside its training set); no
+   representability barrier shown (Astra cj-ffe80dbfda01, EVIDENCE.md in /scratch/a/A.Otaifi/astra/signstep).
+2. What changed it: Astra's exact-table checks; lead's blind guess (compute s_G on the fly, LEAD_BLIND_GUESS.md) is untested,
+   Astra finds selective recomputation ~6.4x shell work at 14x14 but did not test full s_G with cheap-sign walls.
+3. Next (sign angle): CPU check of on-the-fly s_G with sgn(psi_P) walls (pred 5.0-6.0e-6), then edge-weighted PP vs matched
+   restart (<= 1.5 H100-h; kill: no gain over restart or tax >= 0.93e-6).
+
 ## What we understand (CLAUDE.md point 7; one line each, board block, evidence)
 - E_FN[A] = lowest eigenvalue of H_FN[A]; the copy enters only through V_A(x) = sum_blocked |H_xy| |A(y)|/|A(x)| (board 4).
 - <chi|H_FN|chi> - <chi|H|chi> = sum over blocked bonds of a perfect square (the double sum counts each bond twice), >= 0 (board 5).

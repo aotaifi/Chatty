@@ -1,0 +1,15 @@
+GPU 0: NVIDIA A40 (UUID: GPU-57ba88e9-9537-c64b-2e3e-b099f99e7906)
+jax 0.8.2 [CudaDevice(id=0)] spins (16384, 100) mean sz 0.0 sz!=0 frac 0.0
+plain 256 12370 evals/s
+plain 1024 13229 evals/s
+plain 4096 12653 evals/s
+symm 256 200 evals/s
+symm 1024 201 evals/s
+symm 4096 201 evals/s
+{"plain_256": 12370.212003142835, "plain_1024": 13228.60213729022, "plain_4096": 12653.35995223799, "symm_256": 199.81395044166896, "symm_1024": 201.21258494936768, "symm_4096": 201.14530837652273, "n_antiparallel_bonds_mean": 225.3203125, "n_antiparallel_bonds_std": 5.067410571716461}
+jax 0.8.2 [CudaDevice(id=0)] spins (16384, 100) mean sz 0.0 sz!=0 frac 0.0
+symm E/N= -0.497628 +- 0.000030 (n=1024, |Im mean|=2.2e-07) mean_antiparallel_bonds=225.56  1193s
+symm_ROLL_TRANSPOSED E/N= -0.398886 +- 0.149049 (n=128, |Im mean|=2.9e-02) mean_antiparallel_bonds=226.27  151s
+symm_GELU_EXACT E/N= -0.497652 +- 0.000039 (n=128, |Im mean|=2.0e-06) mean_antiparallel_bonds=226.27  190s
+plain(main weights, symm-branch spins) E/N= -0.497774 +- 0.000154 (n=1024, |Im|=3.3e-06)
+VIT10 DONE

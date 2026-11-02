@@ -1131,3 +1131,24 @@ Additions (lead/PI 2026-11-02, same tables and solver; one-line predictions writ
   4.37e-6, because the walls move to where the exact node is.
 - (D) Floor at s0 = 0 to solver precision (psi0 is the fixed point). Floors s_G 1.2-2.0e-6 (mine, as above); the lead's
   unmeasured guess is ~0.3e-6.
+
+## Two-PP class (d) (PI chose "A first, C in parallel", 2026-11-02; this angle owns C; ~12 H100-h; pre-registered before any run; board block 27)
+Mechanism: the stall is r -> 0 because the round residual lies outside the single PP's tangent space (Θ v2: C 0-4%; r 0.145
+-> 0.109 -> 0.043). B = |P_1 + lambda P_2| adds d ln B / d lambda = Re P_2/(P_1 + lambda P_2) and P_2's own tangent space, a
+configuration-dependent interference that one PP cannot make. Term changed: the tangent space O_x in the refit (board 22 (4),
+27). Each P_j keeps rank-2/4 lemma updates, so the walker cost is ~2x one PP.
+Setup: P_1 = theta_4's PP (pfaffian_r4 tabs theta_4.npy); P_2 = round-1 L-SWO PP (pfaffian_lswo/run/round_1/theta.npy, a
+different trained PP, finite separation); lambda complex, init 0.1; RBM inactive as before. Target T_5 = theta_4
+e^{4.0 f_J^G[theta_4]} (E_FN 4.367e-6), sign s_G. Fit as round 4: damped GN, fixed 1500 steps, theta = mean of 7
+checkpoints 600..1500. Arms: two-PP seeds 1 and 2; CONTROL = single-PP continuation from theta_4 to the same T_5, seeds 1
+and 2. r_5 = (1.2184e-5 - e(theta_bar)) / 0.7817e-5.
+Predictions: two-PP r_5 0.06-0.16 (bare 1.09-1.17e-5), aug 3.4-4.1e-6 (Astra: r 0.16, aug 3.74e-6). Control r_5 0.01-0.04
+(bare 1.19-1.21e-5), aug 4.20-4.35e-6.
+KILL (d): both two-PP seeds r_5 <= 0.05 AND aug >= 4.2e-6. NOT ATTRIBUTABLE: two-PP r_5 minus control r_5 < 0.03 in either
+seed (the gain is just one more round).
+COST (must be measured before any accuracy claim counts): CPU timing at 10x10 with the T2 convention (all Hamiltonian-
+neighbour ratios per walker step, lemma updates, random complex F, compiled kernel). Arms: plain one PP; one PP + one
+Jacobi level; two PPs + one Jacobi level. Prediction: two-PP augmented over plain one-PP 6-12x (Astra's model 11.0x;
+T2 measured/model 0.51 at 6x6); one-PP augmented 3-6x. KILL of deployment: > 20x. Also re-time 6x6 to anchor against T2's 5.4x.
+Order: the CPU timing and the two-PP code (CPU checks) run in parallel; the GPU fits are submitted only after the timing
+passes. Fallback (a), an active RBM, only if (d) is killed.

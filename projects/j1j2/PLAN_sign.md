@@ -244,6 +244,21 @@ Prediction: table A fails at k = 1 (S_1 = s_G-like, near exact; d_1 < 1e-5) [80%
 If none qualifies: the 6x6 learned-guide family cannot host three useful sign updates; report to the PI with the chain numbers
 (then the 8x8 snapshot test (c) is the only route).
 
+## S2b'/T-EDGE RESULT 2026-11-02 (Paderborn 4087758, 4089690, 4087759; sign_s2b/v2_S_pp2.json, v2_S_edge.json; verified by me)
+PP phase to plateau (control): tax 1.447e-6 (theta_bar) / 1.481e-6, w_T 2.57e-6. Edge loss: 1.651e-6 / 1.687e-6, w_T 2.89e-6.
+T-EDGE KILL FIRES (no gain over the matched control; settled tax >= 0.93e-6). More training gained 11% (1.63 -> 1.45e-6).
+Conv RBM at lr 3e-4: held-out accuracy 0.771 (< 0.9), not graded. One seed each.
+## STEP-BACK 2 (2026-11-02; two failed fixes of the PP-phase storage: more training, edge loss)
+1. Verdict: change the evidence, not the loss: separate representability from generalisation before any further training variant.
+2. Thought: 61% of the PP's wrong weight sits on orbits it never saw, train/held-out loss 0.062/0.081, and the edge loss started
+   at its own optimum (batch loss 0.0253 -> 0.0247). My guess, written before the search: generalisation in the tail, not capacity.
+   It agrees with Westerhout et al. arXiv:1907.08186 (abstract only): for frustrated magnets, generalisation from a subset, not
+   expressibility, is the bottleneck, and the sign is harder than the amplitude. What 6x6 hides: at 14x14 the training set is a vanishing
+   fraction of the space, so generalisation is the scale question anyway.
+3. Cheapest next test (FULL-SET FIT, ~0.5 H100-h): train the same PP phase on ALL 15.8M orbits (teacher-weighted, no held-out), grade w_T
+   and the tax. Prediction: w_T drops to 0.5-1.2e-6 and the tax to 0.3-0.7e-6 (generalisation) [55%]; if w_T stays >= 2e-6, the PP class
+   cannot represent s_G to the bar (capacity), and the next step changes the class (parity features, Astra rank 2), not the data.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

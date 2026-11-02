@@ -1152,3 +1152,25 @@ Jacobi level; two PPs + one Jacobi level. Prediction: two-PP augmented over plai
 T2 measured/model 0.51 at 6x6); one-PP augmented 3-6x. KILL of deployment: > 20x. Also re-time 6x6 to anchor against T2's 5.4x.
 Order: the CPU timing and the two-PP code (CPU checks) run in parallel; the GPU fits are submitted only after the timing
 passes. Fallback (a), an active RBM, only if (d) is killed.
+
+## Result s_G floor + exact-sign additions (2026-11-02; CPU 17646674-76, 17652669; pfaffian_floor/{sG,s1,s2,s0}/floor.json; verified)
+Self-consistent floor, iterated as in the records from the ViT-ratio start (not |psi0|, corrected), 40 solves (e-6 per site):
+| sign | solve 10 | 20 | 30 | 40 | Aitken |
+| s_G | 7.79 | 2.67 | 1.338 | 0.827 | 0.39 |
+| s1 | 10.39 | 4.62 | 3.085 | 2.509 | 2.05 |
+| s2 (oracle) | 7.84 | 2.78 | 1.436 | 0.915 | 0.48 |
+Controls: s1 and s2 reproduce the records to 1e-9 relative. The iteration is still converging (ratio 0.926), so 0.83e-6 is an
+upper bound.
+Prediction floor(s_G) 1.2-2.0e-6 MISSED low; the lead's guess of ~0.3e-6 was closer. s_G's floor is below the oracle s2's.
+Gap of today's best guide (theta_4 augmented 4.367e-6) to the s_G floor: >= 3.54e-6, i.e. the amplitude holds >= 81% of
+the error (91% with Aitken). Prediction 55-75% MISSED (low).
+Exact ED sign s0:
+- (A) |psi0| gives e = 7e-16 (PASS). (D) psi0 is the fixed point (PASS).
+- (B) blocked bonds at s0, which my prediction missed:
+  - by count: J1 29%, J2 58%, all 44%;
+  - by |H| psi0 psi0 weight: 16.8% of all bonds, 89% of it on J2.
+  - At the exact sign FN still removes many hops, and the FN error is entirely amplitude-ratio error on those bonds.
+- (C) theta_4 at s0: bare 1.241e-5; augmented 4.147e-6 at c* 4.0. That is only 0.22e-6 below s_G (4.367e-6); the prediction
+  1.5-3.0e-6 MISSED.
+=> At this amplitude quality the sign is nearly irrelevant: even the exact sign gains 5%. The amplitude copy is the
+bottleneck, which supports putting the effort into C (the amplitude class).

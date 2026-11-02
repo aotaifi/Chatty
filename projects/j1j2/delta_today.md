@@ -682,3 +682,20 @@
 2026-11-02 22:38 VERDICT job 17668485: COMPLETED, NO GATE RUN: the brief is missing, so it names no gate command and no chains for quotable.py. [/scratch/a/A.Otaifi/vit10_runs/a04/fnexact/ANALYSIS.md]
 - 2026-11-02 23:30 sign T-CAP (worker): A40 sizing premise fails for this code: a1pp 17664922 (kng-cl-nv02) runs 0.66 s/step vs 0.094 s/step on H100 (pp 4086773) = 7x, not 2.2x (c128 slogdet; A40 FP64 is weak). 20612 steps -> ~3.8 h > 3 h wall and > 2.2 A40-h cap. Held (scontrol hold) 17664923 17664924 17664925; 17664922 left running (will TIMEOUT ~02:20 unless cancelled). Lead to decide.
 - 2026-11-02 23:45 sign angle (takeover): T-CAP code runs 7x slower on A40 than H100 (0.66 vs 0.094 s/step, c128); resized on A40 by step counts, same work in H100-equivalents (~5 H100-h ~ 32 A40-h), wall up to ~26 h; c64 rejected (tail phases from cancelling 576-image sums). Paderborn copies cancelled (sacct CANCELLED). Results now ~2026-11-04, not by the 09:00 check-in.
+- 2026-11-02 23:31 sign T-CAP (worker, lead decision option 1): CANCELLED A40 17664922 (3 h wall below the 3.8 h needed at the measured 0.66 s/step) and the held 17664923 17664924 17664925 (superseded by step-based resubmission). Approved compute unchanged at ~5 H100-h equivalent (A40 at 7x).
+2026-11-02 23:36 VERDICT job 17664925: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 23:36 VERDICT job 17664924: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 23:36 VERDICT job 17664923: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 23:36 VERDICT job 17664922: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+- 2026-11-02 23:41 sign T-CAP (worker): step-based A40 resubmission (c128): a1pp 17669369 (20612 steps, wall 14 h) -> a1pp2 17669370 (afterok, wall 5 h), sum 17669371, res 17669372 (cos 12600 + const cap 8400 steps, wall 20 h); watchers armed (watcher2.sh, stall 6000 s). sbatch --test-only worst-case ETA 2026-11-05 11:17 (previous a1pp started 5 h after submission).
+2026-11-02 23:53 [pfaffian R5 race ctl_s2] 4099845 started (step 550) -> cancelled 17659088 (PI pre-approval via lead)
+2026-11-02 23:53 [pfaffian R5 race pp2_s2] 4099841 started (step 330) -> cancelled 17659084 (PI pre-approval via lead)
+2026-11-02 23:53 [pfaffian R5 race pp2_s1] 4099837 started (step 330) -> cancelled 17659082 (PI pre-approval via lead)
+- 2026-11-02 23:55 R5 race settled (worker): Paderborn won pp2_s1 (first step 23:21:42 vs A40 23:29:15; A40 17659082/17659083 cancelled), pp2_s2 and ctl_s2 (A40 17659084/85, 17659088/89 cancelled); A40 won ctl_s1 at 17:50 (17659086 running, Paderborn 4099843/4099844 cancelled). The VPN client had moved to m51 at 18:06, so the Paderborn-facing watchers, race watchers and r5_chain.sh were SSHFAIL on m52 from then until 23:52; they now run on m51 (chain pid 2092892, PPID 1). pp2 on H100: 5.8 s/step.
+2026-11-02 23:53 VERDICT job 17659082: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s1/fit_th/ANALYSIS.md]
+2026-11-02 23:53 VERDICT job 17659085: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s2/tab_th/ANALYSIS.md]
+2026-11-02 23:53 VERDICT job 17659084: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s2/fit_th/ANALYSIS.md]
+2026-11-02 23:53 VERDICT job 17659083: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s1/tab_th/ANALYSIS.md]
+2026-11-02 23:53 VERDICT job 17659088: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s2/fit_th/ANALYSIS.md]
+2026-11-02 23:53 VERDICT job 17659089: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s2/tab_th/ANALYSIS.md]
+- 2026-11-02 23:55 round 5 (C) race settled: Paderborn pp2_s1, pp2_s2, ctl_s2; A40 ctl_s1; pp2 5.8 s/step H100. VPN client moved m52 -> m51 at 18:06 (not the lead); Paderborn watchers must run on the client's host.

@@ -222,6 +222,14 @@ guide s_G B e^{c f_J[B; sgn psi_P walls]}: theta_bar 6.483e-6 (c* 3.5), theta(12
 Controls reproduce v1_sG. Lead's 5.0-6.0e-6 missed; mine 5.5-7.0e-6 held. Above the competitor (5.57e-6) and above the stored PP
 phase (6.27e-6): on-the-fly s_G with free walls is NOT useful. The Jacobi walls must match the guide sign (Test X lesson, again).
 
+## TESTBED QUESTION (PI 2026-11-02: agree with lead and Astra what to test storage on)
+Verified by me (exact ED sign sg0, N36 data; p0-weighted wrong weight): Marshall 1.96e-2, s1 7.2e-6, s_G 8.4e-7. At 6x6 from psi_P one
+signed Lanczos step already gives a near-exact sign: the loop never updates it, so 6x6-from-psi_P cannot test stored sign UPDATES.
+Lead's view: 8x8 infeasible for a 0.5e-6 tax (8x8 FN p=0 2.8e-6/site per 0.4 H100-h -> 1e-7 needs ~800x); test a MOVING target at 6x6
+with exact grading: 2-3 sign rounds S_{k+1} = sgn[G_k(1 + alpha_k(E_L[G_k] - E))], G_k the stored guide, each stored by the deployable
+class and fed forward, from a start where one step changes the sign on a scale-like weight (weaker psi_P checkpoint or sgn psi_P;
+not Marshall). Readout: does E_FN still fall per round, and does the tax accumulate. Astra cj-ed149d8d5be8 asked blind.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

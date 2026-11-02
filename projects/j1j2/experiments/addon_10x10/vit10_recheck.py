@@ -2,6 +2,7 @@
 Reports fraction rechecked, flips vs f64 before/after, E_L and V_sf bias/rms after. usage: python vit10_recheck.py DIR [thr=1e-3] [mode=rel|absr|absre]   rel = registered trigger |Re r|<thr|r|; absr (post hoc) |r|<thr; absre (post hoc) |Re r|<thr"""
 import sys, numpy as np
 sys.path.insert(0, __file__.rsplit("/", 1)[0]); import validate_vit10 as VV
+VERD = "--verdict" in sys.argv; sys.argv = [a for a in sys.argv if a != "--verdict"]
 D = sys.argv[1]; thr = float(sys.argv[2]) if len(sys.argv) > 2 else 1e-3
 z = np.load(f"{D}/prec_symm.npz"); ii, bb = z["ii"], z["bb"]; n = ii.max() + 1; K = VV.BJ[bb] / 2
 r64 = np.exp(z["f64_y"] - z["f64_x"][ii]); r32 = np.exp(z["f32h_y"] - z["f32h_x"][ii])
@@ -18,3 +19,7 @@ for nm, r in (("f32h", r32), ("recheck", rc)):
 fr = sel.mean(); print(f"RECHECK mode {mode} thr {thr}: pairs rechecked {sel.sum()} of {len(sel)} = {fr:.3e}; flips before {f0} after {f1}; flipped pairs inside recheck set: {int((flipsel & sel).sum())}/{f0}")
 sf, s64 = 3000., 200.   # symm evals/s, A40 (bench.json); a recheck costs one f64 eval of y (x in f64 is one per config)
 print(f"RECHECK cost per pair: f32h {1/sf*1e3:.3f} ms + {fr:.2e}*{1/s64*1e3:.1f} ms (f64 y) -> x{1 + fr*sf/s64:.3f} throughput cost; +1 f64 eval of x only if any pair of x is rechecked (<= {1/s64*1e3:.1f} ms per config vs {226/sf*1e3:.0f} ms)")
+
+if VERD:   # pre-registered held-out criteria: 0 flips after recheck, E_L and V_sf |bias| < 2e-7/site, recheck fraction < 1%
+    e, v = q(rc); ok = f1 == 0 and abs((e - e0).mean()) < 2e-7 and abs((v - v0).mean()) < 2e-7 and fr < 0.01
+    print("RECHECK VERDICT held-out:", "PASS" if ok else "FAIL", f"(flips after {f1}, |E_L bias| {abs((e-e0).mean()):.1e}, |V_sf bias| {abs((v-v0).mean()):.1e}, fraction {fr:.2e})")

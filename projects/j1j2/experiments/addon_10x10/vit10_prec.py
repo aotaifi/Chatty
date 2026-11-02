@@ -30,12 +30,17 @@ if __name__ == "__main__":
     S = VV.spins().astype(np.float64)
     if mode == "prec":
         n = int(sys.argv[3]); rng = np.random.default_rng(12345)
-        X = S[np.sort(rng.choice(len(S), n, replace=False))]; ii, bb, Y = neighbours(X)
+        held = len(sys.argv) > 4 and sys.argv[4] == "heldout"      # fresh disjoint set: complement of the seed-12345 draw, drawn with seed 777; symm only, f64 + f32h only
+        first = np.sort(rng.choice(len(S), n, replace=False))
+        if held:
+            rest = np.setdiff1d(np.arange(len(S)), first); X = S[np.sort(np.random.default_rng(777).choice(rest, n, replace=False))]
+        else: X = S[first]
+        ii, bb, Y = neighbours(X)
         print("configs", n, "neighbours", len(Y), "mean/config", len(Y) / n, jax.devices(), flush=True)
         res = {"ii": ii}
-        for kind, bs in (("plain", 2048), ("symm", 512)):
+        for kind, bs in ((("symm", 512),) if held else (("plain", 2048), ("symm", 512))):
             lp = {}
-            for tag, dt, prec in (("f64", f64, None), ("f32d", f32, None), ("f32h", f32, "highest")):
+            for tag, dt, prec in ((("f64", f64, None), ("f32h", f32, "highest")) if held else (("f64", f64, None), ("f32d", f32, None), ("f32h", f32, "highest"))):
                 f = build(kind, dt, prec); t = time.time()
                 lp[tag] = (run(f, X, dt, bs).astype(np.complex128), run(f, Y, dt, bs).astype(np.complex128))
                 print(kind, tag, "%.0fs" % (time.time() - t), flush=True)
@@ -48,7 +53,7 @@ if __name__ == "__main__":
             def EL(tag):
                 r = np.exp(lp[tag][1] - lp[tag][0][ii]) * VV.BJ[bb] / 2; off = np.zeros(n, complex); np.add.at(off, ii, r); return (diag + off) / 100
             E64 = EL("f64"); print(f"E_L {kind} f64: mean {E64.real.mean():.6f} +- {E64.real.std(ddof=1)/np.sqrt(n):.6f} std/N {E64.real.std():.3e} (n={n})", flush=True)
-            for tag in ("f32d", "f32h"):
+            for tag in (("f32h",) if held else ("f32d", "f32h")):
                 e = rel(lp[tag][0][ii], lp[tag][1], lp["f64"][0][ii], lp["f64"][1])
                 r32 = np.exp(lp[tag][1] - lp[tag][0][ii])
                 flips = int(np.sum(np.sign(r32.real) != np.sign(r0.real)))

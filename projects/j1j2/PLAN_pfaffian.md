@@ -1174,3 +1174,12 @@ Exact ED sign s0:
   1.5-3.0e-6 MISSED.
 => At this amplitude quality the sign is nearly irrelevant: even the exact sign gains 5%. The amplitude copy is the
 bottleneck, which supports putting the effort into C (the amplitude class).
+Result COST (2026-11-02; ws1 m42, one core, C kernel; pfaffian_cost/run/walker_cost_L{6,10}_time.json; verified):
+| ratio to the plain one-PP walker step | 6x6 | 10x10 |
+| one PP + one Jacobi level (J) | 4.78x | 5.50x |
+| two PPs + one Jacobi level (D) | 9.33x | 10.91x |
+Exactness: all ratios match direct determinants to 1.4e-12; broken versions fail. 6x6 J anchors T2 (4.78 vs 5.4). At 10x10,
+D/P matches Astra's op model to 2%. VERDICT: PASSES (predicted 6-12x; kill > 20x). J inside its 3-6x prediction.
+Convention (stated): T2's, where every image's inverse is recomputed per step. With persistent rank-2 inverse updates the
+plain step gets much cheaper and both ratios rise, for ours AND for any one-Lanczos-step guide, which has the same d^2
+two-swap class (board 23). The comparison with the competitor is convention-independent; the absolute "x plain" is not.

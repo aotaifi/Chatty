@@ -307,6 +307,17 @@ Predictions (lead, before any number): (a) fails at k = 1 [65%]; (b) three usefu
 Decision: an arm qualifies -> propose the storage test on it to the PI at check-in (no GPU in takeover beyond the T-CAP default);
 neither -> stop the qualification search, report the chain numbers; no more starts, no alpha change, no size change in takeover.
 
+## STEP 0' RESULT 2026-11-02 (CPU 17662380/1, 27 core-h; /scratch/a/A.Otaifi/ansatz_runs/sign_q0r/q0r_{a,b}.json; verified by me)
+B2 start, per site above E0, Delta graded at a common amplitude. Round 0 (shared, reproduces q0_B2): Delta_0 = +5.27e-6.
+(a) fixed B, k = 1: Delta_1 = -7.6e-8 (d 4.6e-6). (b) exact refresh: refresh alone lowers F(S_1) 5.88e-5 -> 3.13e-5; then
+k = 1 sign step Delta_1 = -2.39e-6 (d 1.4e-6). NEITHER QUALIFIES. Floor/fJ-row sensitivity <= 9e-13. Predictions: (a) fails at k = 1 held;
+(b) three useful updates missed. Not checked: c-scan resolution at T_1 (c* moved 5.2 -> 3.0).
+Reading: in this 6x6 learned-guide family (A, PP, B1, B2), ONE signed-Lanczos sign step carries all the sign gain that exists;
+every second sign step measured (B1 fixed, B2 fixed, B2 refreshed) gains <= 0 while the amplitude refresh gains 2.7e-5. The 6x6 loop
+therefore needs ONE stored sign (the s_G type, already shown storable by the XL CNN at 0.42e-6), not a moving one; a moving-target
+storage test cannot be hosted at 6x6. Whether further sign steps pay at 14x14 is open and not testable here.
+Per the pre-registered rule: qualification search STOPPED (no more starts, no alpha change, no size change in takeover).
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

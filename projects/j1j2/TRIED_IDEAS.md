@@ -55,6 +55,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A36 | s_G on the fly with Jacobi walls from the free sign sgn psi_P (T-OTF, lead) | 11-02 | 6x6 exact | 6.48e-6 (theta_bar), 6.64e-6 (theta(1200)) vs s_G own walls 4.64/4.79e-6 | FAILS (cause: wall mismatch costs 1.85e-6; walls must match the guide sign) | PLAN_sign.md "T-OTF RESULT" |
 | A37 | PP-phase sign storage: train to plateau / edge-weighted loss (T-EDGE) | 11-02 | 6x6 exact | plateau tax 1.45e-6; edge 1.65e-6 (no gain); 61% of wrong weight off the training set | FAILS bar (cause open: generalisation vs capacity; full-set fit decides) | PLAN_sign.md "STEP-BACK 2" |
 | A38 | Qualify a start for repeated sign updates at FIXED amplitude (step 0; tables A, PP, B1, B2) | 11-02 | 6x6 exact | one step gains 1.7-11e-6; the second (B1) loses 0.4e-6 at d 3.5e-5 | FAILS (cause: sign step needs a matched magnitude; = A4) | PLAN_sign.md "STEP 0 RESULT" |
+| A39 | Step 0' (B2): second sign step at fixed vs exactly refreshed amplitude | 11-02 | 6x6 exact | Delta_1 -7.6e-8 (fixed), -2.39e-6 (refreshed; refresh itself -2.7e-5) | FAILS (one sign step carries all sign gain in this 6x6 family; moving target not hostable at 6x6) | PLAN_sign.md "STEP 0' RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

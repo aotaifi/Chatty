@@ -449,6 +449,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a: an XL CNN storing s_G costs 4.2-4.3e-7 (two seeds;
   sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6. DEPLOYABLE sign (complex-PP phase, det4 updates):
   tax 1.63e-6 -> loop 6.27e-6, ABOVE the competitor (S2b, unconverged; S2b' to plateau running).
+- At 6x6 one signed-Lanczos sign step carries all the sign gain: second steps from four learned starts gain nothing or lose (sign
+  angle step 0, sign_q0, sign_q0r); the loop needs one stored s_G-type sign, then amplitude-only rounds. Open at 14x14.
 - At 6x6 the amplitude, not the sign, limits the loop (pfaffian_floor): s_G floor <= 0.83e-6 (Aitken 0.39e-6) vs best guide 4.37e-6;
   the exact ED sign improves theta_4's augmented guide only to 4.15e-6. Even the exact sign blocks 44% of bonds (16.8% of the
   |H|psi0 psi0 weight, mostly J2), so FN error there is purely amplitude-ratio error; psi0 itself is the fixed point (7e-16).

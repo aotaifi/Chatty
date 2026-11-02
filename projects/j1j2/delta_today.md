@@ -602,3 +602,7 @@
 2026-11-02 00:21 VERDICT job 17642561: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_otf/ANALYSIS.md]
 2026-11-02 00:58 VERDICT job 17642562: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_otf/ANALYSIS.md]
 - 2026-11-02 sign angle T-OTF (17642561/2): s_G with sgn psi_P walls 6.48e-6/site (theta_bar), not useful (> competitor 5.57e-6, > stored PP 6.27e-6). T-EDGE pending.
+2026-11-02 05:09 VERDICT job 4087759: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-02 05:27 VERDICT job 4087758: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+2026-11-02 06:35 VERDICT job 17643201: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
+- 2026-11-02 ketworks: tools/ketboard.py (clone /scratch/a/A.Otaifi/ext/ketworks); benchmark file updated (bd9a4ce). New bars: 10x10 CNN-MPS -0.4976939(2), 16x16 -0.4969140(5) (2603.14425 Table 1). CORRECTION: our 8x8 p=1 FN -0.498946(5) is 1.7e-5 ABOVE Varbench RBM+PP -0.498963(2) (2302.04919), not 6.2e-5 below the best published.

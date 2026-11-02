@@ -9,8 +9,8 @@ the loop stalls after ~3 rounds with a complex PP (round 4 drop 0.34e-6). Deploy
 | B. 8x8 loop with sampled fits and a stored sign | does the loop survive sampling and a stored sign where exact tables do not exist | per round: label-free fit with flattened sampling (untested), sign net (S2, <= 3 H100-h), evaluation by FN-GFMC with one Jacobi level (~5.4x plain; p=0 was 0.4 H100-h) -> ~3-6 H100-h per round | augmented FN at 8x8 not below network + one step (8x8 p=1 FN -0.498946(5)) after 2 rounds |
 | C. richer class for the loop at 6x6 (Pfaffian angle + Astra, on paper now) | can the stall be lifted at one-level cost | <= 2 H100-h per candidate round | per its proposal |
 
-Lead's recommendation: A first. It needs no new method (the add-on is tested at 8x8: -0.498946(5), 6.2e-5 below the best published
-bound there), it answers the publishable question, and the loop's augmented guide can join as a second arm once B shows sampling works.
+Lead's recommendation: A first. It needs no new method (the add-on is tested at 8x8: -0.498946(5); CORRECTION 2026-11-02: that is 1.7e-5 ABOVE the best
+published 8x8 value, Varbench RBM+PP -0.498963(2), arXiv 2302.04919), it answers the publishable question, and the loop's augmented guide can join as a second arm once B shows sampling works.
 Confidence ~50% that A beats -0.49769 (the 8x8 gain fades with N: one step removes 84% of the error at 6x6, 47% at 8x8).
 B is the loop's real scale test but has two untested pieces (sampled near-node fits, stored composite sign). C only matters if B works.
 
@@ -39,3 +39,7 @@ update), so start with FN p=0 (no Lanczos step): at 8x8 FN p=0 alone gained 8.3e
 - (c) second explicit level ~650x, (b) backflow ~4300x at 10x10: not deployable. Correction: T2's 36.5x was backflow-augmented over
   backflow-bare; against a plain PP it is ~800x by op count.
 - Angle: ~45% that (d) or (a) crosses 4.0e-6 at 6x6.
+
+## 2026-11-02: bars moved (tools/ketboard.py; J1J2_BENCHMARKS_COST.md section "2026-11-02 update")
+- 10x10: CNN-MPS -0.4976939(2) (arXiv 2603.14425 Table 1) is the new best bound; no code/checkpoint in the paper text.
+- 8x8: our add-on result is above the best published value (Varbench). Option A must beat -0.4976939 at 10x10.

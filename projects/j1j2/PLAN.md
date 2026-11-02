@@ -14,7 +14,9 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
   beats the old fitted loop (8.4e-6). The loop's accuracy edge at 6x6 is not demonstrated.
 - 8x8 (M1, translation x flip RBM+PP, results/m1_8x8/): VMC p=0 -0.498674(12), p=1 -0.498923(17); FN-GFMC p=0
   -0.4987565(28), p=1 -0.498946(5) (both QUOTABLE, 2 chains; p=0 dtau/M scans flat; p=1 M=64 check 0.1 sigma).
-  p=1 FN is 6.2e-5 below published full-projection RBM+PP (-0.498886) and 2.5e-4 above DMRG (-0.4992). Cost: training
+  p=1 FN is 6.2e-5 below published full-projection RBM+PP (-0.498886) and 2.5e-4 above DMRG (-0.4992).
+  > CORRECTION 2026-11-02: Varbench (arXiv 2302.04919) lists RBM+PP K=0 at -0.498963(2) (via ketworks; tools/ketboard.py --L 8 --bc pbc):
+  >   our p=1 FN -0.498946(5) is 1.7e-5 ABOVE the best published 8x8 value, not below it (Varbench file itself not yet opened). Cost: training
   ~4.1, VMC 1.1, FN p=0 0.4, FN p=1 7.9 H100-h. Projection dominates walker cost (8x8 one hop 4.0 s/walker-tau full,
   0.41 translations).
 - One Lanczos step removes 84% of the error at 6x6, 47% at 8x8 (fades with N).

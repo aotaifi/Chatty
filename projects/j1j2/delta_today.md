@@ -615,3 +615,4 @@
 2026-11-02 13:25 VERDICT job 17651564: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
 - 2026-11-02 sign S2b'/T-EDGE (sign_s2b; Paderborn 4087758 pp2, 4087759 rbm2, 4089690 edge; LMU 17643201, 17651564): PP warm plateau w_T 2.57e-6 tax 1.45e-6 (theta_bar); edge loss w_T 2.89e-6 tax 1.65e-6 (no gain); conv-RBM lr 3e-4 held-out acc 0.771 (<0.9, ungraded). 0.86 H100-h (S2b total 1.85).
 - 2026-11-02 sign angle step-back 2: PP-phase storage, two fixes failed (plateau 1.45e-6, edge 1.65e-6); verdict: separate generalisation from capacity by a full-set fit (~0.5 H100-h).
+- 2026-11-02 PI: floor computation (Pfaffian angle, CPU) extended: exact ED sign + network amplitude (bare/aug), ED sign + ED amplitude control, blocked-bond count in the ED-sign frame, self-consistent floors for s_G/s1/s2 (lead guesses s_G ~0.3e-6, ED sign 0).

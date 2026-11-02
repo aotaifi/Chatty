@@ -259,6 +259,24 @@ Conv RBM at lr 3e-4: held-out accuracy 0.771 (< 0.9), not graded. One seed each.
    and the tax. Prediction: w_T drops to 0.5-1.2e-6 and the tax to 0.3-0.7e-6 (generalisation) [55%]; if w_T stays >= 2e-6, the PP class
    cannot represent s_G to the bar (capacity), and the next step changes the class (parity features, Astra rank 2), not the data.
 
+## CORRECTION to STEP-BACK 2 (2026-11-02; independent Opus review /scratch/a/A.Otaifi/astra/sign_warm_opus/OPUS_warm.md)
+My 'generalisation' reading was wrong: the statistic I read it from ('61% of wrong weight off the training set') is 76% for the passing
+XL too, so it does not discriminate. Clean test (reviewer, CPU): error rate on own training draw vs a second draw of the same law: PP
+1.60% vs 1.72%, XL 0.75% vs 1.16%. The PP UNDERFITS (capacity). The warm start W is ill-posed: psi_P's RBM is complex and carries sign;
+the PP-only start is wrong on ~9e-6 of teacher weight. Rule adopted: compute any diagnostic on the passing control first.
+## T-CAP (PI 'agreed go' 2026-11-02; consensus with the Opus reviewer ~75%; pre-registered before any number; <= ~5 H100-h)
+Arms, each trained to the plateau rule (held-out change < 1% over the last 20% of steps, then 10% linear decay), caps from measured
+step counts (1-PP plateau took ~1.0 H100-h: pp 0.59 + pp2 0.41):
+ (1) 1-PP phase, NEW random seed, same history as pp + pp2 (cosine run, then warm constant-lr phase), cap 1.0 H100-h: seed scatter.
+ (2) 2-PP sum phase, P = P_a + P_b (two independent complex pairings, ~5.2k params), random init, cap 2.0 H100-h: capacity.
+ (3) sgn psi_P x sgn(Re(e^{-i theta0}(P_a + P_b))/|.| + kappa), kappa learned from 1.5 (starts exactly at sgn psi_P), cap 2.0 H100-h:
+     the PI's step-by-step hypothesis at the same capacity as (2).
+Same data, loss (uniform BCE on the margin), grading as S2b (exact FN tax inside the loop guide, c rescanned, theta_bar and theta(1200)).
+Decision: scatter s = |tax(1) - 1.447e-6|. Capacity lever iff tax(2) <= tax(1) - max(0.3e-6, 2s). PI hypothesis supported iff
+tax(3) <= tax(2) - max(0.3e-6, 2s). An arm that hits its cap is 'not at plateau' and its comparison is not read.
+Predictions (lead, before any number): (1) 1.35-1.55e-6; (2) 1.0-1.3e-6 [55% capacity lever]; (3) within 0.3e-6 of (2) [60%].
+Reviewer: T-RES 1.0-1.5e-6, <= 1.0e-6 at 20%.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

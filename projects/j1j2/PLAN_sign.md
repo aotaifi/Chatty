@@ -276,6 +276,8 @@ Decision: scatter s = |tax(1) - 1.447e-6|. Capacity lever iff tax(2) <= tax(1) -
 tax(3) <= tax(2) - max(0.3e-6, 2s). An arm that hits its cap is 'not at plateau' and its comparison is not read.
 Predictions (lead, before any number): (1) 1.35-1.55e-6; (2) 1.0-1.3e-6 [55% capacity lever]; (3) within 0.3e-6 of (2) [60%].
 Reviewer: T-RES 1.0-1.5e-6, <= 1.0e-6 at 20%.
+Amendment (takeover, before any number): arm (3) margin normalised l = sP M (m_res + kappa)/(1 + |kappa|) so |l| <= 1 as in (2);
+moved to theorie A40 (Paderborn ETA 2 days), caps scaled by the measured 2.2x A40/H100 ratio: (1) 2.2, (2)-(3) 4.5 A40-h each.
 
 ## STEP 0 RESULT 2026-11-02 (CPU 17652276-79, 17659148; /scratch/a/A.Otaifi/ansatz_runs/sign_q0/q0_*.json; verified by me)
 Fixed amplitude B = |psi_start|, exact chain, no storage (E_FN - E0 per site):

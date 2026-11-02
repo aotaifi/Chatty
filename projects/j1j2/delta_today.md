@@ -651,3 +651,14 @@
 2026-11-02 16:54 VERDICT job 17659148: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_q0/ANALYSIS.md]
 - 2026-11-02 sign angle step 0: no start qualifies at fixed amplitude (only the first sign step pays; B1's second loses 0.4e-6) = A4; Astra asked about the amplitude-refresh variant.
 - 2026-11-02 sign angle: step 0' amendment (B2, fixed vs exact-refresh, d gate dropped, Delta gate kept; Astra 85%) pre-registered; my 'only first step pays' corrected to untested.
+- 2026-11-02 17:12 sign angle STEP 0' (worker): submitted q0r arm a job 17662380, arm b job 17662381 (8 cores each, walls 2.5 h + 3.5 h = 48 core-h max), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_q0r, code q0r.py sha256 713fface7570; setsid watchers pids 665660/665661.
+2026-11-02 17:50 [pfaffian R5 race ctl_s1] 17659086 started (step 10) -> cancelled 4099843 (PI pre-approval via lead)
+2026-11-02 17:51 VERDICT job 4099844: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s1/tab/ANALYSIS.md]
+2026-11-02 17:51 VERDICT job 4099843: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s1/fit/ANALYSIS.md]
+2026-11-02 18:05 VERDICT job 17660541: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/vit10_runs/a03/ANALYSIS.md]
+2026-11-02 18:05 VERDICT job 4099498: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 18:05 VERDICT job 4099500: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 18:05 VERDICT job 4099501: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-02 18:05 VERDICT job 4099502: DISAPPEARED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+- 2026-11-02 18:10 sign T-CAP (worker): the 18:05 DISAPPEARED VERDICTs for 4099498/4099500/4099501/4099502 are FALSE: the PC2 VPN died at 14:54 (ping-restart, then 'Failed retrieving username or password', exit) and the watchers' ssh failed 30x. sacct 18:08: all 4 PENDING (Priority, QoS cont), est. start 2026-11-04 17:05. Not cancelled; no watcher now active; lead to decide (express QoS / VPN fix).
+- 2026-11-02 sign angle (takeover): T-CAP stuck on Paderborn (ETA 2026-11-04, VPN drops after ~5 min, watchers false DISAPPEARED); moved to theorie A40 per the PI's rule (Paderborn ETA > 1 day), Paderborn pending copies to be cancelled; arm (3) margin normalised to |l| <= 1. No express QoS used.

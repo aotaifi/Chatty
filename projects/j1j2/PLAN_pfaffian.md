@@ -1113,3 +1113,11 @@ My recommendation, at about 45% that it crosses 4.0e-6: (d), then (a) as its che
   killed at 4x6) is the closest dead end. (d) differs in that it is refit to the Jacobi target rather than a variational energy.
 Cost of the PI's choice: (d) ~12 H100-h, (a) ~8 H100-h, (c) reference 16 CPU core-h. Each would be pre-registered as above
 before it runs.
+
+## s_G floor (lead request 2026-11-02; CPU only; pre-registered before any number)
+Floor(s) = E_FN at the self-consistent amplitude for a fixed sign s: phi <- the FN ground state of H_FN[phi, s], iterated.
+This is the best any amplitude copy can reach with that sign. Method identical to the records (plain iteration from |psi0|,
+Aitken on the last solves; experiments/compress_6x6/cx_veto.py / cx_s2ceil.py), run for s_G, s1 and s2 with one code.
+Controls: s1 2.51e-6 at 40 solves (Aitken 2.05e-6); s2 ~0.9e-6 (cx_s2ceil.json).
+PREDICTION: floor(s_G) 1.2-2.0e-6 per site. Then today's best guide (theta_4 augmented, 4.367e-6) sits 2.4-3.2e-6 above it,
+so the amplitude, not the sign, still holds 55-75% of the guide's error at s_G.

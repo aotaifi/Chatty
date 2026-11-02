@@ -650,3 +650,4 @@
 - 2026-11-02 16:50 TAKEOVER (PI away). Defaults: A0 continues on A40 (f32 if the revised gate passes, else f64 VMC within 8 A40-h and FN waits for H100 racers); FN p=0 pilot only after A0.3 sizing, ceiling 40 A40-h + 20 H100-h for A this stretch; C (~10 H100-h) and sign T-CAP (~5 H100-h) as approved; no new campaign, no deletions, no paper, no production code. Wakes: A0.3 VERDICT wait (b4dxskl2t), check-in timer 11-03 12:00, angles owe C round 5 and T-CAP.
 2026-11-02 16:54 VERDICT job 17659148: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_q0/ANALYSIS.md]
 - 2026-11-02 sign angle step 0: no start qualifies at fixed amplitude (only the first sign step pays; B1's second loses 0.4e-6) = A4; Astra asked about the amplitude-refresh variant.
+- 2026-11-02 sign angle: step 0' amendment (B2, fixed vs exact-refresh, d gate dropped, Delta gate kept; Astra 85%) pre-registered; my 'only first step pays' corrected to untested.

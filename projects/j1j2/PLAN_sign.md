@@ -288,10 +288,22 @@ Fixed amplitude B = |psi_start|, exact chain, no storage (E_FN - E0 per site):
 | B1 | 1 | 3.51e-5 | -4.3e-7 | 6.4e-5 -> 6.1e-5 |
 Control: A's c = 0 step reproduces s_G exactly (alpha -0.18338). NO START QUALIFIES (pre-registered d_k >= 1e-5 and Delta_k >= 0.5e-6
 for k = 0, 1, 2). Predictions: A fails at k = 1 MISSED (fails at k = 0 on d); PP qualifies MISSED.
-Reading: at FIXED amplitude only the first sign step pays; the second (B1, k = 1) moves the sign on 3.5e-5 of the weight and LOSES
+Reading (CORRECTED after Astra cj-35a7f4402d6c): A, PP and B2 stopped on the d gate, so 'only the first step pays' is UNTESTED for them; the second (B1, k = 1) moves the sign on 3.5e-5 of the weight and LOSES
 energy. This is A4 again (TRIED_IDEAS: a second Krylov step at fixed modulus fails; 'K1 -> FN refresh -> projected K1'): a sign step
 pays only with a magnitude matched to it. So the fixed-amplitude moving-target test, as the PI and I set it up, cannot host several
 useful sign updates. I should have checked A4 before proposing 'fixed amplitude first'.
+
+## STEP 0' (AMENDMENT, takeover 2026-11-02, Astra cj-35a7f4402d6c /scratch/a/A.Otaifi/astra/sign_q0/ASTRA_q0.md, 85%; pre-registered before any number)
+The original step 0 FAILED its registered gates; that stands. Amendment: the d_k >= 1e-5 gate is dropped as a qualification veto (no
+conversion from vertex mass to FN energy; A gains 1.73e-6 at d 1.67e-6); Delta_k >= 0.5e-6/site for three rounds is kept and not lowered.
+Start B2 only (largest first gain among the d-stopped starts). Two arms after the shared round 0:
+ (a) fixed base B (as step 0);
+ (b) exact refresh after each sign step: B_{k+1} = |Phi_FN[J(B_k, T_k)]| / sqrt(n_orb), one converged FN solve, J(B,S) = S B e^{c* f_J[B;S]}.
+Grade each round at a COMMON amplitude: Delta_k = F_{B_k}(S_k) - F_{B_k}(T_k) (refresh lowers E_FN even at unchanged sign, so post-refresh
+falls do not count). Stop an arm at the first Delta_k < 0.5e-6. Cap 48 CPU core-h. Sensitivity: the fJ-undefined rows and the 1e-15 floor.
+Predictions (lead, before any number): (a) fails at k = 1 [65%]; (b) three useful updates [45%].
+Decision: an arm qualifies -> propose the storage test on it to the PI at check-in (no GPU in takeover beyond the T-CAP default);
+neither -> stop the qualification search, report the chain numbers; no more starts, no alpha change, no size change in takeover.
 
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.

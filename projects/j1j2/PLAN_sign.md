@@ -230,6 +230,20 @@ with exact grading: 2-3 sign rounds S_{k+1} = sgn[G_k(1 + alpha_k(E_L[G_k] - E))
 class and fed forward, from a start where one step changes the sign on a scale-like weight (weaker psi_P checkpoint or sgn psi_P;
 not Marshall). Readout: does E_FN still fall per round, and does the tax accumulate. Astra cj-ed149d8d5be8 asked blind.
 
+## DECISION (PI 2026-11-02, after lead and Astra cj-ed149d8d5be8 /scratch/a/A.Otaifi/astra/sign_target/ASTRA_target.md): MOVING-TARGET TEST at 6x6
+Bar (ii): per sign round k, tau_k <= 0.25 Delta_k (Delta_k = e_keep - e_teacher, tau_k = e_stored - e_teacher, each sign with its own
+walls, matched amplitude), for three useful updates; and the stored loop keeps >= 75% of the cumulative gain of the same loop without
+storage. Two storage seeds. Deployable class only. FIXED AMPLITUDE first (refit only if storage passes).
+STEP 0 (qualify a start; CPU; pre-registered before any number): candidate starts = existing exact tables of weaker guides in
+Chatty/runs/rbmpp6 (PP-only rpTabPP, rpTabB1/B2, and A for reference). Fixed B = |psi_start|. Chain, exact, no storage:
+S_0 = sgn psi_start; G_k = S_k B e^{c_k f_J[B; S_k]} (c_k by exact scan, reported as optimistic); S_{k+1} = sgn[G_k (1 + alpha_k(E_L[G_k] - E_k))],
+alpha_k = Ritz one-step Lanczos as in lp6x6.py / test_x.py, E_k = E_var[G_k]. Readouts per k = 0, 1, 2: d_k = Pr_pT(S_{k+1} != S_k),
+ED mismatch of S_k, e_keep = E_FN[G_k-type guide with S_k], e_teacher = same with S_{k+1}, Delta_k.
+Qualifies iff for k = 0, 1, 2: d_k >= 1e-5 and Delta_k >= 0.5e-6/site.
+Prediction: table A fails at k = 1 (S_1 = s_G-like, near exact; d_1 < 1e-5) [80%]; the PP-only table qualifies [55%].
+If none qualifies: the 6x6 learned-guide family cannot host three useful sign updates; report to the PI with the chain numbers
+(then the 8x8 snapshot test (c) is the only route).
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

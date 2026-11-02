@@ -490,7 +490,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-10-31)
+## Running (2026-11-02)
+- Sign angle: moving-target sign storage test at 6x6 (PI decision 2026-11-02), step 0 qualifying a weaker start (CPU); T-EDGE Paderborn 4089690.
 - Pfaffian angle: ROUND 4 (lead GO 2026-10-31), averaged protocol from theta-bar, s_G, ~1.5 H100-h; pred r_4 0.11-0.15, bare 1.13-1.17e-5,
   aug 4.0-4.3e-6; r_4 >= 0.178 kills the decline, bare drop <= 0.5e-6 kills progress. Equal cost at 6x6: training tie/lose, walker step unresolved
   (Jacobi 5.4x measured; Lanczos 36x by op count vs constant factor on board 23), accuracy ours (4.79 vs 5.57e-6); docs/reports/2026-10-31_label_free_loop_6x6.md.

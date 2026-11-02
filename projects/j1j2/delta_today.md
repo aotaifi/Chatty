@@ -606,3 +606,4 @@
 2026-11-02 05:27 VERDICT job 4087758: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
 2026-11-02 06:35 VERDICT job 17643201: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_s2b/ANALYSIS.md]
 - 2026-11-02 ketworks: tools/ketboard.py (clone /scratch/a/A.Otaifi/ext/ketworks); benchmark file updated (bd9a4ce). New bars: 10x10 CNN-MPS -0.4976939(2), 16x16 -0.4969140(5) (2603.14425 Table 1). CORRECTION: our 8x8 p=1 FN -0.498946(5) is 1.7e-5 ABOVE Varbench RBM+PP -0.498963(2) (2302.04919), not 6.2e-5 below the best published.
+- 2026-11-02 lead verified: T-OTF (sign_otf/otf_sGsP.json) on-the-fly s_G with sgn(psi_P) walls 6.48e-6 (theta-bar) -> lead's idea fails (pred 5.0-6.0); S2b' PP old loss to plateau (v2_S_pp2.json) 6.09e-6, w_T 2.57e-6, tax 1.45e-6, still above competitor. T-EDGE (Paderborn 4089690) pending.

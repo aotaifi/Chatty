@@ -1121,3 +1121,13 @@ Aitken on the last solves; experiments/compress_6x6/cx_veto.py / cx_s2ceil.py), 
 Controls: s1 2.51e-6 at 40 solves (Aitken 2.05e-6); s2 ~0.9e-6 (cx_s2ceil.json).
 PREDICTION: floor(s_G) 1.2-2.0e-6 per site. Then today's best guide (theta_4 augmented, 4.367e-6) sits 2.4-3.2e-6 above it,
 so the amplitude, not the sign, still holds 55-75% of the guide's error at s_G.
+Additions (lead/PI 2026-11-02, same tables and solver; one-line predictions written before any number):
+- (A) Exact ED sign s0 plus the ED amplitude |psi0|: a control. It must give E0, i.e. e < 1e-10 per site (the solver
+  residual is ~1e-6, so the energy error is quadratic).
+- (B) s0 blocked bonds (s0 x H x s0 > 0): they exist, because frustration leaves positive sign-frame elements even at the
+  exact sign. I predict 10-30% of J2 bonds and < 5% of J1 bonds by count, with a |H| psi0 psi0-weighted share of 1-5%.
+  If there are none, (C) must be exact.
+- (C) s0 plus the theta_4 amplitude: bare 0.8-1.2e-5; augmented (c rescanned on s0's walls) 1.5-3.0e-6, well below s_G's
+  4.37e-6, because the walls move to where the exact node is.
+- (D) Floor at s0 = 0 to solver precision (psi0 is the fixed point). Floors s_G 1.2-2.0e-6 (mine, as above); the lead's
+  unmeasured guess is ~0.3e-6.

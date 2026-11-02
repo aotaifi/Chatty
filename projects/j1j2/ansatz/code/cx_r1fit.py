@@ -6,6 +6,11 @@
   sign: the target sign is read from spec key 'sign_path' (required; replaces refresh/s2.npy in bonds_of, bond_chunk, PT, efn, t_real).
   skip_efn: no E_FN / splice readout at the end (R1 does them on CPU).  self_test: CPU checks (a) W = 0 constant, (b) Jacobian vs central
       finite differences, (w) warm ln|A| vs check_table, then exit 0 (no fit).  break_rbm_grad: TEST ONLY (stop_gradient on R).
+R5 two-PP class (d) (PLAN_pfaffian.md "Two-PP class (d)"): arm 'pp2': B(x) = exp(R(x)) * (P_1(x) + lam P_2(x)), P_j the complex PP of arm 'rbmpp'
+  (same 576 images, same parity), R the same inactive RBM; theta = [rbmpp theta of P_1 (2740) | Re f_2, Im f_2 (2592) | Re lam, Im lam] (5334).  Warm: a 2740
+  warm_theta is P_1 (+ RBM), spec key warm_theta2 (a 2740 rbmpp theta) gives f_2, lam = lambda_init_re + i lambda_init_im (default 0.1); a 5334 theta is taken
+  as is.  self_test_pp2: CPU checks (a) lam = 0 vs the single-PP code path, (b) Jacobian vs central FD, (c) orbit / flip invariance, (d) d/d lam vs the P_1
+  tangent space; each with a broken control; then exit 0.  The old arms are unchanged.
 Original docstring of cx_c1fit.py follows.
 Test C (complex vs real PP) fit worker = cx_f1fit.py (sha 6d51ccbe...) + options --complex / --warm_theta / --im_sigma / --seed / t_real.npy (see C1 block markers).
 Original docstring of cx_f1fit.py follows.
@@ -74,7 +79,7 @@ while _i < len(_a):
     else: raise SystemExit(f'unknown option {_a[_i]}')
 COMPLEX = bool(SPEC.get('complex', False)); IM_SIGMA = float(SPEC.get('im_sigma', 0.0))
 F = os.path.join(OUT, 'cx_t1s.json'); PROG = os.path.join(OUT, 'progress.txt'); T00 = time.time()
-ARM = SPEC['arm']; assert ARM in ('vit', 'vit_nostrat', 'pp', 'ppbf', 'rbmpp'), ARM
+ARM = SPEC['arm']; assert ARM in ('vit', 'vit_nostrat', 'pp', 'ppbf', 'rbmpp', 'pp2'), ARM
 STRAT = ARM != 'vit_nostrat'; MODEL = 'vit' if ARM.startswith('vit') else ARM
 DRY = bool(SPEC.get('dry', False)); SEED = int(SPEC.get('seed', 0))
 DECS = list(range(-5, -14, -1)); ND = len(DECS)
@@ -146,7 +151,7 @@ res['decade_orbits'] = {str(d): dict(train=int(np.sum((dec_h == d) & ~ho_h)), he
 progress(f'[t1s {ARM}] lab + target ready {time.time() - T00:.0f}s  orbits per decade {res["decade_orbits"]}')
 
 # ============================================================================================ models
-RBMPP = False
+RBMPP = False; PP2 = False
 if MODEL == 'vit':
     import flax
     import vit_dt
@@ -173,6 +178,7 @@ if MODEL == 'vit':
     jac_in = lambda Sx: bits(Sx)
 else:
     from rbmpp_lib import Lattice
+    if SPEC.get('arm') == 'pp2': from rbmpp_lib import pp2_combine     # R5
     lat = Lattice(6, 0.5, 'full')
     IMG = lat.IMG; FLP = lat.FL.astype(jnp.float64); NH = N // 2
     xy = np.array([(i % 6, i // 6) for i in range(N)])
@@ -184,9 +190,13 @@ else:
     BF = MODEL == 'ppbf'
     RBMPP = MODEL == 'rbmpp'; NA = int(SPEC.get('rbm_alpha', 4))       # R1
     if RBMPP: COMPLEX = True
+    PP2 = MODEL == 'pp2'                                                # R5 two-PP class (d)
+    if PP2: COMPLEX = True
+    NP1 = 2 * N * N + NA * (N + 1)                                       # R5: size of the rbmpp theta (= the P_1 + RBM block of pp2)
+    LAM_INIT = complex(float(SPEC.get('lambda_init_re', 0.1)), float(SPEC.get('lambda_init_im', 0.0)))
     BREAK_R = bool(SPEC.get('break_rbm_grad', False))                   # TEST ONLY
     ND9 = BFW * BFW; HW = BFW // 2
-    if COMPLEX and not RBMPP: assert BF and BFW == 3, 'C1: --complex is ppbf window 3 only (theta = [Re 1944, Im 1944])'
+    if COMPLEX and not RBMPP and not PP2: assert BF and BFW == 3, 'C1: --complex is ppbf window 3 only (theta = [Re 1944, Im 1944])'
     NP_REAL = N * N + 2 * ND9 * N                                              # 1944
     NBRW = jnp.asarray(np.array([[((x + dx) % 6) + 6 * ((y + dy) % 6) for dy in range(-HW, HW + 1) for dx in range(-HW, HW + 1)]
                                  for y in range(6) for x in range(6)], np.int32))
@@ -194,8 +204,10 @@ else:
     IN3 = np.array([(dy + HW) * BFW + (dx + HW) for dy in (-1, 0, 1) for dx in (-1, 0, 1)])   # 3x3 slots inside the window layout
     if SPEC.get('break_embed'): IN3 = IN3 + 1 if BFW == 5 else IN3     # TEST ONLY (check that the step-0 held-out loss detects a wrong embedding)
     theta0 = jnp.concatenate([f0.reshape(-1), jnp.zeros(2 * ND9 * N if BF else 0, jnp.float64)])
-    if COMPLEX and not RBMPP: theta0 = jnp.concatenate([theta0, jnp.zeros(NP_REAL, jnp.float64)])         # [Re, Im], Im = 0
+    if COMPLEX and not RBMPP and not PP2: theta0 = jnp.concatenate([theta0, jnp.zeros(NP_REAL, jnp.float64)])         # [Re, Im], Im = 0
     if RBMPP: theta0 = jnp.concatenate([f0.reshape(-1), jnp.zeros(N * N + NA * (N + 1), jnp.float64)])   # R1: [Re f, Im f, RBM (NA, 37)]
+    if PP2: theta0 = jnp.concatenate([f0.reshape(-1), jnp.zeros(N * N + NA * (N + 1), jnp.float64), f0.reshape(-1), jnp.zeros(N * N, jnp.float64),
+                                      jnp.asarray([LAM_INIT.real, LAM_INIT.imag], jnp.float64)])   # R5: [P_1 block | Re f_2, Im f_2 | Re lam, Im lam]
     FCH, JCH, TCH = 512, 64, 512
     WARM = jnp.asarray(np.load(SPEC['pp_table'])['lP'], jnp.float64)
 
@@ -224,6 +236,18 @@ else:
     def A_one(th, sigma):
         """(m, S): A = exp(m) * S, S = sum over the 576 images of sgn * exp(ld - m) (real, or complex with --complex).
         R1 rbmpp: m = max ld (stop_gradient) + R(sigma), R = sum_g sum_a ln cosh(b_a + W_a . z_g) (differentiable)."""
+        if PP2:                                                           # R5: B = P_1 + lam P_2 (rbmpp_lib.pp2_combine), same images, same R
+            f = (th[:N * N] + 1j * th[N * N:2 * N * N]).reshape(N, N)
+            wb = th[2 * N * N:NP1].reshape(NA, N + 1)
+            f2 = (th[NP1:NP1 + N * N] + 1j * th[NP1 + N * N:NP1 + 2 * N * N]).reshape(N, N)
+            lam = th[NP1 + 2 * N * N] + 1j * th[NP1 + 2 * N * N + 1]
+            Z = FLP[:, None] * sigma.astype(jnp.float64)[IMG]
+            ld, sgn = jax.vmap(lambda zz: log_one(f, None, None, zz))(Z)
+            ld2, sgn2 = jax.vmap(lambda zz: log_one(f2, None, None, zz))(Z)
+            m, S_ = pp2_combine(ld, sgn, ld2, sgn2, lam)
+            Rx = jnp.sum(lncosh(Z @ wb[:, :N].T + wb[:, N][None, :]))
+            if BREAK_R: Rx = jax.lax.stop_gradient(Rx)
+            return m + Rx, S_
         if RBMPP:
             f = (th[:N * N] + 1j * th[N * N:2 * N * N]).reshape(N, N)
             wb = th[2 * N * N:].reshape(NA, N + 1)
@@ -259,7 +283,14 @@ NPAR = int(theta0.size)
 theta_start = theta0
 if WARM_THETA:
     _w = np.load(WARM_THETA)
-    if RBMPP:                                        # R1: Re f, Im f of the complex copy (3888 = [Re f, Re u, Im f, Im u]); RBM = 0
+    if MODEL == 'pp2':                               # R5: a 2740 rbmpp theta = P_1 (+ RBM); f_2 from warm_theta2 (rbmpp theta, its RBM block dropped); lam = LAM_INIT
+        if _w.size != NPAR:
+            assert _w.size == NP1, (_w.size, NP1, NPAR)
+            _w2 = np.load(SPEC['warm_theta2']); assert _w2.size == NP1 and _w2.dtype == np.float64, (_w2.size, _w2.dtype)
+            res['warm_theta2'] = SPEC['warm_theta2']; res['warm_theta2_sha256'] = __import__('hashlib').sha256(open(SPEC['warm_theta2'], 'rb').read()).hexdigest()
+            res['warm_theta2_rbm_block_maxabs'] = float(np.max(np.abs(_w2[2 * N * N:])))
+            _w = np.concatenate([_w, _w2[:2 * N * N], [LAM_INIT.real, LAM_INIT.imag]]); del _w2
+    elif RBMPP:                                        # R1: Re f, Im f of the complex copy (3888 = [Re f, Re u, Im f, Im u]); RBM = 0
         if _w.size != NPAR:
             assert _w.size == 2 * (N * N + 2 * 9 * N), (_w.size, NPAR)
             _w = np.concatenate([_w[:N * N], _w[N * N + 2 * 9 * N:2 * N * N + 2 * 9 * N], np.zeros(NA * (N + 1))])
@@ -279,7 +310,8 @@ if MODEL == 'ppbf' and FREEZE:
     ACT = jnp.asarray(np.nonzero(np.concatenate([np.ones(N * N, bool), _m.reshape(-1)]))[0])
 res['complex'] = COMPLEX; res['im_sigma'] = IM_SIGMA; res['bf_window'] = BFW; res['freeze_outer'] = FREEZE; res['n_active'] = int(ACT.size) if ACT is not None else NPAR
 res['npar'] = NPAR; res['npar_note'] = ('ViT (cx_reanchor)' if MODEL == 'vit' else
-                                       f'f 36x36 ({N * N}, diagonal unused: {N * N - N} active)' + (f' + backflow u1,u2 2x9x36 ({2 * 9 * N})' if MODEL == 'ppbf' else f' + Im f ({N * N}) + RBM alpha {NA} x 37 ({NA * (N + 1)})' if MODEL == 'rbmpp' else ''))
+                                       f'f 36x36 ({N * N}, diagonal unused: {N * N - N} active)' + (f' + backflow u1,u2 2x9x36 ({2 * 9 * N})' if MODEL == 'ppbf' else f' + Im f ({N * N}) + RBM alpha {NA} x 37 ({NA * (N + 1)})' if MODEL == 'rbmpp' else
+                                       f' + Im f ({N * N}) + RBM alpha {NA} x 37 ({NA * (N + 1)}) + P_2 Re/Im f ({2 * N * N}) + Re/Im lam (2)' if MODEL == 'pp2' else ''))
 progress(f'[t1s {ARM}] model {MODEL} npar {NPAR}')
 
 
@@ -319,6 +351,125 @@ def table(th, idx=None):
         if time.time() - tl > 120:
             jax.block_until_ready(out[-1]); tl = time.time(); progress(f'  table {i + m}/{D_}  {tl - t0:.0f}s')
     return jnp.concatenate(out)
+
+
+# ============================================================================================ R5 pp2 self test (CPU checks; exits)
+if SPEC.get('self_test_pp2'):
+    assert PP2 and NPAR == NP1 + 2 * N * N + 2, (PP2, NPAR, NP1)
+    _r = np.random.default_rng(int(SPEC.get('self_test_seed', 11))); st = dict(npar=NPAR, np1=NP1, lam_init=[LAM_INIT.real, LAM_INIT.imag])
+    _thw = np.asarray(theta_start, np.float64); _L = NPAR - 2
+    st['warm'] = dict(lam=_thw[_L:].tolist(), rbm_block_maxabs=float(np.max(np.abs(_thw[2 * N * N:NP1]))), warm_theta=WARM_THETA, warm_theta2=SPEC.get('warm_theta2'))
+
+    def _single_pp_fn():                              # the 'rbmpp' code path of A_one (globals switched while tracing), on the first NP1 entries
+        global PP2, RBMPP
+        PP2, RBMPP = False, True
+        try:
+            fn = jax.jit(lambda th, Sx: jax.vmap(lambda s_: logA_one(th, s_))(bits(Sx).astype(jnp.float64)))
+            jax.block_until_ready(fn(jnp.asarray(_thw[:NP1]), sec.reps[:FCH]))
+        finally:
+            PP2, RBMPP = True, False
+        return fn
+    _fn1 = _single_pp_fn()
+    _f1 = lambda th, Sx: np.concatenate([np.asarray(_fn1(jnp.asarray(th), _pad(Sx[i:i + FCH], FCH)[0]))[:min(FCH, Sx.shape[0] - i)] for i in range(0, Sx.shape[0], FCH)])
+    _ix = np.sort(_r.choice(int(sec.D), 1000, replace=False)); _X = sec.reps[jnp.asarray(_ix)]
+    # (a) lam = 0: pp2 == single PP with P_1's params; broken: lam = 1e-3 must differ
+    _tha = _thw.copy(); _tha[_L:] = 0.0
+    _lref = _f1(_thw[:NP1], _X); _l0 = np.asarray(fwd(jnp.asarray(_tha), _X))
+    _thb = _tha.copy(); _thb[_L] = 1e-3; _lb = np.asarray(fwd(jnp.asarray(_thb), _X))
+    st['a'] = dict(n_orbits=int(_ix.size), max_abs_dev_lam0=float(np.max(np.abs(_l0 - _lref))), broken_lam1em3_max_abs_dev=float(np.max(np.abs(_lb - _lref))),
+                   broken_lam1em3_min_abs_dev=float(np.min(np.abs(_lb - _lref))))
+    st['a_pass'] = bool(st['a']['max_abs_dev_lam0'] < 1e-12 and st['a']['broken_lam1em3_max_abs_dev'] > 1e-12)
+    if SPEC.get('check_table'):                       # secondary: the production (H100) table of the single-PP theta on the same orbits
+        _t = np.load(SPEC['check_table'], mmap_mode='r')[_ix]
+        st['a']['vs_check_table'] = dict(table=SPEC['check_table'], max_abs_dev_single_pp=float(np.max(np.abs(_lref - _t))), max_abs_dev_pp2_lam0=float(np.max(np.abs(_l0 - _t))))
+    # warm-start balance |lam P_2| / |P_1| (diagnostic): P_2 alone through the single-PP path
+    _th2 = np.concatenate([_thw[NP1:NP1 + 2 * N * N], _thw[2 * N * N:NP1]]); _l2 = _f1(_th2, _X)
+    _rat = abs(LAM_INIT) * np.exp(_l2 - _lref); _lw = np.asarray(fwd(jnp.asarray(_thw), _X))
+    st['warm_balance'] = dict(abs_lam_P2_over_P1_quantiles={q: float(np.quantile(_rat, q)) for q in (0.1, 0.5, 0.9)}, warm_minus_P1_lnB_median=float(np.median(_lw - _lref)),
+                              warm_minus_P1_lnB_max_abs=float(np.max(np.abs(_lw - _lref))))
+    # (b) Jacobian vs central FD at the warm theta (lam = LAM_INIT), 10 orbits: 4 Re f_1, 4 Im f_1, 4 Re f_2, 4 Im f_2, 2 RBM, Re lam, Im lam
+    _X10 = _X[:10]; _G = np.asarray(jac(jnp.asarray(_thw), _X10))
+    _offd = [i * N + j for i in range(N) for j in range(N) if i != j]
+    _P = [int(q) for q in list(_r.choice(_offd, 4, replace=False)) + [N * N + q for q in _r.choice(_offd, 4, replace=False)]
+          + [NP1 + q for q in _r.choice(_offd, 4, replace=False)] + [NP1 + N * N + q for q in _r.choice(_offd, 4, replace=False)]
+          + list(2 * N * N + _r.choice(NA * (N + 1), 2, replace=False)) + [_L, _L + 1]]
+    _kind = ['Re f1'] * 4 + ['Im f1'] * 4 + ['Re f2'] * 4 + ['Im f2'] * 4 + ['RBM'] * 2 + ['Re lam', 'Im lam']
+    _h = float(SPEC.get('fd_h', 1e-6)); _FD = np.empty((10, len(_P)))
+    for k, q in enumerate(_P):
+        _tp = _thw.copy(); _tp[q] += _h; _tm = _thw.copy(); _tm[q] -= _h
+        _FD[:, k] = (np.asarray(fwd(jnp.asarray(_tp), _X10, 10)) - np.asarray(fwd(jnp.asarray(_tm), _X10, 10))) / (2 * _h)
+    _J = _G[:, _P]; _sc = np.max(np.abs(_FD), 1, keepdims=True)
+    _Gb = np.asarray(jac(jnp.asarray(_thw + 1e-3 * _r.standard_normal(NPAR)), _X10))[:, _P]
+    st['b'] = dict(params=_P, kind=_kind, h=_h, max_rel_dev=float(np.max(np.abs(_J - _FD) / _sc)),
+                   max_rel_dev_per_col=dict(zip([f'{k}:{q}' for k, q in zip(_kind, _P)], np.max(np.abs(_J - _FD) / _sc, 0).tolist())),
+                   lam_cols_max_rel_dev=float(np.max(np.abs(_J[:, -2:] - _FD[:, -2:]) / _sc)), lam_cols_absmax=float(np.max(np.abs(_FD[:, -2:]))),
+                   elementwise_max_rel=float(np.max(np.abs(_J - _FD) / np.maximum(np.abs(_FD), 1e-6))),
+                   broken_perturbed_theta_max_rel_dev=float(np.max(np.abs(_Gb - _FD) / _sc)), scale='per orbit: max |FD| over the tested columns')
+    st['b_pass'] = bool(st['b']['max_rel_dev'] < 1e-6 and st['b']['broken_perturbed_theta_max_rel_dev'] > 1e-4)
+    # (c) orbit and spin-flip invariance of ln|B| and of the Jacobian rows: 20 orbits x 6 group elements (lat.G) and the global flip; broken: one image dropped
+    _ls = jax.jit(jax.vmap(logA_one, in_axes=(None, 0))); _js = jax.jit(jax.vmap(jax.grad(logA_one), in_axes=(None, 0)))
+    _S20 = np.asarray(bits(_X[:20]).astype(jnp.float64)); _Gg = np.asarray(lat.G); _ks = _r.integers(0, len(_Gg), 6)
+    _thj = jnp.asarray(_thw)
+
+    def _inv(lsf, jsf):
+        l0 = np.asarray(lsf(_thj, jnp.asarray(_S20))); j0 = np.asarray(jsf(_thj, jnp.asarray(_S20))); jsc = np.max(np.abs(j0), 1, keepdims=True)
+        dl = dj = 0.0
+        for k in _ks:
+            Sg = _S20[:, _Gg[k]]; dl = max(dl, float(np.max(np.abs(np.asarray(lsf(_thj, jnp.asarray(Sg))) - l0))))
+            dj = max(dj, float(np.max(np.abs(np.asarray(jsf(_thj, jnp.asarray(Sg))) - j0) / jsc)))
+        fl = float(np.max(np.abs(np.asarray(lsf(_thj, jnp.asarray(-_S20))) - l0))); fj = float(np.max(np.abs(np.asarray(jsf(_thj, jnp.asarray(-_S20))) - j0) / jsc))
+        return dict(orbit_lnB_max_abs=dl, orbit_J_max_rel=dj, flip_lnB_max_abs=fl, flip_J_max_rel=fj)
+    st['c'] = _inv(_ls, _js); st['c']['group_elements'] = [int(k) for k in _ks]
+    _IMG0, _FLP0 = IMG, FLP
+    IMG, FLP = IMG[1:], FLP[1:]                        # broken: the projection without image 0 (re-traced with the globals switched)
+    try:
+        st['c_broken_one_image_dropped'] = _inv(jax.jit(jax.vmap(logA_one, in_axes=(None, 0))), jax.jit(jax.vmap(jax.grad(logA_one), in_axes=(None, 0))))
+    finally:
+        IMG, FLP = _IMG0, _FLP0
+    st['c_pass'] = bool(max(st['c']['orbit_lnB_max_abs'], st['c']['flip_lnB_max_abs']) < 1e-10 and max(st['c']['orbit_J_max_rel'], st['c']['flip_J_max_rel']) < 1e-8
+                        and st['c_broken_one_image_dropped']['orbit_lnB_max_abs'] > 1e-6)
+    # (d) d ln|B| / d lam vs the P_1 tangent space (columns 0..NP1-1 of the pp2 Jacobian at the warm theta), 4096 orbits
+    _nd = int(SPEC.get('self_test_d_orbits', 4096)); _ixd = np.sort(_r.choice(int(sec.D), _nd, replace=False))
+    _Jd = np.asarray(jac(jnp.asarray(_thw), sec.reps[jnp.asarray(_ixd)]))
+    _A1 = _Jd[:, :NP1]; _A1c = np.concatenate([_A1, np.ones((_nd, 1))], 1)
+    _sv = np.linalg.svd(_A1, compute_uv=False); _rk = int(np.sum(_sv > 1e-10 * _sv[0]))
+
+    def _cos(v, A):
+        c_, *_ = np.linalg.lstsq(A, v, rcond=None); pv = A @ c_; return float(np.linalg.norm(pv) / np.linalg.norm(v))
+    _vr = _r.standard_normal(_nd); _vin = _A1 @ _r.standard_normal(NP1)
+    st['d'] = dict(n_orbits=_nd, rank_P1_block=_rk, n_cols_P1_block=NP1,
+                   col_absmax={'Re lam': float(np.max(np.abs(_Jd[:, _L]))), 'Im lam': float(np.max(np.abs(_Jd[:, _L + 1])))},
+                   col_rms={'Re lam': float(np.sqrt(np.mean(_Jd[:, _L] ** 2))), 'Im lam': float(np.sqrt(np.mean(_Jd[:, _L + 1] ** 2)))},
+                   cos_with_projection_on_P1={'Re lam': _cos(_Jd[:, _L], _A1), 'Im lam': _cos(_Jd[:, _L + 1], _A1)},
+                   cos_with_projection_on_P1_plus_const={'Re lam': _cos(_Jd[:, _L], _A1c), 'Im lam': _cos(_Jd[:, _L + 1], _A1c)},
+                   null_random_gaussian_vector=_cos(_vr, _A1), broken_vector_in_P1_span=_cos(_vin, _A1),
+                   P2_block_cos_on_P1={'Re f2 col (first off-diag)': _cos(_Jd[:, NP1 + 1], _A1)})
+    st['d_pass'] = bool(min(st['d']['col_absmax'].values()) > 1e-8 and max(st['d']['cos_with_projection_on_P1'].values()) < 1 - 1e-6 and st['d']['broken_vector_in_P1_span'] > 1 - 1e-8)
+    # (d) gauge identity: ln|B|(alpha f_1, lam) = (N/2) ln|alpha| + ln|B|(f_1, lam alpha^(-N/2)), so with lam = lr + i li:
+    #   J_Imlam * (N/2) |lam|^2 ... in general: J_P1 . u_phase = (N/2) (li J_Relam - lr J_Imlam),  J_P1 . u_scale = N/2 - (N/2) (lr J_Relam + li J_Imlam),
+    #   u_phase = [-Im f_1, Re f_1], u_scale = [Re f_1, Im f_1] in the (Re f_1, Im f_1) columns.  Exact => d/d lam lies in span(P_1 columns, constant).
+    _lr, _li = float(_thw[_L]), float(_thw[_L + 1]); _h2 = N // 2
+    _up = np.concatenate([-_thw[N * N:2 * N * N], _thw[:N * N]]); _us = _thw[:2 * N * N]
+    _gp = _Jd[:, :2 * N * N] @ _up - _h2 * (_li * _Jd[:, _L] - _lr * _Jd[:, _L + 1])
+    _gs = _Jd[:, :2 * N * N] @ _us - (_h2 - _h2 * (_lr * _Jd[:, _L] + _li * _Jd[:, _L + 1]))
+    st['d']['gauge_identity_max_abs_dev'] = dict(phase=float(np.max(np.abs(_gp))), scale=float(np.max(np.abs(_gs))), scale_of_terms=float(np.max(np.abs(_Jd[:, :2 * N * N] @ _us))))
+    # (d2) does the P_2 block enlarge the tangent space?  numerical ranks on more orbits than parameters (rank tolerance 1e-10 x largest singular value)
+    _nd2 = int(SPEC.get('self_test_d2_orbits', 0))
+    if _nd2:
+        _ix2 = np.sort(_r.choice(int(sec.D), _nd2, replace=False)); _J2 = np.asarray(jac(jnp.asarray(_thw), sec.reps[jnp.asarray(_ix2)]))
+        _rkf = lambda A: (lambda sv: int(np.sum(sv > 1e-10 * sv[0])))(np.linalg.svd(A, compute_uv=False))
+        _one = np.ones((_nd2, 1))
+        st['d2'] = dict(n_orbits=_nd2, rank_P1_const=_rkf(np.concatenate([_J2[:, :NP1], _one], 1)),
+                        rank_P1_const_lam=_rkf(np.concatenate([_J2[:, :NP1], _one, _J2[:, _L:]], 1)),
+                        rank_P1_const_P2=_rkf(np.concatenate([_J2[:, :NP1], _one, _J2[:, NP1:_L]], 1)),
+                        rank_all=_rkf(np.concatenate([_J2, _one], 1)), n_cols_all=NPAR + 1); del _J2
+        progress(f'[self_test_pp2] d2 ranks {st["d2"]}')
+    json.dump(st, open(os.path.join(OUT, 'self_test_pp2.json'), 'w'), indent=1, default=float)
+    progress(f'[self_test_pp2] a_pass {st["a_pass"]} (lam=0 dev {st["a"]["max_abs_dev_lam0"]:.2e}, broken lam=1e-3 dev {st["a"]["broken_lam1em3_max_abs_dev"]:.2e})  '
+             f'b_pass {st["b_pass"]} (max rel {st["b"]["max_rel_dev"]:.2e}, lam cols {st["b"]["lam_cols_max_rel_dev"]:.2e}, broken {st["b"]["broken_perturbed_theta_max_rel_dev"]:.2e})  '
+             f'c_pass {st["c_pass"]} ({st["c"]}, broken {st["c_broken_one_image_dropped"]})  d_pass {st["d_pass"]} (cos {st["d"]["cos_with_projection_on_P1"]}, null {st["d"]["null_random_gaussian_vector"]:.3f}, '
+             f'in-span {st["d"]["broken_vector_in_P1_span"]:.6f}, rank {_rk})')
+    sys.exit(0)
 
 
 # ============================================================================================ R1 self test (CPU checks; exits)

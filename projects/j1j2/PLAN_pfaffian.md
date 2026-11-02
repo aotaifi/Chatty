@@ -1183,3 +1183,12 @@ D/P matches Astra's op model to 2%. VERDICT: PASSES (predicted 6-12x; kill > 20x
 Convention (stated): T2's, where every image's inverse is recomputed per step. With persistent rank-2 inverse updates the
 plain step gets much cheaper and both ratios rise, for ours AND for any one-Lanczos-step guide, which has the same d^2
 two-swap class (board 23). The comparison with the competitor is convention-independent; the absolute "x plain" is not.
+AMENDMENT before any fit (2026-11-02, from the staging CPU check (d)): the lambda direction is NOT new. Since
+ln|B|(alpha f_1, lambda) = 18 ln|alpha| + ln|B|(f_1, lambda alpha^-18), the scale and phase of f_1 reproduce d/d lambda (cosine
+with span(P_1, const) = 1.0; identity to 8e-13). The new directions come only from P_2's own block, weighted by
+lambda P_2/(P_1 + lambda P_2): median |lambda P_2/P_1| = 0.095 at the warm start.
+Rank of the tangent space on 12288 orbits: P_1 + const 2379; + lambda 2379; + P_2 4755.
+The mechanism stands with this correction (the tangent space doubles). Predictions and kills are unchanged.
+CPU checks: lambda = 0 reproduces the single PP to 3.6e-15; Jacobian vs FD 1.3e-9; symmetry 3.6e-15; every broken version
+fails. Target control E_FN[T_5] rel 4.5e-11. Code shas: cx_r1fit.py 8f89a324, rbmpp_lib.py 97eade56; old arms
+byte-identical. Cost gate passed (above).

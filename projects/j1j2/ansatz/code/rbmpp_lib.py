@@ -272,3 +272,12 @@ def random_configs(N, B, seed):
 
 def to32(p):
     return jax.tree_util.tree_map(lambda x: x.astype(jnp.float32), p)
+
+
+# ------------------------------------------------------------------------------------------ two-PP class (d) (PLAN_pfaffian.md "Two-PP class (d)", round 5)
+def pp2_combine(ld1, sg1, ld2, sg2, lam):
+    """B = P_1 + lam P_2 from the per-image (ln|det|, complex phase) of two projected PPs over the SAME images:
+    P_j = sum_g sg_j(g) exp(ld_j(g)).  Returns (m, S) with B = exp(m) S, m = max over both (stop_gradient), S complex.
+    Used by cx_r1fit.py arm 'pp2' (ln|B| = m + ln|S| + R); with lam = 0 it reduces to the single PP up to rounding."""
+    m = jax.lax.stop_gradient(jnp.maximum(jnp.max(ld1), jnp.max(ld2)))
+    return m, jnp.sum(sg1 * jnp.exp(ld1 - m)) + lam * jnp.sum(sg2 * jnp.exp(ld2 - m))

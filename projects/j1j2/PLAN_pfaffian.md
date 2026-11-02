@@ -1192,3 +1192,4 @@ The mechanism stands with this correction (the tangent space doubles). Predictio
 CPU checks: lambda = 0 reproduces the single PP to 3.6e-15; Jacobian vs FD 1.3e-9; symmetry 3.6e-15; every broken version
 fails. Target control E_FN[T_5] rel 4.5e-11. Code shas: cx_r1fit.py 8f89a324, rbmpp_lib.py 97eade56; old arms
 byte-identical. Cost gate passed (above).
+RUNNING round 5 (two-PP + control, 2 seeds each): Paderborn copies (ids in pfaffian_r5) raced against theorie A40 copies 17659082-89 (A40 test-only ETA 2026-11-04; the H200s were all allocated); race watchers per arm; readout chained by r5_chain.sh.

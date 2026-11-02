@@ -623,3 +623,4 @@
 2026-11-02 13:52 VERDICT job 17652277: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_q0/ANALYSIS.md]
 2026-11-02 13:56 VERDICT job 17652279: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_q0/ANALYSIS.md]
 - 2026-11-02 PI: 'A first, C in parallel'. A = lead's open question (add-on on published 10x10 ViT); A0.1 read-only checkpoint inspection by a worker (a first brief that would run downloaded code was refused by the permission check). C = Pfaffian angle, candidate (d) two-PP sum, ~12 H100-h.
+- 2026-11-02 A0.1 (read-only): HF nqs-models ViT 10x10, Apache-2.0; 434,760 f64 params; symm_trxy_ising (sha 1e327504) E/N -0.497676; no Marshall rule (net learns sign); symm guide = 64 forward passes per logpsi (card: 3317 s vs 41 s per sweep). Safe path: own JAX reimplementation (~60 lines), no trust_remote_code. A0.2 worker: reimplement, validate on shipped samples, H100 throughput (<= 1 GPU-h).

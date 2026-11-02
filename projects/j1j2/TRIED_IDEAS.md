@@ -52,6 +52,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A33 | Repair-aware signed Lanczos step (magnitude from the flipped orbit's local energy 2H_xx - E_L) | 11-01 | 6x6 exact | stored XL 2.23e-7 (plain 1.50e-6) but competitor guide 1.394e-5 vs plain 5.574e-6 | FAILS (cause: same rule overshoots genuine flips, magnitude ratio 8.2) | PLAN_sign.md "R1 RESULT" |
 | A34 | XL CNN stores the loop sign s_G; graded inside the round-3 Jacobi loop guide (S2a) | 11-01 | 6x6 exact | tax 4.25e-7/site (theta_bar), 4.30e-7 (theta(1200)); w_T 1.07e-6; 0.28 H100-h | WORKS (2 seeds agree to 5e-9; class not deployable at scale) | PLAN_sign.md "S2a RESULT" |
 | A35 | Deployable sign classes on s_G: complex-PP phase (2593 params) and conv complex RBM phase (S2b) | 11-02 | 6x6 exact | PP: tax 1.63e-6/site, stored loop 6.27e-6 (> competitor 5.57e-6), w_T 2.9e-6; RBM did not train | PP BETWEEN (not at plateau); RBM not measured (optimisation, lr 3e-3) | PLAN_sign.md "S2b RESULT" |
+| A36 | s_G on the fly with Jacobi walls from the free sign sgn psi_P (T-OTF, lead) | 11-02 | 6x6 exact | 6.48e-6 (theta_bar), 6.64e-6 (theta(1200)) vs s_G own walls 4.64/4.79e-6 | FAILS (cause: wall mismatch costs 1.85e-6; walls must match the guide sign) | PLAN_sign.md "T-OTF RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

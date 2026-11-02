@@ -599,3 +599,6 @@
 - 2026-11-01 step back (PI) on the stored-sign failure: lead's blind guess filed (/scratch/a/A.Otaifi/astra/signstep/LEAD_BLIND_GUESS.md: compute s_G on the fly instead of storing ~40%; residual-sign net with FN-weighted loss ~30%; undertraining ~20%); Astra blind review cj-ffe80dbfda01 (under-training vs objective vs representability vs storing at all). Lit: 2508.09870, 2610.00505, 1907.08186, 2011.11214, 2012.08889 (abstracts only).
 - 2026-11-01 step back (stored sign): verdict continue, change training before class (Astra: under-trained + misaligned objective, no capacity barrier). Next: CPU on-the-fly s_G check, then edge-weighted PP vs matched restart.
 - 2026-11-01 sign angle pre-registered T-OTF (CPU; lead 5.0-6.0e-6, angle 5.5-7.0e-6) and T-EDGE (edge-weighted PP vs matched-restart control S2b'(i'), <= 0.5 H100-h/arm; angle tax 0.8-1.4e-6, Astra 0.4-0.9e-6) (PLAN_sign.md f10cec4). Angle owns the S2b brief's uniform-BCE error.
+2026-11-02 00:21 VERDICT job 17642561: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_otf/ANALYSIS.md]
+2026-11-02 00:58 VERDICT job 17642562: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_otf/ANALYSIS.md]
+- 2026-11-02 sign angle T-OTF (17642561/2): s_G with sgn psi_P walls 6.48e-6/site (theta_bar), not useful (> competitor 5.57e-6, > stored PP 6.27e-6). T-EDGE pending.

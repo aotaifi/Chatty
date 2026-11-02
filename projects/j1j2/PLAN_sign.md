@@ -217,6 +217,11 @@ refreshed teacher samples (new seed); warm start from the S2b PP; constant lr 3e
 start, loss and schedule, uniform BCE, matched budget. Predictions: Astra tax 0.4-0.9e-6; mine 0.8-1.4e-6; edge beats the control by
 >= 0.2e-6 [55%]. Kill (lead's): no gain over the control, or settled tax >= 0.93e-6.
 
+T-OTF RESULT 2026-11-02 (CPU 17642561 control, 17642562; /scratch/a/A.Otaifi/ansatz_runs/sign_otf/otf_sGsP.json; verified by me):
+guide s_G B e^{c f_J[B; sgn psi_P walls]}: theta_bar 6.483e-6 (c* 3.5), theta(1200) 6.644e-6 (c* 3.4); +1.84/1.86e-6 over s_G's own walls.
+Controls reproduce v1_sG. Lead's 5.0-6.0e-6 missed; mine 5.5-7.0e-6 held. Above the competitor (5.57e-6) and above the stored PP
+phase (6.27e-6): on-the-fly s_G with free walls is NOT useful. The Jacobi walls must match the guide sign (Test X lesson, again).
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

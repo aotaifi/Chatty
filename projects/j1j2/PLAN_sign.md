@@ -277,6 +277,22 @@ tax(3) <= tax(2) - max(0.3e-6, 2s). An arm that hits its cap is 'not at plateau'
 Predictions (lead, before any number): (1) 1.35-1.55e-6; (2) 1.0-1.3e-6 [55% capacity lever]; (3) within 0.3e-6 of (2) [60%].
 Reviewer: T-RES 1.0-1.5e-6, <= 1.0e-6 at 20%.
 
+## STEP 0 RESULT 2026-11-02 (CPU 17652276-79, 17659148; /scratch/a/A.Otaifi/ansatz_runs/sign_q0/q0_*.json; verified by me)
+Fixed amplitude B = |psi_start|, exact chain, no storage (E_FN - E0 per site):
+| start (E_var) | k | d_k | Delta_k | ED mismatch S_k -> S_{k+1} |
+|---|---|---|---|---|
+| A (4.74e-5) | 0 | 1.67e-6 | 1.73e-6 | 1.10e-5 -> 7.8e-7 |
+| PP (6.30e-5) | 0 | 2.16e-6 | 2.20e-6 | 2.38e-5 -> 3.8e-6 |
+| B2 (1.54e-4) | 0 | 5.31e-6 | 5.27e-6 | 9.25e-5 -> 1.85e-5 |
+| B1 (3.87e-4) | 0 | 1.30e-5 | 1.14e-5 | 3.12e-4 -> 6.4e-5 |
+| B1 | 1 | 3.51e-5 | -4.3e-7 | 6.4e-5 -> 6.1e-5 |
+Control: A's c = 0 step reproduces s_G exactly (alpha -0.18338). NO START QUALIFIES (pre-registered d_k >= 1e-5 and Delta_k >= 0.5e-6
+for k = 0, 1, 2). Predictions: A fails at k = 1 MISSED (fails at k = 0 on d); PP qualifies MISSED.
+Reading: at FIXED amplitude only the first sign step pays; the second (B1, k = 1) moves the sign on 3.5e-5 of the weight and LOSES
+energy. This is A4 again (TRIED_IDEAS: a second Krylov step at fixed modulus fails; 'K1 -> FN refresh -> projected K1'): a sign step
+pays only with a magnitude matched to it. So the fixed-amplitude moving-target test, as the PI and I set it up, cannot host several
+useful sign updates. I should have checked A4 before proposing 'fixed amplitude first'.
+
 ## Running
 - Astra cj-344a55c0d108 DONE (above). Board blocks 24-26 posted (v51). R0, R1 DONE (lead's go under the PI's takeover, 2026-11-01): worker, run dir /scratch/a/A.Otaifi/ansatz_runs/sign_r0 (ANALYSIS_BRIEF.md, controls C1-C4). Next per verdict: as in Tests/R0.
 - Input from the lead 2026-11-01: label-free loop under s_G at 6x6 reached 4.79e-6 after round 3 (4.64e-6 averaged) vs competitor 5.57e-6 (docs/reports/2026-10-31_label_free_loop_6x6.md); S2's bar: a stored sign must keep that, judged with the magnitude refit under the stored sign.

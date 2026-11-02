@@ -9,9 +9,9 @@ PLAIN, SYMM = HF + "model.safetensors", HF + "symm_trxy_ising/model.safetensors"
 IDX = HF + "symm_trxy_ising/symm_indexes.txt"
 NL, H, D, LE, B = 8, 12, 72, 5, 2           # layers, heads, d_model, patches per side, patch side
 
-def load(path):
+def load(path, dt=jnp.float64):
     f = safe_open(path, "np")
-    return {k[7:]: jnp.asarray(f.get_tensor(k), jnp.float64) for k in f.keys()}   # strip 'params.'
+    return {k[7:]: jnp.asarray(f.get_tensor(k), dt) for k in f.keys()}   # strip 'params.'
 
 def circulant(J, transposed=False):
     """roll2d: Jfull[h, i*5+j, :] = flat(roll(roll(J_h as 5x5, i, axis -2), j, axis -1)); attn out[l]=sum_m Jfull[l,m] v[m]."""
@@ -28,13 +28,14 @@ def log_cosh(x):
     x = x * (1 - 2 * jnp.signbit(x.real))
     return x + jnp.log1p(jnp.exp(-2.0 * x)) - jnp.log(2.0)
 
-def make_plain(P, gelu_approx=True, transposed=False):
+def make_plain(P, gelu_approx=True, transposed=False, dt=jnp.float64, prec=None):   # dt: compute dtype (params must be load(...,dt)); prec: matmul precision, e.g. "highest"
     Jf = [circulant(P[f"encoder.layers_{l}.attn.J"], transposed) for l in range(NL)]
     gelu = lambda x: jax.nn.gelu(x, approximate=gelu_approx)
     lin = lambda x, n: x @ P[n + ".kernel"] + P[n + ".bias"]
     nrm = lambda x, n: ln(x, {"scale": P[n + ".scale"], "bias": P[n + ".bias"]})
     def logpsi(sigma):
-        s = jnp.atleast_2d(sigma).astype(jnp.float64); n = s.shape[0]
+      with jax.default_matmul_precision(prec):
+        s = jnp.atleast_2d(sigma).astype(dt); n = s.shape[0]
         x = s.reshape(n, LE, B, LE, B).transpose(0, 1, 3, 2, 4).reshape(n, LE * LE, B * B)   # extract_patches2d
         x = lin(x, "patches_and_embed.embed")
         for l in range(NL):
@@ -56,7 +57,7 @@ def make_symm(P, idx=None, **kw):
         z0 = out[:, :1]
         return z0[:, 0] + jnp.log(jnp.sum(jnp.exp(out - z0), axis=1))
     def logpsi(sigma):
-        s = jnp.atleast_2d(sigma).astype(jnp.float64)
+        s = jnp.atleast_2d(sigma).astype(kw.get("dt", jnp.float64))
         fp, fm = sym(s), sym(-s)                                             # sz-flip (singlet) term
         return fp + jnp.log(1.0 + jnp.exp(fm - fp))
     return logpsi

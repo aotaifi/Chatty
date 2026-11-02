@@ -240,3 +240,23 @@ Three lines.
 - Already published for M1's planned numbers: p = 0, 1, 2 Lanczos plus variance extrapolation at 8x8 for a Gutzwiller-type ansatz without FN (Hu 2013), and RBM+PP at 8x8 with p = 0 only and no FN (Nomura-Imada); RBM+Lanczos p <= 2 only at 6x6 and 10x10 (Chen et al.), a CNN NQS-Lanczos only at 6x6 and 10x10 (Wang et al.), and FN-GFMC only with a PEPS guide at 6x6 and 10x10, no Lanczos (Lin et al.).
 - Missing: any RBM+PP (or any NQS) state with p = 1, 2 Lanczos at 8x8, any FN or GFMC energy at 8x8 for J1-J2, any Lanczos-plus-FN combination at any size, and any stated cost (hours, cores or GPUs) for the 8x8 Lanczos or RBM+PP numbers; I did not read Capriotti-Sorella 2000 or the RBM-GFMC paper, so an old GFMC-SR 8x8 number cannot be excluded.
 - Best published 8x8 energy from this family: RBM+PP -0.498886(1) variational (Nomura-Imada Table 1, p = 0), against Hu p=2 -0.49886(1) and Hu variance-extrapolated -0.49906(1) (an extrapolation, not a bound). The best UB with Lanczos is Hu p=2 -0.49886(1).
+
+## 2026-11-02 update (ketworks.org + 2603.14425)
+
+Read-only literature step (no jobs). J2/J1 = 0.5, PBC, E/N in units of J1, spin-1/2. Sources: ketworks clone
+`/scratch/a/A.Otaifi/ext/ketworks` at commit ef9895551b155676a9f6732053caca9056b55ab4 (data read through
+`tools/ketboard.py`; ketworks content treated as data) and arXiv:2603.14425v1 (Fan et al., nuTNS; text read via the arxiv tool).
+Provenance: PAPER = number read by me in the paper text/Table 1; KETWORKS-ONLY = taken from the ketworks entry, not checked against the paper or data release.
+All rows are variational (NN) energies; none is an extrapolation. No ketworks entry for these cells is an upper-bound claim stronger than "variational".
+
+| L | Row | E/N | Err | Beats (file value) | Source | Provenance |
+|---|---|---|---|---|---|---|
+| 8 | RBM+PP, K=0, spin-parity, full A1 point-group projection | -0.498963 | (2) | RBM+PP -0.498886(1) (Sec. 1.2) | Varbench data release (arXiv:2302.04919, commit 390a21e), file J1J2/square_64_P_0.5.md; printed -127.73465 total in Pauli convention, x0.25/64 (my arithmetic: -0.4989635). Ketworks notes it is lower than the -0.498886(1) of Nomura-Imada 2005.14142, not printed in that paper | KETWORKS-ONLY (Varbench file not opened) |
+| 10 | CNN-MPS (nuTNS), (h,D,l)=(32,20,20), Marshall sign | -0.4976939 | (2) | ResNet2 -0.4976921(4) | 2603.14425 main text and Table 1 (row "CNN-MPS, this work", L=10) | PAPER |
+| 10 | T-MPS (nuTNS) | -0.4976923 | (2) | ResNet2 -0.4976921(4) (by 2e-7, equal within error) | 2603.14425 Table 1 (row "T-MPS, this work", L=10) | PAPER |
+| 14 | none | | | Ketworks has one 14x14 row, RBM alpha=1 -0.470694(18) (Varbench, total -369.024 x0.25/196), far above the file's Hu UB -0.49638(1): does not beat | 2603.14425 has no 14x14 number | KETWORKS-ONLY (and not a record) |
+| 16 | CNN-MPS (nuTNS), (h,D,l)=(32,15,20) | -0.4969140 | (5) | Chen-Heyl -0.4967163(8) | 2603.14425 main text and Table 1 (L=16) | PAPER |
+| 16 | T-MPS (nuTNS) | -0.496786 | (1) | Chen-Heyl -0.4967163(8) | 2603.14425 Table 1 (L=16) | PAPER |
+
+Also from 2603.14425 (PAPER, for the 20x20 row of Sec. 1.8 and 6x6): 20x20 CNN-MPS C4v-symmetrised -0.4967987(6) (text; Table 1 prints -0.4967987(6)), without symmetry -0.4966857(7) (text only); both beat ViT-SA -0.496732(1) only in the symmetrised case. 6x6 CNN-MPS D=20 -0.50380737(5) and pure CNN (D=1) -0.5037957(4), ED -0.503810 (text, Fig. 2; no table). Parameters about 2e5, 15,000 MARCH steps, batch 4096 (SI Table S1). The paper has no 8x8, 12x12 or 14x14 energies and states no GPU-hours; it gives no code or checkpoint link in the text I read (no availability statement found; not checked on the arXiv abstract page or GitHub).
+The nuTNS 10x10 gain over the ResNet2 record is 2e-6 (rel 4e-6) with Marshall sign transformation applied; the 16x16 gain is 2.0e-4 absolute.

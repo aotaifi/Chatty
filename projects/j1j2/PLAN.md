@@ -39,6 +39,13 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
+## OPEN QUESTION (PI 2026-11-02: "A first, C in parallel"): does the add-on improve a strong published 10x10 network below the
+best published bound -0.4976939(2) (arXiv 2603.14425)? Guide: published ViT nqs-models/j1j2_square_10x10_05 (-0.497676).
+Mechanism (hypothesis): FN p=0 removes the guide's amplitude error except across sign-violating bonds; at 8x8 FN p=0 gained 8.3e-5
+over VMC p=0 (RBM+PP). Prediction (unvalidated): FN p=0 from the ViT lands -0.49770 to -0.49775. Kill: not below -0.4976939 by
+2 sigma at two-chain error <= 5e-6. Step A0.1 (worker, read-only): inspect the checkpoint; A0.2: reproduce its VMC energy + H100
+throughput; A0.3: FN p=0 pilot sized from A0.2. C (Pfaffian angle): two-PP sum + Jacobi level at 6x6, ~12 H100-h.
+
 ## OPEN QUESTION: CLOSED 2026-11-01 (answer below); the PI picks the next one from the Queue / scale designs
 ANSWER: the stored network cannot carry the Jacobi correction in its tangent space (Theta v2: 0-4%); with the Jacobi factor kept as an
 explicit one-level layer and label-free refits under the Lanczos sign, the loop banks ~3 rounds and saturates (round 4 drop 0.34e-6,
@@ -542,4 +549,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): At 6x6 the loop beats one Lanczos step with an exactly known sign (4.4e-6 vs 5.6e-6), but with a sign network cheap enough for large lattices it falls behind (6.3e-6).
-- NEXT (open, high): The PI picks the next step: a richer network for the loop, an 8x8 loop test, or the 10x10 add-on test.
+- NEXT (in progress, high): Apply the add-on to the best published 10x10 network to see if it beats the best published energy; in parallel try a richer network for the loop at 6x6.

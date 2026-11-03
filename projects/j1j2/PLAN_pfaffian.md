@@ -1226,3 +1226,7 @@ r ~ 0.08 for an active RBM both point the same way.
 RULE: "structure matters" iff r_5(two-PP, 0.49) - r_5(M5) > 0.15, i.e. r_5(M5) < 0.34. Otherwise the round-5 gain is
 attributed to parameter count. M5 is a capacity control, not a deployable guide: with m = 72 per image its walker cost
 exceeds 20x by Astra's model.
+AMENDMENT before any M5 run (2026-11-03): rbm_init_sigma 0.01 shifts ln|A| by rms 1.25 (576 images x 72 units; the
+starting held-out loss 4.23 against 5.7e-3), so M5 would partly measure recovery from noise. Use sigma = 1e-3 instead (rms
+0.0125, measured). Prediction and rule unchanged. Code: cx_r1fit.py f1374bed (rbm_init_sigma option; old arms
+byte-identical). T_6 control rel 3.0e-11.

@@ -415,6 +415,15 @@ kappa > 1, sgn(m_res + kappa) = +1 everywhere; kappa rose 1.5 -> 3.38 by step 12
 redesigned: l = sP M (1 + A m_res)/(1 + A), A = softplus(.) >= 0 from 1e-3. It starts exactly at sgn psi_P, and flips need A > 1. Prediction
 and decision rule unchanged.
 
+## RE-GRADE WITH FIXED f_J (lead's request 2026-11-03; ansatz/code/fj_fix.py mode b1: rows with no kept bond become nodes;
+## c_eff = c min(1, f0/|f_J|), f0 = the 0.9999 quantile; pre-registered before any number; CPU <= 24 core-h; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_fix)
+Re-grade with the fixed family, at a common B, c rescanned: B1 k=0 and k=1 (fixed B); B2 k=0, k=1 fixed, k=1 refreshed (B_1 recomputed with the
+fixed family). Same sign sequences T_k as before (q0_B1s, q0r); controls: the s_G guide unchanged to <= 1.2e-8 (lead's check).
+Predictions: B2 fixed k=1 |Delta_1| < 0.2e-6 [75%]; B2 refreshed k=1 Delta_1 in [+0.1, +0.7]e-6 [55%]; B1 fixed k=1 Delta_1 >= 0 [50%];
+first steps stay >= +1.5e-6 [80%].
+Decision: every second-step Delta_1 < 0.5e-6 -> 'the second sign step gains < 0.5e-6/site at 6x6' CONFIRMED (no longer 'loses');
+any Delta_1 >= 0.5e-6 -> the claim is WRONG: report the case, and a moving-target test becomes hostable at 6x6 from that start.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

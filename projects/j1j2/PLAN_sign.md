@@ -326,6 +326,22 @@ differences at exact 6x6, <= 48 CPU core-h (+1-2 days of building the driver); (
 comparison, <= 8 H100-h; (5) storage only if (4) is positive, <= 16 H100-h. Total cap 26 H100-h. Lead's view: run gates (1)-(2) only,
 then decide.
 
+## GATES 1-2 (PI 'go with what you both agree on', 2026-11-03; pre-registered before any number)
+GATE 1 (teacher cost, <= 0.25 H100-h; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_g1): with the M1 8x8 RBM+PP checkpoint, time complete
+GFMC rows for the keep guide G1 = S1 B e^{c f_J[B;S1]} (S1 = one signed-Lanczos sign of psi_M1) and the teacher guide with T1 = sgn step(G1),
+each with its own walls, on ~50 held-out roots: deduplicated base queries per row and seconds per row on one H100, and the ratio q to M1's
+p=1 row cost (results/m1_8x8). Prediction: keep row 3 shells, teacher row 5 shells; q(teacher) 10-300 [60%].
+Rule: q <= 1 -> gate 3 needs kappa <= 0.048; 1 < q <= 5 -> continue only if gate 2 gives kappa <= 0.048/q; q > 5 -> stop the 8x8 FN route
+(needs kappa < 0.01, not credible without evidence) and report.
+GATE 2 (paired FN estimator at exact 6x6, <= 48 CPU core-h; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_g2): couple two FN populations
+(common event randomness, coupled resampling, each arm's own rates and weights), difference over >= 4 independent pair ensembles.
+Calibration set (exact differences known): B2 first update +5.27e-6; B2 fixed second -7.6e-8; B2 refreshed second -2.39e-6; S2a stored XL
+vs s_G +4.25e-7; zero controls (same sign; global flip); broken control (wall term omitted) must fail.
+Pass: every case within 2 SE of exact, replicated, blocking stable; report kappa = Var(paired)/Var(unpaired) at matched work.
+Prediction: passes with kappa 0.05-0.3 [45%]; kappa below 0.048 [20%].
+Decision after both: gate 3 (8x8 pilot, 1.75 H100-h) only if q*kappa <= 0.048; otherwise close the current investigation as
+'second sign step at 8x8 unaffordable to measure with this estimator', 8x8 physics left open.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

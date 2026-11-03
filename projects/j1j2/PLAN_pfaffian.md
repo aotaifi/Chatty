@@ -1467,3 +1467,16 @@ Result f_J audit + fix (2026-11-04; CPU 17688846 and 17690117; pfaffian_fjaudit/
 Kept for scale: fj_fix.py mode b1 (no-kept -> node, c_eff = c min(1, f0/|f_J|)). Its weight check must be RELATIVE: raise
 if the augmented max share exceeds 10x the base guide's max share (the absolute 1e-3 fires on the base guide's own bulk
 orbit at 6x6).
+V staged and submitted (2026-11-04).
+- Pool: 4e5 i.i.d. draws over orbits from n|B_4|^(2 beta) (1/3 each for beta = 1, 1/2, 1/4), with K = 2 blocked partners
+  each, P(y|x) proportional to |H_xy||B_4(y)/B_4(x)| (importance ratio kept). Band-uniform weights per decade.
+- Realised counts in the 9 decades: 5k-57k; ESS 2.2k-39k. Decade -6 is short of the 4e4 target (30k), and so are the top
+  two decades, which have little configuration mass.
+- Checks: (a) pool = table reproduces cx_r1fit's loss, gradient and GN step to 4e-14; (b) the pool statistics match the
+  exact multinomial (max |z| 2.2); (c) it fits from a perturbed start. Each check has a broken version, and it fails.
+- Target T_5^b1 (fixed f_J; 1650 rows capped). Its E_FN differs from the old T_5 by 8e-12.
+  Confound, stated: the exact-table r_5 = 0.493 was fitted to the OLD T_5. The kill and pass thresholds are absolute, so
+  they are unaffected.
+- Found: cx_r1fit's acceptance test let a NEGATED first step through as "noise", while the held-out loss rose. This
+  weakness is in the table fit as well. The tail averaging masks it, but it is recorded.
+- Run: Paderborn, with an A40 racer (Paderborn ETA more than 1 day). Readout: v_bare.py; PASS r_V >= 0.35, KILL r_V < 0.25.

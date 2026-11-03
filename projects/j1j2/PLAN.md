@@ -43,7 +43,8 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 best published bound -0.4976939(2) (arXiv 2603.14425)? Guide: published ViT nqs-models/j1j2_square_10x10_05 (-0.497676).
 Mechanism (hypothesis): FN p=0 removes the guide's amplitude error except across sign-violating bonds; at 8x8 FN p=0 gained 8.3e-5
 over VMC p=0 (RBM+PP). Prediction (unvalidated): FN p=0 from the ViT lands -0.49770 to -0.49775. Kill: not below -0.4976939 by
-2 sigma at two-chain error <= 5e-6. Step A0.1 (worker, read-only): inspect the checkpoint; A0.2: reproduce its VMC energy + H100
+2 sigma at two-chain error <= 5e-6. A0.1-A0.3 DONE: our JAX copy (f7cdb0c) VMC -0.497677(5) two chains (vit10_runs/a03), f32h + f64 recheck of |r|<1e-3 passes a
+'held-out FN-precision test. A0.4 (FN p=0 driver, validation) running. Old step list: A0.2: reproduce its VMC energy + H100
 throughput; A0.3: FN p=0 pilot sized from A0.2. C (Pfaffian angle): two-PP sum + Jacobi level at 6x6, ~12 H100-h.
 
 ## OPEN QUESTION: CLOSED 2026-11-01 (answer below); the PI picks the next one from the Queue / scale designs

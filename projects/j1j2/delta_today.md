@@ -699,3 +699,9 @@
 2026-11-02 23:53 VERDICT job 17659088: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s2/fit_th/ANALYSIS.md]
 2026-11-02 23:53 VERDICT job 17659089: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s2/tab_th/ANALYSIS.md]
 - 2026-11-02 23:55 round 5 (C) race settled: Paderborn pp2_s1, pp2_s2, ctl_s2; A40 ctl_s1; pp2 5.8 s/step H100. VPN client moved m52 -> m51 at 18:06 (not the lead); Paderborn watchers must run on the client's host.
+2026-11-03 00:45 VERDICT job 17668486: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/vit10_runs/a04/vit/ANALYSIS.md]
+2026-11-03 00:46 VERDICT job 4099845: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/ctl_s2/fit/ANALYSIS.md]
+2026-11-03 01:54 VERDICT job 17663574: COMPLETED, QUOTABLE: E = -0.497677 +- 5e-06 (2 chains, series mode); chains agree (chi2/dof 2.41, p=0.121). [/scratch/a/A.Otaifi/vit10_runs/a03/ANALYSIS.md]
+2026-11-03 01:55 VERDICT job 4099837: COMPLETED, NO VERDICT. The gate crashed with FileNotFoundError because `/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/readout/readout.json` does not exist. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s1/fit/ANALYSIS.md]
+2026-11-03 01:55 VERDICT job 4099841: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5/pp2_s2/fit/ANALYSIS.md]
+- 2026-11-03 02:05 A0.3 VMC of our symm ViT (f32h; lead re-ran quotable.py on vit10_runs/a03/vmc{A,B}/E.npy): QUOTABLE E/N -0.497677(5), 2 chains (A -0.497682(5), B -0.497672(4), chi2/dof 2.41 p 0.12) = published -0.497676; bar -0.4976939 is 1.7e-5 below. ~2x2 A40-h.

@@ -1234,3 +1234,9 @@ AMENDMENT 2 before any M5 run (2026-11-03): at sigma 1e-3 the RBM tangent block 
 (tanh is nearly linear, so the start is Jastrow-like). M5 would then match two-PP in parameter count but not in tangent rank.
 Selection rule, fixed now: the smallest sigma in {2e-3, 3e-3, 5e-3} with RBM rank >= 2000 AND step-0 held-out loss <= 1.14e-2.
 If none qualifies, sigma 1e-3 with the label "rank-deficient start".
+Sigma sweep (pfaffian_r6/cpu/sigma_sweep.txt): RBM rank 251 / 1248 / 2423 / 2521 at sigma 1e-3 / 2e-3 / 3e-3 / 5e-3, with
+start held-out loss 6.0e-3 / 1.22e-2 / 3.96e-2 / 0.27. No sigma passed, so M5 runs at 1e-3 labelled "rank-deficient start".
+Reading fixed now: if r_5(M5) < 0.34, "structure matters" holds only against a Jastrow-like start (weak). The follow-up would
+then be M5 at sigma 3e-3 (rank 2423), ~2 H100-h, proposed to the lead after the readout.
+RUNNING round 6: R6 Paderborn fit 4103501 + table 4103502 (won the race; A40 17673215/16 cancelled); M5 Paderborn 4103519
++ 4103520 raced against A40 17673270 + 17673271; readout chained by r6_chain.sh on m51.

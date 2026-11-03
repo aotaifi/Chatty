@@ -379,6 +379,21 @@ Prediction (offset story): >= 60% of the away-flip weight lies in the window the
 Kill: away-flip weight in the window < 30%, OR hybrid Delta < 0 in >= 2 of 3 cases -> the offset is not the cause.
 Review: the derivation goes to an independent reviewer to break before the CPU check (agreement point 6).
 
+## T-SPLIT (PI go 2026-11-03; lead's call after the project lead's and Astra's reviews; pre-registered before any number; CPU <= 8 core-h)
+Astra cj-807a618b54f5 (/scratch/a/A.Otaifi/astra/sign_rule/ASTRA_rule.md): the offset algebra is right, but 'V > K lowers E_FN' is false
+in general (counterexample); the certificate uses the current FN state u (cut score Q). B2 fixed: 97.7% of the second step's flip weight
+has V - K < 0 (first step 44%); refreshed: 48%. The hybrid H = Lanczos AND V > K certifiably improves frozen-magnitude FN in B2 fixed,
+by >= 7.8e-9/site.
+Lead's judgement: B2 fixed is a near-null case (loss 7.6e-8); the real loss is B2 refreshed (-2.39e-6), so the decisive split is there.
+Split (Astra eq D): loop change = [E_FN(T, a) - E_FN(S, a)] at the FROZEN parent magnitude a + [rebuild of T's Jacobi magnitude].
+Solves, both B2 arms at k = 1: (1) E_FN(L, a) with L = the Lanczos sign T_1, at the parent's frozen a = B e^{c_S f_J[B;S]}
+(refreshed: B = B_1, c_S = 5.2; fixed: B = B_0, c_S = 4.7); (3) the hybrid H in the deployable family: its own f_J, c in {3.0, 4.0, 4.7, 5.2}.
+Prediction (refreshed arm): (1) frozen sign change in [-5e-7, +2e-7]/site, so most of the -2.39e-6 comes from the rebuild [65%];
+(3) H also loses in the rebuilt family [60%].
+Decision: |frozen change| < 0.5e-6 and the loop loss is large -> the REBUILD causes it: hand to the project lead (loop design), not this
+angle. Frozen change <= -1e-6 -> the FLIP choice causes it: next is a sign rule matched to its magnitude (certificate Q). H gains >= 0.5e-6
+in the rebuilt family -> candidate rule, to the lead.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

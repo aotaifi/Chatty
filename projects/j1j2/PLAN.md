@@ -493,7 +493,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   4078411: kernel 2.95x (8x8) / 2.04x (10x10, random params) -> gate PASS (marginal at 10x10). Before production use: j1j2 has no ed_cases.json (root CLAUDE.md §4), write one.
 - Sampling engineering for the 10x10 stage (PI list 2026-10-30): convergence watcher, resetting stuck chains, larger proposals for
   acceptance near nodes, chains per sample, NetKet / NVIDIA samplers vs our code; opens as an angle with the 10x10 test, first
-  input = GPU profile (Paderborn 4075217). Optimizer fixed by the PI: SR / minSR, no optimizer comparison.
+  input = GPU profile (Paderborn 4075217). Optimizer fixed by the PI: SR / minSR, no optimizer comparison. If 10x10 VMC/FN chains
+  stick or disagree: try NetKet parallel tempering first (tooling venv /scratch/a/A.Otaifi/venvs/tooling; PLAN_tooling.md).
 - Laws of learnability (PI 2026-10-30, parked for its own angle): why an architecture or input embedding learns a target better.
   Theory exists: NTK eigenspectrum vs target alignment (1806.07572, 2006.13198), spectral bias (1806.08734), embeddings reshape
   that spectrum (Fourier features 2006.10739); NQS sign generalization (1907.08186). Ids from memory, unread here. Our use: predict

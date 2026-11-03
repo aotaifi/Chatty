@@ -1493,3 +1493,4 @@ the averaging bonus (best checkpoint e minus e(theta_bar)) shrinks from 0.35e-6 
 0.1e-6 of arm B's average, 1.252e-5.
 Kill: walk amplitude >= 0.1e-6 under the strict rule. The walk then has another source, e.g. sampling noise in the batch.
 Cost ~0.8 H100-h + tables + CPU.
+RUNNING V: Paderborn fit 4107178 + tab 4107179, raced against A40 17695322 + 17695323; readout chained by v_chain.sh.

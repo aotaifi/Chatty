@@ -320,8 +320,8 @@ Per the pre-registered rule: qualification search STOPPED (no more starts, no al
 
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
-  RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum 17669371 (est. start 2026-11-03 22:34) and (3) res
-  17669372 PENDING. Watchers armed (worker). Next per verdict: the pre-registered T-CAP decision rule.
+  RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING
+  (first copies OOM on A40; resubmitted with 4-way gradient micro-batching, same batch and maths, grad diff 9.8e-15). Watchers armed (worker). Next per verdict: the pre-registered T-CAP decision rule.
 - Takeover (PI away since 2026-11-02 16:50); next check-in 2026-11-04 11:00.
 
 ## Dead ends

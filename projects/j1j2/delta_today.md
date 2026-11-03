@@ -729,3 +729,12 @@
 - 2026-11-03 round 6 R6 running (Paderborn 4103501). Lead (takeover) cancelled M5 sigma 1e-3 (tangent rank 251 << two-PP's +2376; uninformative control) and asked for M5 at sigma 3e-3 (rank 2423) instead, same budget; r_5 measured from that arm's own start.
 - 2026-11-03 09:21 pfaffian R6/M5 (worker): M5 at sigma 1e-3 cancelled by lead decision, rank-deficient control: Paderborn 4103519 (never started) + 4103520, A40 17673270 + 17673271, all CANCELLED (sacct); their 4 watchers + race watcher stopped first (no VERDICT). R6 untouched (4103501 running). M5 resubmitted at rbm_init_sigma 3e-3 next.
 - 2026-11-03 M5 sigma 3e-3 submitted (Paderborn 4103524/25 vs A40 17673289/90; angle pred r_5(own) 0.10-0.25; d050c9a); sigma 1e-3 jobs cancelled. R6 4103501 running.
+2026-11-03 09:28 [pfaffian R6 race m5] 4103524 started (step 40) -> cancelled 17673289 (PI pre-approval via lead)
+2026-11-03 09:29 VERDICT job 17673289: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/m5/fit_th/ANALYSIS.md]
+2026-11-03 09:29 VERDICT job 17673290: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/m5/tab_th/ANALYSIS.md]
+2026-11-03 10:06 VERDICT job 17669371: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-03 10:11 VERDICT job 17669372: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+- 2026-11-03 10:17 sign T-CAP (worker): sum 17669371 FAILED at its first step on kng-cl-nv02 (GPU out of memory, 18.67 GiB request; 2-PP batch 1024 c128 does not fit an A40 46 GB); res 17669372 cancelled during its step-0 check (would hit the same step). Fix: tcap_train.py --micro 4 (same 1024 batch, grad as sum over 4 sequential lax.scan chunks; CPU check micro vs full grad diff 9.8e-15). Resubmitted sum_m4 17678709, res_m4 17678710 (same steps), watchers armed. a1pp 17669369 running 0.657 s/step.
+2026-11-03 10:48 VERDICT job 4103524: COMPLETED, NO VERDICT. The gate failed because the readout has not run. `r6_gate.py` raised FileNotFoundError on `/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/readout/readout.json`. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/m5/fit/ANALYSIS.md]
+2026-11-03 11:41 VERDICT job 4103501: COMPLETED, NO VERDICT. The gate failed: `readout.json` is missing at `/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/readout/readout.json`. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/r6/fit/ANALYSIS.md]
+- 2026-11-03 12:00 check-in: A0.5 chains 17672162/64 running since 10:04 (8 h each, end ~18:05); T-CAP a1pp running; R6 + M5 on Paderborn. Next check-in 20:30 (A0.5 analysis).

@@ -1422,3 +1422,4 @@ Controls added before any 8x8 run (Astra):
 - (c4) independent pools and fits (two seeds of the pool, not only of the optimiser).
 - (c5) same-sign bare/augmented comparisons: every bare and augmented 8x8 number under the same stored sign. p=0 with the
   network's own sign is quoted separately.
+Note for the paused GFMC build (iv): gfmc_guide.py's guide is Re B with sign sgn Re B, but our 6x6 guides are s |B|. Equivalence at c = 0 therefore needs |Re B|. Decision deferred to the restart: grade the 8x8 guides as s_G |B| e^{c f_J} and state the convention.

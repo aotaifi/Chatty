@@ -1393,3 +1393,32 @@ Scope line: passed over
 - a second explicit Jacobi level (650x);
 - on-the-fly s_G (d^3).
 B BUILD started (2026-11-03, lead/PI: B in parallel): (i) pp2_lemma.py, (ii) sign8.py, (iii) pool_fit.py + the staged V launcher, (iv) gfmc_aug.py; workers, code + CPU checks only. Next: V at 6x6 and 8x8 R0 in parallel after Astra's review (cj-c9d47cfcaf6d) and the f_J fix; 8x8 R1 only once V passes.
+
+## B design revised after Astra's review (ansatz/REVIEW_astra_Bdesign_2026-11-03.md, cj-c9d47cfcaf6d; lead decision 2026-11-03)
+Astra puts R1 at ~15%. Two points I accept:
+- "P/S small -> ~5% loss" is unsupported: in Θ v2 a fit with P/S 0.005 scored 0.447 on its training pairs and -0.477
+  held out.
+- At S = 4e5 the deep decade -14 gets 19k of the 40k samples it needs, and it carries 11% of the bond weight.
+Astra also measured that round 5 turned 0.288 of its bare gain into augmented gain, which puts R1 at -0.498951..-0.498967
+(my -0.49896..-0.49900 was optimistic).
+V (narrowed; runs after the f_J fix):
+- One finite-pool replay of round 5: theta_4 -> T_5 (fixed-f_J target), two-PP, exact s_G, exact FN grading.
+- Pool: S = 4e5 x-draws, i.i.d. from |B_4|^(2 beta) with beta in {1, 1/2, 1/4} in equal parts (exact sampling from
+  the table, so only the coverage is tested). Each x gets K = 2 blocked partners with P(y|x) proportional to
+  |H_xy| |B_4(y)/B_4(x)| over x's blocked y. Weights are reweighted to band-uniform decades.
+- Fit as round 5 (1500 steps, tail average). About 3 H100-h plus CPU.
+- PREDICTION (updated after Astra): r_sampled 0.15-0.35, central 0.25. KILL: r_sampled < 0.25. My odds of passing are
+  ~50%.
+- A second independent pool runs only if V is promising (r >= 0.25).
+8x8 build now: only the full-guide benchmark (two-PP + Jacobi with the rank-4 lemma + sign CNN, realistic batch,
+symmetry projection, f64/f32, memory), <= 1 GPU-h. Items (ii) labels/training and (iv) GFMC class are paused until V.
+Controls added before any 8x8 run (Astra):
+- (c1) an ENERGY-based sign-storage gate at 8x8: FN-GFMC of the production guide with the stored CNN sign against the
+  directly computed s_G, on the same amplitude, at c = 0. Pass if they differ by < 1e-5 per site.
+- (c2) E' and the cap f0 determined from samples (E' from p=0 GFMC; f0 as the sampled 0.9999 quantile of |f_J|),
+  with the 6x6 sampled-vs-exact f0 check.
+- (c3) an exact c > 0 validation of the 8x8 evaluator code at 6x6: the augmented GFMC energy against the exact table
+  value (theta_4, 4.367e-6).
+- (c4) independent pools and fits (two seeds of the pool, not only of the optimiser).
+- (c5) same-sign bare/augmented comparisons: every bare and augmented 8x8 number under the same stored sign. p=0 with the
+  network's own sign is quoted separately.

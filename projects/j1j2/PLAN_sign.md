@@ -394,6 +394,18 @@ Decision: |frozen change| < 0.5e-6 and the loop loss is large -> the REBUILD cau
 angle. Frozen change <= -1e-6 -> the FLIP choice causes it: next is a sign rule matched to its magnitude (certificate Q). H gains >= 0.5e-6
 in the rebuilt family -> candidate rule, to the lead.
 
+## T-SPLIT RESULT 2026-11-03 (CPU 17683003/4, 17685127, 5.2 core-h; /scratch/a/A.Otaifi/ansatz_runs/sign_split/split_{a,b}.json, diag/; verified)
+Energy change per site (positive = loss): fixed arm: frozen-magnitude sign change +6.2e-8, loop +7.6e-8 (both ~0). Refreshed arm: frozen
+sign change -3.49e-7 (a GAIN), loop +2.39e-6. Prediction (1) held.
+BUT the refreshed loop number is an ARTIFACT of the Jacobi family: orbit 148821 has B_1 ~ e^{-37.9} and no kept bond under S_1
+(f_J undefined, set to 0); T_1 flips it, giving f_J = +16.5, so at c >= 3 that one orbit carries 1 - 1e-9 of the guide weight
+(diag/collapse_T1B1.json, w_top1 0.999999999 at c = 3). The step 0' refreshed Delta_1 = -2.39e-6 and the H grade in that arm are INVALID.
+Corrected reading of step 0': the second sign step gains 0.35e-6/site at frozen magnitude in the refreshed arm and ~0 at fixed B. That is
+below the 0.5e-6 'useful' bar, but it is not a loss, so 'every second step loses' is withdrawn; 'gains little at 6x6' stands.
+The Jacobi factor is unbounded on tiny-amplitude orbits (f_J ~ ln of a neighbour sum over a tiny B), and a sign flip there can make one
+orbit dominate. This is a loop-design defect, handed to the project lead. Not checked: whether any earlier stored-sign grade (S2a, S2b, R1c)
+touched such an orbit (their scans were smooth and their energies sane).
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

@@ -799,3 +799,5 @@
 2026-11-03 20:10 VERDICT job 17693828: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/a40_17693828/ANALYSIS.md]
 2026-11-03 20:14 VERDICT job 17693880: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/a40_17693880/ANALYSIS.md]
 - 2026-11-03 20:35 check-in: f_J audit clean for all quoted loop guides (lead read fj_audit.json); fix job 17690117 running; R6/M5 table jobs PENDING on Paderborn; T-CAP a1pp2 running; V waits on the fix; /scratch 964.1/972.8 G. Next check-in 11-04 10:00.
+2026-11-03 20:40 VERDICT job 17693959: COMPLETED, pp2_lemma_bench DONE: M1024_f64 aug 0.378 s/ws (lemma 0.11, cnn 0.26) J/P 185 peak 13.4G; M1024_f32 aug 0.278 s/ws (lemma 0.016, cnn 0.26) J/P 1219 peak 13.4G f32maxrel r2 9.0e+10; signB/A nan [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/a40_17693959/ANALYSIS.md]
+- 2026-11-03 8x8 full-guide benchmark (angle; 41 A40-min): 0.378 s/walker-step A40 f64 (lemma 0.114, sign CNN 0.261 = 69%), exact to 2e-12; f32 unusable (cond 1e6); on-the-fly s_G 223x the CNN. Lead: grading must reach ~3e-6/point (not 1e-5) -> ~45-165 H100-h per point before savings; savings become a precondition for B; H100 benchmark held until V.

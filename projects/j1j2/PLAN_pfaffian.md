@@ -1489,7 +1489,7 @@ Test: rerun arm B's segment, theta(1200) + 900 steps (seed 1, lambda floor 7.8e-
 accept a step only if the held-out loss does not rise by more than its own noise, the standard error of L_ho from
 the batch scatter.
 Predictions: the walk amplitude (rms of the checkpoint-to-checkpoint E_FN change) falls from 0.13e-6 to <= 0.05e-6;
-the averaging bonus (best checkpoint minus the mean of 6) shrinks from 0.35e-6 to <= 0.1e-6; the final bare e is within
+the averaging bonus (best checkpoint e minus e(theta_bar)) shrinks from 0.35e-6 to <= 0.1e-6; the final bare e is within
 0.1e-6 of arm B's average, 1.252e-5.
 Kill: walk amplitude >= 0.1e-6 under the strict rule. The walk then has another source, e.g. sampling noise in the batch.
 Cost ~0.8 H100-h + tables + CPU.

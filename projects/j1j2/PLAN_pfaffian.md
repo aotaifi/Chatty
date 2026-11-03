@@ -1429,3 +1429,20 @@ s_G(z) therefore costs one fast E_L per endpoint, i.e. d^2 E_L calls per walker 
 calls, not d^3 full evaluations. Storing the sign may be unnecessary. The 8x8 benchmark times both options.
 Also: s_G labels for CNN training cost ~26 s per 2e5 samples, not ~1 H100-h. M1 p=1 constants (consts.json): alpha
 -0.17543, E_total -31.9151, w = -1. sign8.py (XL/L CNN, sign_fn, save/load) is built; its label/training code is paused.
+Result 8x8 guide benchmark (2026-11-04; A40 f64, run 17693959; pp2_lemma_bench/a40_17693959/bench.json; verified):
+- Evaluator exactness: pp2_lemma.py is exact against direct determinants to 2.8e-12 (one swap) and 2.3e-12 (two swaps);
+  1.9e-9 on 3 of 1.1e5 two-swap ratios of theta_5, bounded by eps x cancellation x cond(M), with cond up to 1e6 at 8x8.
+  It reproduces the pp2 table to 1.9e-13, the 8x8 production RBM+PP to 6e-12, and fJ_of to 1.6e-14. Every broken version
+  fails.
+- Full augmented two-PP guide with the XL sign CNN, 8x8, M = 1024: 0.378 s per walker step, made up of 0.0020 plain,
+  0.114 lemma and 0.261 CNN (28.8M CNN calls). 26.9 hops per walker-tau gives 10.2 s/walker-tau on the A40, against p=1's
+  0.514 s/walker-tau on an H100. The H100 figure for our guide is NOT measured: the A40 is weak in f64 (the lemma part),
+  while the CNN part is fp32.
+- f32 is unusable (r2 error 9e10), because the inverse has cond up to 1e6.
+- Sign on the fly from E_L at the endpoints: 2.05e-3 s per endpoint (A40 f64), 223x the CNN, so the STORED sign stays.
+- Savings not built yet: deduplicated endpoints (~1.9x) and less padding (~1.3x); an L-size CNN (~4x fewer parameters).
+- J/P here = 185, because the plain step uses persistent fast updates (0.002 s). This is the convention caveat recorded with
+  the CPU cost gate.
+Consequence for B: 8x8 grading at a 1e-5 error target was budgeted at 2-6 H100-h per point. If the H100 is ~3-5x faster
+than the A40 for this guide, it is ~2-6x p=1's cost per walker-tau, i.e. ~4-15 H100-h per point at 1e-5 before the
+savings. One short H100 benchmark (~0.2 H100-h) settles it.

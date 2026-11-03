@@ -570,4 +570,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): At 6x6 a two-pair-product loop guide reaches 3.3e-6 per site, 41% below one Lanczos step (5.6e-6); the cheap stored sign is still the weak point.
-- NEXT (open, high): Fixed-node alone barely improves the best published 10x10 network; the PI decides the next 10x10 step (a cheap sign change, or the loop guide).
+- NEXT (in progress, high): Design the loop test at 8x8 without exact tables (sampled fits, stored sign), after the Jacobi-factor fix and the two open 6x6 controls.

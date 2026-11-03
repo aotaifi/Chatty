@@ -1240,3 +1240,8 @@ Reading fixed now: if r_5(M5) < 0.34, "structure matters" holds only against a J
 then be M5 at sigma 3e-3 (rank 2423), ~2 H100-h, proposed to the lead after the readout.
 RUNNING round 6: R6 Paderborn fit 4103501 + table 4103502 (won the race; A40 17673215/16 cancelled); M5 Paderborn 4103519
 + 4103520 raced against A40 17673270 + 17673271; readout chained by r6_chain.sh on m51.
+LEAD DECISION (takeover, 2026-11-03): M5 at sigma 1e-3 is cancelled (4103519/4103520, 17673270/17673271), because a rank-251
+control adds about a tenth of the directions the second PP adds (2376) and cannot separate structure from count. It is
+replaced by M5 at sigma 3e-3 (RBM rank 2423), same spec and budget. r_5 is measured from M5's own start energy:
+r_5(own) = (e_start - e(theta_5^M5)) / (e_start - 4.367e-6), with e_start from a table-only job on the initial theta.
+The rule is unchanged: structure matters iff 0.4929 - r_5(own) > 0.15. My prediction for r_5(own): 0.10-0.25.

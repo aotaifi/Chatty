@@ -30,6 +30,7 @@ true ratio r* = phi(x)/phi(y), the copy's ratio r.
 - Published: RBM+PP (Nomura-Imada arXiv:2005.14142); neural backflow (Luo-Clark 2019).
 
 ## What we understand (one line each; evidence)
+- At 8x8 the STORED SIGN dominates the augmented guide's walker cost: XL CNN 0.261 of 0.378 s/walker-step (69%; A40, fp32 CNN vs f64 lemma; 28.8M sign calls at x, y and two-swap endpoints). On-the-fly s_G is 223x dearer. At scale the sign, not the amplitude ratios, is the expensive part unless the CNN shrinks (pp2_lemma_bench/a40_17693959/bench.json).
 - Round stop = fixed step budget + Polyak averaging of the tail iterates: at a fixed target E_FN walks 0.1-0.2e-6 per 150 steps (noise in copy-loss-flat directions); the 6-checkpoint mean beat the best iterate by 0.35e-6 (1.252e-5 vs 1.287e-5; pfaffian_r3avg/readout/readout.json, P19).
 - The PP's linear tangent space at B_1 holds 0-4% of the round residual (Θ v2, calibrated: C_exact 0.082 vs held-out 0.069/0.065; P16); the nonlinear refit still stores r = 0.11-0.18 of each round's Jacobi gain under s_G (P15-P19). Whether r declines per round is NOT established (q 0.63-0.95 single-iterate; averaged r_3 0.178 >= r_2 0.145).
 
@@ -1446,3 +1447,9 @@ Result 8x8 guide benchmark (2026-11-04; A40 f64, run 17693959; pp2_lemma_bench/a
 Consequence for B: 8x8 grading at a 1e-5 error target was budgeted at 2-6 H100-h per point. If the H100 is ~3-5x faster
 than the A40 for this guide, it is ~2-6x p=1's cost per walker-tau, i.e. ~4-15 H100-h per point at 1e-5 before the
 savings. One short H100 benchmark (~0.2 H100-h) settles it.
+B design amendment (lead, 2026-11-04):
+- Grading must reach ~3e-6 per point, not 1e-5. Astra's R1 range spans 1.6e-5 and contains Varbench. That is ~11x the
+  1e-5 cost: ~45-165 H100-h per graded point before savings.
+- The savings (endpoint dedup ~1.9x, padding ~1.3x, an L-size CNN ~4x) become a PRECONDITION for any 8x8 grading, not an
+  option.
+- The H100 benchmark is held until V reads out.

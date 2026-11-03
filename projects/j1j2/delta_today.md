@@ -744,3 +744,5 @@
 2026-11-03 12:56 VERDICT job 17669369: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
 - 2026-11-03 sign angle: PI paused gates 1-2; paper check written (Lanczos sign threshold offset by the diagonal kappa_x vs coordinate-wise FN rule V > K); prediction and kill pre-registered.
 - 2026-11-03 /scratch 961/973G (sign angle's worker). Lead's watch fires at 966G. Prepared under the takeover exception: existing PI-pending scripts z2_hunt_ruby/docs/cleanup_run_20261102.sh (newest manifest) and ruby_offdiag cleanup_run_2026-10-29.sh; only High rows, only if the soft quota is hit.
+- 2026-11-03 13:05 sign T-CAP: arm 1 phase 1 (17669369) DONE, held-out 0.0740 vs seed 0's 0.0837 at the same phase (loss scatter ~12%, not yet graded); a1pp2 pending; sum_m4 step 6930/12600 (held-out 0.163); res_m4 pending.
+- 2026-11-03 /cleanup (PI): j1j2 owns ~28 GB of /scratch, all < 14 days or cited -> nothing to delete (docs/cleanup_manifest_2026-11-03.md). Space sits in other projects: existing z2_hunt (cleanup_run_20261102.sh) and ruby_offdiag (2026-10-29) scripts await the PI; foreign rows added to CLEANUP_ACTIONS.md. /scratch 961.3/972.8 GB.

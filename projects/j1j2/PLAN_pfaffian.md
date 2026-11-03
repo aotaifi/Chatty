@@ -1453,3 +1453,17 @@ B design amendment (lead, 2026-11-04):
 - The savings (endpoint dedup ~1.9x, padding ~1.3x, an L-size CNN ~4x) become a PRECONDITION for any 8x8 grading, not an
   option.
 - The H100 benchmark is held until V reads out.
+Result f_J audit + fix (2026-11-04; CPU 17688846 and 17690117; pfaffian_fjaudit/{fj_audit.json, fix/fj_fix.json}; verified):
+- No defect on any quoted guide. The control reproduces every augmented minimum to <= 1.7e-10.
+- No-kept rows: one on L-SWO r1 only (n = 12, base weight 1.5e-19). Setting it to a node changes e by 6e-16.
+- Max single-orbit share of the augmented weight: 0.0093 on every guide. That equals the base guide's own share
+  (0.0094; one high-multiplicity bulk orbit, n = 144, c f_J ~ 0), so it is not an f_J artifact.
+- c* f_J: max 5.0-6.8; n-weighted q.9999 2.3-2.6.
+- Capping at q.9999 changes E_FN by <= 1.5e-10.
+- Fix variants: a1, a2, b1 and b2 (per-row cap) move every minimum by <= 1.2e-8, and the minimum stays at c = 4.0.
+- Two-PP gain changes by +0.07% (b2) and ~0 (b1).
+- Predictions (< 0.05e-6 move; < 5% gain change) HIT. The KILL of "refinement" did not fire.
+- Our 6x6 guides never had the sign angle's blow-up: complex PPs have no near-zeros with large f_J.
+Kept for scale: fj_fix.py mode b1 (no-kept -> node, c_eff = c min(1, f0/|f_J|)). Its weight check must be RELATIVE: raise
+if the augmented max share exceeds 10x the base guide's max share (the absolute 1e-3 fires on the base guide's own bulk
+orbit at 6x6).

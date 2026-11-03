@@ -1,6 +1,6 @@
 """r5_bare.py: round-5 readout (PLAN_pfaffian.md "Two-PP class (d)") = r4_bare.py (sha 76c40780) with the arm loop of round 5.  K, Vm (sign s_G) built ONCE; then
   0. control: theta_4's table (pfaffian_r4/pdb_tabs/tab_t4/round_1/la_table.npy, theta_4 sha 31142501) must give e = 1.2184484428720862e-05 (rel 1e-8), else exit 2 (no other solve);
-  1. for each arm in readout/arms.txt (written by r5_chain.sh; subset of pp2_s1 pp2_s2 ctl_s1 ctl_s2): theta bookkeeping (7 shas; theta_5 recomputed locally = np.mean of the 7
+  1. for each arm in readout/arms.txt (written by r5_chain.sh; tokens ARM:pdb | ARM:th = the race winner's cluster; subset of pp2_s1 pp2_s2 ctl_s1 ctl_s2): theta bookkeeping (7 shas; theta_5 recomputed locally = np.mean of the 7
      iterates vs the cluster's theta_5.npy, recorded, no abort), then bare e of theta_5 (ARM/tab/tab_t5/round_1/la_table.npy) and r_5 = (1.2184484e-5 - e) / 0.7817e-5;
   2. for each arm: the augmented c scan (c = 0,1,2,3,3.5,4,4.5,5,6,7 + parabola refinement; f_J^G and aug() verbatim from r4_bare.py, E' = E_FN[theta_5 of that arm]).
 Writes OUT/readout.json (resumable), readout.log.   usage: python3 r5_bare.py OUTDIR [--control-only]
@@ -20,15 +20,17 @@ CTRL = (f'{R4}/pdb_tabs/tab_t4/round_1/la_table.npy', 1.2184484428720862e-05)   
 CTRL_SHA = json.load(open(f'{R4}/readout/readout.json'))['tables']['theta_4']['sha256']
 PRE_E = 1.2184484e-5; PRE_G = 0.7817e-5
 ARMS_ALL = ('pp2_s1', 'pp2_s2', 'ctl_s1', 'ctl_s2')
-arms = open(f'{OUT}/arms.txt').read().split() if not CONTROL_ONLY else []
-assert all(a in ARMS_ALL for a in arms), arms
+tok = open(f'{OUT}/arms.txt').read().split() if not CONTROL_ONLY else []      # 'ARM:pdb' (Paderborn: ARM/fit, ARM/tab) or 'ARM:th' (theorie race copy: ARM/fit_th, ARM/tab_th)
+arms = [t.split(':')[0] for t in tok]; CL = {t.split(':')[0]: (t.split(':') + ['pdb'])[1] for t in tok}
+assert all(a in ARMS_ALL for a in arms) and all(c in ('pdb', 'th') for c in CL.values()), tok
+DIRS = {a: ((f'{Q}/{a}/fit', f'{Q}/{a}/tab') if CL[a] == 'pdb' else (f'{Q}/{a}/fit_th', f'{Q}/{a}/tab_th')) for a in arms}
 STEPS = (600, 750, 900, 1050, 1200, 1350)
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
 RJ = f'{OUT}/readout.json'; res = json.load(open(RJ)) if os.path.exists(RJ) else {}
 def dump(): res['sec'] = time.time() - T0; json.dump(res, open(RJ, 'w'), indent=1, default=float)
-res.update(arms=arms, host=os.uname().nodename, s1=S1, s1_sha256=sha(S1), E0=BS.E0, pre_e=PRE_E, pre_g=PRE_G,
+res.update(arms=arms, cluster=CL, dirs=DIRS, host=os.uname().nodename, s1=S1, s1_sha256=sha(S1), E0=BS.E0, pre_e=PRE_E, pre_g=PRE_G,
            code_sha256={f: sha(os.path.join(os.path.dirname(os.path.abspath(__file__)), f)) for f in ('r5_bare.py', 'bond_split.py', 'delta0.py')},
-           fit_code_sha256={a: json.load(open(f'{Q}/{a}/fit/spec_r1.json')).get('code_sha256') for a in arms})
+           fit_code_sha256={a: json.load(open(f'{DIRS[a][0]}/spec_r1.json')).get('code_sha256') for a in arms})
 n = np.load(f'{BS.CSRD}/norb.npy').astype(np.float64); D = len(n); assert n.sum() == 9075135300
 s1 = np.load(S1).astype(np.float64); assert set(np.unique(s1)) <= {-1.0, 1.0}
 K, Vm, D0 = BS.build(n, s1); log('built K,Vm (s_G) once')
@@ -84,7 +86,7 @@ def aug(name, lF, r):                                                           
 # 1. per arm: theta bookkeeping + bare e + r_5
 names = [f'theta_step{k}.npy' for k in STEPS] + ['theta.npy']; vn = res.setdefault('verdict_numbers', {}); th_rec = res.setdefault('theta', {})
 for a in arms:
-    FD, TD = f'{Q}/{a}/fit', f'{Q}/{a}/tab'
+    FD, TD = DIRS[a]
     th = [np.load(f'{FD}/round_1/{f}') for f in names]; m = np.mean(np.stack(th), axis=0); np.save(f'{OUT}/theta_5_{a}_local.npy', m); cl = np.load(f'{TD}/theta_5.npy')
     th_rec[a] = dict(npar=int(m.size), shas={f: sha(f'{FD}/round_1/{f}') for f in names}, theta_5_cluster_sha256=sha(f'{TD}/theta_5.npy'), theta_5_local_sha256=sha(f'{OUT}/theta_5_{a}_local.npy'),
                      max_abs_diff_cluster_vs_local=float(np.abs(cl - m).max()), cluster_shas_json=json.load(open(f'{TD}/theta_shas.json')))
@@ -98,6 +100,6 @@ res['bare_done'] = True; dump()
 # 2. per arm: augmented scan (pp2 arms first, as listed)
 for a in arms:
     if tabs[a].get('scan_status'): continue
-    la = load(f'{Q}/{a}/tab/tab_t5/round_1/la_table.npy'); aug(a, la, tabs[a]['E_FN']); del la
+    la = load(f'{DIRS[a][1]}/tab_t5/round_1/la_table.npy'); aug(a, la, tabs[a]['E_FN']); del la
     vn[a]['e_aug'] = tabs[a]['e_aug_min_site']; vn[a]['cstar'] = tabs[a]['cstar']; dump()
 res['status'] = 'DONE'; res['done'] = True; dump(); log('DONE')

@@ -1193,3 +1193,22 @@ CPU checks: lambda = 0 reproduces the single PP to 3.6e-15; Jacobian vs FD 1.3e-
 fails. Target control E_FN[T_5] rel 4.5e-11. Code shas: cx_r1fit.py 8f89a324, rbmpp_lib.py 97eade56; old arms
 byte-identical. Cost gate passed (above).
 RUNNING round 5 (two-PP + control, 2 seeds each): Paderborn copies (ids in pfaffian_r5) raced against theorie A40 copies 17659082-89 (A40 test-only ETA 2026-11-04; the H200s were all allocated); race watchers per arm; readout chained by r5_chain.sh.
+
+## Result round 5, two-PP class (d) (2026-11-03; readout 17672082, pfaffian_r5/readout/readout.json; verified; 6.8 H100-h + 12.5 A40-h)
+| arm (from theta_4 to T_5, s_G) | bare e | r_5 | aug min (c*) |
+| two-PP seed 1 | 8.332e-6 | 0.493 | 3.258e-6 (4.0) |
+| two-PP seed 2 | 8.347e-6 | 0.491 | 3.291e-6 (4.0) |
+| control single PP seed 1 (A40) | 1.1827e-5 | 0.046 | 4.127e-6 (3.9) |
+| control single PP seed 2 | 1.1814e-5 | 0.047 | 4.146e-6 (3.9) |
+Control: e(theta_4) reproduced exactly. All fits ran 1500 steps; shas match between cluster and local.
+VERDICT: KILL (d) not fired. ATTRIBUTABLE: r_5(two-PP) - r_5(control) = +0.447 / +0.444 (rule >= 0.03).
+Predictions: two-PP r_5 0.06-0.16 MISSED HIGH (0.49); aug 3.4-4.1e-6 MISSED LOW (3.26-3.29e-6). Control r_5 0.01-0.04 and
+aug 4.20-4.35e-6 just outside (0.046, 4.13-4.15e-6).
+The term that was wrong: I sized the storage by the lambda direction plus a 0.1-weighted P_2 block. The P_2 block (tangent
+rank 2379 -> 4755) stores half of the round's Jacobi gain in one round, about 10x the single PP at round 4.
+Caveats:
+- The two-PP class has about 2x the parameters, so "a second PP" and "more parameters" are not separated (no equal-capacity
+  control exists).
+- The two seeds share the warm start and target, so their spread (0.002 in r) measures the optimiser path only.
+- The cost gate passed, measured: 10.9x plain at 10x10 against 5.5x for a single PP.
+Against the competitor (5.574e-6, same sign): the augmented two-PP guide is 3.26-3.29e-6, i.e. 41% lower. Floor(s_G) <= 0.83e-6.

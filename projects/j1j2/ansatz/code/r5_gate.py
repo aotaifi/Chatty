@@ -9,9 +9,9 @@ d = json.load(open(RJ)); assert d.get('done'), 'readout not done'; assert d['con
 V = d['verdict_numbers']; arms = d['arms']
 print(f"control e(theta_4) rel {d['control']['rel']:.1e}; arms read: {' '.join(arms)}")
 for a in arms:
-    fit = json.load(open(f'{Q}/{a}/fit/cx_r1.json')); steps = fit.get('fit', {}).get('steps'); th = d['theta'][a]
+    fit = json.load(open(f"{d['dirs'][a][0]}/cx_r1.json")); steps = fit.get('fit', {}).get('steps'); th = d['theta'][a]
     shaok = th['theta_5_cluster_sha256'] == th['theta_5_local_sha256'] or th['max_abs_diff_cluster_vs_local'] < 1e-12
-    print(f"  {a:7s} npar {th['npar']}  steps {steps}{'' if steps == 1500 else ' (NOT 1500)'}  e {V[a]['e']:.6e}  r_5 {V[a]['r_5']:.4f}  e_aug {V[a].get('e_aug', float('nan')):.6e} (c* {V[a].get('cstar')}, "
+    print(f"  {a:7s} [{d['cluster'][a]}] npar {th['npar']}  steps {steps}{'' if steps == 1500 else ' (NOT 1500)'}  e {V[a]['e']:.6e}  r_5 {V[a]['r_5']:.4f}  e_aug {V[a].get('e_aug', float('nan')):.6e} (c* {V[a].get('cstar')}, "
           f"{d['tables'][a].get('scan_status')})  theta_5 sha {'OK' if shaok else 'MISMATCH'}" + (f"  lambda(theta_5) {th['lambda_theta5']}" if 'lambda_theta5' in th else ''))
 pp = [a for a in ('pp2_s1', 'pp2_s2') if a in V]; missing = [a for a in ('pp2_s1', 'pp2_s2', 'ctl_s1', 'ctl_s2') if a not in V]
 kill = len(pp) == 2 and all(V[a]['r_5'] <= 0.05 and V[a].get('e_aug', 0) >= 4.2e-6 for a in pp)

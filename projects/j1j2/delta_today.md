@@ -727,3 +727,5 @@
 2026-11-03 09:12 VERDICT job 17673215: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/r6/fit_th/ANALYSIS.md]
 2026-11-03 09:12 VERDICT job 17673216: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6/r6/tab_th/ANALYSIS.md]
 - 2026-11-03 round 6 R6 running (Paderborn 4103501). Lead (takeover) cancelled M5 sigma 1e-3 (tangent rank 251 << two-PP's +2376; uninformative control) and asked for M5 at sigma 3e-3 (rank 2423) instead, same budget; r_5 measured from that arm's own start.
+- 2026-11-03 09:21 pfaffian R6/M5 (worker): M5 at sigma 1e-3 cancelled by lead decision, rank-deficient control: Paderborn 4103519 (never started) + 4103520, A40 17673270 + 17673271, all CANCELLED (sacct); their 4 watchers + race watcher stopped first (no VERDICT). R6 untouched (4103501 running). M5 resubmitted at rbm_init_sigma 3e-3 next.
+- 2026-11-03 M5 sigma 3e-3 submitted (Paderborn 4103524/25 vs A40 17673289/90; angle pred r_5(own) 0.10-0.25; d050c9a); sigma 1e-3 jobs cancelled. R6 4103501 running.

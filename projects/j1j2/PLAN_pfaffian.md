@@ -1292,3 +1292,16 @@ audit flags anything: cap c f_J at a quantile, or use c_eff(x) = min(c, f_max / 
 Prediction: complex PPs have no exact zeros (P(|A| < eps) ~ eps^2), so for our guides the largest single-orbit share of the
 augmented weight is < 1e-4, the 0.9999-capped E_FN differs by < 0.02e-6, and the no-kept rows are <= 3 per guide with
 negligible weight. Flags at > 1e-3 share or > 0.05e-6.
+FIX (PI go via the lead, 2026-11-03; pre-registered before any number):
+(a) No-kept rows: (a1) a node: amplitude 0, finite stand-in lF + c f_J -> lF - 69; (a2) a floor: f_J = f_min, the 1e-4
+    quantile of the finite f_J.
+(b) Per-row relaxation instead of global over-relaxation: (b1) c_eff(x) = c min(1, f0/|f_J(x)|); (b2) a smooth cap,
+    c f0 tanh(f_J/f0). Here f0 is the n-weighted 0.9999 quantile of |f_J|. Rationale: c > 1 is Jacobi over-relaxation
+    (JOR), stable only for small spectral steps, and a per-row limiter is the usual trust-region remedy (Saad, Iterative
+    Methods for Sparse Linear Systems, 2003, ch. 4, relaxation; cited from memory, not re-read).
+For each fixed variant, c is re-scanned around c* (3, 3.5, 4, 4.5, 5).
+Predictions (the lead's and mine): on every quoted guide the fix moves the augmented minimum by < 0.05e-6, and the two-PP
+gain (control minus two-PP, round 5) changes by < 5%.
+KILL of "refinement": any fixed guide moves by > 0.2e-6, or the two-PP gain shrinks by > 20%; then we step back.
+Code: ansatz/code/fj_fix.py (shared fJ_of_fixed + a single-orbit weight check that asserts max share < 1e-3) goes into the
+readouts and to the sign angle.

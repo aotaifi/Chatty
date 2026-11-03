@@ -1245,3 +1245,4 @@ control adds about a tenth of the directions the second PP adds (2376) and canno
 replaced by M5 at sigma 3e-3 (RBM rank 2423), same spec and budget. r_5 is measured from M5's own start energy:
 r_5(own) = (e_start - e(theta_5^M5)) / (e_start - 4.367e-6), with e_start from a table-only job on the initial theta.
 The rule is unchanged: structure matters iff 0.4929 - r_5(own) > 0.15. My prediction for r_5(own): 0.10-0.25.
+RUNNING M5 (sigma 3e-3): Paderborn fit 4103524 + table 4103525 (tab_t5 + tab_t0 for e_start), raced against A40 17673289 + 17673290; the cancelled sigma 1e-3 dirs are kept under pfaffian_r6/m5_s1em3_cancelled.

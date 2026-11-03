@@ -410,6 +410,11 @@ T-CAP INTERIM 2026-11-03 (verified from sign_tcap/v2_S_sum.json): arm (2) 2-PP s
 2.806e-6 (theta(1200)); w_T 4.65e-6, C_F 3.75e-5. WORSE than the 1-PP's 1.447e-6, so the 'capacity lever' cannot fire whatever arm (1)'s
 scatter is, unless s > 0.65e-6. Prediction (2) 1.0-1.3e-6 MISSED. Arms (1) a1pp2 17693076 and (3) res_m4 17678710 running on A40.
 
+T-CAP AMENDMENT 2026-11-03 (lead, before any arm-(3) number): arm (3) as specified was frozen by construction. m_res in [-1, 1], so with
+kappa > 1, sgn(m_res + kappa) = +1 everywhere; kappa rose 1.5 -> 3.38 by step 1260. My spec error (and the reviewer's design). Cancelled and
+redesigned: l = sP M (1 + A m_res)/(1 + A), A = softplus(.) >= 0 from 1e-3. It starts exactly at sgn psi_P, and flips need A > 1. Prediction
+and decision rule unchanged.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

@@ -406,6 +406,10 @@ The Jacobi factor is unbounded on tiny-amplitude orbits (f_J ~ ln of a neighbour
 orbit dominate. This is a loop-design defect, handed to the project lead. Not checked: whether any earlier stored-sign grade (S2a, S2b, R1c)
 touched such an orbit (their scans were smooth and their energies sane).
 
+T-CAP INTERIM 2026-11-03 (verified from sign_tcap/v2_S_sum.json): arm (2) 2-PP sum, at plateau (17451 steps): tax 2.758e-6 (theta_bar),
+2.806e-6 (theta(1200)); w_T 4.65e-6, C_F 3.75e-5. WORSE than the 1-PP's 1.447e-6, so the 'capacity lever' cannot fire whatever arm (1)'s
+scatter is, unless s > 0.65e-6. Prediction (2) 1.0-1.3e-6 MISSED. Arms (1) a1pp2 17693076 and (3) res_m4 17678710 running on A40.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

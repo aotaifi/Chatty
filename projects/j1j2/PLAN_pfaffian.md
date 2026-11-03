@@ -1305,3 +1305,90 @@ gain (control minus two-PP, round 5) changes by < 5%.
 KILL of "refinement": any fixed guide moves by > 0.2e-6, or the two-PP gain shrinks by > 20%; then we step back.
 Code: ansatz/code/fj_fix.py (shared fJ_of_fixed + a single-orbit weight check that asserts max share < 1e-3) goes into the
 readouts and to the sign angle.
+
+## B design: the label-free loop at 8x8, with no exact tables (paper only, 2026-11-03; for Astra's blind review; no runs until the f_J fix, R6 and M5 read out)
+Anchors (8x8, E per site; fact sheet from the records):
+- Production RBM+PP: rbmpp8/rb8_prod, f 64x64 real, complex RBM alpha 0.25, translations only, 6176 parameters,
+  3.8 H100-h; VMC -0.498671(3).
+- FN p=0 with that guide: -0.4987565(28), 0.40 H100-h for 2 chains.
+- Network + one signed Lanczos step + FN (M1 p=1): -0.498946(5), 7.9 H100-h.
+- Varbench RBM+PP with full projection (2302.04919): -0.498963(2).
+- E0 is not known: Hu extrapolation -0.49906(1); ours -0.498992(16).
+- So we grade absolute energies against p=1 and Varbench, and quote no "error vs E0".
+6x6 law carried over (measured):
+- c* = 3.9-4.0 for every guide and sign.
+- Augmented/bare ratio 0.36-0.41 at round 0-1.
+- One Jacobi level on the network's own copy is about equal to one Lanczos step: round 1 under s_G 6.07e-6 vs 5.57e-6.
+- Each label-free round then gains. The two-PP round stored r = 0.49 against 0.05 for a single PP (P22).
+- The amplitude carries >= 81% of the guide's error at s_G (P21).
+(1) BASE. B_0 = P_1 + lambda P_2.
+- P_1 = the production PP with the RBM (warm, rb8_prod).
+- P_2 = a second PP warm-started from P_1 plus noise at finite separation, or from a second production seed if one exists.
+  The 6x6 lesson: P_2 must not sit in P_1's tangent neighbourhood (Astra, P16); lambda is gauge-redundant (Amendment, round 5).
+- Guide G = s_G(x) B(x) e^{c f_J[B](x)}, with c fixed at 4.0 by the 6x6 law and the FIXED f_J (no-kept rows set to a node;
+  per-row relaxation cap f0; fj_fix.py). The single-orbit weight check is built in.
+(2) LABEL-FREE FIT FROM SAMPLES.
+- Round target T_k = G_k (B_k e^{4 f_J[B_k]}); the labels ln T(x) are deterministic given B_k, s_G and E'. Only the coverage
+  of configuration space is sampled.
+- Pool: S samples x plus K = 2 blocked partners y each, from a tempered ladder |B|^(2 beta), beta in {1, 1/2, 1/4}.
+  The pool is reweighted to band-uniform weights over |B|^2 decades, as the 6x6 fits used. Decades are defined relative
+  to the median of ln|B|^2 under beta = 1, because the norm is unknown.
+- Coverage need, from Test W: decades below -9 carry 85% of the round's bond weight at 6x6 and get 0.25-0.5 stored per
+  decade. The sampler must put >= 4e4 samples into each of the ~9 occupied decades, so S ~ 4e5.
+- Generalisation noise (derived): for a least-squares fit with P parameters and S samples, the held-out excess is about
+  P/S of the residual. Two-PP + RBM has P ~ 1.8e4 real, so P/S ~ 0.045 at S = 4e5: r shrinks by ~5%, small against 6x6's
+  r = 0.49 per round.
+- The iterate-averaging stop (P19) handles the optimiser noise as at 6x6.
+- Label cost (derived from measured anchors): f_J(x) needs one walker-step's ratios. With the lemma this is 5.5x one
+  evaluation (measured, 10x10 CPU kernel).
+  - 4e5 x 3 configurations x (5.5 lemma evaluations, plus d + 1 = 129 sign-CNN calls) gives 1.5e8 CNN calls at 3.3e-5 s:
+    ~1.4 GPU-h.
+  - The lemma part runs on the CPU C kernel (walker_cost.py extended to 8x8): ~170 core-h, free.
+- Fit: two-PP damped GN on the pool, 1500 steps; ~6 s/step on an H100 (2x the 3.04 s RBM+PP SR step) gives ~2.5 H100-h
+  per round.
+(3) SIGN. s_G = sign of (1 + alpha(H - E)) psi_RBM+PP: one signed Lanczos step on the production guide, the same sign as M1 p=1.
+- The d^3 issue: computed on the fly, f_J(y) at every walker neighbour y needs s_G(z) at y's neighbours z, and each s_G(z)
+  needs E_L(z), i.e. B at w ~ z. That is three swaps from the walker, d^3 ~ 128^3 = 2e6 evaluations per walker step at 8x8.
+  Impossible, so s_G must be STORED.
+- Store it in a CNN trained on s_G labels from tempered samples. At 6x6 the XL net on s_G gave w_T 1.07e-6 and a FN tax
+  of 4.25e-7, all its errors in the low-amplitude tail. There is no 8x8 XL; the 8x8 L-size ground-state net reaches
+  0.9-1.2% configuration error.
+- Cost: labels from 2e5 samples x 129 evaluations, about 1 H100-h; training an XL at 8x8 about 1 H100-h.
+- Acceptance: the |B|^2-weighted wrong fraction on held-out samples must be <= 1e-4 (estimated with s_G computed directly
+  on those samples).
+- Then the walker cost is one-level: d^2 lemma ratios plus d^2 CNN calls per step.
+(4) GRADING. FN-GFMC with gfmc_guide.py, extended by a new guide class: augmented two-PP plus stored sign plus fixed f_J,
+  with the lemma evaluator.
+- Today gfmc_guide.py evaluates full configurations with no fast updates, which is the 128x-per-hop class of p=1.
+- 2 chains; error target 1e-5 per point first (about 1/4 of p=1's cost, so ~2-6 H100-h per point, derived), tightened to
+  5e-6 only for points within 3 sigma of a bar.
+- Equivalence test before use: at c = 0 with the network's own sign, the new class must reproduce the p=0 value
+  -0.4987565(28) within 2 sigma.
+(5) ROUNDS, PREDICTIONS, KILLS, COST.
+- V (the gate, at 6x6 first). Run the whole SAMPLED pipeline at 6x6, where the tables exist: pool, CNN sign, fit, then
+  exact grading. Start from theta_4 with two-PP, as round 5 did.
+  - Prediction: r_sampled >= 0.35 against the exact-table r = 0.49.
+  - KILL of "the loop survives sampling": r_sampled < 0.25.
+  - Cost ~3 H100-h plus CPU.
+- R0 at 8x8. Augmented production guide (single PP, no refit), stored s_G, c = 4.
+  - Prediction: E = -0.49894(1), i.e. p=1 within 1.5e-5, since one Jacobi level ~ one Lanczos step at 6x6.
+  - KILL (machinery at scale): E above -0.49892, worse than p=1 by > 2.6e-5. Then stop and diagnose the CNN sign error and
+    f_J at scale.
+  - Cost: CNN ~2 H100-h, grading ~4 H100-h.
+- R1 at 8x8. Two-PP label-free fit from the R0 guide's target.
+  - Predictions: bare FN p=0 of B_1 -0.49880..-0.49885 (r 0.2-0.5 of g ~ 1.9e-4); augmented -0.49896..-0.49900.
+  - Bars: beat p=1 by > 3 sigma; beat Varbench -0.498963(2) by > 3 sigma (the headline, at ~40% by my estimate).
+  - KILL (the loop at scale): the bare FN drop is < 1e-5 (r < 0.05).
+  - Cost: labels ~1.5 GPU-h + 170 core-h; fit ~2.5 H100-h; grading of bare + augmented ~6-10 H100-h.
+- Total to the R1 verdict: ~20-25 H100-h plus ~3 A40-h, plus build time.
+Build items (unknowns, with times; one worker each):
+- (i) a batched JAX lemma evaluator for the two-PP at 8x8, 1-2 days; unknown: GPU efficiency of rank-4 dets over d^2
+  endpoints;
+- (ii) the s_G sign CNN at 8x8, 0.5-1 day;
+- (iii) the sampled-pool fit driver, a cx_r1fit variant reading a pool instead of tables, 1-2 days;
+- (iv) the gfmc_guide.py augmented guide class plus its equivalence test, 1 day.
+- V needs (ii) and (iii) at 6x6 only; R0 needs (i), (ii) and (iv).
+Scope line: passed over
+- backflow (cost ~800x, P-proposal);
+- a second explicit Jacobi level (650x);
+- on-the-fly s_G (d^3).

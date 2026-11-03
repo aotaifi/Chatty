@@ -463,9 +463,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - A sum of two pair-products lifts the stall (round 5, 2 seeds, pfaffian_r5): stores r 0.49 vs 0.046 for one PP; augmented guide
   3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Walker step 10.9x plain PP at 10x10 (measured). Not yet separated from "more
   parameters" (control running); seeds share the start.
-- [IN DOUBT 2026-11-03] "one sign step carries all the sign gain" at 6x6: the B2-refresh loss (-2.39e-6) was an f_J artifact
-  (no-kept-bond row set to f_J=0, then one orbit dominated; corrected: that step GAINS 0.35e-6, sign_split/diag/collapse_T1B1.json).
-  The other second-step losses (B1 -0.43e-6, B2 -0.08e-6) are re-checked in the f_J audit.
+- At 6x6 the second sign step gains < 0.5e-6/site from all four learned starts (re-graded with fixed f_J, sign_fix/fix_B{1,2}.json:
+  B1 -4.3e-7, B2 -7.6e-8, B2 refreshed +3.9e-7; first steps +1.1e-5 / +5.3e-6; top orbit share <= 9.3e-3). Larger L untested.
 - At 6x6 the amplitude, not the sign, limits the loop (pfaffian_floor): s_G floor <= 0.83e-6 (Aitken 0.39e-6) vs best guide 4.37e-6;
   the exact ED sign improves theta_4's augmented guide only to 4.15e-6. Even the exact sign blocks 44% of bonds (16.8% of the
   |H|psi0 psi0 weight, mostly J2), so FN error there is purely amplitude-ratio error; psi0 itself is the fixed point (7e-16).

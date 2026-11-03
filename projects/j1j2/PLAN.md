@@ -483,6 +483,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Local dressing that keeps cheap determinant updates (PI 2026-11-03): CNN-MPS (2603.14425) gains from a local disentangler (backflow);
+  our backflow PP killed the cheap Jacobi step (~800x). Question: a dressing that changes only the swapped sites' pair amplitudes, so a
+  two-swap stays a low-rank update. Paper-only look by the Pfaffian angle after the B design.
 - Walker-code speed (GPU profile 4075217, gpu_profile/PROFILE.md): 8x8 FN-GFMC is GPU-bound (sm 96.6%), 98.3% network compute,
   dominated by XLA reduce/transpose fusions, not matmul/solves; bigger GPU batches do not help; f32/tf32/bf16 not usable near nodes
   (f32 18 sign flips / 1.44M pairs). Next lever (hypothesis): find the line behind input_reduce_fusion_2 (12 of 25 s) and use

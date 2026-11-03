@@ -1392,3 +1392,4 @@ Scope line: passed over
 - backflow (cost ~800x, P-proposal);
 - a second explicit Jacobi level (650x);
 - on-the-fly s_G (d^3).
+B BUILD started (2026-11-03, lead/PI: B in parallel): (i) pp2_lemma.py, (ii) sign8.py, (iii) pool_fit.py + the staged V launcher, (iv) gfmc_aug.py; workers, code + CPU checks only. Next: V at 6x6 and 8x8 R0 in parallel after Astra's review (cj-c9d47cfcaf6d) and the f_J fix; 8x8 R1 only once V passes.

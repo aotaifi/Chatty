@@ -789,3 +789,13 @@
 - 2026-11-03 18:32 sign T-CAP (worker): arm (2) sum graded (v2.py, job 17692907, v2_S_sum.json): theta_bar c* 4.0 e_aug 7.4015e-6 -> tax 2.757e-6; r3_1200 c* 4.0 e_aug 7.5924e-6 -> tax 2.806e-6; w_T 4.65e-6, C_F 3.75e-5 (s2b_eval_sum.json). At plateau (17451 steps).
 2026-11-03 18:45 [sign T-CAP race a1pp2] A40 17693076 started -> cancelled Paderborn 4106560 (verified; its watcher pid 2316562 stopped) (PI pre-approval via lead)
 2026-11-03 18:49 [sign T-CAP race res_m4] A40 17678710 started -> cancelled Paderborn 4106561 (verified; its watcher pid 2316785 stopped) (PI pre-approval via lead)
+2026-11-03 18:55 VERDICT job 17693076: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-03 18:58 VERDICT job 17693313: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/cpu/checka_job/ANALYSIS.md]
+- 2026-11-03 19:13 sign T-CAP (worker): A40 a1pp2_m4 17693076 cancelled at 8 min: chunked const step ran 1.9 s/step (un-jitted lax.scan re-traced every call; would hit const_sec before min 4000 steps). s2b_train_m.py now jits grad_batch once (sha 0b8b393d0dd82039ae1dde52088b99125cfd5ebdb43c78b233764593201fa807, maths unchanged); resubmitted A40 a1pp2_m4j 17693436 (no Paderborn twin: race already decided for the A40).
+- 2026-11-03 19:24 sign T-CAP: res_m4 A40 17678710 cancelled by the sign angle lead: kappa > 1 freezes the residual (m in [-1, 1]); redesigned (kappa 1.5 -> 3.38 by cos step 1260; held-out acc frozen at 0.9619).
+2026-11-03 19:28 VERDICT job 17678710: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+2026-11-03 19:44 VERDICT job 17693391: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/cpu/checka_job/ANALYSIS.md]
+2026-11-03 19:56 VERDICT job 4106699: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/pdb_4106699/ANALYSIS.md]
+2026-11-03 20:10 VERDICT job 17693828: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/a40_17693828/ANALYSIS.md]
+2026-11-03 20:14 VERDICT job 17693880: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pp2_lemma_bench/a40_17693880/ANALYSIS.md]
+- 2026-11-03 20:35 check-in: f_J audit clean for all quoted loop guides (lead read fj_audit.json); fix job 17690117 running; R6/M5 table jobs PENDING on Paderborn; T-CAP a1pp2 running; V waits on the fix; /scratch 964.1/972.8 G. Next check-in 11-04 10:00.

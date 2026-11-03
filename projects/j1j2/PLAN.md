@@ -407,7 +407,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
    restart (<= 1.5 H100-h; kill: no gain over restart or tax >= 0.93e-6).
 
 ## Step back 2026-11-03 (f_J defect; PI request)
-1. Verdict (hypothesis until the audit): a refinement, not a blockade. f_J is one Jacobi step of the FN equation; on rows with no kept
+1. Verdict: a refinement, confirmed for all 8 quoted guides (audit 17688846, pfaffian_fjaudit/fj_audit.json: capped e moves <= 1.5e-10,
+   one no-kept row at weight 1.5e-19, largest orbit share 0.0093 = a bulk orbit). The defect bites only after sign changes (sign angle). f_J is one Jacobi step of the FN equation; on rows with no kept
    bond the correct value is -infinity (isolated row, phi' = 0), not 0; on tiny-B rows the global over-relaxation c > 1 amplifies huge
    local corrections (nonlinear SOR instability). Fix: node or floor on isolated rows, per-row relaxation c_eff = c min(1, f0/|f_J|).
 2. What changed it: the sign angle's collapse case (one orbit 1-1e-9 of the weight); reported loop energies remain exact FN bounds.
@@ -570,6 +571,12 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Sign gap delta = (E0 - E_B)/N as a size-converging correction (TRIED J8): fit N <= 32, holdout N = 34/36 misses 5.5e-3 / 1.1e-2
   per site at J2 0.5, same as fitting E0 directly (bar 1e-4); E_B/N is smooth (residual 2e-4), E0/N carries the cluster-shape
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
+- Pretrained learned correction map (small exact clusters -> 10x10 ViT, replacing f_J; PI + Claude + Astra cj-cc17b9b84ecf,
+  2026-11-03, no run): the multi-round target does not exist at an approximate sign (H_FN[a]a = H^s a, so a fixed point is an
+  eigenstate of H); the one-round residual beyond c* f_J is ~8% of a round and f_J is already worth ~1.7 rounds, so the ceiling is
+  below the gap that matters (4.37e-6 vs floor 0.83e-6 is storage). Closed by the PI: not worth it.
+- Relaxing the FN constraint (released node, FN-SR / gamma-FN): released node costs Delta_B 0.385/site (DESIGN_scalable_loop:504);
+  gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
 - STATUS (in progress, high): At 6x6 a two-pair-product loop guide reaches 3.3e-6 per site, 41% below one Lanczos step (5.6e-6); the cheap stored sign is still the weak point.

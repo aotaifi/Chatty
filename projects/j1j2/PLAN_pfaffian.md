@@ -1278,3 +1278,17 @@ Per decade the extra storage is spread everywhere: 0.24-0.47 in every decade fro
 So "near-node reshaping" is NOT supported. The second PP acts as a smooth multiplicative factor |1 + lambda P_2/P_1|
 (~1 +- 0.67 with a varying phase) over the whole bulk, i.e. it adds directions everywhere. The parameter-matched M5 is
 now the deciding control.
+
+## f_J defect audit (lead 2026-11-03, from the sign angle's T-SPLIT; CPU; pre-registered before any number)
+Defect: fJ_of sets non-finite rows (SK = 0: no kept bond; den <= 0) to 0, with at most 3 allowed. On tiny-|A| rows,
+c f_J = c ln(A'/A) is unbounded for c > 1 (the guide is A^(1-c) A'^c, which grows like A^(1-c) as A -> 0).
+Our quoted E_FN values are exact for the guides used, so they stay valid upper bounds; the risk is sampling at scale.
+Principled value for no-kept rows (derived): the Jacobi update gives A'(x) = 0 there, so f_J = -infinity. In H_FN such a row
+has no kept hop, so it forms its own component with eigenvalue H_xx + V_A(x) > E and the FN ground state vanishes on it.
+-infinity is therefore exact, and a walker never enters x (guide ratio 0). No floor is needed in principle; a tabulated
+solver needs only a finite stand-in (e.g. ln A - 69).
+The unbounded positive side is the real hazard: c > 1 extrapolates beyond the one Jacobi step. A bounded alternative, if the
+audit flags anything: cap c f_J at a quantile, or use c_eff(x) = min(c, f_max / f_J(x)).
+Prediction: complex PPs have no exact zeros (P(|A| < eps) ~ eps^2), so for our guides the largest single-orbit share of the
+augmented weight is < 1e-4, the 0.9999-capped E_FN differs by < 0.02e-6, and the no-kept rows are <= 3 per guide with
+negligible weight. Flags at > 1e-3 share or > 0.05e-6.

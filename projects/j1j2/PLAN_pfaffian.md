@@ -1230,3 +1230,7 @@ AMENDMENT before any M5 run (2026-11-03): rbm_init_sigma 0.01 shifts ln|A| by rm
 starting held-out loss 4.23 against 5.7e-3), so M5 would partly measure recovery from noise. Use sigma = 1e-3 instead (rms
 0.0125, measured). Prediction and rule unchanged. Code: cx_r1fit.py f1374bed (rbm_init_sigma option; old arms
 byte-identical). T_6 control rel 3.0e-11.
+AMENDMENT 2 before any M5 run (2026-11-03): at sigma 1e-3 the RBM tangent block has rank 251 of 2664, against 2521 at 0.01
+(tanh is nearly linear, so the start is Jastrow-like). M5 would then match two-PP in parameter count but not in tangent rank.
+Selection rule, fixed now: the smallest sigma in {2e-3, 3e-3, 5e-3} with RBM rank >= 2000 AND step-0 held-out loss <= 1.14e-2.
+If none qualifies, sigma 1e-3 with the label "rank-deficient start".

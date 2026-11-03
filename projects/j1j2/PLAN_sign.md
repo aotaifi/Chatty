@@ -318,6 +318,14 @@ therefore needs ONE stored sign (the s_G type, already shown storable by the XL 
 storage test cannot be hosted at 6x6. Whether further sign steps pay at 14x14 is open and not testable here.
 Per the pre-registered rule: qualification search STOPPED (no more starts, no alpha change, no size change in takeover).
 
+## NEXT QUESTION AT 8x8 (Astra cj-9be89de86cff, /scratch/a/A.Otaifi/astra/sign_8x8/ASTRA_8x8.md, 90% in the sequence; awaiting the PI)
+Test whether a second sign step pays at 8x8 BEFORE any storage. VMC cannot judge it (exact 6x6 counterexample, B2 first update: FN gain
++5.27e-6, VMC gain -2.04e-6 on the same guides), so FN differences are needed, which means a paired FN estimator validated against exact
+6x6. Gates, each a stop point: (1) time the full 8x8 teacher (nested shells up to the 5th), <= 0.25 H100-h; (2) validate paired FN
+differences at exact 6x6, <= 48 CPU core-h (+1-2 days of building the driver); (3) 8x8 pilot, <= 1.75 H100-h; (4) second-sign FN
+comparison, <= 8 H100-h; (5) storage only if (4) is positive, <= 16 H100-h. Total cap 26 H100-h. Lead's view: run gates (1)-(2) only,
+then decide.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

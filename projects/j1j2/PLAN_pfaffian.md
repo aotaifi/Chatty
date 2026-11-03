@@ -1246,3 +1246,21 @@ replaced by M5 at sigma 3e-3 (RBM rank 2423), same spec and budget. r_5 is measu
 r_5(own) = (e_start - e(theta_5^M5)) / (e_start - 4.367e-6), with e_start from a table-only job on the initial theta.
 The rule is unchanged: structure matters iff 0.4929 - r_5(own) > 0.15. My prediction for r_5(own): 0.10-0.25.
 RUNNING M5 (sigma 3e-3): Paderborn fit 4103524 + table 4103525 (tab_t5 + tab_t0 for e_start), raced against A40 17673289 + 17673290; the cancelled sigma 1e-3 dirs are kept under pfaffian_r6/m5_s1em3_cancelled.
+
+## Test W: where does the second PP store the round correction? (lead/PI 2026-11-03; CPU only; pre-registered before any number)
+Hypothesis (the lead's, labelled as one): B = P_1 + lambda P_2 reshapes the amplitude where |P_1| is small, near the nodes,
+where the Jacobi correction lives; one PP cannot (Θ).
+Quantities, with Delta*(x) = ln T_5(x) - ln B_4(x) the target correction (c f_J) and Delta(x) = ln B_5(x) - ln B_4(x) the stored
+one. Global constants are removed by the n|B_4|^2-weighted mean. Decades d = floor(log10 of the per-configuration |B_4|^2).
+For two-PP s1 and the control ctl_s2, per decade:
+- (i) the site-wise stored fraction kappa_d = <Delta Delta*>_d / <Delta* Delta*>_d, n-weighted;
+- (ii) the same on blocked-bond differences (Delta_x - Delta_y) against (Delta*_x - Delta*_y), weighted by
+  |H_xy| B_4(x) B_4(y) (board block 5), with x the smaller side;
+- (iii) each decade's share of the total blocked-bond energy weight of Delta*.
+(2) On a stratified sample (<= 20k orbits per decade, CPU jax), rho(x) = |lambda P_2(x) / P_1(x)| for theta_5 s1, and its
+per-decade Spearman correlation with Delta(x).
+Prediction (the lead's; I share it at ~60%): the two-PP's extra stored fraction (kappa(two-PP) - kappa(control), on (ii))
+sits in decades < -9, with |difference| < 0.1 in decades >= -7; rho grows toward low decades (median rho higher at -11 than
+at -6), and rho correlates positively with Delta in the low decades.
+KILL of "near-node reshaping": the bond-weighted extra storage summed over decades >= -9 exceeds that over < -9. The
+mechanism is then "more directions", and M5 should match.

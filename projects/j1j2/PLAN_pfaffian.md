@@ -1423,3 +1423,9 @@ Controls added before any 8x8 run (Astra):
 - (c5) same-sign bare/augmented comparisons: every bare and augmented 8x8 number under the same stored sign. p=0 with the
   network's own sign is quoted separately.
 Note for the paused GFMC build (iv): gfmc_guide.py's guide is Re B with sign sgn Re B, but our 6x6 guides are s |B|. Equivalence at c = 0 therefore needs |Re B|. Decision deferred to the restart: grade the 8x8 guides as s_G |B| e^{c f_J} and state the convention.
+Correction to "the d^3 issue" (2026-11-03, from the sign8 builder; not yet measured in the guide): the production 8x8 code has
+a fast-update E_L (eloc_full, 0.09-0.13 ms per configuration on an H100, gfmc_m13b/prod/rb8/V/timing8.json). On-the-fly
+s_G(z) therefore costs one fast E_L per endpoint, i.e. d^2 E_L calls per walker step: the same count as d^2 stored-CNN
+calls, not d^3 full evaluations. Storing the sign may be unnecessary. The 8x8 benchmark times both options.
+Also: s_G labels for CNN training cost ~26 s per 2e5 samples, not ~1 H100-h. M1 p=1 constants (consts.json): alpha
+-0.17543, E_total -31.9151, w = -1. sign8.py (XL/L CNN, sign_fn, save/load) is built; its label/training code is paused.

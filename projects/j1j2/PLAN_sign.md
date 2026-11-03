@@ -357,6 +357,17 @@ Guide frame of G: E_L(x) = H_xx + V(x) - K(x), V = sum_blocked |H_xy| |G_y/G_x|,
 Prediction (falsifiable, cheap, existing B2 tables, CPU ~2 h): (a) of the fixed-arm second step's flip weight (T_1 != S_1, p_T-weighted),
 >= 50% has V - K < 0 under the parent G_1 [60%]; (b) the rule-(1) sign at the same B gains >= 0.5e-6/site where ours lost 7.6e-8 [40%;
 risk: A27, greedy local flips fail under imperfect amplitudes]. Kill of the mechanism: (a) < 20%.
+Re-think (lead, 2026-11-03, before Astra):
+- (1) is exact as the first-order FN change only if the FN ground state u is close to the guide a. In general the per-bond weight is
+  (u_x sqrt(a_y/a_x) + u_y sqrt(a_x/a_y))^2 (Astra eq 3, cj-344a55c0d108), not 4 a_x a_y. So rule (1) is right after an exact refresh
+  (u ~ a) and only approximate at fixed B.
+- Simultaneous flips: (1) and (2) both decide x alone; two flipped neighbours leave their shared bond unchanged, so Jacobi-style
+  updates of all x at once can over-flip clusters (same for both rules).
+- Prior art: A27 (greedy signed-bond flips recover 94% of the K1 gain with exact amplitudes, fail at log-amplitude noise 0.3) and A21
+  (signed-bond heuristic gives 0 gain in a 20-site chamber transfer). So rule (1) depends on the amplitude's tail accuracy; the test must
+  report it.
+- Interpretation: (2) is the right sign for the magnitude |1 + alpha(E_L - E)| a; we pair it with a different magnitude (B e^{c f_J}).
+  This is the Test X lesson again: a sign must be chosen for the magnitude it will be used with.
 Review: the derivation goes to an independent reviewer to break before the CPU check (agreement point 6).
 
 ## Running

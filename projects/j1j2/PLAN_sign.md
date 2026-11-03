@@ -368,6 +368,15 @@ Re-think (lead, 2026-11-03, before Astra):
   report it.
 - Interpretation: (2) is the right sign for the magnitude |1 + alpha(E_L - E)| a; we pair it with a different magnitude (B e^{c f_J}).
   This is the Test X lesson again: a sign must be chosen for the magnitude it will be used with.
+Lead's review (2026-11-03): the algebra holds (re-derived). Competing explanation: after step 1 the sign is near exact, so there is nothing
+left to fix and any rule's errors dominate. (Against it: B1 after step 1 is 6.4e-5 from ED, 80x s_G, and its step 2 still loses.)
+Lead advises against adopting V > K (greedy, single-site, tail ratios: the A27/A21 failure mode) and against pairing the Lanczos sign
+with the Lanczos magnitude (that is the competitor, and R0 failed with a stored sign).
+T-RULE (lead's design; pre-registered BEFORE Astra's review; CPU ~10 core-h; existing tables; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rule):
+cases B1 k=1 fixed, B2 k=1 fixed, B2 k=1 refreshed. (i) Classify each step-2 flip (T != S) as toward or away from the ED sign, p_T-weighted,
+histogrammed by kappa_x and by V - K under the parent. (ii) Hybrid rule: flip iff (Lanczos rule AND V > K), same magnitude; graded Delta.
+Prediction (offset story): >= 60% of the away-flip weight lies in the window theta_x < V - K < 0; hybrid Delta >= 0 in all three cases [45%].
+Kill: away-flip weight in the window < 30%, OR hybrid Delta < 0 in >= 2 of 3 cases -> the offset is not the cause.
 Review: the derivation goes to an independent reviewer to break before the CPU check (agreement point 6).
 
 ## Running

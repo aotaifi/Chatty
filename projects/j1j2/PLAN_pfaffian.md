@@ -1480,3 +1480,16 @@ V staged and submitted (2026-11-04).
 - Found: cx_r1fit's acceptance test let a NEGATED first step through as "noise", while the held-out loss rose. This
   weakness is in the table fit as well. The tail averaging masks it, but it is recorded.
 - Run: Paderborn, with an A40 racer (Paderborn ETA more than 1 day). Readout: v_bare.py; PASS r_V >= 0.35, KILL r_V < 0.25.
+
+## Queue (after V): strict step acceptance (lead 2026-11-04; paper only until V reads out)
+Hypothesis: cx_r1fit's acceptance test admits bad steps as "noise". Each admitted step is a random kick along directions
+where the copy loss is flat but E_FN is not. Their sum is the E_FN walk (0.1-0.2e-6 per 150 steps, R3-cont arm B) and
+could feed the round-3 damping collapse.
+Test: rerun arm B's segment, theta(1200) + 900 steps (seed 1, lambda floor 7.8e-3, checkpoints every 150), under a strict rule:
+accept a step only if the held-out loss does not rise by more than its own noise, the standard error of L_ho from
+the batch scatter.
+Predictions: the walk amplitude (rms of the checkpoint-to-checkpoint E_FN change) falls from 0.13e-6 to <= 0.05e-6;
+the averaging bonus (best checkpoint minus the mean of 6) shrinks from 0.35e-6 to <= 0.1e-6; the final bare e is within
+0.1e-6 of arm B's average, 1.252e-5.
+Kill: walk amplitude >= 0.1e-6 under the strict rule. The walk then has another source, e.g. sampling noise in the batch.
+Cost ~0.8 H100-h + tables + CPU.

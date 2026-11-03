@@ -1264,3 +1264,17 @@ sits in decades < -9, with |difference| < 0.1 in decades >= -7; rho grows toward
 at -6), and rho correlates positively with Delta in the low decades.
 KILL of "near-node reshaping": the bond-weighted extra storage summed over decades >= -9 exceeds that over < -9. The
 mechanism is then "more directions", and M5 should match.
+Result Test W (2026-11-03; CPU 17681251; pfaffian_w/w_result.json; verified)
+Per-decade bond-weighted stored fraction kappa (two-PP s1 / single-PP control s2 / decade's share of the Delta* bond weight):
+-14: 0.46/0.03/0.11; -13: 0.50/0.04/0.17; -12: 0.45/0.05/0.19; -11: 0.36/0.06/0.18; -10: 0.30/0.05/0.15; -9: 0.26/0.03/0.09;
+-8: 0.25/0.01/0.04; -7: 0.25/0.00/0.01; -6: 0.24/0.01/0.002.
+Controls: Delta = Delta* gives kappa 1 everywhere; a permuted Delta* gives ~0 for decades <= -10 (noisy in the sparse decades
+>= -9).
+rho = |lambda P_2/P_1|: median 0.67 and flat from decade -6 to -11 (10-90% 0.57-0.81); it rises only below -14 (1.29 at -21),
+where ~1% of the weight sits. Spearman(rho, Delta) is +0.08..+0.17 in decades -23..-9.
+VERDICT: the KILL formally does not fire (0.31 < -9 vs 0.03 >= -9), but only because 85% of the weight lies below -9.
+Per decade the extra storage is spread everywhere: 0.24-0.47 in every decade from -14 to -6, against the prediction of
+< 0.1 for decades >= -7. rho is flat, not node-peaked.
+So "near-node reshaping" is NOT supported. The second PP acts as a smooth multiplicative factor |1 + lambda P_2/P_1|
+(~1 +- 0.67 with a varying phase) over the whole bulk, i.e. it adds directions everywhere. The parameter-matched M5 is
+now the deciding control.

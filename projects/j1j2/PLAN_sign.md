@@ -424,6 +424,12 @@ first steps stay >= +1.5e-6 [80%].
 Decision: every second-step Delta_1 < 0.5e-6 -> 'the second sign step gains < 0.5e-6/site at 6x6' CONFIRMED (no longer 'loses');
 any Delta_1 >= 0.5e-6 -> the claim is WRONG: report the case, and a moving-target test becomes hostable at 6x6 from that start.
 
+## FIXED-f_J RE-GRADE RESULT 2026-11-04 (CPU 17696058/9, 18.3 core-h; /scratch/a/A.Otaifi/ansatz_runs/sign_fix/fix_B{1,2}.json; verified by me)
+Fixed Jacobi family (fj_fix.py b1), common B, c refined to 0.1; top-1 orbit weight <= 9.3e-3 in all grades (no collapse). Delta per site:
+B1 k=0 +1.137e-5, B1 k=1 fixed -4.31e-7; B2 k=0 +5.27e-6, B2 k=1 fixed -7.6e-8, B2 k=1 refreshed +3.94e-7 (old -2.39e-6, artifact).
+CONFIRMED (pre-registered rule): no second sign step reaches 0.5e-6/site at 6x6 (range -0.43 to +0.39e-6); first steps 5.3-11.4e-6.
+Predictions: B2 fixed held; B2 refreshed held; B1 >= 0 missed; first steps held. Not checked: a separate c minimum below 3.
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

@@ -1212,3 +1212,17 @@ Caveats:
 - The two seeds share the warm start and target, so their spread (0.002 in r) measures the optimiser path only.
 - The cost gate passed, measured: 10.9x plain at 10x10 against 5.5x for a single PP.
 Against the competitor (5.574e-6, same sign): the augmented two-PP guide is 3.26-3.29e-6, i.e. 41% lower. Floor(s_G) <= 0.83e-6.
+
+## Round 6 two-PP + parameter-matched control (lead GO 2026-11-03, takeover; <= 6 H100-h with A40 racers; pre-registered before any run)
+Arm R6, two-PP round 6: from seed 1's theta_5 (P_1, P_2, lambda warm). Target T_6 = B_5 e^{4.0 f_J^G[B_5]}; control
+E_FN[T_6] = 3.2584e-6. Seed 1, 1500 steps, mean of 7 checkpoints from 600 to 1500. r_6 = (8.3319e-6 - e(theta_6)) / 5.0735e-6.
+Prediction: r_6 0.2-0.4 (bare 6.3-7.3e-6), aug 2.5-2.9e-6. KILL: r_6 <= 0.1 (the second PP saturates like the first).
+Arm M5, parameter-matched single class at round 5: one PP plus an ACTIVE RBM bulk, as in the rbmpp kind with rbm_alpha = 72
+(72 x 37 = 2664 real RBM parameters), init W, b ~ N(0, 0.01^2). That makes PP 2592 + RBM 2664 = 5256 parameters, against
+5334 for two-PP. It starts from theta_4's PP with target T_5, the same as the round-5 arms, seed 1, 1500 steps + averaging.
+The CPU checks must show nonzero RBM Jacobian columns, and that a sigma -> 0 init reproduces theta_4.
+Prediction: r_5(M5) 0.05-0.15, aug 3.9-4.2e-6. Test N (RBM banks miss the round direction, eps^2 0.95-0.98) and Astra's
+r ~ 0.08 for an active RBM both point the same way.
+RULE: "structure matters" iff r_5(two-PP, 0.49) - r_5(M5) > 0.15, i.e. r_5(M5) < 0.34. Otherwise the round-5 gain is
+attributed to parameter count. M5 is a capacity control, not a deployable guide: with m = 72 per image its walker cost
+exceeds 20x by Astra's model.

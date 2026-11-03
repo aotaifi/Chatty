@@ -533,7 +533,7 @@ PI 2026-10-27 ('go for Paderborn'): test C (complex vs real PP, Pfaffian angle) 
 Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's ceiling 15 H100-h, single job <= 6 H100-h, cont.
 
 ## Angles
-- tooling angle (session local_e7c8b147, PLAN_tooling.md, 2026-11-03): which NQS-library parts our JAX pipeline should reuse.
+- tooling angle (session local_e7c8b147, PLAN_tooling.md): CLOSED 2026-11-03, reuse no library; levers are our two-swap kernel and image count.
 - 2026-10-30 (PI): Pfaffian angle asked for a learnability prediction (NTK alignment at init vs measured storage of existing fits, CPU) before the next network decision.
 - pfaffian-angle (session local_d60cd248, PLAN_pfaffian.md): the project's NETWORK EXPERT from 2026-10-28 (PI): capacity, shape,
   function class; open: can complex PP + 3x3 backflow hold the deep corrections (Tests E-G), and if not which network. Owned stage 1; lead holds authority over its decisions (PI 2026-10-27:

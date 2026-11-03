@@ -743,3 +743,4 @@
 - 2026-11-03 sign angle: gates 1 (8x8 teacher cost) and 2 (paired FN estimator at 6x6) pre-registered and started (PI go).
 2026-11-03 12:56 VERDICT job 17669369: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
 - 2026-11-03 sign angle: PI paused gates 1-2; paper check written (Lanczos sign threshold offset by the diagonal kappa_x vs coordinate-wise FN rule V > K); prediction and kill pre-registered.
+- 2026-11-03 /scratch 961/973G (sign angle's worker). Lead's watch fires at 966G. Prepared under the takeover exception: existing PI-pending scripts z2_hunt_ruby/docs/cleanup_run_20261102.sh (newest manifest) and ruby_offdiag cleanup_run_2026-10-29.sh; only High rows, only if the soft quota is hit.

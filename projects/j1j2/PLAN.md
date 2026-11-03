@@ -405,6 +405,14 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 3. Next (sign angle): CPU check of on-the-fly s_G with sgn(psi_P) walls (pred 5.0-6.0e-6), then edge-weighted PP vs matched
    restart (<= 1.5 H100-h; kill: no gain over restart or tax >= 0.93e-6).
 
+## Step back 2026-11-03 (f_J defect; PI request)
+1. Verdict (hypothesis until the audit): a refinement, not a blockade. f_J is one Jacobi step of the FN equation; on rows with no kept
+   bond the correct value is -infinity (isolated row, phi' = 0), not 0; on tiny-B rows the global over-relaxation c > 1 amplifies huge
+   local corrections (nonlinear SOR instability). Fix: node or floor on isolated rows, per-row relaxation c_eff = c min(1, f0/|f_J|).
+2. What changed it: the sign angle's collapse case (one orbit 1-1e-9 of the weight); reported loop energies remain exact FN bounds.
+3. Test: audit + fix on all quoted guides (Pfaffian angle, CPU); kill "refinement" if fixed guides move > 0.2e-6 or the two-PP gain
+   shrinks > 20%.
+
 ## What we understand (CLAUDE.md point 7; one line each, board block, evidence)
 - E_FN[A] = lowest eigenvalue of H_FN[A]; the copy enters only through V_A(x) = sum_blocked |H_xy| |A(y)|/|A(x)| (board 4).
 - <chi|H_FN|chi> - <chi|H|chi> = sum over blocked bonds of a perfect square (the double sum counts each bond twice), >= 0 (board 5).

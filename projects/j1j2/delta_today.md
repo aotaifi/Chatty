@@ -741,3 +741,5 @@
 - 2026-11-03 PI: understand why two-PP stores more. Lead hypothesis: lambda P_2/P_1 is largest where |P_1| is small (near nodes, where the Jacobi correction lives), so a sum of PPs reshapes the near-node amplitude without moving the bulk; test (angle, CPU): per-|B_4|^2-decade stored fraction two-PP vs single-PP (pred extra storage in phi^2 < 1e-9), read with M5.
 - 2026-11-03 12:21 sign angle: PI back (takeover ends). Live: a1pp 17669369 fit done (plateau rel 2.9%, a1pp2 continuation queued 17669370); sum_m4 17678709 at step 5040 (held-out 0.619); res_m4 17678710 PENDING.
 - 2026-11-03 sign angle: gates 1 (8x8 teacher cost) and 2 (paired FN estimator at 6x6) pre-registered and started (PI go).
+2026-11-03 12:56 VERDICT job 17669369: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_tcap/ANALYSIS.md]
+- 2026-11-03 sign angle: PI paused gates 1-2; paper check written (Lanczos sign threshold offset by the diagonal kappa_x vs coordinate-wise FN rule V > K); prediction and kill pre-registered.

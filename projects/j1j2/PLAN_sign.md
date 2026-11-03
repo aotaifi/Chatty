@@ -342,6 +342,23 @@ Prediction: passes with kappa 0.05-0.3 [45%]; kappa below 0.048 [20%].
 Decision after both: gate 3 (8x8 pilot, 1.75 H100-h) only if q*kappa <= 0.048; otherwise close the current investigation as
 'second sign step at 8x8 unaffordable to measure with this estimator', 8x8 physics left open.
 
+## PAPER CHECK: is our sign-update rule the wrong one? (lead, 2026-11-03; PI: at scale later sign updates must pay, so a rule that
+## never pays at 6x6 is suspect; gates 1-2 PAUSED by the PI until this is settled)
+Guide frame of G: E_L(x) = H_xx + V(x) - K(x), V = sum_blocked |H_xy| |G_y/G_x|, K = sum_kept |H_xy| |G_y/G_x|.
+(1) Coordinate-wise FN rule (flip x alone, amplitude fixed): in the bound <a|H_FN|a> a kept bond gives -2|H|a_x a_y, a blocked one +2|H|a_x a_y,
+    so flipping x lowers it iff V(x) > K(x), i.e. iff E_L(x) - H_xx > 0. Threshold: the off-diagonal local energy, no diagonal term.
+(2) Our rule (sign of one signed Lanczos step): flip iff 1 + alpha(E_L - E) < 0, i.e. iff V - K > 1/|alpha| - kappa_x, kappa_x = H_xx - E.
+    Its threshold is offset by theta_x = 1/|alpha| - kappa_x, which depends on x through the DIAGONAL energy (1/|alpha| ~ 11-13 here).
+    Tail configurations (kappa_x > 1/|alpha|) are flipped even when V < K (wrong by (1)); low-kappa configurations are under-flipped.
+    In the full Lanczos vector those wrong flips carry magnitude |1 + alpha(E_L - E)|, small near the threshold, so they are harmless;
+    extracting the SIGN alone and rebuilding the magnitude with the Jacobi factor drops that protection.
+(3) Mechanism for 'first step pays, second does not': the first step's flips include clear V >> K flips that pass any threshold; once
+    those are done, the remaining flips are marginal, and the theta_x offset errors dominate.
+Prediction (falsifiable, cheap, existing B2 tables, CPU ~2 h): (a) of the fixed-arm second step's flip weight (T_1 != S_1, p_T-weighted),
+>= 50% has V - K < 0 under the parent G_1 [60%]; (b) the rule-(1) sign at the same B gains >= 0.5e-6/site where ours lost 7.6e-8 [40%;
+risk: A27, greedy local flips fail under imperfect amplitudes]. Kill of the mechanism: (a) < 20%.
+Review: the derivation goes to an independent reviewer to break before the CPU check (agreement point 6).
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

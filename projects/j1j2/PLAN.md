@@ -39,7 +39,8 @@ The refit loop (store each round in the network) is closed: L8, docs/reports/202
 - Literature: the loop is self-healing DMC (Reboredo-Hood-Kent arXiv:0808.3417) on a lattice. Caffarel et al. arXiv:2609.01301: noise-free,
   the FN energy RISES to a wrong node for any finite basis; cure = node-weighted update. Test 1 got variant (iii), node-weighted fidelity.
 
-## OPEN QUESTION (PI 2026-11-02: "A first, C in parallel"): does the add-on improve a strong published 10x10 network below the
+## OPEN QUESTION (PI 2026-11-02) -- ANSWERED 2026-11-03: NO at p=0. FN p=0 from the ViT -0.497682(4) vs VMC -0.497677(5): gain 5(6)e-6, 3 sigma
+above the bar (docs/reports/2026-11-03_addon_10x10_vit_fn.md); the ViT's error is in its sign, which p=0 cannot change. Original question: does the add-on improve a strong published 10x10 network below the
 best published bound -0.4976939(2) (arXiv 2603.14425)? Guide: published ViT nqs-models/j1j2_square_10x10_05 (-0.497676).
 Mechanism (hypothesis): FN p=0 removes the guide's amplitude error except across sign-violating bonds; at 8x8 FN p=0 gained 8.3e-5
 over VMC p=0 (RBM+PP). Prediction (unvalidated): FN p=0 from the ViT lands -0.49770 to -0.49775. Kill: not below -0.4976939 by
@@ -569,4 +570,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): At 6x6 a two-pair-product loop guide reaches 3.3e-6 per site, 41% below one Lanczos step (5.6e-6); the cheap stored sign is still the weak point.
-- NEXT (in progress, high): Apply the add-on to the best published 10x10 network to see if it beats the best published energy; in parallel try a richer network for the loop at 6x6.
+- NEXT (open, high): Fixed-node alone barely improves the best published 10x10 network; the PI decides the next 10x10 step (a cheap sign change, or the loop guide).

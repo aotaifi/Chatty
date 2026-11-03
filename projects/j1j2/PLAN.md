@@ -450,6 +450,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   competitor (5.57e-6); s_G is worth 4.1e-6 (sign_v1). S2a: an XL CNN storing s_G costs 4.2-4.3e-7 (two seeds;
   sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6. DEPLOYABLE sign (complex-PP phase, det4 updates):
   tax 1.63e-6 -> loop 6.27e-6, ABOVE the competitor (S2b, unconverged; S2b' to plateau running).
+- A sum of two pair-products lifts the stall (round 5, 2 seeds, pfaffian_r5): stores r 0.49 vs 0.046 for one PP; augmented guide
+  3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Walker step 10.9x plain PP at 10x10 (measured). Not yet separated from "more
+  parameters" (control running); seeds share the start.
 - At 6x6 one signed-Lanczos sign step carries all the sign gain: second steps from four learned starts gain nothing or lose (sign
   angle step 0, sign_q0, sign_q0r); the loop needs one stored s_G-type sign, then amplitude-only rounds. Open at 14x14.
 - At 6x6 the amplitude, not the sign, limits the loop (pfaffian_floor): s_G floor <= 0.83e-6 (Aitken 0.39e-6) vs best guide 4.37e-6;
@@ -554,5 +557,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   scatter, so delta inherits it; same at J2 0.3 (signgap/A0_ed/energies.json, A1_fits/fits.out; lead re-derived the fits).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 the loop beats one Lanczos step with an exactly known sign (4.4e-6 vs 5.6e-6), but with a sign network cheap enough for large lattices it falls behind (6.3e-6).
+- STATUS (in progress, high): At 6x6 a two-pair-product loop guide reaches 3.3e-6 per site, 41% below one Lanczos step (5.6e-6); the cheap stored sign is still the weak point.
 - NEXT (in progress, high): Apply the add-on to the best published 10x10 network to see if it beats the best published energy; in parallel try a richer network for the loop at 6x6.

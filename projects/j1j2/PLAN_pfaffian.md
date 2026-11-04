@@ -1711,3 +1711,16 @@ diff: no table/PP2 branch changes the stationary law. Fresh 96-chain PP2 replica
 Gap found: the production entry point draw_fn uses the in-sampler tau pilot + thinning (Pool8Sampler._measure), which no exactness test has run.
 Test (pre-registered): draw_fn itself at 6x6 (table and PP2 evaluators), >= 96 independent samplers, same bins and Gaussian rule; pass max |z|
 <= 3 and chi2/dof <= 1.5; broken version: keep the pilot's first-sweep (unequilibrated) draws, which must fail. The informed move stays unused.
+Result M5'' init check (2026-11-04 22:00; pfaffian_m5pp/cpu_check/summary.json; harness = cx_r1fit first step to 5.6e-15; verified): NO sigma passes,
+and MY MECHANISM WAS WRONG. I said the RBM columns are O(sigma sqrt N) ~ 2e-2, small, and damped away. Measured at theta_4: RBM median column
+norm 2.53 at sigma 3e-3, i.e. 31x P_2's (0.081) and 2.8x P_1's (0.90); damping factor at that column 0.99. I left out the 576-image sum.
+sigma 0.02/0.05/0.1 scramble the guide (e_start 4.6e-2 to 6.5e-2, ~4000x theta_4) and pass the share only because of that.
+What follows: a block with LARGE columns moves FEW parameters per unit of function change (dtheta ~ J^+ r), so the parameter-space share
+|dtheta_RBM|^2/|dtheta|^2 is not a measure of how much the block is used. It penalises the RBM (large columns) and would also fail the two-PP's
+own P_2, whose parameter-space share at the first step is 0.205 < 0.507. The M5' gate (58e8c0e) was therefore ill-posed: its verdict INVALID is
+recorded AS REGISTERED, but it does not show that the RBM was unused.
+Next (pre-registered before any number): the FUNCTION-space share, S_fn = sum_w |dlnA_RBM|^2 / sum_w |dlnA_total|^2 over the copy-loss value
+rows (pool weights), with dlnA_RBM = R(x; W_end) - R(x; W_start) and dlnA_total the full model change, for M5 (init -> steps 600, 1350) and M5'
+(theta_rel -> step 600); and the same for P_2 in the two-PP round 5 (P_2 term vs total) as the reference. Prediction (mine, from column norm x
+parameter change): S_fn(M5') ~ 0.01, far below P_2's. Kill of "M5/M5' were effectively one-PP": S_fn(RBM) >= 0.5 x S_fn(P_2). If it fires,
+M5' was a valid control and should be rerun as is (sigma 3e-3); if not, the stall is undiagnosed and M5'' waits for a mechanism. ~5 core-h.

@@ -1609,3 +1609,8 @@ parts together give "GFMC with the evaluator = exact FN".
 Result V augmented (2026-11-04; CPU 17722344, pfaffian_v/readout/aug/readout_aug.json; control pp2_s1 reproduced to 9e-11; verified): theta_V aug min
 3.3462e-6 at c* 4.0 (f_J old and b1 identical to 2e-14), +0.088e-6 above the exact-table round 5 (3.2584e-6). Augmented gain from theta_4 (4.367e-6):
 1.021e-6 vs 1.109e-6, ratio 0.92 (bare 0.94). The sampled pool costs ~8% of the round's gain, augmented or bare. Deterministic exact readout (no error bar).
+Result (3) savings (2026-11-04; CPU, pfaffian_8x8build/savings/; code 7c4dddf, default path 'old' bit-equal to the frozen module; verified check_*.json):
+- dedup vs old: 8x8 production rel 3.6e-15, two-PP rel 3.6e-15 (abs 6.8e-12 at |ratio| ~3.6e3; the registered abs 1e-12 was ill-posed for ratios up
+  to 6.6e5, so READ AS REGISTERED: abs MISSED, rel 1e-13 PASS), 6x6 theta_5 exact 0.0, L-CNN 0 sign flips; every broken key fails.
+- CPU speed (job 17730108): padding 1.2x, endpoint dedup 2.5x on the lemma; CNN calls 2.7x fewer (28.2k -> 10.1k per walker step). Whole step
+  with the L-CNN 2.7x. Estimated savings were 1.9x / 1.3x / -; measured are ~1.3x better on dedup, as predicted on padding. GPU per-move cost unmeasured.

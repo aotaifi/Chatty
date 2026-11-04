@@ -1538,3 +1538,12 @@ V: a fresh Paderborn copy goes in alongside the running A40 copy 17695322/176953
 same pool_fit (66799f1c); new run dirs. Whichever copy finishes the readout first counts, and the other is NOT cancelled
 without telling the lead. Expected ~2.4 H100-h.
 V copies: Paderborn pdb2 fit 4109778 + tab 4109779 (squeue start est. 11-07); A40 17695322/23 at step 760, 53.3 s/step, finish est. 11-04 ~20:30 + 80 min table. v_chain2.sh takes the first completed copy and cancels nothing that is still running. m51 rebooted at 08:30 and killed the VPN and its watchers; re-armed.
+
+## Result V gate (2026-11-04/05; Paderborn pdb2 fit 4109778 (express) won; readout pfaffian_v/readout/readout.json; verified)
+Finite pool of 4e5 i.i.d. tempered draws, two-PP from theta_4 to T_5^b1, exact s_G and exact grading: bare e(theta_V) =
+8.561e-6, r_V = 0.4636. The exact-table fit gave r_5 = 0.4929 (e 8.332e-6), a ratio of 0.94.
+PASS (>= 0.35). Prediction 0.15-0.35 MISSED HIGH: Astra's P/S and coverage concerns did not materialise at S = 4e5 for this
+class and round.
+Augmented grading: CPU readout running (R5's c scan, old and b1 f_J), against the exact-table 3.258e-6.
+Next: 8x8 work waits for the PI's go with preconditions c1-c5 and the savings (dedup, padding, smaller CNN). The A40
+duplicate 17695322 keeps running until the PI decides.

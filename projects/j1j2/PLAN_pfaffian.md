@@ -1623,3 +1623,7 @@ Result (1b) pool_fit 8x8 model (2026-11-04; CPU jobs 17729764-69, 17732278; pfaf
   max 350-430 from single importance weights). The partner importance weights rho will need a tail check at real pool sizes (pool8).
 - Cost: CPU GN step at B = 8208 ~11 min (derived) -> 1500 steps infeasible on CPU; H100 estimate 3-12 s/step (derived, unmeasured). Pool labels
   ~50 core-h per 4e5 draws (extrapolated).
+Result M5' validity gate (2026-11-04 ~17:45; A40 17720568, round/fit_th/round_1/theta_step600.npy sha 8fc0b310, nearest saved theta to step 300; CPU):
+RBM rms change from theta_rel 4.80e-5 (threshold 1.06e-3), PP 1.37e-3; RBM share of |dtheta|^2 0.0013 (threshold 0.507). VERDICT: INVALID as
+registered. M5' is an effective one-PP run and cannot separate structure from parameter count. Paderborn twin 4110546 held; A40 continues
+until the lead rules (cancel recommended; M5'' as proposed above).

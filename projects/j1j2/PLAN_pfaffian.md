@@ -1614,3 +1614,12 @@ Result (3) savings (2026-11-04; CPU, pfaffian_8x8build/savings/; code 7c4dddf, d
   to 6.6e5, so READ AS REGISTERED: abs MISSED, rel 1e-13 PASS), 6x6 theta_5 exact 0.0, L-CNN 0 sign flips; every broken key fails.
 - CPU speed (job 17730108): padding 1.2x, endpoint dedup 2.5x on the lemma; CNN calls 2.7x fewer (28.2k -> 10.1k per walker step). Whole step
   with the L-CNN 2.7x. Estimated savings were 1.9x / 1.3x / -; measured are ~1.3x better on dedup, as predicted on padding. GPU per-move cost unmeasured.
+Result (1b) pool_fit 8x8 model (2026-11-04; CPU jobs 17729764-69, 17732278; pfaffian_8x8build/poolfit8/; verified check flags; commit pending a,d rerun on 7c4dddf):
+- arm 'pp8': complex f_1, f_2 (64x64), complex RBM M = 16, complex lam; 18466 real parameters; P_1 warm from rb8_prod params_final.npz (sha 0520c5be).
+- (a) logA = pp2_lemma.logB to 1.1e-14 (and = rbmpp_lib production to 8.1e-12 at lam = 0); (b) gradient vs FD 2.4e-9..8.1e-8; (c) GN step lowers
+  held-out 3.137 -> 2.892 and train 0.1505 -> 0.1170; (d) labels_fn = slow path to 1.1e-14 (37 of 60 capped). Each broken version fails
+  (cut-lam on the loss gradient only by 2.2e-3). 6x6 checks a, b, c unchanged.
+- Open: (c2) with REAL 8x8 labels at c = 4 one GN step lowers train 1.6% but raises held-out 0.4%, inside heavy-tail noise (per-entry loss mean 7,
+  max 350-430 from single importance weights). The partner importance weights rho will need a tail check at real pool sizes (pool8).
+- Cost: CPU GN step at B = 8208 ~11 min (derived) -> 1500 steps infeasible on CPU; H100 estimate 3-12 s/step (derived, unmeasured). Pool labels
+  ~50 core-h per 4e5 draws (extrapolated).

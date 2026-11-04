@@ -210,9 +210,10 @@ class Pool8Sampler:
     """draw_fn(beta, S, rng) -> (configs int8 (S, N), lnB (S,)) from PT of |B|^(2 beta); thinning by 2 tau of the slowest of ln|B|^2 and the decade index
     (tau measured in a pilot at the first draw_fn call unless thin is given).  Output betas are the rungs requested; other rungs only help mixing."""
 
-    def __init__(self, ev, betas=(1.0, 0.5, 0.25), E=8, seed=1, mode='single', thin=None, burn=200, pilot=400, log=print, start='random'):
+    def __init__(self, ev, betas=(1.0, 0.5, 0.25), E=8, seed=1, mode='single', thin=None, burn=200, pilot=400, log=print, start='random', keep_pilot=0):
         self.ev, self.betas, self.E, self.mode, self.log = ev, list(betas), E, mode, log
         self.pt = PT(ev, betas, E, seed, mode, init=hot_start(ev, len(betas) * E, seed + 7777) if start == 'hot' else None); self.thin = thin; self.burn = burn; self.pilot = pilot; self.buf = {b: [] for b in betas}
+        self.keep_pilot = keep_pilot                                                         # TEST HOOK (broken version): push the first keep_pilot unequilibrated pilot sweeps into the output buffers, skip the burn
         self.tau = {}; self.did_burn = False; self.sweeps_done = 0; self.med2 = None
 
     def _advance(self, n, record=None):
@@ -221,7 +222,12 @@ class Pool8Sampler:
             if record is not None: record.append(self.pt.lnb.copy())
 
     def _measure(self):
-        rec = []; self._advance(self.pilot, rec); lb = np.array(rec)                      # (T, R, E)
+        rec = []
+        for t in range(self.pilot):
+            self.pt.sweep(); self.sweeps_done += 1; rec.append(self.pt.lnb.copy())
+            if t < self.keep_pilot:                                                          # BROKEN (test hook only): unequilibrated pilot states leak into the output
+                for b in self.buf: self.buf[b].append((self.pt.sig[self.betas.index(b)].copy(), self.pt.lnb[self.betas.index(b)].copy()))
+        lb = np.array(rec)                                                                   # (T, R, E)
         self.med2 = float(np.median(2.0 * lb[:, self.betas.index(1.0), :]))                 # the beta = 1 rung
         dec = decade_index(lb, self.med2); tau = []
         for q in range(self.pt.R):
@@ -235,7 +241,7 @@ class Pool8Sampler:
 
     def draw_cfg(self, beta, S, rng=None):
         if not self.did_burn:
-            self._advance(self.burn); self.did_burn = True
+            self._advance(0 if self.keep_pilot else self.burn); self.did_burn = True                  # (broken hook: no burn either)
             tm = self._measure()
             if self.thin is None: self.thin = int(math.ceil(2.0 * tm))
             self.log(f'[pool8] burn {self.burn}, thin = {self.thin} sweeps')

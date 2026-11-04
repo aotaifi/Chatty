@@ -1627,3 +1627,21 @@ Result M5' validity gate (2026-11-04 ~17:45; A40 17720568, round/fit_th/round_1/
 RBM rms change from theta_rel 4.80e-5 (threshold 1.06e-3), PP 1.37e-3; RBM share of |dtheta|^2 0.0013 (threshold 0.507). VERDICT: INVALID as
 registered. M5' is an effective one-PP run and cannot separate structure from parameter count. Paderborn twin 4110546 held; A40 continues
 until the lead rules (cancel recommended; M5'' as proposed above).
+Result (1a) pool8 sampler (2026-11-04; CPU 111 core-h; pfaffian_8x8build/pool8/results.json, RUN_LOG.md; verified results.json; code committed):
+- Kernel: one antiparallel J1/J2 exchange, acceptance min(1, |B|^(2 beta) n_anti(x)/n_anti(y)); PT between rungs; draw_fn(beta, S, rng) ->
+  (uint64 words, ln|B|, int64 min-image ids), thinned to ceil(2 max tau).
+- (a) AS REGISTERED (|z| <= 3, chi2/dof <= 2): table evaluator, first set 64 chains FAIL (max |z| 3.37, one overflow bin, 5 seen vs 13.7 expected);
+  the worker then switched low-count bins to Poisson tails (post hoc, not credited); fresh 128-chain replicate PASS under the original rule (2.15,
+  1.19). PP2 evaluator: set 1 FAIL (3.50), replicate PASS (2.08), pooled 96 chains FAIL marginally (3.23, chi2/dof 1.45). PP2 lnB = table lnB to
+  1.1e-13 on 17280 configs, so the two runs have the same transition kernel; I read the PP2 miss as a fluctuation (~33 bins per run) but it is
+  NOT closed (~30 core-h would). Broken versions fail on the table evaluator: Hastings factor dropped |z| 18, |B|^beta 951, PT always-accept 379.
+- (b) 8x8 production (params_final sha 0520c5be): tau_int 1.2 / 0.7 / 0.6 sweeps at beta 1 / 0.5 / 0.25; PT swap 0.10 / 0.30; hot vs random starts
+  agree (max |z| 2.2 of 30); quotable.py on <2lnB> at beta 1: QUOTABLE -66.96(12). CPU 0.33 s per sweep per walker. Slow modes > 1500 sweeps not excluded.
+- (c) Sizing (derived): the LIMITING decade is the TOP one (+2), not the deep ones; beta 0.5 already covers decade -6 (occupancy 0.15). ESS/P >= 3
+  needs S 3.3e6 on equal thirds {1, .5, .25} (920 core-h), 1.56e6 on {1, .5} optimised (383 core-h independent chains), 1.16e6 on {1.2, 1, .5} (273).
+  Plus labels (~50 core-h per 4e5, from 1b).
+- W^B_x alone is benign (ESS fraction 0.72-0.96 per decade; max W/Wbar 7.6). So the heavy entries in 1b's (c2) come from the T/B factor
+  exp[(lnT_y - lnB_y) - (lnT_x - lnB_x)] (c f_J differences) or from the Marshall stub sign (my inference; with the stub, f_J is not the real one).
+Open design question (mine, before any 8x8 pool): which RELATIVE decades to fit. +2..-6 is inherited from 6x6 (absolute -5..-14 there, where
+Test W put 85% of the round's bond weight below -9). At 8x8 the decade range must follow where the round's bond weight sits, measured with the
+real s_G and f_J on a small pool, not assumed. Its answer moves S: if the deep decades matter, beta 0.25 comes back.

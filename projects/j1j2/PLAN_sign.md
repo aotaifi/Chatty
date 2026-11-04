@@ -445,6 +445,10 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
+- T-LCNN (2026-11-04 13:50, CPU, ~27 h wall, ~240 core-h): seed 0 17725768->69->70->71, seed 1 17725772->73->74->75 (train/eval/grade/top1),
+  run dir sign_lcnn/seed{0,1}; gate: python3 sign_lcnn/gate.py <seed dir>. Verdicts: R6 tax > 1.5e-6 -> tell the lead 'stop the 8x8 build';
+  <= 1.5e-6 -> tell the lead 'precheck passes' and release T-SCALE 8x8 GPU spend (held by the lead until then).
+- T-SCALE step 0 DONE (see STEP 0 RESULT); 8x8 build waits for T-LCNN. Opus local-CNN review DONE (no GPU; see LOCAL-CNN REVIEW).
 - Nothing on the cluster. T-CAP arm 3 (res2, A40 17697011) FINISHED 2026-11-04 07:58 (final held-out acc 0.9623 vs sgn psi_P's 0.9619:
   essentially sgn psi_P, as predicted from the A stall); NOT graded yet (run dir /scratch/a/A.Otaifi/ansatz_runs/sign_tcap/runs_a40s/res2*).
   Grading = v2.py with the stored sign, ~1 h CPU; closes T-CAP's PI-hypothesis comparison formally (expected tax ~4e-6).
@@ -549,6 +553,61 @@ Step 2 (<= 10 H100-h total): train and measure at L = 8, 10.
 Predictions (angle lead, before any number): w_T/N grows <= 2x from L = 6 to 10 [50%]; grows > 5x [20%].
 Reads: per-site proxy kbar w_T/N at 10x10 <= 3e-6 (1% of the ~3e-4 competitor error; 10x10 RBM+PP E/N -0.497272, H7) -> cheap stored sign viable at
 scale; growth as fast as the competitor's error -> not viable, report. Not covered: kbar's own L dependence (needs an FN grade at 8x8, unaffordable).
+
+## T-SCALE AMENDMENT (angle lead, 2026-11-04, PI asked whether the prediction was checked conceptually; before any number). Steps 1-2 HELD.
+It was not: the 50% prediction was a guess. Flaw found on paper: the target T_L is one global signed-Lanczos step. Its flips need
+E_L(x) - E > 1/|alpha_L|. With alpha_L ~ 1/sigma_H^2 ~ 1/N and bulk fluctuations of E_L ~ sqrt(N), the flipped weight shrinks with N
+(flips survive only next to the guide's nodes). Equivalently, a fixed number of Lanczos steps improves E/N less and less as N grows
+(standard; Becca-Sorella book, not re-read). So the stored sign's absolute per-site tax at 10x10 would be small even if storage were poor:
+a pass would be uninformative. Fix: read the RELATIVE retention r = 1 - w_T/d_L, with d_L = weight(T_L != guide sign); at 6x6 the stored PP keeps
+79% of the s_G gain (Astra, theta_bar). r can fail at any size. Step 0 also reports d_L. [lead's confidence in the shrinkage argument ~70%]
+Consequence for the loop (to the project lead): if one step's sign gain per site shrinks with N, the loop at 14x14 needs many sign updates,
+which is the PI's premise, so the scaling question is whether storage errors accumulate across rounds (mechanism 4, contraction q).
+
+## T-SCALE REVIEW (Astra cj-17cae01c48b2, /scratch/a/A.Otaifi/astra/sign_scale/ASTRA_scale.md, read in full; job exit 1 after the file was written)
+- My calibration error: the 6x6 w_T used the round-3 Jacobi weight (sign_s2/data p0), not the Lanczos weight |v'|^2 the design samples. Corrected
+  (exact, all orbits): w_G(S_a1) 9.355e-7, S_t 6.974e-7, XL 4.503e-7; kbar 32.6 / 35.9 / 33.9 (consistent across copies at 6x6).
+- The w -> tax transfer is unsupported across L: a scattered wrong configuration changes O(N) edges (kbar ~ N, factor 2.78 from 6 to 10);
+  C_W/N is 21-23x the tax (relaxation factor unmeasured). Tempered estimator feasible: ~5e5 independent draws for a 20% half-width.
+- Astra's recommendation (85%): 8x8 first, 10x10 only if the 8x8 result and rates allow; add the boundary statistic C_W/N, two training seeds,
+  the no-update control sgn(v) with missed vs false flips; pre-register a 20% half-width; 0.25 H100-h sampler pilot. FN viability needs a paired
+  FN grade at size (driver not built), not w.
+Angle lead's call: adopt all of it; keep the relative retention r = 1 - w_T/d_L (same idea as the no-update control) as the headline readout,
+with C_W/N as the energy-relevant second readout. The test answers 'does the copy stay as good as at 6x6', NOT 'is the FN tax small at 10x10'.
+Steps 1-2 re-sized from step 0's timings before any submission.
+
+## T-LCNN (lead's precheck for the 8x8 loop build, 2026-11-04; pre-registered before training; CPU; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_lcnn)
+Train the sign class the 8x8 plan uses, the L CNN (sl_train.py SIZES L = 64 channels x 6 layers), on s_G at 6x6 with S2a's recipe
+(same data sign_s2/data/N36, beta 0.5, one-swap neighbours, 80000 steps), 2 seeds; grade with v2r.py on R6 theta_6 and R5 pp2_s1, s_G controls as T-R6.
+Smaller 'saving' variant: graded too once the lead names it.
+Prediction (angle lead): R6 tax 0.5-1.0e-6 [70%] (XL 0.43e-6 on theta_bar, tax independent of amplitude in T-R6; L's floor certificate
+4.8e-7 is 2.8x XL's); > 1.5e-6 [10%]. Stop rule (lead): R6 tax > 1.5e-6 stops the 8x8 build.
+
+## T-SCALE STEP 0 RESULT 2026-11-04 (A40 17722680, 17724740, 17721088/9; 1.43 A40-h, over its 1 h; /scratch/a/A.Otaifi/ansatz_runs/sign_scale/STEP0.md; worker's numbers, spot-checks pending)
+Guides: 8x8 M1 rbmpp8/rb8_prod/params_final.npz (E/N -0.498672); 10x10 rbmppL/prod/rbL10_prod/backup_paderborn/params_04150.npz (stopped run, E/N -0.497272, no eval chains).
+Labels: one guide call per label via rank-2 bond ratios: 1.0 ms (8x8), 3.9 ms (10x10) on A40. alpha_8 = -0.18 (two seeds; analytic -0.171(7), -0.191(7); not quotable, 7 sweeps).
+alpha_10 NOT scanned (~2 A40-h).
+Flip weight d_L = P_|psi|^2(T != sgn guide) at alpha -0.18: 8x8 1/16384 (6e-5, 95% upper 2.9e-4); 10x10 4/8192 = 4.9(2.2)e-4. Not a test of my shrinkage
+argument (alpha_10 unfitted; 10x10 guide is a stopped, worse checkpoint; 1 and 4 events). Taken at face value it does NOT shrink from 8 to 10.
+PP sign net: 2.9 s/step (8x8), 15.9 s/step (10x10) vs 0.66 s at 6x6; s2b_train_m.py is hard-coded to 6x6 (lattice, neighbour table, ED loaders):
+the data pipeline must be rebuilt from guide labels. Projected: 8x8 labels 0.4-0.6 + training 3.3-7 A40-h; 10x10 training 18-37 A40-h (over the cap).
+Consequence: T-SCALE is an 8x8 test (Astra's advice holds on cost grounds too); 10x10 needs the PI's spend decision after 8x8.
+
+## LOCAL-CNN REVIEW (PI request 2026-11-04; Opus reviewer, /scratch/a/A.Otaifi/astra/sign_localcnn/OPUS_localcnn.md; CPU only; fit3.json checked by me)
+Verdict: no GPU on the shallow local CNN sign. The best convex correction from all translation-summed 3x3-patch features, added to the 1-PP margin,
+moves w_T 1.724e-6 -> 1.712e-6 (-0.7%; -20% needed); on the two-PP mix 1.413e-6 -> 1.408e-6. A planted local rule is recovered (test can see it).
+The PP's errors are seed-specific (seeds share 0.61e-6 of their wrong weight), not a shared local motif: this is why mixing two PPs helped.
+Parity: an additive local term cannot express 'odd number of local defects'; the right form for local defects is PP x local phase (product).
+Cost: L-independent but not cheaper than the PP (2-layer C16: 1.1e10 MAC/move vs PP full projection 4.7e10). Reviewer's better bet (~40%, guess):
+a third frozen PP seed in the mix (~5.2 A40-h). Not checked: the product form (stored logits keep only cos of the phase).
+
+## TAKEOVER 2026-11-04 evening (PI: 'discuss with the lead and decide; you are also taking over')
+Decision (proposed to the lead, default unless it objects): 8x8 sign network = 1-PP complex phase, 2 seeds + margin mix, on T_8 (M1, alpha -0.18);
+readouts per T-SCALE REVIEW. Tonight CPU: general-L pipeline + 6x6 gates G1 (labels = s_G exactly), G2 (sampled w_T(S_a1) = 9.355e-7 within a 20%
+half-width; broken control), G3 (margin equality). From 11-05 ~10:00 (lead's takeover GPU default, after Astra): 8x8 labels ~0.5 A40-h, training
+2 x 3-7 A40-h on A40. No H100, no 10x10 without the PI. Result that changes the plan: G1 or G2 failing (pipeline wrong) or T-LCNN R6 tax > 1.5e-6
+(lead stops the 8x8 build; the PP 8x8 copy test still runs, it does not depend on the build).
+Proposed to the lead for the 8x8 loop build: store the sign after every sign update and track the tax over rounds (accumulation at scale).
 
 ## Dead ends
 (none yet)

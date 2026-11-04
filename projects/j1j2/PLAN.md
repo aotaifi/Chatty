@@ -490,6 +490,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Sign tax over many rounds (sign angle 2026-11-04; the PI's 14x14 worry, errors accumulating over sign updates): in the 8x8 loop build,
+  re-store the sign after every sign update and grade the tax per round; flat = OK, growing = the sign must be re-trained from scratch
+  or the class changed. Lead: include as a per-round readout of the 8x8 loop (no extra run), not a separate test.
 - Competitor bar (LaQX review 2026-11-04, PLAN_tooling.md): published plain VMC CNN-MPS at 6x6 is -0.5038070(2), 2.65e-6/site above our E0 -18.137147540071613/36
   (arXiv 2611.04333 SciPost TeX l.763; CORRECTED 2026-11-04 by the Opus review, lead re-derived: 3.2e-6 was vs the paper's rounded ED), BELOW our best loop guide
   (2.81e-6 exact sign; 3.56e-6 stored sign) and

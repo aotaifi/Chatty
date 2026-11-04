@@ -1705,3 +1705,9 @@ Result (2) c3 (2026-11-04; pfaffian_8x8build/gfmc_aug/c3_table/gate_i.json, c3_i
 - (ii) same-seed identity, aug_ratios vs table provider, c = 4, 32 blocks: hops and walker hashes identical, E_mix max rel 6.7e-15. Broken
   c = 3.9 moves E_mix by 2.0e-5 rel. So GFMC with the evaluator = the table GFMC of (i). c3 PASSES.
 - Cost note for 8x8: the 6x6 table-guide GFMC needed 5.1e6 walker-tau per c for sigma 2-5e-7 per site.
+Result pool8 closure (2026-11-04/05; job 17741261; pool8/closure_pp2/{closure,pooled192}.json; verified): STATISTICS, as registered. Code-path
+diff: no table/PP2 branch changes the stationary law. Fresh 96-chain PP2 replicate: flagged bin z -0.37 (sign reversed), max |z| 2.71, chi2/dof
+1.35; pooled 192 chains max |z| 2.93. KILL did not fire. 44.6 core-h.
+Gap found: the production entry point draw_fn uses the in-sampler tau pilot + thinning (Pool8Sampler._measure), which no exactness test has run.
+Test (pre-registered): draw_fn itself at 6x6 (table and PP2 evaluators), >= 96 independent samplers, same bins and Gaussian rule; pass max |z|
+<= 3 and chi2/dof <= 1.5; broken version: keep the pilot's first-sweep (unequilibrated) draws, which must fail. The informed move stays unused.

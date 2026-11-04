@@ -1606,3 +1606,6 @@ exact capped target in 'fix' mode 4.367227e-6 (job 17725880, gfmc_aug/pred_exact
 (c = 4, c = 0), 2 chains, sigma <= 5e-7, within 2 sigma of 4.367227e-6 / 1.218448e-5, with c = -4 (3.79734e-5) as the broken version, plus one dtau/M
 bias check; (ii) same-seed trajectory identity, AugGuide vs the table provider, ~200 walker-tau at c = 4, <= 1e-10 rel (broken: c = 3.9). The two
 parts together give "GFMC with the evaluator = exact FN".
+Result V augmented (2026-11-04; CPU 17722344, pfaffian_v/readout/aug/readout_aug.json; control pp2_s1 reproduced to 9e-11; verified): theta_V aug min
+3.3462e-6 at c* 4.0 (f_J old and b1 identical to 2e-14), +0.088e-6 above the exact-table round 5 (3.2584e-6). Augmented gain from theta_4 (4.367e-6):
+1.021e-6 vs 1.109e-6, ratio 0.92 (bare 0.94). The sampled pool costs ~8% of the round's gain, augmented or bare. Deterministic exact readout (no error bar).

@@ -1530,3 +1530,10 @@ Readouts:
 - (2) Start-independent: structure matters iff aug_min(M5') - 3.258e-6 > 0.3e-6.
 Predictions: e_rel 1.21-1.25e-5; r_5(M5') 0.10-0.20; aug 3.8-4.1e-6; both readouts give "structure matters" (~70%).
 If they disagree, I report both as registered and claim nothing.
+RACE RULE (lead/PI 2026-11-04, replaces "the first copy to log a step wins"): the winner is the copy with the earlier
+EXPECTED FINISH, i.e. now + remaining steps x measured s/step (+ table time), decided once both copies have logged steps.
+The old rule cancelled V's H100 copy, ~9x faster, because the A40 logged its first step earlier. New script:
+race_watch_eta.sh, for future launches.
+V: a fresh Paderborn copy goes in alongside the running A40 copy 17695322/17695323, with the same pool (9146690d) and the
+same pool_fit (66799f1c); new run dirs. Whichever copy finishes the readout first counts, and the other is NOT cancelled
+without telling the lead. Expected ~2.4 H100-h.

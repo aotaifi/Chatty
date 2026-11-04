@@ -1763,3 +1763,8 @@ plateau convention) AND the exact E_FN of theta(1200) vs theta(1500) differs by 
 tail average of the last 900 steps. Report the verdict at 1500 AND at plateau.
 Prediction (lead, ~65%): "structure". Observation, not a cause: by step 600, M5' moved the function 5x less than the two-PP (8.7e-4 vs 4.3e-3).
 Refutation: M5' within both margins at plateau. Disagreeing readouts: report both, claim nothing.
+M5' rerun RUNNING (2026-11-04 23:02): pfaffian_m5p2/, A40 fit 17748827 -> tables 17748829 (tab_t5, tab_s1200, tab_s1500) -> CPU readout + plateau
+(m5p2_chain.sh); reproduces the cancelled run exactly at steps 10-60 (repro_check.txt); VERDICT lines ~11-05 15:30. Scripts d1687fa.
+Amendment before any number of this run: plateau condition (A) uses WINDOW means of the held-out loss (steps 1050-1200 vs 1350-1500), not two
+single steps (the fixed held-out batch scatters 5.8e-3..1.0e-2 step to step). (B) unchanged. The RBM projection share over the round is read
+by m5pp_sfn.py on the final theta after the readout (lead, CPU).

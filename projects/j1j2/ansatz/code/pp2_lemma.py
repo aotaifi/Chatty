@@ -34,6 +34,11 @@ Evaluation paths (2026-11-04, piece (3) savings; DEFAULT_PATH = 'old' keeps ever
   two_swap_ratios / fJ_fixed / aug_ratios take eval_path=None (-> DEFAULT_PATH); fJ_fixed / aug_ratios also cnn_dedup=None (-> True iff
   eval_path == 'dedup'): the sign_fn is then called once per distinct configuration among x, all y_a and all z_ab (across walkers).
   make_sign_fn(size='L'|'XL', seed, net) wraps sign8.SignNet as a jax_native sign_fn.  STATS collects counts / seconds of the new paths.
+Lemma-path sign (2026-11-05, savings item (4)): sign_fn may be a PhaseSign (phase_sign_from_theta(theta, L)): the sign angle's 1-PP complex-phase class,
+  S(x) = M(x) sgn(l(x)),  l(x) = Re(e^{-i theta0} P(x)) / |P(x)|,  P(x) = sum over the 8 L^2 x 2 images g of par(z_g) det f[Up(z_g), Dn(z_g)]   (f complex, no RBM),
+  M = Marshall (-1)^{#up on the sublattice x + y even}, sgn(0) = +1.   fJ_fixed / aug_ratios then get sx, sy, sz from a SECOND lemma evaluation (its own per-image
+  inverse), P(y)/P(x), P(z)/P(x) of every valid endpoint, with the same eval_path ('old' / 'pack' / 'dedup') and the same move lists as the amplitude's; no sign_fn call
+  on a full configuration.  M(endpoint) = M(x) (-1)^{popcount(flip mask & A-sublattice mask)}.  Outputs have the same keys / shapes as with any other sign_fn.
 Constructors: PP2.from_cx_theta(theta, L=6, NA=4) (6x6 round-5 theta, 'outer', full projection); PP2.from_rbmpp_npz(path)
 (production rbmpp params: f real, complex RBM 'inner', projection read from the file); p.with_p2(f2, lam).
 """
@@ -89,8 +94,9 @@ class Lat:
         if proj == 'full': P = G
         elif proj == 'translations': P = np.stack([G[8 * t] for t in range(N)])
         elif proj == 'none': P = G[:1]
+        elif proj == 'full_noflip': P = G                                   # BROKEN-variant hook (PhaseSign broken='flip'): the spin-flip images dropped
         else: raise ValueError(proj)
-        fl = [1.0, -1.0] if proj != 'none' else [1.0]
+        fl = [1.0, -1.0] if proj not in ('none', 'full_noflip') else [1.0]
         self.IMG = np.concatenate([P for _ in fl]).astype(np.int32)
         self.FL = np.concatenate([[f] * len(P) for f in fl])
         self.INV = np.argsort(self.IMG, axis=1).astype(np.int32)             # z_g[INV[g, s]] = FL_g sigma[s]
@@ -593,6 +599,83 @@ def make_sign_fn(size='L', seed=0, net=None, L=8, bias=0.0):
     return sign_fn
 
 
+# ------------------------------------------------------------------------------------------ lemma-path 1-PP phase sign
+class PhaseSign:
+    """The sign angle's stored-sign class (s2b_train_m.py 'pp' arm; theta = [Re f, Im f, theta0]) evaluated through the determinant-ratio lemma.
+    S(x) = M(x) sgn l(x),  l = Re(e^{-i theta0} P)/|P|, P = B of the PP2 (f complex, rbm 'none', no P_2, full projection x flip).
+    endpoints(x, d, at_y): (sx, sy, sz) for the amplitude evaluation d (two_swap_ratios / _one_as_two output of the SAME x and dmax), margins on request.
+    __call__(cfg): plain sign_fn on full configurations (direct slogdet of every image, via logB), for non-lemma callers.
+    broken: test hooks (a deliberately wrong version must fail the checks): 'parity' (slot parity P + Q of the lemma sign dropped), 'flip' (spin-flip images dropped),
+            'phase' (e^{+i theta0}), 'marshall' (M = +1), 'marshall_mask' (A-sublattice mask of the wrong sublattice parity: sites x even)."""
+    lemma_phase = True
+
+    def __init__(self, f, theta0, L=None, proj='full', marshall=True, broken=None):
+        f = np.asarray(f); N = f.shape[0]; L = L or int(round(np.sqrt(N))); assert L * L == N
+        assert broken in (None, 'parity', 'flip', 'phase', 'marshall', 'marshall_mask'), broken
+        self.broken = broken; self.marshall = marshall and broken != 'marshall'; self.theta0 = float(theta0); self.L = L; self.N = N
+        self.params = PP2(f.astype(np.complex128), L=L, proj='full_noflip' if broken == 'flip' else proj, rbm='none')
+        xs = np.arange(N) % L; ys = np.arange(N) // L
+        a = ((xs % 2) == 0) if broken == 'marshall_mask' else (((xs + ys) % 2) == 0)
+        self.amask = np.uint64(sum(1 << int(i) for i in np.nonzero(a)[0]))
+        self._sgn_theta = -1.0 if broken != 'phase' else 1.0
+
+    @staticmethod
+    def from_theta(theta, L=6, **kw):
+        th = np.asarray(theta, np.float64); N = L * L; assert th.size == 2 * N * N + 1, th.size
+        return PhaseSign((th[:N * N] + 1j * th[N * N:2 * N * N]).reshape(N, N), th[-1], L=L, **kw)
+
+    def _marshall_x(self, X):
+        A = jnp.asarray(np.array([(i % self.L + i // self.L) % 2 == 0 for i in range(self.N)]))
+        n = jnp.sum(jnp.where(A[None, :], jnp.asarray(X) > 0, False), 1)
+        return jnp.where(n % 2 == 0, 1.0, -1.0)
+
+    def _signs(self, X, lP, r1, r2, masks, at_y, margins, am, bm):
+        """lP (B,) complex log P(x); r1 (B, dA) = P(y_a)/P(x) (0 where invalid); r2 (B, dA, dB) or None; masks (B, E) flip masks (E = dA [+ dA dB])."""
+        u0 = jnp.exp(1j * (self._sgn_theta * self.theta0 + jnp.imag(lP)))          # e^{-i theta0} P/|P|  (unit modulus)
+        Mx = self._marshall_x(X) if self.marshall else jnp.ones(X.shape[0])
+        if self.marshall:
+            Mm = 1.0 - 2.0 * (jax.lax.population_count(masks & jnp.uint64(self.amask)) % 2).astype(jnp.float64)
+        else: Mm = jnp.ones(masks.shape)
+        def marg(r, valid):                                                        # r = P(endpoint)/P(x); margin Re(e^{-i th0} P_e)/|P_e|
+            ar = jnp.abs(r); m = jnp.real(u0.reshape((-1,) + (1,) * (r.ndim - 1)) * r) / jnp.maximum(ar, 1e-300)
+            return jnp.where(valid, m, jnp.real(u0).reshape((-1,) + (1,) * (r.ndim - 1)))
+        dA = r1.shape[1]; mx = jnp.real(u0)
+        my = marg(r1, am)
+        sgn = lambda m: jnp.where(m >= 0, 1.0, -1.0)
+        sx = sgn(mx) * Mx; sy = sgn(my) * Mx[:, None] * Mm[:, :dA]
+        out = [sx, sy]; mrg = [mx, my]
+        if at_y:
+            mz = marg(r2, bm); sz = sgn(mz) * Mx[:, None, None] * Mm[:, dA:].reshape(r2.shape); out.append(sz); mrg.append(mz)
+        else: out.append(None); mrg.append(None)
+        return (out, mrg) if margins else out
+
+    def endpoints(self, x, d, at_y=True, dtype='f64', eval_path=None, walker_chunk=256, margins=False):
+        t0 = time.perf_counter(); p = self.params; path = eval_path or DEFAULT_PATH; x = np.asarray(x); brk = (self.broken == 'parity')
+        if at_y:
+            dm = d['am'].shape[1]
+            ds = two_swap_ratios(p, x, dtype, dm, walker_chunk=walker_chunk, eval_path=path, _broken=brk)
+            lP = ds['logB']; r1 = ds['r1']; r2 = ds['r2']
+            masks = _flip_masks(d['upa'], d['dna'], d['am'], d['ru'], d['rd'], d['k'], d['bm'])
+        else:
+            lP, r1 = one_swap_ratios(p, x, dtype, walker_chunk=walker_chunk, _broken=brk, return_logB=True); r2 = None
+            masks = _flip_masks0(d['upa'], d['dna'], d['am'])
+        res = self._signs(x, lP, r1, r2, masks, at_y, margins, d['am'], d['bm'] if at_y else None)
+        jax.block_until_ready(res)
+        _stat('sec_phase_sign', time.perf_counter() - t0); _stat('phase_sign_calls', 1)
+        return res
+
+    def __call__(self, cfg):
+        cfg = np.asarray(cfg); lP = logB(self.params, cfg, 'f64')
+        m = jnp.cos(jnp.imag(lP) + self._sgn_theta * self.theta0)
+        M = self._marshall_x(cfg) if self.marshall else 1.0
+        return np.asarray(jnp.where(m >= 0, 1.0, -1.0) * M).astype(np.int8)
+
+
+def phase_sign_from_theta(theta, L=6, **kw):
+    """PhaseSign from the sign angle's theta.npy ([Re f (L^2 x L^2), Im f, theta0])."""
+    return PhaseSign.from_theta(theta, L, **kw)
+
+
 # ------------------------------------------------------------------------------------------ f_J and the augmented guide
 def _hxx(lat, X):
     return 0.25 * jnp.sum(jnp.asarray(lat.JB) * X[..., lat.BI] * X[..., lat.BJ], -1)
@@ -675,8 +758,10 @@ def fJ_fixed(params, x, sign_fn, EP, c, f0=None, mode='old', at_y=True, dtype='f
     if _two is not None: d = _two
     elif at_y: d = two_swap_ratios(params, x, dtype, dmax, img_chunk, walker_chunk, eval_path=path, _broken=_broken_save or False)
     else: d = _one_as_two(params, x, dtype, walker_chunk)
-    Y, Z = _configs(X, {k: d[k] for k in ('upa', 'dna', 'am', 'ru', 'rd', 'k') if k in d}, with_z=at_y and not cnn_dedup)
-    if cnn_dedup: sx, sy, sz = _signs_dedup(sign_fn, np.asarray(x), d, at_y, sign_chunk, _broken_save)
+    lemma_sign = getattr(sign_fn, 'lemma_phase', False)
+    Y, Z = _configs(X, {k: d[k] for k in ('upa', 'dna', 'am', 'ru', 'rd', 'k') if k in d}, with_z=at_y and not cnn_dedup and not lemma_sign)
+    if lemma_sign: sx, sy, sz = sign_fn.endpoints(x, d, at_y, dtype, path, walker_chunk)
+    elif cnn_dedup: sx, sy, sz = _signs_dedup(sign_fn, np.asarray(x), d, at_y, sign_chunk, _broken_save)
     else:
         sx = _call_sign(sign_fn, X.astype(jnp.int8), sign_chunk)
         sy = _call_sign(sign_fn, Y.reshape(-1, lat.N), sign_chunk).reshape(Y.shape[:2])

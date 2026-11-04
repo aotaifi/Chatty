@@ -1,6 +1,7 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
-Goal (REFOCUSED by the PI 2026-10-26, after L8): network + p Lanczos hops + lattice fixed-node GFMC as an add-on to any trained
-NQS, cheaper in GPU-h than brute-force NQS at equal accuracy at 10x10-14x14, for frustrated magnets where QMC has a sign problem.
+Goal (PI 2026-11-04, restating the loop of 2026-10-30): THE LOOP: guide -> signed Lanczos step -> fixed node -> store the amplitude
+in the network AND store the sign -> repeat, at one-level walker cost per round; beat network + Lanczos steps + FN at equal cost
+at >= 8x8, usable on any trained NQS at 10x10-14x14. (Old 2026-10-26 wording 'add-on without loop' superseded.)
 The refit loop (store each round in the network) is closed: L8, docs/reports/2026-10-26_l8_loop_round_8x8.md.
 > CORRECTION 2026-10-27 (index): the 10x10-14x14 add-on test is NOT done: the 10x10/12x12 trainings were cancelled and the Paderborn budget revoked 2026-10-26 (delta_today.md 19:10; checkpoints under rbL{10,12}_prod/backup_paderborn), re-opened only for the LP test (see 'Budget'). The Goal is a target, not a result; the deliverable at 10x10-14x14 remains pending, subject to the lead's budget (TRIED_IDEAS.md Contradictions item 12).
 

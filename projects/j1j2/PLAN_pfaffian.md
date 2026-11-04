@@ -1781,3 +1781,7 @@ Untested: a trained 8x8 phase PP (none exists yet); the tail beyond 24 walkers a
 Lead ruling on item (4): "1e-12 bar MISSED, GUARDED" (not passed). Guard before 8x8 production: wherever |m| < 1e-8 (relative, 100x above the
 observed error) the lemma path falls back to the direct phase computation; the fallback rate is logged per run. Now: report the |m|
 distribution on the 2.1M tested endpoints (fraction < 1e-8, < 1e-6). Fallback rate > 1% at 8x8 -> tell the lead (the 93x shrinks; re-size).
+Guard result (2026-11-05; signlemma/guard/; code ebeb550; verified mdist_*.json): |m| < 1e-8 and < 1e-6 on 0 of 1.61M (6x6) and 0 of 1.86M (8x8)
+endpoints; min |m| 1.5e-5 (6x6), 6.8e-6 (8x8). Guarded signs = direct signs everywhere; injected near-zero margins are caught (100/100, 20/20)
+and wrong without the guard. Guard cost +0.7%, fallback rate 0 at 8x8 M 64. Item (4): 1e-12 bar missed, GUARDED; usable. Untested on a
+trained 8x8 phase PP (its margins may sit closer to 0 than a random f's).

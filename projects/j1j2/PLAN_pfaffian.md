@@ -1594,3 +1594,9 @@ M5' VALIDITY GATE (lead 2026-11-04, pre-registered before reading any round chec
 by step 300 of the round (or the nearest saved theta), the RBM block's rms change from theta_rel is >= 1.06e-3 (10x the relax's 1.06e-4)
 OR the RBM's share of the update norm |dtheta_RBM|^2/|dtheta|^2 is >= its parameter share 2664/5256 = 0.507. Otherwise INVALID (an
 effective one-PP run; suspected cause: the small-init RBM gradient, as in the zero-init RBM finding of 2026-10-30) and the lead is told before it runs on.
+M5' validity, analog evidence (2026-11-04, CPU, before the gate's own checkpoint): the earlier M5 arm (same class, same seed-72 init, same fitter, T_5,
+1350 steps) has its RBM rms change from init 4.13e-4 at step 600 and 4.12-4.14e-4 through 1350 (frozen); PP moved 7.4e-3 rms; RBM share of the
+squared update ~0.3% against 0.507. Mechanism: dR/dW = sum_g tanh(b + W.z_g) z_g ~ O(sigma sqrt N) ~ 2e-2, so the RBM columns are ~1e-2..1e-1 of the PP's
+and the relative damping s^2/(s^2 + lam) suppresses them. Expected verdict: INVALID. Paderborn twin 4110546 on hold; A40 runs to step 600 (~17:35),
+where the registered gate is read. Proposed M5'': larger RBM init (sigma ~0.05-0.1) + relax, RBM column norms matched to the two-PP arm's P_2 block
+by a CPU check before submission; the fitter unchanged.

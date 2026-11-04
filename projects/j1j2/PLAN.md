@@ -466,7 +466,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   Structure vs parameters unresolved (M5 metric broken by its start; M5' running).
 - Storage survives sampling at 6x6 (V, 2026-11-04; lead read pfaffian_v/readout/readout.json, Paderborn express fit 4109778, 1500 steps,
   control theta_4 exact): two-PP round 5 fitted from 4e5 sampled configurations stores r_V 0.464 vs 0.493 from the exact table (ratio 0.94;
-  bare 8.561e-6 vs 8.332e-6). PASS (>= 0.35). Gap 0.029 ~ one fit-to-fit scatter unit (+-0.2e-6 in E). One seed, one pool; aug not yet graded.
+  bare 8.561e-6 vs 8.332e-6). PASS (>= 0.35). Gap 0.029 ~ one fit-to-fit scatter unit (+-0.2e-6 in E). Aug (c* 4.0) 3.346e-6 vs exact-table 3.258e-6 (+0.088e-6, < fit scatter; readout/aug/readout_aug.json, lead read). One seed, one pool.
 - Deployable stored sign on the two-PP loop guides (lead read sign_comb/r6grade/v1_sG.json, v2_S_a1.json; exact FN, 6x6): S_a1 tax 0.88e-6 on
   R6 theta_6 (aug 3.70e-6 vs s_G 2.81e-6) and 0.86e-6 on R5 (4.12 vs 3.26e-6): stored-sign loop 1.88e-6 below the competitor 5.574e-6 at R6.
   Caveats: one sign seed (seed 0 was 0.6e-6 worse on the 1-PP guide); exact tables; competitor on RBM+PP base (Queue: bar).

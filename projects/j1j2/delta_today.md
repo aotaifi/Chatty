@@ -842,3 +842,4 @@
 2026-11-04 02:07 VERDICT job 4108187: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_m5p/rel1/fit/ANALYSIS.md]
 2026-11-04 02:07 VERDICT job 4108188: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_m5p/rel1/tab/ANALYSIS.md]
 - 2026-11-04 09:35 migrate (lead): no lead-owned jobs; angles own V (17695322/3), M5' (17704188/9) and T-CAP; PC2 VPN down again (the angle restarts it, one client only); /scratch 965.9/972.8 G; sign T-CAP says capacity lever NO and awaits the PI on cancelling.
+- 2026-11-04 09:35 sign angle: migrate. res2 17697011 finished 07:58 (essentially sgn psi_P), ungraded; nothing running; PLAN_sign.md 'Where the angle stands' written.

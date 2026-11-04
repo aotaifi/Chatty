@@ -445,10 +445,19 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
-  RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING
-  (first copies OOM on A40; resubmitted with 4-way gradient micro-batching, same batch and maths, grad diff 9.8e-15). Watchers armed (worker). Next per verdict: the pre-registered T-CAP decision rule.
-- Takeover (PI away since 2026-11-02 16:50); next check-in 2026-11-04 11:00.
+- Nothing on the cluster. T-CAP arm 3 (res2, A40 17697011) FINISHED 2026-11-04 07:58 (final held-out acc 0.9623 vs sgn psi_P's 0.9619:
+  essentially sgn psi_P, as predicted from the A stall); NOT graded yet (run dir /scratch/a/A.Otaifi/ansatz_runs/sign_tcap/runs_a40s/res2*).
+  Grading = v2.py with the stored sign, ~1 h CPU; closes T-CAP's PI-hypothesis comparison formally (expected tax ~4e-6).
+- Gates 1-2 (8x8 teacher cost, paired FN estimator) PAUSED by the PI; code kept in sign_g1/, sign_g2/ (gate 1 estimate: teacher row ~7e6
+  evaluations, q ~1e4-1e5, i.e. far above the stop threshold 5).
+
+## Where the angle stands (2026-11-04)
+- Storage of ONE sign: XL CNN passes (tax 0.42e-6, 2 seeds; not deployable at 14x14). Deployable PP phase: 0.85-1.45e-6 (seed scatter
+  0.6e-6), fails 0.5e-6. Neither a bond-weighted loss, a 2-PP sum, nor a residual on sgn psi_P (two parametrisations; saddle, = A10) helped.
+- At 6x6 the second sign step gains < 0.5e-6 from all four starts (A41), so the 6x6 loop needs one stored sign; moving-target storage is not
+  testable at 6x6, and 8x8 grading is unaffordable with the current teacher (gate 1 estimate).
+- Open for the PI: (1) step-back on the deployable sign class (third failed fix: capacity; residual failed twice); (2) whether to accept
+  ~1e-6/site deployable sign tax, or close the angle with 'one stored sign; deployable class not found at the bar'. Lead's view: step-back first.
 
 ## Dead ends
 (none yet)

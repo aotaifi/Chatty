@@ -839,3 +839,6 @@
 - 2026-11-04 02:06 sign T-CAP (worker): arm (1) graded (job 17697352, v2_S_a1.json): theta_bar c* 4.0 e_aug 5.4908e-6 -> tax 0.847e-6; r3_1200 c* 3.9 e_aug 5.6508e-6 -> tax 0.865e-6. Seed scatter s = |0.847 - 1.447|e-6 = 0.600e-6 -> comparison threshold max(0.3e-6, 2s) = 1.20e-6. Capacity lever (tax2 <= tax1 - 1.20e-6): NO (tax2 2.757e-6). res2 17697011: A 0.083 at cos step 3780, 0.081 at 4410 (not rising), held-out acc 0.9619 (= sP).
 2026-11-04 02:07 [pfaffian M5P race rel1] 17704188 started (step 10) -> cancelled 4108187 (PI pre-approval via lead)
 - 2026-11-04 02:10 sign T-CAP: arm 1 tax 0.847e-6 (seed scatter 0.60e-6), arm 2 2.76e-6 -> capacity lever NO; arm 3 stalls at A 0.08 (residual saddle, = A10); cancel recommended, awaiting PI.
+2026-11-04 02:07 VERDICT job 4108187: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_m5p/rel1/fit/ANALYSIS.md]
+2026-11-04 02:07 VERDICT job 4108188: FAILED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_m5p/rel1/tab/ANALYSIS.md]
+- 2026-11-04 09:35 migrate (lead): no lead-owned jobs; angles own V (17695322/3), M5' (17704188/9) and T-CAP; PC2 VPN down again (the angle restarts it, one client only); /scratch 965.9/972.8 G; sign T-CAP says capacity lever NO and awaits the PI on cancelling.

@@ -520,15 +520,15 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-02)
-- Sign angle: moving-target sign storage test at 6x6 (PI decision 2026-11-02), step 0 qualifying a weaker start (CPU); T-EDGE Paderborn 4089690.
-- Pfaffian angle: ROUND 4 (lead GO 2026-10-31), averaged protocol from theta-bar, s_G, ~1.5 H100-h; pred r_4 0.11-0.15, bare 1.13-1.17e-5,
-  aug 4.0-4.3e-6; r_4 >= 0.178 kills the decline, bare drop <= 0.5e-6 kills progress. Equal cost at 6x6: training tie/lose, walker step unresolved
-  (Jacobi 5.4x measured; Lanczos 36x by op count vs constant factor on board 23), accuracy ours (4.79 vs 5.57e-6); docs/reports/2026-10-31_label_free_loop_6x6.md.
-- Pfaffian angle: L-SWO round 2 (PI go), arms s1 and s_G, ~1.2 H100-h; kill: round 2 lowers bare B by <= 0.5e-6 -> change the network (Test N / Theta); pass -> round 3 and the scale question.
-- Pfaffian angle (its own session, survives the lead's clear): R1 rerun on Paderborn H100 to convergence (job id in
-  PLAN_pfaffian.md; A40 R1 17603167 = unconverged, superseded); Test N (nonlinear feature bank, CPU). Angle reports by message.
-- Sign-storage angle (session local_3026e44f, started 2026-10-30 on the PI's "start the sign angle", detached; PLAN_sign.md): can a second network store each round's Lanczos sign; sent Test X + R1b results.
+## Running (2026-11-04 09:35; all jobs owned by the angles, which re-arm their own waits)
+- Pfaffian angle (local_d60cd248, PLAN_pfaffian.md): V = sampled-fit replay of round 5 at 6x6 (A40 17695322 + tables 17695323; Paderborn twin),
+  pred r_sampled 0.15-0.35, kill < 0.25; gates the 8x8 loop build (B design revised a6bc9d8; grading must reach ~3e-6/point,
+  45-165 H100-h before savings). M5' (PP+RBM relaxed start, structure vs parameters; A40 17704188 + 17704189): structure iff
+  r_5(two-PP) - r_5(M5') > 0.15 or two-PP aug better by > 0.3e-6. Queued after V: stricter step acceptance in cx_r1fit (accepted a
+  negated step), local-dressing idea (paper).
+- Sign angle (local_3026e44f, PLAN_sign.md): T-CAP capacity of a cheap sign net: arm 1 tax 0.85e-6 (seed scatter 0.6e-6), arm 2 2.76e-6
+  -> "capacity lever NO"; arm 3 stalls; angle recommends cancelling the rest and awaits the PI.
+- No lead-owned jobs. /scratch 965.9 of 972.8 GB soft (lead's 990 GB emergency watch ended with the session; re-arm it).
 
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.

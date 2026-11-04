@@ -1600,3 +1600,9 @@ squared update ~0.3% against 0.507. Mechanism: dR/dW = sum_g tanh(b + W.z_g) z_g
 and the relative damping s^2/(s^2 + lam) suppresses them. Expected verdict: INVALID. Paderborn twin 4110546 on hold; A40 runs to step 600 (~17:35),
 where the registered gate is read. Proposed M5'': larger RBM init (sigma ~0.05-0.1) + relax, RBM column norms matched to the two-PP arm's P_2 block
 by a CPU check before submission; the fitter unchanged.
+c3 amended (2026-11-04, after the gfmc_aug worker's cost probe): GFMC driven by pp2_lemma.aug_ratios on CPU costs 48 core-s per walker-tau at 6x6,
+so sigma 5e-7 would need ~1.2e5 core-h. Already shown: AugGuide rows = exact table rows to 1.2e-14 at c = 0, 4, -4 (a 1%-flipped sign misses by 0.49);
+exact capped target in 'fix' mode 4.367227e-6 (job 17725880, gfmc_aug/pred_exact). c3 is now two parts: (i) FN-GFMC with the exact table guides
+(c = 4, c = 0), 2 chains, sigma <= 5e-7, within 2 sigma of 4.367227e-6 / 1.218448e-5, with c = -4 (3.79734e-5) as the broken version, plus one dtau/M
+bias check; (ii) same-seed trajectory identity, AugGuide vs the table provider, ~200 walker-tau at c = 4, <= 1e-10 rel (broken: c = 3.9). The two
+parts together give "GFMC with the evaluator = exact FN".

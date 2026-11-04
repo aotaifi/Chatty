@@ -202,8 +202,9 @@ Tried and failed, do not re-propose without a new term: learned bond field (E9, 
 none yet
 
 ## Cockpit
-- STATUS (open, medium): Discussing with the PI whether a pair-product network can copy the fixed-node state in rare configurations.
-- NEXT (open, medium): Agree on paper which Pfaffian variant to test and the test that would kill it.
+- STATUS (in progress, high): The two-PP label-free loop survives finite sampling at 6x6 (94% of the exact-table gain); building the 8x8 tools on CPU.
+- NEXT (in progress, medium): Finish the 8x8 sampler, grading code and speedups with their checks; GPU waits for the second review on 11-05.
+- NEXT (in progress, medium): Read the parameter-matched control (one PP plus RBM) to decide whether the second PP's structure or its size matters.
 
 ## Role from 2026-10-28 (lead, at the PI's request): network expert. Open question: can complex PP + 3x3 backflow hold
 the deep (near-node) corrections, and if not, which network can? Inputs (lead, verified): Test E (67.6% of configurations,
@@ -1561,3 +1562,31 @@ Running, no VERDICT yet (re-arm waits):
 Waiting on the PI: 8x8 go (B design, revised; c1-c5 and savings are preconditions; grading target 3e-6 per point,
 ~45-165 H100-h before savings); cancel of the A40 V duplicate.
 Queued after these: the strict step-acceptance test (section "Queue (after V)").
+
+## 8x8 BUILD, route 2 (PI go via the lead 2026-11-04 ~14:00; CPU and code only; NO GPU until Astra re-reviews after 11-05 09:55)
+Basis: blind Opus review reviews/2026-11-04_v_go_review_opus.md (V PASS confirmed; storage holds on configurations never in the pool).
+Control changes (lead): c1 tolerance tightened from 1e-5 to <= 3e-6 per site. Necessary before any 8x8 grading: c1, c3, c5; c4 for the
+"0.94" ratio; c2 nice-to-have. Grading convention fixed: guide = s |B| e^{c f_J} (not gfmc_guide's Re B); the 8x8 c = 0 equivalence
+against p=0 -0.4987565(28) needs |Re B| (amp mode 're') and is quoted as a convention check only.
+Pieces (one worker each, disjoint files; each "done" is a test that can fail, with a broken version that fails):
+- (1a) pool8.py: 8x8 tempered MCMC pool sampler of |B|^(2 beta) (exchange moves, Sz = 0, PT across beta rungs), output thinned to
+  ~independent draws for pool_fit's draw_fn hook. DONE = at 6x6 on B_4 the sampled per-decade occupation and <ln|B|^2> per beta match the
+  exact orbit multinomial (tau-corrected |z| <= 3, chi2/dof <= 2), and a broken acceptance fails it; at 8x8 on the production guide:
+  tau_int per beta, decade occupancy, CPU s/sweep, and the S (and core-h) needed for ESS/P >= 3 in every fitted decade (review: S ~ 1.5-2e6).
+- (1b) pool_fit.py 8x8 model: the two-PP (+ RBM) at L = 8 (P_1 warm from production rb8_prod, P_2 complex) and the 8x8 labels_fn
+  (ln T via pp2_lemma.fJ_fixed, mode 'fix'). DONE = logA of the fit model equals pp2_lemma.logB on the same parameters to <= 1e-10;
+  gradient vs finite differences <= 1e-6 rel; a GN step on a small synthetic 8x8 pool lowers the loss; labels_fn equals a direct
+  slow-path f_J on >= 50 configurations to <= 1e-9; each with a broken version that fails.
+- (2) gfmc_aug.py: the AugGuide class G = s |B| e^{c f_J} (fixed f_J, b1 cap, relative weight check) on the pp2_lemma evaluator, plus c3:
+  6x6 FN-GFMC of theta_4 with exact s_G at c = 4 against the exact table value 4.367085e-6 (capped), and at c = 0 against 1.218448e-5.
+  DONE = both within 2 sigma with sigma <= 5e-7 per site; broken versions (f_J sign flipped; s_G replaced by the network's own sign)
+  miss by > 5 sigma, predicted on paper first.
+- (3) savings in pp2_lemma.py: endpoint dedup and less padding (bit-for-bit or <= 1e-12 against the current path on 8x8 production and
+  theta_5 configurations), the L-size CNN wired as the guide's sign (sign8 'L'); CPU timing ratios. GPU timing waits for Astra.
+  The L-CNN's ACCURACY is the sign angle's T-LCNN precheck (stop if R6 tax > 1.5e-6), not this piece.
+Also (lead): A40 V duplicate 17695322 matches pdb2 to step 1010; lead proposed cancel + reuse the slot for a new-pool replica (c4).
+Do nothing on it until the lead confirms.
+M5' note (2026-11-04 14:xx, CPU check on theta_rel.npy): after the relax the RBM block is still its random init (rms 3.0e-3; moved
+1.06e-4 rms, corr 0.9994 with the seed-72 init; W full rank 36). The PP alone restored theta_4's energy (the c = 0 target needs no
+RBM). M5' therefore starts with live but untrained RBM capacity, which is what the control intends. At readout, also record the RBM
+block's movement over the round (rms change vs PP's) so that "parameter count" is not read off an RBM that never moved.

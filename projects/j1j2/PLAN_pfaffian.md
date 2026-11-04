@@ -1691,3 +1691,9 @@ Per-round stored-sign tax (lead 2026-11-04, from the sign angle / PI's 14x14 que
   angle's w_T/N (MCMC on |v|^(2 beta), cheap; tax_site ~= kbar w_T/N with kbar 17.8 measured at 6x6), and the energy tax only at R0 (= c1) and
   the last round. Interface: gfmc_aug takes any sign_fn; a 1-PP phase sign can use pp2_lemma's ratio machinery (one more PP inverse per image),
   so its endpoint cost is ~ one extra lemma evaluation, not CNN-like.
+Condition (lead, accepted): the 17.8 factor is a 6x6 calibration. At 8x8 measure kbar = tax_site / (w_T/N) at R0 and at the last round (where the
+energy tax is graded anyway). If the two differ by > 30%, or either differs from 17.8 by > 2x, the per-round w_T/N proxy is NOT trusted and the
+per-round trigger needs another readout (decided then).
+Savings item (4): the 1-PP phase sign at the endpoints through pp2_lemma's determinant-ratio path. Exactness: sign identical and margin Re[.]
+equal to the direct-phase evaluation to <= 1e-12 RELATIVE (the absolute bar was ill-posed for large ratios in (3)), on 6x6 S_a1 and on an 8x8
+1-PP, with a broken version (wrong image parity) that fails; CPU timing vs the direct phase.

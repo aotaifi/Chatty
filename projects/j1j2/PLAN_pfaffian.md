@@ -1778,3 +1778,6 @@ Result savings item (4) lemma-path sign (2026-11-05; pfaffian_8x8build/signlemma
 - Speed (CPU, 8x8, M 64, dedup): lemma sign adds +61% to the amplitude step; ~93x faster per step than the direct phase sign_fn (240x on the sign part).
 - Pre-existing: pp2_lemma_test.py (a) fails on the frozen 7c4dddf module too (two-swap rel 1-2e-9 vs 1e-10), the conditioning limit recorded 11-03.
 Untested: a trained 8x8 phase PP (none exists yet); the tail beyond 24 walkers at 8x8; GPU.
+Lead ruling on item (4): "1e-12 bar MISSED, GUARDED" (not passed). Guard before 8x8 production: wherever |m| < 1e-8 (relative, 100x above the
+observed error) the lemma path falls back to the direct phase computation; the fallback rate is logged per run. Now: report the |m|
+distribution on the 2.1M tested endpoints (fraction < 1e-8, < 1e-6). Fallback rate > 1% at 8x8 -> tell the lead (the 93x shrinks; re-size).

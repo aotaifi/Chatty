@@ -1768,3 +1768,13 @@ M5' rerun RUNNING (2026-11-04 23:02): pfaffian_m5p2/, A40 fit 17748827 -> tables
 Amendment before any number of this run: plateau condition (A) uses WINDOW means of the held-out loss (steps 1050-1200 vs 1350-1500), not two
 single steps (the fixed held-out batch scatters 5.8e-3..1.0e-2 step to step). (B) unchanged. The RBM projection share over the round is read
 by m5pp_sfn.py on the final theta after the readout (lead, CPU).
+Result savings item (4) lemma-path sign (2026-11-05; pfaffian_8x8build/signlemma/; code 654efcf, default path bit-equal to 7c4dddf; verified):
+- Signs IDENTICAL to the sign angle's own direct margin code on every valid endpoint: 6x6 S_a1 1.61M endpoints, 8x8 complex 1-PP 0.51M, all three
+  eval paths; every broken version (parity, flip image, phase, Marshall, mask) gives 29k-2M mismatches.
+- AS REGISTERED the margin bar (<= 1e-12 relative) is MISSED: max |dm| 7.6e-12 (6x6), 4.4e-11 (8x8); relative for |m| >= 0.1 5.6e-11 / 2.4e-10.
+  Cause measured: the lemma path is the less accurate one (longdouble reference), errors ~1e3 eps kappa with image cancellation kappa 5e3 / 5e4,
+  i.e. conditioning of the per-image inverse, same class as the known two-swap limit. Consequence: a sign can flip only where |m| < ~1e-10;
+  none seen. f_J / aug outputs with the lemma sign equal the direct ones to <= 3.6e-15 (they depend on signs only).
+- Speed (CPU, 8x8, M 64, dedup): lemma sign adds +61% to the amplitude step; ~93x faster per step than the direct phase sign_fn (240x on the sign part).
+- Pre-existing: pp2_lemma_test.py (a) fails on the frozen 7c4dddf module too (two-swap rel 1-2e-9 vs 1e-10), the conditioning limit recorded 11-03.
+Untested: a trained 8x8 phase PP (none exists yet); the tail beyond 24 walkers at 8x8; GPU.

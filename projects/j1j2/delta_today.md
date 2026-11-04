@@ -890,3 +890,7 @@
 - 2026-11-04 PI: go conditional on Astra agreeing. Astra xhigh cj-feb7957e7d45 asked blind (no lead conclusion): V PASS validity, 8x8 go and preconditions/competitor, A40 duplicate, most likely 8x8 failure.
 - 2026-11-04 13:13 pfaffian angle migrated (session cleared); state in PLAN_pfaffian.md 'STATE AT MIGRATION'.
 - 2026-11-04 Astra cj-feb7957e7d45 FAILED: ChatGPT usage limit, resets 2026-11-05 09:55. Asked the PI: wait for Astra, or blind Opus worker review now + Astra tomorrow.
+2026-11-04 13:14 [V aug readout] theta_V aug under s_G (R5 aug scan, f_J old + b1) + pp2_s1 control: job 17722344, /scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/readout/aug/
+2026-11-04 13:18 VERDICT job 17721089: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_scale/ANALYSIS.md]
+2026-11-04 13:19 VERDICT job 17721219: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/readout/ANALYSIS.md]
+- 2026-11-04 PI chose option 2: blind Opus worker review of V/8x8 go now (report reviews/2026-11-04_v_go_review_opus.md); CPU-only 8x8 prep if it agrees; GPU waits for Astra retry after quota reset 11-05 09:55 (timer armed).

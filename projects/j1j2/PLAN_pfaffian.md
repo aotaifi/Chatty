@@ -1748,3 +1748,18 @@ derived from the same numbers): M5' RBM 0.14, two-PP P_2 0.54. So the RBM is use
 function 5x less than two-PP by step 600 (8.7e-4 vs 4.3e-3). M5's RBM change (0.96) mostly re-fits its own init noise (start 12x theta_4).
 My reading: M5' was not an idle-RBM run. It is a PP + RBM run whose fit makes less progress, which is part of the answer to "structure vs
 count", not a defect of the control. My prediction (0.01) missed; I have no mechanism for the slower progress.
+
+## M5' rerun (lead decision 2026-11-04 ~23:30; A40, inside the lead's takeover ceiling; pre-registered before submission)
+CORRECTION to "Result M5' validity gate" (34570b4) and its cancel: the gate was ill-posed (parameter-space share penalises large-column
+blocks; the two-PP's own P_2 scores 0.205 on it). The RBM was active: projection share 0.14 vs P_2's 0.54 (S_fn result above). The cancel of
+A40 17720568/69 and Paderborn 4110546/47 on 2026-11-04 was PREMATURE.
+Arm: exactly M5' as before: theta_rel.npy (sha bff7cdc4, e_rel 1.218426e-5), PP + RBM alpha 72, sigma 3e-3 seed 72 lineage, cx_r1fit f1374bed, round
+spec = pfaffian_m5p/round spec (target T_5^b1, 1500 steps, save_theta_at 600..1350, tail average), new run dir pfaffian_m5p2.
+Readouts at 1500, as registered: (1) structure iff 0.4929 - r_5(M5') > 0.15, with r_5 = (e_rel - e_end)/(e_rel - 4.367093e-6); (2) structure iff
+aug_min(M5') - 3.2584e-6 > 0.3e-6. Beside them, the projection share of the RBM over the round (fit metric, as the S_fn step).
+Plateau condition (lead: class against class, not speed): plateau iff over steps 1200-1500 the held-out loss changes by < 1.5% (the fit's own
+plateau convention) AND the exact E_FN of theta(1200) vs theta(1500) differs by < 0.1e-6. If not, extend from theta(1500) in 600-step segments
+(same fitter; checkpoints every 150; table at each segment end) until both hold, at most 3000 extra steps; then read (1)/(2) again on the
+tail average of the last 900 steps. Report the verdict at 1500 AND at plateau.
+Prediction (lead, ~65%): "structure". Observation, not a cause: by step 600, M5' moved the function 5x less than the two-PP (8.7e-4 vs 4.3e-3).
+Refutation: M5' within both margins at plateau. Disagreeing readouts: report both, claim nothing.

@@ -579,4 +579,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): At 6x6 the two-pair-product loop keeps improving, now 2.8e-6 per site, half of one Lanczos step (5.6e-6); the 10x10 add-on with fixed-node alone gave nothing.
-- NEXT (in progress, high): Design the loop test at 8x8 without exact tables (sampled fits, stored sign), after the Jacobi-factor fix and the two open 6x6 controls.
+- NEXT (in progress, high): Check whether the network still stores well when fitted from samples instead of exact tables (6x6 test running); only then build the 8x8 loop test.

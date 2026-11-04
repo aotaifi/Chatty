@@ -26,10 +26,20 @@ API (params = a PP2 object; sigma, x = (B, N) arrays of +-1):
         sign_fn: callable, (M, N) +-1 array -> (M,) +-1 (numpy or jax; called outside jit, in chunks of sign_chunk).
   aug_ratios(params, x, sign_fn, EP, c, f0=None, mode='fix', ...) -> dict  ratio (B, NB) = G(y_b)/G(x) (real, signed; 0 if aligned),
         logG_x = Re logB(x) + add_x, s_x, and fJ_fixed's fields.
+Evaluation paths (2026-11-04, piece (3) savings; DEFAULT_PATH = 'old' keeps every output of the functions above unchanged):
+  eval_path = 'old'   : padded (dA, dB = dA + 15) layout, every (a, b) path evaluated (the A40-benchmarked code);
+              'pack'  : same outputs, but only the valid (a, b) entries are evaluated (per-walker move lists packed in buckets of QUANT moves, walkers sorted by count);
+              'dedup' : like 'pack', and every distinct endpoint z (x ^ flip-mask) once per walker: z = x (b = a), the (a, b) / (b, a)
+                        pairs of disjoint bonds, and any other path reaching the same configuration share one evaluation.
+  two_swap_ratios / fJ_fixed / aug_ratios take eval_path=None (-> DEFAULT_PATH); fJ_fixed / aug_ratios also cnn_dedup=None (-> True iff
+  eval_path == 'dedup'): the sign_fn is then called once per distinct configuration among x, all y_a and all z_ab (across walkers).
+  make_sign_fn(size='L'|'XL', seed, net) wraps sign8.SignNet as a jax_native sign_fn.  STATS collects counts / seconds of the new paths.
 Constructors: PP2.from_cx_theta(theta, L=6, NA=4) (6x6 round-5 theta, 'outer', full projection); PP2.from_rbmpp_npz(path)
 (production rbmpp params: f real, complex RBM 'inner', projection read from the file); p.with_p2(f2, lam).
 """
 import functools
+import os
+import time
 import numpy as np
 import jax
 import jax.numpy as jnp
@@ -361,12 +371,226 @@ def _two_j(p, X, dmax, img_chunk=1, broken=False):
     return dict(logB=lB, a=jnp.where(Am, A, -1), am=Am, r1=r1, b=Bb, bm=bm, r2=r2, ru=ru, rd=rd_, k=kk, upa=upa, dna=dna)
 
 
-def two_swap_ratios(params, x, dtype='f64', dmax=None, img_chunk=1, walker_chunk=256, _broken=False):
+def two_swap_ratios(params, x, dtype='f64', dmax=None, img_chunk=1, walker_chunk=256, _broken=False, eval_path=None):
+    path = eval_path or DEFAULT_PATH
+    if path != 'old':
+        assert path in ('pack', 'dedup'), path
+        return _two_new(params, x, dtype, dmax, walker_chunk, path, _broken)
     p = params.cast(dtype); rd = jnp.float64 if dtype == 'f64' else jnp.float32
     x = np.asarray(x); dm = dmax or _dmax_of(p.lat, x)
     if len(x) <= walker_chunk: return _two_j(p, jnp.asarray(x, rd), dm, img_chunk=img_chunk, broken=_broken)
-    parts = [_two_j(p, jnp.asarray(x[i:i + walker_chunk], rd), dm, img_chunk=img_chunk, broken=_broken) for i in range(0, len(x), walker_chunk)]
+    parts = []
+    for i in range(0, len(x), walker_chunk):
+        parts.append(_two_j(p, jnp.asarray(x[i:i + walker_chunk], rd), dm, img_chunk=img_chunk, broken=_broken))
+        if PROGRESS is not None: jax.block_until_ready(parts[-1]['r2']); PROGRESS(i + walker_chunk, len(x))
     return {k: jnp.concatenate([q[k] for q in parts]) for k in parts[0]}
+
+
+# ------------------------------------------------------------------------------------------ savings: flat move lists, endpoint dedup
+DEFAULT_PATH = os.environ.get('PP2_DEFAULT_PATH', 'old')   # 'old' until the lead switches (PP2_DEFAULT_PATH=pack|dedup: test hook)
+STATS = {}                            # counts and host seconds of the new paths (reset by the caller)
+PROGRESS = None                       # optional callback (walkers done, walkers total) after every walker chunk of two_swap_ratios (job heartbeat)
+_SENT = np.uint64(0xFFFFFFFFFFFFFFFF)
+
+
+def _stat(k, v): STATS[k] = STATS.get(k, 0) + v
+
+
+def _bit(s): return jnp.left_shift(jnp.uint64(1), s.astype(jnp.uint64))
+
+
+@jax.jit
+def _flip_masks(upa, dna, Am, ru, rd_, kk, bm):
+    """flip mask (uint64, bit s = site s flipped) of every entry, flat layout E = dA + dA dB: the dA first swaps (y_a), then the (a, b)
+    endpoints z_ab; z = x ^ mask.  Invalid entries (Am / bm false) get mask 0 (= z = x, as the old padded _configs does)."""
+    Bn, dA = Am.shape
+    m0 = jnp.where(Am, _bit(upa) | _bit(dna), jnp.uint64(0))
+    mz = jnp.where(kk >= 1, _bit(ru[..., 0]) | _bit(rd_[..., 0]), jnp.uint64(0)) | \
+         jnp.where(kk >= 2, _bit(ru[..., 1]) | _bit(rd_[..., 1]), jnp.uint64(0))
+    mz = jnp.where(bm, mz, jnp.uint64(0))
+    return jnp.concatenate([m0, mz.reshape(Bn, -1)], 1)
+
+
+@jax.jit
+def _flip_masks0(upa, dna, Am):
+    return jnp.where(Am, _bit(upa) | _bit(dna), jnp.uint64(0))
+
+
+@jax.jit
+def _pair_keys(A, Bb, P):
+    """BROKEN-variant key: the unordered bond pair {a mod P, b mod P} (P = 2N: the lattice index of the bond without its type J1 / J2)
+    instead of the configuration; col 0: {a mod P, none}.  Flat layout as _flip_masks."""
+    Bn, dA = A.shape; Pu = jnp.asarray(P).astype(jnp.uint64); a = A.astype(jnp.uint64) % Pu
+    k0 = a * jnp.uint64(1024) + jnp.uint64(1000)
+    b = jnp.where(Bb < 0, jnp.uint64(1000), Bb.astype(jnp.uint64) % Pu); a3 = jnp.broadcast_to(a[:, :, None], b.shape)
+    kz = jnp.minimum(a3, b) * jnp.uint64(1024) + jnp.maximum(a3, b)
+    return jnp.concatenate([k0, kz.reshape(Bn, -1)], 1)
+
+
+def _row_unique(key, valid):
+    """per-row unique of key over the valid entries (numpy).  Returns gid (B, E) group id within the row (-1 invalid), (rb, re) walker
+    and entry index of the FIRST entry of every group (flat, row-major), cnt (B,) groups per row."""
+    kk = np.where(valid, key, _SENT)
+    order = np.argsort(kk, axis=1, kind='stable')
+    sk = np.take_along_axis(kk, order, 1)
+    new = np.empty(sk.shape, bool); new[:, 0] = True; new[:, 1:] = sk[:, 1:] != sk[:, :-1]
+    new &= sk != _SENT
+    gid_s = np.cumsum(new, 1) - 1
+    gid = np.empty_like(gid_s); np.put_along_axis(gid, order, gid_s, 1)
+    gid = np.where(valid, gid, -1)
+    rb, rs = np.nonzero(new)
+    return gid, rb, order[rb, rs], new.sum(1)
+
+
+def _cfg_keys(Xn):
+    Xn = np.asarray(Xn)
+    return ((Xn > 0).astype(np.uint64) << np.arange(Xn.shape[1], dtype=np.uint64)[None]).sum(1, dtype=np.uint64)
+
+
+_two_moves_j = jax.jit(_two_moves, static_argnums=(0, 2))
+
+
+def _moves_chunk(p, Xc, m, dm, path, broken):
+    """pass 1 for one walker chunk (Xc (Bc, N) device, the first m walkers real): the move lists of the new paths and the bookkeeping that maps
+    them back.  Entry layout E = dA + dA dB (first swaps y_a, then the endpoints z_ab).  Returns (d, mask, rep) with rep = dict(w, ru, rd, k)
+    the moves to evaluate (walker index within the chunk, row-major) and gidx (m, E) = index of each entry's move within rep (-1 invalid)."""
+    A, Am, Bb, bm, ru, rd_, kk, upa, dna = _two_moves_j(p.lat, Xc, dm)
+    Bc, dA = Am.shape; dB = Bb.shape[2]; E = dA + dA * dB
+    RU = jnp.concatenate([jnp.stack([upa, upa], -1), ru.reshape(Bc, dA * dB, 2)], 1)
+    RD = jnp.concatenate([jnp.stack([dna, dna], -1), rd_.reshape(Bc, dA * dB, 2)], 1)
+    K = jnp.concatenate([Am.astype(jnp.int32), kk.reshape(Bc, -1)], 1)
+    V = np.array(jnp.concatenate([Am, bm.reshape(Bc, -1)], 1)); V[m:] = False
+    mask = np.asarray(_flip_masks(upa, dna, Am, ru, rd_, kk, bm))
+    RUn = np.asarray(RU); RDn = np.asarray(RD); Kn = np.asarray(K)
+    if path == 'dedup':
+        key = np.asarray(_pair_keys(A, Bb, p.lat.NB // 2)) if broken == 'pair' else mask
+        gid, mw, me, cnt = _row_unique(key, V)
+        gidx = np.where(V, (np.cumsum(cnt) - cnt)[:, None] + gid, -1)
+    else:
+        mw, me = np.nonzero(V)
+        gidx = np.where(V, np.cumsum(V.ravel()).reshape(V.shape) - 1, -1)
+    if broken == 'trunc':                                                  # BROKEN: the last 10% of the moves never evaluated (their entries stay 0)
+        keep = int(0.9 * len(mw)); mw, me = mw[:keep], me[:keep]; gidx = np.where(gidx < keep, gidx, -1)
+    rep = dict(w=mw, ru=RUn[mw, me], rd=RDn[mw, me], k=Kn[mw, me])
+    d = dict(logB=None, a=jnp.where(Am, A, -1), am=Am, b=Bb, bm=bm, ru=ru, rd=rd_, k=kk, upa=upa, dna=dna)
+    return {k_: (v[:m] if v is not None else None) for k_, v in d.items()}, mask[:m], rep, gidx[:m], V[:m]
+
+
+_UQ = {}                           # flip masks of the last new-path two_swap_ratios call, keyed by identity of its r2 array
+
+
+QUANT = 512                           # move-list bucket quantum (K is rounded up to a multiple: few compiled shapes)
+
+
+def _two_new(params, x, dtype, dmax, walker_chunk, path, broken):
+    """two_swap_ratios on the 'pack' / 'dedup' paths: same output dict (a plain dict: exactly the old keys).  Pass 1 builds the move lists chunk by chunk;
+    pass 2 sorts the walkers by their move count, packs them in chunks of walker_chunk with K = the chunk's max count rounded up to QUANT, and runs
+    the old kernel (_ratios_batch: identical arithmetic per move) on the packed lists; pass 3 scatters the results back to the padded layout."""
+    p = params.cast(dtype); rd = jnp.float64 if dtype == 'f64' else jnp.float32
+    x = np.asarray(x); M = len(x); dm = dmax or _dmax_of(p.lat, x); t0 = time.perf_counter()
+    P1 = []; off = 0; mv = dict(w=[], ru=[], rd=[], k=[])
+    for i in range(0, M, walker_chunk):
+        blk = x[i:i + walker_chunk]; m = len(blk)
+        if m < walker_chunk and M > walker_chunk: blk = np.concatenate([blk, np.repeat(blk[:1], walker_chunk - m, 0)])
+        d, mk, rep, gidx, V = _moves_chunk(p, jnp.asarray(blk, rd), m, dm, path, broken)
+        P1.append((i, m, d, mk, gidx, V, off)); mv['w'].append(rep['w'] + i); mv['ru'].append(rep['ru']); mv['rd'].append(rep['rd']); mv['k'].append(rep['k'])
+        off += len(rep['w'])
+    mv = {k_: np.concatenate(v) for k_, v in mv.items()}; Mtot = len(mv['w'])
+    u = np.bincount(mv['w'], minlength=M); start = np.cumsum(u) - u; pos = np.arange(Mtot) - start[mv['w']]
+    order = np.argsort(u, kind='stable'); chunk_of = np.empty(M, np.int64); row_of = np.empty(M, np.int64)
+    chunk_of[order] = np.arange(M) // walker_chunk; row_of[order] = np.arange(M) % walker_chunk
+    res = np.zeros(Mtot, np.complex128 if dtype == 'f64' else np.complex64); lB = np.zeros(M, np.complex128 if dtype == 'f64' else np.complex64)
+    t1 = time.perf_counter(); nsh = set()
+    for c in range((M + walker_chunk - 1) // walker_chunk):
+        ws = order[c * walker_chunk:(c + 1) * walker_chunk]; Bc = len(ws); Bp = walker_chunk if M > walker_chunk else Bc
+        Kb = int(max(QUANT, QUANT * int(np.ceil(u[ws].max() / QUANT)))); nsh.add(Kb)
+        sel = np.nonzero(chunk_of[mv['w']] == c)[0]; r_ = row_of[mv['w'][sel]]; q_ = pos[sel]
+        RUp = np.zeros((Bp, Kb, 2), np.int32); RDp = np.zeros((Bp, Kb, 2), np.int32); Kp = np.zeros((Bp, Kb), np.int32)
+        RUp[r_, q_] = mv['ru'][sel]; RDp[r_, q_] = mv['rd'][sel]; Kp[r_, q_] = mv['k'][sel]
+        Xp = x[ws]
+        if Bp > Bc: Xp = np.concatenate([Xp, np.repeat(Xp[:1], Bp - Bc, 0)])
+        out = _rb_pack(p, jnp.asarray(Xp, rd), jnp.asarray(RUp), jnp.asarray(RDp), jnp.asarray(Kp), broken=(broken is True))
+        lb_, r = np.asarray(out[0]), np.asarray(out[1]); res[sel] = r[r_, q_]; lB[ws] = lb_[:Bc]
+        if PROGRESS is not None: PROGRESS(min((c + 1) * walker_chunk, M), M)
+    t2 = time.perf_counter(); parts = []; masks = []
+    for (i, m, d, mk, gidx, V, off_) in P1:
+        dA = d['am'].shape[1]; dB = d['bm'].shape[2]
+        r_e = np.where(V, res[np.clip(gidx + off_, 0, max(Mtot - 1, 0))], 0)
+        d['r1'] = jnp.asarray(r_e[:, :dA]); d['r2'] = jnp.asarray(r_e[:, dA:].reshape(m, dA, dB)); d['logB'] = jnp.asarray(lB[i:i + m]); parts.append(d); masks.append(mk)
+    out = {k_: jnp.concatenate([q[k_] for q in parts]) for k_ in parts[0]}      # a plain dict with exactly the old keys
+    _UQ.clear(); _UQ['r2'] = out['r2']; _UQ['mask'] = np.concatenate(masks)     # side channel for the CNN dedup (valid while d['r2'] is this array)
+    E = dA + dA * dB; nvalid = int(sum(V_.sum() for (_, _, _, _, _, V_, _) in P1))
+    Kbs = [int(max(QUANT, QUANT * int(np.ceil(u[order[c * walker_chunk:(c + 1) * walker_chunk]].max() / QUANT)))) for c in range((M + walker_chunk - 1) // walker_chunk)]
+    _stat('walkers', M); _stat('entries_old_padded', M * E); _stat('entries_valid', nvalid); _stat('entries_evaluated', Mtot)
+    _stat('entries_packed_padded', int(sum(min(walker_chunk, M) * Kb_ for Kb_ in Kbs)))
+    _stat('buckets', len(nsh)); _stat('sec_bookkeeping', (t1 - t0) + (time.perf_counter() - t2)); _stat('sec_lemma', t2 - t1)
+    return out
+
+
+@functools.partial(jax.jit, static_argnames=('broken',))
+def _rb_pack(p, X, ru, rd_, k, broken=False):
+    """_ratios_batch (the old kernel, unchanged arithmetic) on a packed move list: X (Bc, N), ru / rd_ (Bc, K, 2), k (Bc, K); K = bucket size."""
+    return _ratios_batch(p, X, ru, rd_, k, 1, broken)
+
+
+def _call_sign_keys(sign_fn, keys, N, chunk):
+    """sign_fn on the configurations given by uint64 keys (bit s set = spin +1), fixed-size chunks (one compile per chunk shape)."""
+    nat = getattr(sign_fn, 'jax_native', False); U = len(keys); outs = []; sh = np.arange(N, dtype=np.uint64)[None]
+    for i in range(0, U, chunk):
+        kb = keys[i:i + chunk]; m = len(kb)
+        tgt = chunk if U > chunk else int(max(256, 1 << int(np.ceil(np.log2(max(m, 1))))))
+        if m < tgt: kb = np.concatenate([kb, np.repeat(kb[:1], tgt - m)])
+        cfg = (((kb[:, None] >> sh) & np.uint64(1)).astype(np.int8) * 2 - 1).astype(np.int8)
+        o = sign_fn(jnp.asarray(cfg) if nat else cfg)
+        outs.append((jnp.asarray(o) if nat else np.asarray(o))[:m])
+    if nat: return jnp.concatenate(outs).astype(jnp.float64)
+    out = np.concatenate(outs).astype(np.float64); assert np.all(np.abs(out) == 1), 'sign_fn must return +-1'
+    return jnp.asarray(out)
+
+
+def _signs_dedup(sign_fn, Xn, d, at_y, chunk, broken):
+    """sx (M,), sy (M, dA), sz (M, dA, dB) with ONE sign_fn call per distinct configuration among x, all y_a, all z_ab of the whole batch.
+    Entries that are not valid endpoints are z = x, as in the padded path (so every entry equals the old path's, valid or not)."""
+    t0 = time.perf_counter(); M, N = Xn.shape; dA = d['am'].shape[1]
+    xkey = _cfg_keys(Xn)
+    if at_y:
+        mask = _UQ['mask'] if (_UQ.get('r2') is not None and d.get('r2') is _UQ['r2']) else np.asarray(_flip_masks(d['upa'], d['dna'], d['am'], d['ru'], d['rd'], d['k'], d['bm']))
+    else: mask = np.asarray(_flip_masks0(d['upa'], d['dna'], d['am']))
+    allk = np.concatenate([xkey[:, None], xkey[:, None] ^ mask], 1)             # (M, 1 + E)
+    if broken == 'pair':                                                     # BROKEN: group by the bond pair, not the configuration
+        assert at_y; pk = np.asarray(_pair_keys(d['a'], d['b'], PP2_NB(N) // 2))
+        gid, rb, re_, cnt = _row_unique(np.concatenate([np.full((M, 1), 2 ** 62, np.uint64), pk], 1), np.ones(allk.shape, bool))
+        U = allk[rb, re_]; emap = (np.cumsum(cnt) - cnt)[:, None] + gid
+    else:
+        if broken == 'cnnkey': allk = allk & ~(np.uint64(3) << np.uint64(N - 2))   # BROKEN: sites N-2, N-1 dropped from the key
+        gid, rb, re_, cnt = _row_unique(allk, np.ones(allk.shape, bool))
+        U, inv_u = np.unique(allk[rb, re_], return_inverse=True); emap = inv_u[(np.cumsum(cnt) - cnt)[:, None] + gid]
+        if broken == 'cnnkey': U = U                                         # (the representative key is the masked one: wrong configs)
+    t1 = time.perf_counter()
+    sU = _call_sign_keys(sign_fn, U, N, chunk)
+    t2 = time.perf_counter()
+    s = sU[jnp.asarray(emap)] if isinstance(sU, jnp.ndarray) else sU[emap]
+    s = jnp.asarray(s)
+    sx = s[:, 0]; sy = s[:, 1:1 + dA]; sz = s[:, 1 + dA:].reshape(M, dA, -1) if at_y else None
+    _stat('cnn_calls_dedup', len(U)); _stat('cnn_calls_total_valid', M * (1 + dA) + (int(np.asarray(d['bm']).sum()) if at_y else 0))
+    _stat('cnn_calls_old_padded', M * allk.shape[1]); _stat('sec_cnn_bookkeeping', (t1 - t0) + (time.perf_counter() - t2)); _stat('sec_cnn', t2 - t1)
+    return sx, sy, sz
+
+
+def PP2_NB(N): return lattice(int(round(np.sqrt(N))), 'none').NB
+
+
+def make_sign_fn(size='L', seed=0, net=None, L=8, bias=0.0):
+    """sign8.SignNet as a jax_native sign_fn for _call_sign / _call_sign_keys (f32 network, +-1 out; sign of logit - bias).  size 'L' = 64 ch x 6 layers.
+    (A random-weight net has a nearly constant sign; the tests pass bias = the median logit so that the signs are balanced.)"""
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import sign8
+    net = net or sign8.SignNet(L=L, size=size, seed=seed)
+    f = jax.jit(lambda x: jnp.where(net.jax_logit(net.params, x.astype(jnp.float32)) - jnp.float32(bias) >= 0, 1, -1))
+    def sign_fn(x): return f(x)
+    sign_fn.jax_native = True; sign_fn.net = net; sign_fn.bias = bias
+    return sign_fn
 
 
 # ------------------------------------------------------------------------------------------ f_J and the augmented guide
@@ -443,17 +667,20 @@ def _apply_mode(f, mode, c, f0, node):
 
 
 def fJ_fixed(params, x, sign_fn, EP, c, f0=None, mode='old', at_y=True, dtype='f64', dmax=None, img_chunk=1,
-             sign_chunk=16384, node=NODE_ADD, _broken=False, _two=None, walker_chunk=256):
+             sign_chunk=16384, node=NODE_ADD, _broken=False, _two=None, walker_chunk=256, eval_path=None, cnn_dedup=None, _broken_save=None):
     """f_J (r5_bare.fJ_of arithmetic, per configuration instead of per orbit row) at x and at every neighbour y_a, and the fixed add."""
-    lat = params.lat
+    lat = params.lat; path = eval_path or DEFAULT_PATH
+    if cnn_dedup is None: cnn_dedup = (path == 'dedup')
     x = np.asarray(x); X = jnp.asarray(x, jnp.float64 if dtype == 'f64' else jnp.float32)
     if _two is not None: d = _two
-    elif at_y: d = two_swap_ratios(params, x, dtype, dmax, img_chunk, walker_chunk)
+    elif at_y: d = two_swap_ratios(params, x, dtype, dmax, img_chunk, walker_chunk, eval_path=path, _broken=_broken_save or False)
     else: d = _one_as_two(params, x, dtype, walker_chunk)
-    Y, Z = _configs(X, {k: d[k] for k in ('upa', 'dna', 'am', 'ru', 'rd', 'k') if k in d}, with_z=at_y)
-    sx = _call_sign(sign_fn, X.astype(jnp.int8), sign_chunk)
-    sy = _call_sign(sign_fn, Y.reshape(-1, lat.N), sign_chunk).reshape(Y.shape[:2])
-    sz = _call_sign(sign_fn, Z.reshape(-1, lat.N), sign_chunk).reshape(Z.shape[:3]) if at_y else None
+    Y, Z = _configs(X, {k: d[k] for k in ('upa', 'dna', 'am', 'ru', 'rd', 'k') if k in d}, with_z=at_y and not cnn_dedup)
+    if cnn_dedup: sx, sy, sz = _signs_dedup(sign_fn, np.asarray(x), d, at_y, sign_chunk, _broken_save)
+    else:
+        sx = _call_sign(sign_fn, X.astype(jnp.int8), sign_chunk)
+        sy = _call_sign(sign_fn, Y.reshape(-1, lat.N), sign_chunk).reshape(Y.shape[:2])
+        sz = _call_sign(sign_fn, Z.reshape(-1, lat.N), sign_chunk).reshape(Z.shape[:3]) if at_y else None
     rdt = jnp.real(d['r1']).dtype
     fx, py = _fj_parts(lat, X.astype(rdt), d, sx.astype(rdt), sy.astype(rdt), None if sz is None else sz.astype(rdt), EP, at_y, _broken)
     out = dict(d, fx=fx, add_x=_apply_mode(fx, mode, c, f0, node), sx=sx, sy=sy, sz=sz, Y=Y)
@@ -467,10 +694,11 @@ def fJ_fixed(params, x, sign_fn, EP, c, f0=None, mode='old', at_y=True, dtype='f
 
 
 def aug_ratios(params, x, sign_fn, EP, c, f0=None, mode='fix', dtype='f64', dmax=None, img_chunk=1, sign_chunk=16384, node=NODE_ADD,
-               walker_chunk=256):
+               walker_chunk=256, eval_path=None, cnn_dedup=None, _broken_save=None):
     """G(y_b)/G(x) for every bond b (B, NB), G = s_G |B| e^{add}; 0 for aligned bonds."""
     lat = params.lat
-    o = fJ_fixed(params, x, sign_fn, EP, c, f0, mode, True, dtype, dmax, img_chunk, sign_chunk, node, walker_chunk=walker_chunk)
+    o = fJ_fixed(params, x, sign_fn, EP, c, f0, mode, True, dtype, dmax, img_chunk, sign_chunk, node, walker_chunk=walker_chunk,
+                 eval_path=eval_path, cnn_dedup=cnn_dedup, _broken_save=_broken_save)
     ga = o['sx'][:, None] * o['sy'] * jnp.abs(o['r1']) * jnp.exp(o['add_y'] - o['add_x'][:, None])
     ga = jnp.where(o['am'], ga, 0.0)
     Bn = ga.shape[0]

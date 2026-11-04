@@ -5,6 +5,9 @@ sign = sign8.SignNet XL (128 ch x 6 layers, random weights, f32) at x, every y a
 usage: python pp2_lemma_bench.py OUTDIR [M ...]        (default M = 256 1024)
 Measures per M and dtype (f64, f32): seconds per walker-step of aug_ratios, split into lemma (two_swap_ratios), CNN (sign at x, y, z),
 rest; one_swap_ratios (plain P step) for the J/P ratio; peak device memory; f32 vs f64 max relative error of r1, r2 and the augmented ratio.
+Options (2026-11-04, piece (3); all default to the A40-benchmarked behaviour): PP2B_PATH=old|pack|dedup (eval_path of the lemma; 'dedup' also
+deduplicates the CNN calls), PP2B_CNN=XL|L (sign8 size), PP2B_DTYPES=f64,f32, PP2B_WALKERS=<npy of +-1 configs> (instead of the Metropolis prep),
+PP2B_NO_SIGN=1 (skip the sign-option block).  The new paths add the unique / valid / padded endpoint counts (lemma_stats, cnn_stats, aug_stats) and the host bookkeeping seconds.
 Walkers: configurations from a short Metropolis run of |B| (rbmpp_lib-style exchange moves on the production guide P_1 + RBM) so that d
 is realistic, not random S^z = 0 states.
 """
@@ -24,6 +27,8 @@ SIGN_FIRST = os.environ.get('PP2B_SIGN_FIRST') == '1'
 LEAN = os.environ.get('PP2B_LEAN') == '1'              # one timed repetition per component (no repeat), for M = 1024
 SCH = int(os.environ.get('PP2B_SCHUNK', '16384'))       # sign_fn chunk
 BCH = int(os.environ.get('PP2B_BCHUNK', '256'))         # endpoint chunk of the on-the-fly sign (B)
+PATH = os.environ.get('PP2B_PATH', 'old'); CNN = os.environ.get('PP2B_CNN', 'XL'); DTS = tuple(os.environ.get('PP2B_DTYPES', 'f64,f32').split(','))
+WALK = os.environ.get('PP2B_WALKERS')
 C = 4.0; F0 = 3.0             # f0 is a placeholder (cost-neutral)
 CONSTS = os.environ.get('PP2B_CONSTS', '/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/V/consts.json')   # p=1 sign constants (alpha, E, w)
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
@@ -68,15 +73,18 @@ def main():
     pP2 = PL.PP2(f2, L=8, proj=p1.proj, rbm='inner', b=p1.b, W=p1.W)
     lam = 0.5 * np.exp(np.real(complex(PL.logB(p1, x0)[0]) - complex(PL.logB(pP2, x0)[0])))
     p = p1.with_p2(f2, lam)
-    net = sign8.SignNet(L=8, size='XL', seed=0)
+    net = sign8.SignNet(L=8, size=CNN, seed=0)
     f32 = jax.jit(lambda x: jnp.where(net.jax_logit(net.params, x.astype(jnp.float32)) >= 0, 1, -1))
     def sign_fn(x): return f32(x)
     sign_fn.jax_native = True
     R = dict(lean=LEAN, sign_first=SIGN_FIRST, host=os.uname().nodename, device=str(jax.devices()[0]), jax=jax.__version__, code_sha256={f: sha(os.path.join(HERE, f)) for f in
              ('pp2_lemma.py', 'pp2_lemma_bench.py', 'sign8.py')}, params=PROD, params_sha256=sha(PROD), n_images=int(lat.nI),
-             lam=[float(np.real(lam)), float(np.imag(lam))], cnn=dict(size='XL', npar=net.npar), hops_per_walker_tau=hpwt,
+             lam=[float(np.real(lam)), float(np.imag(lam))], cnn=dict(size=CNN, npar=net.npar), eval_path=PATH, cpu_threads=os.environ.get('OMP_NUM_THREADS'), load_avg=os.getloadavg(), hops_per_walker_tau=hpwt,
              hops_source=HOPS + ' (copy of /scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/p1_s1/blocks.npz; mean hops / (M dtau))', runs={})
-    t = time.time(); Xall, acc = walkers(p, max(MS)); R['walker_prep'] = dict(sec=time.time() - t, acc=float(acc))
+    t = time.time()
+    if WALK: Xall = np.load(WALK).astype(np.float64)[:max(MS)]; acc = float('nan'); assert len(Xall) >= max(MS)
+    else: Xall, acc = walkers(p, max(MS))
+    R['walker_prep'] = dict(sec=time.time() - t, acc=float(acc), file=WALK)
     dd = (Xall[:, lat.BI] != Xall[:, lat.BJ]).sum(1); R['d_anti'] = dict(mean=float(dd.mean()), max=int(dd.max()), min=int(dd.min()))
     log(f'walkers ready: acc {acc:.3f} d mean {dd.mean():.1f} max {dd.max()}  peak {peak():.2f} GiB')
     dmax = PL._dmax_of(lat, Xall); R['dmax'] = dmax
@@ -86,7 +94,7 @@ def main():
         # endpoint).  Timed on a subsample of endpoint configs (throughput is linear in the count), extrapolated to all d^2 endpoints.
         K = json.load(open(CONSTS)); wph = complex(*K['w']); al = K['alpha']; E1 = K['E']
         lat_JB = jnp.asarray(lat.JB)
-        for dt in ('f64', 'f32'):
+        for dt in DTS:
             pc = p.cast(dt); rdt = jnp.float64 if dt == 'f64' else jnp.float32
             @jax.jit
             def sgB(z):
@@ -110,29 +118,37 @@ def main():
     if SIGN_FIRST: sign_options()
     for M in MS:
         X = Xall[:M]
-        for dt in ('f64', 'f32'):
+        for dt in DTS:
             key = f'M{M}_{dt}'; res = {}
             # warm-up / compile on the same shapes
             NR = 1 if LEAN else 2
-            blk(PL.one_swap_ratios(p, X, dt)); blk(PL.two_swap_ratios(p, X[:256], dt, dmax))
+            blk(PL.one_swap_ratios(p, X, dt)); blk(PL.two_swap_ratios(p, X[:256], dt, dmax, eval_path=PATH))
             ts = []
             for rep in range(NR):
                 t = time.perf_counter(); blk(PL.one_swap_ratios(p, X, dt)); ts.append(time.perf_counter() - t)
             res['t_one'] = min(ts)
             ts = []
             for rep in range(NR):
-                t = time.perf_counter(); d = blk(PL.two_swap_ratios(p, X, dt, dmax)); ts.append(time.perf_counter() - t)
+                PL.STATS.clear(); t = time.perf_counter(); d = blk(PL.two_swap_ratios(p, X, dt, dmax, eval_path=PATH)); ts.append(time.perf_counter() - t)
             res['t_lemma'] = min(ts)
-            Xd = jnp.asarray(X, jnp.float32); Y, Z = blk(PL._configs(Xd, d))
-            nz = int(np.prod(Z.shape[:3])); ny = int(np.prod(Y.shape[:2])); res['n_sign_calls'] = M + ny + nz
-            if LEAN: blk(PL._call_sign(sign_fn, Xd.astype(jnp.int8), SCH)); blk(PL._call_sign(sign_fn, Y.reshape(-1, 64), SCH)); blk(PL._call_sign(sign_fn, Z.reshape(-1, 64)[:SCH], SCH))
-            for rep in range(NR):                                                   # rep 0 = warm-up (compiles every chunk shape)
-                t = time.perf_counter()
-                blk(PL._call_sign(sign_fn, Xd.astype(jnp.int8), SCH)); blk(PL._call_sign(sign_fn, Y.reshape(-1, 64), SCH))
-                blk(PL._call_sign(sign_fn, Z.reshape(-1, 64), SCH)); res['t_cnn'] = time.perf_counter() - t
-            del Y, Z
-            if not LEAN: blk(PL.aug_ratios(p, X, sign_fn, EP, C, F0, 'fix', dt, dmax, sign_chunk=SCH))
-            t = time.perf_counter(); o = blk(PL.aug_ratios(p, X, sign_fn, EP, C, F0, 'fix', dt, dmax, sign_chunk=SCH)); res['t_aug'] = time.perf_counter() - t
+            Xd = jnp.asarray(X, jnp.float32)
+            if PATH == 'dedup':                                                      # CNN on the distinct configurations only (x, y_a, z_ab, all walkers)
+                res['lemma_stats'] = dict(PL.STATS)
+                for rep in range(NR):
+                    PL.STATS.clear(); t = time.perf_counter(); blk(PL._signs_dedup(sign_fn, np.asarray(X), d, True, SCH, None)); res['t_cnn'] = time.perf_counter() - t
+                res['n_sign_calls'] = int(PL.STATS['cnn_calls_dedup']); res['cnn_stats'] = dict(PL.STATS)
+            else:
+                Y, Z = blk(PL._configs(Xd, d))
+                nz = int(np.prod(Z.shape[:3])); ny = int(np.prod(Y.shape[:2])); res['n_sign_calls'] = M + ny + nz
+                if LEAN: blk(PL._call_sign(sign_fn, Xd.astype(jnp.int8), SCH)); blk(PL._call_sign(sign_fn, Y.reshape(-1, 64), SCH)); blk(PL._call_sign(sign_fn, Z.reshape(-1, 64)[:SCH], SCH))
+                for rep in range(NR):                                                   # rep 0 = warm-up (compiles every chunk shape)
+                    t = time.perf_counter()
+                    blk(PL._call_sign(sign_fn, Xd.astype(jnp.int8), SCH)); blk(PL._call_sign(sign_fn, Y.reshape(-1, 64), SCH))
+                    blk(PL._call_sign(sign_fn, Z.reshape(-1, 64), SCH)); res['t_cnn'] = time.perf_counter() - t
+                del Y, Z
+                res['n_valid_endpoints'] = int(np.asarray(d['bm']).sum()); res['n_padded_endpoints'] = int(np.prod(d['bm'].shape))
+            if not LEAN: blk(PL.aug_ratios(p, X, sign_fn, EP, C, F0, 'fix', dt, dmax, sign_chunk=SCH, eval_path=PATH))
+            t = time.perf_counter(); PL.STATS.clear(); o = blk(PL.aug_ratios(p, X, sign_fn, EP, C, F0, 'fix', dt, dmax, sign_chunk=SCH, eval_path=PATH)); res['aug_stats'] = dict(PL.STATS); res['t_aug'] = time.perf_counter() - t
             res['t_rest'] = res['t_aug'] - res['t_lemma'] - res['t_cnn']
             for k_ in ('t_one', 't_lemma', 't_cnn', 't_aug', 't_rest'): res[k_.replace('t_', 's_per_walker_step_')] = res[k_] / M
             res['J_over_P'] = res['t_aug'] / res['t_one']; res['lemma_over_P'] = res['t_lemma'] / res['t_one']

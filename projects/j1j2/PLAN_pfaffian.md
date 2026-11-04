@@ -1698,8 +1698,8 @@ Savings item (4): the 1-PP phase sign at the endpoints through pp2_lemma's deter
 equal to the direct-phase evaluation to <= 1e-12 RELATIVE (the absolute bar was ill-posed for large ratios in (3)), on 6x6 S_a1 and on an 8x8
 1-PP, with a broken version (wrong image parity) that fails; CPU timing vs the direct phase.
 Result (2) c3 (2026-11-04; pfaffian_8x8build/gfmc_aug/c3_table/gate_i.json, c3_ident/gate_ii.json; verified; gfmc_aug.py committed, sha acd2f6e4):
-- (i) table-guide FN-GFMC, 4 chains, M 1024, 5.1e6 walker-tau per c, quotable.py QUOTABLE: c = 0 1.2738(47)e-5 vs exact 1.218448e-5 (1.18 sigma);
-  c = 4 fix 4.336(20)e-6 vs 4.367227e-6 (0.15 sigma). PASS (2 sigma, sigma <= 5e-7). Broken c = -4 misses by 30.0(5.7)e-6 = 5.3 sigma
+- (i) table-guide FN-GFMC, 4 chains, M 1024, 5.1e6 walker-tau per c, quotable.py QUOTABLE: c = 0 1.274(47)e-5 vs exact 1.218448e-5 (1.18 sigma);
+  c = 4 fix 4.34(20)e-6 vs 4.367227e-6 (0.15 sigma). PASS (2 sigma, sigma <= 5e-7). Broken c = -4 misses by 30.0(5.7)e-6 = 5.3 sigma
   (predicted +33.6e-6). M 256 at c = 0: +0.98(65)e-6; M 256 - M 1024 = 0.42(80)e-6, so the population bias is below sigma. Both c = 0 deviations
   are positive (+0.55, +0.98 sigma-units 1.2, 1.5): not significant; dtau not varied.
 - (ii) same-seed identity, aug_ratios vs table provider, c = 4, 32 blocks: hops and walker hashes identical, E_mix max rel 6.7e-15. Broken

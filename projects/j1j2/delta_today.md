@@ -847,3 +847,5 @@
 - 2026-11-04 lead: PLAN Goal line restated as the loop (PI); sign angle asked for view on its class: lead says optimiser-limited (2-PP superset trains worse; tax tracks train error on one curve), one warm-start discriminator, else accept ~1e-6; /scratch watch re-armed at 990 GiB.
 - 2026-11-04 sign angle: lead's view in (optimiser-limited; accept ~1e-6 now; one warm-start 2-PP discriminator); my saddle concern on its lambda~1e-3 init recorded; final call after Astra cj-98ed296751e4.
 - 2026-11-04 lead -> sign angle: discriminator approved (<= 4.5 A40-h): 2-PP sign net from P_2 = P_1 + 0.1 relative noise, lambda 1 (angle: small-lambda init = arm-3 saddle); reads: diff grows + tax < 0.5e-6 optimiser-limited, grows + tax in scatter local optimum (accept ~1e-6), no growth stalled.
+- 2026-11-04 sign angle: T-WARM pre-registered in PLAN_sign.md (lead GO, 4.5 A40-h cap); submission waits for Astra cj-98ed296751e4.
+- 2026-11-04 PI go: V twin on Paderborn (fresh 1500 steps, ~2.4 H100-h at R6 5.8 s/step) sent to the Pfaffian angle; A40 17695322 kept; race rule changed to expected finish time (old start-first rule cancelled a ~9x faster H100 copy, 4107178).

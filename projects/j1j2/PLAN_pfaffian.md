@@ -1724,3 +1724,7 @@ rows (pool weights), with dlnA_RBM = R(x; W_end) - R(x; W_start) and dlnA_total 
 (theta_rel -> step 600); and the same for P_2 in the two-PP round 5 (P_2 term vs total) as the reference. Prediction (mine, from column norm x
 parameter change): S_fn(M5') ~ 0.01, far below P_2's. Kill of "M5/M5' were effectively one-PP": S_fn(RBM) >= 0.5 x S_fn(P_2). If it fires,
 M5' was a valid control and should be rerun as is (sigma 3e-3); if not, the stall is undiagnosed and M5'' waits for a mechanism. ~5 core-h.
+S_fn amendment (lead 2026-11-04, before any number): metric = the copy loss's own (band-uniform decade weights + blocked-bond term with lam_b),
+reported in total and per decade (value and bond rows separately), for RBM (M5, M5') and P_2 (two-PP round 5) over the same stretches.
+If the kill fires: log "M5' validity gate ill-posed; cancel 2026-11-04 premature" beside the INVALID record and rerun M5' as it was
+(sigma 3e-3, A40, ~12 h; inside the lead's takeover ceiling, no Astra wait).

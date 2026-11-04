@@ -89,3 +89,29 @@ mechanism (lrux persistent inverse) loses its 1.45-1.6x on the plain PP step to 
 nodes, and the Jacobi / two-PP guides spend 71%+ in the two-swap kernel it does not touch. Keep the venv
 (/scratch/a/A.Otaifi/venvs/tooling) for cross-checks; NetKet's parallel tempering is the first thing to try if 10x10 VMC chains
 ever stick. Angle CLOSED.
+
+## LaQX review (2026-11-04; lead's request for the PI; paper arXiv:2611.04333 v1 TeX + repo github.com/bytedance/laqx HEAD c6a3ee5,
+read only, in /scratch/a/A.Otaifi/laqx_review; no LaQX code executed). VERDICT: no change to the 2026-11-03 answer.
+1. GFMC: lattice fixed-node (ten Haaf), real guide only: sign-violating terms h > 0 moved to the diagonal (laqx/operators/gfmc_utils.py:59-72;
+   paper eq. fixed-node). Discrete-time propagator 1 - dtau (H_FN - E_T), default dtau 1e-2 (docs/reference/parameters.md:104), E_loc and all
+   neighbour ratios recomputed EVERY step, moved or not (gfmc_utils.py:93), vs our continuous time (one evaluation per hop).
+   Per-walker step cap dtau_n = 1/(d_n - E_T) (paper eq. gfmc-step, gfmc_utils.py:96): the walker density becomes f0/dtau_n, so the mixed
+   estimate is biased wherever caps fire (derived; toy check /scratch/a/A.Otaifi/laqx_review/check/tau_bias.py: 2% capped -> E - E0 = -9.3e-4,
+   below E0, uniform-dtau control 1e-15). Negligible if caps are rare (they log mean_step); not a correct general scheme near nodes.
+   No population-control correction factors; weights renormalised each step, E_T = last estimate (gfmc_utils.py:117-118).
+   Ratios: fresh LU per walker per step (network_block.py:137), then per connected configuration a rank-k Woodbury update
+   (network_block.py:161-172; k = rows changed inside the CNN light cone, adaptive, default budget 30), in a sequential lax.scan
+   (gfmc_utils.py:58). Only for the Slater-type 'scale' and 'tensor' networks; the J1-J2 network cnn_mps has no fast path
+   (cnn_mps.py:105 'del cache': full re-evaluation per neighbour). No pair-product model, no two-swap kernel. f64: determinant matrices and
+   logdet cast to f64 (scale.py:47, gfmc_utils.py:26); network f32 unless --precision x64/--use_x64 (parameters.md:123-124).
+2. J1-J2 numbers: 6x6 only, VMC, CNN-MPS D=20, -0.5038070(2), 3.2e-6/site above ED (paper sec. J1-J2, ~l.763); no J1-J2 GFMC, no 8x8, no GPU-h
+   (GFMC shown only for Hubbard 16x4 / 16x8). Not comparable with our 8x8 FN p=1 -0.498946(5) / 7.9 H100-h or Varbench -0.498963(2).
+   Note: at 6x6 this plain VMC (3.2e-6) equals our best add-on guide (3.3e-6 above exact).
+3. Beats our pieces? No. Two-swap kernel: none (per-neighbour Woodbury O(n^2 k) vs our O(n) per neighbour from precomputed T).
+   Sampler: Hamiltonian-term proposals with Hastings factor (operators/mcmc.py:5-50), as ours. Optimisers: SPRING, MARCH (utils/march.py),
+   Adam; MARCH is their stabilised SR; PI fixed SR/minSR, nothing to adopt. gfmc.py:16 and pretrain.py:15 force jax_debug_nans (slow).
+4. Our loop: no. GFMC keeps the network fixed (paper sec. gfmc-algorithm: "the neural parameters remain fixed"); pretrain.py fits orbitals to
+   another network, not to an FN or Lanczos state; spin sign = Marshall (spin.py:6), no separate sign network.
+Capability worth knowing (lead's call, not a recommendation to act now): laqx/networks/cnn_mps.py is the architecture of the 10x10 record
+-0.4976939(2) (arXiv:2603.14425, our bar for open question A); MIT; no trained weights released (repo has none; the paper names none).
+Training it ourselves = 15000 MARCH steps x 4096 samples at 10x10, GPU-h unstated.

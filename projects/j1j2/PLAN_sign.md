@@ -430,6 +430,20 @@ B1 k=0 +1.137e-5, B1 k=1 fixed -4.31e-7; B2 k=0 +5.27e-6, B2 k=1 fixed -7.6e-8, 
 CONFIRMED (pre-registered rule): no second sign step reaches 0.5e-6/site at 6x6 (range -0.43 to +0.39e-6); first steps 5.3-11.4e-6.
 Predictions: B2 fixed held; B2 refreshed held; B1 >= 0 missed; first steps held. Not checked: a separate c minimum below 3.
 
+T-CAP RESULT (arms 1-2) 2026-11-04 (verified from sign_tcap/v2_S_a1.json, v2_S_sum.json):
+| arm | tax theta_bar | tax theta(1200) | w_T |
+|---|---|---|---|
+| 1-PP seed 0 (S2b', H100) | 1.447e-6 | 1.481e-6 | 2.57e-6 |
+| 1-PP seed 1 (arm 1, A40) | 0.847e-6 | 0.865e-6 | 1.72e-6 |
+| 2-PP sum (arm 2) | 2.758e-6 | 2.806e-6 | 4.65e-6 |
+Seed scatter s = 0.60e-6 (one pair; different hardware and phase caps). Capacity lever: NO (the sum is worse than either 1-PP seed).
+Predictions: arm 1 1.35-1.55e-6 missed (0.85); arm 2 missed. Reading: at this class size the training seed moves the tax by 0.6e-6, as much
+as anything else tried; a summed pairing trains worse, not better. Neither a capacity nor a loss change has beaten seed noise.
+Arm 3 (residual, redesign 2): A stalls at 0.08 (cos steps 3780-4410), far below the 1 needed to flip any orbit; held-out stays exactly
+sgn psi_P. Mechanism: the gradient on m is scaled by A/(1+A), and the 88% agreeing orbits pull A down, so m cannot learn the flips while
+A is small: a saddle. This is A10 again: learning only the flips on top of a fixed base does not train. Second failed parametrisation of the
+residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
+
 ## Running
 - T-CAP on theorie A40 (cip/inter; c128, 0.657 s/step measured; /scratch/a/A.Otaifi/ansatz_runs/sign_tcap, jobids.txt): arm (1) a1pp 17669369
   RUNNING since 2026-11-03 08:34 (ETA ~12:45), then a1pp2 17669370; arms (2) sum_m4 17678709 and (3) res_m4 17678710 PENDING

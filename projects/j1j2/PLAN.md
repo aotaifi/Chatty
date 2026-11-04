@@ -464,6 +464,9 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - A sum of two pair-products lifts the stall (round 5, 2 seeds, pfaffian_r5): stores r 0.49 vs 0.046 for one PP; augmented guide
   3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Round 6: r 0.25, aug 2.81e-6 (pfaffian_r6). Walker step 10.9x plain PP at 10x10.
   Structure vs parameters unresolved (M5 metric broken by its start; M5' running).
+- Deployable stored sign on the two-PP loop guides (lead read sign_comb/r6grade/v1_sG.json, v2_S_a1.json; exact FN, 6x6): S_a1 tax 0.88e-6 on
+  R6 theta_6 (aug 3.70e-6 vs s_G 2.81e-6) and 0.86e-6 on R5 (4.12 vs 3.26e-6): stored-sign loop 1.88e-6 below the competitor 5.574e-6 at R6.
+  Caveats: one sign seed (seed 0 was 0.6e-6 worse on the 1-PP guide); exact tables; competitor on RBM+PP base (Queue: bar).
 - At 6x6 the second sign step gains < 0.5e-6/site from all four learned starts (re-graded with fixed f_J, sign_fix/fix_B{1,2}.json:
   B1 -4.3e-7, B2 -7.6e-8, B2 refreshed +3.9e-7; first steps +1.1e-5 / +5.3e-6; top orbit share <= 9.3e-3). Larger L untested.
 - At 6x6 the amplitude, not the sign, limits the loop (pfaffian_floor): s_G floor <= 0.83e-6 (Aitken 0.39e-6) vs best guide 4.37e-6;

@@ -1680,3 +1680,6 @@ Prediction (mine): at 6x6 the weight peaked 5-6 decades below the beta = 1 media
 ~1.33x at 8x8, so the peak sits near relative -7/-8 and the 95% range reaches about -10/-11. Then +2..-6 misses ~30-40% of the weight, beta 0.25
 (or lower) is needed again, and S grows from the deep end. Miss: the 95% range ends at -6 or above (then the inherited range stands and pool8's
 sizing holds). Cost: f_J at 8x8 with on-the-fly s_G is d^2 E_L calls per configuration; the worker times a pilot and sizes it, <= 300 core-h.
+c4 RUNNING (2026-11-04 18:39): pfaffian_v_c4/, pool seed 2 (sha 8a9b80e6; spec diff = seed only; check (b) PASS, max |z| 2.85 over 41 cells);
+A40 fit 17741531 -> tab 17741532 -> bare 17741533 -> aug 17741534 (afterok); 53.2 s/step, readouts ~11-05 18:35 / 19:40. Check (a) job 17741259 pending
+read. Next per verdict: r_V2 >= 0.35 -> V PASS stands, quote ratio mean +- half-difference; r_V2 < 0.35 -> V's PASS does not hold across pools, report to the lead.

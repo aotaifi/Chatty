@@ -880,3 +880,10 @@
 2026-11-04 12:30 VERDICT job 4109778: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/pdb2/fit/ANALYSIS.md]
 - 2026-11-04 sign angle: PI yes on the size test; T-SCALE pre-registered (w_T/N at L=6,8,10, tax ~ 17.8 w_T/N from 6x6); step 0 inventory+timing to a worker, design to Astra.
 - 2026-11-04 GitHub publickey refusals (~11:00) were transient on the GitHub side: same key (SHA256:kYZh..., listed on api.github.com/users/aotaifi/keys) authenticates again; lead commits pushed (f3b1ca7); sign angle told to re-push 57eaf67.
+- 2026-11-04 sign angle: T-SCALE steps 1-2 held; amendment: one-step target's flip weight shrinks with N -> read relative retention 1 - w_T/d_L, not the absolute tax.
+2026-11-04 12:52 VERDICT job 4109779: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v/pdb2/tab/ANALYSIS.md]
+- 2026-11-04 sign angle: PI 'ok go' on T-SCALE (relative retention at L=8,10); runs after step 0 timing and Astra cj-17cae01c48b2.
+2026-11-04 12:53 [pfaffian V chain2] copy pdb2 finished first (readout 17721219); the other copy th is still running/pending and is NOT cancelled (pdb2 COMPLETED/COMPLETED th /)
+- 2026-11-04 sign angle: Astra T-SCALE review in (measure error corrected: w_G(S_a1) 9.36e-7; w->tax transfer unsupported across L); adopted: 8x8 first, boundary statistic, two seeds, no-update control.
+2026-11-04 13:04 VERDICT job 17721088: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_scale/ANALYSIS.md]
+- 2026-11-04 13:10 V PASS (lead verified pfaffian_v/readout/readout.json, winner pdb2 = Paderborn express 4109778, 1500 steps, control exact): r_V 0.4636 vs exact-table 0.4929 (0.94), bare 8.5606e-6. A40 duplicate 17695322 at step 990 (~7.5 h left): cancel proposed to the PI. 8x8 build awaits the PI go.

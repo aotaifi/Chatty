@@ -1494,3 +1494,24 @@ the averaging bonus (best checkpoint e minus e(theta_bar)) shrinks from 0.35e-6 
 Kill: walk amplitude >= 0.1e-6 under the strict rule. The walk then has another source, e.g. sampling noise in the batch.
 Cost ~0.8 H100-h + tables + CPU.
 RUNNING V: Paderborn fit 4107178 + tab 4107179, raced against A40 17695322 + 17695323; readout chained by v_chain.sh.
+
+## Result round 6 + M5 (2026-11-04; readout 17698157, pfaffian_r6/readout/readout.json; verified; ~4.2 H100-h)
+| arm | bare e | r | aug min (c*) |
+| R6 two-PP round 6 (from theta_5 s1) | 7.061e-6 | r_6 0.2505 | 2.814e-6 (3.9) |
+| M5 PP + active RBM, 5256 params, round 5 from theta_4 | 1.1134e-5 | r_5 vs theta_4 0.134; r_5_own 0.954 | 3.986e-6 (3.9) |
+| (two-PP round 5, for comparison) | 8.332e-6 | 0.493 | 3.258e-6 |
+Controls: theta_4 rel 0; theta_5 rel 4.7e-11.
+R6 predictions HIT (r 0.2-0.4; aug 2.5-2.9e-6); no KILL. Per-round storage q = 0.25/0.49 = 0.51.
+Augmented guide after round 6: 2.81e-6, i.e. 50% of the competitor's 5.574e-6. Floor(s_G) <= 0.83e-6.
+M5 against the pre-registered rule: the gate on r_5_own reads PARAMETER COUNT (0.4929 - 0.954 < 0.15). But e_start =
+1.51e-4, 12x theta_4's, because the sigma 3e-3 RBM init scrambled the guide. r_5_own's denominator is therefore ~97% the
+self-inflicted init gap, and the metric measures noise removal, not round storage. The rule was ill-conditioned for this start;
+I do not read it as evidence either way.
+What the arm does show, at equal target, steps and parameter count:
+- M5 ends at bare 1.113e-5 and aug 3.99e-6, against two-PP 8.33e-6 and 3.26e-6 (0.73e-6 worse augmented).
+- Against theta_4 it stored 0.134, against 0.49.
+- So the two-PP reaches lower energies from the same budget, but a fair "structure vs count" verdict needs a control
+  that starts AT theta_4's energy.
+Proposed, cost ~1.6 H100-h:
+- M5' = the same PP + RBM, first relaxed to the c = 0 target (B_4 itself) until e returns to <= 1.25e-5, then the round-5
+  fit to T_5. Rule: structure matters iff r_5(two-PP) - r_5(M5', measured from its relaxed start) > 0.15.

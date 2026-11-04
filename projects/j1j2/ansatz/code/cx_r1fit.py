@@ -11,6 +11,10 @@ R5 two-PP class (d) (PLAN_pfaffian.md "Two-PP class (d)"): arm 'pp2': B(x) = exp
   warm_theta is P_1 (+ RBM), spec key warm_theta2 (a 2740 rbmpp theta) gives f_2, lam = lambda_init_re + i lambda_init_im (default 0.1); a 5334 theta is taken
   as is.  self_test_pp2: CPU checks (a) lam = 0 vs the single-PP code path, (b) Jacobian vs central FD, (c) orbit / flip invariance, (d) d/d lam vs the P_1
   tangent space; each with a broken control; then exit 0.  The old arms are unchanged.
+R6 arm M5 (PLAN_pfaffian.md "Round 6 two-PP + parameter-matched control"): spec keys rbm_init_sigma + rbm_init_seed (arm 'rbmpp' only): the warm theta's PP block
+  (Re f, Im f; any RBM size, its RBM block must be all zero) + a fresh RBM block (rbm_alpha, 37) ~ N(0, rbm_init_sigma^2), numpy default_rng(rbm_init_seed).
+  self_test_m5: CPU checks (a) sigma 1e-8 vs the warm theta in its own RBM size, (b) RBM Jacobian columns nonzero (absmax, rank), (c) Jacobian vs FD incl.
+  RBM columns, (d) parameter count; each with a broken control; then exit 0.  Without these keys nothing changes.
 Original docstring of cx_c1fit.py follows.
 Test C (complex vs real PP) fit worker = cx_f1fit.py (sha 6d51ccbe...) + options --complex / --warm_theta / --im_sigma / --seed / t_real.npy (see C1 block markers).
 Original docstring of cx_f1fit.py follows.
@@ -290,7 +294,14 @@ if WARM_THETA:
             res['warm_theta2'] = SPEC['warm_theta2']; res['warm_theta2_sha256'] = __import__('hashlib').sha256(open(SPEC['warm_theta2'], 'rb').read()).hexdigest()
             res['warm_theta2_rbm_block_maxabs'] = float(np.max(np.abs(_w2[2 * N * N:])))
             _w = np.concatenate([_w, _w2[:2 * N * N], [LAM_INIT.real, LAM_INIT.imag]]); del _w2
-    elif RBMPP:                                        # R1: Re f, Im f of the complex copy (3888 = [Re f, Re u, Im f, Im u]); RBM = 0
+    elif RBMPP and SPEC.get('rbm_init_sigma') is not None:   # R6 M5: warm PP block (RBM block of any size, all zero) + fresh RBM block N(0, sigma^2)
+        _nw = (_w.size - 2 * N * N) // (N + 1)
+        assert _w.dtype == np.float64 and _w.size == 2 * N * N + _nw * (N + 1) and _nw >= 0 and np.all(_w[2 * N * N:] == 0), (_w.size, _w.dtype)
+        RBM_INIT_Z = np.random.default_rng(int(SPEC['rbm_init_seed'])).standard_normal(NA * (N + 1))
+        _w = np.concatenate([_w[:2 * N * N], float(SPEC['rbm_init_sigma']) * RBM_INIT_Z])
+        res['rbm_init'] = dict(sigma=float(SPEC['rbm_init_sigma']), seed=int(SPEC['rbm_init_seed']), warm_rbm_alpha=int(_nw), rbm_alpha=NA,
+                               block_rms=float(np.sqrt(np.mean(_w[2 * N * N:] ** 2))))
+    elif RBMPP:                                      # R1: Re f, Im f of the complex copy (3888 = [Re f, Re u, Im f, Im u]); RBM = 0
         if _w.size != NPAR:
             assert _w.size == 2 * (N * N + 2 * 9 * N), (_w.size, NPAR)
             _w = np.concatenate([_w[:N * N], _w[N * N + 2 * 9 * N:2 * N * N + 2 * 9 * N], np.zeros(NA * (N + 1))])
@@ -469,6 +480,81 @@ if SPEC.get('self_test_pp2'):
              f'b_pass {st["b_pass"]} (max rel {st["b"]["max_rel_dev"]:.2e}, lam cols {st["b"]["lam_cols_max_rel_dev"]:.2e}, broken {st["b"]["broken_perturbed_theta_max_rel_dev"]:.2e})  '
              f'c_pass {st["c_pass"]} ({st["c"]}, broken {st["c_broken_one_image_dropped"]})  d_pass {st["d_pass"]} (cos {st["d"]["cos_with_projection_on_P1"]}, null {st["d"]["null_random_gaussian_vector"]:.3f}, '
              f'in-span {st["d"]["broken_vector_in_P1_span"]:.6f}, rank {_rk})')
+    sys.exit(0)
+
+
+# ============================================================================================ R6 M5 self test (CPU checks; exits)
+if SPEC.get('self_test_m5'):
+    assert RBMPP and SPEC.get('rbm_init_sigma') is not None and WARM_THETA
+    _r = np.random.default_rng(int(SPEC.get('self_test_seed', 13))); _o = 2 * N * N; _sig = float(SPEC['rbm_init_sigma'])
+    _thw = np.asarray(theta_start, np.float64); _pp = _thw[:_o]; _w4 = np.load(WARM_THETA); _na4 = (_w4.size - _o) // (N + 1)
+    _ths = lambda s: np.concatenate([_pp, s * RBM_INIT_Z])
+    st = dict(npar=NPAR, rbm_alpha=NA, warm_theta=WARM_THETA, warm_rbm_alpha=int(_na4), rbm_init=res['rbm_init'],
+              theta_start_is_pp_plus_sigma_z=bool(np.array_equal(_thw, _ths(_sig))), warm_pp_block_equal=bool(np.array_equal(_pp, _w4[:_o])))
+
+    def _alpha_fn(na, th_trace):                      # the 'rbmpp' code path traced with rbm_alpha = na (global switched while tracing)
+        global NA
+        _old = NA; NA = na
+        try:
+            fn = jax.jit(lambda th, Sx: jax.vmap(lambda s_: logA_one(th, s_))(bits(Sx).astype(jnp.float64)))
+            jax.block_until_ready(fn(jnp.asarray(th_trace), sec.reps[:FCH]))
+        finally:
+            NA = _old
+        return fn
+    _fn4 = _alpha_fn(int(_na4), _w4)
+    _f4 = lambda th, Sx: np.concatenate([np.asarray(_fn4(jnp.asarray(th), _pad(Sx[i:i + FCH], FCH)[0]))[:min(FCH, Sx.shape[0] - i)] for i in range(0, Sx.shape[0], FCH)])
+    _ix = np.sort(_r.choice(int(sec.D), 1000, replace=False)); _X = sec.reps[jnp.asarray(_ix)]
+    # (a) sigma -> 0 (1e-8): ln|A| of the alpha-NA theta == theta_4's ln|A| in its own (alpha 4, zero RBM) code path; broken: sigma 1e-3
+    _l4 = _f4(_w4, _X); _fw = lambda th: np.asarray(fwd(jnp.asarray(th), _X))
+    _dv = lambda l: dict(max_abs=float(np.max(np.abs(l - _l4))), mean=float(np.mean(l - _l4)), max_abs_mean_removed=float(np.max(np.abs(l - _l4 - np.mean(l - _l4)))),
+                         rms_mean_removed=float(np.std(l - _l4)))
+    st['a'] = dict(n_orbits=int(_ix.size), sigma_0=_dv(_fw(_ths(0.0))), sigma_1em8=_dv(_fw(_ths(1e-8))), broken_sigma_1em3=_dv(_fw(_ths(1e-3))))
+    if SPEC.get('check_table'):                       # secondary: theta_4's production table on the same orbits
+        _t = np.load(SPEC['check_table'], mmap_mode='r')[_ix]; st['a']['theta4_code_vs_check_table_max_abs'] = float(np.max(np.abs(_l4 - _t)))
+    st['a_pass'] = bool(st['a']['sigma_1em8']['max_abs'] < 1e-10 and st['a']['broken_sigma_1em3']['max_abs'] > 1e-10)
+    # warm-start perturbation at the production sigma (diagnostic, no pass/fail): ln|A|(theta_start) - ln|A|(theta_4)
+    _ds = _fw(_thw) - _l4
+    st['warm_perturbation'] = dict(sigma=_sig, mean=float(np.mean(_ds)), rms_mean_removed=float(np.std(_ds)), max_abs_mean_removed=float(np.max(np.abs(_ds - np.mean(_ds)))),
+                                   quantiles_mean_removed={q: float(np.quantile(_ds - np.mean(_ds), q)) for q in (0.01, 0.5, 0.99)})
+    # (b) RBM Jacobian columns at theta_start (sigma): per-column absmax, numerical ranks (tol 1e-10 x largest singular value); broken: sigma 0 (the inactive RBM)
+    _nb = int(SPEC.get('self_test_m5_orbits', 8192)); _ixb = np.sort(_r.choice(int(sec.D), _nb, replace=False))
+    _Jb = np.asarray(jac(jnp.asarray(_thw), sec.reps[jnp.asarray(_ixb)])); _R = _Jb[:, _o:]; _cm = np.max(np.abs(_R), 0)
+    _rkf = lambda A: (lambda sv: int(np.sum(sv > 1e-10 * sv[0])))(np.linalg.svd(A, compute_uv=False)); _one = np.ones((_nb, 1))
+    st['b'] = dict(n_orbits=_nb, n_rbm_cols=int(_R.shape[1]), rbm_absmax=float(_cm.max()), rbm_col_absmax_min=float(_cm.min()), rbm_col_absmax_median=float(np.median(_cm)),
+                   n_rbm_cols_absmax_below_1em12=int(np.sum(_cm < 1e-12)), rbm_rms=float(np.sqrt(np.mean(_R ** 2))), pp_rms=float(np.sqrt(np.mean(_Jb[:, :_o] ** 2))),
+                   rank_rbm=_rkf(_R), rank_pp_const=_rkf(np.concatenate([_Jb[:, :_o], _one], 1)), rank_all_const=_rkf(np.concatenate([_Jb, _one], 1)), n_cols_all_const=NPAR + 1)
+    del _R, _Jb
+    _Jz = np.asarray(jac(jnp.asarray(_ths(0.0)), _X))[:, _o:]
+    st['b']['broken_sigma0'] = dict(n_orbits=int(_ix.size), rbm_absmax=float(np.max(np.abs(_Jz)))); del _Jz
+    st['b_pass'] = bool(st['b']['rbm_col_absmax_min'] > 1e-8 and st['b']['broken_sigma0']['rbm_absmax'] < 1e-12)
+    # (c) Jacobian vs central FD at theta_start, 10 orbits: 4 Re f, 4 Im f, 6 W, 2 b; broken: Jacobian at a perturbed theta
+    _X10 = _X[:10]; _G = np.asarray(jac(jnp.asarray(_thw), _X10))
+    _offd = [i * N + j for i in range(N) for j in range(N) if i != j]
+    _Wi = [int(a) * (N + 1) + int(i) for a, i in zip(_r.integers(0, NA, 6), _r.integers(0, N, 6))]; _bi = [int(a) * (N + 1) + N for a in _r.integers(0, NA, 2)]
+    _P = [int(q) for q in list(_r.choice(_offd, 4, replace=False)) + [N * N + q for q in _r.choice(_offd, 4, replace=False)] + [_o + q for q in _Wi + _bi]]
+    _kind = ['Re f'] * 4 + ['Im f'] * 4 + ['W'] * 6 + ['b'] * 2
+    _h = float(SPEC.get('fd_h', 1e-6)); _FD = np.empty((10, len(_P)))
+    for k, q in enumerate(_P):
+        _tp = _thw.copy(); _tp[q] += _h; _tm = _thw.copy(); _tm[q] -= _h
+        _FD[:, k] = (np.asarray(fwd(jnp.asarray(_tp), _X10, 10)) - np.asarray(fwd(jnp.asarray(_tm), _X10, 10))) / (2 * _h)
+    _J = _G[:, _P]; _sc = np.max(np.abs(_FD), 1, keepdims=True)
+    _Gb = np.asarray(jac(jnp.asarray(_thw + 1e-3 * _r.standard_normal(NPAR)), _X10))[:, _P]
+    st['c'] = dict(params=_P, kind=_kind, h=_h, max_rel_dev=float(np.max(np.abs(_J - _FD) / _sc)),
+                   max_rel_dev_per_col=dict(zip([f'{k}:{q}' for k, q in zip(_kind, _P)], np.max(np.abs(_J - _FD) / _sc, 0).tolist())),
+                   rbm_cols_max_rel_dev=float(np.max(np.abs(_J[:, 8:] - _FD[:, 8:]) / _sc)), rbm_cols_absmax=float(np.max(np.abs(_FD[:, 8:]))),
+                   broken_perturbed_theta_max_rel_dev=float(np.max(np.abs(_Gb - _FD) / _sc)), scale='per orbit: max |FD| over the tested columns')
+    st['c_pass'] = bool(st['c']['max_rel_dev'] < 1e-6 and st['c']['rbm_cols_absmax'] > 1e-8 and st['c']['broken_perturbed_theta_max_rel_dev'] > 1e-4)
+    # (d) parameter count: PP 2 x 36 x 36 = 2592 + RBM rbm_alpha x 37 (72 x 37 = 2664) = 5256; broken: the count at rbm_alpha - 1
+    _cnt = lambda na: 2 * N * N + na * (N + 1)
+    st['d'] = dict(npar=NPAR, theta_start_size=int(_thw.size), jac_width=int(_G.shape[1]), n_pp=_o, n_rbm=NA * (N + 1), expect=dict(pp=2592, rbm=2664, total=5256),
+                   broken_count_alpha_minus_1=_cnt(NA - 1))
+    st['d_pass'] = bool(NPAR == _thw.size == _G.shape[1] == _cnt(NA) == 5256 and _o == 2592 and NA * (N + 1) == 2664 and _cnt(NA - 1) != 5256)
+    json.dump(st, open(os.path.join(OUT, 'self_test_m5.json'), 'w'), indent=1, default=float)
+    progress(f'[self_test_m5] init ok {st["theta_start_is_pp_plus_sigma_z"]}  a_pass {st["a_pass"]} (1e-8 dev {st["a"]["sigma_1em8"]["max_abs"]:.2e}, broken {st["a"]["broken_sigma_1em3"]["max_abs"]:.2e})  '
+             f'b_pass {st["b_pass"]} (RBM absmax {st["b"]["rbm_absmax"]:.3e}, col min {st["b"]["rbm_col_absmax_min"]:.2e}, rank rbm {st["b"]["rank_rbm"]}, rank pp+c {st["b"]["rank_pp_const"]}, '
+             f'rank all+c {st["b"]["rank_all_const"]}/{NPAR + 1}, broken {st["b"]["broken_sigma0"]["rbm_absmax"]:.1e})  c_pass {st["c_pass"]} (max rel {st["c"]["max_rel_dev"]:.2e}, '
+             f'rbm {st["c"]["rbm_cols_max_rel_dev"]:.2e}, broken {st["c"]["broken_perturbed_theta_max_rel_dev"]:.2e})  d_pass {st["d_pass"]} ({NPAR})  '
+             f'warm perturbation rms {st["warm_perturbation"]["rms_mean_removed"]:.3e}')
     sys.exit(0)
 
 

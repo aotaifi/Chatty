@@ -889,3 +889,4 @@
 - 2026-11-04 13:10 V PASS (lead verified pfaffian_v/readout/readout.json, winner pdb2 = Paderborn express 4109778, 1500 steps, control exact): r_V 0.4636 vs exact-table 0.4929 (0.94), bare 8.5606e-6. A40 duplicate 17695322 at step 990 (~7.5 h left): cancel proposed to the PI. 8x8 build awaits the PI go.
 - 2026-11-04 PI: go conditional on Astra agreeing. Astra xhigh cj-feb7957e7d45 asked blind (no lead conclusion): V PASS validity, 8x8 go and preconditions/competitor, A40 duplicate, most likely 8x8 failure.
 - 2026-11-04 13:13 pfaffian angle migrated (session cleared); state in PLAN_pfaffian.md 'STATE AT MIGRATION'.
+- 2026-11-04 Astra cj-feb7957e7d45 FAILED: ChatGPT usage limit, resets 2026-11-05 09:55. Asked the PI: wait for Astra, or blind Opus worker review now + Astra tomorrow.

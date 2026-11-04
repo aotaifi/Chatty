@@ -1683,3 +1683,11 @@ sizing holds). Cost: f_J at 8x8 with on-the-fly s_G is d^2 E_L calls per configu
 c4 RUNNING (2026-11-04 18:39): pfaffian_v_c4/, pool seed 2 (sha 8a9b80e6; spec diff = seed only; check (b) PASS, max |z| 2.85 over 41 cells);
 A40 fit 17741531 -> tab 17741532 -> bare 17741533 -> aug 17741534 (afterok); 53.2 s/step, readouts ~11-05 18:35 / 19:40. Check (a) job 17741259 pending
 read. Next per verdict: r_V2 >= 0.35 -> V PASS stands, quote ratio mean +- half-difference; r_V2 < 0.35 -> V's PASS does not hold across pools, report to the lead.
+Per-round stored-sign tax (lead 2026-11-04, from the sign angle / PI's 14x14 question; a readout of the loop, not a run):
+- Sign class at 8x8 = the sign angle's 1-PP complex phase (2 seeds + margin mix); the L CNN is the accuracy reference only.
+- Each round k: re-store the sign after the sign update, then read the tax. Flat = fine; growing = re-train from scratch or change the class.
+- Cost point (mine): the energy tax E_FN(stored S_k) - E_FN(direct s_G,k) needs a direct-s_G grading each round, and direct s_G at the d^2
+  endpoints costs 223x the CNN (A40 benchmark), so a per-round ENERGY tax at 8x8 is not affordable. Proposed readout: per round the sign
+  angle's w_T/N (MCMC on |v|^(2 beta), cheap; tax_site ~= kbar w_T/N with kbar 17.8 measured at 6x6), and the energy tax only at R0 (= c1) and
+  the last round. Interface: gfmc_aug takes any sign_fn; a 1-PP phase sign can use pp2_lemma's ratio machinery (one more PP inverse per image),
+  so its endpoint cost is ~ one extra lemma evaluation, not CNN-like.

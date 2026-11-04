@@ -484,6 +484,10 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- Competitor bar (LaQX review 2026-11-04, PLAN_tooling.md): published plain VMC CNN-MPS at 6x6 is -0.5038070(2), ~3.2e-6/site above ED
+  (arXiv 2611.04333 SciPost TeX l.763; verified by the lead), i.e. ~ our best loop guide (2.81e-6, exact tables, exact Lanczos sign) and
+  well below our competitor 5.57e-6 (RBM+PP base). Any loop-advantage claim must face strongest-network + Lanczos + FN at equal walker
+  cost (CNN-MPS has no fast ratio path: generic-NN step cost ~2N). Lead view: not a kill, a sharper bar; decide after V.
 - Local dressing that keeps cheap determinant updates (PI 2026-11-03): CNN-MPS (2603.14425) gains from a local disentangler (backflow);
   our backflow PP killed the cheap Jacobi step (~800x). Question: a dressing that changes only the swapped sites' pair amplitudes, so a
   two-swap stays a low-rank update. Paper-only look by the Pfaffian angle after the B design.

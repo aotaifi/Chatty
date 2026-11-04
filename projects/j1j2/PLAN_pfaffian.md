@@ -1590,3 +1590,7 @@ M5' note (2026-11-04 14:xx, CPU check on theta_rel.npy): after the relax the RBM
 1.06e-4 rms, corr 0.9994 with the seed-72 init; W full rank 36). The PP alone restored theta_4's energy (the c = 0 target needs no
 RBM). M5' therefore starts with live but untrained RBM capacity, which is what the control intends. At readout, also record the RBM
 block's movement over the round (rms change vs PP's) so that "parameter count" is not read off an RBM that never moved.
+M5' VALIDITY GATE (lead 2026-11-04, pre-registered before reading any round checkpoint): M5' is a VALID parameter-count control only if,
+by step 300 of the round (or the nearest saved theta), the RBM block's rms change from theta_rel is >= 1.06e-3 (10x the relax's 1.06e-4)
+OR the RBM's share of the update norm |dtheta_RBM|^2/|dtheta|^2 is >= its parameter share 2664/5256 = 0.507. Otherwise INVALID (an
+effective one-PP run; suspected cause: the small-init RBM gradient, as in the zero-init RBM finding of 2026-10-30) and the lead is told before it runs on.

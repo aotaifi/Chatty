@@ -25,7 +25,11 @@ FIT (= cx_r1fit's pp2 arm): damped Gauss-Newton (minSR in sample space when rows
   fresh acceptance batch with the stratified paired test, fixed held-out batch, exactly max_steps steps, theta saved at save_theta_at; theta_bar = mean of the saved
   iterates and the final theta (round-5 tail average).  Test-only knob: break_negate_step.
 8x8 hooks (not used at 6x6): draw_fn(beta, S, rng) -> configs, lnB;  neighbours_fn(configs) -> (y (S, NB) configs, hw (NB,), valid, blocked, dlnB);
-  labels_fn(configs) -> ln T  (pp2_lemma.fJ_fixed / logB plug in here).  The model block below is the 6x6 pp2 (Lattice(6)); an 8x8 model is not in this file.
+  labels_fn(configs) -> ln T  (pp2_lemma.fJ_fixed / logB plug in here).  make_model below is the 6x6 pp2 (Lattice(6)).
+8x8 (added 2026-11-04, build piece (1b); the 6x6 code is untouched): the '8x8 model' block holds make_model8 (arm 'pp8': B = sum_g phi(z_g)[a_1 + lam a_2], complex f_1, f_2 (64 x 64),
+  complex RBM M = 16, lam complex, translations x flip, npar 18466; = pp2_lemma rbm 'inner'), warm_theta8 (production rb8_prod + P_2 = P_1 + noise), theta8_to_pp2 / pp2_to_theta8,
+  Labels8 (the labels_fn: ln T = Re ln B + c f_J via pp2_lemma.fJ_fixed mode 'fix'), Neighbours8 (neighbours_fn), canon64 / pack64 / unpack64 (configs are uint64 words, bit i = [sigma_i = +1]),
+  build8 (pool builder from a draw_fn) and a dev sampler.  fit() with spec 'arm': 'pp8' runs the same damped GN on this model.  Tests: pool_fit8_test.py.
 """
 import os, sys, json, time, math, hashlib
 from functools import partial
@@ -333,12 +337,231 @@ def load_pool(path):
 
 
 def warm_theta(SP, mdl):
+    if mdl.get('arm') == 'pp8': return warm_theta8(SP, mdl)                          # 8x8 (see the 8x8 block); the 6x6 path below is unchanged
     _w = np.load(SP['warm_theta']); NP1 = mdl['NP1']; N = mdl['N']
     if mdl['npar'] != NP1 and _w.size != mdl['npar']:            # pp2: 2740 P_1 (+RBM) + f_2 of warm_theta2 + lam
         assert _w.size == NP1; _w2 = np.load(SP['warm_theta2']); assert _w2.size == NP1
         _w = np.concatenate([_w, _w2[:2 * N * N], [float(SP.get('lambda_init_re', 0.1)), float(SP.get('lambda_init_im', 0.0))]])
     assert _w.size == mdl['npar'] and _w.dtype == np.float64, (_w.size, mdl['npar'])
     return _w
+
+
+# ============================================================================================ 8x8 model (two-PP + complex 'inner' RBM), labels and pool hooks
+# Added for build piece (1b) (PLAN_pfaffian.md "8x8 BUILD, route 2").  Nothing above this line is touched; the 6x6 arms 'pp2' / 'rbmpp' run exactly as before.
+#
+#   B(sigma) = sum_g phi(z_g) [ a_1(g) + lam a_2(g) ],   a_j(g) = par(z_g) det f_j[Up(z_g), Dn(z_g)],   phi(z) = prod_k cosh(b_k + z . W[:, k])
+#   images z_g = FL_g sigma[IMG_g]: the 64 translations x spin flip (128 images; proj 'translations', the production structure).  f_1, f_2: 64 x 64 COMPLEX,
+#   b, W: complex RBM (M = 16 hidden units), lam: complex.  The same functional form as pp2_lemma rbm = 'inner' (P_2 shares the RBM with P_1), written here
+#   independently of pp2_lemma (own lattice, own slogdet per image, own complex log-sum-exp) so that pp2_lemma.logB is a real cross-check.
+#   The fitted amplitude is A = |B| (the guide is s_G |B| e^{c f_J}; its sign is not fitted), logA = Re log B.
+# theta (real, npar = 2 N^2 + 2 M (N + 1) + 2 N^2 + 2 = 18466 at N = 64, M = 16):
+#   [Re f_1 (N^2), Im f_1 (N^2), Re b (M), Im b (M), Re W (N M, row-major (N, M)), Im W (N M)  |  Re f_2, Im f_2  |  Re lam, Im lam]
+# Configurations at 8x8 are packed in uint64, bit i = 1 iff sigma_i = +1 (the cx_lib.bits convention; 64 sites fill the word exactly).
+N8, L8 = 64, 8
+_BIT64 = np.uint64(1) << np.arange(64, dtype=np.uint64)
+
+
+def pack64(sig):
+    """(M, 64) +-1 -> (M,) uint64, bit i set iff sig[:, i] > 0."""
+    return np.bitwise_or.reduce((np.asarray(sig) > 0).astype(np.uint64) * _BIT64[None, :], axis=1)
+
+
+def unpack64(w):
+    """(M,) uint64 -> (M, 64) int8 +-1."""
+    w = np.asarray(w, np.uint64)
+    return (((w[:, None] >> np.arange(64, dtype=np.uint64)[None, :]) & np.uint64(1)).astype(np.int8) * 2 - 1)
+
+
+def lat8(L=8):
+    """bond list (J1 then J2; per site i: right, up | diag, anti-diag; the pp2_lemma order), translation images, JB, HW = JB / 2."""
+    N = L * L; site = lambda x, y: (x % L) + L * (y % L); nn_, nnn = [], []
+    for y in range(L):
+        for x in range(L):
+            i = site(x, y); nn_ += [(i, site(x + 1, y)), (i, site(x, y + 1))]; nnn += [(i, site(x + 1, y + 1)), (i, site(x + 1, y - 1))]
+    bl = nn_ + nnn; BI = np.array([b[0] for b in bl]); BJ = np.array([b[1] for b in bl]); JB = np.array([1.0] * len(nn_) + [0.5] * len(nnn))
+    IMG = np.array([[site(x + tx, y + ty) for y in range(L) for x in range(L)] for ty in range(L) for tx in range(L)])      # (N, N): z_g[s] = sigma[IMG[g, s]]
+    return dict(L=L, N=N, BI=BI, BJ=BJ, JB=JB, HW=JB / 2, NB=len(bl), IMG=IMG)
+
+
+def canon64(words):
+    """canonical representative of each configuration under the 64 translations x spin flip (flip = complement at S^z = 0): min over the 128 images."""
+    w = np.asarray(words, np.uint64); sig = unpack64(w); IMG = lat8()['IMG']; best = w.copy()
+    for g in range(IMG.shape[0]):
+        p = pack64(sig[:, IMG[g]]); best = np.minimum(best, np.minimum(p, ~p))
+    return best
+
+
+def unpack8(th, N=N8, M=16):
+    """theta -> f1, b, W, f2, lam (complex)."""
+    c = lambda a, b: a + 1j * b; n2 = N * N
+    f1 = c(th[:n2], th[n2:2 * n2]).reshape(N, N); o = 2 * n2
+    b = c(th[o:o + M], th[o + M:o + 2 * M]); o += 2 * M
+    W = c(th[o:o + N * M], th[o + N * M:o + 2 * N * M]).reshape(N, M); o += 2 * N * M
+    f2 = c(th[o:o + n2], th[o + n2:o + 2 * n2]).reshape(N, N); o += 2 * n2
+    return f1, b, W, f2, c(th[o], th[o + 1])
+
+
+def pack8(f1, b, W, f2, lam):
+    """inverse of unpack8 (numpy)."""
+    r = lambda a: np.asarray(a).reshape(-1)
+    return np.concatenate([r(np.real(f1)), r(np.imag(f1)), r(np.real(b)), r(np.imag(b)), r(np.real(W)), r(np.imag(W)), r(np.real(f2)), r(np.imag(f2)),
+                           [np.real(lam), np.imag(lam)]]).astype(np.float64)
+
+
+def make_model8(SP=None, M=None, _broken=None):
+    """the 8x8 model dict, same keys as make_model's (fwd_j, jac_j, bits, N, NP1, npar, logA_one) plus logpsi_one (complex log B).
+    _broken (TEST ONLY): 'nopar' drops the permutation parity (|B| is blind to it at S^z = 0 with these images: it shows in the phase only); 'noflip' drops the spin-flip images' sign; 'conjb' conjugates the RBM bias; 'grad_f2' / 'grad_lam' / 'grad_W' keep the value but
+    cut the derivative with respect to f_2 / lam / W (stop_gradient)."""
+    import jax, jax.numpy as jnp
+    jax.config.update('jax_enable_x64', True)
+    M = int(M if M is not None else (SP or {}).get('rbm_M', 16)); N = N8; NH = N // 2; lt = lat8(); n2 = N * N
+    NP1 = 2 * n2 + 2 * M * (N + 1); npar = NP1 + 2 * n2 + 2
+    IMG = jnp.asarray(np.concatenate([lt['IMG'], lt['IMG']]).astype(np.int32)); FL = jnp.asarray(np.concatenate([np.ones(N), (np.ones(N) if _broken == 'noflip' else -np.ones(N))]))
+    AR = jnp.arange(64, dtype=jnp.uint64)
+
+    def bits(Sx):
+        return (((Sx[:, None] >> AR[None, :]) & jnp.uint64(1)).astype(jnp.float64) * 2 - 1)
+
+    def logcosh(z):
+        s = jnp.where(jnp.real(z) >= 0, 1.0, -1.0); return s * z + jnp.log1p(jnp.exp(-2.0 * s * z)) - jnp.log(2.0)
+
+    def det_par(f, zz):
+        order = jnp.argsort(-zz, stable=True); U = order[:NH]; D = order[NH:]
+        sg, ld = jnp.linalg.slogdet(f[U][:, D])
+        up = (zz > 0).astype(jnp.int32); dn = 1 - up; inv = jnp.sum(up * (jnp.cumsum(dn) - dn))
+        par = 1.0 if _broken == 'nopar' else 1.0 - 2.0 * (inv % 2).astype(jnp.float64)
+        return ld, sg * par
+
+    def logpsi_one(th, sigma):
+        f1, b, W, f2, lam = unpack8(th, N, M)
+        if _broken == 'conjb': b = jnp.conj(b)
+        if _broken == 'grad_f2': f2 = jax.lax.stop_gradient(f2)
+        if _broken == 'grad_lam': lam = jax.lax.stop_gradient(lam)
+        if _broken == 'grad_W': W = jax.lax.stop_gradient(W)
+        Z = FL[:, None] * sigma.astype(jnp.float64)[IMG]                                # (128, N)
+        ld1, s1 = jax.vmap(lambda zz: det_par(f1, zz))(Z); ld2, s2 = jax.vmap(lambda zz: det_par(f2, zz))(Z)
+        lr = jnp.sum(logcosh(b[None, :] + Z.astype(jnp.complex128) @ W), 1)              # (128,) complex
+        l1 = lr + ld1; l2 = lr + ld2
+        m = jax.lax.stop_gradient(jnp.maximum(jnp.max(jnp.real(l1)), jnp.max(jnp.real(l2)) + jnp.log(jnp.maximum(jnp.abs(lam), 1e-300))))
+        S = jnp.sum(s1 * jnp.exp(l1 - m)) + lam * jnp.sum(s2 * jnp.exp(l2 - m))
+        return m + jnp.log(S)
+
+    def logA_one(th, sigma):
+        return jnp.real(logpsi_one(th, sigma))                                           # log|B| = Re log B
+    fwd_j = jax.jit(lambda th, Sx: jax.vmap(lambda s_: logA_one(th, s_))(bits(Sx)))
+    jac_j = jax.jit(jax.vmap(jax.grad(logA_one), in_axes=(None, 0)))
+    psi_j = jax.jit(lambda th, Sx: jax.vmap(lambda s_: logpsi_one(th, s_))(bits(Sx)))
+    return dict(arm='pp8', fwd_j=fwd_j, jac_j=jac_j, psi_j=psi_j, bits=bits, N=N, M=M, NP1=NP1, npar=npar, logA_one=logA_one, logpsi_one=logpsi_one)
+
+
+def theta8_to_pp2(th, M=16):
+    """theta -> pp2_lemma.PP2 (complex f1, f2, lam, RBM 'inner', translations): the object pp2_lemma's evaluators take."""
+    import pp2_lemma as PL
+    f1, b, W, f2, lam = unpack8(np.asarray(th), N8, M)
+    return PL.PP2(f1, f2, lam, b, W, L=L8, proj='translations', rbm='inner')
+
+
+def pp2_to_theta8(p):
+    assert p.L == L8 and p.rbm == 'inner' and p.has_p2, (p.L, p.rbm, p.has_p2)
+    return pack8(np.asarray(p.f1), np.asarray(p.b), np.asarray(p.W), np.asarray(p.f2), complex(p.lam))
+
+
+def warm_theta8(SP, mdl=None):
+    """theta of B_0 = P_1 + lam P_2.  P_1 = the production RBM+PP (SP['warm_npz'], f real -> complex with Im f_1 = f1_im_sigma * rms(f) * N(0,1), default 0;
+    complex RBM kept).  P_2: f_2 = f_1 + p2_sigma_rel * rms(f_1) (xi_re + i xi_im) / sqrt 2, xi ~ N(0,1) (seed p2_seed): noise at FINITE separation (p2_sigma_rel, default 0.3),
+    lam = lambda_init_re + i lambda_init_im (default 0.1).  The separation ||f_2 - f_1|| / ||f_1|| is returned in SP['_p2_sep'] when SP is a dict.
+    SP['warm_theta8'] (a saved 18466-vector) overrides everything."""
+    if SP.get('warm_theta8'):
+        w = np.load(SP['warm_theta8']); assert w.dtype == np.float64 and w.size == (mdl['npar'] if mdl else 18466), w.shape; return w
+    z = np.load(SP['warm_npz']); f = np.asarray(z['f'], np.float64); assert f.shape == (N8, N8) and bool(z['rbm']) and str(z['proj']) == 'translations'
+    rng = np.random.default_rng(int(SP.get('p2_seed', 0))); rms = float(np.sqrt(np.mean(f * f)))
+    f1 = f + 1j * float(SP.get('f1_im_sigma', 0.0)) * rms * rng.standard_normal(f.shape)
+    xi = rng.standard_normal(f.shape) + 1j * rng.standard_normal(f.shape)
+    f2 = f1 + float(SP.get('p2_sigma_rel', 0.3)) * rms * xi / np.sqrt(2.0)
+    lam = complex(float(SP.get('lambda_init_re', 0.1)), float(SP.get('lambda_init_im', 0.0)))
+    b = np.asarray(z['bre']) + 1j * np.asarray(z['bim']); W = np.asarray(z['Wre']) + 1j * np.asarray(z['Wim'])
+    SP['_p2_sep'] = float(np.linalg.norm(f2 - f1) / np.linalg.norm(f1))
+    return pack8(f1, b, W, f2, lam)
+
+
+class Labels8:
+    """labels_fn(configs) -> ln T for the 8x8 guide B (a pp2_lemma.PP2 = the round's guide B_k, NOT the model being fitted):
+         T = s_G B e^{c f_J[B]},  ln T(x) = Re ln B(x) + add_x,  add_x = pp2_lemma.fJ_fixed (mode 'fix' by default: no-kept rows -> node -69, else c sign(f_J) min(|f_J|, f0)).
+    cfg: uint64 words (pack64 convention) or (M, 64) +-1 arrays.  sign_fn: (M, 64) +-1 int8 -> (M,) +-1 (the stored s_G; a test stub is fine).  Only the amplitude is returned;
+    the sign enters through f_J (kept / blocked bonds) and through the partners' blocking.  No normalisation (the offset c of the fit absorbs it).
+    _break (TEST ONLY): 'c_sign' (c -> -c), 'no_cap' (f0 = inf), 'sign_other' (kept/blocked decided by another sign_fn: sign_fn_alt)."""
+
+    def __init__(self, guide, sign_fn, EP, c=4.0, f0=None, mode='fix', dtype='f64', chunk=256, _break=None, sign_fn_alt=None):
+        self.guide, self.sign_fn, self.EP, self.c, self.f0, self.mode, self.dtype, self.chunk = guide, sign_fn, float(EP), float(c), f0, mode, dtype, int(chunk)
+        self._break, self.sign_fn_alt = _break, sign_fn_alt
+        if mode == 'fix': assert f0 is not None, "mode 'fix' needs f0"
+
+    def __call__(self, cfg, orb=None):
+        import pp2_lemma as PL
+        cfg = np.asarray(cfg); X = unpack64(cfg.astype(np.uint64)) if cfg.ndim == 1 else cfg
+        X = X.astype(np.float64); out = np.empty(len(X)); c = -self.c if self._break == 'c_sign' else self.c
+        f0 = np.inf if self._break == 'no_cap' else self.f0; sf = self.sign_fn_alt if self._break == 'sign_other' else self.sign_fn
+        for i in range(0, len(X), self.chunk):
+            xb = X[i:i + self.chunk]
+            o = PL.fJ_fixed(self.guide, xb, sf, self.EP, c, f0, self.mode, at_y=False, dtype=self.dtype)
+            lB = o['logB'] if 'logB' in o else PL.logB(self.guide, xb, self.dtype)
+            out[i:i + len(xb)] = np.asarray(np.real(lB), np.float64) + np.asarray(o['add_x'], np.float64)
+        return out
+
+
+class Neighbours8:
+    """neighbours_fn for build_pool at 8x8: all NB = 256 one-swap neighbours of each x under the guide B (pp2_lemma.one_swap_ratios), blocked = anti-aligned bond with
+    s(x) s(y) > 0 under sign_fn.  Returns the build_pool tuple (y words (S, NB), hw, valid, blocked, dlnB = ln|B(y)/B(x)|, y orbit ids = 0 (labels_fn ignores them))."""
+
+    def __init__(self, guide, sign_fn, dtype='f64', sign_chunk=16384, walker_chunk=256):
+        self.guide, self.sign_fn, self.dtype, self.sc, self.wc = guide, sign_fn, dtype, sign_chunk, walker_chunk; lt = lat8()
+        self.BI, self.BJ, self.hw = lt['BI'], lt['BJ'], lt['HW']; self.MASK = _BIT64[self.BI] | _BIT64[self.BJ]
+
+    def sign(self, X):
+        o = []
+        for i in range(0, len(X), self.sc): o.append(np.asarray(self.sign_fn(X[i:i + self.sc])))
+        s = np.concatenate(o).astype(np.float64) if o else np.zeros(0); assert np.all(np.abs(s) == 1), 'sign_fn must return +-1'; return s
+
+    def __call__(self, cfg, orb=None, sub=4096):
+        w = np.asarray(cfg, np.uint64)
+        if len(w) > sub:                                                                                                          # memory: (S, NB) arrays in sub-blocks
+            parts = [self(w[i:i + sub]) for i in range(0, len(w), sub)]
+            return (np.concatenate([q[0] for q in parts]), self.hw, np.concatenate([q[2] for q in parts]), np.concatenate([q[3] for q in parts]),
+                    np.concatenate([q[4] for q in parts]), np.zeros((len(w), len(self.BI)), np.int64))
+        import pp2_lemma as PL
+        X = unpack64(w); S = len(w)
+        r = np.asarray(PL.one_swap_ratios(self.guide, X.astype(np.float64), self.dtype, walker_chunk=self.wc))                    # (S, NB) complex, 0 if aligned
+        valid = X[:, self.BI] != X[:, self.BJ]; ar = np.abs(r)
+        with np.errstate(divide='ignore'): dl = np.where(valid & (ar > 0), np.log(np.where(ar > 0, ar, 1.0)), -700.0)
+        y = np.where(valid, w[:, None] ^ self.MASK[None, :], w[:, None])
+        sx = self.sign(X.astype(np.int8)); sy = np.ones((S, len(self.BI)))
+        iv = np.nonzero(valid); sy[iv] = self.sign(unpack64(y[iv]))
+        blocked = valid & (sx[:, None] * sy > 0)
+        return y, self.hw, valid, blocked, dl, np.zeros(y.shape, np.int64)
+
+
+def draw_from_candidates(cand_words, cand_lnB):
+    """DEV / TEST sampler only (real 8x8 pools come from pool8.py): tempered resampling from a fixed candidate set drawn UNIFORMLY over S^z = 0 (importance weights
+    |B|^(2 beta), multinomial resampling).  Returns the draw_fn hook (beta, S, rng) -> (words, lnB, orbit ids = canon64 words as int64)."""
+    cw = np.asarray(cand_words, np.uint64); cl = np.asarray(cand_lnB, np.float64); cor = canon64(cw).view(np.int64)
+
+    def draw_fn(beta, S, rng):
+        lw = 2.0 * beta * (cl - cl.max()); p = np.exp(lw); p /= p.sum(); i = rng.choice(len(cl), size=S, p=p)
+        return cw[i], cl[i], cor[i]
+    return draw_fn
+
+
+def build8(OUT, SP, draw_fn, sign_fn):
+    """8x8 pool: x ~ draw_fn (tempered ladder of |B_k|^(2 beta)), K blocked partners, labels ln T = Labels8 (guide = theta8 of SP['guide_theta8'] or the SP warm start).
+    SP: S, betas, K, seed, decs_rel, EP, c, f0, mode, guide_theta8 | warm spec.  Writes OUT/pool.npz + pool_summary.json (+ .sha256)."""
+    os.makedirs(OUT, exist_ok=True); T0 = time.time(); log = lambda m: print(f'[{time.time() - T0:6.0f}s] {m}', flush=True)
+    th = np.load(SP['guide_theta8']) if SP.get('guide_theta8') else warm_theta8(dict(SP)); guide = theta8_to_pp2(th, int(SP.get('rbm_M', 16)))
+    lab = Labels8(guide, sign_fn, SP['EP'], SP.get('c', 4.0), SP.get('f0'), SP.get('mode', 'fix'))
+    P = build_pool(draw_fn, Neighbours8(guide, sign_fn), lab, int(SP['S']), [float(b) for b in SP.get('betas', [1.0, 0.5, 0.25])], int(SP.get('K', 2)),
+                   int(SP.get('seed', 1)), [int(d) for d in SP.get('decs_rel', list(range(2, -7, -1)))], ho_fn=ho_hash, log=log)
+    path = os.path.join(OUT, 'pool.npz'); np.savez(path, **P); summ = pool_summary(P)
+    summ.update(spec={k: v for k, v in SP.items()}, pool_sha256=sha(path), code_sha256=sha(os.path.abspath(__file__)), sec=time.time() - T0)
+    jdump(os.path.join(OUT, 'pool_summary.json'), summ); open(path + '.sha256', 'w').write(summ['pool_sha256'] + '  pool.npz\n'); log(f'pool written {path}'); return P
 
 
 # ============================================================================================ fit
@@ -361,8 +584,8 @@ def fit(OUT, SP):
     TAU = float(SP.get('tau', 0.05)); TAU_MIN = float(SP.get('tau_min', TAU)); ANNEAL = int(SP.get('anneal_steps', 20)); Z_ACC = float(SP.get('z_acc', 2.0))
     HO_EVERY = int(SP.get('ho_every', 10)); FLAT_TOL = float(SP.get('flat_tol', 0.02)); MAX_STEPS = int(SP['max_steps']); FIT_SEC = float(SP.get('fit_sec', 1e12))
     SAVE_AT = sorted({int(q) for q in SP.get('save_theta_at', [])}); SEED = int(SP.get('seed', 0)); NEG = bool(SP.get('break_negate_step', False))
-    mdl = make_model(SP.get('arm', 'pp2'), int(SP.get('rbm_alpha', 4))); net = Net(mdl); per_sample, grad_from_G, solve_dir = _jfuns()
-    theta = jnp.asarray(warm_theta(SP, mdl)); res['npar'] = int(theta.size); res['warm_theta_sha256'] = sha(SP['warm_theta'])
+    mdl = make_model8(SP) if SP.get('arm') == 'pp8' else make_model(SP.get('arm', 'pp2'), int(SP.get('rbm_alpha', 4))); net = Net(mdl); per_sample, grad_from_G, solve_dir = _jfuns()
+    theta = jnp.asarray(warm_theta(SP, mdl)); res['npar'] = int(theta.size); res['warm_theta_sha256'] = sha(SP.get('warm_theta') or SP.get('warm_theta8') or SP['warm_npz'])
     if SP.get('test_perturb_sigma'):                  # TEST ONLY (check c): start from warm + sigma N(0,1) (seed 0), far enough that GN must reduce the loss
         theta = theta + float(SP['test_perturb_sigma']) * jnp.asarray(np.random.default_rng(0).standard_normal(theta.size)); res['test_perturb_sigma'] = float(SP['test_perturb_sigma'])
     S_tr = PoolSampler(P, False, 1000 + SEED, LAM_B); S_ho = PoolSampler(P, True, 5000 + SEED, LAM_B)

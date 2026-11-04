@@ -461,8 +461,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   sign_s2/v2_S.json), stored loop 5.07e-6 < 5.57e-6. DEPLOYABLE sign (complex-PP phase, det4 updates):
   tax 1.63e-6 -> loop 6.27e-6, ABOVE the competitor (S2b, unconverged; S2b' to plateau running).
 - A sum of two pair-products lifts the stall (round 5, 2 seeds, pfaffian_r5): stores r 0.49 vs 0.046 for one PP; augmented guide
-  3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Walker step 10.9x plain PP at 10x10 (measured). Not yet separated from "more
-  parameters" (control running); seeds share the start.
+  3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Round 6: r 0.25, aug 2.81e-6 (pfaffian_r6). Walker step 10.9x plain PP at 10x10.
+  Structure vs parameters unresolved (M5 metric broken by its start; M5' running).
 - At 6x6 the second sign step gains < 0.5e-6/site from all four learned starts (re-graded with fixed f_J, sign_fix/fix_B{1,2}.json:
   B1 -4.3e-7, B2 -7.6e-8, B2 refreshed +3.9e-7; first steps +1.1e-5 / +5.3e-6; top orbit share <= 9.3e-3). Larger L untested.
 - At 6x6 the amplitude, not the sign, limits the loop (pfaffian_floor): s_G floor <= 0.83e-6 (Aitken 0.39e-6) vs best guide 4.37e-6;
@@ -578,5 +578,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 a two-pair-product loop guide reaches 3.3e-6 per site, 41% below one Lanczos step (5.6e-6); the cheap stored sign is still the weak point.
+- STATUS (in progress, high): At 6x6 the two-pair-product loop keeps improving, now 2.8e-6 per site, half of one Lanczos step (5.6e-6); the 10x10 add-on with fixed-node alone gave nothing.
 - NEXT (in progress, high): Design the loop test at 8x8 without exact tables (sampled fits, stored sign), after the Jacobi-factor fix and the two open 6x6 controls.

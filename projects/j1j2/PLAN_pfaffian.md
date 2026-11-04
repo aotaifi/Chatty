@@ -1647,7 +1647,7 @@ Test W put 85% of the round's bond weight below -9). At 8x8 the decade range mus
 real s_G and f_J on a small pool, not assumed. Its answer moves S: if the deep decades matter, beta 0.25 comes back.
 
 ## Lead/PI decisions 2026-11-04 evening (PI "1. agree", via the lead)
-- Cancel M5' (A40 17720568/69, Paderborn 4110546/47 held) and the V A40 duplicate (17695322/23). NOT YET DONE: my cancel was blocked by the
+- Cancel M5' (A40 17720568/69, Paderborn 4110546/47 held) and the V A40 duplicate (17695322/23): DONE (run by the lead, sacct CANCELLED; watchers stopped). Earlier my cancel was blocked by the
   session's permission classifier (authorisation came through a peer); waits on the PI running scancel or granting it.
 - c4: V replica with a NEW POOL SEED on the A40 only (same pool_fit code 66799f1c, same fit spec and fit seed; only the pool seed changes).
   Readouts: r_V2 (v_bare.py), augmented min (aug_readout.py). Registered use: V's PASS stands iff r_V2 >= 0.35 as well; the sampled/exact ratio
@@ -1661,3 +1661,22 @@ real s_G and f_J on a small pool, not assumed. Its answer moves S: if the deep d
   Prediction (lead, ~65%): "structure". Mechanism: the RBM factor is a spin-pattern function and Test N showed the round correction is not one
   (eps^2 0.95-0.98 even with finite-weight RBM features), while Test W showed the second PP stores 0.24-0.47 in every decade.
   Refutation: M5'' within both margins, which would make the gain a parameter count. Disagreeing readouts: report both, claim nothing.
+pool8 closure (lead 2026-11-04: close before pool8 feeds any 8x8 fit; pre-registered before any number)
+Mechanism: the chain's transition kernel P(x->y) = (1/n_anti(x)) min(1, |B(y)/B(x)|^(2 beta) n_anti(x)/n_anti(y)) depends on the evaluator only
+through lnB, and PP2 lnB = table lnB to 1.1e-13, so P_PP2 = P_table. A real PP2-only bias must therefore come from a code path the table run
+does not share (walker init, the in-sampler tau pilot and thinning, batching, RNG streams, the PT swap bookkeeping), not from the kernel.
+Steps: (1) a code-path diff, table vs PP2 mode, listing each branch that differs (no run); (2) a fresh 96-chain PP2 replicate, new seeds, same T.
+Predictions if statistics: the flagged bin (beta 1, decade -2; 0.1563 vs 0.1508) |z| < 2 in the replicate; all-bin max |z| <= 3 (a perfect
+sampler exceeds 3 in one of ~33 bins ~9% of the time, so "max |z| < 2 over all bins" is NOT the bar: P ~ 0.2 even if exact); chi2/dof <= 1.5;
+all 192 PP2 chains pooled max |z| <= 3. KILL ("PP2-path bias"): the flagged bin again |z| >= 2 with the same sign, or pooled max |z| > 3 with
+the same bin; then the differing branch from (1) is the named term and is fixed before use. ~30 core-h.
+8x8 decade range (lead: my call; pre-registered before any number)
+Quantity: Test W (iii) at 8x8 for round 1 (R0 guide = production rb8_prod, B = P_1): per relative decade d of |B|^2 (median of 2lnB under beta = 1
+as zero), the share of the total blocked-bond weight sum_{x,y blocked} |H_xy| |B(x) B(y)| (Delta*_x - Delta*_y)^2 with Delta* = c f_J[B] (c = 4,
+mode 'fix', s_G computed directly: sign of (1 + alpha (H - E)) psi with M1's alpha -0.17543, E_total -31.9151, w = -1; E' = p=0 FN -0.4987565 x 64;
+f0 = the sampled 0.9999 quantile of |f_J|, which is c2). Estimated from pool8 draws at beta {1, .5, .25, .125} reweighted to |B|^2.
+Rule: fit the smallest contiguous range of relative decades holding >= 95% of that weight. Error: decade shares to <= 20% relative where >= 2%.
+Prediction (mine): at 6x6 the weight peaked 5-6 decades below the beta = 1 median (absolute -12/-13 with the median near -7), and the band widens
+~1.33x at 8x8, so the peak sits near relative -7/-8 and the 95% range reaches about -10/-11. Then +2..-6 misses ~30-40% of the weight, beta 0.25
+(or lower) is needed again, and S grows from the deep end. Miss: the 95% range ends at -6 or above (then the inherited range stands and pool8's
+sizing holds). Cost: f_J at 8x8 with on-the-fly s_G is d^2 E_L calls per configuration; the worker times a pilot and sizes it, <= 300 core-h.

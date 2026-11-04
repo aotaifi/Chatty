@@ -1547,3 +1547,17 @@ class and round.
 Augmented grading: CPU readout running (R5's c scan, old and b1 f_J), against the exact-table 3.258e-6.
 Next: 8x8 work waits for the PI's go with preconditions c1-c5 and the savings (dedup, padding, smaller CNN). The A40
 duplicate 17695322 keeps running until the PI decides.
+
+## STATE AT MIGRATION (2026-11-04 ~13:30; angle session cleared)
+Running, no VERDICT yet (re-arm waits):
+- M5' ROUND (pfaffian_m5p; ANALYSIS_BRIEF.md has the gates): A40 fit 17720568 + tab 17720569 RUNNING, raced against
+  Paderborn 4110546 + 4110547 PENDING. Relax rel1 is accepted: e_rel = 1.21843e-5 (relax_accepted.json, theta_rel sha
+  bff7cdc4), i.e. back to theta_4's 1.21845e-5. After the tables: CPU readout m5p_read.py, then m5p_gate.py with both
+  registered readouts. Its worker dies with this clear, so the next lead runs the gate if the chain does not.
+- V A40 duplicate 17695322/17695323: kept running until the PI decides on cancelling it; V already PASSED via pdb2.
+- V readout job 17721219 (pf_vrd) still running (bare done); the theta_V AUGMENTED grading (R5's c scan, old + b1 f_J,
+  control = pp2_s1 3.2584e-6 at c* 4.0) was delegated just before the clear; check
+  pfaffian_v/readout/aug/readout_aug.json. If it is absent, re-brief a worker from this line.
+Waiting on the PI: 8x8 go (B design, revised; c1-c5 and savings are preconditions; grading target 3e-6 per point,
+~45-165 H100-h before savings); cancel of the A40 V duplicate.
+Queued after these: the strict step-acceptance test (section "Queue (after V)").

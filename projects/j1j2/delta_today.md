@@ -888,3 +888,4 @@
 2026-11-04 13:04 VERDICT job 17721088: FAILED [/scratch/a/A.Otaifi/ansatz_runs/sign_scale/ANALYSIS.md]
 - 2026-11-04 13:10 V PASS (lead verified pfaffian_v/readout/readout.json, winner pdb2 = Paderborn express 4109778, 1500 steps, control exact): r_V 0.4636 vs exact-table 0.4929 (0.94), bare 8.5606e-6. A40 duplicate 17695322 at step 990 (~7.5 h left): cancel proposed to the PI. 8x8 build awaits the PI go.
 - 2026-11-04 PI: go conditional on Astra agreeing. Astra xhigh cj-feb7957e7d45 asked blind (no lead conclusion): V PASS validity, 8x8 go and preconditions/competitor, A40 duplicate, most likely 8x8 failure.
+- 2026-11-04 13:13 pfaffian angle migrated (session cleared); state in PLAN_pfaffian.md 'STATE AT MIGRATION'.

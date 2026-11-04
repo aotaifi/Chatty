@@ -1734,3 +1734,17 @@ weaker of the two). Broken version (pilot's first sweeps leaked): table 4% leak 
 Reason, measured: the 6x6 chain forgets a random start in 2-3 sweeps, so the leak moves <2lnB>(beta 1) by only ~0.02. The test resolves
 a beta-1 <2lnB> shift of ~0.03 (table statistics). Read: draw_fn is exact to that resolution; the leak failure mode is self-limiting at
 tau ~1 sweep (8x8 tau 1.2). pool8 is cleared to feed an 8x8 fit; the informed move stays disabled.
+Result S_fn (2026-11-04 23:00; jobs 17748167-69; pfaffian_m5pp/cpu_check/summary_sfn.json, gate_sfn.txt; fit's own centred metric, one 8208-row
+first-step batch per arm; block + rest = total to 5e-15; verified):
+| arm, stretch | S_fn | block norm^2 | total norm^2 | S_cross |
+| M5 RBM, init -> 600 | 0.964(4) | 3.05e-2 | 3.16e-2 | +0.001 |
+| M5' RBM, theta_rel -> 600 | 0.46(6) | 3.96e-4 | 8.68e-4 | -0.63 |
+| two-PP P_2, start -> 600 | 4.6(7) | 1.96e-2 | 4.27e-3 | -8.1 |
+AS REGISTERED: kill ratio S_fn(RBM)/S_fn(P_2) = 0.10 (M5'), 0.21-0.24 (M5); no decade >= 0.5. The kill does NOT fire; "M5/M5' effectively
+one-PP" is not refuted on the registered metric.
+But the registered metric is ill-posed a second time: S_fn is not a share when blocks cancel (P_2's change largely cancels P_1's: S_cross -8,
+S_fn 4.6), so the denominator is inflated. Non-registered, cancellation-free reading (projection share <d_block, d_total>/|d_total|^2,
+derived from the same numbers): M5' RBM 0.14, two-PP P_2 0.54. So the RBM is used, about 4x less than P_2. M5' also moved the whole
+function 5x less than two-PP by step 600 (8.7e-4 vs 4.3e-3). M5's RBM change (0.96) mostly re-fits its own init noise (start 12x theta_4).
+My reading: M5' was not an idle-RBM run. It is a PP + RBM run whose fit makes less progress, which is part of the answer to "structure vs
+count", not a defect of the control. My prediction (0.01) missed; I have no mechanism for the slower progress.

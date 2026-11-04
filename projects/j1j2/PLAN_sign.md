@@ -532,5 +532,23 @@ existing networks are ~100x worse at 10x10 than at 6x6, so a ~1e-6/site tax that
 per-site tax grow with L? Proposed next (awaiting the PI's yes): stored-PP wrong-sign weight w_T against the on-the-fly one-step target at 8x8 and
 10x10 on guide samples (no FN, no exact), tax ~ 0.4-0.6 w_T from 6x6; a few GPU-h per size.
 
+## T-SCALE (PI 'yes' 2026-11-04; design on paper, pre-registered before any number; Astra review of the design before steps 1-2)
+Question: does the per-site tax of a cheap stored sign grow with L? (PI: at 10x10 existing networks are ~100x worse than at 6x6, so a tax that
+stays ~1e-6/site is a clear win; one that grows like the competitor's error is not.)
+Mechanism (6x6, measured): tax_total = N x tax_site ~= kbar w_T, w_T = target-weighted wrong-sign weight. kbar = 36 x 0.847e-6/1.715e-6 = 17.8 (S_a1),
+36 x 0.696e-6/1.409e-6 = 17.8 (S_t), 14.3 (XL CNN). So tax_site ~= kbar (w_T/N). Local sign defects at constant density give w_T ~ N, i.e. a flat
+per-site tax; worse generalisation at larger L (arXiv:1907.08186, abstract) gives w_T/N growing. Readout: w_T/N at L = 6 (exact 4.76e-8, S_a1), 8, 10.
+Target at each L: T_L = sgn[v + alpha_L (H v - E v)], v = that size's best guide (8x8 M1 RBM+PP, 10x10 rbL10_prod RBM+PP), alpha_L from the
+VMC energy minimum of the step (6x6 rule: alpha* = -0.18338). Labels exact at any x from one H row (~4N guide calls). Stored class: 1-PP complex
+phase, same recipe as S_a1 (tempered beta 0.5 samples + one-swap neighbours, uniform BCE on the margin, plateau rule).
+Estimator: w_T = E_{|v'|^2}[1(S != T)], by MCMC on |v'|^(2 beta) with beta 0.5 and reweighting (wrong signs sit in the tail).
+Step 0 (worker; <= 1 H100-h + 10 core-h): checkpoints, label cost per sample, PP step cost at L = 8, 10, alpha_L scan.
+Step 1 (CPU <= 24 core-h): estimator check at exact 6x6: sampled w_T of S_a1 = 1.715e-6 within 2 SE over >= 4 independent chains; broken control
+(no reweighting) must disagree.
+Step 2 (<= 10 H100-h total): train and measure at L = 8, 10.
+Predictions (angle lead, before any number): w_T/N grows <= 2x from L = 6 to 10 [50%]; grows > 5x [20%].
+Reads: per-site proxy kbar w_T/N at 10x10 <= 3e-6 (1% of the ~3e-4 competitor error; 10x10 RBM+PP E/N -0.497272, H7) -> cheap stored sign viable at
+scale; growth as fast as the competitor's error -> not viable, report. Not covered: kbar's own L dependence (needs an FN grade at 8x8, unaffordable).
+
 ## Dead ends
 (none yet)

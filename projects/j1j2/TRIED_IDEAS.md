@@ -59,6 +59,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A40 | T-SPLIT: frozen-magnitude sign change vs Jacobi rebuild of the second sign step | 11-03 | 6x6 exact | frozen: fixed +6.2e-8, refreshed -3.5e-7 (gain); refreshed loop loss = one orbit (B e^{-37.9}, f_J 16.5) dominating | Jacobi family DEFECT found (unbounded f_J on tiny orbits); step 0' refreshed number invalid | PLAN_sign.md "T-SPLIT RESULT" |
 | A41 | Second sign step re-graded with the fixed Jacobi family (fj_fix b1) | 11-04 | 6x6 exact | B1 -4.3e-7, B2 fixed -7.6e-8, B2 refreshed +3.9e-7 (first steps +5.3e-6, +1.14e-5) | CONFIRMED: second sign step gains < 0.5e-6/site at 6x6 | PLAN_sign.md "FIXED-f_J RE-GRADE RESULT" |
 | A42 | T-CAP: 1-PP seed scatter, 2-PP sum capacity, residual sgn psi_P x correction (PI step-by-step) | 11-04 | 6x6 exact | 1-PP taxes 1.45/0.85e-6 (seeds); 2-PP 2.76e-6; residual stalls at A 0.08 (no flips) | capacity NO; residual does not train (saddle; = A10) | PLAN_sign.md "T-CAP RESULT" |
+| A43 | T-COMB/T-R6: frozen mix of two trained 1-PP sign margins; stored signs graded on round-3, R5 and R6 amplitudes | 11-04 | 6x6 exact | tax 0.70-0.74e-6 (mix), 0.85-0.88e-6 (1-PP) on all four; R6 stored loop 3.56e-6 vs competitor 5.57e-6 | WORKS below competitor (10x scatter); misses 0.5e-6; tax independent of amplitude | PLAN_sign.md "T-COMB step 1 + T-R6 RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

@@ -459,5 +459,78 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - Open for the PI: (1) step-back on the deployable sign class (third failed fix: capacity; residual failed twice); (2) whether to accept
   ~1e-6/site deployable sign tax, or close the angle with 'one stored sign; deployable class not found at the bar'. Lead's view: step-back first.
 
+## STEP-BACK 3 (2026-11-04; deployable sign class; third failed fix; provisional until Astra cj-98ed296751e4 and the lead reply)
+1. Verdict (provisional): continue on the 1-PP class, but change the lever from class/loss to the OPTIMISER; do not grade arm 3.
+2. Thought: zero-compute, from existing run.json: train accuracy orders all five taxes monotonically, the passing XL control included
+   (XL 0.9925 -> 0.43e-6; 1-PP s1 0.9864 -> 0.85e-6; 1-PP s0 0.9840 -> 1.45e-6; 2-PP sum 0.9793 -> 2.76e-6; residual 0.9729 -> ~4.1e-6),
+   and train-heldout gaps are alike (no overfitting). The 2-PP sum CONTAINS the 1-PP yet fits the training set worse: the optimiser,
+   not the class, sets where these runs land (term: optimisation gap L(theta_Adam) - min_C L). Literature (wiki only, papers not read):
+   Szabo2020 'Marshall trap', VMC phase optimisation gets stuck; Westerhout 2020 sign generalisation fails in frustrated phases.
+   Caveat: unweighted train accuracy is a proxy; linear XL<->s1 interpolation says the bar needs ~0.991 (derived, unvalidated).
+3. Cheapest test: 1-PP seed spread, 3 new seeds x ~2.2 A40-h + 3 x ~1 h CPU grading (~7 A40-h). Prediction: spread >= 0.4e-6 [65%],
+   best seed <= 0.5e-6 [25%]. Kill of 'optimisation-limited': all seeds within 0.3e-6 and train acc <= 0.988 -> representability
+   floor, close the class at the bar.
+Lead's view (2026-11-04, blind): optimiser limit, not representability (one tax-vs-train-error curve, tax ~ err^1.75; superset 2-PP worse);
+accept ~1e-6 for now (keeps 50-70% of the 2.76e-6 loop margin; V is binding); one discriminator only: 2-PP warm-started from 1-PP seed 1,
+lambda ~1e-3, P_2 small. My concern: lambda*P_2 small is the arm-3 bilinear saddle (gradient on P_2 scaled by lambda; A stalled at 0.08),
+so 'flat' would not separate a local optimum from a stall. Variant: P_2 = P_1 + small noise, lambda = 1 (same start sign, O(1) gradients);
+a run whose ||P_1 - P_2|| never grows is 'stalled, not read'. Decision after Astra.
+Arm 3 grading: no outcome changes a decision (held-out = sgn psi_P to 4e-4 accuracy, free-sign tax known), so not run; recorded as
+'did not train'.
+
+## T-WARM (lead GO 2026-11-04, cap 4.5 A40-h; pre-registered before any number; submission waits for Astra cj-98ed296751e4)
+Question: is the 1-PP seed-1 point (train acc 0.9864, tax 0.847e-6) a local optimum of the 2-PP sum class, or did the optimiser stop there?
+Start: P = P_1 + P_2, P_1 = 1-PP seed 1 (sign_tcap/runs_a40s/a1_pp2_m4j), P_2 = P_1 with relative noise ||F_2 - F_1||/||F_1|| = 0.1
+(lambda = 1, no small factor: escape from the symmetric point P_1 = P_2 runs on the antisymmetric curvature, ~ ln(1/noise)/|curv|).
+Training: as T-CAP arm 2 (same data, uniform BCE on the margin, const lr 3e-4 phase with the plateau rule, 10% decay); grading v2.py.
+Checks: step 0 tax within seed scatter of 0.847e-6 (else the start is not the 1-PP point: stop); log ||F_1 - F_2||/||F_1|| at every checkpoint.
+Reads: (a) difference grows AND tax <= 0.5e-6 -> optimiser-limited, larger class worth having; (b) difference grows AND tax within
+0.847e-6 +- 0.6e-6 -> local optimum of the larger class: accept ~1e-6/site, park the class; (c) tax > 1.45e-6 -> training leaves a good
+point for a worse one: the optimiser, not the class, is broken (same reading as arm 2); (d) difference never exceeds 2x its start -> stalled,
+decides nothing. An arm at its cap is not read.
+Predictions (angle lead, before any number): (b) 55%, (a) 15%, (c) 15%, (d) 15%.
+
+## T-COMB (REPLACES T-WARM's start, 2026-11-04, angle lead's call after the lead and Astra cj-98ed296751e4
+## /scratch/a/A.Otaifi/astra/sign_class/ASTRA_class.md (read in full); pre-registered before any number; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_comb)
+Astra: containment P_{F,F} = 2P_F gives a constructive optimisation gap >= 0.018 in train BCE for the random-start sum (agrees with lead and me);
+but nothing yet shows the best 1-PP can reach 0.5e-6. Its frozen normalised-margin combination m_t = (1-t) m_seed1 + t m_seed0, t = 0.436214
+(fit on train BCE only): train BCE 0.0539 -> 0.0474, held-out 0.0732 -> 0.0624, w_T 1.715e-6 -> 1.409e-6. Deployable (two det4 PPs).
+Why this start over T-WARM's noisy copy: two different trained optima, not the symmetric point P_1 = P_2, so no saddle escape is needed.
+My correction: seed spread costs ~5.2 A40-h per seed (Astra, from the recorded A40 timings), not 2.2; STEP-BACK 3's '~7 A40-h' was wrong.
+Step 1 (CPU 4-14 core-h): grade S_t = M sgn m_t with v2.py on theta_bar and theta(1200), own walls, c rescanned; check f_J finite rows,
+top-1 orbit share, solver residuals. Prediction: tax 0.55-0.75e-6 (slope tax/w_T 0.40-0.49 x 1.41e-6) [70%]; <= 0.5e-6 [10%].
+Step 2 (only if step 1 misses; <= 3 A40-h, inside the lead's 4.5 A40-h): joint warm continuation of both PPs, t fixed at start, same data and
+loss, 4000 const 3e-4 + 400 decay, checkpoint chosen by held-out loss, graded as step 1. Prediction: <= 0.5e-6 on both tables [25%].
+Reads: any step <= 0.5e-6 on both tables -> deployable stored sign at 6x6, report; step 2 within 0.3e-6 of step 1 -> stop: 'no passing class
+found within the tested budget' (not 'none exists'), fallback = best measured deployable sign; step 2 worse than step 1 -> same stop.
+Open (Astra): the 1-PP's stored loop is only 0.08e-6 below the competitor on theta_bar and 0.08e-6 above on theta(1200); the lead's '50-70% of
+the margin kept' uses R6's amplitude, where no sign tax has been measured. Which amplitude the tax must be measured on goes to the lead.
+
+## T-R6 (lead's request 2026-11-04: grade the stored sign on the amplitude the loop claim rests on; pre-registered before any number; CPU)
+Lead retracted 'keeps 50-70% of the margin' (tax measured on the round-3 single-PP tables, not transferable: Test X). Grade S_a1 (1-PP seed 1),
+and S_t if T-COMB beats S_a1, against s_G on two two-PP amplitude tables: R6 theta_6 (pfaffian_r6/r6/tab/tab_t6/round_1/la_table.npy, sha 6bb5918d)
+and R5 pp2_s1 (pfaffian_r5/pp2_s1/tab/tab_t5/round_1/la_table.npy, sha f5d9d1aa). Grader: v2.py logic with these tables added (copy, not edit).
+Controls: s_G on R6 reproduces the readout's bare 7.0612e-6 and aug 2.814e-6 (c* 3.9); on R5 s1 bare 8.3319e-6.
+Readout: E_aug(S) per site above E0 vs the competitor 5.574e-6, margin in units of the fit-to-fit scatter 0.2e-6; tax = E_aug(S) - E_aug(s_G).
+Bias: theta_6 was trained under s_G, so the grade favours s_G (tax is an upper estimate for a loop trained under S).
+Predictions (angle lead, before any number): R6 tax 0.6-1.5e-6 [60%]; stored-sign loop below the competitor by >= 5 x 0.2e-6 [75%].
+
+## T-COMB step 1 + T-R6 RESULT 2026-11-04 (CPU 17715330, 17715406/07, 17717616; 58 core-h, T-R6 14.9 core-h over its cap; /scratch/a/A.Otaifi/ansatz_runs/sign_comb{,/r6grade}; verified by me from the json)
+Energy per site above E0, augmented loop guide, c rescanned. Controls: s_G on R6 bare 7.061207e-6, aug 2.813615e-6 (readout 2.814e-6); t=0 reproduces S_a1 exactly.
+| amplitude | s_G | S_a1 (1-PP) | S_t (2 PPs mixed) | S_t vs competitor 5.574e-6 |
+|---|---|---|---|---|
+| theta_bar (round 3) | 4.644e-6 | 5.491e-6 (tax 0.85e-6) | 5.339e-6 (tax 0.70e-6) | -0.23e-6 |
+| theta(1200) | 4.786e-6 | 5.651e-6 (0.87e-6) | 5.499e-6 (0.71e-6) | -0.08e-6 |
+| R5 two-PP s1 | 3.258e-6 | 4.117e-6 (0.86e-6) | 3.974e-6 (0.72e-6) | -1.60e-6 (8.0 x 0.2e-6) |
+| R6 two-PP theta_6 | 2.814e-6 | 3.697e-6 (0.88e-6) | 3.557e-6 (0.74e-6) | -2.02e-6 (10.1 x 0.2e-6) |
+The sign tax is ~0.7-0.9e-6/site on all four amplitudes (it does not depend on the amplitude here). On the R6 amplitude the stored-sign
+loop beats the competitor by 2.0e-6 (10 x the fit-to-fit scatter). Predictions: T-COMB 0.55-0.75e-6 held; T-R6 tax 0.6-1.5e-6 held; >= 5 x 0.2e-6
+below competitor held. S_t misses 0.5e-6. No f_J bad rows for S_t (S_a1: row 0); top-1 orbit 0.93% everywhere.
+Step 2 (joint warm training) NOT started: the PI's reframing (below) makes the 6x6 0.5e-6 bar the wrong target.
+PI 2026-11-04 (reframing, angle lead agrees, withdrew 'fails the bar'): the bar is the sign tax against the competitor's error AT THE TARGET SIZE;
+existing networks are ~100x worse at 10x10 than at 6x6, so a ~1e-6/site tax that does not grow with size is a clear win. Open: does the
+per-site tax grow with L? Proposed next (awaiting the PI's yes): stored-PP wrong-sign weight w_T against the on-the-fly one-step target at 8x8 and
+10x10 on guide samples (no FN, no exact), tax ~ 0.4-0.6 w_T from 6x6; a few GPU-h per size.
+
 ## Dead ends
 (none yet)

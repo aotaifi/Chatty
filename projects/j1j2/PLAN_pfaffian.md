@@ -1728,3 +1728,9 @@ S_fn amendment (lead 2026-11-04, before any number): metric = the copy loss's ow
 reported in total and per decade (value and bond rows separately), for RBM (M5, M5') and P_2 (two-PP round 5) over the same stretches.
 If the kill fires: log "M5' validity gate ill-posed; cancel 2026-11-04 premature" beside the INVALID record and rerun M5' as it was
 (sigma 3e-3, A40, ~12 h; inside the lead's takeover ceiling, no Astra wait).
+Result draw_fn test (2026-11-05; job 17748174; pool8/drawfn/*.json; verified): draw_fn with pilot + auto thin PASSES at 6x6 on both evaluators
+(table 96 samplers max |z| 2.71, chi2/dof 1.41; PP2 96 samplers max |z| 1.40, chi2/dof 0.53, low: its errors look overestimated, so it is the
+weaker of the two). Broken version (pilot's first sweeps leaked): table 4% leak FAILS only on chi2/dof (1.54); PP2 10% leak not detected.
+Reason, measured: the 6x6 chain forgets a random start in 2-3 sweeps, so the leak moves <2lnB>(beta 1) by only ~0.02. The test resolves
+a beta-1 <2lnB> shift of ~0.03 (table statistics). Read: draw_fn is exact to that resolution; the leak failure mode is self-limiting at
+tau ~1 sweep (8x8 tau 1.2). pool8 is cleared to feed an 8x8 fit; the informed move stays disabled.

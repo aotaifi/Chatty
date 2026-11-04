@@ -1645,3 +1645,19 @@ Result (1a) pool8 sampler (2026-11-04; CPU 111 core-h; pfaffian_8x8build/pool8/r
 Open design question (mine, before any 8x8 pool): which RELATIVE decades to fit. +2..-6 is inherited from 6x6 (absolute -5..-14 there, where
 Test W put 85% of the round's bond weight below -9). At 8x8 the decade range must follow where the round's bond weight sits, measured with the
 real s_G and f_J on a small pool, not assumed. Its answer moves S: if the deep decades matter, beta 0.25 comes back.
+
+## Lead/PI decisions 2026-11-04 evening (PI "1. agree", via the lead)
+- Cancel M5' (A40 17720568/69, Paderborn 4110546/47 held) and the V A40 duplicate (17695322/23). NOT YET DONE: my cancel was blocked by the
+  session's permission classifier (authorisation came through a peer); waits on the PI running scancel or granting it.
+- c4: V replica with a NEW POOL SEED on the A40 only (same pool_fit code 66799f1c, same fit spec and fit seed; only the pool seed changes).
+  Readouts: r_V2 (v_bare.py), augmented min (aug_readout.py). Registered use: V's PASS stands iff r_V2 >= 0.35 as well; the sampled/exact ratio
+  is then quoted as the mean of the two pools with their half-difference as the pool-to-pool scatter. No kill beyond that.
+- M5'' (GO after Astra and after the CPU check): PP + RBM alpha 72 (5256 parameters), RBM init sigma chosen by the CPU check, relax to B_4
+  (e_rel <= 1.25e-5), then the round to T_5^b1 with the same fitter, steps and tail average as M5'.
+  CPU check (before any GPU): at the round-5 start, the RBM Jacobian column norms (median, of the copy-loss residual) are within 3x of the
+  P_2 block's in the two-PP arm, and the first GN step's RBM share of |dtheta|^2 is >= 0.3. Smallest passing sigma in {0.02, 0.05, 0.1}.
+  Validity gate during the run: at the first saved theta (step 600) the RBM share of |dtheta|^2 since theta_rel is >= 0.3. Else INVALID, stop.
+  Readouts as M5': (1) structure iff 0.4929 - r_5(M5'') > 0.15; (2) structure iff aug_min(M5'') - 3.2584e-6 > 0.3e-6.
+  Prediction (lead, ~65%): "structure". Mechanism: the RBM factor is a spin-pattern function and Test N showed the round correction is not one
+  (eps^2 0.95-0.98 even with finite-weight RBM features), while Test W showed the second PP stores 0.24-0.47 in every decade.
+  Refutation: M5'' within both margins, which would make the gain a parameter count. Disagreeing readouts: report both, claim nothing.

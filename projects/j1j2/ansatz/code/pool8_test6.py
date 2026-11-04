@@ -49,7 +49,7 @@ def main(outp, files):
             z1 = (f - fe) / se1; z2 = (f - fe) / se2
             # rare bins (expected independent events < 50): the Gaussian z is not valid; use the exact two-sided Poisson tail (independent events = T Et / (2 tau))
             nind = T * Et / (2.0 * max(tau, 0.5)); mu = fe * nind; k = f * nind; zp = None
-            if mu < 50:
+            if mu < 50 and not os.environ.get('POOL8_GAUSS'):
                 from scipy.stats import poisson, norm
                 kk = int(round(k)); p = min(1.0, 2.0 * min(poisson.cdf(kk, mu), poisson.sf(kk - 1, mu))); zp = float(np.sign(f - fe) * norm.isf(max(p, 1e-300) / 2.0))
                 z1 = z2 = zp

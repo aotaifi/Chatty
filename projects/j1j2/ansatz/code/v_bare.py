@@ -17,11 +17,11 @@ S1 = '/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2/s_G.npy'
 CTRL = (f'{R4}/pdb_tabs/tab_t4/round_1/la_table.npy', 1.2184484428720862e-05)
 CTRL_SHA = json.load(open(f'{R4}/readout/readout.json'))['tables']['theta_4']['sha256']
 PRE_E = 1.2184484e-5; PRE_G = 0.7817e-5; PASS_R = 0.35; KILL_R = 0.25
-FD, TD = f'{Q}/fit', f'{Q}/tab'; STEPS = (600, 750, 900, 1050, 1200, 1350)
+WIN = open(f'{Q}/readout/winner.txt').read().split()[0]; FD, TD = {'pdb': (f'{Q}/fit', f'{Q}/tab'), 'pdb2': (f'{Q}/pdb2/fit', f'{Q}/pdb2/tab'), 'th': (f'{Q}/fit_th', f'{Q}/tab_th')}[WIN]; STEPS = (600, 750, 900, 1050, 1200, 1350)
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
 RJ = f'{OUT}/readout.json'; res = json.load(open(RJ)) if os.path.exists(RJ) else {}
 def dump(): res['sec'] = time.time() - T0; json.dump(res, open(RJ, 'w'), indent=1, default=float)
-res.update(host=os.uname().nodename, s1=S1, s1_sha256=sha(S1), pre_e=PRE_E, pre_g=PRE_G, pass_r=PASS_R, kill_r=KILL_R,
+res.update(winner=WIN, host=os.uname().nodename, s1=S1, s1_sha256=sha(S1), pre_e=PRE_E, pre_g=PRE_G, pass_r=PASS_R, kill_r=KILL_R,
            code_sha256={f: sha(os.path.join(os.path.dirname(os.path.abspath(__file__)), f)) for f in ('v_bare.py', 'bond_split.py', 'delta0.py')},
            fit_spec=json.load(open(f'{FD}/spec_pool_fit.json')))
 n = np.load(f'{BS.CSRD}/norb.npy').astype(np.float64); D = len(n); assert n.sum() == 9075135300
@@ -51,5 +51,18 @@ bare('V', f'{TD}/tab_t5/round_1/la_table.npy'); e = tabs['V']['e']; r = (PRE_E -
 r5 = json.load(open(f'{R5}/readout/readout.json'))['verdict_numbers']['pp2_s1']
 verdict = 'PASS' if r >= PASS_R else ('KILL' if r < KILL_R else 'NEITHER (0.25 <= r_V < 0.35)')
 res['verdict_numbers'] = dict(e=e, r_V=r, bare_drop=CTRL[1] - e, exact_table_pp2_s1=dict(e=r5['e'], r_5=r5['r_5']), r_V_over_r5=r / r5['r_5'], verdict=verdict)
-res['status'] = 'DONE'; res['done'] = True; dump()
+res['status'] = 'BARE DONE'; dump()
 log(f'VERDICT V: e(theta_V) {e:.6e}  r_V {r:.4f}  (exact-table pp2 s1 r_5 {r5["r_5"]:.4f}; ratio {r / r5["r_5"]:.3f})  -> {verdict}')
+# 3. augmented e of theta_V with the FIXED f_J (fj_fix mode b1, E' = E_FN[theta_V]), c in 3, 3.5, 4, 4.5, 5 (the FIX re-scan grid); relative weight check vs the bare guide
+import fj_fix as FX
+lF = load(f'{TD}/tab_t5/round_1/la_table.npy'); raw, dmin = FX.raw_fJ(lF, tabs['V']['E_FN']['E'], s1); assert dmin > 0
+def sh(la): w = n * np.exp(2 * (la - la.max())); return float(w.max() / w.sum())
+aug = res.setdefault('aug_b1', {}); sb = sh(lF); aug['base_max_share'] = sb; aug['n_nonfinite'] = int((~np.isfinite(raw)).sum())
+for c in (3.0, 3.5, 4.0, 4.5, 5.0):
+    if str(c) in aug.get('scan', {}): continue
+    add, info = FX.apply_mode(raw, n, 'b1', c); la = lF + add; sa = sh(la); r_, _ = D0M.efn_vec(K, Vm, D0, n, la)
+    aug.setdefault('scan', {})[str(c)] = dict(e=r_['dE_site'], iters=r_['iters'], res=r_['res'], f0=info['f0'], max_share=sa, rel_weight_ok=bool(sa <= 10 * sb)); dump()
+    log(f'aug b1 c={c}: e {r_["dE_site"]:.6e} max share {sa:.3e} (base {sb:.3e})')
+cb = min(aug['scan'], key=lambda k: aug['scan'][k]['e']); aug['cstar_grid'] = float(cb); aug['e_aug_min'] = aug['scan'][cb]['e']
+res['verdict_numbers']['e_aug_b1'] = aug['e_aug_min']; res['verdict_numbers']['cstar_b1'] = float(cb); res['aug_done'] = True; res['status'] = 'DONE'; res['done'] = True; dump()
+log(f'aug b1: c* {cb} e_aug {aug["e_aug_min"]:.6e}')

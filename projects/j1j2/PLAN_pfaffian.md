@@ -1537,3 +1537,4 @@ race_watch_eta.sh, for future launches.
 V: a fresh Paderborn copy goes in alongside the running A40 copy 17695322/17695323, with the same pool (9146690d) and the
 same pool_fit (66799f1c); new run dirs. Whichever copy finishes the readout first counts, and the other is NOT cancelled
 without telling the lead. Expected ~2.4 H100-h.
+V copies: Paderborn pdb2 fit 4109778 + tab 4109779 (squeue start est. 11-07); A40 17695322/23 at step 760, 53.3 s/step, finish est. 11-04 ~20:30 + 80 min table. v_chain2.sh takes the first completed copy and cancels nothing that is still running. m51 rebooted at 08:30 and killed the VPN and its watchers; re-armed.

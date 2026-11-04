@@ -9,6 +9,8 @@
 set -euo pipefail
 case "$(hostname -s)" in th-ws-7010m51) ;; *) echo "run launch_r6_th.sh on th-ws-7010m51 (VPN host), not $(hostname -s)"; exit 1;; esac
 HERE=$(cd "$(dirname "$0")" && pwd)
+# Race rule (PI 2026-11-04): expected-finish rule via race_watch_eta.sh (RACE_KIND=r6); RACE_WATCH=$HERE/r6_race_watch.sh restores the old first-start rule.
+RACE_WATCH=${RACE_WATCH:-$HERE/race_watch_eta.sh}
 Q=/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6; R5=/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5; R4=/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6
 L=/project/theorie/a/A.Otaifi/Chatty/runs
@@ -87,7 +89,7 @@ for A in $ARMS; do
   echo "$JT" > $TT/job_id.txt; echo "$A tab_th $JT afterok:$JOB $(date -Is)" >> $Q/job_ids.txt
   R1_TSUBS="$TG$([ $A = m5 ] && echo " t0")" setsid nohup "$HERE/r5_tab_watch.sh" "$JT" "$TT" > "$TT/watcher.log" 2>&1 < /dev/null &
   echo $! > $TT/watcher_pid.txt
-  setsid nohup "$HERE/r6_race_watch.sh" "$A" > "$Q/$A/race.log" 2>&1 < /dev/null &
+  RACE_KIND=r6 setsid nohup "$RACE_WATCH" "$A" > "$Q/$A/race.log" 2>&1 < /dev/null &
   echo $! > $Q/$A/race_pid.txt
   echo "$A: fit_th=$JOB (watcher $(cat $FT/watcher_pid.txt) ppid=$(ps -o ppid= -p $(cat $FT/watcher_pid.txt))) tab_th=$JT (watcher $(cat $TT/watcher_pid.txt) ppid=$(ps -o ppid= -p $(cat $TT/watcher_pid.txt))) race $(cat $Q/$A/race_pid.txt) ppid=$(ps -o ppid= -p $(cat $Q/$A/race_pid.txt))"
 done

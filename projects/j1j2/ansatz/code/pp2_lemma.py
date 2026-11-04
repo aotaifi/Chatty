@@ -605,11 +605,14 @@ class PhaseSign:
     S(x) = M(x) sgn l(x),  l = Re(e^{-i theta0} P)/|P|, P = B of the PP2 (f complex, rbm 'none', no P_2, full projection x flip).
     endpoints(x, d, at_y): (sx, sy, sz) for the amplitude evaluation d (two_swap_ratios / _one_as_two output of the SAME x and dmax), margins on request.
     __call__(cfg): plain sign_fn on full configurations (direct slogdet of every image, via logB), for non-lemma callers.
+    guard (default 1e-8, 0 = off): GUARD against the lemma path's conditioning error (max |dm| 7.6e-12 at 6x6, 4.4e-11 at 8x8 vs the direct code): every valid endpoint with
+            |lemma margin| < guard is recomputed with the direct phase code (logB of the endpoint configuration); n_checked / n_fallback / fallback_rate count them
+            (also STATS['phase_guard_checked' / 'phase_guard_fallbacks']).  Safe iff the lemma error stays below the threshold.  _inject: test hook, see _guard.
     broken: test hooks (a deliberately wrong version must fail the checks): 'parity' (slot parity P + Q of the lemma sign dropped), 'flip' (spin-flip images dropped),
             'phase' (e^{+i theta0}), 'marshall' (M = +1), 'marshall_mask' (A-sublattice mask of the wrong sublattice parity: sites x even)."""
     lemma_phase = True
 
-    def __init__(self, f, theta0, L=None, proj='full', marshall=True, broken=None):
+    def __init__(self, f, theta0, L=None, proj='full', marshall=True, broken=None, guard=1e-8, _inject=0.0):
         f = np.asarray(f); N = f.shape[0]; L = L or int(round(np.sqrt(N))); assert L * L == N
         assert broken in (None, 'parity', 'flip', 'phase', 'marshall', 'marshall_mask'), broken
         self.broken = broken; self.marshall = marshall and broken != 'marshall'; self.theta0 = float(theta0); self.L = L; self.N = N
@@ -618,6 +621,7 @@ class PhaseSign:
         a = ((xs % 2) == 0) if broken == 'marshall_mask' else (((xs + ys) % 2) == 0)
         self.amask = np.uint64(sum(1 << int(i) for i in np.nonzero(a)[0]))
         self._sgn_theta = -1.0 if broken != 'phase' else 1.0
+        self.guard = float(guard); self._inject = float(_inject); self.reset_guard()
 
     @staticmethod
     def from_theta(theta, L=6, **kw):
@@ -629,23 +633,60 @@ class PhaseSign:
         n = jnp.sum(jnp.where(A[None, :], jnp.asarray(X) > 0, False), 1)
         return jnp.where(n % 2 == 0, 1.0, -1.0)
 
+    def _margins(self, X, lP, r1, r2, at_y, am, bm):
+        """lemma margins l at x (B,), the one-swap endpoints (B, dA) and the two-swap endpoints (B, dA, dB) (invalid entries: l(x))."""
+        u0 = jnp.exp(1j * (self._sgn_theta * self.theta0 + jnp.imag(lP)))          # e^{-i theta0} P/|P|  (unit modulus)
+        def marg(r, valid):                                                        # r = P(endpoint)/P(x); margin Re(e^{-i th0} P_e)/|P_e|
+            ar = jnp.abs(r); m = jnp.real(u0.reshape((-1,) + (1,) * (r.ndim - 1)) * r) / jnp.maximum(ar, 1e-300)
+            return jnp.where(valid, m, jnp.real(u0).reshape((-1,) + (1,) * (r.ndim - 1)))
+        return jnp.real(u0), marg(r1, am), (marg(r2, bm) if at_y else None)
+
+    def _guard(self, X, masks, mx, my, mz, am, bm):
+        """GUARD: every valid endpoint (and x) with |lemma margin| < self.guard is recomputed with the direct phase code (logB: slogdet of every image of the endpoint
+        configuration, margin cos(arg P - theta0)); returns the margins with those entries replaced.  Counts checked / fallback entries (self.n_checked, self.n_fallback)."""
+        X = np.asarray(X); M_, N = X.shape; dA = my.shape[1]
+        mxn = np.array(mx); myn = np.array(my); mzn = None if mz is None else np.array(mz)
+        mk = np.asarray(masks); amn = np.asarray(am); bmn = None if bm is None else np.asarray(bm)
+        thr = self.guard; inj = self._inject
+        cols = [mxn[:, None], myn] + ([] if mzn is None else [mzn.reshape(M_, -1)])
+        allm = np.concatenate(cols, 1); valid = np.concatenate([np.ones((M_, 1), bool), amn] + ([] if bmn is None else [bmn.reshape(M_, -1)]), 1)
+        mkx = np.concatenate([np.zeros((M_, 1), np.uint64), mk], 1)                    # flip mask of every entry (x itself: 0)
+        self.n_checked += int(valid.sum()); _stat('phase_guard_checked', int(valid.sum()))
+        if inj: allm = np.where(valid & (np.abs(allm) < max(thr, 1e-8)), allm - inj * np.sign(np.where(allm == 0, 1.0, allm)), allm)   # TEST HOOK: perturbation toward / across zero on near-zero entries
+        if thr > 0:
+            w, e = np.nonzero(valid & (np.abs(allm) < thr))
+            if len(w):
+                sh = np.arange(N, dtype=np.uint64)[None]
+                flip = ((mkx[w, e][:, None] >> sh) & np.uint64(1)).astype(bool)
+                cfg = np.where(flip, -X[w], X[w])
+                lPd = np.asarray(logB(self.params, cfg, 'f64'))
+                allm[w, e] = np.cos(np.imag(lPd) + self._sgn_theta * self.theta0)
+                self.n_fallback += len(w); _stat('phase_guard_fallbacks', len(w))
+        mx2 = allm[:, 0]; my2 = allm[:, 1:1 + dA]; mz2 = None if mzn is None else allm[:, 1 + dA:].reshape(mzn.shape)
+        return jnp.asarray(mx2), jnp.asarray(my2), (None if mz2 is None else jnp.asarray(mz2))
+
+    @property
+    def fallback_rate(self):
+        """fraction of checked endpoints (valid + x) that fell back to the direct phase code since the last reset_guard()."""
+        return self.n_fallback / max(self.n_checked, 1)
+
+    def reset_guard(self):
+        self.n_checked = 0; self.n_fallback = 0
+
     def _signs(self, X, lP, r1, r2, masks, at_y, margins, am, bm):
         """lP (B,) complex log P(x); r1 (B, dA) = P(y_a)/P(x) (0 where invalid); r2 (B, dA, dB) or None; masks (B, E) flip masks (E = dA [+ dA dB])."""
-        u0 = jnp.exp(1j * (self._sgn_theta * self.theta0 + jnp.imag(lP)))          # e^{-i theta0} P/|P|  (unit modulus)
+        mx, my, mz = self._margins(X, lP, r1, r2, at_y, am, bm)
+        if self.guard > 0 or self._inject: mx, my, mz = self._guard(X, masks, mx, my, mz, am, bm)
         Mx = self._marshall_x(X) if self.marshall else jnp.ones(X.shape[0])
         if self.marshall:
             Mm = 1.0 - 2.0 * (jax.lax.population_count(masks & jnp.uint64(self.amask)) % 2).astype(jnp.float64)
         else: Mm = jnp.ones(masks.shape)
-        def marg(r, valid):                                                        # r = P(endpoint)/P(x); margin Re(e^{-i th0} P_e)/|P_e|
-            ar = jnp.abs(r); m = jnp.real(u0.reshape((-1,) + (1,) * (r.ndim - 1)) * r) / jnp.maximum(ar, 1e-300)
-            return jnp.where(valid, m, jnp.real(u0).reshape((-1,) + (1,) * (r.ndim - 1)))
-        dA = r1.shape[1]; mx = jnp.real(u0)
-        my = marg(r1, am)
+        dA = r1.shape[1]
         sgn = lambda m: jnp.where(m >= 0, 1.0, -1.0)
         sx = sgn(mx) * Mx; sy = sgn(my) * Mx[:, None] * Mm[:, :dA]
         out = [sx, sy]; mrg = [mx, my]
         if at_y:
-            mz = marg(r2, bm); sz = sgn(mz) * Mx[:, None, None] * Mm[:, dA:].reshape(r2.shape); out.append(sz); mrg.append(mz)
+            sz = sgn(mz) * Mx[:, None, None] * Mm[:, dA:].reshape(r2.shape); out.append(sz); mrg.append(mz)
         else: out.append(None); mrg.append(None)
         return (out, mrg) if margins else out
 

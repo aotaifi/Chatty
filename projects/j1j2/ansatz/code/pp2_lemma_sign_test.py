@@ -5,6 +5,8 @@ usage (JAX_PLATFORMS=cpu):
   python pp2_lemma_sign_test.py OUT b SYS M [VARIANTS...]    check (b): fJ_fixed / aug_ratios with the lemma-path sign vs with the direct sign_fn (eval_path old / pack / dedup)
   python pp2_lemma_sign_test.py OUT time SYS M VARIANT       check (c): CPU seconds per walker step (one aug_ratios call) for VARIANT in
                                                              hash (no real sign), lemma_old / lemma_pack / lemma_dedup, direct_dedup, direct_old
+  python pp2_lemma_sign_test.py OUT mdist SYS M              |m| distribution of the lemma margin on all valid endpoints (guard off): fractions < 1e-8, < 1e-6, minimum
+  python pp2_lemma_sign_test.py OUT inj SYS NW               guard test with injected near-zero margins: theta0 tuned per walker so that one endpoint has margin +-3e-10; guard 0 / inject 1e-9 must fail, guard 1e-8 must catch
   python pp2_lemma_sign_test.py OUT default                  check (d2): default path outputs bit-equal to the frozen 7c4dddf pp2_lemma.py
 SYS a6: 6x6, sign = S_a1 (sign_tcap runs_a40s/a1_pp2_m4j/theta.npy), walkers = 192 random group images of teacher states + 128 uniform random S^z = 0 configurations,
         amplitude (checks b, time) = pfaffian_r5 pp2_s1 theta_5;
@@ -203,8 +205,9 @@ def stage_a(system, M, variants):
     mabs = np.abs(np.where(valid, m_dir, 1.0)); res['margin_stats'] = dict(min_abs=float(np.nanmin(np.where(valid, np.abs(m_dir), np.nan))), frac_abs_lt_1em3=float(np.mean(np.abs(m_dir[valid]) < 1e-3)),
                                                                           frac_negative=float(np.mean(m_dir[valid] < 0)), mean_abs=float(np.mean(np.abs(m_dir[valid]))))
     for v in variants:
-        brk = None if v in ('old', 'pack', 'dedup') else v.split(':')[1]; path = v if brk is None else v.split(':')[0]
-        ps = PL.PhaseSign.from_theta(th, L, broken=brk) if brk else ps0
+        gd = float(v.split('@')[1]) if '@' in v else None; vb = v.split('@')[0]
+        brk = None if vb in ('old', 'pack', 'dedup') else vb.split(':')[1]; path = vb if brk is None else vb.split(':')[0]
+        ps = PL.PhaseSign.from_theta(th, L, broken=brk, **({} if gd is None else dict(guard=gd))) if (brk or gd is not None) else ps0
         t = time.time(); PL.STATS.clear()
         (sx, sy, sz), (mx, my, mz) = ps.endpoints(X, d, True, 'f64', path, walker_chunk=32 if L == 8 else 128, margins=True)
         sec = time.time() - t
@@ -222,7 +225,8 @@ def stage_a(system, M, variants):
                    max_dmargin_over_eps_kappa=float(dmk.max()), max_kappa=float(kap_dir[valid].max()), median_kappa=float(np.median(kap_dir[valid])),
                    max_abs_dmargin_kappa_le_1e3=float(dm[valid & (kap_dir <= 1e3)].max()), frac_kappa_gt_1e3=float(np.mean(kap_dir[valid] > 1e3)),
                    max_rel_dmargin_big_kappa_le_1e3=float((dm / np.maximum(mref, 1e-300))[big & valid & (kap_dir <= 1e3)].max()),
-                   n_sign_flips_valid=int(mism['y_valid'] + mism['z_valid'] + mism['x']), stats=dict(PL.STATS))
+                   n_sign_flips_valid=int(mism['y_valid'] + mism['z_valid'] + mism['x']), guard=ps.guard, n_checked=ps.n_checked, n_fallback=ps.n_fallback,
+                   fallback_rate=ps.fallback_rate, stats=dict(PL.STATS))
         if brk is None and v == variants[0]:                                                              # which one is closer to the truth on the worst entries? (longdouble LU)
             worst = np.argsort(-np.where(valid, dm, 0).ravel())[:6]; ww, ee = np.divmod(worst, dm.shape[1])
             mlem = np.concatenate([mx[:, None], my, mz.reshape(Mw, -1)], 1)[ww, ee]; mdir = m_dir[ww, ee]; mld = margin_ld(th, L, allc[ww, ee])
@@ -232,6 +236,7 @@ def stage_a(system, M, variants):
         res['variants'][v] = rec
         log(f'  {v}: max |dm| {rec["max_abs_dmargin"]:.3e} (rel for |m|>=0.1: {rec["max_rel_dmargin_for_abs_margin_ge_0p1"]:.3e}), sign mismatches {mism}, {sec:.1f}s')
     good = [v for v in variants if ':' not in v]; bad = [v for v in variants if ':' in v]
+    res['PASS_signs_identical'] = bool(good) and all(res['variants'][v]['mismatch_total'] == 0 for v in good)
     res['PASS'] = bool(good) and all(res['variants'][v]['mismatch_total'] == 0 and res['variants'][v]['max_abs_dmargin'] <= TOL for v in good)
     res['PASS_strict_relative_margin_ge_0p1'] = bool(good) and all(res['variants'][v]['max_rel_dmargin_for_abs_margin_ge_0p1'] <= TOL for v in good)
     res['BROKEN_FAILS'] = bool(bad) and all((res['variants'][v]['mismatch_total'] > 0 or res['variants'][v]['max_abs_dmargin'] > 1e-6) for v in bad)   # (a Marshall error leaves the margin unchanged: sign mismatches are the signal)
@@ -300,17 +305,67 @@ def stage_time(system, M, variant):
     if variant.startswith('hash'):                                                                        # hash (= dedup path), hash_old, hash_pack: no real sign cost, the amplitude lemma alone
         sf = hash_sign; path = variant[5:] or 'dedup'
     elif variant.startswith('lemma_'):
-        sf = PL.PhaseSign.from_theta(th, L); path = variant[6:]
+        g0 = variant.endswith('_g0'); path = variant[6:].replace('_g0', '')
+        sf = PL.PhaseSign.from_theta(th, L, guard=0.0 if g0 else 1e-8)
     else:
         sf = make_direct_sign_fn(th, L); path = variant[7:]
     reps = []
     for rep in range(1 if variant.startswith('direct') else 2):                                                                                  # rep 0 includes compile of new shapes
         PL.STATS.clear(); t = time.time()
+        if hasattr(sf, 'reset_guard'): sf.reset_guard()
         o = PL.aug_ratios(amp, X, sf, S['EP'], 4.0, eval_path=path, **kw); jax.block_until_ready(o['ratio']); reps.append(dict(sec=time.time() - t, stats=dict(PL.STATS)))
+        if hasattr(sf, 'reset_guard'): reps[-1].update(guard=sf.guard, n_checked=sf.n_checked, n_fallback=sf.n_fallback, fallback_rate=sf.fallback_rate)
         log(f'time {system} {variant} M={len(X)} rep {rep}: {reps[-1]["sec"]:.1f}s ({reps[-1]["sec"] / len(X):.3f} s/walker)')
     res = dict(system=system, variant=variant, M=len(X), path=path, reps=reps, sec_per_walker=reps[-1]['sec'] / len(X), host=os.uname().nodename, threads=os.environ.get('OMP_NUM_THREADS', '-'),
                code_sha256=sha(os.path.join(HERE, 'pp2_lemma.py')), test_sha256=sha(__file__))
     json.dump(res, open(f'{OUT}/time_{system}_{variant}_M{M}.json', 'w'), indent=1, default=float)
+
+
+# ------------------------------------------------------------------------------------------ guard: |m| distribution and injected near-zero test
+def stage_mdist(system, M):
+    S = setup(system, M); L = S['L']; X = S['X']; th = S['theta']; wc = 32 if L == 8 else 128
+    ps = PL.PhaseSign.from_theta(th, L, guard=0.0)
+    d = PL.two_swap_ratios(ps.params, X, 'f64', None, walker_chunk=wc, eval_path='dedup')
+    (sx, sy, sz), (mx, my, mz) = ps.endpoints(X, d, True, 'f64', 'dedup', walker_chunk=wc, margins=True)
+    am = np.asarray(d['am']); bm = np.asarray(d['bm'])
+    m = np.concatenate([np.abs(np.asarray(mx)), np.abs(np.asarray(my))[am], np.abs(np.asarray(mz))[bm]])
+    srt = np.sort(m)
+    res = dict(system=system, M=len(X), n_entries=int(len(m)), n_x=int(len(X)), n_y=int(am.sum()), n_z=int(bm.sum()),
+               frac_lt_1e8=float(np.mean(m < 1e-8)), n_lt_1e8=int((m < 1e-8).sum()), frac_lt_1e6=float(np.mean(m < 1e-6)), n_lt_1e6=int((m < 1e-6).sum()),
+               frac_lt_1e4=float(np.mean(m < 1e-4)), n_lt_1e4=int((m < 1e-4).sum()), min_abs_m=float(srt[0]), smallest_20=srt[:20].tolist(),
+               quantiles={str(q): float(np.quantile(m, q)) for q in (1e-6, 1e-4, 1e-3, 1e-2, 0.1, 0.5)}, host=os.uname().nodename,
+               code_sha256=sha(os.path.join(HERE, 'pp2_lemma.py')), test_sha256=sha(__file__), info=S['info'])
+    # uniform-density expectation for |m| < t when m is spread over [-1, 1]: t (density of the sample near 0 would give n * t * rho0)
+    res['n_expected_lt_1e8_if_density_at_0_equals_that_below_1e-2'] = float(np.mean(m < 1e-2) / 1e-2 * 1e-8 * len(m))
+    json.dump(res, open(f'{OUT}/mdist_{system}_M{M}.json', 'w'), indent=1); log(f'MDIST {system} M {len(X)}: entries {len(m)}, <1e-8: {res["n_lt_1e8"]}, <1e-6: {res["n_lt_1e6"]}, <1e-4: {res["n_lt_1e4"]}, min {res["min_abs_m"]:.3e}')
+
+
+def stage_inj(system, NW):
+    """Per walker, one random valid endpoint e gets its margin set to +-3e-10 by tuning theta0 (m_e = cos(phi_e - theta0) = sin(target)), phi_e from the direct logB.
+    Lemma margin errors (<= 4e-11) are far below 3e-10, so with no injection the lemma signs are right (control).  _inject = 1e-9 moves every entry with |m| < 1e-8
+    across zero: guard 0 must give a wrong sign at the targeted entry, guard 1e-8 must recompute it directly and agree with the reference."""
+    S = setup(system, NW); L = S['L']; N = L * L; X = S['X']; th = S['theta']; rng = np.random.default_rng(5); wc = 32 if L == 8 else 128
+    ps_ref = PL.PhaseSign.from_theta(th, L, guard=0.0)
+    recs = {k: dict(wrong=0, fallbacks=0, checked=0) for k in ('ctl_g0_inj0', 'broken_g0_inj1e-9', 'guard_g1e-8_inj1e-9', 'guard_g1e-8_inj0')}
+    cfgs = {k: [] for k in ('ctl_g0_inj0', 'broken_g0_inj1e-9', 'guard_g1e-8_inj1e-9', 'guard_g1e-8_inj0')}
+    for i in range(len(X)):
+        x1 = X[i:i + 1]; d = PL.two_swap_ratios(ps_ref.params, x1, 'f64', None, walker_chunk=wc, eval_path='dedup')
+        Y, Z = valid_endpoint_configs(x1, d); am = np.asarray(d['am'])[0]; bm = np.asarray(d['bm'])[0]; dA = len(am)
+        zi = np.argwhere(bm & (np.asarray(d['k'])[0] == 2)); a_, b_ = zi[rng.integers(len(zi))]; c = Z[0, a_, b_].astype(np.float64)
+        phi = float(np.imag(np.asarray(PL.logB(ps_ref.params, c[None], 'f64'))[0])); target = 3e-10 * (1 if i % 2 == 0 else -1)
+        th0 = phi - (np.pi / 2 - target)                                                # cos(phi - th0) = sin(target)
+        thp = th.copy(); thp[-1] = th0
+        mref = make_direct_margin(thp, L)(c[None])[0]; sref = int(marshall_of(c[None], L)[0] * (1 if mref >= 0 else -1))
+        assert abs(mref - np.sin(target)) < 1e-12, (mref, target)
+        for key, g, inj in (('ctl_g0_inj0', 0.0, 0.0), ('broken_g0_inj1e-9', 0.0, 1e-9), ('guard_g1e-8_inj1e-9', 1e-8, 1e-9), ('guard_g1e-8_inj0', 1e-8, 0.0)):
+            ps = PL.PhaseSign.from_theta(thp, L, guard=g, _inject=inj)
+            sx_, sy_, sz_ = ps.endpoints(x1, d, True, 'f64', 'dedup', walker_chunk=wc)
+            got = int(np.asarray(sz_)[0, a_, b_]); recs[key]['wrong'] += int(got != sref); recs[key]['fallbacks'] += ps.n_fallback; recs[key]['checked'] += ps.n_checked
+        if i % 10 == 0: log(f'  inj {system} walker {i + 1}/{len(X)}: ' + ', '.join(f'{k}: wrong {v["wrong"]}' for k, v in recs.items()))
+    res = dict(system=system, n_walkers=len(X), target_margin_abs=3e-10, inject=1e-9, results=recs, code_sha256=sha(os.path.join(HERE, 'pp2_lemma.py')), test_sha256=sha(__file__))
+    res['PASS'] = recs['ctl_g0_inj0']['wrong'] == 0 and recs['guard_g1e-8_inj1e-9']['wrong'] == 0 and recs['guard_g1e-8_inj0']['wrong'] == 0
+    res['BROKEN_FAILS'] = recs['broken_g0_inj1e-9']['wrong'] == len(X)
+    json.dump(res, open(f'{OUT}/check_inj_{system}.json', 'w'), indent=1); log(f'CHECK inj {system}: PASS {res["PASS"]} BROKEN_FAILS {res["BROKEN_FAILS"]} {recs}')
 
 
 # ------------------------------------------------------------------------------------------ (d2)
@@ -351,5 +406,7 @@ if __name__ == '__main__':
     elif STAGE == 'a': stage_a(sys.argv[3], int(sys.argv[4]), sys.argv[5:] or ['old', 'pack', 'dedup'])
     elif STAGE == 'b': stage_b(sys.argv[3], int(sys.argv[4]), sys.argv[5:] or ['old', 'pack', 'dedup'])
     elif STAGE == 'time': stage_time(sys.argv[3], int(sys.argv[4]), sys.argv[5])
+    elif STAGE == 'mdist': stage_mdist(sys.argv[3], int(sys.argv[4]))
+    elif STAGE == 'inj': stage_inj(sys.argv[3], int(sys.argv[4]))
     elif STAGE == 'default': stage_default()
     else: raise SystemExit(__doc__)

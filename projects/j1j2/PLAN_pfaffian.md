@@ -1968,3 +1968,13 @@ Branch 2 bars (lead 2026-11-05): every branch-2 number is reported against BOTH 
 registered) and (ii) M1 + one Lanczos step + FN p=1 -0.498946(5) (the competitor, which carries the sign step).
 READ THIS BEFORE ANY BRANCH-2 RESULT: the predicted R1 aug range (-0.49884..-0.49889) sits 6-11e-5 ABOVE bar (ii). Branch 2 tests whether
 amplitude rounds work at 8x8, not whether the loop wins there; a win needs the sign back. A pass on (i) is not a loop advantage.
+Branch 2 final stage (lead, from a PI question, 2026-11-05; registered before any number): after the amplitude rounds converge at sgn(M1), run
+M1's p=1 pipeline UNCHANGED with only the network swapped: psi_1 = (1 + alpha (E_L - E)) B_k, its own sign, alpha and E from the same VMC rule as
+M1, then FN-GFMC. HEADLINE: B_k + p=1 + FN against M1 + p=1 + FN -0.498946(5) (results/m1_8x8), at equal TOTAL GPU-h including the loop
+(pool, labels, fits, grading). The fixed-sign comparisons against p=0 stay as the mechanism test.
+Mechanism: the Lanczos step's gain comes from the sign it adds plus the amplitude it starts from; a B_k with a better amplitude at a fixed sign
+should carry its amplitude gain through the step, minus any interaction (B_k's own sign may differ from sgn(M1) where it was fitted against
+sgn(M1) labels).
+Prediction (mine, ~50%): B_k + p=1 below M1 p=1 by 1-3e-5 per site (-0.49896..-0.49898), i.e. about the R1 bare gain over p=0 carried through.
+Kill: not below -0.498946 by > 3 sigma (sigma ~7e-6 combined) -> the amplitude gain does not survive the sign step. Also report it per GPU-h.
+Cost ~8 H100-h at M1's rate; goes to the PI before submission (takeover ceiling).

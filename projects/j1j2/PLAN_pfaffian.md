@@ -2028,3 +2028,10 @@ Mechanism (measured): training lowers the fraction of x with S != s_G (19.8% -> 
 best candidate -2..-5: .40 .42 .72 .68 against sgn(M1)'s .04 .12 .25 .31. The sign is trained on a configuration-weighted wrong-sign count
 (w_T), while the labels need the bond metric |H| B_x B_y (Delta*_x - Delta*_y)^2, where a wrong high-amplitude bond costs far more. The two
 objectives conflict: what lowers w_T raises eps^2. Branch 1 stays closed (needs a pass on A and on fresh blocks).
+Result registered x-draw pool (2026-11-05; pool_x/prod, job 17750939; gate.out; diag/diag_halves.json; verified gate.out): 450,080 draws per rung
+(beta 1 / .5 / .25), counts within 13.7% (limit 20%), median -66.903 (diff 0.127), Sz all 32, recompute 6e-13. AS REGISTERED: FAIL on halves only
+(beta 1, decade -2: fA 0.1510 vs fB 0.1548, z -3.44 > 3). Diagnosis: statistics (permutation null p ~0.010-0.011 over the 24 cells; between-chain
+variance ratio 1.08(11), no drift, flat block scaling, error already includes chain scatter; a slow mode would need ratio ~4). Decision (mine):
+the pool is USED, with the registered FAIL beside it. A real occupancy shift of this size could not bias the fit: pool_fit self-normalises the
+weights inside each (beta, decade) cell, so a cell's occupancy changes only its ESS, not its weights' mean. This pool is in any case only the
+-2..-6 part; the deep decades come from the stage-1 expansion + importance resampling (bond-ESS gate).

@@ -1978,3 +1978,13 @@ sgn(M1) labels).
 Prediction (mine, ~50%): B_k + p=1 below M1 p=1 by 1-3e-5 per site (-0.49896..-0.49898), i.e. about the R1 bare gain over p=0 carried through.
 Kill: not below -0.498946 by > 3 sigma (sigma ~7e-6 combined) -> the amplitude gain does not survive the sign step. Also report it per GPU-h.
 Cost ~8 H100-h at M1's rate; goes to the PI before submission (takeover ceiling).
+Result M5' rerun at 1500 (2026-11-05; A40 17748827, tables 17748829, CPU 17761847; pfaffian_m5p2/readout_round/{readout,plateau}.json; gates rerun
+by the lead: m5p2_gate.py final, m5p2_plateau_gate.py):
+- r_5(M5') = 0.1218 (tail average; theta(1200) 0.054, theta(1500) 0.083); aug_min 4.0125e-6.
+- Readout (1): 0.4929 - 0.1218 = +0.371 > 0.15 -> STRUCTURE. Readout (2): 4.0125e-6 - 3.2584e-6 = +0.754e-6 > 0.3e-6 -> STRUCTURE. They agree.
+- Predictions (mine: r 0.10-0.20, aug 3.8-4.1e-6) HIT; the lead's "structure" (~65%) holds AT 1500.
+- PLATEAU (amended rule): (A) window means 1050-1200 vs 1350-1500 change 0.12% (< 1.5%: PASS; the single-step 7.7% is the noisy form we
+  replaced); (B) E_FN(1200) - E_FN(1500) = 2.24e-7 > 0.1e-6: FAIL. NOT PLATEAUED: E_FN is still falling (~0.75e-7 per 100 steps).
+- What extension could change: readout (1) flips if r reaches 0.343 (e <= 9.50e-6, another 1.7e-6 drop; ~2300 steps at the current rate if it
+  stayed linear); readout (2) flips if aug <= 3.56e-6. Per the registration the verdict is re-read at plateau; extension in 600-step segments
+  (max 3000) goes to the lead first.

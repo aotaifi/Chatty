@@ -1877,3 +1877,17 @@ GPU-h. Gate (a) becomes information: eps^2 of sgn(M1)-labels vs s_G-labels on th
 That number is computed now (CPU, below).
 Branch 2 confirmed by the lead: sgn(M1) = sgn Re[w psi_rb8_prod], frozen (not s_G). BAR for branch 2 = M1 + FN p=0 at the same sign:
 -0.4987565(28) per site, chains p0_s1 + p0_s2, 0.40 H100-h, chain diff -0.74 sigma, QUOTABLE (/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/analysis_final.json).
+Result gates (c), (e), c2-E' (2026-11-05; pfaffian_8x8build/gates_cE/; control reproduces Astra's V bond ESS to 4e-16; f_J(y) evaluator = stored
+to 2e-12; verified c_ess.json, c_size.json):
+(c) FAILS for the registered pool. Bond/configuration ESS ratio per decade -2..-9: .89 .88 .84 .66 .70 | .076 .12 .15 (asymptote .060 at -7, 68%
+.046-.097), and it still falls with the draw count at -7. Registered 4.5e5 per rung gives bond ESS 6.2e3 / 8.1e3 / 1.0e4 at -7/-8/-9, i.e. 0.34-0.56 P
+(V had 1.3 P at its worst). Meeting 3 P at the 1:1:1 split needs 3.1-6.7e6 per rung; cheapest is ~8.6e6 more beta-0.25 draws, 1.2-2.7e3 core-h.
+Mechanism (equation): rho = W^B_x exp[c (f_J(y) - f_J(x))]. In decades -7..-9, 3-10% of x have f_J(x) < -0.5 (down to ~ -1.1), so the factor
+exp(-c f_J(x)) reaches e^4.4 ~ 80 at c = 4; those x carry 14-17% of a decade's root weight each (top-1). None in -2..-6. This is a property of
+the loss's own bond weights |T(y)/T(x)|, not of the sampler: the round's correction is concentrated on few deep x where the target sits far
+below B. It scales with c (another reason R0 rescans c).
+(e) f0 = 1.22, 68% 1.09-1.31 (bootstrap, GPD tail fit 1.22(7)); q.999-based alternative 1.45 (95% 1.38-1.61). The range stays -2..-9 for all f0
+in 1.05-1.61, shares move <= 0.0023. f0 is settled at 1.22 for 'fix'; it does not move anything measurable.
+c2 E': label eps^2 = 9.9e-7 per (1e-4/site)^2, quadratic in the shift (9.9e-5 at 1e-3/site). The p=0 error 2.8e-6/site gives eps^2 ~1e-9; E'
+needs to be known to ~1e-3/site. The Re B vs S|B| convention difference is below that (to check with the c=0 equivalence run). c2 E' CLOSED
+for labels.

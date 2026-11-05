@@ -1233,3 +1233,25 @@
 2026-11-05 16:48 VERDICT job 17747969: COMPLETED, progress.txt ends in "VERDICT_TRAIN_PP done" (job 17747969, watcher state COMPLETED). [/scratch/a/A.Otaifi/ansatz_runs/sign_scale/m6/pp_s1/ANALYSIS.md]
 - 2026-11-05 M5' plateau (A) correction: registered 16-point windows 2.9% > 1.5% -> fails (angle had quoted a 4-point window). Ext1 submitted (A40 17763914, est. start 11-06 06:29, ~8.5 h); lead asked a new batch-stream seed (same seed would replay round 1's first 600 batches).
 - 2026-11-05 M5' ext1 seed 1 -> 2 in place (17763914 pending; spec read at start); side effect: new held-out batch and fresh WBAR estimate (small loss-weight change); plateau (A) within ext1 only; E_FN-based readouts unaffected.
+2026-11-05 17:10 VERDICT job 17741531: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v_c4/fit_th/ANALYSIS.md]
+2026-11-05 17:19 VERDICT job 17763775: COMPLETED, the gate printed no verdict line. Its numbers are eps2 (s_G bonds) fit -2..-9 = 0.4002 +- 0.0099, half_A 0.3942 +- 0.0124, half_B 0.4056 +- 0.0153. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8build/gate_a/round2/step0ctl/ANALYSIS.md]
+- 2026-11-05 17:25 Pfaffian worker, gate (a) round 2 CONTROL PASSED (gate_a/round2/step0ctl/result.json, job 17763775): the frozen-RBM class at its step-0 theta (r8iw/gate0a/theta_step0.npy, sha ce756bf5, = sgn(M1)) through the same rfa path reproduces eps_m1 exactly: eps^2 0.4002 +- 0.0099, A 0.3942 +- 0.0124, B 0.4056 +- 0.0153. So the T-IW finals above stand: both are worse than sgn(M1) (gamma 1.0 0.724, gamma 0.5 0.642). Remaining r8f / T-IW checkpoints still queued/running.
+2026-11-05 17:40 VERDICT job 17762771: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:42 VERDICT job 17762776: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:42 VERDICT job 17762770: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:42 VERDICT job 17762778: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762783: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762773: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762777: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762774: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762781: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762772: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:44 VERDICT job 17762780: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:46 VERDICT job 17762784: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:46 VERDICT job 17762786: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:48 VERDICT job 17762785: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+2026-11-05 17:48 VERDICT job 17762787: DONE [/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1/ANALYSIS.md]
+- 2026-11-05 T-B2P1 DONE (sign_b2p1/*.json; controls ctrlX 5.573833e-6, ctrl0 7.061207e-6 pass): E_FN/site best grid (alpha_mom=F1): a1 S=s_G B6 2.646e-6; a2 S=s_G B5 3.211e-6; b S=sgn(psi_P) B6 3.705e-6; c (Jacobi head, c*=4.0) 7.202e-6; all but c beat bar 5.574e-6; ~12 core-h.
+- 2026-11-05 sign angle: T-B2P1: one Lanczos step at c=0 on S|B_6| beats the competitor 5.574e-6: s_G 2.646e-6 (below the Jacobi-aug 2.814), sgn(psi_P) 3.705e-6; fixed own sign + Jacobi head 7.202e-6 (worse); my mechanism prediction was wrong (A47).
+2026-11-05 17:50 VERDICT job 17760819: COMPLETED, no verdict line printed; gate output only: kind rfa, eps2 (s_G bonds) fit -2..-9 = 0.7087 +- 0.0277, all 0.6947. [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8build/gate_a/round2/g05_18180/ANALYSIS.md]
+- 2026-11-05 T-B2P1 verified (sign_b2p1/*.json): one Lanczos step at c=0 on S|B|: s_G B_6 2.646e-6, s_G B_5 3.211e-6, sgn(psi_P) B_6 3.705e-6 vs competitor 5.574e-6; sgn(psi_P) + head no step 7.202e-6. Lead: 8x8 Branch 2 = option (ii) (rounds at fixed sgn(M1), head only in refit targets, final p=1 at c=0 + FN; headline vs M1 + p=1 + FN -0.498946(5)). PLAN "What we understand" updated.

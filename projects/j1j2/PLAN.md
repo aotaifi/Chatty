@@ -466,6 +466,9 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
 - A sum of two pair-products lifts the stall (round 5, 2 seeds, pfaffian_r5): stores r 0.49 vs 0.046 for one PP; augmented guide
   3.26-3.29e-6 vs competitor 5.57e-6 (same sign). Round 6: r 0.25, aug 2.81e-6 (pfaffian_r6). Walker step 10.9x plain PP at 10x10.
   Structure vs parameters unresolved (M5 metric broken by its start; M5' running).
+- A final signed Lanczos step on the STORED network beats the Jacobi head (T-B2P1, 2026-11-05; lead verified sign_b2p1/*.json; exact FN, 6x6,
+  moment alpha, c = 0): s_G|B_6| + step 2.646e-6 (< aug 2.814e-6; ~ published CNN-MPS VMC 2.654e-6), s_G|B_5| + step 3.211e-6,
+  sgn(psi_P)|B_6| + step 3.705e-6 vs competitor 5.574e-6; sgn(psi_P) + head (c* 4), no step 7.202e-6. Mechanism of step > head NOT understood.
 - Storage survives sampling at 6x6 (V, 2026-11-04; lead read pfaffian_v/readout/readout.json, Paderborn express fit 4109778, 1500 steps,
   control theta_4 exact): two-PP round 5 fitted from 4e5 sampled configurations stores r_V 0.464 vs 0.493 from the exact table (ratio 0.94;
   bare 8.561e-6 vs 8.332e-6). PASS (>= 0.35). Gap 0.029 ~ one fit-to-fit scatter unit (+-0.2e-6 in E). Aug (c* 4.0) 3.346e-6 vs exact-table 3.258e-6 (+0.088e-6, < fit scatter; readout/aug/readout_aug.json, lead read). One seed, one pool.

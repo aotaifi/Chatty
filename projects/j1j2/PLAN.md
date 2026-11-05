@@ -540,15 +540,14 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-04 09:35; all jobs owned by the angles, which re-arm their own waits)
-- Pfaffian angle (local_d60cd248, PLAN_pfaffian.md): V = sampled-fit replay of round 5 at 6x6 (A40 17695322 + tables 17695323; Paderborn twin),
-  pred r_sampled 0.15-0.35, kill < 0.25; gates the 8x8 loop build (B design revised a6bc9d8; grading must reach ~3e-6/point,
-  45-165 H100-h before savings). M5' (PP+RBM relaxed start, structure vs parameters; A40 17704188 + 17704189): structure iff
-  r_5(two-PP) - r_5(M5') > 0.15 or two-PP aug better by > 0.3e-6. Queued after V: stricter step acceptance in cx_r1fit (accepted a
-  negated step), local-dressing idea (paper).
-- Sign angle (local_3026e44f, PLAN_sign.md): T-CAP capacity of a cheap sign net: arm 1 tax 0.85e-6 (seed scatter 0.6e-6), arm 2 2.76e-6
-  -> "capacity lever NO"; arm 3 stalls; angle recommends cancelling the rest and awaits the PI.
-- No lead-owned jobs. /scratch 965.9 of 972.8 GB soft (lead's 990 GB emergency watch ended with the session; re-arm it).
+## Running (2026-11-05 11:00, lead under takeover; jobs owned by the angles, which watch their own)
+- Pfaffian angle: V replica with a new pool (c4, A40 17741531 step 1090/1500 -> tab/aug/readout ~19:00); M5' rerun as was (A40 17748827
+  step 1360/1500 -> tab 17748829 -> readout + plateau ~15:30; lead pred "structure" ~65%); 8x8 readiness after Astra cj-6a20013aa7ba
+  (GPU readiness GO, production R0/c1/R1 NO-GO until: 8x8 sign eps^2 < 0.3 on decades8 draws, paired c1, pool by bond-weight ESS, label
+  cost, f0 interval): paired-c1 6x6 pilot (CPU), bond-ESS/f0/E' checks (CPU), H100 benchmark (<= 2 H100-h); 8x8 x-draws 1.1e6 (CPU).
+- Sign angle: T-SIGN8 (A40 17753590; M1 copy, frozen RBM, complex-phase pairing; plateau, cap 20000 steps) -> eps^2 gate; T-DEEP2.
+- Proposed angle for the PI to start after M5': architecture for the Jacobi loop (proposals/2026-11-05_architecture_angle_brief.md).
+- /scratch 946.5 GiB of 972.8 soft; lead watch at 990 GiB.
 
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.
@@ -598,5 +597,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 the two-pair-product loop keeps improving, now 2.8e-6 per site, half of one Lanczos step (5.6e-6); the 10x10 add-on with fixed-node alone gave nothing.
-- NEXT (open, high): The network stores almost as well from samples as from exact tables (94%); next is the PI's go for the 8x8 loop test.
+- STATUS (in progress, high): At 6x6 the loop stores almost as well from samples as from exact tables and beats one Lanczos step with a cheap stored sign; at 8x8 nothing is shown yet, and the published CNN-MPS network alone is still better at 6x6.
+- NEXT (in progress, high): Train the 8x8 stored sign and check it does not spoil the correction; only then grade the first 8x8 loop round.

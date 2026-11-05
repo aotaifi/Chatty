@@ -498,6 +498,11 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
   (2.81e-6 exact sign; 3.56e-6 stored sign) and
   well below our competitor 5.57e-6 (RBM+PP base). Any loop-advantage claim must face strongest-network + Lanczos + FN at equal walker
   cost (CNN-MPS has no fast ratio path: generic-NN step cost ~2N). Lead view: not a kill, a sharper bar; decide after V.
+- Amplitude network for the 14x14 loop (PI + lead 2026-11-05): spec = a two-swap ratio at ~constant x a plain step (low-rank or local update)
+  AND the Jacobi correction within reach of a refit. PP: cheap, holds 25-49%/round. CNN: plain re-eval ~2N x, but finite light cone ->
+  cached local update possibly constant (worker reading LaQX cnn_mps.py: proposals/2026-11-05_cnn_mps_twoswap_cost.md, future input).
+  ViT: global attention, every layer changes all tokens -> no cheap update; usable only as a node sign (T-HYB). Own architecture = this spec
+  (the earlier network-angle attempt lacked it); exploratory, parked.
 - Local dressing that keeps cheap determinant updates (PI 2026-11-03): CNN-MPS (2603.14425) gains from a local disentangler (backflow);
   our backflow PP killed the cheap Jacobi step (~800x). Question: a dressing that changes only the swapped sites' pair amplitudes, so a
   two-swap stays a low-rank update. Paper-only look by the Pfaffian angle after the B design.

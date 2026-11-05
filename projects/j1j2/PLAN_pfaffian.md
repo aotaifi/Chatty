@@ -1832,3 +1832,9 @@ S(x) S(y) > 0) and labels need S and f_J, so both wait for the trained 8x8 sign.
 Plan: independent chains per rung, S_q = 3.3e5 / 4.5e5 / 3.2e5 at beta 1 / .5 / .25, draw_fn with pilot + auto thin, seeds recorded.
 Checks on the output (pass before use): per-decade counts per rung within 20% of decades8 sizing.json's occupancy (decades -2..-9); the two seed
 halves agree (max |z| <= 3 over decade fractions); median 2lnB at beta 1 within 0.3 of -67.03.
+x-draw pilot (2026-11-05; job 17750526; pool_x/pilot/): draw_fn runs ONE shared PT ladder with one thin (3 sweeps, tau_max 1.0-1.4) and its sweep
+count is set by the largest rung target, so the registered targets cost ~524 core-h at the measured 0.43 s/sweep/walker (0.30-0.51 by node),
+not 231 (which assumed independent per-rung chains). Decision (mine, before any production draw): keep the tested draw_fn path unchanged
+(a per-rung rewrite would need a new exactness test) and raise the cap to 560 core-h; every rung then gets 4.5e5 draws (beta 1 and .25 get a free
+surplus). Gate amendment: cells whose sizing count is < 100 are tested at 3 sigma combined instead of the 20% band (the 20% band is
+statistically impossible there); the literal 20% misses are printed beside.

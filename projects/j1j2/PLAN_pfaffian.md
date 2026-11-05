@@ -1908,3 +1908,8 @@ labels; w_T 5.87e-5 [5.23, 6.50]e-5 vs no-update d 1.63e-4 (sign_scale/r8/gradew
 Delta*_S vs decades8's Delta*_sG (M1 consts.json constants), Test W (ii) bond metric, decades -2..-9, block errors; half A/B split as registered
 (single checkpoint, so A and B are both reported; the gate reads B). Pass (eps^2_B < 0.3) -> branch 1 live; the stage-1 heavy-x set is then
 recomputed under this sign.
+Result branch-2 information (2026-11-05; jobs 17754200, 17755755; pfaffian_8x8build/eps_m1/; jackknife over 76 process blocks; controls: s_G path
+reproduces stored fx/fy to 9e-16, shares to 3e-17, Marshall broken 4.5; verified): eps^2(sgn(M1) labels vs s_G labels) = 0.400(10) over -2..-9
+(halves 0.394(12) / 0.406(15), QUOTABLE agreement). Per decade -2..-9: .036 .119 .247 .305 .456 .551 .616 .667. sgn(M1) != s_G on 0.5% (-6),
+6.1% (-7), 10% (-8), 21% (-9) of draws. So the frozen production sign misses ~40% of the round's correction measure, concentrated deep; the
+fixed-sign loop (branch 2) is an amplitude-only loop that does not carry the sign step. Information, not a gate.

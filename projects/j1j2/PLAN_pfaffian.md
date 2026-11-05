@@ -2055,3 +2055,10 @@ BRANCH 2 GRADING PLAN (option (ii); derived from these rates and M1's measured p
 - R1 fit on H100: 3-12 s/step x 1500 steps ~1.3-5 H100-h (derived, unmeasured at 8x8). Labels with sgn(M1): lemma cost, small.
 - Total to the headline: ~12-16 H100-h at sigma 5e-6. The predicted gain (1.6-3.9e-5) against M1's 5e-6 error is resolved at 2.5-6 sigma.
   The lead's ceiling is 15 H100-h, so the upper end goes to the PI.
+Branch 2 GO (lead 2026-11-05, renewed takeover ceiling 40 H100-h for the first graded 8x8 point): sequence bond-ESS gate -> labels -> fit -> bare
+c = 0 mechanism grade -> R0 check -> headline (headline only after the bare grade passes its registered kill). express_hpcalot first (check the
+November remainder of 20), normal QoS after; 6 concurrent chains where it saves; H100-h logged per step against 40; any step > 1.5x its estimate
+-> stop and tell the lead. Estimates: fit 1.3-5, bare grade 0.7, R0 check 2, headline 8 H100-h.
+Headline precision (registered before running): sigma 5e-6 on B_k + p=1; the difference to M1 p=1 -0.498946(5) then has sigma ~7e-6, so the
+predicted low-end gain 1.6e-5 is ~2.3 sigma and the high end 3.9e-5 ~5.6 sigma. A gain below 2.1e-5 (3 sigma) cannot be claimed at this sigma; it
+would be reported as "consistent with a gain of x +- 7e-6", not as a pass.

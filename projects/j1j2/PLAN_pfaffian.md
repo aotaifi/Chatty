@@ -1913,3 +1913,15 @@ reproduces stored fx/fy to 9e-16, shares to 3e-17, Marshall broken 4.5; verified
 (halves 0.394(12) / 0.406(15), QUOTABLE agreement). Per decade -2..-9: .036 .119 .247 .305 .456 .551 .616 .667. sgn(M1) != s_G on 0.5% (-6),
 6.1% (-7), 10% (-8), 21% (-9) of draws. So the frozen production sign misses ~40% of the round's correction measure, concentrated deep; the
 fixed-sign loop (branch 2) is an amplitude-only loop that does not carry the sign step. Information, not a gate.
+Result gate (a) on ppw_s1 (2026-11-05; pfaffian_8x8build/gate_a/; export sha 930b61b6, theta aac1b0e6 verified; PhaseSign reproduces the export
+0/2000, broken parity 2057; fallback 2 / 1.24e8; S = s_G gives 0; verified analyze_ppw_s1.log): FAIL. eps^2 half B 0.539(44) (A 0.564(71), total
+0.551(42)) vs bar 0.3. The no-update step-0 PP gives 0.568(32): no measurable gain from training on this metric, although the sign angle's w_T
+fell ~3x (5.87e-5 vs 1.63e-4). sgn(M1) gives 0.400(10), better than both. Per decade (ppw_s1): -2 .12, -3 .24, -4 .53, -5 .59, -6 .63, -7 .60,
+-8 .63, -9 .70; S != s_G at x 4.9 / 9.0 / 16.1% at -7 / -8 / -9.
+Branch 1 does not open on this checkpoint. Open question before reading it as a class failure: the sign was trained on alpha -0.18 s_G labels,
+the reference is alpha -0.17543. If s_G itself moves between the two alphas where 1 + alpha (E_L - E) is near zero (deep tail), part of the
+miss is a target mismatch. Control (pre-registered): eps^2 of s_G(-0.18)-labels vs s_G(-0.17543)-labels on a decade-stratified 1000-draw subset
+of decades8 (-4..-9); >= 0.2 means the alpha mismatch alone is a large part of 0.54 and the sign must be retrained on M1's constants (or graded on
+its own alpha) before a verdict on the class; < 0.05 means the mismatch is not the cause. ~40 core-h.
+Also noted: w_T (|v'|^2-weighted wrong-sign weight) does not track eps^2 (bond metric with (Delta*_x - Delta*_y)^2): 80% of eps^2 comes from bonds
+the sign wrongly unblocks, ~0.4% of the bond weight. A sign trained to minimise w_T is not trained on what the labels need.

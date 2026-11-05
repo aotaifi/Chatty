@@ -1808,3 +1808,11 @@ Prediction (mine): total eps^2 0.03-0.3, central 0.1; the deepest fitted decades
 Registered: eps^2 <= 0.1 -> stored-sign labels fine; eps^2 >= 0.3 -> they cost a large share of each round (M-R law: kept fraction ~ 1 - eps^2),
 decide before 8x8 labelling; in between -> report and the lead decides. Broken version: S = s_G gives eps^2 = 0 exactly; S = Marshall sign must give
 eps^2 = O(1). ~10 core-h.
+Result stored-sign labels check (2026-11-05; job 17749959; pfaffian_8x8build/storedsign6/storedsign6_result.json; verified): total eps^2 = 0.171
+(old) / 0.168 (fix) over decades -15..-5 on s_G's blocked bonds (0.180 / 0.175 on S's). In the registered "lead decides" band (0.1-0.3).
+Per decade: -15 0.61, -14 0.50, -13 0.31, -12 0.13, -11 0.041, -10 0.022, -9 0.011, >= -8 < 0.005. S != s_G on 6.1% of orbits at -15, 2.1% at
+-14, 0.35% at -13, ~0 above -11. Controls: S = s_G gives 0 exactly; Delta*_sG = ln T5 - ln B_4 to 1.4e-14; Test W (iii) shares to 6e-16;
+Marshall gives 297. S_a1 identity confirmed (w_T 1.7149e-6 reproduced). Prediction (0.03-0.3, deep decades above the total) HIT.
+Reading (mine): the stored sign's errors sit exactly in the decades that carry the round's deep weight (-13..-15 hold ~0.4 of it at 6x6), so ~17%
+of each round's correction is mislabelled there. f0 note: the fix's f0 is the SIGNED n-weighted q.9999 of c f_J divided by c (fj_audit 'cfJ'),
+not an |f_J| quantile (1.31).

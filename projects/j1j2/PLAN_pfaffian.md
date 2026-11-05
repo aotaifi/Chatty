@@ -1785,3 +1785,15 @@ Guard result (2026-11-05; signlemma/guard/; code ebeb550; verified mdist_*.json)
 endpoints; min |m| 1.5e-5 (6x6), 6.8e-6 (8x8). Guarded signs = direct signs everywhere; injected near-zero margins are caught (100/100, 20/20)
 and wrong without the guard. Guard cost +0.7%, fallback rate 0 at 8x8 M 64. Item (4): 1e-12 bar missed, GUARDED; usable. Untested on a
 trained 8x8 phase PP (its margins may sit closer to 0 than a random f's).
+Result 8x8 decade range (2026-11-05; decades8/final/final_old.json, analyze_old.log; 6332 draws, 76 PT processes; verified): REGISTERED RANGE
+= relative decades -2..-9 (0.958 of the round-1 Delta* blocked-bond weight; stable in 99.95% of resamples). Shares: -2 .038, -3 .084, -4 .138,
+-5 .164, -6 .200(24), -7 .177, -8 .115, -9 .043; -1 .017, -10 .013. 2 chains agree (chi2/dof 0.90). The inherited +2..-6 holds only 0.648.
+Controls: s_G = M1's own on 240/240 (alpha = 0 broken: 31/240 differ); 6x6 control reproduces Test W (iii) (max |z| 1.88), broken |z| up to 8e3.
+Estimator change (pilot, before production): each pair seen from its larger-|B| end (the smaller-end estimator was heavy-tailed: 5 draws = 68%);
+validated by the 6x6 control. Mode 'old' (uncapped) is primary.
+My prediction (peak -7/-8, range to -10/-11) MISSED: peak at -6, range ends at -9. The registered miss (ends at -6 or above) did not fire.
+Consequences: (1) the fitted 8x8 decades are -2..-9; pool8's sizing was for +2..-6 and must be redone (the top decades that limited it drop out;
+-7..-9 come in, |B|^2 mass 4.4e-5 at -9, so beta <= 0.25 rungs return). (2) Labels must use the STORED sign: direct s_G cost 129 s per
+configuration here (f_J with E_L at every endpoint), i.e. ~5e4 core-h for 1.5e6 labels. (3) f0 is unsettled: the beta = 1 sampled q.9999 is 0.143
+(essentially the sample max), while the 6x6 fix used the n-weighted q.9999 (0.6236 for f_J), and a |B|^2-weighted cap moves Test W's shares by up to
+72 sigma. Proposal: f0 = the n-weighted q.9999 at 8x8, sampled at beta = 0 (uniform over Sz = 0, i.e. n-weighted), validated at 6x6 against 0.6236.

@@ -1988,3 +1988,10 @@ by the lead: m5p2_gate.py final, m5p2_plateau_gate.py):
 - What extension could change: readout (1) flips if r reaches 0.343 (e <= 9.50e-6, another 1.7e-6 drop; ~2300 steps at the current rate if it
   stayed linear); readout (2) flips if aug <= 3.56e-6. Per the registration the verdict is re-read at plateau; extension in 600-step segments
   (max 3000) goes to the lead first.
+M5' record until plateau: "STRUCTURE at 1500, not plateaued".
+Extension segment 1 (lead GO 2026-11-05; A40 only; registered before submission): warm from theta(1500) (final iterate), same fitter and spec,
+600 steps (1501-2100), theta saved every 150; tables of theta(1800), theta(2100) and the tail average of the last 900 steps (theta 1200..2100,
+saved iterates). Plateau re-read on 1800 vs 2100 (E_FN) and window means 1650-1800 vs 1950-2100 (L_ho). If not plateaued: segment 2 goes to the
+lead. Prediction (linear extrapolation of the ~0.75e-7 per 100 steps fall): r at 2100 ~0.17-0.18, aug ~3.9e-6, so both readouts still
+STRUCTURE. Caveat: the fit restarts its optimiser state (trust radius, damping) from the spec at step 1501, a discontinuity that the
+1500-step registration did not have; it is recorded beside the result.

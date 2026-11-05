@@ -1902,3 +1902,4 @@ remaining root-weight scatter is the y-side mean_k e^{c f_J(y)} and the in-decad
 ESS rises from ~0.07 to ~0.7: ~10x fewer draws at -7..-9 (derived, unmeasured). Cost per proposal: f_J(y) needs one-swap ratios at y (one E_L-class
 call): ~80 ms on CPU (informed-move timing) against ~5 ms for the plain move, i.e. ~16x. Net on CPU ~1.6x MORE expensive than brute force; on an
 H100 (E_L ~0.1 ms batched) the per-proposal cost is negligible, so the tilt is the GPU route. Exactness test needed before use (6x6 table).
+Stage-1 note (2026-11-05): pool8 cannot run a 1-rung ladder (median lookup needs a beta = 1 rung); authorised an opt-in med2 argument (default path bit-identical, checked), med2 = -67.03 at 8x8; the 1-rung path gets its own 6x6 exactness test before any draw.

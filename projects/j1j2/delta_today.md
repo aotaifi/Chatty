@@ -1232,3 +1232,4 @@
 - 2026-11-05 alpha control (91c8167): eps^2 s_G(-0.18) vs s_G(M1) labels 0.024(4) over -4..-9 (< 0.05; halves 0.024/0.024; -9 cell 0.16(7), light) -> alpha mismatch NOT the cause of ppw_s1 0.54. M5' segment 1 staging on A40.
 2026-11-05 16:48 VERDICT job 17747969: COMPLETED, progress.txt ends in "VERDICT_TRAIN_PP done" (job 17747969, watcher state COMPLETED). [/scratch/a/A.Otaifi/ansatz_runs/sign_scale/m6/pp_s1/ANALYSIS.md]
 - 2026-11-05 M5' plateau (A) correction: registered 16-point windows 2.9% > 1.5% -> fails (angle had quoted a 4-point window). Ext1 submitted (A40 17763914, est. start 11-06 06:29, ~8.5 h); lead asked a new batch-stream seed (same seed would replay round 1's first 600 batches).
+- 2026-11-05 M5' ext1 seed 1 -> 2 in place (17763914 pending; spec read at start); side effect: new held-out batch and fresh WBAR estimate (small loss-weight change); plateau (A) within ext1 only; E_FN-based readouts unaffected.

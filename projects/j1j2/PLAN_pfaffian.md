@@ -2005,3 +2005,7 @@ verdict "not plateaued" is unchanged (B failed too). The ext1 plateau gate print
 Ext1 RUNNING (submitted 2026-11-05 16:20; A40 fit 17763914 PENDING, table 17763915, CPU chain m5p2x_chain.sh): warm theta(1500) sha 325a9482;
 tail average = 7 iterates 1200..2100 at spacing 150 (incl. 1500, as at 1500); same seed, so ext1's batch stream repeats round 1's first 600 steps
 (same pool, different theta; recorded). Expected VERDICT ~8.5 h after start (--test-only start 11-06 06:29).
+Ext1 amendment (lead, before the fit started; 2026-11-05 ~17:05): fit_overrides.seed 1 -> 2 in ext1/fit_th/spec_r1.json (read at job start; job
+17763914 still PENDING; seed-1 copy kept as spec_r1.seed1.json). In cx_r1fit the seed drives the training sampler, the held-out batch, the WBAR
+estimate, the fixed batch TRB and the JAX key; model state unchanged. So ext1 sees new training draws; its held-out loss is on a new batch (plateau
+(A) compares windows inside ext1 only) and WBAR is a fresh estimate of the same normalisation (recorded as a small change of the loss weights).

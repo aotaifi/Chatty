@@ -1891,3 +1891,14 @@ in 1.05-1.61, shares move <= 0.0023. f0 is settled at 1.22 for 'fix'; it does no
 c2 E': label eps^2 = 9.9e-7 per (1e-4/site)^2, quadratic in the shift (9.9e-5 at 1e-3/site). The p=0 error 2.8e-6/site gives eps^2 ~1e-9; E'
 needs to be known to ~1e-3/site. The Re B vs S|B| convention difference is below that (to check with the c=0 equivalence run). c2 E' CLOSED
 for labels.
+Pool expansion (lead GO 2026-11-05, staged, cap 2.7e3 core-h; pre-registered before any draw)
+Stage 1: +2e6 beta = 0.25 x-draws (single-rung chains; a 1-rung ladder is the PT code with no swaps; first a 6x6 table exactness check of the
+single-rung path, max |z| <= 3, chi2/dof <= 1.5, broken |B|^beta fails). Measure, with sgn(M1) (cheap, from the lemma ratios) as the working sign:
+f_J(x) on all draws, partners K = 2 and their f_J, root weights, bond ESS per decade -7..-9 as a function of the draw count m (nested subsets).
+Continue to 8.6e6 iff bond ESS grows ~linearly in the number of heavy x (f_J(x) < -0.5); STOP and tell the lead if the -7 ratio keeps falling with m
+(tail heavier than a finite pool covers). Final gate on the built pool: bond ESS >= 3 P per decade, with the sign R1 actually uses.
+Tilted chain, paper only (fallback): target |B|^(2 beta) W^B(x) e^{-c f_J(x)}. The x-side factor that makes the tail is then sampled, so the
+remaining root-weight scatter is the y-side mean_k e^{c f_J(y)} and the in-decade band reweighting; if those behave as in decades -2..-6, bond/config
+ESS rises from ~0.07 to ~0.7: ~10x fewer draws at -7..-9 (derived, unmeasured). Cost per proposal: f_J(y) needs one-swap ratios at y (one E_L-class
+call): ~80 ms on CPU (informed-move timing) against ~5 ms for the plain move, i.e. ~16x. Net on CPU ~1.6x MORE expensive than brute force; on an
+H100 (E_L ~0.1 ms batched) the per-proposal cost is negligible, so the tilt is the GPU route. Exactness test needed before use (6x6 table).

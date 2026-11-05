@@ -416,6 +416,8 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 3. Test: audit + fix on all quoted guides (Pfaffian angle, CPU); kill "refinement" if fixed guides move > 0.2e-6 or the two-PP gain
    shrinks > 20%.
 
+LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 for j1j2): read before designing any test; add a row when a lesson costs a run.
+
 ## What we understand (CLAUDE.md point 7; one line each, board block, evidence)
 - E_FN[A] = lowest eigenvalue of H_FN[A]; the copy enters only through V_A(x) = sum_blocked |H_xy| |A(y)|/|A(x)| (board 4).
 - <chi|H_FN|chi> - <chi|H|chi> = sum over blocked bonds of a perfect square (the double sum counts each bond twice), >= 0 (board 5).

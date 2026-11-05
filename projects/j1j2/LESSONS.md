@@ -11,6 +11,14 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - Held-out BCE does not track the tax at high accuracy | T-DEEP2: accuracy 0.979 -> 0.990 while tax +0.27e-6 | PLAN_sign "T-DEEP2 RESULT"
 - Check a proxy or diagnostic on the known (passing) cases before using it | '61% off-training-set' misled; Gate S added | PLAN_sign "T-BOND"
 - A coefficient calibrated at one size or measure does not transfer (17.8 -> 32.6 with the right measure; w -> tax across L unsupported) | factor-2 calibration error | PLAN_sign "T-SCALE REVIEW"
+- The loop gains come from the TARGET and the CLASS, not the weighting: label-free A e^{c f_J} stored 37% vs 15% with FN labels; two PPs r 0.49 vs 0.05 | weeks of loss variants (B16-B27, F1/F2/T1s) | PLAN.md "What we understand"; PLAN_pfaffian R5
+- Pointwise labels from walker counts are 20-70x noisier than a round's correction (rms 0.006 in ln phi); use exact per-sample targets | Test W | PLAN.md "What we understand"
+- Draw equally per |B|^2 decade and size pools by BOND-weight ESS (partner weights rho), not configuration ESS | V deepest band bond ESS 1.3P vs config 23k; 8x8 gate (c) failed | Astra cj-6a20013aa7ba; PLAN_pfaffian gate (c)
+- A fitted range or quantile set at 6x6 does not transfer: measure it at the new size (+2..-6 held 0.648 at 8x8; f0 0.62 -> 1.22) | 8x8 pool resized | PLAN_pfaffian decade range, (e)
+- f0 is the n-weighted SIGNED q.9999 of c f_J / c, not an |f_J| or |B|^2 quantile; non-finite f_J rows are a node, not 0 | f_J defect audit 11-03 | PLAN.md "Step back 2026-11-03"
+- Shares of a frozen-phi BOUND are not shares of the true cost (bound/true 6-18x); use a saturating or exact measure before predicting splits | Test D prediction refuted | PLAN.md "TEST D RESULT"
+- Compare against the strongest published network, measured on our own E0, not a competitor we built; re-derive a published gap from the raw energy | CNN-MPS bar 3.2 -> 2.65e-6 (rounded ED) | PLAN.md Queue "Competitor bar"
+- Independent energies cannot bound a small difference (two 3e-6 errors -> 4.2e-6 on the tax); use paired / common-random-number estimators | c1 redesign | Astra cj-6a20013aa7ba
 
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"
@@ -20,7 +28,13 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - A larger class that contains the smaller one but trains worse means the optimiser, not representability | 2-PP sum 2.76 vs 1-PP 0.85e-6 | PLAN_sign "T-CAP RESULT"
 - Full space-group projection generalised far better than translations-only on fresh chains (hypothesis: inductive bias) | 8x8 w_T 5.9e-5 vs no gain | PLAN_sign "8x8 PP-FULL WARM RESULT"
 - One constant set (alpha, E, f0) everywhere; label and reference built with different alpha make a target mismatch | sign labels -0.18 vs loop -0.17543 | PLAN_pfaffian "Two branches for R1"
+- Judge whether a block is used in FUNCTION space, not parameter space: a large-column block moves few parameters per unit change | M5' declared INVALID and cancelled prematurely, rerun ~12 A40-h | PLAN_pfaffian M5'
+- Zero-initialised RBM blocks get zero gradient under cx_r1fit; L-SWO/R1 were plain PP, not RBM x PP | mislabelled runs | PLAN.md "CODE FINDING"
+- cx_r1fit step acceptance passed a negated step as noise; fit-to-fit E_FN walk +-0.2e-6 makes single fits unquotable | candidate cause of the walk | delta_today 11-03
+- Pick checkpoints on one half of the grading draws and gate on the other (selection bias) | - | PLAN_pfaffian gate (a)
 
 ## Operations
 - Paderborn normal QoS can queue for weeks; name --qos=express_hpcalot (20 H100-h/month) in every brief | 8x8 work fell back to A40 for a day | delta_today 11-05
 - A watcher on a job that logs only at its end fires false STALLED; set the stall limit from the job's own logging cadence | false STALLED on 17751660 | delta_today 11-05
+- A race between machines is won by expected FINISH time, not by which copy starts first | 9x faster H100 copy of V cancelled, ~10 h lost | delta_today 11-04
+- Check a peer's units: a parenthesised error off by 10x turns a 1.2-sigma pass into a 12-sigma miss | c3 notation | PLAN_pfaffian c3

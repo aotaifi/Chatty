@@ -1903,3 +1903,8 @@ ESS rises from ~0.07 to ~0.7: ~10x fewer draws at -7..-9 (derived, unmeasured). 
 call): ~80 ms on CPU (informed-move timing) against ~5 ms for the plain move, i.e. ~16x. Net on CPU ~1.6x MORE expensive than brute force; on an
 H100 (E_L ~0.1 ms batched) the per-proposal cost is negligible, so the tilt is the GPU route. Exactness test needed before use (6x6 table).
 Stage-1 note (2026-11-05): pool8 cannot run a 1-rung ladder (median lookup needs a beta = 1 rung); authorised an opt-in med2 argument (default path bit-identical, checked), med2 = -67.03 at 8x8; the 1-rung path gets its own 6x6 exactness test before any draw.
+Gate (a) first candidate (lead 2026-11-05): sign_scale/r8/ppw_s1, 1-PP complex phase, full space-group projection, one seed, trained on alpha -0.18
+labels; w_T 5.87e-5 [5.23, 6.50]e-5 vs no-update d 1.63e-4 (sign_scale/r8/gradew/wT_ppw_s1.json). Gate (a) on it before the r8f checkpoints: eps^2 of
+Delta*_S vs decades8's Delta*_sG (M1 consts.json constants), Test W (ii) bond metric, decades -2..-9, block errors; half A/B split as registered
+(single checkpoint, so A and B are both reported; the gate reads B). Pass (eps^2_B < 0.3) -> branch 1 live; the stage-1 heavy-x set is then
+recomputed under this sign.

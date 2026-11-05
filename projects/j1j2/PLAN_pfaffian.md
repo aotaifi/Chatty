@@ -2062,3 +2062,14 @@ November remainder of 20), normal QoS after; 6 concurrent chains where it saves;
 Headline precision (registered before running): sigma 5e-6 on B_k + p=1; the difference to M1 p=1 -0.498946(5) then has sigma ~7e-6, so the
 predicted low-end gain 1.6e-5 is ~2.3 sigma and the high end 3.9e-5 ~5.6 sigma. A gain below 2.1e-5 (3 sigma) cannot be claimed at this sigma; it
 would be reported as "consistent with a gain of x +- 7e-6", not as a pass.
+Result branch-2 prep (2026-11-06 ~00:00; pfaffian_8x8_r1/prep/; code above):
+- Labels under sgn(M1): = slow direct path to 2.0e-12 on 80 draws (16 deepest-f_J); partner masks 0/11320 differ; Marshall broken 1.55. CPU 0.7
+  core-s per pool entry (~370 core-h for 1.87e6, derived). Observation: under sgn(M1) only 1 of 1500 deep draws has f_J(x) < -0.5 (the heavy-x
+  tail of gate (c) was measured under s_G), so the bond-ESS deficit may be much smaller at sgn(M1): the stage-1 gate measures exactly this.
+- Grading providers: BareM1Sign = M1 p=0 guide, 0/28880 sign differences, ratios to 2.3e-10, rates 1e-12; P1Guide = M1 RBMPPGuideG, 0/28880
+  signs, ratios to 1.14e-9 (registered 1e-10 MISSED; cause measured: pp2_lemma's E_L at the worst endpoint is off brute force by 6.7e-9, M1's by
+  6.3e-11; effect on the FN rates 9e-12, on d_FN 2.5e-12: immaterial). Broken versions fail. CPU per walker step: P1Guide 3.42 s vs M1 p=1 3.09 s.
+- R1 fit: pool builder = pool_fit's; pool_fit's held-out median bug on filtered pools fixed in b2_prep.fit. Dry run: the default P_2 start
+  (sep 0.3, lam 0.1) wrecks the start (held-out 8.1-8.9 vs B_0's 0.147), even at lam 1e-5, because a 30% perturbation of a 64x64 f changes
+  |det| by orders of magnitude, so |lam P_2| >> |P_1|. Decision (mine): keep P_2 far from P_1's tangent space (sep 0.3; Astra P16) but set lam
+  so that the pool-median |lam P_2 / P_1| = 0.05 at the start (6x6 round 5 ended at median 0.67); accept if the start loss is <= 1.2x B_0's.

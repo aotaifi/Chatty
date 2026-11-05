@@ -1995,3 +1995,7 @@ saved iterates). Plateau re-read on 1800 vs 2100 (E_FN) and window means 1650-18
 lead. Prediction (linear extrapolation of the ~0.75e-7 per 100 steps fall): r at 2100 ~0.17-0.18, aug ~3.9e-6, so both readouts still
 STRUCTURE. Caveat: the fit restarts its optimiser state (trust radius, damping) from the spec at step 1501, a discontinuity that the
 1500-step registration did not have; it is recorded beside the result.
+Result alpha-mismatch control (2026-11-05; job 17761852; alpha_ctl/alpha_ctl_result.json; control 17761264 exact; verified analyze.log): eps^2 of
+s_G(-0.18, E -31.915008) labels vs s_G(M1) labels = 0.024(4) over -4..-9 (halves 0.024 / 0.024; QUOTABLE A vs B). Per x-decade -9..-4: .16(7) .041
+.032 .031 .012 .008. NOT THE CAUSE (registered < 0.05): the gate (a) miss of ppw_s1 (0.54) is not a label-target mismatch; it is the stored
+sign's own deep errors.

@@ -1816,3 +1816,6 @@ Marshall gives 297. S_a1 identity confirmed (w_T 1.7149e-6 reproduced). Predicti
 Reading (mine): the stored sign's errors sit exactly in the decades that carry the round's deep weight (-13..-15 hold ~0.4 of it at 6x6), so ~17%
 of each round's correction is mislabelled there. f0 note: the fix's f0 is the SIGNED n-weighted q.9999 of c f_J divided by c (fj_audit 'cfJ'),
 not an |f_J| quantile (1.31).
+Lead decision (2026-11-05): 8x8 R1 uses STORED-sign labels; expected loss ~17% of the round gain (eps^2 0.17 at 6x6), registered before the run.
+When a trained 8x8 sign exists: eps^2 at 8x8 on the 6332 decades8 draws (direct-s_G f_J already stored); >= 0.3 -> fix the sign's deep tail
+(sign angle), not the labels. The per-decade disagreement goes to the sign angle as its training target.

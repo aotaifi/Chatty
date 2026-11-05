@@ -61,6 +61,8 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A42 | T-CAP: 1-PP seed scatter, 2-PP sum capacity, residual sgn psi_P x correction (PI step-by-step) | 11-04 | 6x6 exact | 1-PP taxes 1.45/0.85e-6 (seeds); 2-PP 2.76e-6; residual stalls at A 0.08 (no flips) | capacity NO; residual does not train (saddle; = A10) | PLAN_sign.md "T-CAP RESULT" |
 | A43 | T-COMB/T-R6: frozen mix of two trained 1-PP sign margins; stored signs graded on round-3, R5 and R6 amplitudes | 11-04 | 6x6 exact | tax 0.70-0.74e-6 (mix), 0.85-0.88e-6 (1-PP) on all four; R6 stored loop 3.56e-6 vs competitor 5.57e-6 | WORKS below competitor (10x scatter); misses 0.5e-6; tax independent of amplitude | PLAN_sign.md "T-COMB step 1 + T-R6 RESULT" |
 | A44 | Shallow local CNN sign (alone or added to the PP margin) | 11-04 | 6x6 exact, CPU | best 3x3-patch convex correction: w_T -0.7% (1-PP), -0.4% (mix); CNN alone held-out acc 0.767 | FAILS: PP errors are seed-specific, not local; additive form cannot express defect parity | PLAN_sign.md "LOCAL-CNN REVIEW" |
+| A45 | Hybrid sign: accurate XL CNN at the node, PP sign in the Jacobi walls (T-HYB, lead's design) | 11-05 | 6x6 exact, R6 | tax 0.998e-6 vs PP alone 0.883, XL alone 0.439; PP walls under exact node 0.351 | FAILS: wall errors cost additively; walls must match the node | PLAN_sign.md "T-HYB RESULT" |
+| A46 | Deep-decade coverage (beta 0.5/0.25 mixture) for the stored sign (T-DEEP, T-DEEP2) | 11-05 | 6x6 exact | random init: B stalls; warm continuation: eps^2 B2/A2 0.93, tax 0.999 vs 1.148 (S_a1 0.883) | FAILS (no 30% cut); continuation raises accuracy but worsens tax: BCE-vs-tax mismatch | PLAN_sign.md "T-DEEP2 RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

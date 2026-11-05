@@ -445,7 +445,7 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- T-LCNN (2026-11-04 13:50, CPU, ~27 h wall, ~240 core-h): seed 0 17725768->69->70->71, seed 1 17725772->73->74->75 (train/eval/grade/top1),
+- T-LCNN DONE (see T-LCNN RESULT; GPU race won). Old entry: (2026-11-04 13:50, CPU, ~27 h wall, ~240 core-h): seed 0 17725768->69->70->71, seed 1 17725772->73->74->75 (train/eval/grade/top1),
   run dir sign_lcnn/seed{0,1}; gate: python3 sign_lcnn/gate.py <seed dir>. Verdicts: R6 tax > 1.5e-6 -> tell the lead 'stop the 8x8 build';
   <= 1.5e-6 -> tell the lead 'precheck passes' and release T-SCALE 8x8 GPU spend (held by the lead until then).
 - T-SCALE step 0 DONE (see STEP 0 RESULT); 8x8 build waits for T-LCNN. Opus local-CNN review DONE (no GPU; see LOCAL-CNN REVIEW).
@@ -608,6 +608,115 @@ half-width; broken control), G3 (margin equality). From 11-05 ~10:00 (lead's tak
 2 x 3-7 A40-h on A40. No H100, no 10x10 without the PI. Result that changes the plan: G1 or G2 failing (pipeline wrong) or T-LCNN R6 tax > 1.5e-6
 (lead stops the 8x8 build; the PP 8x8 copy test still runs, it does not depend on the build).
 Proposed to the lead for the 8x8 loop build: store the sign after every sign update and track the tax over rounds (accumulation at scale).
+
+## T-SCALE 6x6 GATES (2026-11-04 evening; sign_scale/val6; verified from wT_table4.json, exact_S_a1.json, g3_margin.txt)
+G2 (table backend, estimator only): sampled w(S_a1) 9.207e-7 [8.87, 9.54]e-7 vs exact 9.355e-7, half-width 3.6%, 4 chain sets, QUOTABLE; broken (no reweight) 6.6e-4.
+Exact 6x6 no-update control (Lanczos measure): d_6 = 5.853e-6 (step flip weight), stored S_a1 missed 3.67e-7 + false 5.68e-7 -> retention r_6 = 1 - w/d = 0.84.
+G3 margin: identical to s2b_train_m.py (max rel 0; broken 0.30). G1, G3 training, G2 guide backend: running (new worker).
+Paderborn H100 queue ~11-21: all GPU on theorie A40; 0 H100-h used.
+Added before any 8x8 number: MATCHED-BUDGET 6x6 reference (same pipeline, same 8x8 schedule 2000 cosine + cap 4500 steps, 2 seeds), because 6x6's
+r 0.84 came from ~25k steps and 8x8 cannot afford that (2.9 s/step). Read: r_8 within 0.1 of matched r_6 -> copy holds; lower by > 0.1 -> degrades.
+
+## T-LCNN RESULT 2026-11-04 (A40 17747340/44 train+eval, CPU grade 17747342/46; 0.8 A40-h; sign_lcnn/seed{0,1}_gpu/v2_S.json; verified by me)
+L CNN (64 ch x 6 layers) on s_G at 6x6, two seeds: R6 tax 1.081e-6 / 1.077e-6, R5 1.065e-6 / 1.059e-6; w_T 2.17e-6 / 2.15e-6; no f_J bad rows.
+Stop rule (> 1.5e-6) does NOT fire: the lead's 8x8 build continues. Prediction 0.5-1.0e-6 MISSED (higher). The L CNN is worse than the deployable
+1-PP (0.88e-6) and the two-PP mix (0.74e-6) on the same grade. top1 (fixed rerun 17749149/50): orbit 15802042, 0.933% share, top-10 4.17%, = the bulk orbit of all earlier grades (no concentration).
+
+## T-DEEP (lead's lever 2026-11-05; pre-registered before any number)
+Lead (Pfaffian angle 9d37e93): at 8x8 the loop's LABELS use the stored sign. At 6x6, S_a1 shifts the round correction by eps^2 0.17, all in the deep
+decades (-15 0.61, -14 0.50, -13 0.31, < 0.005 above -8); S_a1 disagrees with s_G on 6.1/2.1/0.35% of orbits at -15/-14/-13. Pass bar at 8x8: eps^2 < 0.3
+on decades8's 6332 draws.
+Record against loss reweighting: T-EDGE (bond-weighted loss) worsened the tax (1.65 vs 1.45e-6). Untested lever: sample COVERAGE of the deep decades.
+(1) 8x8 PP pair (beta 0.5) = baseline; eps^2 measured when it exists. (2) 6x6 coverage arm: 1-PP on a beta mixture {0.5, 0.25}, same pipeline and
+schedule as the matched-budget 6x6 reference; grade: R6 tax and eps^2 by decade vs S_a1's 0.17. ~1 A40-h + CPU.
+Predictions: -15/-14 disagreement halves [50%]; tax changes < 0.15e-6 [60%]. (3) 8x8 deep arm only if (1) misses 0.3 and (2) cuts eps^2 >= 30%.
+
+## T-SCALE 8x8 FIRST ATTEMPT 2026-11-05 (A40 17749271/72; sign_scale/r8/pp_s*/progress.txt; read by me)
+Gates: G1 PASS (0 label differences vs s_G on 665,928 configs; broken alpha=0 9784); G2 guide backend PASS (w 9.07e-7 [7.6, 10.5]e-7 vs exact 9.355e-7,
+half-width 16%; d 5.97e-6; r 0.848; one chain set warm-started from table_s13); G3 PASS (200 CPU steps).
+8x8 random-init 1-PP does NOT train: held-out acc 0.502 / 0.510 at cosine step 2000 and 0.503 at const step 3000 (BCE 1.41 -> 1.41); the same code and
+schedule leave the random start at 6x6 between steps 500 and 1000. Not a symmetry mismatch (Marshall x target invariant, +1.000 translations/flip).
+Hypothesis (not derived): the random start is a plateau whose escape time grows with N and |G| (1024 images at 8x8 vs 576). Cancelled (~7 A40-h saved).
+Change (before any number): WARM START from the guide's own pairing (M1's PP factor + 1e-2 imaginary part), constant lr 3e-4 + plateau rule, cap 4500;
+step 0 = the no-update sign (checked). Matched 6x6 reference with the same warm start (table A parent's PP). One 8x8 seed first. Cap 20 A40-h.
+This is also how deployment would start each round. Prediction: trains, and r_8 within 0.1 of matched warm r_6 [45%].
+
+## T-HYB (lead's design 2026-11-05; pre-registered before any number; CPU; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_hyb)
+Lead: no stored Jacobi head exists (Theta v2, Test N, M-R failed); walls need S two swaps away, d^2 cost stands. Hybrid: accurate sign at the node,
+cheap PP sign in the walls: G = S_node(y) B(y) exp(c f_J[B; S_wall](y)); cost ~2N S_node evaluations + d^2 PP lemma-path evaluations per move.
+Grades on R6 theta_6 (and R5), c rescanned, tax vs s_G 2.8136e-6:
+ H1 node S_XL, walls S_a1 (the candidate); H2 node s_G, walls S_a1 (pure wall cost); C1 S_XL/S_XL (XL on R6, new); C2 S_a1/S_a1 (must reproduce 0.883e-6);
+ C0 s_G/s_G (2.8136e-6).
+Prediction: wall cost scales A36's 1.85e-6 (sgn psi_P walls, 11.6% orbit disagreement with s_G) by the |H|-weighted wall disagreement ratio
+D(S_a1, S_XL)/D(sP, s_G), computed exactly from the tables before grading. Angle lead's prior: H1 tax 0.5-0.9e-6 [60%]; pass (< 0.6e-6) [35%];
+C1 0.40-0.50e-6 [70%].
+Pass: H1 tax < 0.6e-6 -> 14x14 sign = CNN/ViT at the node + PP walls. Else the PP-only class stands.
+
+## T-DEEP RESULT 2026-11-05 (A40 17750067/79/145/146, 3.03 A40-h; sign_deep/grade/v2_S_{A,B}.json verified by me; storedsign6 controls pass)
+INCONCLUSIVE on coverage: arm B (beta {0.5, 0.25}) stalled at chance through the cosine phase (held-out 0.53 at step 2000; A 0.975 at step 1000) and hit
+the 4500 cap still improving. R6 tax A 2.32e-6, B 23.1e-6, S_a1 0.88e-6; eps^2 (old) A 0.473, B 7.76, S_a1 0.171.
+Two facts: (1) the 4500-step budget costs 2.6x in tax at 6x6 (A 2.32 vs S_a1 0.88, same data class, ~25k steps): under-training dominates; (2) the lead's
+eps^2 tracks the tax: tax/eps^2 = 5.1, 4.9, 3.0 (x1e-6) for S_a1, A, B, so eps^2 on decade draws is a usable cheap proxy at 8x8.
+The random-init stall now appears at 6x6 too, with deeper data (B), not only at 8x8: hypothesis (not derived): harder (deeper) label sets lengthen the
+random-start plateau. Next (pre-registered before any number): T-DEEP2, warm continuation of the converged S_a1 parameters on A-data vs B-data, const lr 3e-4,
+4000 steps each, same seed: isolates coverage without the init stall. Predictions: B2 lowers -15/-14 disagreement vs A2 by >= 30% [50%]; R6 tax
+difference |B2 - A2| < 0.15e-6 [55%]. Cap 2 A40-h.
+
+## T-HYB RESULT 2026-11-05 (CPU 17751313-17, ~40 core-h; sign_hyb/{C0,C1,C2,H1,H2}.json verified by me)
+R6 tax vs s_G (node/walls): C1 XL/XL 0.439e-6; C2 S_a1/S_a1 0.883e-6 (reproduces T-R6 exactly); H1 XL/S_a1 0.998e-6; H2 s_G/S_a1 0.351e-6.
+FAILS the bar (< 0.6e-6): the hybrid is no better than the PP alone (0.998 vs 0.883). The PP walls cost 0.35-0.56e-6 even under an exact node sign,
+and wall damage adds to the node tax (H1 ~ C1 + 0.56). The PP's 0.88e-6 splits as ~0.35 walls + ~0.53 node. D-scaling of A36 over-predicted by 1.5-2x.
+Reading: the walls must be as accurate as the node (A36 again); a cheap wall sign under an accurate node sign does not pay. PP-only class stands; best deployable
+remains the two-PP mix (0.74e-6). Predictions: C1 held; H1 0.5-0.9 missed (higher); pass 35% did not pass.
+
+## T-SIGN8 (critical path, lead 2026-11-05: production 8x8 grading NO-GO until the trained 8x8 sign passes eps^2 < 0.3 on decades8's 6332 draws;
+## Astra cj-6a20013aa7ba /scratch/a/A.Otaifi/astra/v_go/REVIEW.md; pre-registered before any number)
+Class: a copy of the M1 guide (RBM x PP, M1's own projection) with the RBM parameters FROZEN and the pairing f trainable as a complex phase:
+m(x) = Re(e^{-i theta0} Psi(x))/|Psi(x)|, Psi = M1 with f -> f (1 + i 1e-2 xi). Step 0 = sgn(M1) exactly on every sample (gate; fixes the 1344/20000
+mismatch of the PP-only start). Deployable: the guide class itself. Train on T_8 data (r8/d81, d82) with const lr 3e-4 and the plateau rule, cap 20000
+steps (A40, 'as needed'); checkpoint every 1000 steps. Hand-off: the plateau checkpoint's sign to the Pfaffian angle for eps^2 on decades8 draws.
+Prediction: plateau before 12000 steps [55%]; eps^2 < 0.3 [45%] (6x6 S_a1 0.17 at ~25k steps; matched-budget 6x6 arm A 0.47).
+Coefficient note (lead): the w -> tax proxy coefficient is kbar = 32.6 (Lanczos measure, Astra), superseding 17.8 in T-SCALE above.
+
+## T-SIGN8 GATE 0 FAIL and fix (2026-11-05; r8f/gate0/gate0.json read by me; 0.09 A40-h)
+f -> f(1 + i 1e-2 xi) flips the step-0 sign on 2.08% of held-out configs (5963/287306); eps = 0 gives 0 (model correct). Broken controls reproduce
+5.5% (RBM dropped) and 6.7% (RBM dropped + full projection).
+Equation: M1's projected Psi = sum_g R(gx) det f(gx) is REAL. With f(1 + i eps xi): Psi = Psi_R + i eps Psi_1 + eps^2 Psi_2 + O(eps^3), so
+Re Psi = Psi_R + eps^2 Re Psi_2: the sign flips wherever |Psi_R| < eps^2 |Psi_2|, i.e. at the image-cancellation configs next to the nodes (2%).
+And the normalised margin m = Re(e^{-i theta0} Psi)/|Psi| = +-1 has zero gradient at real Psi (d cos/dphi = 0 at phi = 0, pi). The two needs
+(exact start, nonzero gradient) conflict for ANY eps in this margin: the term at fault is the |Psi| normalisation.
+Fix (changes that term): keep f REAL and use the cancellation-ratio margin m = Psi(x)/A(x), A(x) = sum_g |R(gx) det f(gx)| > 0, |m| <= 1.
+sgn m = sgn Psi exactly at step 0; dm/df != 0 at a real f; |m| is small exactly where images cancel, near the nodes. Loss softplus(-s y m) with
+a trainable scale s (init 4). Deployable: same evaluations as the guide plus the |terms| sum.
+Gate 0 unchanged (0 mismatches). Prediction: Gate 0 passes [95%]; training leaves step 0 within 500 steps [70%].
+
+## T-DEEP2 RESULT 2026-11-05 (A40 17751657/58, CPU 17751659/60; 1.8 A40-h; sign_deep2/code/tdeep2_table.py re-run by me, controls PASS)
+Warm continuation of S_a1 (4000 steps): R6 tax S_a1 0.883 / A2 (beta 0.5) 1.148 / B2 (beta mix) 0.999e-6; eps^2 old 0.171 / 0.201 / 0.187;
+-15/-14 disagreement B2/A2 0.97/0.98. Coverage lever: NO (eps^2 cut 7%, needed 30%). No 8x8 deep arm. Predictions: >= 30% cut missed; |dtax| < 0.15e-6 borderline.
+New fact: continuing S_a1 RAISES held-out accuracy (0.979 -> 0.990, on the pipeline's held-out set, not S_a1's own) while the tax RISES (+0.27e-6):
+equal-or-better classification, worse tax. That is the loss-objective mismatch the lead named (uniform BCE does not track the FN tax at this level).
+Third proxy point: tax/eps^2 = 5.1 (S_a1), 5.7 (A2), 5.3 (B2) x1e-6 per unit eps^2.
+Consequence for T-SIGN8: select and report checkpoints by eps^2 / w_T on separate draws, not by held-out BCE.
+
+## T-SIGN8 RESULT 2026-11-05 (A40 17753590, 17754056; 0.62 A40-h; r8f/HANDOFF.md, grade/dwT_*.json read by me)
+Gate 0 PASS (frozen RBM + real pairing, margin Psi/sum|t_g|: 0/287306 mismatches; broken controls 5.1% / 6.7%). Plateau at step 9000.
+No trained checkpoint beats the no-update sign: w - d (paired) = +6.6e-5 (s3000), +4.7e-5 (s6000), +4.5e-5 (s9000), +0.9 [-0.9, +2.6]e-5 (final);
+d = 1.63e-4 (NOT quotable, chains 2.0 sigma apart). Training fixes ~72% of the missed flips (1.63e-4 -> 4.6e-5) but adds false flips 1.26-1.78e-4.
+Held-out BCE fell 0.249 -> 0.149 meanwhile (BCE does not track w, as in T-DEEP2). Predictions: plateau < 12000 held; eps^2 pending (Pfaffian angle, 5 checkpoints).
+Note: d_8 = 1.6e-4 is 28x d_6 (5.85e-6): the one-step sign change carries far more weight at 8x8, so storing it matters more there.
+Labels used alpha -0.18, E -31.915008; the loop/decades8 use alpha -0.17543, E -31.915136 (target mismatch, size unmeasured).
+
+STEP-BACK 4 (third failed 8x8 sign version: random init stuck; PP-only start wrong; frozen-RBM start adds false flips)
+1. Verdict: continue, changing the one term the equation names, then stop. 2. Thought: the graded quantity is w = E_{p1}[1(S != T)], p1 ~ |v'|^2,
+but the loss is uniform over samples from q ~ |v'|^(2 beta), beta 0.5, i.e. it weights each configuration by q/p1 ~ |v'|^-1 relative to the grade:
+the tail is over-weighted by orders and the bulk, where false flips cost, under-weighted. This is covariate shift; the standard fix is importance-weighted
+ERM with a flattening power gamma (Shimodaira 2000, J. Stat. Plan. Inference 90, 227: weights (p/q)^gamma, 0 <= gamma <= 1; from memory, not re-read).
+T-EDGE (bond weights on the same samples, 6x6) is a different weighting and does not cover this. 3. Cheapest test (T-IW): from the same step-0 start,
+two arms gamma = 0.5 and 1.0, omega_i = (|v'(x_i)|^(2-2 beta))^gamma normalised, clipped at the 99.9% quantile; labels regenerated at the loop's
+alpha -0.17543, E -31.915136; same schedule; grade w - d paired, missed/false by |v'| decile. ~1.5 A40-h.
+Predictions: false-flip weight of the unweighted final checkpoint sits in the upper half of |v'|^2 [65%]; one arm gives w - d < 0 beyond its 95% interval [40%].
+Kill: neither arm below d -> this class + BCE cannot beat the free no-update sign at 8x8 at this data size; report to the lead (8x8 then uses sgn(M1)
+or the exact step with its cost).
 
 ## Dead ends
 (none yet)

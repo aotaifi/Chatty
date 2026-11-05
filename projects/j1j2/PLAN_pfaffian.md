@@ -2036,3 +2036,22 @@ the pool is USED, with the registered FAIL beside it. A real occupancy shift of 
 weights inside each (beta, decade) cell, so a cell's occupancy changes only its ESS, not its weights' mean. This pool is in any case only the
 -2..-6 part; the deep decades come from the stage-1 expansion + importance resampling (bond-ESS gate).
 Lead agreed (2026-11-05): pool used, no confirmation batch. Condition: if R1's per-decade held-out loss is an outlier in decade -2 (the beta-1 cell that failed halves), re-open it.
+Result H100 benchmark (2026-11-05; Paderborn 4117903 + 4117939, 1.44 H100-h; h100bench/job{A,B}/summary_*.json; adapter gfmc_aug8.py 7d8719a,
+6x6 identity with the c3 run: hops/hashes equal, E_mix 4.7e-15; verified summaries). M = 1024, f64, 27 hops per walker-tau:
+| arm | s per walker step | s per walker-tau | variance per site^2 per walker-tau |
+| c = 4, stored phase sign | 0.0127 | 0.348 | ~1.1e-6 (NOT QUOTABLE, 2 chains disagree) |
+| c = 0, stored phase sign | 0.0010 | 0.027 | 6.5e-6 (QUOTABLE at M 256: E_mix -0.498716(13)) |
+| c = 0, direct s_G | 0.0155 | 0.426 | not measured |
+H100-h per point (solo M 1024; ~1.6x less with 6 concurrent chains): c = 0 5.4 (sigma 3e-6) / 49 (1e-6); c = 4 ~12 (5-18) / ~105.
+The sign's own lemma dominates c = 4 (0.0077 of 0.0127 s/step); a two-PP amplitude costs about the same as one PP. Phase-sign fallback 9e-10.
+Noted, not quoted: c = 0 with the stored phase sign sits ~4e-5 ABOVE p=0's own-sign value (the stored sign is worse, as gate (a) said); the c = 4
+estimate -0.49890 is unquotable.
+BRANCH 2 GRADING PLAN (option (ii); derived from these rates and M1's measured p=1 cost; for the lead/PI):
+- At sgn(M1) the sign comes free from the amplitude's own ratios, so the bare c = 0 grade costs ~ the plain step (1.3e-4 s/step, ~8x below
+  the c = 0 phase-sign arm): mechanism test R1 bare vs p=0 at sigma 3e-6 ~0.7 H100-h (M1's own p=0 took 0.40 H100-h for 2.8e-6).
+- The p=1 guide on B_k needs E_L at every one-swap endpoint (the direct-s_G-like arm, 0.43 s/walker-tau, ~M1 p=1's 0.51): M1 took 7.9 H100-h
+  for sigma 5e-6. R0 check (M1 p=1 through the new evaluator, 2 sigma at sigma 1e-5): ~2 H100-h. HEADLINE (B_k + p=1, sigma 5e-6): ~8 H100-h.
+  sigma 3e-6 would be ~22 H100-h.
+- R1 fit on H100: 3-12 s/step x 1500 steps ~1.3-5 H100-h (derived, unmeasured at 8x8). Labels with sgn(M1): lemma cost, small.
+- Total to the headline: ~12-16 H100-h at sigma 5e-6. The predicted gain (1.6-3.9e-5) against M1's 5e-6 error is resolved at 2.5-6 sigma.
+  The lead's ceiling is 15 H100-h, so the upper end goes to the PI.

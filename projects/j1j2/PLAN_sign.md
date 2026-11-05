@@ -751,10 +751,83 @@ x-end only (y symmetrised by drawing it as x), times the decade band weight. Bon
 Gate S (angle lead's addition, before training, CPU): on the 6332 decades8 draws (both ends stored), the surrogate W = sum over wrong bonds of w_xy for
 sgn(M1), ppw_s1 step 0 and ppw_s1 must order like their eps^2 (0.400 < 0.539 < 0.568) and W/eps^2 must agree across the three within 30%.
 Fails -> the weight is not the loop's cost; no training.
-PASS: half-B eps^2 < 0.3 for the best-on-A checkpoint, both seeds. KILL: half-A eps^2 not below 0.37 within ~3000 steps in either seed.
+PASS: half-B eps^2 < 0.3 for the best-on-A checkpoint, both seeds. KILL: half-A eps^2 not below 0.37 within ~3000 steps in either seed (AMENDED after T-IW, before any T-BOND number: at the plateau or 15000 steps).
 Ruled out up front (lead's list): psi^2 or per-configuration weights; walker-count labels; selection on the gate half; parameter-space gates;
 f_J non-finite rows -> node; one constant set; exact warm start; strict optimiser acceptance; no 6x6 coefficients; two seeds before any pass.
 Predictions (angle lead): Gate S passes [55%]; PASS [30%]; KILL fires [40%].
+
+## T-IW RESULT 2026-11-05 (A40 17754337-39; ~2.7 A40-h; r8iw/HANDOFF.md, train_g0*/grade/dwT_*.json verified by me)
+Frozen-RBM class (start = sgn(M1), Gate 0 0/287306), matched labels (alpha -0.17543, E -31.915136; 2640/1.51M training labels changed vs -0.18),
+importance-weighted BCE omega = |v'|^((2-2 beta) gamma): paired w - d at the final (cap + decay, step 19998): gamma 0.5 -4.40 [-5.60, -3.21]e-5,
+gamma 1.0 -2.16 [-3.31, -1.00]e-5; d = 1.51e-4 (not quotable, chains 2 sigma). Both arms are WORSE than d at steps 3000 and 6000
+(gamma 0.5 +7.3e-5, +3.6e-5) and cross below d only after ~15000 steps. Not at plateau. One seed each. Prediction 'one arm below d' [40%] held.
+Weighting moved the false flips out of the top |v'|^2 deciles (8-9: 1.75e-5/1.57e-5 -> 8.3e-6/1.8e-6), as the covariate-shift term predicted.
+eps^2 (the deciding metric) not yet measured: checkpoints handed to the Pfaffian angle (r8iw/HANDOFF.md).
+Consequence for T-BOND (amendment before any T-BOND number): the trajectory gets worse before better, so a KILL at ~3000 steps could fire on a run
+that would pass; KILL moved to the plateau or 15000 steps, whichever first.
+
+## ASTRA on T-BOND and T-JOINT (cj-a2cbf28c7311, /scratch/a/A.Otaifi/astra/sign_eps2/ASTRA_eps2.md, read in full; audit.py reproduces the saved eps^2 to 1e-12)
+- T-BOND REJECTED as written (not run). The single-edge Delta f_J formula is right, but eps^2 is a weighted graph-Laplacian quadratic form in the label
+  errors, eps^2 ~ eta^T L_mu eta (eq 1): endpoint cross terms; a configuration flip changes f_J at x AND all its neighbours; errors at one x add INSIDE
+  the logs (A_x = sum sigma_e h_xe), not as squares (counterexample: block + unblock at one x costs 0, the surrogate charges 0.08). Multiple wrong bonds
+  per root are the rule (5085/5724 M1 roots). Saved decomposition: x-end square 0.07-0.09 of eps^2 0.40-0.57; the y end carries most.
+- Gate S is not a validation: an incomplete diagonal surrogate passes its ordering and 30% tests on these files (false positive shown). Gate S stopped.
+  Partial Gate S numbers (worker, from the Pfaffian angle's per-file outputs; sign_bond/gateS/dev_on_reference_outputs/): x-end W = 4.87(92)e-4 (M1),
+  4.44(76)e-4 (step 0), 6.7(3.4)e-4 (ppw_s1): wrong ordering, W/eps^2 spread 1.56x -> the x-end surrogate fails Gate S anyway, consistent with Astra.
+- Consistent eps^2 (full / A / B): sgn(M1) 0.400 / 0.394 / 0.406; ppw_s1 0.551 / 0.564 / 0.539; PP step 0 0.568 / 0.543 / 0.593. Half B is now a reused benchmark.
+- Recommendation (Astra): finish the A/B eps^2 grades of the T-IW exports (~18-20 core-h, no new labels); continue the lead's Branch 2 meanwhile.
+  P(this PP/frozen-RBM family reaches eps^2 < 0.3 on honest held-out data in one practical two-seed attempt, corrected objective) 20% (10-35%);
+  T-BOND unchanged ~10%. Any new loss must form the full kept/blocked sums before the logs and be checked against the hard-sign evaluator directionally.
+- T-JOINT: worth one bounded 6x6 comparison after fixing definitions (own sign defines own walls; no literal complex regression to a real target;
+  cross-grade amplitude/sign to separate losses); P(joint <= separate) 45%. No topological reason that a sign change forces small |A|.
+My call: agree. T-BOND not trained; T-IW eps^2 grades are the next number (with the Pfaffian angle); recommend Branch 2 to the lead now; T-JOINT is
+the PI's to schedule.
+
+## T-B2P1 (lead's request 2026-11-05: 6x6 analogue of the Branch-2 headline; pre-registered before any solve; CPU; run dir /scratch/a/A.Otaifi/ansatz_runs/sign_b2p1)
+Guide psi_1 = (1 + alpha (E_L - E)) S |B_k|, E_L of S|B_k|, alpha from the moment formula (Astra eq) or a line search as for the competitor;
+exact 6x6 FN with psi_1's own sign and magnitude, c = 0. Arms: (a) S = s_G on B_6 (R6 theta_6) and B_5 (R5 pp2_s1); (b) S = sgn(psi_P) on B_6.
+Bar: competitor 5.574e-6 (psi_P + p=1 + FN). Controls: S = sgn(psi_P), B = |psi_P| reproduces the competitor's 5.574e-6; alpha = 0 reproduces
+bare E_FN[S, |B_k|] (R6 s_G bare 7.0612e-6).
+Predictions (angle lead): (a) B_6 3.5-5.0e-6, beats the bar [65%]; (b) 4.0-6.5e-6, beats the bar [45%]. (Lead: (a) 60%, (b) weaker.)
+MECHANISM (written after launch, before any number; PI: think first): both factors are one relaxation step of the FN equation (H_FN - E) psi = 0.
+Jacobi: e^{f_J} = SK/(H_xx - E' + V), i.e. the step preconditioned by the local diagonal D(x) = H_xx + V(x) - E'. Lanczos: 1 + alpha (E_L - E) =
+1 + |alpha| (K - V - H_xx + E), the same step with ONE constant preconditioner |alpha|. Next to the node V(x) and D(x) vary by large factors, so the
+constant-alpha step cannot adapt there and should recover only part of the bare -> augmented gain (7.06 -> 2.81e-6). The Lanczos step also flips the
+sign where 1 + alpha(E_L - E) < 0: on s_G that is a second sign step (<= 0.5e-6 at 6x6, A41); on sgn(psi_P) it is the first (~4e-6).
+Revised predictions: (a1) 4.0-6.0e-6, beats the bar [50%] (was 65%); (b) beats the bar [40%].
+Design point the equations show: at a FIXED sign, Branch 2 can keep the Jacobi head at walker time (the walls need the fixed sign two swaps out, which a
+lemma-path evaluator of sgn(M1) gives cheaply); the final Lanczos step at c = 0 must DROP the head (c > 0 with a stepped sign is d^3). So Branch 2 must
+choose between (i) fixed own sign + Jacobi head and (ii) one Lanczos sign step without the head. Arm (c) added: S = sgn(psi_P) on B_6 with the head.
+Read: (b) beats the bar -> Branch 2's 8x8 headline has a 6x6 precedent; (a) beats but (b) not -> the gain needs the stepped sign inside the loop
+(stored s_G), and Branch 2 at fixed own sign loses it; neither -> the loop's 6x6 advantage lives in the augmentation, which the c = 0 final step drops.
+
+## T-B2P1 RESULT 2026-11-05 (CPU 21 jobs, 11.9 core-h; sign_b2p1/*.json verified by me; controls: Test X 5.573833e-6 rel 2e-10, alpha=0 7.0612e-6)
+Exact 6x6 FN per site above E0, one signed Lanczos step on S|B_k| at c = 0, moment-formula alpha (= line-search optimum within 0.02e-6):
+| arm | E_FN | vs competitor 5.574e-6 |
+|---|---|---|
+| (a1) s_G, B_6 + step | 2.646e-6 | -2.93e-6 (also below the Jacobi-augmented 2.814e-6) |
+| (a2) s_G, B_5 + step | 3.211e-6 | -2.36e-6 |
+| (b) sgn(psi_P), B_6 + step | 3.705e-6 | -1.87e-6 |
+| (c) sgn(psi_P), B_6 + Jacobi head (c* 4.0), no step | 7.202e-6 | +1.63e-6 |
+MY MECHANISM WAS WRONG: I predicted one constant-alpha Lanczos step recovers only part of the Jacobi gain (a1 4.0-6.0e-6); it recovers MORE
+(2.65 vs 2.81e-6). At s_G the step changes the sign on only 1.2e-6 of the weight, so nearly all of the 7.06 -> 2.65 gain is magnitude. The diagonal
+preconditioning argument does not hold here; not yet understood why (candidate: alpha is variationally optimal for the step, c = 4 on f_J is a fixed
+heuristic power).
+Branch 2 consequence: a 6x6 precedent exists for 'fixed sign + amplitude loop + one final Lanczos step at c = 0' (b: 1.87e-6 below the competitor),
+and the alternative 'fixed own sign + Jacobi head' (c) is WORSE than the competitor. So Branch 2 must end with the Lanczos step, not the head.
+Caveats: one network per table; B_6 was trained under s_G (helps (a), and (b) uses that amplitude under another sign); exact tables, no sampling.
+
+## GATE (a) on T-IW finals (Pfaffian angle 2026-11-05 16:05; gate_a/round2/{g05_19998,g10_19998}; step-0 control reproduces sgn(M1) 0.4002 exactly)
+eps^2 (full, -2..-9): gamma 0.5 final 0.642(23), gamma 1.0 final 0.724(37), gamma 0.5 s6000 0.941(47); all WORSE than sgn(M1) 0.400. The w_T gains
+(w - d -4.4e-5) do not carry to the loop metric. Branch 1 (stored sign in the loop) is NOT reopened by this class; the lead started Branch 2.
+Angle status: storing the 8x8 sign with the deployable PP/frozen-RBM class does not reach the loop's bar (best eps^2 = the no-update sign itself).
+What the angle delivers instead: T-B2P1 (one final Lanczos step at c = 0 beats the competitor at fixed own sign at 6x6; the head at fixed own sign does not).
+
+## Queue (not run; PI sets priority)
+- T-JOINT (PI: ask Astra, do not run; question 6 in astra/sign_eps2/QUESTION.md) (lead's design 2026-11-05, on the PI's question): one complex two-PP net storing s_G x |T_5| at 6x6 exact (refit from theta_4; modulus
+  loss as R5 + bond phase loss with the T-BOND weight); grade exact FN with its own sign and walls vs separate B_5 + S_t (R5 aug 3.97e-6).
+  ~1.5 H100-h + CPU. Untried (a joint REAL net is ruled out: own node fought the imposed sign, q 0.424, P1; complex node-free copy halved the tax).
+  Lead's prior joint <= separate 35%; mine 40%.
 
 ## Dead ends
 (none yet)

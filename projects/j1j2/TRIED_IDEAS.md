@@ -63,6 +63,7 @@ Abbreviations: FN = fixed node; E_FN = lattice fixed-node energy of a guide (sig
 | A44 | Shallow local CNN sign (alone or added to the PP margin) | 11-04 | 6x6 exact, CPU | best 3x3-patch convex correction: w_T -0.7% (1-PP), -0.4% (mix); CNN alone held-out acc 0.767 | FAILS: PP errors are seed-specific, not local; additive form cannot express defect parity | PLAN_sign.md "LOCAL-CNN REVIEW" |
 | A45 | Hybrid sign: accurate XL CNN at the node, PP sign in the Jacobi walls (T-HYB, lead's design) | 11-05 | 6x6 exact, R6 | tax 0.998e-6 vs PP alone 0.883, XL alone 0.439; PP walls under exact node 0.351 | FAILS: wall errors cost additively; walls must match the node | PLAN_sign.md "T-HYB RESULT" |
 | A46 | Deep-decade coverage (beta 0.5/0.25 mixture) for the stored sign (T-DEEP, T-DEEP2) | 11-05 | 6x6 exact | random init: B stalls; warm continuation: eps^2 B2/A2 0.93, tax 0.999 vs 1.148 (S_a1 0.883) | FAILS (no 30% cut); continuation raises accuracy but worsens tax: BCE-vs-tax mismatch | PLAN_sign.md "T-DEEP2 RESULT" |
+| A47 | Branch-2 analogue: S|B_k| + one Lanczos step at c=0 vs Jacobi head (T-B2P1) | 11-05 | 6x6 exact | s_G,B_6 2.646e-6; s_G,B_5 3.211e-6; sgn(psi_P),B_6 3.705e-6; sgn(psi_P),B_6 + head 7.202e-6; competitor 5.574e-6 | WORKS: one final step beats the competitor at fixed own sign; the head at a fixed own sign does not | PLAN_sign.md "T-B2P1 RESULT" |
 
 ## B. Amplitude storage, learning and write-back
 

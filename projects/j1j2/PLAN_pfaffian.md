@@ -2021,3 +2021,10 @@ fixed-sign grading plan above where they differ:
   8x8 headline gain over M1 + p=1 = ~34% of M1-p=1's error to E0. E0 is not known at 8x8: Hu -0.49906(1) gives an error of 1.14e-4 and a gain of
   ~3.9e-5; ours -0.498992(16) gives 4.6e-5 and ~1.6e-5. So B_k + p=1 = -0.498962 .. -0.498985. Caveat: at 6x6 B was fit with s_G labels; at 8x8 it is
   fit under sgn(M1) (labels eps^2 0.40 off s_G's), so I expect the low end or below. Kill: not below -0.498946 by > 3 sigma.
+Result gate (a) round 2 (2026-11-05; gate_a/round2/summary.json; 12 candidates, rfa evaluator; step-0 control reproduces sgn(M1) eps^2 0.400(10)
+exactly through the new path; verified): FAILS. No candidate beats sgn(M1). Best on half A: T-IW gamma 0.5 step 19998 (M1 labels), A 0.610(33),
+B 0.674(31), total 0.642(23). Others 0.71-1.47; within each arm eps^2 falls with training but from > 0.9 and never below 0.40.
+Mechanism (measured): training lowers the fraction of x with S != s_G (19.8% -> 14-16%) but moves errors into the HIGH-amplitude decades:
+best candidate -2..-5: .40 .42 .72 .68 against sgn(M1)'s .04 .12 .25 .31. The sign is trained on a configuration-weighted wrong-sign count
+(w_T), while the labels need the bond metric |H| B_x B_y (Delta*_x - Delta*_y)^2, where a wrong high-amplitude bond costs far more. The two
+objectives conflict: what lowers w_T raises eps^2. Branch 1 stays closed (needs a pass on A and on fresh blocks).

@@ -1819,3 +1819,9 @@ not an |f_J| quantile (1.31).
 Lead decision (2026-11-05): 8x8 R1 uses STORED-sign labels; expected loss ~17% of the round gain (eps^2 0.17 at 6x6), registered before the run.
 When a trained 8x8 sign exists: eps^2 at 8x8 on the 6332 decades8 draws (direct-s_G f_J already stored); >= 0.3 -> fix the sign's deep tail
 (sign angle), not the labels. The per-decade disagreement goes to the sign angle as its training target.
+Result pool re-sizing + f0 (2026-11-05; decades8/sizing/sizing.json, beta0/b0_{6,8}/; code 40259d9):
+- Pool for fitted decades -2..-9 (derived): rungs {1, .5, .25} with S_q 3.3e5 / 4.5e5 / 3.2e5 = 1.10e6 draws, ~231 core-h of sampling (halves 198 / 225);
+  the optimum is flat ({1, .5, .125} 235; {1, .5} 243). Weak spot: beta = 1 efficiency at -5/-6 rests on 21/8 draws (those decades come from beta .5/.25).
+- f0 (c2): definition = n-weighted signed q.9999 of f_J (0.6235649 exactly on theta_4's table). Sampled at beta = 0: 6x6 0.668(34), 1.3 sigma from
+  0.6236 (reproduces); 8x8 1.22(8) (~1.2e4 draws, so this is near the sample max; rough). With f0 1.14-1.31 mode 'fix' leaves the range at -2..-9,
+  shares within 0.001 of 'old'. c2 is settled for the range; the 8x8 E' check of c2 is still open.

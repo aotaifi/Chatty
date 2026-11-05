@@ -1,4 +1,5 @@
 # PLAN_sign: sign-storage angle (angle lead, session started 2026-10-30; reports to the FN-loop lead)
+Shared lessons with the lead: LESSONS.md (read before designing any test; add a row when a lesson costs a run).
 
 ## Question (one, open)
 Can a second network STORE each round's sign s_{k+1} = sgn psi'_k (psi'_k = one signed Lanczos step of the guide
@@ -717,6 +718,43 @@ alpha -0.17543, E -31.915136; same schedule; grade w - d paired, missed/false by
 Predictions: false-flip weight of the unweighted final checkpoint sits in the upper half of |v'|^2 [65%]; one arm gives w - d < 0 beyond its 95% interval [40%].
 Kill: neither arm below d -> this class + BCE cannot beat the free no-update sign at 8x8 at this data size; report to the lead (8x8 then uses sgn(M1)
 or the exact step with its cost).
+
+## 8x8 PP-FULL WARM RESULT 2026-11-05 (A40 17750218 train, CPU 17751790 grade; sign_scale/r8/gradew/wT_ppw_s1.json verified by me)
+1-PP complex phase, FULL space-group projection (1024 images), warm-started from M1's pairing without the RBM factor, 4500 steps (cap, not plateau), alpha -0.18 labels:
+w_T 5.87e-5 [5.23, 6.50]e-5 vs no-update d 1.63e-4 [1.47, 1.79]e-4 -> r_8 = 0.64; missed 2.22e-5, false 3.65e-5. QUOTABLE (2 chains).
+Matched 6x6 (same class and start, 4500 steps): w 2.89e-6 vs d 5.97e-6 -> r_6 = 0.52. Copy quality does NOT degrade from 6x6 to 8x8 at matched budget
+(r_8 - r_6 = +0.12 +- 0.03, errors treat w and d as independent). The warm starts differ (8x8 step 0 r = 0.33, 6x6 step 0 r = -0.41), one seed each.
+Contrast: the frozen-RBM M1 copy (T-SIGN8, translation projection, exact start) could not beat d. Hypothesis (not derived): the full point-group projection
+is the inductive bias that generalises to unseen configurations; the frozen-RBM model's held-out BCE fell while its fresh-chain w rose.
+This is the 8x8 stored sign to hand to the Pfaffian angle (export in r8iw/HANDOFF_ppw.md). T-IW extended: PP-full arms gamma 0 / 0.5 / 1 on the loop's alpha/E labels.
+
+## GATE (a) on ppw_s1 (Pfaffian angle, 2026-11-05; PLAN_pfaffian.md "Result gate (a) on ppw_s1"): FAIL
+decades8 eps^2 (bond metric with (Delta*_x - Delta*_y)^2, half B): ppw_s1 0.539(44); its PP-full step 0 0.568(32); frozen sgn(M1) 0.400(10); bar 0.3.
+w_T fell 3x but eps^2 did not move: 80% of eps^2 comes from bonds the sign wrongly UNBLOCKS (~0.4% of bond weight). w_T is the wrong target metric.
+My error: I ranked ppw_s1 ahead of the r8f checkpoints by w_T; the PP-full class starts at 0.57 (RBM sign dropped), r8f starts at sgn(M1) = 0.40.
+Next (my call): gate (a) on r8f checkpoints (alpha -0.18) and on T-IW frozen-RBM gamma arms (matched alpha); PP-full gamma arms cancelled.
+If none passes 0.3 on B: bond-weighted loss on the loop's measure (|H_xy| B_x B_y (Delta*_x - Delta*_y)^2, unblock errors separately), scored by
+split-half eps^2, after an Astra review. If that fails: recommend the lead's Branch 2 (fixed sgn(M1)).
+
+## T-BOND (joint design, lead + angle lead, 2026-11-05, PI: "work together on this one"; pre-registered before any number; Astra review after 15:00)
+Lead's lessons (amplitude side): gains came from target and class, not weighting; never weight per configuration by psi^2 (|H| a_x a_y is psi^2-type:
+why T-EDGE failed); draw equally per decade (decade -13 band weighs ~120x its |A|^2 share); production loss ansatz/code/pool_fit.py l.11-22.
+Cost of one sign error (lead, from fj_fix.py l.14-21; re-derived by me): f_J(x) = ln SK_x - ln den_x, SK = sum_kept |H| r, den = diag - E' + sum_blocked |H| r.
+Misclassifying bond (x,y) moves h = |H_xy| |B_y/B_x| between SK and den:
+  wrong UNBLOCK: Df_J(x) = ln(1 + h/SK_x) - ln(1 - h/den_x);  wrong BLOCK: Df_J(x) = ln(1 - h/SK_x) - ln(1 + h/den_x).
+den_x >~ 9 but SK_x is tiny next to the node, so unblocking a large-r bond there is catastrophic: this derives '80% of eps^2 from unblocking on 0.4%
+of bond weight'. w_T (per configuration) and |H| a_x a_y (per bond, psi^2-type) both miss it.
+Design: frozen-RBM model at exactly sgn(M1) (eps^2 0.400; B half 0.406). Data: pool8 x-draws (sign-free, rungs beta 1/.5/.25, -7..-9 tail expansion),
+ALL ~2N bonds of each x, labels t_xy = s_G(x) s_G(y) from M1 consts (alpha -0.1754318714549749, E -31.915135844116154). Loss: BCE on the bond
+product m_x m_y vs t_xy, weight w_xy = |c Df_J(x)|^2 for the error direction (f0-capped as the labels: n-weighted signed q.9999, fj_fix mode 'fix'),
+x-end only (y symmetrised by drawing it as x), times the decade band weight. Bond-ESS per decade gate on the sign pool. ~2e5 x: labels ~7 A40-h.
+Gate S (angle lead's addition, before training, CPU): on the 6332 decades8 draws (both ends stored), the surrogate W = sum over wrong bonds of w_xy for
+sgn(M1), ppw_s1 step 0 and ppw_s1 must order like their eps^2 (0.400 < 0.539 < 0.568) and W/eps^2 must agree across the three within 30%.
+Fails -> the weight is not the loop's cost; no training.
+PASS: half-B eps^2 < 0.3 for the best-on-A checkpoint, both seeds. KILL: half-A eps^2 not below 0.37 within ~3000 steps in either seed.
+Ruled out up front (lead's list): psi^2 or per-configuration weights; walker-count labels; selection on the gate half; parameter-space gates;
+f_J non-finite rows -> node; one constant set; exact warm start; strict optimiser acceptance; no 6x6 coefficients; two seeds before any pass.
+Predictions (angle lead): Gate S passes [55%]; PASS [30%]; KILL fires [40%].
 
 ## Dead ends
 (none yet)

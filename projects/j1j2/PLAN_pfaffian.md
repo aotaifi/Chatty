@@ -2009,3 +2009,15 @@ Ext1 amendment (lead, before the fit started; 2026-11-05 ~17:05): fit_overrides.
 17763914 still PENDING; seed-1 copy kept as spec_r1.seed1.json). In cx_r1fit the seed drives the training sampler, the held-out batch, the WBAR
 estimate, the fixed batch TRB and the JAX key; model state unchanged. So ext1 sees new training draws; its held-out loss is on a new batch (plateau
 (A) compares windows inside ext1 only) and WBAR is a fresh estimate of the same normalisation (recorded as a small change of the loss weights).
+BRANCH 2 = OPTION (ii) (lead decision 2026-11-05, from T-B2P1, sign_b2p1/*.json, controls 7.061e-6 / 5.574e-6 reproduced). This supersedes the
+fixed-sign grading plan above where they differ:
+- Rounds: amplitude rounds at fixed sgn(M1); the Jacobi head (c f_J) is used ONLY to build each round's refit target, not in the graded guide.
+- Final guide: one signed Lanczos step at c = 0 on sgn(M1)|B_k| (psi_1 = (1 + alpha (E_L - E)) sgn(M1)|B_k|, alpha/E by M1's VMC rule), then FN.
+- Evidence at 6x6: sgn(psi_P) on B_6 + step 3.705e-6; same sign + head, no step 7.202e-6 (worse than the competitor 5.574e-6).
+- HEADLINE: B_k + p=1 + FN vs M1 + p=1 + FN -0.498946(5), at equal total GPU-h including the loop.
+- R0 CHECK: M1's p=1 reproduced through the new evaluator (B_0 = rb8_prod, sgn(M1), step, FN) within 2 sigma of -0.498946(5).
+- Mechanism test (kept): R1 bare at sgn(M1) vs p=0 -0.4987565(28).
+- HYPOTHESIS (from the 6x6 analogue (b): the step on the refit B gains 1.87e-6 of the competitor's 5.57e-6, ~34% of M1-p=1's error to E0):
+  8x8 headline gain over M1 + p=1 = ~34% of M1-p=1's error to E0. E0 is not known at 8x8: Hu -0.49906(1) gives an error of 1.14e-4 and a gain of
+  ~3.9e-5; ours -0.498992(16) gives 4.6e-5 and ~1.6e-5. So B_k + p=1 = -0.498962 .. -0.498985. Caveat: at 6x6 B was fit with s_G labels; at 8x8 it is
+  fit under sgn(M1) (labels eps^2 0.40 off s_G's), so I expect the low end or below. Kill: not below -0.498946 by > 3 sigma.

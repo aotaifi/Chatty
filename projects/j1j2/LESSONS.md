@@ -23,6 +23,7 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - A per-bond (or per-configuration) surrogate for eps^2 misses its cross terms: eps^2 is a Laplacian quadratic form in label errors, errors at one x add inside the logs | T-BOND rejected before running; Gate S had a demonstrated false positive | PLAN_sign "ASTRA on T-BOND"
 - Validating a surrogate on 2-3 correlated known cases proves little; test it directionally on controlled perturbations (isolated, cluster flips) | Gate S | ASTRA_eps2.md (3)
 - A per-bond diagonal surrogate of eps^2 is wrong: eps^2 is a graph-Laplacian form eta^T L eta with endpoint cross terms; errors at one x add inside the logs and most roots carry several wrong bonds (5085/5724); the x end held only 0.07-0.09 | T-BOND design rejected (lead's derivation), Gate S would have passed falsely | Astra cj-a2cbf28c7311; PLAN_sign "T-BOND"
+- Cutting the wrong-sign FRACTION (w_T) can raise the loop's label error: training moved errors into high-amplitude decades (-2..-5: .40-.72 vs sgn(M1) .04-.31), where |H| B_x B_y weighs them most | 12 trained 8x8 signs all worse than the untrained sign (best 0.61/0.67 vs 0.39/0.41) | PLAN_pfaffian gate (a) round 2; gate_a/round2/summary.json
 
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"

@@ -1838,3 +1838,26 @@ not 231 (which assumed independent per-rung chains). Decision (mine, before any 
 (a per-rung rewrite would need a new exactness test) and raise the cap to 560 core-h; every rung then gets 4.5e5 draws (beta 1 and .25 get a free
 surplus). Gate amendment: cells whose sizing count is < 100 are tested at 3 sigma combined instead of the 20% band (the 20% band is
 statistically impossible there); the literal 20% misses are printed beside.
+
+## Lead decision after Astra (2026-11-05; cj-6a20013aa7ba, /scratch/a/A.Otaifi/astra/v_go/REVIEW.md, read)
+GPU readiness work GO; production R0 / c1 / R1 grading NO-GO until (a)-(e) close:
+(a) trained 8x8 sign: eps^2 < 0.3 on the 6332 decades8 draws, block errors + per decade, no-update control (waits for the sign angle's checkpoint).
+(b) c1 as a PAIRED equivalence test (Astra: independent arms need sigma <= 0.72-1.08e-6 each; two at 3e-6 give sigma(tax) 4.2e-6). Design below.
+(c) pool sized on BOND-weight ESS (root weights w_in mean_k rho), not configuration ESS (V's -6: 7.0k bond vs 23.2k configuration).
+(d) labels: total bill first (direct s_G ~150 A40-h for 1.35e6 entries); decide after (a). RETRACTED from the registration: "eps^2 0.17 means ~17%
+    of the round lost". That transferred the M-R storage law to a changed FN operator, which it does not cover. The stored-sign label effect is
+    measured, not inferred.
+(e) f0 at 8x8 rests on ~1.2 tail observations: bootstrap interval, or a less extreme quantile.
+Also from Astra: close c2's E' part (E' must match the S|B| convention, not the Re B p=0 number) with a sensitivity check; c5 literally (same-sign
+bare and augmented R0/R1); c is a 6x6 transfer, so R0 rescans c; the competitor bar is best trainable network + FN at equal TOTAL GPU-h.
+c1 paired design (paper, before any run):
+- Same amplitude |B| (production), c = 0, two sign arms: stored S and direct s_G. At c = 0 direct s_G costs one E_L per one-swap endpoint
+  (d ~ 145 per walker step), one level, not d^3, so the s_G arm is affordable on GPU.
+- Estimator: common random numbers. Both arms run the same walker population with the same RNG stream, and the reconfiguration uses the same
+  uniforms (comb). The arms coincide until a walker meets a bond whose kept/blocked status differs (S != s_G at x or y), which is rare in the
+  bulk. tax = mean over blocks of (E_S - E_sG) per paired block; error from the scatter of the paired differences over >= 2 independent pairs.
+- Precision target: sigma(tax) <= 0.5e-6 (bounds a tax below 3e-6 at > 4 sigma, and resolves a ~1e-6 tax).
+- Numbers come from a 6x6 pilot where the answer is exact: table-guide GFMC (c3 machinery) with S_a1 vs s_G on B_4 at c = 0; exact tax from the
+  two table FN solves. Measure the variance ratio var(paired diff)/(var_S + var_sG), check the paired estimate against the exact tax within
+  2 sigma, and show a broken version (independent seeds) gives the naive variance. The 8x8 cost then = per-arm variance from the H100 benchmark
+  x the measured ratio (if the ratio transfers; re-measured on a short 8x8 pair before production).

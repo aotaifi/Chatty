@@ -1925,3 +1925,8 @@ of decades8 (-4..-9); >= 0.2 means the alpha mismatch alone is a large part of 0
 its own alpha) before a verdict on the class; < 0.05 means the mismatch is not the cause. ~40 core-h.
 Also noted: w_T (|v'|^2-weighted wrong-sign weight) does not track eps^2 (bond metric with (Delta*_x - Delta*_y)^2): 80% of eps^2 comes from bonds
 the sign wrongly unblocks, ~0.4% of the bond weight. A sign trained to minimise w_T is not trained on what the labels need.
+Gate (a) round 2 (lead / sign angle 2026-11-05; registered before any number): candidates (i) r8f frozen-RBM checkpoints 3000 / 6000 / 9000 / 9900
+(sign_scale/r8f/HANDOFF.md, stored_sign8.py; alpha -0.18 labels), (ii) T-IW frozen-RBM gamma arms trained on M1's alpha/E labels, as their exports
+land (sign_scale/r8iw/HANDOFF.md). PP-full arms cancelled. Select the lowest eps^2 on half A across ALL candidates; gate it on half B (< 0.3).
+Reference: step-0 = sgn(M1) per half, A 0.394(12), B 0.406(15) (this class starts there, so passing needs a ~25% cut). Branch 2 preparation
+continues in parallel; R1 takes whichever branch is ready with its gates passed.

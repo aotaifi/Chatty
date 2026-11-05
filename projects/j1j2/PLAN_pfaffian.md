@@ -1999,3 +1999,9 @@ Result alpha-mismatch control (2026-11-05; job 17761852; alpha_ctl/alpha_ctl_res
 s_G(-0.18, E -31.915008) labels vs s_G(M1) labels = 0.024(4) over -4..-9 (halves 0.024 / 0.024; QUOTABLE A vs B). Per x-decade -9..-4: .16(7) .041
 .032 .031 .012 .008. NOT THE CAUSE (registered < 0.05): the gate (a) miss of ppw_s1 (0.54) is not a label-target mismatch; it is the stored
 sign's own deep errors.
+CORRECTION (2026-11-05, found by the ext1 worker): at 1500 I reported plateau (A) as PASS (0.12%). That number is a 4-point window (steps
+1170-1200 vs 1470-1500), not the registered 16-point windows 1050-1200 vs 1350-1500, which give 2.9% > 1.5%: (A) FAILS as registered. The
+verdict "not plateaued" is unchanged (B failed too). The ext1 plateau gate prints both and reads the registered 16-point form.
+Ext1 RUNNING (submitted 2026-11-05 16:20; A40 fit 17763914 PENDING, table 17763915, CPU chain m5p2x_chain.sh): warm theta(1500) sha 325a9482;
+tail average = 7 iterates 1200..2100 at spacing 150 (incl. 1500, as at 1500); same seed, so ext1's batch stream repeats round 1's first 600 steps
+(same pool, different theta; recorded). Expected VERDICT ~8.5 h after start (--test-only start 11-06 06:29).

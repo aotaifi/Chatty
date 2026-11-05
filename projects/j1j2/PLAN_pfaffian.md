@@ -1930,3 +1930,16 @@ Gate (a) round 2 (lead / sign angle 2026-11-05; registered before any number): c
 land (sign_scale/r8iw/HANDOFF.md). PP-full arms cancelled. Select the lowest eps^2 on half A across ALL candidates; gate it on half B (< 0.3).
 Reference: step-0 = sgn(M1) per half, A 0.394(12), B 0.406(15) (this class starts there, so passing needs a ~25% cut). Branch 2 preparation
 continues in parallel; R1 takes whichever branch is ready with its gates passed.
+Result c1 paired pilot (2026-11-05; c1pair6/; gfmc_pair.py 1a892fa; exact tax job 17752394; verified exact_tax.json):
+- Exact c = 0 tax of S_a1 on |B_4| (table FN solves): 1.32362e-6 per site (e 1.3508104e-5 vs 1.2184484e-5).
+- Paired estimator, clock moves + per-walker stochastic-rounding reconfiguration (PK, 4 pairs, 1.23e6 walker-tau per arm): 1.36(81)e-6, z +0.04;
+  QUOTABLE 1.34(79)e-6. Comb design as written (PC): 1.74(1.37)e-6. Independent seeds (IK): naive variance (ratio 1.09).
+- Variance ratio var(diff)/(var_S + var_sG): PK 0.66(3), but 0.43 -> 0.94 over the run's fifths; walker coincidence 0.79 -> 0.10. The saving
+  is only ~1.6x (3.2e6 vs 5.1e6 walker-tau per arm for sigma 0.5e-6).
+- Mechanism: a walker that hops through a bond where S != s_G diverges and never re-merges, and branching lets diverged lineages take over;
+  the comb spreads any weight difference to all later walkers (PC decouples within one fifth).
+Reading: the estimator is UNBIASED (exact tax recovered) but common random numbers alone do not keep the arms coupled over a long run. The
+remaining lever is short forks from a common population: many segments, each started from the same walkers, read while R is still ~0.4.
+That needs the projection-relaxation time after a fork (bias of the forked arm) to be shorter than the decoupling time; not measured.
+For 8x8 sizing: per-arm variance from the H100 benchmark x 0.66 (long runs) as the conservative factor; S != s_G is more frequent at 8x8, so
+decoupling is likely faster there.

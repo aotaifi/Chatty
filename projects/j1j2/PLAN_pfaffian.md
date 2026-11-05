@@ -1944,3 +1944,23 @@ That needs the projection-relaxation time after a fork (bias of the forked arm) 
 For 8x8 sizing: per-arm variance from the H100 benchmark x 0.66 (long runs) as the conservative factor; S != s_G is more frequent at 8x8, so
 decoupling is likely faster there.
 c1 sizing (lead 2026-11-05): 8x8 c1 is sized with NO pairing saving (ratio 1.0); any saving seen at 8x8 is a bonus. c1 matters only on branch 1 (T-BOND passes); branch 2 (fixed sgn(M1)) needs no c1. Short-fork work is dropped for now.
+
+## BRANCH 2 STARTED (lead decision 2026-11-05 evening; Astra cj-a2cbf28c7311 rejected T-BOND's surrogate, puts the PP-phase class < 0.3 at ~20%)
+Branch 1 reopens only if a T-IW checkpoint passes eps^2 on half A AND on FRESH process blocks (half B has been reused). T-IW finals are being graded
+(ga2_g05/g10_19998, running).
+Branch 2 = fixed-sign amplitude loop at sgn(M1) = sgn Re[w psi_rb8_prod], M1 consts.json constants everywhere.
+Steps, each gated: (1) stage-1 pool passes bond ESS >= 3 P per decade -2..-9 with sgn(M1) (if the tail cannot be covered: tell the lead before
+labelling); (2) labels on that pool (sgn(M1) is free from the lemma ratios); (3) fit R1: two-PP warm from rb8_prod (A40, or H100 inside the
+lead's 15 H100-h ceiling); (4) no production grade until the H100 benchmark gives H100-h per point; anything above the ceiling goes to the PI.
+Mechanism (why a fixed-sign loop can gain): lattice FN energy depends on the guide's amplitude ratios on sign-violating bonds, not only on its
+signs. At 6x6 the c = 4 augmentation at fixed s_G moved E_FN from 1.218e-5 to 4.37e-6 per site with no sign change. So amplitude-only rounds
+have headroom; how much at sgn(M1) is unknown. The target's correction measure differs from s_G's by eps^2 0.40.
+PREDICTIONS (mine, registered before any 8x8 number; low confidence, ~50% for each range):
+- R0-aug (B_0 = rb8_prod, sgn(M1), c rescan 2..5): E = -0.49882 .. -0.49886 per site (a gain of 0.6-1.0e-4 below p=0 -0.4987565(28)). My basis:
+  the s_G-design R0 predicted about p=1 (-0.49894, 1.9e-4 gain); scaled by ~(1 - eps^2) ~ 0.6 for the lost deep correction, minus the
+  stored-label loss.
+- R1 bare (two-PP fit to T_1 under sgn(M1)): -0.49877 .. -0.49881 (a stored fraction r ~ 0.2-0.5 of the R0-aug gain).
+- R1 aug: -0.49884 .. -0.49889.
+KILLS: R0-aug not below p=0 by > 3 sigma -> the augmentation does not transfer to 8x8 at sgn(M1) (stop, diagnose c and f_J at scale). R1 bare
+not below p=0 by > 3 sigma -> the fixed-sign loop does not store at 8x8.
+BAR: M1 + FN p=0 at the same sign, -0.4987565(28), analysis_final.json. Same-sign comparisons only (c5).

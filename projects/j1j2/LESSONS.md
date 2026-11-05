@@ -20,6 +20,10 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - Compare against the strongest published network, measured on our own E0, not a competitor we built; re-derive a published gap from the raw energy | CNN-MPS bar 3.2 -> 2.65e-6 (rounded ED) | PLAN.md Queue "Competitor bar"
 - Independent energies cannot bound a small difference (two 3e-6 errors -> 4.2e-6 on the tax); use paired / common-random-number estimators | c1 redesign | Astra cj-6a20013aa7ba
 
+- A per-bond (or per-configuration) surrogate for eps^2 misses its cross terms: eps^2 is a Laplacian quadratic form in label errors, errors at one x add inside the logs | T-BOND rejected before running; Gate S had a demonstrated false positive | PLAN_sign "ASTRA on T-BOND"
+- Validating a surrogate on 2-3 correlated known cases proves little; test it directionally on controlled perturbations (isolated, cluster flips) | Gate S | ASTRA_eps2.md (3)
+- A per-bond diagonal surrogate of eps^2 is wrong: eps^2 is a graph-Laplacian form eta^T L eta with endpoint cross terms; errors at one x add inside the logs and most roots carry several wrong bonds (5085/5724); the x end held only 0.07-0.09 | T-BOND design rejected (lead's derivation), Gate S would have passed falsely | Astra cj-a2cbf28c7311; PLAN_sign "T-BOND"
+
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"
 - A complex perturbation of a real Psi flips signs where |Re Psi| < eps^2 |Psi_2|; the normalised margin Re(Psi)/|Psi| has zero gradient at real Psi. Use a real f with m = Psi / sum|terms| | 2.1% step-0 flips | PLAN_sign "T-SIGN8 GATE 0 FAIL"

@@ -501,7 +501,7 @@ delta_today.md; check all before proposing (a tried-ideas index is being built).
 - Amplitude network for the 14x14 loop (PI + lead 2026-11-05): spec = a two-swap ratio at ~constant x a plain step (low-rank or local update)
   AND the Jacobi correction within reach of a refit. PP: cheap, holds 25-49%/round. CNN: plain re-eval ~2N x, but finite light cone ->
   cached local update possibly constant (worker reading LaQX cnn_mps.py: proposals/2026-11-05_cnn_mps_twoswap_cost.md, future input).
-  ViT: global attention, every layer changes all tokens -> no cheap update; usable only as a node sign (T-HYB). Own architecture = this spec
+  ViT: global attention, every layer changes all tokens -> no cheap update; as a node sign with PP walls FAILS (T-HYB, A45: hybrid tax 0.998e-6 > PP 0.883e-6). Own architecture = this spec
   (the earlier network-angle attempt lacked it); exploratory, parked.
 - Local dressing that keeps cheap determinant updates (PI 2026-11-03): CNN-MPS (2603.14425) gains from a local disentangler (backflow);
   our backflow PP killed the cheap Jacobi step (~800x). Question: a dressing that changes only the swapped sites' pair amplitudes, so a

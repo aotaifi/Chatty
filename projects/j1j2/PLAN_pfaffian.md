@@ -1797,3 +1797,14 @@ Consequences: (1) the fitted 8x8 decades are -2..-9; pool8's sizing was for +2..
 configuration here (f_J with E_L at every endpoint), i.e. ~5e4 core-h for 1.5e6 labels. (3) f0 is unsettled: the beta = 1 sampled q.9999 is 0.143
 (essentially the sample max), while the 6x6 fix used the n-weighted q.9999 (0.6236 for f_J), and a |B|^2-weighted cap moves Test W's shares by up to
 72 sigma. Proposal: f0 = the n-weighted q.9999 at 8x8, sampled at beta = 0 (uniform over Sz = 0, i.e. n-weighted), validated at 6x6 against 0.6236.
+Stored-sign labels check (lead 2026-11-05; 6x6 exact, CPU; pre-registered before any number)
+Question: production labels use f_J computed with the STORED sign S (V used s_G). Does that change the round correction?
+Quantity: Delta*_S = c f_J[B_4; S_a1] and Delta*_sG = c f_J[B_4; s_G] (c = 4, mode 'old' and 'fix' f0 0.6236), on the exact 6x6 tables. eps^2 =
+|Delta*_S - Delta*_sG|^2 / |Delta*_sG|^2 in the Test W (ii) bond metric (|H_xy| B_4(x) B_4(y) on blocked bonds of s_G, x the smaller side,
+global constant removed), per |B_4|^2 decade over the fitted decades and in total; also with S's blocked bonds.
+Mechanism: f_J[B; S] differs from f_J[B; s_G] only on rows where S != s_G at x or at a neighbour (the kept/blocked split flips). S_a1's wrong
+signs sit in the low-amplitude tail, where Delta* also lives, so eps^2 should grow toward deep decades.
+Prediction (mine): total eps^2 0.03-0.3, central 0.1; the deepest fitted decades above the total.
+Registered: eps^2 <= 0.1 -> stored-sign labels fine; eps^2 >= 0.3 -> they cost a large share of each round (M-R law: kept fraction ~ 1 - eps^2),
+decide before 8x8 labelling; in between -> report and the lead decides. Broken version: S = s_G gives eps^2 = 0 exactly; S = Marshall sign must give
+eps^2 = O(1). ~10 core-h.

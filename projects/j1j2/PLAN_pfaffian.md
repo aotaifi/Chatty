@@ -1861,3 +1861,6 @@ c1 paired design (paper, before any run):
   two table FN solves. Measure the variance ratio var(paired diff)/(var_S + var_sG), check the paired estimate against the exact tax within
   2 sigma, and show a broken version (independent seeds) gives the naive variance. The 8x8 cost then = per-arm variance from the H100 benchmark
   x the measured ratio (if the ratio transfers; re-measured on a short 8x8 pair before production).
+Gate (a) protocol (lead / sign angle 2026-11-05, before any number): run the decades8 eps^2 check on 3-4 T-SIGN8 checkpoints (held-out BCE does
+not track the tax: T-DEEP2 accuracy 0.979 -> 0.990 while the tax rose 0.27e-6). Split the 6332 draws into halves A/B by process block; choose the
+checkpoint with the lowest eps^2 on A; the gate (eps^2 < 0.3) is judged on B, with block errors and per decade. No-update control as Astra asked.

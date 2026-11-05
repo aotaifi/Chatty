@@ -2035,3 +2035,4 @@ variance ratio 1.08(11), no drift, flat block scaling, error already includes ch
 the pool is USED, with the registered FAIL beside it. A real occupancy shift of this size could not bias the fit: pool_fit self-normalises the
 weights inside each (beta, decade) cell, so a cell's occupancy changes only its ESS, not its weights' mean. This pool is in any case only the
 -2..-6 part; the deep decades come from the stage-1 expansion + importance resampling (bond-ESS gate).
+Lead agreed (2026-11-05): pool used, no confirmation batch. Condition: if R1's per-decade held-out loss is an outlier in decade -2 (the beta-1 cell that failed halves), re-open it.

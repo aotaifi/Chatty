@@ -1082,3 +1082,4 @@
 - 2026-11-05 sign angle: T-HYB pre-registered (lead's hybrid: XL CNN node + PP walls, graded on R6; pass < 0.6e-6).
 - 2026-11-05 T-HYB running (CPU; PLAN_sign.md): H1 S_XL node + S_a1 walls, H2 s_G node + S_a1 walls (pure wall cost), C1 S_XL own walls on R6; |H|-weighted wall disagreement written before grading; angle prior H1 0.5-0.9e-6, pass 35%.
 - 2026-11-05 PI: CNN-MPS two-swap cost count sent to a worker as future input (proposals/2026-11-05_cnn_mps_twoswap_cost.md); Queue line added: amplitude-network spec for 14x14 (cheap two-swap ratio + Jacobi correction storable); ViT no cheap update; own architecture parked.
+- 2026-11-05 CNN-MPS two-swap cost (worker, read-only; proposals/2026-11-05_cnn_mps_twoswap_cost.md; lead checked del cache at cnn_mps.py:105): cached ratio 0.90-0.98 of a full forward (20-layer light cone covers the lattice; all MPS tensors change) -> one Jacobi step ~2N x plain: kill fires for CNN-MPS as the walled amplitude.

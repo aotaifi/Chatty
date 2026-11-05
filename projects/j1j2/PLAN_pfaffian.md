@@ -1864,3 +1864,14 @@ c1 paired design (paper, before any run):
 Gate (a) protocol (lead / sign angle 2026-11-05, before any number): run the decades8 eps^2 check on 3-4 T-SIGN8 checkpoints (held-out BCE does
 not track the tax: T-DEEP2 accuracy 0.979 -> 0.990 while the tax rose 0.27e-6). Split the 6332 draws into halves A/B by process block; choose the
 checkpoint with the lowest eps^2 on A; the gate (eps^2 < 0.3) is judged on B, with block errors and per decade. No-update control as Astra asked.
+
+## Two branches for R1 after T-SIGN8 (lead 2026-11-05: no trained 8x8 phase-PP checkpoint beats the no-update sign; T-IW is the last try)
+Label constants, ONE set everywhere: M1's /scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/V/consts.json: alpha -0.1754318714549749, E -31.915135844116154,
+w = -1 (decades8's; the sign angle's -0.18 / -31.915008 are NOT used in this angle).
+Branch 1 (T-IW gets below d): stored-sign loop as planned; gate (a) on T-IW checkpoints with the A/B split protocol.
+Branch 2 (T-IW fails): R1 at a FIXED sign, the amplitude-only loop. My reading of "sgn(M1)": the sign of the production network itself,
+sgn Re[w psi_rb8_prod], frozen across rounds (the sign of M1 p=0, whose FN energy is -0.4987565(28)); NOT s_G (that would be M1 p=1's sign,
+which cannot be evaluated at walker time with c > 0). Labels T = sgn(M1) |B_k| e^{4 f_J[B_k; sgn(M1)]}; for k >= 1 sgn(M1) at endpoints comes
+from a second lemma evaluator of P_1 (PhaseSign-like). Competitor: M1 (or the best trainable network) + FN p=0 at the same sign, equal total
+GPU-h. Gate (a) becomes information: eps^2 of sgn(M1)-labels vs s_G-labels on the decades8 draws = "value of the sign step not captured".
+That number is computed now (CPU, below).

@@ -2080,3 +2080,9 @@ negated steps are rejected.
 Rule (registered before the next scan): scan sep in {0.03, 0.1, 0.3} x median target t in {0.003, 0.01, 0.05}; among the pairs whose start loss
 is <= 1.2x B_0's, take the largest t (tie: the larger sep). Then a 20-step CPU dry run must show P_2 USED: its projection share of the function
 change in the fit metric >= 0.1 by step 20 (the M5' lesson). Otherwise take the next pair.
+R1 warm start CHOSEN by the registered rule (2026-11-06; prep/warm/scan.json, dry_sep0.03_t0.05/share.json; verified): sep 0.03, median target
+0.05 (lam 0.0397 on the toy pool), start held-out loss 0.159 = 1.08x B_0's. ln|P_2/P_1| quantiles q1/q50/q99 -1.18/0.23/2.80, so P_2 is O(1)
+of P_1 across the pool, not a tangent-space copy (a linearisable perturbation would sit at ratio ~1 +- small). 20-step dry run: P_2 projection
+share 0.178(30) at step 20 (accept >= 0.1; it scatters 0.02-0.31 over steps 5-20, so this is a reading, not a trend); held-out 0.159 -> 0.138 with
+a minimum at step 7 and one spike (0.512 at step 16). Launcher override R1_SPEC_OVER='{"p2_sigma_rel": 0.03, "p2_lam_median_target": 0.05}';
+lam is recomputed on the production pool.

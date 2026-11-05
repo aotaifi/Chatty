@@ -1964,3 +1964,7 @@ PREDICTIONS (mine, registered before any 8x8 number; low confidence, ~50% for ea
 KILLS: R0-aug not below p=0 by > 3 sigma -> the augmentation does not transfer to 8x8 at sgn(M1) (stop, diagnose c and f_J at scale). R1 bare
 not below p=0 by > 3 sigma -> the fixed-sign loop does not store at 8x8.
 BAR: M1 + FN p=0 at the same sign, -0.4987565(28), analysis_final.json. Same-sign comparisons only (c5).
+Branch 2 bars (lead 2026-11-05): every branch-2 number is reported against BOTH (i) same-sign p=0 -0.4987565(28) (the mechanism test, as
+registered) and (ii) M1 + one Lanczos step + FN p=1 -0.498946(5) (the competitor, which carries the sign step).
+READ THIS BEFORE ANY BRANCH-2 RESULT: the predicted R1 aug range (-0.49884..-0.49889) sits 6-11e-5 ABOVE bar (ii). Branch 2 tests whether
+amplitude rounds work at 8x8, not whether the loop wins there; a win needs the sign back. A pass on (i) is not a loop advantage.

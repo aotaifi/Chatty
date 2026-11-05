@@ -33,6 +33,7 @@ assert s['decs_rel'] == B2.DECS_R1, f"pool decades {s['decs_rel']} != {B2.DECS_R
 assert all(s['counts'][str(d)]['train'] > 0 and s['counts'][str(d)]['heldout'] > 0 for d in B2.DECS_R1), 'a decade without train / held-out entries'
 z = np.load(f'{POOLDIR}/pool.npz'); assert float(z['med2lnB']) == float(s['med2lnB'])
 sp = B2.r1_spec(f'{D}/pool.npz', PS, warm_npz=f'{D}/params_final.npz', code_dir=HERE, **json.loads(OVER))
+sp = B2.resolve_lam(dict(sp, warm_npz=B2.PROD8), f'{POOLDIR}/pool.npz'); sp['warm_npz'] = f'{D}/params_final.npz'   # lam from the LOCAL pool + params (same files, sha-checked)
 json.dump(sp, open(f'{LOC}/spec_r1.json', 'w'), indent=1)
 print(f"spec {LOC}/spec_r1.json: pool S {s['S']} med {s['med2lnB']} decs {s['decs_rel']} train/heldout " + ' '.join(f"{d}:{s['counts'][str(d)]['train']}/{s['counts'][str(d)]['heldout']}" for d in B2.DECS_R1)
       + f"  B {sp['B']} steps {sp['max_steps']} fit_sec {sp['fit_sec']} lam_init {sp['lambda_init_re']} p2_sigma_rel {sp['p2_sigma_rel']}")

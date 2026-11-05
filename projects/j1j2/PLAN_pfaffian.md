@@ -2073,3 +2073,10 @@ Result branch-2 prep (2026-11-06 ~00:00; pfaffian_8x8_r1/prep/; code above):
   (sep 0.3, lam 0.1) wrecks the start (held-out 8.1-8.9 vs B_0's 0.147), even at lam 1e-5, because a 30% perturbation of a 64x64 f changes
   |det| by orders of magnitude, so |lam P_2| >> |P_1|. Decision (mine): keep P_2 far from P_1's tangent space (sep 0.3; Astra P16) but set lam
   so that the pool-median |lam P_2 / P_1| = 0.05 at the start (6x6 round 5 ended at median 0.67); accept if the start loss is <= 1.2x B_0's.
+R1 warm-start scan (2026-11-06; prep/t2/warmscan_lamt*.json): with sep 0.3, ln|P_2/P_1| has median 14.85 and 10-90% spread 11.55-18.22 (a random
+30% perturbation of f gives a PP whose amplitude is unrelated to P_1, unlike 6x6's trained P_2). So a median-normalised lam leaves a heavy tail.
+Start loss vs B_0's 0.147: t 0.05 -> 4.8x, 0.01 -> 1.75x, 0.003 -> 1.16x, 0.001 -> 1.04x. Dry runs fall from both registered targets and the
+negated steps are rejected.
+Rule (registered before the next scan): scan sep in {0.03, 0.1, 0.3} x median target t in {0.003, 0.01, 0.05}; among the pairs whose start loss
+is <= 1.2x B_0's, take the largest t (tie: the larger sep). Then a 20-step CPU dry run must show P_2 USED: its projection share of the function
+change in the fit metric >= 0.1 by step 20 (the M5' lesson). Otherwise take the next pair.

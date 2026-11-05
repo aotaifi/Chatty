@@ -272,6 +272,26 @@ def r1_spec(pool, pool_sha, warm_npz=PROD8, code_dir=HERE, **over):
     sp.update(over); return sp
 
 
+def p2_logratio(pool, SP, n_max=None):
+    """ln|P_2(x) / P_1(x)| on the pool's x entries for the warm start of SP (warm_theta8's own P_2 construction: same seed, sep, RBM)."""
+    w = np.load(pool)['x']; w = w[:n_max] if n_max else w
+    th = PF.warm_theta8(dict(SP, lambda_init_re=0.0, lambda_init_im=0.0)); f1, b, W, f2, _ = PF.unpack8(th)
+    P1 = PL.PP2(f1, L=8, proj='translations', rbm='inner', b=b, W=W); P2 = PL.PP2(f2, L=8, proj='translations', rbm='inner', b=b, W=W)
+    X = PF.unpack64(w).astype(np.float64)
+    return np.real(np.asarray(PL.logB(P2, X))) - np.real(np.asarray(PL.logB(P1, X)))
+
+
+def resolve_lam(sp, pool_local):
+    """spec key 'p2_lam_median_target' t (lead 2026-11-06): lambda_init_re = t exp(-median ln|P_2/P_1|) over the pool's x, lambda_init_im = 0, so that the
+    pool-median |lam P_2 / P_1| = t at the start.  Records the median and quantiles in the spec."""
+    t = sp.get('p2_lam_median_target')
+    if t is None: return sp
+    lr = p2_logratio(pool_local, sp); med = float(np.median(lr))
+    sp.update(lambda_init_re=float(t) * math.exp(-med), lambda_init_im=0.0, p2_logratio_median=med,
+              p2_logratio_q=[float(np.quantile(lr, q)) for q in (0.01, 0.1, 0.5, 0.9, 0.99)], p2_logratio_n=int(lr.size))
+    return sp
+
+
 if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser(); s = ap.add_subparsers(dest='cmd')

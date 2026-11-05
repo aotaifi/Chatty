@@ -150,6 +150,7 @@ def t_dryrun():
     for tag, extra in (('ok', {}), ('broken_negate', dict(break_negate_step=True))):
         sp = B2.r1_spec(pool, sha(pool), B=int(os.environ.get('DRY_B', 256)), B_acc=int(os.environ.get('DRY_B', 256)), B_ho=int(os.environ.get('DRY_BHO', 256)), ho_every=1,
                         max_steps=3, save_theta_at=[], fit_sec=1e9, lambda_init_re=float(os.environ.get('DRY_LAM', 0.1)), **extra)
+        if os.environ.get('DRY_LAMT'): sp = B2.resolve_lam(dict(sp, p2_lam_median_target=float(os.environ['DRY_LAMT'])), pool)
         RD = f'{OUT}/dry{os.environ.get("DRY_TAG", "")}_{tag}'; os.makedirs(RD, exist_ok=True); json.dump(sp, open(f'{RD}/spec.json', 'w'), indent=1)
         t = time.time(); r = B2.fit(RD, sp); c = r['fit']['curve']
         res[tag] = dict(L_ho=[q['L_ho'] for q in c], L_tr=[q['L_tr'] for q in c], verdicts=[h['verdict'] for h in r['fit']['hist']], sec=time.time() - t,
@@ -158,7 +159,7 @@ def t_dryrun():
     ok = res['ok']; bk = res['broken_negate']
     res['PASS'] = bool(ok['L_ho'][-1] < ok['L_ho'][0] and ok['L_tr'][-1] < ok['L_tr'][0])
     res['BROKEN_FAILS'] = bool(not (bk['L_ho'][-1] < bk['L_ho'][0] and bk['L_tr'][-1] < bk['L_tr'][0]))
-    res['lambda_init_re'] = float(os.environ.get('DRY_LAM', 0.1)); jd(f't2c_dryrun{os.environ.get("DRY_TAG", "")}', res); log(f"(2c) PASS {res['PASS']} BROKEN_FAILS {res['BROKEN_FAILS']}")
+    res['lambda_init_re'] = float(json.load(open(f'{OUT}/dry{os.environ.get("DRY_TAG", "")}_ok/spec.json'))['lambda_init_re']); res['p2_lam_median_target'] = os.environ.get('DRY_LAMT'); jd(f't2c_dryrun{os.environ.get("DRY_TAG", "")}', res); log(f"(2c) PASS {res['PASS']} BROKEN_FAILS {res['BROKEN_FAILS']}")
 
 
 {'labels': t_labels, 'pool': t_pool, 'toy': t_toy, 'dryrun': t_dryrun}[WHAT]()

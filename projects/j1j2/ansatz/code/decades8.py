@@ -315,6 +315,32 @@ def sigcheck(a):
     json.dump(res, open(a.outjson, 'w'), indent=1); print(json.dumps(res, indent=1))
 
 
+# ============================================================================================ beta = 0 draws of f_J at x (f0)
+def beta0(a):
+    """i.i.d. uniform Sz = 0 configurations (beta = 0: per-configuration uniform = n-weighted over orbits); raw f_J at x only
+    (pp2_lemma.fJ_fixed at_y = False, mode 'old' arithmetic; s_G at x and its one-swap neighbours).  Checkpoint every chunk."""
+    import pp2_lemma as PL
+    import pool8 as P8
+    t0 = time.time(); rng = np.random.default_rng(a.seed)
+    if a.problem == 8:
+        assert sha(PROD8) == PROD8_SHA
+        p = PL.PP2.from_rbmpp_npz(PROD8); al, E, w = m1_consts(); sfn = make_sG8_np(al, E, w); EP = EP8; N = 64
+    else:
+        ev = P8.TableEval6(); p = P8.load_eval(6, 'pp2').p; sfn = TableSign6(ev); EP = EP6; N = 36
+    logf = open(a.out + '.log', 'a')
+    def log(m): s = f'{time.strftime("%Y-%m-%dT%H:%M:%S")} [{time.time() - t0:8.0f}s] {m}'; logf.write(s + '\n'); logf.flush()
+    log(f'START beta0 problem {a.problem} n {a.n} chunk {a.chunk} seed {a.seed} host {os.uname().nodename}')
+    fx = []; lnB = []
+    while sum(len(v) for v in fx) < a.n:
+        X = np.ones((a.chunk, N), np.int8)
+        for i in range(a.chunk): X[i, rng.permutation(N)[:N // 2]] = -1
+        o = PL.fJ_fixed(p, X, sfn, EP, 1.0, mode='old', at_y=False)
+        fx.append(np.asarray(o['fx'])); lnB.append(np.asarray(o['logB']).real)
+        f = np.concatenate(fx); np.savez(a.out + '.tmp.npz', fx=f, lnB=np.concatenate(lnB), seed=a.seed, problem=a.problem); os.replace(a.out + '.tmp.npz', a.out)
+        log(f'PROGRESS {len(f)}/{a.n} |f| q.999 {np.quantile(np.abs(f[np.isfinite(f)]), 0.999):.4f} max {np.nanmax(np.abs(f[np.isfinite(f)])):.4f} nonfinite {int((~np.isfinite(f)).sum())}')
+    log(f'TASK_DONE n {len(f)} sec {time.time() - t0:.0f}')
+
+
 # ============================================================================================ f_J check
 def fjcheck(a):
     """fj_raw (blocked-only signs) vs pp2_lemma.fJ_fixed (all y) on the same configs; 6x6: also vs the exact table fJ_theta4 (orbit lookup of x, y).
@@ -513,8 +539,9 @@ if __name__ == '__main__':
     t.add_argument('--E', type=int, default=2); t.add_argument('--nper', type=int, default=10); t.add_argument('--seed', type=int, default=1); t.add_argument('--thin', type=int, default=None)
     t.add_argument('--burn', type=int, default=200); t.add_argument('--pilot', type=int, default=200); t.add_argument('--maxsec', type=float, default=1e18)
     t.add_argument('--alpha0', action='store_true'); t.add_argument('--side', default='large', choices=['small', 'large', 'all']); t.add_argument('--mbetas', default=None); t.add_argument('--eval_path', default='dedup')
+    b0 = sp.add_parser('beta0'); b0.add_argument('--problem', type=int, default=8); b0.add_argument('--out', required=True); b0.add_argument('--n', type=int, default=1000); b0.add_argument('--chunk', type=int, default=64); b0.add_argument('--seed', type=int, default=1)
     k = sp.add_parser('fjcheck'); k.add_argument('outjson'); k.add_argument('--problem', type=int, default=8); k.add_argument('--n', type=int, default=4)
     z = sp.add_parser('analyze'); z.add_argument('outjson'); z.add_argument('files', nargs='+'); z.add_argument('--problem', type=int, default=8); z.add_argument('--c', type=float, default=4.0)
     z.add_argument('--f0', default='auto'); z.add_argument('--mode', default='fix'); z.add_argument('--plain', action='store_true'); z.add_argument('--halves_prefix', default=None); z.add_argument('--conv', default='small', choices=['small', 'large'])
     a = ap.parse_args()
-    {'sigcheck': sigcheck, 'task': task, 'analyze': analyze, 'fjcheck': fjcheck}[a.cmd](a)
+    {'sigcheck': sigcheck, 'task': task, 'analyze': analyze, 'fjcheck': fjcheck, 'beta0': beta0}[a.cmd](a)

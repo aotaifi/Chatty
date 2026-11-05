@@ -1825,3 +1825,10 @@ Result pool re-sizing + f0 (2026-11-05; decades8/sizing/sizing.json, beta0/b0_{6
 - f0 (c2): definition = n-weighted signed q.9999 of f_J (0.6235649 exactly on theta_4's table). Sampled at beta = 0: 6x6 0.668(34), 1.3 sigma from
   0.6236 (reproduces); 8x8 1.22(8) (~1.2e4 draws, so this is near the sample max; rough). With f0 1.14-1.31 mode 'fix' leaves the range at -2..-9,
   shares within 0.001 of 'old'. c2 is settled for the range; the 8x8 E' check of c2 is still open.
+8x8 R1 pool, x-draws (lead GO 2026-11-05; CPU ~231 core-h; pre-registered before any draw)
+Guide: B_0 = P_1 = production rb8_prod params_final.npz (sha 0520c5be), the amplitude the round-1 pool samples; exists, no GPU. pool8 cleared
+(closure STATISTICS 51d9de4; draw_fn test 5d3efec). Draw ONLY x (words, ln|B|, beta, chain id) now: partners need the stored sign (blocked =
+S(x) S(y) > 0) and labels need S and f_J, so both wait for the trained 8x8 sign.
+Plan: independent chains per rung, S_q = 3.3e5 / 4.5e5 / 3.2e5 at beta 1 / .5 / .25, draw_fn with pilot + auto thin, seeds recorded.
+Checks on the output (pass before use): per-decade counts per rung within 20% of decades8 sizing.json's occupancy (decades -2..-9); the two seed
+halves agree (max |z| <= 3 over decade fractions); median 2lnB at beta 1 within 0.3 of -67.03.

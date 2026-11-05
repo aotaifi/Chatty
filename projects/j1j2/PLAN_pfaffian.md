@@ -1875,3 +1875,5 @@ which cannot be evaluated at walker time with c > 0). Labels T = sgn(M1) |B_k| e
 from a second lemma evaluator of P_1 (PhaseSign-like). Competitor: M1 (or the best trainable network) + FN p=0 at the same sign, equal total
 GPU-h. Gate (a) becomes information: eps^2 of sgn(M1)-labels vs s_G-labels on the decades8 draws = "value of the sign step not captured".
 That number is computed now (CPU, below).
+Branch 2 confirmed by the lead: sgn(M1) = sgn Re[w psi_rb8_prod], frozen (not s_G). BAR for branch 2 = M1 + FN p=0 at the same sign:
+-0.4987565(28) per site, chains p0_s1 + p0_s2, 0.40 H100-h, chain diff -0.74 sigma, QUOTABLE (/scratch/a/A.Otaifi/gfmc_m13b/prod/rb8/analysis_final.json).

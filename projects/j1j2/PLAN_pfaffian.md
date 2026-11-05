@@ -1943,3 +1943,4 @@ remaining lever is short forks from a common population: many segments, each sta
 That needs the projection-relaxation time after a fork (bias of the forked arm) to be shorter than the decoupling time; not measured.
 For 8x8 sizing: per-arm variance from the H100 benchmark x 0.66 (long runs) as the conservative factor; S != s_G is more frequent at 8x8, so
 decoupling is likely faster there.
+c1 sizing (lead 2026-11-05): 8x8 c1 is sized with NO pairing saving (ratio 1.0); any saving seen at 8x8 is a bonus. c1 matters only on branch 1 (T-BOND passes); branch 2 (fixed sgn(M1)) needs no c1. Short-fork work is dropped for now.

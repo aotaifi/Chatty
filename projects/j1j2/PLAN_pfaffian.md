@@ -2096,3 +2096,7 @@ Result M5' ext1 (2026-11-06; A40 17763914 / 17763915, CPU 17774657; ext1/readout
   readout (1) needs r >= 0.343 (another 1.6e-6) to flip, readout (2) needs aug <= 3.56e-6. Neither is reachable unless the rate turns up.
   Recommendation to the lead: stop the extension and record "STRUCTURE (1500 and 2100), E_FN plateaued, held-out loss not" rather than spend
   another ~15 A40-h; the lead's call under the registered rule.
+M5' FINAL (lead 2026-11-06): "M5' STRUCTURE at 1500 and 2100 (r_5 0.1265 vs 0.4929; aug 4.0076e-6 vs 3.2584e-6); E_FN plateaued; held-out loss
+did not; extension stopped by the lead". DEVIATION from the registered extension rule, reason: (B) passes (1.8e-8 per 100 steps) and the
+decaying-rate bound (r <= ~0.15 by 3000) makes both flips unreachable; the held-out rise is on the new seed-2 batch, which E_FN does not see.
+TRIED_IDEAS rows P27 (M5') and P28 (8x8 stored sign classes, gate (a)) added. The A40 goes to branch 2.

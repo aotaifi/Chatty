@@ -210,11 +210,12 @@ class Pool8Sampler:
     """draw_fn(beta, S, rng) -> (configs int8 (S, N), lnB (S,)) from PT of |B|^(2 beta); thinning by 2 tau of the slowest of ln|B|^2 and the decade index
     (tau measured in a pilot at the first draw_fn call unless thin is given).  Output betas are the rungs requested; other rungs only help mixing."""
 
-    def __init__(self, ev, betas=(1.0, 0.5, 0.25), E=8, seed=1, mode='single', thin=None, burn=200, pilot=400, log=print, start='random', keep_pilot=0):
+    def __init__(self, ev, betas=(1.0, 0.5, 0.25), E=8, seed=1, mode='single', thin=None, burn=200, pilot=400, log=print, start='random', keep_pilot=0, med2=None):
         self.ev, self.betas, self.E, self.mode, self.log = ev, list(betas), E, mode, log
         self.pt = PT(ev, betas, E, seed, mode, init=hot_start(ev, len(betas) * E, seed + 7777) if start == 'hot' else None); self.thin = thin; self.burn = burn; self.pilot = pilot; self.buf = {b: [] for b in betas}
         self.keep_pilot = keep_pilot                                                         # TEST HOOK (broken version): push the first keep_pilot unequilibrated pilot sweeps into the output buffers, skip the burn
         self.tau = {}; self.did_burn = False; self.sweeps_done = 0; self.med2 = None
+        self.med2_in = med2                                                                  # opt-in: given decade reference (median 2lnB of the beta = 1 rung), needed when the ladder has no beta = 1 rung; None = measured (default path)
 
     def _advance(self, n, record=None):
         for t in range(n):
@@ -228,7 +229,7 @@ class Pool8Sampler:
             if t < self.keep_pilot:                                                          # BROKEN (test hook only): unequilibrated pilot states leak into the output
                 for b in self.buf: self.buf[b].append((self.pt.sig[self.betas.index(b)].copy(), self.pt.lnb[self.betas.index(b)].copy()))
         lb = np.array(rec)                                                                   # (T, R, E)
-        self.med2 = float(np.median(2.0 * lb[:, self.betas.index(1.0), :]))                 # the beta = 1 rung
+        self.med2 = float(self.med2_in) if self.med2_in is not None else float(np.median(2.0 * lb[:, self.betas.index(1.0), :]))   # the beta = 1 rung (or the given med2)
         dec = decade_index(lb, self.med2); tau = []
         for q in range(self.pt.R):
             t1 = tau_int(2.0 * lb[:, q, :].T)[0]; t2 = tau_int(dec[:, q, :].T)[0]; tau.append(dict(beta=self.betas[q], tau_lnB2=t1, tau_dec=t2))

@@ -2086,3 +2086,13 @@ of P_1 across the pool, not a tangent-space copy (a linearisable perturbation wo
 share 0.178(30) at step 20 (accept >= 0.1; it scatters 0.02-0.31 over steps 5-20, so this is a reading, not a trend); held-out 0.159 -> 0.138 with
 a minimum at step 7 and one spike (0.512 at step 16). Launcher override R1_SPEC_OVER='{"p2_sigma_rel": 0.03, "p2_lam_median_target": 0.05}';
 lam is recomputed on the production pool.
+Result M5' ext1 (2026-11-06; A40 17763914 / 17763915, CPU 17774657; ext1/readout/{readout,plateau}.json; gates rerun by the lead):
+- Tail average 1200..2100: r_5(M5') 0.1265, aug_min 4.0076e-6 (c* 4.0). Readout (1) +0.366 > 0.15, (2) +0.749e-6 > 0.3e-6: STRUCTURE, both agree.
+- Prediction (linear: r ~0.17-0.18, aug ~3.9e-6) MISSED: the E_FN fall decelerated. E_FN 1200 / 1500 / 1800 / 2100 = 1.1761 / 1.1537 /
+  1.1500 / 1.1482e-5; change per 100 steps -7.5e-8, -1.2e-8, -6.1e-9.
+- Plateau: (B) E_FN(1800) - E_FN(2100) = 1.8e-8 < 1e-7 PASS; (A) held-out window means change 16% (16-point) / 9.8% (4-point): FAIL. The held-out
+  loss (new batch, seed 2) ROSE 8.6e-3 -> 1.2e-2 while E_FN stayed flat. NOT PLATEAUED as registered.
+- Bound (derived): at the current decaying rate, E_FN falls at most ~2e-7 more over the remaining 2400 steps to the 3000 cap, r <= ~0.15;
+  readout (1) needs r >= 0.343 (another 1.6e-6) to flip, readout (2) needs aug <= 3.56e-6. Neither is reachable unless the rate turns up.
+  Recommendation to the lead: stop the extension and record "STRUCTURE (1500 and 2100), E_FN plateaued, held-out loss not" rather than spend
+  another ~15 A40-h; the lead's call under the registered rule.

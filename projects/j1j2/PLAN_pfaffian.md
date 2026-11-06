@@ -2100,3 +2100,13 @@ M5' FINAL (lead 2026-11-06): "M5' STRUCTURE at 1500 and 2100 (r_5 0.1265 vs 0.49
 did not; extension stopped by the lead". DEVIATION from the registered extension rule, reason: (B) passes (1.8e-8 per 100 steps) and the
 decaying-rate bound (r <= ~0.15 by 3000) makes both flips unreachable; the held-out rise is on the new seed-2 batch, which E_FN does not see.
 TRIED_IDEAS rows P27 (M5') and P28 (8x8 stored sign classes, gate (a)) added. The A40 goes to branch 2.
+Result pool expansion stage 1 (2026-11-06; pool_x2/, jobs 17755345 (1-rung exactness: max |z| 1.99, chi2/dof 0.76; broken 232), 17755902 (2e6
+beta 0.25 draws, halves max |z| 0.95), 17770149 (f_J under sgn(M1), 0/3316 sign mismatches, = fJ_fixed to 9e-16); ess/ess_stage1.json;
+verified): registered reading CONTINUE (the -7 ratio is flat, not falling). But the premise changed: UNDER sgn(M1) THE HEAVY-x TAIL IS RARE.
+Bond/config ESS ratio at m = 2e6: -7 0.382(17), -8 0.233, -9 0.134 (still rising with m), against 0.06-0.15 under s_G (gate (c)). Heavy x
+(f_J(x) < -0.5): 8 / 35 / 205 of 2e6 at -7/-8/-9 (gate (c) under s_G: 3-10% of deep draws). New-draw bond ESS 8.1e4 / 6.1e4 / 3.8e4; with the
+registered pool ~8.7e4 / 6.9e4 / 4.8e4 against 5.4e4: only -9 is short (~0.9 of target), and its ratio rises faster than linear.
+So the 8.6e6 continuation (sized under s_G) is NOT needed for branch 2. Decision (mine): stage 2 = +0.8e6 beta 0.25 draws (~130 core-h runtime),
+then build the combined pool and run the FINAL gate (bond ESS >= 3 P in every decade -2..-9 under sgn(M1), Kish ESS on the actual combined
+root weights, not summed). Mechanism check (pending, sg_check.py): same x under s_G vs sgn(M1) at -9, to confirm that the sign is what removes
+the heavy tail. Core-h are counted as runtime (per core), the convention of the earlier caps; billed is ~2x.

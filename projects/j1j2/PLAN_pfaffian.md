@@ -2110,3 +2110,8 @@ So the 8.6e6 continuation (sized under s_G) is NOT needed for branch 2. Decision
 then build the combined pool and run the FINAL gate (bond ESS >= 3 P in every decade -2..-9 under sgn(M1), Kish ESS on the actual combined
 root weights, not summed). Mechanism check (pending, sg_check.py): same x under s_G vs sgn(M1) at -9, to confirm that the sign is what removes
 the heavy tail. Core-h are counted as runtime (per core), the convention of the earlier caps; billed is ~2x.
+OBSERVATION (for the sign angle's joint-network hypothesis (b); lead 2026-11-06): under the network's OWN sign sgn(M1) the heavy-x tail
+(f_J(x) < -0.5) shrinks from 3-10% of deep draws (direct s_G, gate (c)) to ~1e-4 (248 of 2e6, stage 1). In f_J = ln SK - ln den, SK (the kept-bond
+sum) stays large when the node is the amplitude's own: B's own nodes leave kept bonds around every x, while s_G's nodes cut through regions where
+|B| has no node, leaving x with few kept bonds and a very negative f_J. Pending confirmation on the same x (sg_check.py, -9). The 8.6e6
+continuation is cancelled; stage 2 (+0.8e6) and the final gate proceed.

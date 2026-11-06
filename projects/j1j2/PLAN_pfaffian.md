@@ -2115,3 +2115,10 @@ OBSERVATION (for the sign angle's joint-network hypothesis (b); lead 2026-11-06)
 sum) stays large when the node is the amplitude's own: B's own nodes leave kept bonds around every x, while s_G's nodes cut through regions where
 |B| has no node, leaving x with few kept bonds and a very negative f_J. Pending confirmation on the same x (sg_check.py, -9). The 8.6e6
 continuation is cancelled; stage 2 (+0.8e6) and the final gate proceed.
+Result FINAL POOL GATE (2026-11-06 ~12:30; pool_x2/comb/pool_s2b/pool.npz, 2,000,175 entries, sha 426487e9; final_gate.json; verified): PASS, thin.
+Bond ESS (training entries, held-out excluded) -2..-9: 5.80 6.56 8.02 9.39 10.3 9.26 6.89 5.54 (x1e4); min 5.54e4 at -9 = 1.03 x 3P. Broken
+(rho = W^B only) moves -9 to 9.49e4 (detected). The -9 margin is 3% against a ~20% uncertainty of its ratio: an ESS/P of ~3 there, not more.
+Pool = registered pool_x (781,644) + stage 1 (-2..-6 labelled, -7..-9 converted, 4e-12) + stage 2 (-9 only, 111,598). Spec: med 2lnB
+-67.03209 (decades8 origin; R1 must read it from the pool), K 2, sgn(M1), mode fix, c 4, f0 1.22, E' -31.920416. ~258 core-h (budget 250, slow nodes).
+Mechanism CONFIRMED on the same x (100 decade -9 draws): heavy fraction 0.00 under sgn(M1) (min f_J -0.455) vs 0.09 under s_G (min -0.948),
+median f_J -0.034 under both. The sign alone makes the heavy-x tail (OBSERVATION above).

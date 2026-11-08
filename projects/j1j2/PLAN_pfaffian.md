@@ -202,9 +202,9 @@ Tried and failed, do not re-propose without a new term: learned bond field (E9, 
 none yet
 
 ## Cockpit
-- STATUS (in progress, high): The two-PP label-free loop survives finite sampling at 6x6 (94% of the exact-table gain); building the 8x8 tools on CPU.
-- NEXT (in progress, medium): Finish the 8x8 sampler, grading code and speedups with their checks; GPU waits for the second review on 11-05.
-- NEXT (in progress, medium): Read the parameter-matched control (one PP plus RBM) to decide whether the second PP's structure or its size matters.
+- STATUS (in progress, high): Branch 2 at 8x8: round-1 refit done; its first energy grade (no augmentation, same sign as the production network) is running tonight.
+- NEXT (in progress, high): Read that grade against the production network on the same code; if the refit is lower, run the one-Lanczos-step headline (about 8 GPU-hours, needs the PI).
+- NEXT (open, medium): Find why the refit leaves the heaviest deep bonds unfitted (sampling or network class) before a second round.
 
 ## Role from 2026-10-28 (lead, at the PI's request): network expert. Open question: can complex PP + 3x3 backflow hold
 the deep (near-node) corrections, and if not, which network can? Inputs (lead, verified): Test E (67.6% of configurations,
@@ -2175,3 +2175,17 @@ not read the paper, the definition below is mine): per-sample gradient SNR of th
 ||g_i - mean g||^2 over (i) the heavy entries (sum wb > 5, training) and (ii) a bulk set of the same size; read the ratio SNR_heavy / SNR_bulk.
 Registered: ratio < 0.1 -> sampling/noise (supports (a)); ratio >= 1 with no progress under the unclipped GN steps -> class (supports (b)); in
 between -> reported beside the GN-step separator, which stays primary. CPU, after the grade.
+
+## STATE AT MIGRATION (2026-11-09 00:05; angle session cleared)
+Running, no VERDICT yet (re-arm the wait):
+- Bare c = 0 grade, OUTSIDE REGISTRATION: Paderborn 4165381 (express_hpcalot, 2:50 wall, started ~23:16, ~1.4 h expected), 6 chains: B_1 = R1
+  theta_tail (sha cbeecc75) x3, B_0 = rb8_prod x3, same code (gfmc_b2 BareM1Sign). Run dir pfaffian_8x8_r1/grade_bare/prod; ANALYSIS_BRIEF.md has
+  the gate command (scripts/analyze_grade.py prod --sigma 3e-6) and the branches; watcher watch_job.sh pid 222542 (PPID 1, m51). Probe 4164840
+  took 0.137 H100-h. Its worker was let go; the next session runs the gate itself if the watcher's analysis fails (it often does: "command refused").
+After the grade (all registered above): (1) read E_1, E_0, E_1 - E_0 vs bar (i) -0.4987565(28) and the concentration readout (wmax median > 0.2 =
+not converged); mechanism kill: R1 bare not below p=0 by > 3 sigma. (2) If it passes: R0 check (M1 p=1 through the new evaluator) then the headline
+B_k + p=1 (~8 H100-h; total within the lead's 40 H100-h ceiling for the first point; the 8 H100-h p=1 run was to go to the PI before submission).
+(3) CPU separator (a)/(b) + gradient-SNR readout for R2 (sections "Separator ..."). H100-h spent on branch 2 so far: bench 1.44 + R1 fit 1.73 +
+probe 0.14 + grade (running).
+Closed this session: M5' = STRUCTURE (P27); 8x8 stored-sign classes fail gate (a) (P28); V reproduced (c4, ratio 0.916(24)); stored-sign labels
+eps^2 0.17 (6x6); pool gate passed (pool_s2b sha 426487e9); heavy-x tail is a property of s_G, absent under the own sign (confirmed same-x).

@@ -2158,3 +2158,9 @@ understood): why the fit raised P_1 at deep heavy-wb x instead of lowering it; t
 Grade spec: B_1 = theta_tail, guide sgn(M1)|B_1| (gfmc_b2 BareM1Sign), c = 0, 6 chains on one H100, sigma <= 3e-6; plus B_0 through the SAME code
 as the same-sign control (c5) to <= 3e-6, so the mechanism comparison is paired in code; bar (i) -0.4987565(28) quoted beside. Readout per block:
 max walker weight share, top-10 share, walker-tau share in decades -7..-9. Budget <= 2 H100-h total; stop at 1.5x.
+Lead's hypothesis (the heavy bond term makes the fit match e_x - e_y, and e_x follows the partner's error) TESTED on the 30 outliers
+(r1/outliers/outliers_top30_typ30.csv, heavy partner = larger wb): median |e_x| 1.38, median e_y(heavy partner) 0.04, median |e_x - e_y| 1.42;
+0/30 have |e_x - e_y| < 0.3 |e_x|. REFUTED: the heavy partners are fitted (e_y ~ 0) and x is not; the bond differences themselves are wrong, so
+the fit genuinely fails those bonds (and FN sees bond differences, so this can cost energy). Open, for R2: why the GN fit leaves the
+heaviest-weight bonds unfitted (candidates: they are 0.8% of entries, so rarely in a step's batch, and when drawn their weight is clipped by the
+trust radius; or the P_1 class cannot move deep x without spoiling the bulk). Not tested.

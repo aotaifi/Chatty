@@ -1,5 +1,6 @@
 # PLAN_sign: sign-storage angle (angle lead, session started 2026-10-30; reports to the FN-loop lead)
 Shared lessons with the lead: LESSONS.md (read before designing any test; add a row when a lesson costs a run).
+Open discussion with the PI (points P1-P8, nothing settled): DISCUSSION_sign_2026-11-08.md.
 
 ## Question (one, open)
 Can a second network STORE each round's sign s_{k+1} = sgn psi'_k (psi'_k = one signed Lanczos step of the guide
@@ -824,6 +825,10 @@ Angle status: storing the 8x8 sign with the deployable PP/frozen-RBM class does 
 What the angle delivers instead: T-B2P1 (one final Lanczos step at c = 0 beats the competitor at fixed own sign at 6x6; the head at fixed own sign does not).
 
 ## Queue (not run; PI sets priority)
+- Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
+  (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own
+  nodes leave kept bonds around every x (SK stays large); s_G's nodes cut through regions where |B| has no node and strand x with few kept bonds,
+  exactly the costly unblocking regime (T-BOND). A sign whose node follows the amplitude avoids it by construction.
 - T-JOINT (PI: ask Astra, do not run; question 6 in astra/sign_eps2/QUESTION.md) (lead's design 2026-11-05, on the PI's question): one complex two-PP net storing s_G x |T_5| at 6x6 exact (refit from theta_4; modulus
   loss as R5 + bond phase loss with the T-BOND weight); grade exact FN with its own sign and walls vs separate B_5 + S_t (R5 aug 3.97e-6).
   ~1.5 H100-h + CPU. Untried (a joint REAL net is ruled out: own node fought the imposed sign, q 0.424, P1; complex node-free copy halved the tax).

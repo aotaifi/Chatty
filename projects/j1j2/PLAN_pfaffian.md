@@ -2131,3 +2131,13 @@ R1 graded network (fixed before any energy): the REGISTERED one is theta_tail (t
 theta_bar); it is graded. The final iterate theta is graded beside it only if the paired per-entry check (16 x 1024 held-out entries, L_net - L_B0,
 bootstrap over batches) shows it clearly better; no swap after energies. 2-batch check (startcheck.json) unreadable: B_0 0.251 vs 0.165 between
 batches (heavy single entries).
+Result R1 paired loss check (2026-11-08; r1/startcheck/perentry_50*.npz, paired16.json; 16 x 1024 held-out entries, bootstrap over batches):
+| network | paired mean L - L_B0 | fraction of entries below B_0 |
+| warm start | +0.055(23) | 0.42 |
+| theta_tail (registered) | +0.059(123) | 0.77 |
+| theta (final) | +0.053(123) | 0.77 |
+B_0 mean 0.348. Start rule: ratio of 16-batch means 1.159 <= 1.2, PASS (marginal). theta_tail vs theta: +0.005(9), no difference, so theta_tail is
+graded alone. The mean is NOT below B_0, but the median entry improves (median diff -0.0054) and excluding the top 0.1% of entries (16) the mean
+diff is -0.114 (~-33% of B_0). The mean is carried by a handful of CATASTROPHIC entries: +1011 (the same entry drawn twice), +200, +169, +91, ...;
+the top 20 carry 83% of all positive excess. So R1 improved ~all entries and blew up a few: a defect (likely ln|1 + lam P_2/P_1| exploding where
+|P_2/P_1| is in its tail) that could matter for the FN grade if walkers reach those configurations. Diagnosis before grading: below.

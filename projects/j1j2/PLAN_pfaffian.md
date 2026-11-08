@@ -2122,3 +2122,4 @@ Pool = registered pool_x (781,644) + stage 1 (-2..-6 labelled, -7..-9 converted,
 -67.03209 (decades8 origin; R1 must read it from the pool), K 2, sgn(M1), mode fix, c 4, f0 1.22, E' -31.920416. ~258 core-h (budget 250, slow nodes).
 Mechanism CONFIRMED on the same x (100 decade -9 draws): heavy fraction 0.00 under sgn(M1) (min f_J -0.455) vs 0.09 under s_G (min -0.948),
 median f_J -0.034 under both. The sign alone makes the heavy-x tail (OBSERVATION above).
+R1 SUBMITTED (2026-11-08 17:38): Paderborn H100 4143668 (express_hpcalot, est. start 18:39) + theorie A40 race 17842947, race_watch_eta.sh (pid 3412767, PPID 1); pool_s2b sha 426487e9; warm sep 0.03, t 0.05, lam_init 0.0268 recomputed on the pool (toy 0.0397); stop rule 7.5 H100-h. (11-06: the submission was lost when the worker hit the weekly API limit and no wait was armed on its job id; my error.)

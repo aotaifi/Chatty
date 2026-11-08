@@ -2164,3 +2164,9 @@ Lead's hypothesis (the heavy bond term makes the fit match e_x - e_y, and e_x fo
 the fit genuinely fails those bonds (and FN sees bond differences, so this can cost energy). Open, for R2: why the GN fit leaves the
 heaviest-weight bonds unfitted (candidates: they are 0.8% of entries, so rarely in a step's batch, and when drawn their weight is clipped by the
 trust radius; or the P_1 class cannot move deep x without spoiling the bulk). Not tested.
+Separator (a) sampling/clipping vs (b) class conflict, for R2 (lead 2026-11-08; registered now, runs AFTER the bare grade lands; CPU):
+from theta_tail, 50 GN steps on a batch made only of the heavy entries (sum of partner wb > 5; the 136-entry class, training entries only), no
+trust clipping (same damping), tracking L_heavy (that batch, plus held-out heavy entries) and L_bulk (a fixed 4096-entry held-out batch without
+heavy entries). Readings: (a) if L_heavy falls >= 50% while L_bulk rises < 10% -> fix by oversampling heavy entries with corrected weights;
+(b) if L_bulk rises >= 25% by the time L_heavy has fallen 50% -> a structural change for deep x (architecture angle); in between -> report both
+curves. Broken control: the same 50 steps on a random bulk batch must not lower L_heavy by 50%.

@@ -31,3 +31,11 @@ M5' (PP+RBM, parameter-matched control; readout ~11-05 15:30, PLAN_pfaffian.md).
    PLAN_pfaffian.md) and measured two-swap cost vs plain.
 Prediction (lead): K > 2 pair products keep raising the stored share (~55%); something genuinely new beats that (~25%).
 Kill: no candidate passes C1 and C2 on paper. Second opinion (Astra, CLAUDE.md point 8) before any GPU proposal.
+
+## Added 2026-11-08 (PI + lead): gated bulk/tail hybrid as a first-class candidate
+G(x) = B_PP(x) exp[w(x) g(x)], w(x) a smooth switch on |B_PP(x)|^2 in the deep decades (free from B_PP), g a CNN or other expressive net
+evaluated only where w > 0. Cost: g only on the fraction of the (2N)^2 Jacobi endpoints in the tail (measure it on pool8 draws first).
+Motivation: 8x8 R1 fails on ~0.8% deep x next to much larger blocked neighbours (PLAN_pfaffian R1 outlier diagnosis); literature has no gated
+|psi| hybrid (proposals/2026-11-08_tail_fitting_literature.md). Gate: build only if the R1 (a)/(b) separator says CLASS (b); if sampling (a),
+oversampling fixes it and the hybrid is not needed. Paper work (cost count, switch smoothness vs the Jacobi factor, tail training data) may
+start now; no run before the (a)/(b) verdict. M5' result: structure matters (two PPs >> PP+RBM at equal parameters).

@@ -43,3 +43,4 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - A watcher on a job that logs only at its end fires false STALLED; set the stall limit from the job's own logging cadence | false STALLED on 17751660 | delta_today 11-05
 - A race between machines is won by expected FINISH time, not by which copy starts first | 9x faster H100 copy of V cancelled, ~10 h lost | delta_today 11-04
 - Check a peer's units: a parenthesised error off by 10x turns a 1.2-sigma pass into a 12-sigma miss | c3 notation | PLAN_pfaffian c3
+- A peer's "being submitted now" is not a submission: arm a wait on the job id or progress file in the same turn | 8x8 R1 fit never submitted, ~2 days lost (11-06 -> 11-08) | delta_today 11-08

@@ -16,9 +16,10 @@ case $KIND in
   v)   LL=${R1_Q:-$PB/pfaffian_v};                 PDB_RUN=${R1_PDB_RUN:-$PR/v_fit};              TAG="V";;
   r6)  : ${ARM:?arm}; LL=${R1_Q:-$PB/pfaffian_r6}/$ARM;   PDB_RUN=${R1_PDB_RUN:-$PR/r6_${ARM}_fit};  TAG="R6 $ARM";;
   m5p) : ${ARM:?arm}; LL=${R1_Q:-$PB/pfaffian_m5p}/$ARM;  PDB_RUN=${R1_PDB_RUN:-$PR/m5p_${ARM}_fit}; TAG="M5P $ARM";;
-  *)   echo "RACE_KIND must be v, r6 or m5p"; exit 1;;
+  b2r1) LL=${R1_Q:-$PB/pfaffian_8x8_r1/r1};          PDB_RUN=${R1_PDB_RUN:-$PR/b2r1_r1_fit};         TAG="B2 R1"; NOTAB=1; TAB_S_PDB=${TAB_S_PDB:-0}; TAB_S_TH=${TAB_S_TH:-0};;   # 2026-11-08: fit only, no table jobs
+  *)   echo "RACE_KIND must be v, r6, m5p or b2r1"; exit 1;;
 esac
-A40=${R1_A40_ID:-$(cat $LL/fit_th/job_id.txt 2>/dev/null)}; A40T=${R1_A40T_ID:-$(cat $LL/tab_th/job_id.txt 2>/dev/null)}
+A40=${R1_A40_ID:-$(cat $LL/fit_th/job_id.txt 2>/dev/null)}; A40T=${R1_A40T_ID:-$(cat $LL/tab_th/job_id.txt 2>/dev/null)}; [ -n "${NOTAB:-}" ] && A40T=0
 [[ "$A40" =~ ^[0-9]+$ && "$A40T" =~ ^[0-9]+$ ]] || { echo "theorie job ids missing: a40=$A40"; exit 1; }
 A40_RUN=${R1_A40_RUN:-$LL/fit_th}
 DELTA=${R1_DELTA:-/project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2/delta_today.md}
@@ -78,7 +79,7 @@ PY
 }
 # --- wait for the Paderborn ids
 while true; do
-  PDB=${R1_PDB_ID:-$(cat $LL/fit/job_id.txt 2>/dev/null)}; PDBT=${R1_PDBT_ID:-$(cat $LL/tab/job_id.txt 2>/dev/null)}
+  PDB=${R1_PDB_ID:-$(cat $LL/fit/job_id.txt 2>/dev/null)}; PDBT=${R1_PDBT_ID:-$(cat $LL/tab/job_id.txt 2>/dev/null)}; [ -n "${NOTAB:-}" ] && PDBT=0
   [[ "$PDB" =~ ^[0-9]+$ && "$PDBT" =~ ^[0-9]+$ ]] && break
   [ -e "$LL/pdb_skip" ] && { note "pdb_skip present: no Paderborn copy for $TAG; race watcher exits (nothing cancelled)"; exit 0; }
   sa=$($SACCT -j $A40 -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//')
@@ -111,11 +112,11 @@ while true; do
   case "$dec" in
     keep_pdb|keep_th)
       if [ $dec = keep_pdb ]; then   # cancel the theorie copy
-        $SCANCEL $A40T 2>&1 | sed 's/^/scancel th tab: /'; $SCANCEL $A40 2>&1 | sed 's/^/scancel th fit: /'
+        [ "$A40T" != 0 ] && $SCANCEL $A40T 2>&1 | sed 's/^/scancel th tab: /'; $SCANCEL $A40 2>&1 | sed 's/^/scancel th fit: /'
         for i in 1 2 3 4 5 6; do sleep "${VERIFY_WAIT:-5}"; v=$($SACCT -j $A40 -X -n -P -o State 2>/dev/null | head -1 | sed 's/ .*//'); case "$v" in CANCELLED*) break;; esac; done
         case "$v" in CANCELLED*) note "ETA rule: keep Paderborn $PDB, cancelled theorie $A40 (state $v; PI pre-approval for race losers). $inf";; *) note "ETA rule: keep Paderborn $PDB, scancel $A40 issued, state afterwards '$v' (NOT verified cancelled). $inf";; esac
       else                           # cancel the Paderborn copy
-        rem "export PATH=$SLURMBIN:\$PATH; scancel $PDBT $PDB" 2>&1 | sed 's/^/scancel pdb: /'
+        rem "export PATH=$SLURMBIN:\$PATH; scancel $([ "$PDBT" != 0 ] && echo $PDBT) $PDB" 2>&1 | sed 's/^/scancel pdb: /'
         for i in 1 2 3 4 5 6; do sleep "${VERIFY_WAIT:-5}"; v=$(rem "export PATH=$SLURMBIN:\$PATH; sacct -j $PDB -X -n -P -o State | head -1 | sed 's/ .*//'" 2>/dev/null); case "$v" in CANCELLED*) break;; esac; done
         case "$v" in CANCELLED*) note "ETA rule: keep theorie $A40, cancelled Paderborn $PDB (state $v; PI pre-approval for race losers). $inf";; *) note "ETA rule: keep theorie $A40, scancel $PDB issued, state afterwards '$v' (NOT verified cancelled). $inf";; esac
       fi

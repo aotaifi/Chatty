@@ -257,9 +257,15 @@ def fit(OUT, SP):
     med = float(np.load(SP['pool'])['med2lnB']); orig = PF.pool_weights
     PF.pool_weights = lambda lBx, chain, betas, decs_rel, rho, xorb, ho_fn=None: pool_weights_med(lBx, chain, betas, decs_rel, rho, xorb, ho_fn, med) if med is not None else orig(lBx, chain, betas, decs_rel, rho, xorb, ho_fn)
     try:
-        return PF.fit(OUT, SP)
+        r = PF.fit(OUT, SP)
     finally:
         PF.pool_weights = orig
+    if SP.get('tail_avg_steps'):                       # tail average of the listed saved iterates + the final theta (spec 'tail_avg_steps'); theta_bar of pool_fit is kept as is
+        ths = [np.load(os.path.join(OUT, f'theta_step{k}.npy')) for k in SP['tail_avg_steps']] + [np.load(os.path.join(OUT, 'theta.npy'))]
+        np.save(os.path.join(OUT, 'theta_tail.npy'), np.mean(np.stack(ths), 0))
+        r['theta_tail'] = dict(of=[f'theta_step{k}.npy' for k in SP['tail_avg_steps']] + ['theta.npy'], sha256=sha(os.path.join(OUT, 'theta_tail.npy')))
+        PF.jdump(os.path.join(OUT, 'pool_fit.json'), r)
+    return r
 
 
 def r1_spec(pool, pool_sha, warm_npz=PROD8, code_dir=HERE, **over):
@@ -267,14 +273,16 @@ def r1_spec(pool, pool_sha, warm_npz=PROD8, code_dir=HERE, **over):
     every key can be overridden."""
     sp = dict(arm='pp8', rbm_M=16, pool=pool, pool_sha256=pool_sha, warm_npz=warm_npz, p2_sigma_rel=0.3, p2_seed=1, f1_im_sigma=0.0, lambda_init_re=0.1, lambda_init_im=0.0,
               B=8208, B_acc=8208, B_ho=4096, K=2, lam_b=1.0, lam0=1e-2, lam_cap=1.0, lam_floor=1e-6, tau=0.05, tau_min=0.01, anneal_steps=20, z_acc=2.0, ho_every=10,
-              flat_tol=0.02, max_steps=1500, save_theta_at=[600, 750, 900, 1050, 1200, 1350], seed=1, fit_sec=27000.0,
+              flat_tol=0.02, max_steps=1500, save_theta_at=list(range(150, 1500, 150)), tail_avg_steps=[600, 750, 900, 1050, 1200, 1350], seed=1, fit_sec=27000.0,
               code_sha256={f: sha(os.path.join(code_dir, f)) for f in ('pool_fit.py', 'cx_lib.py', 'rbmpp_lib.py')}, b2_code_sha256=sha(os.path.join(code_dir, 'b2_prep.py')))
     sp.update(over); return sp
 
 
-def p2_logratio(pool, SP, n_max=None):
-    """ln|P_2(x) / P_1(x)| on the pool's x entries for the warm start of SP (warm_theta8's own P_2 construction: same seed, sep, RBM)."""
+def p2_logratio(pool, SP, n_max=None, n_sub=None, seed=0):
+    """ln|P_2(x) / P_1(x)| on the pool's x entries for the warm start of SP (warm_theta8's own P_2 construction: same seed, sep, RBM).
+    n_sub: a uniform random subset of n_sub entries (seed), for pools too large to evaluate in full."""
     w = np.load(pool)['x']; w = w[:n_max] if n_max else w
+    if n_sub and n_sub < len(w): w = w[np.sort(np.random.default_rng(seed).choice(len(w), int(n_sub), replace=False))]
     th = PF.warm_theta8(dict(SP, lambda_init_re=0.0, lambda_init_im=0.0)); f1, b, W, f2, _ = PF.unpack8(th)
     P1 = PL.PP2(f1, L=8, proj='translations', rbm='inner', b=b, W=W); P2 = PL.PP2(f2, L=8, proj='translations', rbm='inner', b=b, W=W)
     X = PF.unpack64(w).astype(np.float64)
@@ -286,7 +294,10 @@ def resolve_lam(sp, pool_local):
     pool-median |lam P_2 / P_1| = t at the start.  Records the median and quantiles in the spec."""
     t = sp.get('p2_lam_median_target')
     if t is None: return sp
-    lr = p2_logratio(pool_local, sp); med = float(np.median(lr))
+    ns = int(sp.get('p2_logratio_nsub', 20000)); sd = int(sp.get('p2_logratio_seed', 0))         # nsub 0 = the full pool (flag)
+    lr = p2_logratio(pool_local, sp, n_sub=ns, seed=sd); med = float(np.median(lr))
+    rb = np.random.default_rng(1); se = float(np.std([np.median(lr[rb.integers(0, lr.size, lr.size)]) for _ in range(200)]))
+    sp.update(p2_logratio_nsub=ns, p2_logratio_seed=sd, p2_logratio_median_se=se)
     sp.update(lambda_init_re=float(t) * math.exp(-med), lambda_init_im=0.0, p2_logratio_median=med,
               p2_logratio_q=[float(np.quantile(lr, q)) for q in (0.01, 0.1, 0.5, 0.9, 0.99)], p2_logratio_n=int(lr.size))
     return sp

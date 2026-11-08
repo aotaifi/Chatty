@@ -21,7 +21,7 @@ rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $
 [ "$(sha256sum $PROD8 | cut -d' ' -f1)" = "$PROD8SHA" ] || { echo "rb8_prod params sha mismatch"; exit 1; }
 POOLSHA=$(cut -d' ' -f1 $POOLDIR/pool.npz.sha256)
 [ "$(sha256sum $POOLDIR/pool.npz | cut -d' ' -f1)" = "$POOLSHA" ] || { echo "pool.npz sha mismatch"; exit 1; }
-mkdir -p $LOC
+mkdir -p $LOC $Q
 # 1. spec (local file, remote paths); the pool must be a b2_prep merge (decades -2..-9 present, K 2, med recorded) and the code shas are pinned
 PY=/project/theorie/a/A.Otaifi/Chatty/runs/a40slice/venv_jax_0.8.2/bin/python
 JAX_PLATFORMS=cpu $PY - "$HERE" "$POOLDIR" "$POOLSHA" "$D" "$LOC" "$OVER" <<'PY'
@@ -42,7 +42,11 @@ PY
 cat > $LOC/ANALYSIS_BRIEF.md <<EOF
 # Branch 2 R1 fit ($TAG; Paderborn run dir $RUNF, local $LOC)
 Question: does the two-PP fit to T_1 = sgn(M1)|B_0| e^{4 f_J[B_0; sgn(M1)]} (mode 'fix', f0 1.22) converge on the pool $POOLDIR (sha ${POOLSHA:0:12})?
-Files: round_1/pool_fit.json (curve, hist), round_1/theta_bar.npy (mean of theta at 600..1350 and the final), cx_r1.json (done flag), run_metadata.txt.
+Files: round_1/pool_fit.json (curve, hist), round_1/theta_step{150..1350}.npy (every 150), round_1/theta_tail.npy (tail average of the last 900 steps: theta at 600..1350
+and the final 1500, 7 iterates; the round's theta_1), round_1/theta_bar.npy (pool_fit's mean of ALL saved iterates: not used), cx_r1.json (done flag), run_metadata.txt.
+Spec: spec_r1.json (lam recomputed on this pool: p2_logratio_median, p2_logratio_q, lambda_init_re); pool sha in pool.npz.sha256; med2lnB read from the pool.
+Registered before submission: fit estimate 1.3-5 H100-h (3-12 s/step x 1500, derived, not measured at 8x8). STOP (cancel and report to the lead) if the measured
+s/step projects above 7.5 H100-h (1.5x the top, i.e. > 18 s/step); fit_sec 27000 enforces the same ceiling inside the job.
 Gate: cx_r1.json "done": true, steps == 1500, no "stop"; held-out loss L_ho falls from step 0 and its last 300 steps are flat within the anneal tolerance; per-decade held-out
 loss with decade -2 not an outlier (PLAN "pool used" condition).  H100-h = wall x 1; > 7.5 h (1.5x the 5 h estimate) -> stop and tell the lead.
 Next: COMPLETED -> bare c = 0 mechanism grade (gfmc_b2.BareM1Sign on theta_bar) after the lead's go; FAILED / TIMEOUT / STALLED -> report to the lead with the curve.
@@ -57,7 +61,8 @@ for f in $CODE; do chk $HERE/$f $CR/$f; done
 rem "cd $CR && sha256sum $CODE" | sort > $LOC/code_sha256_remote.txt
 diff $LOC/code_sha256.txt $LOC/code_sha256_remote.txt > /dev/null || { echo "codeB2R1 sha256 differs from local"; exit 1; }
 chk $HERE/b2r1_pdb.sbatch $P/b2r1_pdb.sbatch; chk $POOLDIR/pool.npz $D/pool.npz; chk $PROD8 $D/params_final.npz
-rsync -a -e "$SSHO" $LOC/spec_r1.json $LOC/ANALYSIS_BRIEF.md paderborn:$RUNF/
+cp $POOLDIR/pool.npz.sha256 $LOC/pool.npz.sha256
+rsync -a -e "$SSHO" $LOC/spec_r1.json $LOC/ANALYSIS_BRIEF.md $LOC/pool.npz.sha256 paderborn:$RUNF/
 echo "staged Paderborn: code $CR, pool $D/pool.npz (${POOLSHA:0:12}), run $RUNF; local $LOC"
 fitf="--parsable --no-requeue --qos=$QOS --job-name=pf_b2${TAG} --time=15:00:00 --output=$RUNF/slurm-%j.out"
 [ "$MODE" = --test ] && { rem "sbatch --test-only $fitf $P/b2r1_pdb.sbatch $RUNF" 2>&1; exit 0; }

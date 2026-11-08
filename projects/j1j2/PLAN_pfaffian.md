@@ -2146,3 +2146,15 @@ dominating; too small: P_1 + lam P_2 cancelling) and the |B|^2-weighted pool fra
 FN grade OUTSIDE REGISTRATION, with a weight-concentration readout per block (max single-walker weight share, top-10 share, share of walker-tau in
 the outlier decades); a grade dominated by a few walkers is "not converged" whatever its error bar. If the fraction is larger: cap or penalise
 |lam P_2/P_1| (form registered first), refit, then grade.
+Result R1 outlier diagnosis (2026-11-08; r1/outliers/; batches reproduced to 0.0; verified rep2.txt summary): MY GUESS WAS WRONG. Not P_2
+dominating (ln|lam P_2/P_1| in -1.5..+1.74 at all 30 worst entries) and only one true cancellation. The excess sits at entries with very heavy
+bond weight (sum of partner wb > 5: 0.8% of entries carry all of it; corr(sum wb, diff) 0.73), deep x (decades -9/-8, rung 0.25), heavy partner
+ln|B_0(y)/B_0(x)| 2.4-5.6; bond part 98% of their loss. Sign: |B_1| too LARGE at x in 25/30 (+0.9..+3.8), mostly from the trained P_1 itself
+(ln|P_1| - ln|B_0| has std 0.48 at decade -9 vs 0.10 at -2); too small in 5/30. B_0 is already bad there (mean loss 59 for sum wb > 10) and
+theta_tail doubles it. Dropping those 136 entries the mean loss falls 0.150 -> 0.076 (-49%).
+Region fractions: P_2-dominated 6e-4 uniform at x, 4-6e-4 band-weighted, 0/20000 under |B_0|^2 (95% bound 1.5e-4); cancellation 2-3e-4.
+Both < 1e-3 -> by the registered rule the bare c = 0 grade runs OUTSIDE REGISTRATION, with the weight-concentration readout. Open (not
+understood): why the fit raised P_1 at deep heavy-wb x instead of lowering it; that is the term to change if R2 runs.
+Grade spec: B_1 = theta_tail, guide sgn(M1)|B_1| (gfmc_b2 BareM1Sign), c = 0, 6 chains on one H100, sigma <= 3e-6; plus B_0 through the SAME code
+as the same-sign control (c5) to <= 3e-6, so the mechanism comparison is paired in code; bar (i) -0.4987565(28) quoted beside. Readout per block:
+max walker weight share, top-10 share, walker-tau share in decades -7..-9. Budget <= 2 H100-h total; stop at 1.5x.

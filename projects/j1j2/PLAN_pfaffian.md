@@ -2170,3 +2170,8 @@ trust clipping (same damping), tracking L_heavy (that batch, plus held-out heavy
 heavy entries). Readings: (a) if L_heavy falls >= 50% while L_bulk rises < 10% -> fix by oversampling heavy entries with corrected weights;
 (b) if L_bulk rises >= 25% by the time L_heavy has fallen 50% -> a structural change for deep x (architecture angle); in between -> report both
 curves. Broken control: the same 50 steps on a random bulk batch must not lower L_heavy by 50%.
+Separator addition (lead, from proposals/2026-11-08_tail_fitting_literature.md, after Gravina et al. arXiv:2410.10720 Sec. 3.2-3.3; I have
+not read the paper, the definition below is mine): per-sample gradient SNR of the copy loss at theta_tail, SNR = ||mean_i g_i||^2 / mean_i
+||g_i - mean g||^2 over (i) the heavy entries (sum wb > 5, training) and (ii) a bulk set of the same size; read the ratio SNR_heavy / SNR_bulk.
+Registered: ratio < 0.1 -> sampling/noise (supports (a)); ratio >= 1 with no progress under the unclipped GN steps -> class (supports (b)); in
+between -> reported beside the GN-step separator, which stays primary. CPU, after the grade.

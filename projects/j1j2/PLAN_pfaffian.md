@@ -2123,3 +2123,7 @@ Pool = registered pool_x (781,644) + stage 1 (-2..-6 labelled, -7..-9 converted,
 Mechanism CONFIRMED on the same x (100 decade -9 draws): heavy fraction 0.00 under sgn(M1) (min f_J -0.455) vs 0.09 under s_G (min -0.948),
 median f_J -0.034 under both. The sign alone makes the heavy-x tail (OBSERVATION above).
 R1 SUBMITTED (2026-11-08 17:38): Paderborn H100 4143668 (express_hpcalot, est. start 18:39) + theorie A40 race 17842947, race_watch_eta.sh (pid 3412767, PPID 1); pool_s2b sha 426487e9; warm sep 0.03, t 0.05, lam_init 0.0268 recomputed on the pool (toy 0.0397); stop rule 7.5 H100-h. (11-06: the submission was lost when the worker hit the weekly API limit and no wait was armed on its job id; my error.)
+R1 readiness reading (lead 2026-11-08, before the check's numbers): report B_0, warm, theta_tail and theta losses on the same held-out batch
+(2 seeds) with ratios to B_0. B_0 vs T is the "store nothing" baseline: theta above B_0 means the round stored less than no refit. If theta <
+B_0, run the bare c = 0 FN grade even if the start ratio misses 1.2, LABELLED OUTSIDE REGISTRATION in that case.
+R1 fit DONE: Paderborn 4143668, 1500 steps, 1.73 H100-h, held-out 0.262 -> 0.18; A40 copy cancelled by the race watcher (ETA rule, 28 h later).

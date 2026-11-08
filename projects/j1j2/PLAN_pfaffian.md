@@ -2127,3 +2127,7 @@ R1 readiness reading (lead 2026-11-08, before the check's numbers): report B_0, 
 (2 seeds) with ratios to B_0. B_0 vs T is the "store nothing" baseline: theta above B_0 means the round stored less than no refit. If theta <
 B_0, run the bare c = 0 FN grade even if the start ratio misses 1.2, LABELLED OUTSIDE REGISTRATION in that case.
 R1 fit DONE: Paderborn 4143668, 1500 steps, 1.73 H100-h, held-out 0.262 -> 0.18; A40 copy cancelled by the race watcher (ETA rule, 28 h later).
+R1 graded network (fixed before any energy): the REGISTERED one is theta_tail (tail average of the 7 iterates 600..1350 + final, as round 5 / V's
+theta_bar); it is graded. The final iterate theta is graded beside it only if the paired per-entry check (16 x 1024 held-out entries, L_net - L_B0,
+bootstrap over batches) shows it clearly better; no swap after energies. 2-batch check (startcheck.json) unreadable: B_0 0.251 vs 0.165 between
+batches (heavy single entries).

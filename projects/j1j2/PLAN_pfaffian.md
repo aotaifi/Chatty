@@ -2141,3 +2141,8 @@ graded alone. The mean is NOT below B_0, but the median entry improves (median d
 diff is -0.114 (~-33% of B_0). The mean is carried by a handful of CATASTROPHIC entries: +1011 (the same entry drawn twice), +200, +169, +91, ...;
 the top 20 carry 83% of all positive excess. So R1 improved ~all entries and blew up a few: a defect (likely ln|1 + lam P_2/P_1| exploding where
 |P_2/P_1| is in its tail) that could matter for the FN grade if walkers reach those configurations. Diagnosis before grading: below.
+R1 grade decision rule (lead, registered before the diagnosis numbers): the diagnosis gives the SIGN of the outlier errors (|B_1| too large: P_2
+dominating; too small: P_1 + lam P_2 cancelling) and the |B|^2-weighted pool fraction of each region. If the fraction is < 1e-3: run the bare c = 0
+FN grade OUTSIDE REGISTRATION, with a weight-concentration readout per block (max single-walker weight share, top-10 share, share of walker-tau in
+the outlier decades); a grade dominated by a few walkers is "not converged" whatever its error bar. If the fraction is larger: cap or penalise
+|lam P_2/P_1| (form registered first), refit, then grade.

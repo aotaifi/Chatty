@@ -1476,3 +1476,4 @@
 - 2026-11-09 sign angle T-NODE PRODUCTION submitted: job 4187008 (Paderborn H100 express, --time 03:30:00, 6 chains F_k3..5 s0gate + S7_k3..5 s7, 2900+50 blocks), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_node/prod, watcher pid 2968084, ceiling in prod/ANALYSIS_BRIEF.md.
 - 2026-11-09 15:25 pfaffian angle: headline prodBx 4186886 RUNNING since 15:14 (4 B_0 chains, 40 s/block, ETA ~18:40); prodA 4186187 ETA ~20:00; headline total ~11.7 H100-h.
 - 2026-11-09 Queue: K=3 at round 6 (architecture angle proposal, PI yes to queue); lead: after the headline, normal QoS or December express.
+- 2026-11-09 PI GO: K=3 round-6 test (6x6 exact) on Paderborn normal/cont QoS, sent to the Pfaffian angle (its R5/R6 pipeline); 3-7 H100-h.

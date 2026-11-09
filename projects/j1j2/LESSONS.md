@@ -25,6 +25,8 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - A per-bond diagonal surrogate of eps^2 is wrong: eps^2 is a graph-Laplacian form eta^T L eta with endpoint cross terms; errors at one x add inside the logs and most roots carry several wrong bonds (5085/5724); the x end held only 0.07-0.09 | T-BOND design rejected (lead's derivation), Gate S would have passed falsely | Astra cj-a2cbf28c7311; PLAN_sign "T-BOND"
 - Cutting the wrong-sign FRACTION (w_T) can raise the loop's label error: training moved errors into high-amplitude decades (-2..-5: .40-.72 vs sgn(M1) .04-.31), where |H| B_x B_y weighs them most | 12 trained 8x8 signs all worse than the untrained sign (best 0.61/0.67 vs 0.39/0.41) | PLAN_pfaffian gate (a) round 2; gate_a/round2/summary.json
 
+- Check that a diagnostic's target is the quantity the network actually copied (round k vs k+1 numerator) before reading a kill | T-SOFT1 kill and a wrong mechanism reading, withdrawn by Astra | PLAN_sign "ASTRA combined review"
+
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"
 - A complex perturbation of a real Psi flips signs where |Re Psi| < eps^2 |Psi_2|; the normalised margin Re(Psi)/|Psi| has zero gradient at real Psi. Use a real f with m = Psi / sum|terms| | 2.1% step-0 flips | PLAN_sign "T-SIGN8 GATE 0 FAIL"
@@ -38,9 +40,12 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - cx_r1fit step acceptance passed a negated step as noise; fit-to-fit E_FN walk +-0.2e-6 makes single fits unquotable | candidate cause of the walk | delta_today 11-03
 - Pick checkpoints on one half of the grading draws and gate on the other (selection bias) | - | PLAN_pfaffian gate (a)
 
+- A fired kill test is not a verdict: diagnose (budget, tweak), try cheap variants, ask Astra, then decide | T-IW crossed d only after ~15k steps; a 3k kill would have killed it | PLAN_sign "T-IW RESULT"; PI 11-08
+
 ## Operations
 - Paderborn normal QoS can queue for weeks; name --qos=express_hpcalot (20 H100-h/month) in every brief | 8x8 work fell back to A40 for a day | delta_today 11-05
 - A watcher on a job that logs only at its end fires false STALLED; set the stall limit from the job's own logging cadence | false STALLED on 17751660 | delta_today 11-05
 - A race between machines is won by expected FINISH time, not by which copy starts first | 9x faster H100 copy of V cancelled, ~10 h lost | delta_today 11-04
 - Check a peer's units: a parenthesised error off by 10x turns a 1.2-sigma pass into a 12-sigma miss | c3 notation | PLAN_pfaffian c3
 - A peer's "being submitted now" is not a submission: arm a wait on the job id or progress file in the same turn | 8x8 R1 fit never submitted, ~2 days lost (11-06 -> 11-08) | delta_today 11-08
+- A configuration key must fit the lattice: pp2_lemma dedup keys by one uint64, so it collides above 64 sites (14x14 collision shown) | caught before any 10x10 use | Astra cj-852432069699, arch_tied/ANSWER.md

@@ -121,3 +121,12 @@ P11 (PI, 2026-11-09) (a) "The exact sign where the wavefunction is tiny had a lo
    hardest in the same place, next to the node where the kept sum K is small (delta f = log(1 + v/K) - ...; f_J = ln K - ln D). Nothing in T-JOINT
    removes that 1/K amplification, which is what killed stored signs (A48). Angle lead lowers T-JOINT from 45% to ~20% at 8x8 (one round), lower for
    every round. After T-RG: step-back (many failed versions of "store or compute the new sign").
+
+P12 (PI, 2026-11-09) "Use usual VMC optimisation of the network to get a better sign each round, then Lanczos; does it scale?"
+   Scales: yes (stored sign, no nesting; SR/minSR standard to large lattices; M1 itself is VMC-trained, so sgn(M1) is that sign at round 0).
+   Problem = objective: VMC lowers the variational energy, not the FN (node) energy. Measured counterexample, exact 6x6 (PLAN_sign "NEXT QUESTION
+   AT 8x8"): same two guides, the sign step LOWERED E_FN by 5.27e-6 while RAISING E_VMC by 2.04e-6. B9 (8x8): fixed-sign SR lowered the held-out
+   variational energy, FN 0.0512 worse. Literature (abstracts only): rugged sign landscape near J2 = 0.5 (Bukov-Schmitt-Dupont 2011.11214);
+   convolutional nets struggle with sign structure (Szabo-Castelnovo 2002.04613). Variant worth an Astra question after T-RG: train the STORED sign on
+   the FN energy itself, using walker-measured flip gains (ASTRA_node eq 3: dE = -sum_{dF} t_xy a_x a_y (u_x/a_x + u_y/a_y)^2; = P4/P9a with storage,
+   as self-healing DMC does). Hypothesis, untested.

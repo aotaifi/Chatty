@@ -500,6 +500,10 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- NOW (lead decision 2026-11-09, PI "you are lead and decide"): retrain the 8x8 base to published quality BEFORE more loop rounds.
+  M1 VMC -0.498674(12) is 2.1e-4 above Nomura-Imada RBM+PP -0.498886(1) (2005.14142); the loop must be tested on a strong guide (Goal: add-on
+  to strong networks). Step 1 (worker): ours-vs-published setup table, probe, plan (proposals/2026-11-09_base_retrain_8x8.md). Then rerun
+  R1 + headline on the new base. Overlap analysis (CPU) runs in parallel.
 - K = 3 at round 6 (architecture angle, PI "yes" to queue, 2026-11-09): why does the two-PP stored share fall 0.49 (R5) -> 0.25 (R6)?
   Hypothesis: P_2 spends its freedom on the round it first stores. Test: R6 from theta_5 with a fresh P_3, same T_6/budget, exact 6x6, vs K=2
   r 0.25 / aug 2.81e-6 (pfaffian_r6). Pred ~0.45 (55%%) -> one PP per round, cost ~linear in rounds; <= 0.30 -> decline in the fit, not the class.

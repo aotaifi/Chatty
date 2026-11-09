@@ -447,9 +447,10 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- Astra cj-9c2bd0991219 on the fired T-NODE kill (QUESTION7.md -> /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_node.md); background wait armed.
-  Next: read it, then take branch C (verdict on the node; label-route test only with the lead's loop metric and the lead's OK on spend).
-- No job of this angle is running (T-NODE 4187008 finished 18:38).
+- Relabelling cost pilot (Astra's next step, <= 1 CPU core-h, worker, started 2026-11-09 evening): /scratch/a/A.Otaifi/ansatz_runs/sign_relabel_pilot
+  (BRIEF.md -> PILOT.md, pilot.json). Next per outcome: bill (full pool relabel + ~5.5 H100-h fit/grade) goes to the lead, whose call the R1' ablation is;
+  pilot blocked by a code redesign -> estimate the redesign and ask the lead whether the label route is worth it at its 25% prior.
+- No Slurm job of this angle is running (T-NODE 4187008 finished 18:38).
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.

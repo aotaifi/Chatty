@@ -447,6 +447,10 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
+- TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
+  Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
+- Astra cj-9c2bd0991219 done; Astra cj-3cde43955281 on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md). Next: cheap test (<= 8 core-h
+  or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
 - T-RG cost screen (worker, CPU <= 8 core-h), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg, section "T-RG". Next: PASS -> design the round-2 accuracy
   reference, Astra review; KILL -> fan-out diagnosis per level + Astra, then report to the PI with T-JOINT as the next pick.
 

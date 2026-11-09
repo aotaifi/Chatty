@@ -1016,6 +1016,10 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
   eps^2 draws equally per decade, so its 0.40 -> 0.19 gain sits where the walker measure is ~1e-3. Per-decade E_mix differences are noise-limited
   (largest |diff| 2.7e-4 at d = -2, where the signs are identical). 6x6 already said this: s_G's step gain was almost all amplitude (A47).
 - Branch C: S_-7 is not used as a NODE. Its value, if any, is in the labels (c > 0); test only on the lead's loop metric.
+- Lead 2026-11-09 (verified the gate; paired per chain +10.9 / +1.5 / +7.8e-6; kill stands). Label-route metric = the refit net's bare FN energy at
+  c = 0, same code, vs R1's -0.498803(3); eps^2 is only a screen (8x8 link to energy uncalibrated). T-HYB constraint: walls must match the node, so
+  S_-7 walls in f_J force an S_-7 node, which costs +8e-6 -> a label gain must exceed ~1e-5 to show. Cost R1' fit ~1.7 + grade ~1.4 H100-h, after the
+  headline and only if Astra leaves a mechanism. Lead's prior 25%. Design nothing until Astra replies.
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

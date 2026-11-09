@@ -30,6 +30,15 @@ With pp2_lemma's parity par(z) (= site-ordered fermion sign), for every bond b a
   sublattice f), each with its own fast updates: cost (1 + 4m) x plain, constant in N. For general f (production rb8_prod, m = N) it is 4N + 1.
   Two arXiv searches found no statement of this; novelty unverified.
 
+Only the FIRST step collapses: H acting on B_{f o pi_O} (no longer T'-invariant) gives back the full bond sum, so H^2 B needs one PP per
+T'-orbit of bond PAIRS, ~16 m N / 2 (extensive). p nested steps are NOT (1+4m)^p PPs (lead's reading corrected 2026-11-09).
+Literature (2026-11-09, wiki + arXiv, 6 searches): Becca, Hu, Iqbal, Parola, Poilblanc, Sorella arXiv:1412.2656 Sec. 4 (read that section):
+p Lanczos steps on Gutzwiller-projected BCS states (translation-invariant pairing, i.e. m = 1) cost O(N^p) per VMC ratio on top of the
+O(N^2) update, evaluated by the H sum. The PP-sum form is not stated in the parts read. So for VMC (one ratio per move) the identity saves
+nothing at p <= 2. Its gain is in FN-GFMC with a Jacobi head (d ratios per move): two levels at 5 d^2 det4 instead of d^3 det6, a factor
+~d/5 (~80 at 14x14). Related: Dutta-Chen-Henderson-Scuseria arXiv:2101.08911 (abstract only) write correlated AGP states as linear
+combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of the spin-exchange instance: modest, not claimed.
+
 ## Candidates on paper
 | candidate | C1 | C2 | verdict |
 |---|---|---|---|
@@ -49,9 +58,10 @@ With pp2_lemma's parity par(z) (= site-ordered fermion sign), for every bond b a
    local features around the swapped bond, radius r = 1, 2, 3 (pattern counts, then a small window MLP). Prediction (mine, ~50%): explained
    share 0.2-0.4 at r = 2, because f_J's bond difference runs through the PP's Green function, which need not be short-ranged at J2 = 0.5.
    Pass: >= 0.5 on heavy bonds (hybrid's job), >= 0.35 in the bulk.
-3. Tied PP: (a) exact 6x6 check that (1 + alpha(H - E)) B_{f_inv} as S_5 reproduces the d-sum guide's E_FN; (b) bare cost of a
-   translation-invariant (m = 1) and 2x2 (m = 4) f vs general f at 6x6; (c) does R5's learned P_2 lie near span{B_{f1 o pi_O}}?
-   Derivations go to a breaking review (agreement 6); Astra before any GPU proposal (agreement 8).
+3. Lead's order 2026-11-09: (1) breaking review of the identity FIRST (Opus worker, arch_paper/REVIEW_BRIEF.md, running; incl. the RBM
+   invariance condition and the bond-pair count); (2) exact 6x6: S_5 vs the sampled p = 1 energy of the same network; bare cost of
+   translation-invariant f (and RBM) vs general f; a Jacobi head on S_5 vs the competitor's two-step 1.95e-6; (c) does R5's P_2 lie near
+   span{B_{f1 o pi_O}}? H-loc runs in parallel (Sonnet worker, arch_hloc/ANALYSIS_BRIEF.md, running). Astra before any GPU proposal.
 
 ## Dead ends
 (none yet)

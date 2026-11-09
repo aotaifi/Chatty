@@ -1477,3 +1477,5 @@
 - 2026-11-09 15:25 pfaffian angle: headline prodBx 4186886 RUNNING since 15:14 (4 B_0 chains, 40 s/block, ETA ~18:40); prodA 4186187 ETA ~20:00; headline total ~11.7 H100-h.
 - 2026-11-09 Queue: K=3 at round 6 (architecture angle proposal, PI yes to queue); lead: after the headline, normal QoS or December express.
 - 2026-11-09 PI GO: K=3 round-6 test (6x6 exact) on Paderborn normal/cont QoS, sent to the Pfaffian angle (its R5/R6 pipeline); 3-7 H100-h.
+- 2026-11-09 pfaffian angle: K=3 round-6 test (6x6, exact tables) registered in PLAN_pfaffian.md (PI GO regular queue); worker staging; mechanism 'P_2 spends its freedom on the round it first stores' logged.
+- 2026-11-09 K=3 test registered (PLAN_pfaffian "K=3 ROUND-6 TEST at 6x6"; angle pred r 0.33-0.48, aug 2.4-2.7e-6; caveat ~1.5x parameters); new K=3 code path with mu=0 / K=2 bit-identity checks; placement: Paderborn normal/cont if start <= 2 days, else theorie A40 (~22 h), pre-approved by the lead.

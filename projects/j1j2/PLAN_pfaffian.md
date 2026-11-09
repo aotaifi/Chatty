@@ -2189,3 +2189,115 @@ B_k + p=1 (~8 H100-h; total within the lead's 40 H100-h ceiling for the first po
 probe 0.14 + grade (running).
 Closed this session: M5' = STRUCTURE (P27); 8x8 stored-sign classes fail gate (a) (P28); V reproduced (c4, ratio 0.916(24)); stored-sign labels
 eps^2 0.17 (6x6); pool gate passed (pool_s2b sha 426487e9); heavy-x tail is a property of s_G, absent under the own sign (confirmed same-x).
+
+## Result R1 bare c = 0 grade (2026-11-09 00:24; OUTSIDE REGISTRATION; Paderborn 4164840 probe + 4165381 prod, 1.26 H100-h; grade_bare/prod/{ANALYSIS.md,summary_grade.json,raw_*.png}; verified: chain means recomputed from E_mix_post.npy, raw diff curve flat)
+| guide sgn(M1)|B|, c = 0, M 1024, 3 indep. chains each | E / site |
+| B_1 = R1 theta_tail (cbeecc75) | -0.498803(32) |
+| B_0 = rb8_prod, same code | -0.498755(39) |
+| E_1 - E_0 (paired by chain; unpaired -4.82e-5(44)) | -4.95e-5 +- 7.6e-6 (6.5 sigma) |
+E_0 - bar (i) = +1.2e-6 +- 4.0e-6 (driver reproduces p=0). E_1 - bar (i) = -4.65e-5 +- 4.3e-6 (11 sigma): MECHANISM KILL DOES NOT FIRE.
+Inside my registered R1-bare range (-0.49877 .. -0.49881). Concentration: wmax share max 0.002 / 0.011, top-10 <= 0.012 / 0.020, walker-tau in
+decades -7..-9 ~1e-3: the R1 loss outliers do not show in the grade. sigma 3.2e-6 / 3.9e-6 (target 3e-6, not extended).
+Next (registered): R0 check (M1 p=1 via P1Guide through grade_bare.py, sigma 1e-5, ~2 H100-h) being staged in pfaffian_8x8_r1/r0_p1 (lead's GO);
+then the headline B_1 + p=1 (~8 H100-h) goes to the PI before submission. H100-h on branch 2: 1.44 + 1.73 + 1.26 = 4.43 of 40.
+Separator (a)/(b) + SNR scripts ready, smoke-tested only (r1/separator/README.md); the heavy class is 17462 training entries (1.09%), not 136
+(that was the count in the 16x1024 batches); off the critical path now, for R2.
+Result R0 check (2026-11-09 04:08; Paderborn 4171854, 2.18 H100-h, M 256 = M1's M, 6 chains x 80 post-burn blocks, burn 5 tau; r0_p1/prodM256/):
+NOT QUOTABLE (quotable.py refuses 80 samples per chain; my sizing). Estimate E_p1 -0.498965(8) (chain scatter 5.2e-6, chain chi2/dof 0.4), vs M1 p=1
+-0.498946(5): diff -1.9e-5 +- 9e-6 (~2-2.7 sigma below; M1's M=64 run -0.4989467(14) gives ~3.5 sigma). All 6 chains below M1; chain medians too
+(~-1e-5). Rare low blocks (< -0.4995): 4 of 480 here (k4, k5) vs 2 of 1860 in M1 p1_s1/s2 at the same M, heavy-tailed E_L of psi_1 near its
+nodes (1 + alpha(E_L - E) -> 0). Guide identity is at ratio level only (9e-11). Registered R0 bar (2 sigma) not met as an estimate; reading:
+unresolved (statistics with heavy tails vs a walk difference). Test running: CPU trajectory identity, new driver vs M1's driver, same start/seed
+(r0_p1/identity/). If identical -> the evaluator is M1's, the offset is statistics, and the headline should be PAIRED in code (B_1 + p=1 vs
+B_0 + p=1, same driver, same starts) so it does not lean on M1's reference. If not identical -> find the term before any headline.
+H100-h on branch 2: 4.43 + 2.18 = 6.61 of 40. R0 at 2.18 vs estimate 2; quotable extension (~1.4-2 H100-h) would take R0 past 1.5x -> lead's call.
+Result R0 trajectory identity (2026-11-09; r0_p1/identity/{README.md,result.json}; ~1.5 CPU-h): grade_p1.py and M1's own driver gfmc_run.py
+(sha acb9c83f, unmodified) give the SAME FN-GFMC walk from the same start and seed (M 16, 4 blocks): max |dE_mix/N| 4.9e-14, weights 6e-14,
+branching identical; broken alpha = 0 differs by 8.6e-5..3.5e-3. Same E_mix estimator and population control (fixed-M systematic resampling).
+R0 has no transient (burn tenths -0.49892..-0.49897; post-burn quarters -0.498998(22) -0.498940(11) -0.498980(14) -0.498952(15)).
+READING: the evaluator is M1's to machine precision; the R0 offset -1.9e-5(9) is statistics on a heavy-tailed E_L (80-block chains), not code.
+DEVIATION from registration: the R0 bar (E within 2 sigma of M1) is replaced by this stronger identity test; R0 is NOT extended.
+HEADLINE PROPOSAL (for the lead -> PI; not submitted): paired in code, M 256, dtau 0.1: arm A = B_1 (theta_tail) + p=1 via P1Guide on the PP2
+params, arm B = B_0 + p=1 (R0's 6 chains count toward it). Per-block chain std ~1.7e-4 (R0) -> ~1150 post-burn blocks per arm for sigma 5e-6,
+difference sigma ~7e-6 (= registered headline precision). Cost: arm B +680 blocks ~2 H100-h; arm A 1150 blocks ~3.2 H100-h at B_0's rate, x1-2.5
+for the two-PP (bare grade: B_1 2.5x slower per block); total ~5-10 H100-h + burns, ~7-12 H100-h. Branch-2 total would be ~14-19 of 40.
+Also quoted against M1 p=1 -0.498946(5). Kill (registered): B_1 + p=1 not below M1 + p=1 by > 3 sigma; here also checked against arm B.
+Lead (2026-11-09): headline production GO, PI covered; stop > 15 H100-h. Pending lead/PI: c = 0 control (B_1's class refit to B_0 itself, bare grade, ~2 H100-h) -- do not start until the lead confirms.
+
+## R1 ATTRIBUTION CONTROL (c5-type), REGISTERED 2026-11-09 before any staging (lead + PI GO)
+Question: is R1's bare gain (-4.7e-5 vs p=0, -4.95e-5(76) paired vs B_0) due to the Jacobi-augmented target, or to the refit itself
+(two-PP class, warm start, fitter noise)? Run: identical to R1 except the target. Pool pool_s2b (sha 426487e9), warm start (sep 0.03, t 0.05,
+lam_init as R1), same fitter/arm pp8, steps (1500), seed, stop rule, graded network chosen the same way (theta_tail, iterates 600..1350 + final).
+Target T = B_0 (c = 0: labels are B_0's own ratios, no f_J). Then the same bare grade: sgn(M1)|B|, c = 0, 3 independent chains, M 1024, code
+grade_bare/code/grade_bare.py (theta path swapped, sha pinned), sigma ~3e-6; paired against the existing B_0 chains of grade_bare/prod.
+Predictions: lead E(B_1^{c=0}) = -0.498755 +- 1e-5. Mine: 0 .. +1e-5 above B_0 (fit noise in deep decades, ln|P_1| - ln|B_0| std ~0.5 at -9 in R1,
+can only cost), ~70%.
+Reading (gain = E_0 - E(B_1^{c=0}), sigma ~5e-6): gain >= 2.3e-5 -> R1's gain NOT attributable to the Jacobi target; gain < 1e-5 -> attributed
+to the target; 1e-5..2.3e-5 -> partial, reported as such. A loss (E above B_0) also attributes, and sizes the fit-noise cost R1 carries.
+Cost: fit ~1.7 H100-h (R1 took 1.73) + grade ~0.9-1.3 -> ~2.6-3 H100-h (lead's estimate 2; stop and tell the lead above 4.5). Express, submitted
+after the headline probe, never displacing headline production.
+Headline decisions (2026-11-09, angle lead, before the probe): arm A uses B_1's OWN alpha/E by M1's VMC rule (registered l.1972 'pipeline unchanged, network swapped'; l.1869 is the pool-label constants), arm B M1's consts.json (= that rule on B_0); check: rule on B_0 reproduces M1's alpha/E. Chains >= 256 post-burn blocks (quotable.py minimum), production 5 A x 260 + ~4 B x 260; arm B verdict from new chains only, R0's 6 pooled as secondary. KILL fires unless A < M1 and A < B, each by > 3 sigma.
+Result headline probe + step constants (2026-11-09; headline_p1/; probe2 4182862 0.24 H100-h; VMC 4183654 + 4185784 ~1.3 H100-h):
+arm A 89 s/block (3A+3B mixed), arm B 61 s/block (= R0). M1's VMC rule (vmc_moments.py 937f0ed8, imported unchanged) reproduces M1 on B_0:
+alpha -0.17403(324e-5) vs -0.17543(186e-5), E -31.91394(142e-5) vs -31.91514(76e-5) (z 0.4/0.7; broken constants fail at z -4.3/7.0).
+B_1's own constants: alpha -0.19357(317e-5) (10% larger, ~3.6 sigma), E -31.92084(57e-5), w = -0.8786 + 0.4775i (28.5 deg from M1's -1: M1's w
+would have been wrong for arm A). check_h2 0.963(71). Production: arm A 5 x (260 + 50 burn) on express (20 h limit), arm B 4 x 310 on QoS cont
+(express remainder ~9.2 h < projection 9.9-13.3). Projection 11.5-14.9 H100-h incl. spent 1.56 (stop at 15). c=0 control fit 4182798 sits in
+cont with estimated start 2026-11-21 (Priority).
+c=0 control placement (lead 2026-11-09): fit moves to theorie A40 (R1's b2r1a40 launcher, target only changed; s/step after 50 steps to be registered here); grade on A40 if <= 24 h projected, else Paderborn express next month. Paderborn cont job 4182798 stays pending until the PI approves its cancel in this session (est. start 11-21).
+Code notes for > 8x8 (2026-11-09): pp2_lemma dedup keys are one uint64 (bit per site): wrong above 64 sites (14x14 collision shown, Astra cj-852432069699); needs a multi-word key + collision test vs direct evaluation. Speed lever: pp2_lemma recomputes inverses per call (no persistent update).
+
+## K=3 ROUND-6 TEST at 6x6 (lead + PI GO "regular queue go", 2026-11-09; REGISTERED before any code or run)
+Mechanism (architecture angle's wording, board block 27): P_2 spends its freedom on the round it first stores. (R5: fresh P_2 stored r_5 0.49;
+R6, same P_2: r_6 0.25; q = 0.51.)
+Question: does adding one fresh PP per round restore per-round storage? Run: repeat R6 exactly (from seed 1's theta_5, target T_6 =
+B_5 e^{4.0 f_J^G[B_5]} target_T6_sG.npy, same fitter, 1500 steps, seed 1, mean of 7 checkpoints 600..1500, same budget) with a fresh third PP:
+B = P_1 + lam P_2 + mu P_3, P_3 and mu initialised by the rule R5 used for P_2 (sep 0.03, t 0.05 -> mu_init recomputed on the same x).
+Grade exactly as R6 (pfaffian_r6/readout): bare e, r_6 = (8.3319e-6 - e) / 5.0735e-6, aug c-scan min. Against K=2 R6: r 0.2505, aug 2.814e-6 (c 3.9).
+CPU checks before submission: mu = 0 reproduces e(theta_5) (rel <= 1e-9, as R6's 4.7e-11); P_3 Jacobian columns nonzero (tangent rank rises);
+a broken P_3 (columns zeroed) leaves the rank unchanged.
+Predictions: architecture angle r_6(K=3) ~ 0.45 (~55%). Mine: 0.33-0.48 (~50%); the fresh PP restores most but not all of R5's 0.49,
+since T_6's residual is harder (R5 two-PP stored 0.49 of a larger gap). Aug: 2.4-2.7e-6.
+Reading: r_6(K=3) >= 0.40 -> one PP per round restores storage; <= 0.30 -> the decline sits in the fit, not the class; between -> partial.
+Caveat registered now: K=3 has ~1.5x K=2's parameters; a pass does not separate "a fresh PP" from "more parameters" (M5 showed RBM count
+does not substitute at round 5, which is the nearest control).
+Placement: Paderborn regular QoS (cont/normal), NOT express (headline's). No race copy (a race needs a cancel, which needs the PI's word).
+Cost 3-7 H100-h (R6 fit + tables; K=3 ~1.5x per step), inside the lead's ceiling; stop and tell the lead above 9.
+K=3 placement (lead, pre-approved): Paderborn normal or cont if start <= 2 days, else theorie A40 (~22 h at R6's 53 s/step), concurrent with the c=0 control if a second A40 is free, else after it.
+
+## Result HEADLINE 8x8 (2026-11-09 20:01; Paderborn 4186187 arm A + 4186886 arm B, express; headline_p1/prod{A,Bx}/; verified: chain means recomputed from E_mix_all (burn 50 dropped), running means flat, raw_AB_chains.png)
+| p=1 + FN, M 256, dtau 0.1 | E / site | chains x blocks |
+| A = B_1 (theta_tail) + own step (alpha -0.19357, w rot. 28.5 deg) | -0.4989545(34) | 5 x 260 |
+| B = B_0 + M1 step (same code) | -0.4989390(45) | 4 x 260 |
+| M1 p=1 (M1 code, reference) | -0.498946(5) | |
+A - B = -1.55e-5 +- 5.6e-6 (2.7 sigma); A - M1 = -8.5e-6 +- 6.1e-6 (1.4 sigma). REGISTERED KILL FIRES (needs > 3 sigma on both).
+Prediction (-0.498962 .. -0.498985) MISSED HIGH: the gain is 0.85-1.55e-5, below the 1.6-3.9e-5 range.
+Equation for the miss: E(p=0) -> E(p=1) gains 1.83e-4 on B_0 (-0.4987565 -> -0.498939) but 1.52e-4 on B_1 (-0.498803 -> -0.4989545):
+the step recovers 3.1e-5 less on B_1. So the Lanczos step and the refit correct largely the SAME error (R1's p=0 gain 4.65e-5 shrinks to
+~1.55e-5 after the step: about 1/3 survives). The 6x6 analogue (34% of M1-p=1's error) assumed the two were additive; at 8x8 they overlap.
+INCONSISTENCY (affects the errors): R0 (same code, constants, M; 6 x 80 blocks) -0.498968(6) vs arm B -0.498939(4.5): 2.9e-5 (3.8 sigma
+naive). Starts are both beta = 1 pool draws; R0 had 4 low-tail blocks in 480 vs 1 in 1040. B agrees with M1 (+7e-6 +- 6.7e-6). Either the
+block errors are underestimated (heavy-tailed E_L of psi_1; arm B chain chi2/dof 0.06 is also suspiciously small) or there is a start
+effect; not resolved. Pooling R0 into B would give A - B ~ -0.5e-5. Either way no 3-sigma gain.
+Cost: headline 11.7 H100-h (probes + VMC 1.56, A 6.7, B 3.45). Branch 2 total ~18.3 of the lead's 40.
+K=3 AMENDMENT (2026-11-09, before submission; my error): the registration said "P_3 and mu by the rule R5 used for P_2 (sep 0.03, t 0.05)".
+That was wrong: sep 0.03 / t 0.05 is the 8x8 R1 warm-start rule. R5's actual P_2 init was a DIFFERENT TRAINED PP at finite separation
+(round-1 L-SWO PP) with lambda 0.1 (median |lambda P_2/P_1| 0.095). Corrected rule, as the lead specified ("as P_2 was in R5"): P_3 = a
+trained 6x6 PP from outside theta_5's lineage (candidates: pfaffian_r2g run_s2, pfaffian_r1 run_b), the one whose separation from P_1
+(theta_5) is closest to R5's P_2-vs-P_1 separation and that is not close to P_2; mu real, set so median |mu P_3/P_1| = 0.095 on the fit's
+held-out x. Readings, predictions and placement unchanged. Placement: theorie A40 (Paderborn cont est. 11-15, lowcont/nocont December;
+'normal' is not a QoS of this account), wall 47 h for a projected 30-36 h.
+K=3 SUBMITTED (2026-11-09 ~21:30): theorie A40 fit 17871864 + table 17871865 (afterok; if the fit fails the table stays pending and needs a
+PI-approved cancel), chain r6k3_chain.sh -> CPU readout; watchers 222392/222400/222401 (PPID 1); est. start 11-10 12:59, ~30-36 h.
+P_3 = pfaffian_r1/run_b/round_1/theta.npy (sha f03e1325, RBM block dropped as R5's P_2). Separation rms(f - f_1)/rms(f_1): 0.250 from
+theta_5's P_1, 0.173 from P_2 (R5 reference: L-SWO P_2 0.0865 from theta_4's P_1). The r2g / lswo2 PPs (0.09-0.10 from P_1) sit 0.05-0.06 from
+P_2 (same family) and were excluded by "separation from P_2 > half of P_2's distance from P_1 (0.067)". So P_3 is ~2.9x further from P_1
+than R5's P_2 was: noted as a deviation that cannot be avoided with the PPs on disk. mu_init 0.0698 (median |mu P_3/P_1| = 0.095). Start
+held-out loss 3.905e-3 (K=2 R6 3.871e-3). Checks: mu=0 1.8e-14 / spliced e rel 8.3e-11; Jacobian vs FD 2.3e-9; rank 4757 -> 7133 (zeroed
+4757); K=2 path bit-identical (sha 449d8057). Gate: pfaffian_r6k3/ANALYSIS_BRIEF.md; owner wait = pfaffian_r6k3/owner_wait.sh (re-run it after a clear).
+
+## STATE (2026-11-09 21:30) — running, no VERDICT yet
+- c=0 attribution control fit: theorie A40 17852869 (pending); duplicate Paderborn cont 4182798 pending (est. 11-21), cancel needs the PI's word.
+- K=3 round-6 test: theorie A40 17871864 + 17871865 (above).
+- Headline done (Result HEADLINE 8x8). Duplicate Paderborn cont 4186183 (arm B copy, est. 11-22) pending, cancel needs the PI's word.
+- Open: why the p=1 step and the refit overlap (paper first; cheapest test VMC E_L moments of B_1 vs B_0 per decade, CPU); R0-vs-B 3.8 sigma.

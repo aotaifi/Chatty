@@ -469,6 +469,11 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
 - A final signed Lanczos step on the STORED network beats the Jacobi head (T-B2P1, 2026-11-05; lead verified sign_b2p1/*.json; exact FN, 6x6,
   moment alpha, c = 0): s_G|B_6| + step 2.646e-6 (< aug 2.814e-6; ~ published CNN-MPS VMC 2.654e-6), s_G|B_5| + step 3.211e-6,
   sgn(psi_P)|B_6| + step 3.705e-6 vs competitor 5.574e-6; sgn(psi_P) + head (c* 4), no step 7.202e-6. Mechanism of step > head NOT understood.
+- 8x8 loop, one round (2026-11-09; lead verified headline_p1/prodA ANALYSIS): R1 at fixed sgn(M1) gains 4.65e-5 bare (-0.498803 vs -0.498755);
+  with a final p=1 step: B_1 -0.4989545(34) vs B_0 -0.4989390(45) (same code), A - B -1.55e-5(5.6) 2.7 sigma; vs M1 p=1 -8.5e-6 (1.4 sigma):
+  registered KILL fires (not 3 sigma). Mechanism (measured): the step gains 1.83e-4 on B_0 but 1.52e-4 on B_1, so ~1/3 of R1 survives:
+  refit (Jacobi) and Lanczos step correct largely the same error. Caveat: R0 (same code) -0.498968(6) is 3.8 sigma from arm B; block errors on
+  heavy-tailed p=1 energies may be underestimated (B chi2/dof 0.06); pooling R0 gives A - B ~ -0.5e-5.
 - Storage survives sampling at 6x6 (V, 2026-11-04; lead read pfaffian_v/readout/readout.json, Paderborn express fit 4109778, 1500 steps,
   control theta_4 exact): two-PP round 5 fitted from 4e5 sampled configurations stores r_V 0.464 vs 0.493 from the exact table (ratio 0.94;
   bare 8.561e-6 vs 8.332e-6). PASS (>= 0.35). Gap 0.029 ~ one fit-to-fit scatter unit (+-0.2e-6 in E). Aug (c* 4.0) 3.346e-6 vs exact-table 3.258e-6 (+0.088e-6, < fit scatter; readout/aug/readout_aug.json, lead read). c4 replica, new pool (pfaffian_v_c4/readout/readout.json, lead read): r_V2 0.4397, aug 3.390e-6; two pools: r_V/r_5 = 0.916 +- 0.024.
@@ -607,5 +612,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): At 8x8 one loop round at a fixed sign improves fixed node by 4.7e-5 per site; with a final Lanczos step the gain shrinks to about 1.5e-5 (2.5 sigma, final pending); a trained stored sign at 8x8 failed, so the sign stays fixed between rounds.
-- NEXT (in progress, high): Finish the 8x8 headline and its no-correction control, then decide round 2; the sign angle works on a per-round sign (one network for sign and amplitude, under review).
+- STATUS (in progress, high): At 8x8 one loop round improves fixed node by 4.7e-5 at a fixed sign, but after the final Lanczos step only about a third survives (1.5e-5, 2.7 sigma, below the registered 3 sigma): the round and the step fix largely the same error.
+- NEXT (open, high): Understand why the round and the Lanczos step overlap before any further 8x8 spend; the PI decides whether several rounds or a better per-round sign come next.

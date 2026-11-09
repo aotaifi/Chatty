@@ -824,6 +824,168 @@ eps^2 (full, -2..-9): gamma 0.5 final 0.642(23), gamma 1.0 final 0.724(37), gamm
 Angle status: storing the 8x8 sign with the deployable PP/frozen-RBM class does not reach the loop's bar (best eps^2 = the no-update sign itself).
 What the angle delivers instead: T-B2P1 (one final Lanczos step at c = 0 beats the competitor at fixed own sign at 6x6; the head at fixed own sign does not).
 
+## T-CERT and T-SOFT1 (PI go 2026-11-08: cheap checks with kill tests; a fired kill is diagnosed (budget, tweak) and sent to Astra before any
+## verdict; pre-registered before any number; both run on the 8x8 decades8 draws (s_G at x and y, ln|B_y/B_x| stored), not 6x6)
+T-CERT (Astra's certified partial sums, ASTRA_ideas.md eq 8): P(x) = (1 + alpha(H_xx - E)) S(x)|B(x)| + alpha sum_y H_xy S(y)|B(y)| with S = s_G (round-1
+sign), coefficients from |M1| ratios. A child y is CHEAP if the stored net (T-IW g05 final) is confident there (|m_y| >= tau), else EXPENSIVE. Add cheap
+children (using the stored sign), order expensive ones by |a_j|, resolve until |K| > R. Report per x: certified with 0 expensive resolves (fraction),
+mean expensive resolves vs all expensive children, and the certification error rate vs the exact sgn P (cheap children may be wrong).
+Controls: all-exact signs -> 0 errors; deliberately underestimated R -> errors appear. Taus 0.01/0.03/0.1/0.3.
+Kill: mean resolves >= 50% of the expensive children on rows with any expensive child, at every tau. Prediction: passes at some tau [45%].
+T-SOFT1 (I5 amended, information check only, no training): on the same draws compute u(x) = P(x)/D(x) (D = sum of absolute terms of P) and v = P/psi.
+Question: does small |u| mark the bonds that carry eps^2 (the costly wrongly-unblocked bonds of ppw_s1 / T-IW g05)? Report the share of the eps^2
+numerator on bonds whose endpoint |u| is in the lowest 1/5/10%, the ROC AUC of |u| for 'costly bond', and the pole fraction of v (|v| > 10).
+Kill: AUC < 0.6 for u AND for v. Prediction: AUC >= 0.7 [55%]. Pass -> stage 2 (training BCE vs Huber + sign term, two seeds, ~3-4 A40-h + grades).
+
+## T-CERT RESULT (first pass) 2026-11-08 (CPU ~3 core-h; sign_cert/full.json, 6332 decades8 draws; numbers from the worker, read)
+Pruning WORKS: resolves / expensive children 0.02 / 0.04 / 0.11 / 0.25 at tau 0.01 / 0.03 / 0.1 / 0.3 (kill 0.5 does not fire); with NO stored
+signs at all the certificate alone resolves 0.48 of the children. BUT the certified sign is wrong on 8.9 / 8.6 / 7.5 / 3.7% of draws, all in decades
+-7 and below (4-30%), because cheap children are confidently wrong (stored sign wrong on 10% of children with |m| >= 0.1). Order does not matter;
+sgn(M1) as the cheap sign is worse. Not usable as is. Diagnosis (PI rule) running: V1 cheap = confident AND g05/g10 agree; V2 safety margin from
+p_wrong(|m|) calibrated on A, evaluated on B; V1+V2. Then to Astra before any verdict.
+
+## T-CERT VARIANTS 2026-11-08 (CPU ~4.5 core-h; sign_cert/cert2.json; calibration half A, evaluation half B, 3160 draws; worker's numbers, read)
+V1 (agreement gate) does NOT help: g05 and g10 agree on 94% of children and are wrong together (13.3% wrong given agreement vs 14.6% overall):
+at 8x8 the two nets' errors are SHARED (unlike the 6x6 seed-specific finding), which weakens I1.
+V2 (safety margin from p_wrong(|m|)) WORKS for the error: 2x margin 0.54-0.82% at tau <= 0.1; 3x margin 0.28-0.38%; 3x + p_wrong per decade group
+0.16-0.22%; with 11-20% of all ~140 children resolved (27-43% in decades -12..-9, ~0 above -5). Small counts (4-12 error rows of 3160).
+MY CRITERION WAS WRONG for many rounds: each resolved child needs the previous round's exact sign, i.e. recursion. Bounded cost over rounds needs
+mean resolves per row < 1 in the recursion's own distribution, not a fraction < 0.5. Here mean resolves ~ 0.15 x 140 ~ 21 per row -> ~21^k instead
+of 140^k: a big saving for 2-3 rounds (e.g. two sign rounds ~6x cheaper than full nesting), not unbounded rounds. To Astra (PI rule) before verdict.
+
+## ASTRA on T-CERT (cj-54e43141d188, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_cert.md, read; replay reproduces all 112 cert2 summaries)
+CONTINUE narrowly. Pruning screen PASSES; not yet a certified bounded-cost every-round updater: V2's margin is a smoothed expectation, not a bound
+(one-child counterexample); B is now development data (thresholds compared on it); the replay gave the exact SELF sign sx for free, which is itself a
+previous-round request (a self chain alone prevents bounded cost); deep decades -12..-9 need ~51-56 children per row. 21^k is a conditional forecast.
+I1 drops to last (shared errors). Ranking now I5 > I2 > I4 > I3 > I1.
+Next (T-TRACE, frozen V2deck3 tau 0.01; pre-registered before any number): real two-sign-round call trace on 32 decade-stratified roots + the 5 failure
+rows, previous-step signs from the actual evaluator incl. the self dependency; compare unpruned / exact interval pruning / V2: raw and memoized calls,
+CPU time, sign differences. <= 1 core-h. Exact pruning must equal unpruned (else fix code); if V2/exact pruning does not cut evaluator cost -> stop
+this accelerator; if it does -> next gate is hard-sign eps^2 and a matched-cost refreshed-round comparison on fresh blocks.
+
+## T-TRACE RESULT 2026-11-08 (CPU ~0.3 core-h; sign_cert/trace/{trace.json,analysis.json}; worker's numbers, read)
+Real two-sign-round evaluator (ELnp2 s_G reproduces all stored labels). 32 decade-stratified roots (deep-heavy) + 5 failure rows:
+(a) unpruned 4342 round-1 calls, 198 s; (b) EXACT interval pruning 2140 calls, 99.5 s, signs identical to (a) on 37/37 (broken-bound controls differ
+on 8-21 roots); (c) V2deck3 1087 calls + gate evals, 62 s, wrong only on the 5 known failure rows. Split: decades >= -8: (c) 15 calls vs (b) 1066;
+decades <= -9: (c) 1040 vs (b) 1042 (stored signs unreliable there). Self chain costs 1 call per round (no branching). Oracle ordering would save <= 1/3 of (b).
+Reading: exact pruning is a free, exact 2x per level; stored signs add large savings in the bulk only. The walker-weighted cost (deep decades are
+rarely requested) is NOT measured and decides the practical value. To Astra with that question.
+
+## ASTRA on T-TRACE (cj-4a0834d51330, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_trace.md, read; replay reproduces analysis.json)
+CONTINUE. Exact pruning PASSES as a two-round accelerator (2.0x CPU). Weighted by a REQUEST proxy (MBAR weight x R_B, one-swap requests), the hybrid's
+mean resolved children per request is 0.59-0.79 (< 1), vs 21 on the decade-stratified panel; roots weighted by |B|^2: 0.038. Forecast at 8x8: one
+extra sign round costs ~1.5-3x the previous round's sign work (proxy, conditional). Not passed as an every-round updater: bulk substitution errors remain,
+gate evaluation dominates time (a shared shell evaluation could remove it), third-round composition unmeasured. Scaling with N: no constant factor shown.
+Next (T-ROUND3, pre-registered before any number): third sign round on request-proxy-sampled configurations (MBAR x R_B) + the 2 surviving failure rows
+as stress cases; exact pruning vs hybrid, explicit self calls, cache counted; record CPU, gate cost, unique (round, config) evaluations, hard children
+that produce hard children. Criterion (Astra's): request-weighted third/second-round CPU ratio <= 3, not dominated by a few hard branches.
+If it fails: diagnose (gate cost vs hard-descendant expansion) before changing the policy, then Astra. If it passes: next gate = hard-sign eps^2 < 0.3.
+
+## T-SOFT1 RESULT 2026-11-08 (sign_soft1/{soft1_result.json,yend_result.json}; eps^2 reproduced 0.5514 / 0.6416; worker's numbers, read)
+KILL FIRES on the registered (unweighted) reading: AUC of small |u| at x for costly bonds 0.545 (ppw_s1) / 0.557 (g05); v 0.501 / 0.540; per decade
+-9/-8 ~0.44 (chance or below). Weighted pooled u 0.66 / 0.63 is carried by the decade mix, not supported per decade. Diagnosis: at the OTHER end y the
+signal is REVERSED: LARGE |u_y| marks costly bonds (AUC of +|u_y| ~0.61-0.69; 1185 sampled bonds, not importance-weighted; may be a decade proxy).
+Reading (angle lead): the costly errors are NOT where the step's target is near zero (ambiguous); they are where it is clearly nonzero and the stored
+net is confidently wrong (cf. T-CERT: 10% wrong among confident children). So I5's mechanism (soft targets inform the boundary) does not address the
+costly errors; their cause is generalisation/coverage in the deep decades. Not yet a verdict: to Astra (PI rule).
+
+## T-ROUND3 RESULT 2026-11-08 (CPU 0.69 core-h; sign_cert/round3/analysis3.json; request PROXY MBAR x R_B; worker's numbers, read)
+Third/second-round CPU ratio, request-weighted (bootstrap 16-84%): exact pruning 40.3 (38-42); hybrid with recursive fallback 4.25 (3.3-5.3);
+hybrid with exact fallback 6.0 (4.8-7.3). Criterion <= 3 FAILS in every mode (measured, not inconclusive).
+Causes: exact pruning = hard-descendant expansion (21-93 resolved children, each a full round-2 evaluation). Hybrid: bulk (97% of requests) ratio 2.15 =
+pure GATE cost (removable in principle by a shared shell evaluation, Astra); the excess comes from mid decades -8..-6 (3.2% of requests, 50% of round-3
+CPU): 2 of 3 mid requests resolve 43/52 children, 35/50 of which resolve their own. Dominated by a few hard branches (only 3 mid samples).
+Signs: hybrids agree with exact on 15/15 proxy requests. Caveats: proxy, not an FN request stream; g05 stands in for a round-2 net; no amplitude refresh.
+Angle lead's reading: vs the original ~140x per extra sign round, ~4x per round is a large reduction, but not bounded; the mid-decade hard branches are
+the term to change (a better stored sign there, or a shared-shell gate). Not a verdict: to Astra with T-SOFT1 at 00:10 (quota).
+
+## T-GATE RESULT 2026-11-08 (job 17843726, ~40 core-h; sign_gate/result.json; controls reproduce 0.6416 / 0.7244 / 0.4002; worker's numbers, read)
+Keep-old-sign hybrid (stored g05 where |m| >= tau, sgn(M1) elsewhere): eps^2 falls MONOTONICALLY as the stored sign is used less: tau 0 0.642, 0.01 0.588,
+0.03 0.523, 0.1 0.422, 0.3 0.397(10), sgn(M1) 0.400(10). Best on A (tau 0.3) vs sgn(M1): -0.0035 +- 0.0020 (1.7 sigma, not beyond error); B -0.0022 +- 0.0021.
+g10 same (no tau beats sgn(M1)). I1keep (disagreement -> sgn(M1)) 0.569. Disagreement covers only 21% of g05's eps^2 error.
+Reading: on the loop metric the stored sign adds no value over sgn(M1) ANYWHERE, even where it is confident; its confident changes are net harmful
+(consistent with T-CERT and T-SOFT1: confidently wrong). Exact-s_G repair arms (S', I1 exact) not computed: 17-450 core-h (control 1000 core-h).
+Prediction (best tau beats sgn(M1)) [30%] missed.
+
+## T-AMP (PI's idea 2026-11-08: the amplitude decides what is hard; pre-registered before any number; CPU)
+S_k(x) = sgn(M1)(x) if decade(x) > k, else exact s_G (Lanczos one-step sign; with exact interval pruning for cost). k in {-4,-5,-6,-7,-8,-9}.
+(1) Accuracy: decades8 eps^2 (A/B/full) of S_k; exact s_G needed only at deep configurations (x, y, two-swap z) -> cost only there.
+(2) Cost: T-ROUND3 machinery with the decade gate instead of the confidence gate: request-weighted third/second-round CPU ratio, breakdown.
+Pass: some k with eps^2 < 0.3 on A (then B) AND ratio <= 3. Predictions: eps^2 < 0.3 at k >= -7 [65%]; ratio <= 3 at that k [35%].
+If a kill fires: diagnose (deep children of shallow roots, -8..-6 hard branches), variants, then Astra.
+
+## T-AMP PARTIAL 2026-11-08 23:51 (sign_amp/{parent_result.json,count_deep.log}; ~15 CPU-min; worker's numbers, read)
+Pre-registered S_k not run (exact s_G at ~20k two-swap z per x: 330-3400 core-h offline). Zero-cost VARIANT (z inherits its parent's gate):
+eps^2 full k = -4 0.012, -5 0.048, -6 0.100(9), -7 0.197(12), -8 0.329(12), -9 0.380(10); A and B agree; controls sgn(M1) 0.4002, exact 0 pass.
+sgn(M1)'s eps^2 sits mostly in decades -3..-7 (not only the deepest). eps^2 < 0.3 for k >= -7 (variant). Cost part not run. My brief swapped the two
+controls' k labels (worker ran both correctly). To Astra with the cost question.
+
+## ASTRA combined review (cj-abd055cffe3d, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_soft1.md, read)
+MY ERROR: T-SOFT1's spec built the target with psi = s_G|B|, i.e. P_2 (the NEXT round's numerator), not P_1 = [1 + alpha(H - E)](sgn(M1)|B|), whose sign
+s_G the nets copy (u_2 disagrees with s_G on 1604/6332 roots; u_1 on 0). Corrected (no new labels): AUC of small |u_1| at y for costly bonds 0.785 (ppw_s1)
+/ 0.768 (g05). The I5 kill is WITHDRAWN, and so is my reading 'costly errors are confident-wrong, not borderline': small target magnitude IS enriched on
+costly bonds (student confidence and teacher margin are different quantities).
+Hybrid (confidence gate): FAILS the every-round cost screen; exact pruning kept as a component (H3r ~25x faster than E3 on the proxy).
+T-AMP: the parent variant's 0.197 is NOT the eps^2 of S_-7; its bias is uncontrolled (also affects f_J(x)); k = -7 is a candidate, not a pass.
+ONE next step (Astra; T-SOFT2, pre-registered before any number): corrected I5 stage 2: matched BCE vs bounded-numerator Huber + explicit sign term,
+both storing sgn P_1 = s_G, same frozen-RBM class, exact warm start at sgn(M1), same label constants, coverage and optimizer budget, two seeds per arm;
+select on development data, judge full hard-sign eps^2 on FRESH process blocks; pass eps^2 < 0.3 in both seeds of the Huber arm, M1 control reproduced.
+Planning estimate ~3-4 A40-h training + grading (~12 core-h per candidate) + fresh blocks. PI GO 2026-11-09. Predictions (angle lead): Huber arm eps^2 < 0.3 in both seeds [30%]; Huber below BCE by > 2 sigma [50%]. A fired kill is diagnosed, varied and sent to Astra first.
+
+## T-SOFT2 RESULT 2026-11-09 (A40 ~5.4 h, CPU ~53 core-h fresh blocks; sign_soft2/grade/fresh/paired_fresh.json verified by me)
+20 FRESH process blocks (960 draws), jackknife over blocks; QUOTABLE halves. eps^2: sgn(M1) 0.401(34); BCE 0.690(94) / 0.701(92); HUBER 0.699(79) / 0.701(86).
+HUBER - BCE paired: +0.009(35), -0.000(22). Every trained net ~0.30(10) ABOVE sgn(M1). PASS FAILS (bar 0.3); predictions [30%] / [50%] missed.
+Spec change by the worker (judged OK): trainable output scale g = a m (literal Huber pulled margins down 6x; dev eps^2 4-10).
+Diagnosis: the excess is in SHALLOW decades -6..-2 (M1 0.03-0.47, nets 0.41-0.84); deep decades -10..-8 ~ M1; wrongly blocked weight 0.0037 -> 0.0064;
+82% still from wrongly unblocked; coverage is not the cause (123k-228k configs per decade -9..-6); more steps / lambda x4 give 0.68-0.69.
+BCE and Huber end as the SAME sign function (held-out error vs s_G 0.061 in all four runs).
+Reading: supervised training of this class does not carry the step's sign onto the loop metric; it adds damage where sgn(M1) is already nearly right.
+Sixth failed training variant (BCE, IW, PP-full, gate/keep, soft target...). Step back: stop training stored signs of this class; the live route is the
+EXACT sign where it matters (amplitude gate + exact pruning), whose accuracy looked good (parent variant) and whose cost is unmeasured. To Astra (PI rule).
+
+## ASTRA on T-SOFT2 (cj-37ea7c904156, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_soft2.md, read; all fresh numbers reproduced to 3e-16)
+KILL further BCE/IW/Huber training of the frozen-RBM real-pairing sign class under this recipe (a practical stop, not an impossibility theorem).
+Term: training moves toward the target, but its induced change of the kept-bond sum (small denominator next to the node) is too distorted to pay:
+in the exact decomposition the squared-change term outweighs the cross term in every arm. (Correction: BCE and Huber are NOT the same sign function:
+27/960 roots, 4351 neighbours differ.) Fresh blocks are time-limited (done=False), so errors are block jackknife, not a converged FN measurement.
+Parent-spliced eps^2 KILLED as the gate's acceptance test (it grades a different correction). Exact pruning CONTINUES as a component.
+NEXT (T-K7, pre-registered before any number; CPU 3-4 core-h, cap 8): the TRUE amplitude-gated sign S_-7 (eq 4: s_0 = sgn(M1) where decade > -7, s_G
+where <= -7, applied separately at x, y and every z). Accuracy: exact mixed f_J(x) on the 20 fresh blocks; 256 outer reference bonds stratified by block
+and y decade (cover -8/-7/-6) with inclusion probabilities, complete one-swap neighbourhood of each sampled y, parent result as control variate (eq 5).
+Cost: complete caller request scopes on a small fixed trace, gate decided from log amplitudes, r = 2 and 3 timed with exact ungated lower levels, plus the
+absolute cost of the first-update Jacobi caller. Pass: eps^2 interval < 0.3 AND C3/C2 interval < 3 (absolute cost reported). Lower bound above a limit
+rejects that claim; cap reached unresolved = inconclusive. Predictions (angle lead): eps^2 < 0.3 [55%]; C3/C2 < 3 [35%].
+
+## T-K7 RESULT 2026-11-09 (job 17852399, ~4.6 core-h; sign_k7/result.json verified by me; controls pass)
+ACCURACY PASSES: true amplitude-gated sign S_-7 (sgn(M1) where decade > -7, exact s_G where <= -7, at every x, y, z): eps^2 0.191 +- 0.048,
+95% [0.097, 0.285] on 20 fresh blocks (252 sampled outer bonds, eq 5; halves 0.154 / 0.231, QUOTABLE). First 8x8 sign below the 0.3 bar.
+Remaining error sits in shallow decades -6..-3 (0.157 of 0.191), where S_-7 = sgn(M1); deep decades nearly clean.
+COST: first-update caller C1 = 0.30 s per request (7.6 ELnp2 calls; proxy trace) = CHEAP. Repeated rounds REJECTED: C3/C2 = 22.3 [19.9, 25.1] with exact
+UNGATED lower levels (hard-descendant expansion, 2.4k-50k calls per request at r = 3; heavy requests capped, lower bounds).
+Reading: a gated exact one-step sign is cheap AND passes the loop's bar for ONE sign update, with nothing stored. Every-round updates with exact
+lower levels are unaffordable. Untested: recursively GATED lower levels (a different updater, Astra) and a gate at k = -6/-5 to remove the shallow part.
+Predictions: eps^2 < 0.3 [55%] held; C3/C2 < 3 [35%] missed.
+
+## T-NODE (lead 2026-11-09; pre-registered before any number; runs AFTER Astra's preconditions (cj-e7eef3719cc1): real walker cost, walls, f0)
+Question: is S_-7 a better NODE than sgn(M1) at 8x8? FN-GFMC at c = 0 on the fixed amplitude |M1| with sign S_-7 (sgn(M1) where decade > -7, exact s_G
+where <= -7; s_G needed only at deep walker neighbours, one level), same code and settings as M1's p=0 (-0.4987565(28), gfmc_m13b/prod/rb8).
+Also measure the REAL per-move cost (time per walker step, fraction of moves needing exact s_G) from that run; the proxy trace does not count.
+Placement (lead): not in the R1 headline; candidate sign for R2's labels and walls only.
+Prediction (angle lead): gain over sgn(M1) of 5e-6 to 4e-5 per site [55%] (cf. M1 p=1 full step, sign + amplitude, -0.498946: 1.9e-4).
+KILL: no gain beyond 2 sigma -> S_-7 is not used (a fired kill is diagnosed and sent to Astra first). Precision target sigma(diff) <= 4e-6
+(two chains; error of the difference). A40 inside the lead's ceiling.
+Code (lead): copy of /scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8_r1/grade_bare (gfmc_b2.BareM1Sign, M 1024, dtau 0.1; code shas in prod/run_metadata.txt:
+gfmc_b2.py f768e05b, grade_bare.py aa0cf6af, gfmc_aug8.py 8c383172, pp2_lemma.py ef50e129), S_-7 added as a sign option, all else identical; sgn(M1) arm = its B0_k3..k5
+(-0.498762 / -0.498755 / -0.498749) reused if the code path is unchanged for that arm, else rerun. Ran on Paderborn H100 originally; A40 or H100 express.
+
+## ASTRA on T-K7 (cj-e7eef3719cc1, ASTRA_k7.md complete despite the job's quota exit; read) 2026-11-09
+T-K7 accuracy PASS is sound (replayed exactly); recursion with exact ungated lower levels rejected (C3/C2 >= 22.3, censored). S_-7 = viable candidate
+for ONE frozen sign update; FN-energy benefit and real walker cost unproved; recursively gated lower levels = a different updater, worth a later capped
+test, no convergence guarantee; k = -6 plausible later (first-round calls 15.4 vs 7.6), -5 not justified now.
+Preconditions for T-NODE: freeze B0 = |M1| inside the gate even when the amplitude is refitted; s0 = sign Re[w M1] with the SAME global phase on both
+sides of the gate; m_ref -67.03209121446969, alpha -0.1754318714549749, step E -31.915135844116154 (distinct from the Jacobi E' -31.920416); c = 0
+needs only x/y signs (simplest first test); time the complete production move (not 0.30 s / 7.6 calls); fix the wall-time ceiling before launch.
+
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own

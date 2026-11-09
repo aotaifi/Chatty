@@ -1076,6 +1076,15 @@ Ranked: guide first then p=1 + FN + variance extrapolation 75%; restricted-class
 My check: its "0.18% of walker weight" reuses frac_x_deep, which Astra showed counts row evaluations (walker residence below -7 is tau 1.1e-3);
 its claim that the S_-7 null was predictable by weight counting is therefore unsupported (Astra: 68% power at 1e-5). "6x6 second steps small" is 6x6 (PI: not a verdict).
 
+FABLE AFTER THE PI'S PUSHBACK (FRESH.md section 10, read): concedes the frac_x_deep error and that the S_-7 null was a measurement, not predictable.
+2a holds only near convergence: round r's gain ~ remaining wrong-sign weight, contracting by c_r per round (A1: 18x, then 5x from Marshall), so the
+loop needs r* = log(w0/w_floor)/log c rounds (1 from M1, 3-4 from Marshall). Case for the loop over SR: the Marshall trap (2002.04613), since a
+projection step flips bulk signs without driving amplitudes through zero. Proposed 8x8 bad-start test (Marshall x |M1|, A13 reference/held-out):
+A = rounds 2-3 of the stored loop (one-hop labels); B = Ising-ground-state labels at fixed amplitude (2207.10675); C = SR training of the same net at
+equal GPU-h (Marshall-trap control, run first). PASS c_2 >= 3 and c_3 >= 2; KILL c_2 < 2; loop unnecessary if C reaches w_2(A). ~12 A40-h + 0.4 H100-h.
+My check: c_r is a wrong-sign-WEIGHT metric, and LESSONS says cutting w_T can raise the label error (8x8 gate (a)), so the grade must be the FN energy
+per round (lead's metric), with w only as a screen. 12 A40-h exceeds my takeover ceiling (8): design at the check-in with Astra's answer (QUESTION8 (6)).
+
 ## T-LEV (takeover, angle lead's call on Fable's step; pre-registered before any number; CPU <= 10 core-h)
 Question: does the fixed-amplitude SECOND sign step have more leverage at 8x8 than at 6x6 (PI's premise "a better sign every round" vs Fable's 2a)?
 m2(x) = [1 - alpha(H_xx - E)] s_G(x)|B_x| - alpha sum_y H_xy s_G(y)|B_y| (s_G = first-step sign, fixed |B|);

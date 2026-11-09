@@ -447,11 +447,9 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- T-NODE production: Paderborn H100 express job 4187008 (started 2026-11-09 15:16, --time 03:30:00, 6 chains F_k3..5 = sgn(M1) via s0gate,
-  S7_k3..5 = S_-7), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_node/prod, ANALYSIS_BRIEF.md there (ceiling, gate). Watcher pid 2968084 (setsid)
-  -> job_finish.sh -> VERDICT line in delta_today.md. Post step: control (1) ctrl1_probe.py (F chains vs B0_k3..5 bitwise, first 1550 blocks), then
-  scripts/analyze_node.py RUN --sigma 4e-6. Next step per verdict: section "T-NODE BRANCHES" (A large gain / B small / C kill -> diagnose + Astra).
-- Nothing else of this angle is running. Old entries (T-LCNN, T-SCALE step 0, T-CAP arm 3, gates 1-2) are closed; see their RESULT sections.
+- Astra cj-9c2bd0991219 on the fired T-NODE kill (QUESTION7.md -> /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_node.md); background wait armed.
+  Next: read it, then take branch C (verdict on the node; label-route test only with the lead's loop metric and the lead's OK on spend).
+- No job of this angle is running (T-NODE 4187008 finished 18:38).
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
@@ -459,7 +457,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   sign on |M1| +4.0(1.3)e-5/site).
 - Amplitude-gated exact sign S_-7 (sgn(M1) where decade > -7, exact s_G below): eps^2 0.191 [0.097, 0.285] on 20 fresh blocks (T-K7) = first 8x8 sign
   under the 0.3 bar, nothing stored; first-update cost 0.30 s/request (proxy), real per-move cost 2.65x the plain c = 0 step (T-NODE probe).
-  Repeated rounds with exact lower levels: C3/C2 = 22 (rejected). Its node energy: T-NODE running.
+  Repeated rounds with exact lower levels: C3/C2 = 22 (rejected). As a NODE at c = 0 on |M1|: no gain (T-NODE, +8.0(4.1)e-6, kill fired; diagnosis + Astra pending).
 - Components kept: exact interval pruning (exact, ~2x per level); decade gate. Open ideas: recursively gated lower levels (Astra: worth one capped test,
   no convergence guarantee); k = -6; T-JOINT (one complex net, PI: ask Astra only). Discussion record: DISCUSSION_sign_2026-11-08.md (P1-P9, I1-I5).
 - Placement (lead): S_-7 not in the R1 headline; candidate sign for R2 labels/walls once T-NODE shows a node gain and the c > 0 wall cost is timed.
@@ -1006,6 +1004,19 @@ Measured cost already: S_-7 costs 2.65x the plain c = 0 step per move (A40 probe
     the labels/walls (c > 0): the decisive test becomes an R2 label comparison (labels with S_-7 vs sgn(M1)) rather than the node. To Astra before any verdict.
 Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); that real cost is unmeasured and must be timed before R2 uses S_-7 in walls.
 
+## T-NODE RESULT 2026-11-09 (Paderborn H100 express 4187008, ~3.4 H100-h; sign_node/prod/{ANALYSIS.md,summary_node.json,post.log}; verified by me from the json)
+- KILL FIRED (as registered): E(S_-7) - E(sgn M1) = +7.96e-6 +- 4.1e-6 /site paired (unpaired +8.4(3.6)e-6): no gain; S_-7 leans WORSE at 1.9 sigma.
+  Predicted gain >= 5e-6 excluded at 3.2 sigma; >= 2e-5 at 6.8 sigma. sigma(diff) 4.1e-6 vs target 4e-6 (just missed: S_-7 chains hit maxsec at
+  2171/2160/2150 of 2950 blocks; F arm complete).
+- Arms (quotable.py, 3 chains each, chains agree): S_-7 -0.498746(2.7e-6) [chi2/dof 0.15]; sgn(M1) -0.498754(2.3e-6) [chi2/dof 1.33] (B0 earlier -0.4987565(28)).
+- CTRL1 on H100: F_k3..5 = B0_k3..5 bitwise, 1550 blocks each, 0 differing fields; broken arm differs.
+- Cost on H100: 5.47 vs 2.01 s/block (2.72x); s_G 75% of S_-7 time; 45% of moves need s_G.
+- Why the node test cannot see the eps^2 gain (my equation reading, Astra asked blind): S_-7 differs from sgn(M1) only at d <= -7. Walkers spend
+  frac_x_deep = 1.8e-3 of their time at such x, and s_G flips 5.4% of those (~1e-4 of walker time); flips at deep neighbours 23.6% of 2.1% of evaluations.
+  eps^2 draws equally per decade, so its 0.40 -> 0.19 gain sits where the walker measure is ~1e-3. Per-decade E_mix differences are noise-limited
+  (largest |diff| 2.7e-4 at d = -2, where the signs are identical). 6x6 already said this: s_G's step gain was almost all amplitude (A47).
+- Branch C: S_-7 is not used as a NODE. Its value, if any, is in the labels (c > 0); test only on the lead's loop metric.
+
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own
@@ -1017,6 +1028,7 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
   Lead's prior joint <= separate 35%; mine 40%.
 
 ## Dead ends
+- S_-7 as a c = 0 NODE on |M1|: +8.0(4.1)e-6/site vs sgn(M1), kill fired (T-NODE RESULT, sign_node/prod, 4187008). Label use still open.
 - Trained stored 8x8 sign (BCE / IW / PP-full / keep-old gates / soft-target Huber): fresh eps^2 0.69-0.70 vs sgn(M1) 0.40 (T-SOFT2, A48); induced
   kept-bond-sum change outweighs the gain (ASTRA_soft2.md). Practical stop for this recipe, not an impossibility theorem.
 - Confidence-gated stored+exact hybrid for every round: C3/C2 4.25 (T-ROUND3), stored confident signs carry no usable information (T-GATE).

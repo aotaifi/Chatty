@@ -99,3 +99,8 @@ when later rounds or larger lattices move the node into common configurations: i
 
 ## Order proposed
 P2 runs now (cheap). Then P1 + P5 + P6 together on paper (they are one question: what to store and what to compute at walker time), then P4.
+
+## T-NODE result (2026-11-09; for the PI, plain)
+The gated exact sign S_-7 does NOT make a better node at 8x8: energy +8.0(4.1)e-6/site vs the old sign (no gain; the predicted gain >= 5e-6 is
+excluded at 3.2 sigma). Likely reason: it changes the sign only in configurations where walkers spend ~1/10000 of their time, while the loop's label
+score (eps^2) counts those configurations heavily. Open: whether it still helps the next round's LABELS. Astra asked (cj-9c2bd0991219) before any verdict.

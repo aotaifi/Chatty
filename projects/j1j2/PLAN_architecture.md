@@ -30,6 +30,14 @@ With pp2_lemma's parity par(z) (= site-ordered fermion sign), for every bond b a
   sublattice f), each with its own fast updates: cost (1 + 4m) x plain, constant in N. For general f (production rb8_prod, m = N) it is 4N + 1.
   Two arXiv searches found no statement of this; novelty unverified.
 
+REVIEW (Opus worker, 2026-11-09, arch_paper/review/REVIEW.md; exact 4x4, every broken variant fails): A holds (3.3e-15) and needs the
+site-ordered par (Marshall parity breaks J1-v and J2: 2.0). B holds for the SUM over bonds only (per bond under projection: 1.75). 'inner' RBM
+closes if (f, W) are permuted together (1.3e-14); 'outer' does not. C collapse needs ALL of: f T'-invariant, T' permutes hidden units (W, b),
+T' inside the projection group. PRODUCTION rb8_prod (M = 16, W general) -> no collapse, 1 + 4N = 257 terms at 8x8. 4m is an upper bound
+(point-symmetric f, full proj: 1 + 2). 6x6 trap: c4 is an odd site permutation, so a c4-invariant f gives B_full == 0. D: (1+a(H-E))^2 B
+needs 8N + 21 projected PPs (149 / 309 / 533 at L = 4 / 6 / 8; rank 134 at 4x4, the missing 15 are f-independent spin-1/2 identities).
+=> Tied-PP class requires building a symmetric PP (+ symmetric RBM or none); the 6x6 checks must use translation-invariant f with
+translations-only or c4-safe projection.
 Only the FIRST step collapses: H acting on B_{f o pi_O} (no longer T'-invariant) gives back the full bond sum, so H^2 B needs one PP per
 T'-orbit of bond PAIRS, ~16 m N / 2 (extensive). p nested steps are NOT (1+4m)^p PPs (lead's reading corrected 2026-11-09).
 Literature (2026-11-09, wiki + arXiv, 6 searches): Becca, Hu, Iqbal, Parola, Poilblanc, Sorella arXiv:1412.2656 Sec. 4 (read that section):

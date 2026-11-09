@@ -447,6 +447,7 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
+- T-BAD (PI GO): cost probe worker (sign_bad, <= 1 A40-h); design finalised after Astra QUESTION8 (6) (resubmit 23:45), then stage 1 launched.
 - TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1104,6 +1105,23 @@ count flat 16 -> 36 sites); A13 (8x8 from Marshall: stored net + exact hop close
 Hypothesis (angle lead, ~55%): storage is easy while the remaining sign errors sit in high-amplitude configurations (bad start, A13), and hard once
 only deep-tail errors remain (good start, A48); the tail is then the endgame, where Fable's second-order argument applies. Test regime for
 "every round" = a deliberately bad start at 8x8 (Marshall or a weak network) standing in for large L; design at the check-in, Astra first.
+
+## T-BAD (PI GO 2026-11-09 21:10: "go for testing"; DRAFT pre-registration, finalised after Astra QUESTION8 (6) and the cost probe, before any number)
+Question: from a BAD start at 8x8 (stand-in for large L), does the stored loop keep lowering the energy in rounds 2 and 3? Round r: labels = the
+one-hop threshold-step sign of guide r; store them in a sign net; guide r+1 sign = net_{r+1} + one exact hop (constant cost per round, no nesting).
+Base: A13 machinery (experiments/signs_8x8, results/signs_8x8; runs Chatty/runs/signs8): amplitude a = projected ViT fixed, start Marshall M;
+round 1 is DONE there: s_net^M + hop, paired VMC-referee E -0.498711(71) vs ViT sign -0.498785(52), Marshall -0.493748(238), K1_M -0.498186(129).
+Arms: A = rounds 2 and 3 of the stored loop; C = SR (variational-energy) training of the same sign-net class from M at equal GPU-h (Marshall-trap
+control; Fable: run first). B (Ising-ground-state labels) deferred.
+DESIGN ISSUE found while drafting (not in Fable's cost): A13 trained on samples + ALL their one-hop neighbours. Round-2 labels at a NEIGHBOUR y need
+s_1 on N1(y), i.e. r_net at two hops from y = a on the THREE-hop set of the sample (~3-4e5 ViT evals, 70-90 s/sample on a 2080 Ti); labels on samples
+x alone need only the stored two-hop set. So round >= 2 either trains on samples only (many more samples: two-hop data ~2 s/sample) or pays three hops.
+This is the real per-round cost of storage; it is constant in r but sets the sample budget.
+Metric: screen = A13's paired variational referee (RB-type, per-chain SE); deciding = FN energy at c = 0 on fixed |amplitude| per round (lead's metric
+class; asked to confirm). Reads (draft): PASS g2 = E1 - E2 and g3 = E2 - E3 both beyond 2 sigma (paired); KILL g2 not beyond 2 sigma (storage caps
+the loop at one round); loop unnecessary at 8x8 if arm C reaches E <= E2(A) at equal GPU-h. Prediction (angle lead): g2 > 2 sigma 60%, g3 40%.
+Budget: PI GO; proposed cap 20 A40-h + 1 H100-h for stage 1 (A, C screens), FN grade only if the screen passes.
+Now: cost probe (worker, <= 1 A40-h): two-hop data rate on A40, round-1 net + hop evaluation rate, three-hop rate on 20 samples. Run dir sign_bad.
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

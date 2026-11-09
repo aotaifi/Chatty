@@ -500,6 +500,12 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then lr scan, 280-step warm starts, 2.4 H100-h):
+1. Verdict: SWITCH from short warm-start tuning scans to one standard production retrain; short scans cannot separate "slow" from "stuck".
+2. Thought: shift and lr are not the limit (gains 1.5-2.3e-5 +- 1e-5 per 280 steps in every arm, single chains = noise level); the loop needs a
+   PP-class base (the refit stores into PPs), so a published ViT/CNN is no substitute; the 0.1e-3 projection gain is free and already measured.
+3. Next: production retrain, simple projection, lr 0.05 -> 0.005 decay, 16384 samples, ~3000 steps, 2 seeds, ~10-15 H100-h on December express;
+   meanwhile check for released published RBM+PP 8x8 weights (minutes). Kill: no 200-step mean below -0.4988225 within 600 steps.
 - NOW (lead decision 2026-11-09, PI "you are lead and decide"): retrain the 8x8 base to published quality BEFORE more loop rounds.
   M1 VMC -0.498674(12) is 2.1e-4 above Nomura-Imada RBM+PP -0.498886(1) (2005.14142); the loop must be tested on a strong guide (Goal: add-on
   to strong networks). Step 1 (worker): ours-vs-published setup table, probe, plan (proposals/2026-11-09_base_retrain_8x8.md). Then rerun

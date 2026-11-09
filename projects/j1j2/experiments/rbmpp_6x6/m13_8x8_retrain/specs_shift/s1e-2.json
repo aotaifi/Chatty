@@ -1,0 +1,1 @@
+{"L": 8, "J2": 0.5, "proj": "simple", "rbm": true, "M": 16, "seed": 301, "init": "/scratch/hpc-prf-ppdmrg/hpcalot/rbmpp8/runs/rb8_prod/params_final.npz", "steps": 280, "chains": 8192, "lr": 0.02, "lr_end": 0.02, "shift": 0.01, "shift_end": 0.01, "max_dnorm": 0.3, "chunk": 256, "ckpt_every": 20, "therm": 20, "resume": false, "eval_samples": 0}

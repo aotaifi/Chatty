@@ -1131,6 +1131,17 @@ COST PROBE RESULT (A40 job 17870133, 0.21 A40-h; sign_bad/probe/PROBE.md, read):
 /scratch is at 958G of 972.8G soft quota: any cache goes under /project/theorie/a/A.Otaifi/runs/j1j2, not /scratch.
 Decision after Astra (QUESTION8 (6)): round 2 only first (the kill is g2), sample count vs data-limit risk, and whether the cap must rise (PI's call).
 
+ASTRA ON T-BAD (cj-9a275217f646, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_fnsign.md section 6, read in full): GO on the question, amended:
+(1) recurrence (6a): n_{r+1} <- fit(S_r), S_{r+1} = K_T[n_{r+1}] (fit the DEPLOYED sign, then one hop). My draft fitted K[S_r] = two ideal steps per round and
+needed three-hop data; (6a) needs only the two-hop set for neighbour labels (CPU check 2.85e-14). (2) 8,192 tempered root packets/round with all ~145
+neighbour labels, learning curve 2k/4k/8k, doubling to 16k if still improving; failure while still data-limited = no verdict. (3) VMC referee = diagnostic,
+NOT a veto (disagrees with the lead's calibration logic: a large round-0->1 agreement does not calibrate the small round-1->2 sign). (4) Decide by FN c = 0
+of the DEPLOYED S_r; g* = 1e-5, sigma(g) <= 3.5e-6; kill only if g + 2 sigma < g* after data adequacy. (5) SR control with a continuous phase, same capacity,
+matched compute, FN-graded; Ising arm deferred (2207.10675 is a greedy heuristic). Budget A + C ~22 A40-h (35 with doubling) + an UNMEASURED FN bill:
+a full row of the ViT + hop sign costs 2.35 s on an A40, so FN on the A13 amplitude may be unaffordable (100k rows ~65 A40-h).
+MY DECISION (takeover): price FN before any learning spend. Stage 0 on the |M1| amplitude (T-NODE-validated GFMC, cheap amplitude) instead of the ViT:
+time FN c = 0 per move for Marshall x |M1| (bare), a stored CNN sign (net-only), and net + hop (deployed S_r); short Marshall x |M1| FN run (round-0 point).
+Cost <= 2 A40-h. With |M1| the A13 round 1 must be redone (its labels used the ViT amplitude). Full T-BAD budget goes to the PI at 09:00 with these numbers.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.
@@ -1143,6 +1154,14 @@ t_2 != t_1 at 97/351 deep configurations (27.6%): the second gated round changes
 Cheap untried variants (for Astra, before any verdict): other pruning orders (largest |a| first was used); a deeper gate (k = -8 or -9: fewer deep
 children per node); exact sign for the deepest decades only plus storage for the rest. Verdict deferred to Astra (QUESTION8 item 7).
 
+ASTRA ON THE FN-TRAINED SIGN (same file, sections 1-5): the finite-cut majorisation is exact (dE <= Q = -sum_cut t a a (g_x+g_y)^2, g = u/a), and it
+removes the explicit 1/K label pole, but mixed walkers alone do not give g (off-diagonal FN-state ratios); hard signs have no gradient (a continuous
+phase changes the problem). The P4 rule with FN ratios is not a descent certificate unless a ~ u. Precedents: McFarland-Manousakis 2112.14182 (direct
+DMC-energy gradient, molecules), Nakano JCTC 2024 (restricted-class FN optimisation), Caffarel 2609.01301 (SHDMC can RAISE E_FN). Prior that a
+restricted FN-aware learner gives a useful stored second update at 8x8: 30-40%. Cheapest test: <= 8 CPU core-h on the 6x6 exact B2 tables (sign_q0r),
+an information-cost test of the estimator, not a verdict on 8x8. Not run yet (T-BAD first); offered at the check-in.
+T-RG (section 7): cost kill stands; my diagnosis double-counted pruning (~25 is already the post-pruning paid fan-out; 87-111 candidates per level
+would need ~97% pruning). Only variant worth a capped screen: deeper gate k = -8/-9 (<= 4 core-h), if the angle keeps exact recursion open.
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own

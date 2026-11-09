@@ -4,7 +4,7 @@ Brief: proposals/2026-11-05_architecture_angle_brief.md (incl. 2026-11-08 gated 
 Paper + CPU only. No GPU, no hybrid build before the Pfaffian angle's R1 separator (a)/(b) says CLASS (b) (PLAN_pfaffian "Separator ...").
 
 ## CLOSED 2026-11-09 (lead agreed)
-No candidate passes C1 and C2. The gated hybrid fails C1 (extensive gate, A1). Local add-ons fail C2 (non-local correction, A2). The tied PP
+No candidate passes C1 and C2. The gated hybrid fails C1 (extensive gate, AR1). Local add-ons fail C2 (non-local correction, AR2). The tied PP
 sum gives no cost gain (Astra, AR3). Pfaffian sums are dominated (AR4). Backflow fails C1 (measured earlier), the 2-body Jastrow C2 (Test L).
 More PPs (K-PP sums, cost ~K x one PP) remain the only cheap route. Side finding handed to the Pfaffian angle: pp2_lemma dedup keys collide
 above 64 sites. The 6x6 symmetric-f accuracy run (arch_sym6) was kept running at the PI's request; its result is for the record, not a gate.

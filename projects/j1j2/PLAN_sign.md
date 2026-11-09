@@ -1044,6 +1044,8 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
 - Bill of the R1' ablation: ~15,500 core-h relabel (a GPU port is unmeasured; my rough scaling from T-NODE's s_G throughput is ~25 H100-h, a
   guess) + ~5.5 H100-h fit/grade. My recommendation: park the S_-7 label route (one round only, lead's and my prior 25%). Cheapest untried variant:
   a 10% sub-pool (~1,550 core-h) with its own s0 control fit (+2 fits, +2 grades, ~9 H100-h). Lead decides.
+- PARKED by the lead 2026-11-09: 15.5k core-h for one round at a 25% prior does not pay; 10% sub-pool variant recorded as cheapest untried (TRIED_IDEAS A49).
+  Every-round question goes back to the PI; lead's input: 8x8 headline interim lean -1.5e-5 (2.5 sigma, final tonight), its limits ranked overlap ~50%, sign ~30%, deep fit ~20%.
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
@@ -1056,7 +1058,7 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
   Lead's prior joint <= separate 35%; mine 40%.
 
 ## Dead ends
-- S_-7 as a c = 0 NODE on |M1|: +8.0(4.1)e-6/site vs sgn(M1), kill fired (T-NODE RESULT, sign_node/prod, 4187008). Label use still open.
+- S_-7 as a c = 0 NODE on |M1|: +8.0(4.1)e-6/site vs sgn(M1), kill fired (T-NODE RESULT, sign_node/prod, 4187008). Label use PARKED on cost (15.5k core-h relabel, sign_relabel_pilot; A49).
 - Trained stored 8x8 sign (BCE / IW / PP-full / keep-old gates / soft-target Huber): fresh eps^2 0.69-0.70 vs sgn(M1) 0.40 (T-SOFT2, A48); induced
   kept-bond-sum change outweighs the gain (ASTRA_soft2.md). Practical stop for this recipe, not an impossibility theorem.
 - Confidence-gated stored+exact hybrid for every round: C3/C2 4.25 (T-ROUND3), stored confident signs carry no usable information (T-GATE).

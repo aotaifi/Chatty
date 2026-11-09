@@ -447,7 +447,7 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- T-BAD (PI GO): cost probe worker (sign_bad, <= 1 A40-h); design finalised after Astra QUESTION8 (6) (resubmit 23:45), then stage 1 launched.
+- T-BAD (PI GO): cost probe done (neither design fits 20 A40-h); design finalised after Astra QUESTION8 (6) (resubmit 23:45).
 - TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1123,6 +1123,13 @@ SCREEN CALIBRATION (lead 2026-11-09, registered before running): FN c = 0 on the
 (s_net^M + hop) signs. The VMC screen is trusted for rounds 2-3 only if FN ranks round 1 below round 0 as VMC does AND the FN gain E0 - E1 is within a
 factor 2 of the VMC gain (5.04e-3 - 7.4e-5 = 4.97e-3 /site, paired, results/signs_8x8). Otherwise FN grades every round from the start. Inside the 20 A40-h cap.
 Now: cost probe (worker, <= 1 A40-h): two-hop data rate on A40, round-1 net + hop evaluation rate, three-hop rate on 20 samples. Run dir sign_bad.
+COST PROBE RESULT (A40 job 17870133, 0.21 A40-h; sign_bad/probe/PROBE.md, read): two-hop data 2.13 s/sample (10,157 states); round-1 net + hop sign
+0.037 s at a fresh x, its local energy 2.35 s/sample; three-hop set 4.6e5 states, 87 s/sample. Rounds 2+3 without training: (a) samples-only, 32k/round
++ referee 55.7 A40-h (33.0 with the ViT data cached, fixed amplitude); (b) A13-style three-hop 130.9 (77.3). Per 1000 samples per round: (a) 0.70 h,
+(b) 29.3 h. Neither fits 20 A40-h; (a) fits at ~10-12k samples/round uncached. Risk: samples-only training gives far fewer training states than A13
+(2048 samples + ~3e5 neighbours), and A13's nets were data-limited, so a weak round-2 net could fire a false kill. ViT parity with the old run exact.
+/scratch is at 958G of 972.8G soft quota: any cache goes under /project/theorie/a/A.Otaifi/runs/j1j2, not /scratch.
+Decision after Astra (QUESTION8 (6)): round 2 only first (the kill is g2), sample count vs data-limit risk, and whether the cap must rise (PI's call).
 
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).

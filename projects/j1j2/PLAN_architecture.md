@@ -38,12 +38,13 @@ With pp2_lemma's parity par(z) (= site-ordered fermion sign), for every bond b a
 | local dressing of the swapped sites' pair amplitudes (backflow-type) | backflow measured 36.5x at 6x6, grows ~N^2 (board 23). Finite-pattern dressing: O(1) in N but det of ~4w rows (w ~ 9-16) -> kappa >> 30 | not reached | FAIL C1 (practical) |
 | 2-body Jastrow | pass (cached fields, O(1)) | fail: 2-body features eps^2 0.973 (Test L, P7) | FAIL C2 |
 | Pfaffian sums (S_z = 0 sector) | pass: rank-4 Pfaffian update, ~4 x a PP per term | triplet blocks A (up-up), D (down-down) enter only as products A^k D^k (pairs must balance), so dPf/dA = 0 at A = D = 0: zero linear reach at the PP point and a bilinear saddle for a warm-started refit (LESSONS "bilinear saddle") | FAIL: dominated by PP sums (derived, not run) |
-| gated hybrid G = B exp[w(|B|^2) g], g global CNN | kappa_g = d^2 p_z C_g / C_plain (+ d p_y C_g). 8x8: C_g ~ C_plain, d^2 ~ 1.6e4 -> needs p_z <~ 1e-3. p_z: worker running (arch_tail). Scaling: the gate variable is extensive (std of log10|B|^2 under |B|^2 = 1.80 decades at 8x8, pool_x/prod beta-1, 450k draws) while the failure is local (heavy class: max partner ln ratio ~3.5 at EVERY decade, rate 0.03% at -2 -> 2.0% at -9; pool_s2b) -> the firing fraction of a fixed-decade gate grows with N | g sees only the deep region; heavy class 17462 training entries (1.1%) | PENDING p_z; structural C1 risk at scale |
+| gated hybrid G = B exp[w(|B|^2) g], g global CNN | FAIL at 8x8: kappa_g = d^2 p_z C_g / C_plain with d^2 = 1.01e4 distinct z per walker, p_z(dec <= -7) = 0.0619(27), p_z(<= -9) = 0.0116(9) (arch_tail, W 2000, 160-chain errors; lemma vs direct 8.4e-8) -> kappa_g ~ 600 / ~120 at C_g ~ C_plain; a gate deep enough for kappa ~ 5 (<= -12, p_z 5.5e-4) misses the heavy class (87% in -7..-9). Scaling makes it worse: std of log10|B|^2 1.30 (6x6, T5 table) -> 1.80 (8x8), ratio 1.38 vs sqrt(N) 1.33; extrapolated 3.15 decades at 14x14 | g sees only the deep region; heavy class 17462 training entries (1.1%) | FAIL C1 (global gate); the local log-additive form replaces it |
 | local log-additive g (ln g = sum_i phi(window_i), no gate) | pass at all N: a two-swap changes only windows touching 4 sites; kappa ~ 1-2 at 8x8 (vs |G| det4 per PP endpoint) | needs H-loc: the correction's bond difference is a local function of the configuration near the bond. Untested (Test L's 2-body set is a subset) | PENDING H-loc test |
 
 ## Next (registered before any number)
-1. arch_tail (worker, CPU, running): p_y(k), p_z(k) for walkers ~ |B_0|^2. Prediction: p_z(dec <= -7) 1-5%, p_z(<= -9) 0.1-1%.
-   p_z(<= -7) > 1e-3 -> the global-gate hybrid fails C1 at 8x8 already; replace by the local log-additive form.
+1. DONE arch_tail (/scratch/a/A.Otaifi/ansatz_runs/arch_tail/summary.json): p_z(<= -7) 0.0619(27), p_z(<= -9) 0.0116(9); p_y 0.0213 / 0.0034.
+   Predicted 1-5% / 0.1-1%: both slightly exceeded (two-swap shift -2.23 decades as assumed; walker tail heavier than the 450k-draw estimate).
+   Rule fired (> 1e-3): global-gate hybrid fails C1 at 8x8. Tail carried by few walkers: per-walker z fraction at -7 median 0.018, 99th pct 0.58.
 2. H-loc (proposed, CPU, ~2 h worker): on pool_s2b, bond-weighted held-out least squares of add_x - add_y (and of R1's residual e_x - e_y) on
    local features around the swapped bond, radius r = 1, 2, 3 (pattern counts, then a small window MLP). Prediction (mine, ~50%): explained
    share 0.2-0.4 at r = 2, because f_J's bond difference runs through the PP's Green function, which need not be short-ranged at J2 = 0.5.
@@ -56,5 +57,5 @@ With pp2_lemma's parity par(z) (= site-ordered fermion sign), for every bond b a
 (none yet)
 
 ## Cockpit
-- STATUS (in progress, medium): Paper check of network classes for the 14x14 loop: a one-step-exact tied pair-product sum passes on paper; Pfaffians and local backflow fail.
-- NEXT (in progress, medium): Measure how often the Jacobi step lands in the deep tail at 8x8, then test whether the round correction is local.
+- STATUS (in progress, medium): A tied pair-product sum holds one Lanczos step exactly at constant cost; Pfaffians, backflow and the |psi|-gated CNN hybrid fail the cost or reach test.
+- NEXT (in progress, medium): Test whether the round correction is local (decides the cheap local add-on) and check the tied pair-product sum exactly at 6x6.

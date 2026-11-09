@@ -3,7 +3,13 @@
 Brief: proposals/2026-11-05_architecture_angle_brief.md (incl. 2026-11-08 gated hybrid). Reports to the project lead ("FN-loop lead").
 Paper + CPU only. No GPU, no hybrid build before the Pfaffian angle's R1 separator (a)/(b) says CLASS (b) (PLAN_pfaffian "Separator ...").
 
-## Open question (one)
+## CLOSED 2026-11-09 (lead agreed)
+No candidate passes C1 and C2. The gated hybrid fails C1 (extensive gate, A1). Local add-ons fail C2 (non-local correction, A2). The tied PP
+sum gives no cost gain (Astra, A3). Pfaffian sums are dominated (A4). Backflow fails C1 (measured earlier), the 2-body Jastrow C2 (Test L).
+More PPs (K-PP sums, cost ~K x one PP) remain the only cheap route. Side finding handed to the Pfaffian angle: pp2_lemma dedup keys collide
+above 64 sites. The 6x6 symmetric-f accuracy run (arch_sym6) was kept running at the PI's request; its result is for the record, not a gate.
+
+## Open question (one) [closed]
 Which network class carries the loop's amplitude at 14x14, i.e. passes C1 and C2 below? Budget: ~2 days paper/CPU (to 2026-11-11).
 Scope: algebraic classes (PP sums, Pfaffians, tied PP sums) and local log-additive factors; generic NNs (CNN-MPS, ViT, RBM) passed over
 because their two-swap ratio costs ~2N plain (board 23; proposals/2026-11-05_cnn_mps_twoswap_cost.md), except as a gated or local add-on.
@@ -86,5 +92,5 @@ combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of
   Mechanism consistent with f_J running through the PP's Green function; unchecked: C4/spin-flip invariance of the target, a second MLP seed.
 
 ## Cockpit
-- STATUS (in progress, medium): No candidate passes both the cost and the reach test yet; more pair products remain the only cheap route, and the symmetric-pairing idea gave no cost advantage after review.
-- NEXT (in progress, medium): Test whether the round correction is local (decides the cheap local add-on) and check the tied pair-product sum exactly at 6x6.
+- STATUS (done, low): Closed: no network beats plain pair-product sums on both cost and reach for the 14x14 loop; three proposed add-ons were ruled out before building.
+- NEXT (done, low): Nothing further on this angle; the symmetric-pairing accuracy number at 6x6 is recorded when it lands.

@@ -1097,7 +1097,7 @@ Reads (recommendations to the PI, not automatic): R = Lambda_8/Lambda_6 <= 3 -> 
 to the guide; R >= 10 -> premise alive: GATE 1-2 plan; between -> GATE 1 only. Bootstrap interval over roots; a read needs the whole interval in a band.
 Caveat: misses the refreshed-amplitude second step (needs the second shell). Prediction (angle lead): R <= 3 [45%], R >= 10 [20%].
 Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_lev (worker).
-STOPPED 2026-11-09 before any read (PI: the goal is a method that scales; at large L the starting network is bad). T-LEV measures leverage from an
+STOPPED 2026-11-09 (partial, 0.15 core-h, sign_lev/lev8.json): Lambda_8 = 4.9e-5 [95% 1.5e-5, 1.1e-4], one d -5 root ~half; 177/960 roots flip; no calibration, no Lambda_6, no read. (PI: the goal is a method that scales; at large L the starting network is bad). T-LEV measures leverage from an
 already-good sign (M1), so no outcome changes the decision. Fable's 2a holds only from a good start. Our own records from a BAD start contradict it:
 A1 (6x6 from Marshall, wrong weight 2.0e-2 -> 1.1e-3 -> 2.3e-4: the second step gains ~5x again); C1 (exact loop from Marshall converges, iteration
 count flat 16 -> 36 sites); A13 (8x8 from Marshall: stored net + exact hop closes 98.5% of the Marshall -> ViT gap).

@@ -447,10 +447,7 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- Relabelling cost pilot (Astra's next step, <= 1 CPU core-h, worker, started 2026-11-09 evening): /scratch/a/A.Otaifi/ansatz_runs/sign_relabel_pilot
-  (BRIEF.md -> PILOT.md, pilot.json). Next per outcome: bill (full pool relabel + ~5.5 H100-h fit/grade) goes to the lead, whose call the R1' ablation is;
-  pilot blocked by a code redesign -> estimate the redesign and ask the lead whether the label route is worth it at its 25% prior.
-- No Slurm job of this angle is running (T-NODE 4187008 finished 18:38).
+- Nothing. (Relabel pilot done, see "RELABEL PILOT RESULT"; the R1' ablation waits for the lead's call.)
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
@@ -1036,6 +1033,17 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
   c = 0, same code, vs R1's -0.498803(3); eps^2 is only a screen (8x8 link to energy uncalibrated). T-HYB constraint: walls must match the node, so
   S_-7 walls in f_J force an S_-7 node, which costs +8e-6 -> a label gain must exceed ~1e-5 to show. Cost R1' fit ~1.7 + grade ~1.4 H100-h, after the
   headline and only if Astra leaves a mechanism. Lead's prior 25%. Design nothing until Astra replies.
+
+## RELABEL PILOT RESULT 2026-11-09 (sign_relabel_pilot/{PILOT.md,pilot.json}; 0.51 core-h; worker; numbers checked by me in pilot.json)
+- Full-pool S_-7 relabelling of R1's pool (2,000,175 roots, K = 2) = 15,458 (+-524) core-h, 4.9e8 exact s_G calls (0.11 CPU s each); decades -7..-9
+  are 83% of it (s/root 4.2 at d -2 -> 41.9 at d -9; s_G calls/root 8 -> 381). Stored gate-off labels 0.38 s/root. Cache hit ~30%.
+- Controls: (a) gate off reproduces stored R1 labels/partners/rho on 64 roots to 8.9e-13; (b) negating gated endpoint signs changes 63/64 labels
+  (max |d lnT| 5.3; the 64th root never reaches the gate). Fixed-provider fallback agrees; the original crashes (TypeError), as Astra found.
+- Blocked sets change at 59/64 roots (11.7% of S_-7-blocked bonds not blocked under sgn(M1)); 6/128 sampled partners new (all at d -8/-9): old
+  partners not reusable. Caveats: shared workstation (load ~10), sg_chunk 16; Wbar not computed.
+- Bill of the R1' ablation: ~15,500 core-h relabel (a GPU port is unmeasured; my rough scaling from T-NODE's s_G throughput is ~25 H100-h, a
+  guess) + ~5.5 H100-h fit/grade. My recommendation: park the S_-7 label route (one round only, lead's and my prior 25%). Cheapest untried variant:
+  a 10% sub-pool (~1,550 core-h) with its own s0 control fit (+2 fits, +2 grades, ~9 H100-h). Lead decides.
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

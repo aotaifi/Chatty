@@ -447,7 +447,8 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- Nothing. (Relabel pilot done, see "RELABEL PILOT RESULT"; the R1' ablation waits for the lead's call.)
+- T-RG cost screen (worker, CPU <= 8 core-h), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg, section "T-RG". Next: PASS -> design the round-2 accuracy
+  reference, Astra review; KILL -> fan-out diagnosis per level + Astra, then report to the PI with T-JOINT as the next pick.
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
@@ -1046,6 +1047,20 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
   a 10% sub-pool (~1,550 core-h) with its own s0 control fit (+2 fits, +2 grades, ~9 H100-h). Lead decides.
 - PARKED by the lead 2026-11-09: 15.5k core-h for one round at a 25% prior does not pay; 10% sub-pool variant recorded as cheapest untried (TRIED_IDEAS A49).
   Every-round question goes back to the PI; lead's input: 8x8 headline interim lean -1.5e-5 (2.5 sigma, final tonight), its limits ranked overlap ~50%, sign ~30%, deep fit ~20%.
+
+## T-RG (PI 2026-11-09: "the exact sign where the wavefunction is tiny had a lot of hope, and repeating it"; pre-registered before any number)
+Question: can S_-7 be REPEATED every round at bounded cost if the lower rounds are gated too (Astra's eq 1, ASTRA_k7.md (3)):
+t_0 = s0; t_{r+1}(x) = s0(x) outside D (decade > -7), sgn[b_x t_r(x) + sum_y a_xy t_r(y)] inside D; b_x = 1 + alpha(H_xx - E), a_xy = alpha H_xy B_y/B_x.
+Equation for the cost (why T-K7's repetition blew up): a deep root has on average 132 deep neighbours (ASTRA_k7, 385 fresh deep roots), so
+C_r ~ (unpruned deep children)^r; shallow children cost nothing (known s0). The only lever is exact partial-sum pruning: stop expanding when
+|known sum| > |b_x| + sum of unresolved |a_xy| (cheap shortcut certified 0/385 before any deep child is resolved; adaptive pruning untested).
+Test: T-K7's cost machinery (sign_k7/cost, same proxy trace and request scopes) with eq-1 recursion, shallow children from s0, deep children resolved
+cheapest-first with certified pruning, cache per (round, configuration). Report C1, C2, C3 (request-weighted CPU s), C3/C2 with bootstrap interval,
+deep children resolved per request, and roots whose t_2 differs from t_1 (Astra: 175/960). Controls: r = 1 reproduces S_-7 at every root (T-K7 labels);
+pruning off gives identical signs (exactness); a broken certificate (drop the unresolved sum) must give wrong signs.
+PASS: C3/C2 interval < 3. KILL: lower bound >= 3 (then diagnose: fan-out per level, Astra). Cap 8 CPU core-h; capped requests = lower bounds.
+Prediction (angle lead): pass 20% (deep configurations cluster). Cost only: round-2 accuracy needs its own reference, designed only if this passes.
+Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg (worker).
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

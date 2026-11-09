@@ -447,23 +447,22 @@ A is small: a saddle. This is A10 again: learning only the flips on top of a fix
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
 ## Running
-- T-LCNN DONE (see T-LCNN RESULT; GPU race won). Old entry: (2026-11-04 13:50, CPU, ~27 h wall, ~240 core-h): seed 0 17725768->69->70->71, seed 1 17725772->73->74->75 (train/eval/grade/top1),
-  run dir sign_lcnn/seed{0,1}; gate: python3 sign_lcnn/gate.py <seed dir>. Verdicts: R6 tax > 1.5e-6 -> tell the lead 'stop the 8x8 build';
-  <= 1.5e-6 -> tell the lead 'precheck passes' and release T-SCALE 8x8 GPU spend (held by the lead until then).
-- T-SCALE step 0 DONE (see STEP 0 RESULT); 8x8 build waits for T-LCNN. Opus local-CNN review DONE (no GPU; see LOCAL-CNN REVIEW).
-- Nothing on the cluster. T-CAP arm 3 (res2, A40 17697011) FINISHED 2026-11-04 07:58 (final held-out acc 0.9623 vs sgn psi_P's 0.9619:
-  essentially sgn psi_P, as predicted from the A stall); NOT graded yet (run dir /scratch/a/A.Otaifi/ansatz_runs/sign_tcap/runs_a40s/res2*).
-  Grading = v2.py with the stored sign, ~1 h CPU; closes T-CAP's PI-hypothesis comparison formally (expected tax ~4e-6).
-- Gates 1-2 (8x8 teacher cost, paired FN estimator) PAUSED by the PI; code kept in sign_g1/, sign_g2/ (gate 1 estimate: teacher row ~7e6
-  evaluations, q ~1e4-1e5, i.e. far above the stop threshold 5).
+- T-NODE production: Paderborn H100 express job 4187008 (started 2026-11-09 15:16, --time 03:30:00, 6 chains F_k3..5 = sgn(M1) via s0gate,
+  S7_k3..5 = S_-7), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_node/prod, ANALYSIS_BRIEF.md there (ceiling, gate). Watcher pid 2968084 (setsid)
+  -> job_finish.sh -> VERDICT line in delta_today.md. Post step: control (1) ctrl1_probe.py (F chains vs B0_k3..5 bitwise, first 1550 blocks), then
+  scripts/analyze_node.py RUN --sigma 4e-6. Next step per verdict: section "T-NODE BRANCHES" (A large gain / B small / C kill -> diagnose + Astra).
+- Nothing else of this angle is running. Old entries (T-LCNN, T-SCALE step 0, T-CAP arm 3, gates 1-2) are closed; see their RESULT sections.
 
-## Where the angle stands (2026-11-04)
-- Storage of ONE sign: XL CNN passes (tax 0.42e-6, 2 seeds; not deployable at 14x14). Deployable PP phase: 0.85-1.45e-6 (seed scatter
-  0.6e-6), fails 0.5e-6. Neither a bond-weighted loss, a 2-PP sum, nor a residual on sgn psi_P (two parametrisations; saddle, = A10) helped.
-- At 6x6 the second sign step gains < 0.5e-6 from all four starts (A41), so the 6x6 loop needs one stored sign; moving-target storage is not
-  testable at 6x6, and 8x8 grading is unaffordable with the current teacher (gate 1 estimate).
-- Open for the PI: (1) step-back on the deployable sign class (third failed fix: capacity; residual failed twice); (2) whether to accept
-  ~1e-6/site deployable sign tax, or close the angle with 'one stored sign; deployable class not found at the bar'. Lead's view: step-back first.
+## Where the angle stands (2026-11-09)
+- Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
+- Stored trained sign nets (PP, frozen-RBM, IW, soft target): KILLED for this recipe (A48; fresh eps^2 0.69-0.70 vs sgn(M1) 0.40; node cost of a stored
+  sign on |M1| +4.0(1.3)e-5/site).
+- Amplitude-gated exact sign S_-7 (sgn(M1) where decade > -7, exact s_G below): eps^2 0.191 [0.097, 0.285] on 20 fresh blocks (T-K7) = first 8x8 sign
+  under the 0.3 bar, nothing stored; first-update cost 0.30 s/request (proxy), real per-move cost 2.65x the plain c = 0 step (T-NODE probe).
+  Repeated rounds with exact lower levels: C3/C2 = 22 (rejected). Its node energy: T-NODE running.
+- Components kept: exact interval pruning (exact, ~2x per level); decade gate. Open ideas: recursively gated lower levels (Astra: worth one capped test,
+  no convergence guarantee); k = -6; T-JOINT (one complex net, PI: ask Astra only). Discussion record: DISCUSSION_sign_2026-11-08.md (P1-P9, I1-I5).
+- Placement (lead): S_-7 not in the R1 headline; candidate sign for R2 labels/walls once T-NODE shows a node gain and the c > 0 wall cost is timed.
 
 ## STEP-BACK 3 (2026-11-04; deployable sign class; third failed fix; provisional until Astra cj-98ed296751e4 and the lead reply)
 1. Verdict (provisional): continue on the 1-PP class, but change the lever from class/loss to the OPTIMISER; do not grade arm 3.
@@ -986,6 +985,27 @@ Preconditions for T-NODE: freeze B0 = |M1| inside the gate even when the amplitu
 sides of the gate; m_ref -67.03209121446969, alpha -0.1754318714549749, step E -31.915135844116154 (distinct from the Jacobi E' -31.920416); c = 0
 needs only x/y signs (simplest first test); time the complete production move (not 0.30 s / 7.6 calls); fix the wall-time ceiling before launch.
 
+## T-NODE STATUS 2026-11-09 (no energy yet; sign_node/; worker's numbers, read)
+Controls pass: (1) forced-s0 path reproduces the B0 code path bitwise on one device (30 blocks; broken input differs); (2) S_-7 = stored decades8
+labels at 954 x / 134,684 y (0 disagreements; gate off: 1254); (3) walker E_L vs direct ELnp2 5.0e-11 at flipped deep signs; global phase 1.8e-16.
+REAL COST (A40, 6 chains): S_-7 2.65x the plain c = 0 step (0.029 vs 0.011 s/move); s_G needed in 45% of moves, 2.1% of neighbour evaluations,
+2.9 s_G per move; s_G differs from s0 at 24% of deep neighbours. Spec change: s_G via the pp2_lemma GPU path (= make_sG8; matches labels exactly).
+BLOCKED: Paderborn express November quota is nearly used (hlp1_prodA reserves 1072 of the remaining minutes). sigma(diff) <= 4e-6 needs both arms
+rerun (~3.0 H100-h +-30%); reusing B0 gives sigma(diff) >= 4.8e-6 (detects gains >= ~1e-5). A40 production ~63 h per S_-7 chain: impractical.
+Probe 4186269 pending (express). Decision with the lead: QoS / timing.
+
+## T-NODE BRANCHES (written 2026-11-09 before the verdict of job 4187008)
+Measured cost already: S_-7 costs 2.65x the plain c = 0 step per move (A40 probe). Branches by the energy gain G = E(sgn M1) - E(S_-7) per site:
+(A) G >= ~2e-5 (large): the first sign update is worth a lot at 8x8 -> (1) hand S_-7 to the lead for R2 labels/walls; (2) every-round becomes the priority:
+    next test = Astra's capped RECURSIVELY GATED second round (lower levels also S_-7-gated): its eps^2 and C3/C2 on the proxy, then a real trace;
+    (3) k = -6 accuracy/cost (first-round calls ~15 vs 7.6).
+(B) 2 sigma < G < ~1e-5 (small but real): S_-7 is useful but modest -> hand it to the lead (their call whether 2.65x per move pays in R2); every-round
+    stays open at lower priority; the amplitude loop is the bigger lever at 8x8; next sign test only if the lead's R2 needs it.
+(C) G not beyond 2 sigma (KILL as registered): do not use S_-7 as a node. Diagnose first: eps^2 measures damage to the round labels, the node energy
+    measures FN at c = 0; walkers rarely visit decades <= -7, so the node test may be blind to where S_-7 differs. Then the sign's value, if any, is in
+    the labels/walls (c > 0): the decisive test becomes an R2 label comparison (labels with S_-7 vs sgn(M1)) rather than the node. To Astra before any verdict.
+Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); that real cost is unmeasured and must be timed before R2 uses S_-7 in walls.
+
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own
@@ -997,4 +1017,9 @@ needs only x/y signs (simplest first test); time the complete production move (n
   Lead's prior joint <= separate 35%; mine 40%.
 
 ## Dead ends
-(none yet)
+- Trained stored 8x8 sign (BCE / IW / PP-full / keep-old gates / soft-target Huber): fresh eps^2 0.69-0.70 vs sgn(M1) 0.40 (T-SOFT2, A48); induced
+  kept-bond-sum change outweighs the gain (ASTRA_soft2.md). Practical stop for this recipe, not an impossibility theorem.
+- Confidence-gated stored+exact hybrid for every round: C3/C2 4.25 (T-ROUND3), stored confident signs carry no usable information (T-GATE).
+- Two-net disagreement gate (I1): 8x8 nets share their errors (13.3% wrong given agreement; T-CERT V1).
+- T-BOND per-bond surrogate loss: rejected before running (eps^2 is a Laplacian form; Gate S false positive; ASTRA_eps2.md).
+- Local shallow CNN sign: 3x3-patch correction moves w_T -0.7% (A44). Hybrid XL node + PP walls: 0.998e-6 (A45). Coverage (beta mix): A46.

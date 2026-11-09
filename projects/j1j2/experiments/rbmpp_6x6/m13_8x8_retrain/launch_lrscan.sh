@@ -18,5 +18,5 @@ for A in ${ARMS:-lr0.05 lr0.1}; do
   JOBS="$JOBS $A=$JOB/w$WPID"
 done
 $E paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; sleep 5; squeue -u hpcalot -n rb8sh -o '%i %T %r %q'"
-[ -n "$JOBS" ] && echo "$(date '+%Y-%m-%d %H:%M') j1j2 base-retrain worker: S0b SR lr scan submitted (shift 1e-3) (express, 2 x 1 H100, --time 01:10:00, 280 steps each, warm rb8_prod sha 0520c5be, 'simple'):$JOBS; run dirs $LB/<arm>" >> $DELTA
+[ -n "$JOBS" ] && echo "$(date '+%Y-%m-%d %H:%M') j1j2 base-retrain worker: S0b SR lr scan submitted (shift 1e-3) (express, ${#ARMS} chars of arms, 1 H100 each, --time 01:10:00, 280 steps each, warm rb8_prod sha 0520c5be, 'simple'):$JOBS; run dirs $LB/<arm>" >> $DELTA
 echo "submitted:$JOBS"

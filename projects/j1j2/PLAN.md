@@ -504,6 +504,8 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 1. Verdict: SWITCH from short warm-start tuning scans to one standard production retrain; short scans cannot separate "slow" from "stuck".
 2. Thought: shift and lr are not the limit (gains 1.5-2.3e-5 +- 1e-5 per 280 steps in every arm, single chains = noise level); the loop needs a
    PP-class base (the refit stores into PPs), so a published ViT/CNN is no substitute; the 0.1e-3 projection gain is free and already measured.
+   SUBMITTED 2026-11-10: Paderborn 4191676 (s306) / 4191677 (s307), default QoS -> cont, est. start ~11-15, ~10 h each; kill at step 1000
+   (no 200-step mean < -0.4988225); watchers write VERDICT lines to delta_today.md; run dirs /scratch/a/A.Otaifi/rbmpp8/rb8_retrain/<seed>.
 3. Next: production retrain, simple projection, lr 0.05 -> 0.005 decay, 16384 samples, ~3000 steps, 2 seeds, ~10-15 H100-h on December express;
    meanwhile check for released published RBM+PP 8x8 weights (minutes). Kill: no 200-step mean below -0.4988225 within 600 steps.
 - NOW (lead decision 2026-11-09, PI "you are lead and decide"): retrain the 8x8 base to published quality BEFORE more loop rounds.

@@ -7,7 +7,10 @@ Paper + CPU only. No GPU, no hybrid build before the Pfaffian angle's R1 separat
 No candidate passes C1 and C2. The gated hybrid fails C1 (extensive gate, AR1). Local add-ons fail C2 (non-local correction, AR2). The tied PP
 sum gives no cost gain (Astra, AR3). Pfaffian sums are dominated (AR4). Backflow fails C1 (measured earlier), the 2-body Jastrow C2 (Test L).
 More PPs (K-PP sums, cost ~K x one PP) remain the only cheap route. Side finding handed to the Pfaffian angle: pp2_lemma dedup keys collide
-above 64 sites. The 6x6 symmetric-f accuracy run (arch_sym6) was kept running at the PI's request; its result is for the record, not a gate.
+above 64 sites. arch_sym6 RESULT (record, not a gate; /scratch/a/A.Otaifi/ansatz_runs/arch_sym6/s4/best/step4.json, lead-verified): translation-invariant f
+(36 complex numbers, no RBM, VMC+SR, 3 starts) at 6x6: E_var 1.33e-3/site; FN own sign 8.67e-4; + one signed Lanczos step (alpha -0.25) 1.66e-4,
+30x the competitor 5.574e-6 (general-f PP: FN 4.77e-5, +Lanczos 1.46e-5, results/rbmpp_6x6). Predicted 2-6e-5 / 0.8-2e-5: missed ~25x / 10x.
+Identity on the 6x6 table 4e-16 (broken 0.44). Head (iii) not run (memory). Symmetric f costs ~1e-4/site: the tied route is closed on accuracy too.
 
 ## Open question (one) [closed]
 Which network class carries the loop's amplitude at 14x14, i.e. passes C1 and C2 below? Budget: ~2 days paper/CPU (to 2026-11-11).

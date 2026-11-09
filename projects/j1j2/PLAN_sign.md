@@ -453,8 +453,6 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
 - Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmit at 23:45 (timer armed). Next: cheap test (<= 8 core-h
   or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
-- T-RG cost screen (worker, CPU <= 8 core-h), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg, section "T-RG". Next: PASS -> design the round-2 accuracy
-  reference, Astra review; KILL -> fan-out diagnosis per level + Astra, then report to the PI with T-JOINT as the next pick.
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
@@ -1125,6 +1123,18 @@ SCREEN CALIBRATION (lead 2026-11-09, registered before running): FN c = 0 on the
 (s_net^M + hop) signs. The VMC screen is trusted for rounds 2-3 only if FN ranks round 1 below round 0 as VMC does AND the FN gain E0 - E1 is within a
 factor 2 of the VMC gain (5.04e-3 - 7.4e-5 = 4.97e-3 /site, paired, results/signs_8x8). Otherwise FN grades every round from the start. Inside the 20 A40-h cap.
 Now: cost probe (worker, <= 1 A40-h): two-hop data rate on A40, round-1 net + hop evaluation rate, three-hop rate on 20 samples. Run dir sign_bad.
+
+## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
+KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
+Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.
+Diagnosis (equation): C_{r+1}/C_r ~ (deep children per deep node) x (fraction left after pruning) ~ 25 x 0.3-0.4. Measured: level 2 634 -> 191 resolved
+per request (70% pruned); mode 3 level 2 10877 -> 4249 (61%), level 3 365 -> 99 (73%). The certificate almost never closes before a deep child is
+resolved (0 at level 2, 0.71/request at level 3). The term is the fan-out of deep children, ~25 per level: deep configurations cluster (ASTRA_k7: ~132 deep
+neighbours per deep root). Pruning would need to remove ~95% per level to reach C3/C2 < 3.
+Controls: r = 1 reproduces T-K7 S_-7 0/351; pruning off identical 0/351 (r = 2; r = 3 only 0/2, affordable on 2 requests); broken certificate wrong 99/351 (r = 2), 33/145 (r = 3).
+t_2 != t_1 at 97/351 deep configurations (27.6%): the second gated round changes deep signs a lot.
+Cheap untried variants (for Astra, before any verdict): other pruning orders (largest |a| first was used); a deeper gate (k = -8 or -9: fewer deep
+children per node); exact sign for the deepest decades only plus storage for the rest. Verdict deferred to Astra (QUESTION8 item 7).
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

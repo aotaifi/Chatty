@@ -607,5 +607,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 the loop stores almost as well from samples as from exact tables and beats one Lanczos step with a cheap stored sign; at 8x8 nothing is shown yet, and the published CNN-MPS network alone is still better at 6x6.
-- NEXT (in progress, high): Train the 8x8 stored sign and check it does not spoil the correction; only then grade the first 8x8 loop round.
+- STATUS (in progress, high): At 8x8 one loop round at a fixed sign improves fixed node by 4.7e-5 per site; with a final Lanczos step the gain shrinks to about 1.5e-5 (2.5 sigma, final pending); a trained stored sign at 8x8 failed, so the sign stays fixed between rounds.
+- NEXT (in progress, high): Finish the 8x8 headline and its no-correction control, then decide round 2; the sign angle works on a per-round sign (one network for sign and amplitude, under review).

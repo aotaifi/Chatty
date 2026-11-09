@@ -449,7 +449,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 ## Running
 - TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
-- Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV (worker, CPU <= 10 core-h), run dir sign_lev; reads in section T-LEV.
+- Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
 - Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmit at 23:45 (timer armed). Next: cheap test (<= 8 core-h
   or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
 - T-RG cost screen (worker, CPU <= 8 core-h), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg, section "T-RG". Next: PASS -> design the round-2 accuracy
@@ -1088,6 +1088,13 @@ Reads (recommendations to the PI, not automatic): R = Lambda_8/Lambda_6 <= 3 -> 
 to the guide; R >= 10 -> premise alive: GATE 1-2 plan; between -> GATE 1 only. Bootstrap interval over roots; a read needs the whole interval in a band.
 Caveat: misses the refreshed-amplitude second step (needs the second shell). Prediction (angle lead): R <= 3 [45%], R >= 10 [20%].
 Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_lev (worker).
+STOPPED 2026-11-09 before any read (PI: the goal is a method that scales; at large L the starting network is bad). T-LEV measures leverage from an
+already-good sign (M1), so no outcome changes the decision. Fable's 2a holds only from a good start. Our own records from a BAD start contradict it:
+A1 (6x6 from Marshall, wrong weight 2.0e-2 -> 1.1e-3 -> 2.3e-4: the second step gains ~5x again); C1 (exact loop from Marshall converges, iteration
+count flat 16 -> 36 sites); A13 (8x8 from Marshall: stored net + exact hop closes 98.5% of the Marshall -> ViT gap).
+Hypothesis (angle lead, ~55%): storage is easy while the remaining sign errors sit in high-amplitude configurations (bad start, A13), and hard once
+only deep-tail errors remain (good start, A48); the tail is then the endgame, where Fable's second-order argument applies. Test regime for
+"every round" = a deliberately bad start at 8x8 (Marshall or a weak network) standing in for large L; design at the check-in, Astra first.
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

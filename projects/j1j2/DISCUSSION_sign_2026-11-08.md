@@ -130,3 +130,8 @@ P12 (PI, 2026-11-09) "Use usual VMC optimisation of the network to get a better 
    convolutional nets struggle with sign structure (Szabo-Castelnovo 2002.04613). Variant worth an Astra question after T-RG: train the STORED sign on
    the FN energy itself, using walker-measured flip gains (ASTRA_node eq 3: dE = -sum_{dF} t_xy a_x a_y (u_x/a_x + u_y/a_y)^2; = P4/P9a with storage,
    as self-healing DMC does). Hypothesis, untested.
+
+P13 (PI, 2026-11-09, on Fable's "the guide is the lever") The goal is a SCALABLE method: at large L the starting network will be bad, so we need a
+   method that improves the sign. Agreed. Fable's second-order argument assumes a good start; from Marshall our own records show repeated steps keep
+   gaining (A1, C1, A13). T-LEV (good-start regime) stopped. Hypothesis: storage works while sign errors are in the bulk (bad start, A13), fails when
+   only deep-tail errors remain (A48). Next: an every-round test from a deliberately bad start at 8x8; design at the check-in, Astra first.

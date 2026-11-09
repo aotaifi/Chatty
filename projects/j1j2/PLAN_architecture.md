@@ -56,7 +56,7 @@ combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of
 | 2-body Jastrow | pass (cached fields, O(1)) | fail: 2-body features eps^2 0.973 (Test L, P7) | FAIL C2 |
 | Pfaffian sums (S_z = 0 sector) | pass: rank-4 Pfaffian update, ~4 x a PP per term | triplet blocks A (up-up), D (down-down) enter only as products A^k D^k (pairs must balance), so dPf/dA = 0 at A = D = 0: zero linear reach at the PP point and a bilinear saddle for a warm-started refit (LESSONS "bilinear saddle") | FAIL: dominated by PP sums (derived, not run) |
 | gated hybrid G = B exp[w(|B|^2) g], g global CNN | FAIL at 8x8: kappa_g = d^2 p_z C_g / C_plain with d^2 = 1.01e4 distinct z per walker, p_z(dec <= -7) = 0.0619(27), p_z(<= -9) = 0.0116(9) (arch_tail, W 2000, 160-chain errors; lemma vs direct 8.4e-8) -> kappa_g ~ 600 / ~120 at C_g ~ C_plain; a gate deep enough for kappa ~ 5 (<= -12, p_z 5.5e-4) misses the heavy class (87% in -7..-9). Scaling makes it worse: std of log10|B|^2 1.30 (6x6, T5 table) -> 1.80 (8x8), ratio 1.38 vs sqrt(N) 1.33; extrapolated 3.15 decades at 14x14 | g sees only the deep region; heavy class 17462 training entries (1.1%) | FAIL C1 (global gate); the local log-additive form replaces it |
-| local log-additive g (ln g = sum_i phi(window_i), no gate) | pass at all N: a two-swap changes only windows touching 4 sites; kappa ~ 1-2 at 8x8 (vs |G| det4 per PP endpoint) | needs H-loc: the correction's bond difference is a local function of the configuration near the bond. Untested (Test L's 2-body set is a subset) | PENDING H-loc test |
+| local log-additive g (ln g = sum_i phi(window_i), no gate) | pass at all N | FAIL (H-loc, arch_hloc/summary.json): held-out weighted explained share of the correction's bond difference, r = 1-3, linear and MLP: all 0.08-0.13, bulk 0.02-0.04, heavy -0.26..-0.40; R1 residual difference also non-local (all <= 0.03). Controls: shuffled ~0.00, local synthetic 1.00 / 0.96. Predicted 0.2-0.4 at r = 2: missed low | FAIL C2 |
 
 ## Next (registered before any number)
 1. DONE arch_tail (/scratch/a/A.Otaifi/ansatz_runs/arch_tail/summary.json): p_z(<= -7) 0.0619(27), p_z(<= -9) 0.0116(9); p_y 0.0213 / 0.0034.
@@ -72,7 +72,9 @@ combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of
    span{B_{f1 o pi_O}}? H-loc runs in parallel (Sonnet worker, arch_hloc/ANALYSIS_BRIEF.md, running). Astra before any GPU proposal.
 
 ## Dead ends
-(none yet)
+- Gated |B|^2 hybrid with a global CNN: C1 fails, p_z(<= -7) 0.0619(27) at 8x8 (arch_tail).
+- Local log-additive add-on: C2 fails, the round correction's bond difference is not local within r <= 3 (share <= 0.13, heavy < 0; arch_hloc).
+  Mechanism consistent with f_J running through the PP's Green function; unchecked: C4/spin-flip invariance of the target, a second MLP seed.
 
 ## Cockpit
 - STATUS (in progress, medium): A tied pair-product sum holds one Lanczos step exactly at constant cost; Pfaffians, backflow and the |psi|-gated CNN hybrid fail the cost or reach test.

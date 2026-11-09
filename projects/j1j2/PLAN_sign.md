@@ -451,7 +451,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
-- Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmit at 23:45 (timer armed). Next: cheap test (<= 8 core-h
+- Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmitted as cj-9a275217f646 (23:45, items 1-7). Next: cheap test (<= 8 core-h
   or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
 
 ## Where the angle stands (2026-11-09)

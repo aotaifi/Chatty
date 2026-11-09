@@ -495,6 +495,10 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- K = 3 at round 6 (architecture angle, PI "yes" to queue, 2026-11-09): why does the two-PP stored share fall 0.49 (R5) -> 0.25 (R6)?
+  Hypothesis: P_2 spends its freedom on the round it first stores. Test: R6 from theta_5 with a fresh P_3, same T_6/budget, exact 6x6, vs K=2
+  r 0.25 / aug 2.81e-6 (pfaffian_r6). Pred ~0.45 (55%%) -> one PP per round, cost ~linear in rounds; <= 0.30 -> decline in the fit, not the class.
+  Cost 3-7 H100-h (normal QoS or December express). Lead: worth it (tests the only cheap route left); after the 8x8 headline.
 - Sign tax over many rounds (sign angle 2026-11-04; the PI's 14x14 worry, errors accumulating over sign updates): in the 8x8 loop build,
   re-store the sign after every sign update and grade the tax per round; flat = OK, growing = the sign must be re-trained from scratch
   or the class changed. Lead: include as a per-round readout of the 8x8 loop (no extra run), not a separate test.

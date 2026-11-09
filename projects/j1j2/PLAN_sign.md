@@ -1121,6 +1121,9 @@ Metric: screen = A13's paired variational referee (RB-type, per-chain SE); decid
 class; asked to confirm). Reads (draft): PASS g2 = E1 - E2 and g3 = E2 - E3 both beyond 2 sigma (paired); KILL g2 not beyond 2 sigma (storage caps
 the loop at one round); loop unnecessary at 8x8 if arm C reaches E <= E2(A) at equal GPU-h. Prediction (angle lead): g2 > 2 sigma 60%, g3 40%.
 Budget: PI GO; proposed cap 20 A40-h + 1 H100-h for stage 1 (A, C screens), FN grade only if the screen passes.
+SCREEN CALIBRATION (lead 2026-11-09, registered before running): FN c = 0 on the fixed amplitude for the round-0 (Marshall) and round-1
+(s_net^M + hop) signs. The VMC screen is trusted for rounds 2-3 only if FN ranks round 1 below round 0 as VMC does AND the FN gain E0 - E1 is within a
+factor 2 of the VMC gain (5.04e-3 - 7.4e-5 = 4.97e-3 /site, paired, results/signs_8x8). Otherwise FN grades every round from the start. Inside the 20 A40-h cap.
 Now: cost probe (worker, <= 1 A40-h): two-hop data rate on A40, round-1 net + hop evaluation rate, three-hop rate on 20 samples. Run dir sign_bad.
 
 ## Queue (not run; PI sets priority)

@@ -108,3 +108,9 @@ Correction (same day, Astra cj-9c2bd0991219): my "walkers spend ~1/10000 of thei
 time. The energy test could see a gain of 1e-5 with ~70% chance, so the lack of gain is real for the node. Labels remain open for a different reason:
 the new sign changes the loop's correction strongly where few bonds are kept. Next: a 1-core-hour pilot to price relabelling; the decisive test
 (refit + grade with the new sign) costs ~5.5 H100-h plus relabelling and needs the lead's OK.
+
+P10 (PI, 2026-11-09, after T-NODE + relabel pilot) The angle lead proposed pausing every-round sign work and doing one exact step at the end.
+   PI: the physics needs a better sign; with the wrong node no amplitude can fix it. Agreed (equation: E_FN[a,s] = E_floor(s) + A_s(a), A >= 0;
+   amplitude rounds lower only A, never the floor of the current sign; ASTRA_node.md eq 7). A final step lowers the floor once, not repeatedly.
+   Recommendation withdrawn. Open: the 8x8 floor of sgn(M1) is unmeasured; T-NODE's null is floor + mismatch together. Angle lead's next pick: T-JOINT
+   (store sign and amplitude as one object so they change together), to Astra first (PI rule).

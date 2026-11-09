@@ -114,3 +114,10 @@ P10 (PI, 2026-11-09, after T-NODE + relabel pilot) The angle lead proposed pausi
    amplitude rounds lower only A, never the floor of the current sign; ASTRA_node.md eq 7). A final step lowers the floor once, not repeatedly.
    Recommendation withdrawn. Open: the 8x8 floor of sgn(M1) is unmeasured; T-NODE's null is floor + mismatch together. Angle lead's next pick: T-JOINT
    (store sign and amplitude as one object so they change together), to Astra first (PI rule).
+
+P11 (PI, 2026-11-09) (a) "The exact sign where the wavefunction is tiny had a lot of hope, and repeating it": T-RG pre-registered and running (recursively
+   gated S_-7, cost screen C3/C2 < 3, CPU <= 8 core-h; angle lead's prior 20%: a deep configuration has ~132 deep neighbours, so cost ~ fan-out^r
+   unless exact pruning cuts it). (b) "With T-JOINT we pay both?" Yes: one net must store the sign AND the Jacobi-corrected amplitude, and both are
+   hardest in the same place, next to the node where the kept sum K is small (delta f = log(1 + v/K) - ...; f_J = ln K - ln D). Nothing in T-JOINT
+   removes that 1/K amplification, which is what killed stored signs (A48). Angle lead lowers T-JOINT from 45% to ~20% at 8x8 (one round), lower for
+   every round. After T-RG: step-back (many failed versions of "store or compute the new sign").

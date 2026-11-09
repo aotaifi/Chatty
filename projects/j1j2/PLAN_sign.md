@@ -1011,10 +1011,25 @@ Cost axis for all branches: c > 0 walls need S_-7 two swaps out (d^2 per move); 
 - Arms (quotable.py, 3 chains each, chains agree): S_-7 -0.498746(2.7e-6) [chi2/dof 0.15]; sgn(M1) -0.498754(2.3e-6) [chi2/dof 1.33] (B0 earlier -0.4987565(28)).
 - CTRL1 on H100: F_k3..5 = B0_k3..5 bitwise, 1550 blocks each, 0 differing fields; broken arm differs.
 - Cost on H100: 5.47 vs 2.01 s/block (2.72x); s_G 75% of S_-7 time; 45% of moves need s_G.
-- Why the node test cannot see the eps^2 gain (my equation reading, Astra asked blind): S_-7 differs from sgn(M1) only at d <= -7. Walkers spend
+- [WRONG, see ASTRA below] Why the node test cannot see the eps^2 gain (my equation reading, Astra asked blind): S_-7 differs from sgn(M1) only at d <= -7. Walkers spend
   frac_x_deep = 1.8e-3 of their time at such x, and s_G flips 5.4% of those (~1e-4 of walker time); flips at deep neighbours 23.6% of 2.1% of evaluations.
   eps^2 draws equally per decade, so its 0.40 -> 0.19 gain sits where the walker measure is ~1e-3. Per-decade E_mix differences are noise-limited
   (largest |diff| 2.7e-4 at d = -2, where the signs are identical). 6x6 already said this: s_G's step gain was almost all amplitude (A47).
+- ASTRA on T-NODE (cj-9c2bd0991219, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_node.md, read in full; audit files there): run sound (controls
+  re-checked, raw curves audit_raw_*.png, diff k3 fifths chi2/dof 2.40 p 0.048 > cutoff 0.01); keep the operational stop on S_-7 as a node on B0,
+  but it is not proof of zero benefit (+-2 sigma interval [-0.1, +16.1]e-6). CORRECTION of my reading above: frac_x_deep x flip_x_frac (1e-4) is a
+  fraction of ROW EVALUATIONS, not walker time, and the test was NOT blind: power 68% at a 1e-5 gain, ~100% at 2e-5. My prediction (5e-6..4e-5)
+  was a bet without a mechanism; the run lowers it. Exact fixed-amplitude identity: dE_FN = -sum_{dF} t_xy a_x a_y int (u_x/a_x + u_y/a_y)^2 (eq 5).
+  The +8e-6 lean may be noise or a sign-amplitude mismatch; not separable from this run (eq 7), and NOT a tax to carry onto B1.
+  Label route OPEN with a mechanism: delta f(x) = log(1 + v_x/K) - log(1 - v_x/D), so a sign change moves the Jacobi target strongly where the kept sum
+  K is small (eq 9, checked on 960 roots to 1.6e-15). Decisive test = R1' sign ablation: same B0, pool roots, warm start, budget, c, f0, E' as R1;
+  S_-7 frozen on B0, its own labels and RE-SAMPLED blocked partners (old pool partners miss newly blocked bonds); grade the bare guide S_-7 x B1_S vs
+  R1's -0.498803(3.2e-6), sigma(diff) <= 4e-6, gain > 2 sigma. Cost NOT 3.1 H100-h: ~5.5 H100-h fit + grade (2.72x grade) plus relabelling of
+  2.0e6 roots x 2 partners, possibly ~500 core-h (unmeasured). "Walls must match the node" is the chosen iteration, not a theorem.
+  Next (Astra): <= 1 core-h offline relabelling/cost pilot (64 roots over the 8 fitted decades, 2 partners each, full neighbourhoods, gate, labels, rho;
+  gate-off control reproduces old labels; wrong-endpoint-sign broken control). Not approved by Astra: k = -6, longer k = -7, online c > 0.
+  Code defects to fix before reusing the provider: GatedSign.__init__ sets self._elnp = None (shadows the method; small-margin fallback would crash;
+  sg_recheck = 0 in all runs, so these results are unaffected); analyze_node.py reports complete=true from status OK (S7 chains completed=false).
 - Branch C: S_-7 is not used as a NODE. Its value, if any, is in the labels (c > 0); test only on the lead's loop metric.
 - Lead 2026-11-09 (verified the gate; paired per chain +10.9 / +1.5 / +7.8e-6; kill stands). Label-route metric = the refit net's bare FN energy at
   c = 0, same code, vs R1's -0.498803(3); eps^2 is only a screen (8x8 link to energy uncalibrated). T-HYB constraint: walls must match the node, so

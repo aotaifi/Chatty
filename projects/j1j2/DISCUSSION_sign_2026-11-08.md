@@ -104,3 +104,7 @@ P2 runs now (cheap). Then P1 + P5 + P6 together on paper (they are one question:
 The gated exact sign S_-7 does NOT make a better node at 8x8: energy +8.0(4.1)e-6/site vs the old sign (no gain; the predicted gain >= 5e-6 is
 excluded at 3.2 sigma). Likely reason: it changes the sign only in configurations where walkers spend ~1/10000 of their time, while the loop's label
 score (eps^2) counts those configurations heavily. Open: whether it still helps the next round's LABELS. Astra asked (cj-9c2bd0991219) before any verdict.
+Correction (same day, Astra cj-9c2bd0991219): my "walkers spend ~1/10000 of their time there" was wrong; that number counts evaluations, not
+time. The energy test could see a gain of 1e-5 with ~70% chance, so the lack of gain is real for the node. Labels remain open for a different reason:
+the new sign changes the loop's correction strongly where few bonds are kept. Next: a 1-core-hour pilot to price relabelling; the decisive test
+(refit + grade with the new sign) costs ~5.5 H100-h plus relabelling and needs the lead's OK.

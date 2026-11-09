@@ -38,6 +38,15 @@ T' inside the projection group. PRODUCTION rb8_prod (M = 16, W general) -> no co
 needs 8N + 21 projected PPs (149 / 309 / 533 at L = 4 / 6 / 8; rank 134 at 4x4, the missing 15 are f-independent spin-1/2 identities).
 => Tied-PP class requires building a symmetric PP (+ symmetric RBM or none); the 6x6 checks must use translation-invariant f with
 translations-only or c4-safe projection.
+ASTRA (cj-852432069699, 2026-11-09, /scratch/a/A.Otaifi/astra/arch_tied/ANSWER.md; job ended on a usage limit AFTER writing it):
+identity with a relabelled Jastrow holds (4x4, 1e-15; broken 0.07-1.97; base coefficient is 1 + alpha(c0 - E), not 1). MY COST CLAIM WAS WRONG:
+each defect term B_O = Proj[PP_{f o pi_O}] has trivial translation stabilizer, so it needs all N translation images; the 5 (17) projected terms
+are pm(1+4N) primitive determinants, i.e. 257 x (8x8) / 785 x (14x14) a tied base, ~4m x a general-f projected PP. No asymptotic gain over a
+general-f PP + one signed Lanczos step at equal image count; vs the naive two-level route (d^3) a bounded factor survives (Astra: not a timing).
+Accuracy risk: Nomura-Imada arXiv:2005.14142 App. B (Astra-read), 8x8 J2 = 0.5 RBM+PP, a 4x4 pairing cell costs 4.26e-4/site in E_var;
+Hu-Becca-Parola-Sorella 1304.2630 symmetric projected BCS 6x6 p = 0 -0.50117, p = 2 -0.503571 vs ED -0.50381 (Astra-read, not by me).
+Implementation gaps found: pp2_lemma recomputes inverses per call (no persistent update); dedup keys are one uint64 -> collide above 64 sites
+(10x10, 14x14). => Tied class: no cost advantage; the identity is a correctness/representation fact, not an architecture. Pending: arch_sym6 accuracy.
 Only the FIRST step collapses: H acting on B_{f o pi_O} (no longer T'-invariant) gives back the full bond sum, so H^2 B needs one PP per
 T'-orbit of bond PAIRS, ~16 m N / 2 (extensive). p nested steps are NOT (1+4m)^p PPs (lead's reading corrected 2026-11-09).
 Literature (2026-11-09, wiki + arXiv, 6 searches): Becca, Hu, Iqbal, Parola, Poilblanc, Sorella arXiv:1412.2656 Sec. 4 (read that section):
@@ -51,7 +60,7 @@ combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of
 | candidate | C1 | C2 | verdict |
 |---|---|---|---|
 | sum of K independent PPs | pass: kappa ~ K x one PP (10.9 vs 5.5 measured); the table method (Clark/Morales; not read) needs a shared reference, absent for independent f_k: no saving | r 0.49 at K = 2 (R5), 0.25 round 6. A general-f PP's Lanczos step has PP-rank 4N+1 (identity): fixed K cannot hold repeated rounds; candidate mechanism of the r decline | pass C1; C2 partial, falls with rounds (hypothesis) |
-| tied PP sum S_{1+4m}: B_f + sum_O c_O B_{f o pi_O}, f T'-invariant | pass: (1+4m) x plain; a Jacobi head on top costs (1+4m) x one level, i.e. two levels at constant cost (board 20 had ~2e3 x at 14x14) | one Lanczos step EXACT (identity); Jacobi vs Lanczos differ ~8% at 6x6 (PLAN.md); round 2 needs compression (f o pi_O not invariant) | PASS on paper for one step; open: bare cost of imposing T'-invariance on f |
+| tied PP sum S_{1+4m}: B_f + sum_O c_O B_{f o pi_O}, f T'-invariant | WITHDRAWN (Astra): pm(1+4N) primitive dets, no gain over general f + Lanczos; was: (1+4m) x plain; a Jacobi head on top costs (1+4m) x one level, i.e. two levels at constant cost (board 20 had ~2e3 x at 14x14) | one Lanczos step EXACT (identity); Jacobi vs Lanczos differ ~8% at 6x6 (PLAN.md); round 2 needs compression (f o pi_O not invariant) | PASS on paper for one step; open: bare cost of imposing T'-invariance on f |
 | local dressing of the swapped sites' pair amplitudes (backflow-type) | backflow measured 36.5x at 6x6, grows ~N^2 (board 23). Finite-pattern dressing: O(1) in N but det of ~4w rows (w ~ 9-16) -> kappa >> 30 | not reached | FAIL C1 (practical) |
 | 2-body Jastrow | pass (cached fields, O(1)) | fail: 2-body features eps^2 0.973 (Test L, P7) | FAIL C2 |
 | Pfaffian sums (S_z = 0 sector) | pass: rank-4 Pfaffian update, ~4 x a PP per term | triplet blocks A (up-up), D (down-down) enter only as products A^k D^k (pairs must balance), so dPf/dA = 0 at A = D = 0: zero linear reach at the PP point and a bilinear saddle for a warm-started refit (LESSONS "bilinear saddle") | FAIL: dominated by PP sums (derived, not run) |
@@ -77,5 +86,5 @@ combinations of non-orthogonal AGPs (chemistry, pairing Hamiltonian). Novelty of
   Mechanism consistent with f_J running through the PP's Green function; unchecked: C4/spin-flip invariance of the target, a second MLP seed.
 
 ## Cockpit
-- STATUS (in progress, medium): A tied pair-product sum holds one Lanczos step exactly at constant cost; Pfaffians, backflow and the |psi|-gated CNN hybrid fail the cost or reach test.
+- STATUS (in progress, medium): No candidate passes both the cost and the reach test yet; more pair products remain the only cheap route, and the symmetric-pairing idea gave no cost advantage after review.
 - NEXT (in progress, medium): Test whether the round correction is local (decides the cheap local add-on) and check the tied pair-product sum exactly at 6x6.

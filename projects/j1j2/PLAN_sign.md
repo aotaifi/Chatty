@@ -449,7 +449,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 ## Running
 - TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
-- Fresh-eyes consult (Fable, no CLAUDE.md; PI request): astra/fable_fresh/BRIEF.md -> FRESH.md, running.
+- Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV (worker, CPU <= 10 core-h), run dir sign_lev; reads in section T-LEV.
 - Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmit at 23:45 (timer armed). Next: cheap test (<= 8 core-h
   or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
 - T-RG cost screen (worker, CPU <= 8 core-h), run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg, section "T-RG". Next: PASS -> design the round-2 accuracy
@@ -1066,6 +1066,28 @@ pruning off gives identical signs (exactness); a broken certificate (drop the un
 PASS: C3/C2 interval < 3. KILL: lower bound >= 3 (then diagnose: fan-out per level, Astra). Cap 8 CPU core-h; capped requests = lower bounds.
 Prediction (angle lead): pass 20% (deep configurations cluster). Cost only: round-2 accuracy needs its own reference, designed only if this passes.
 Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_rg (worker).
+
+## FRESH-EYES CONSULT (Fable, no CLAUDE.md, PI request 2026-11-09; /scratch/a/A.Otaifi/astra/fable_fresh/FRESH.md, read)
+Main claim (80%): the second sign step changes only node-shell configurations, so its gain is second order and need not grow with L (6x6: second
+steps -0.43..+0.39e-6 vs first 5.3-11.4e-6); the lever is the base guide (our M1 VMC -0.498674(12) vs published RBM+PP -0.498886(1),
+2005.14142; Varbench RBM+PP -0.498963(2) below our p=1 FN -0.498946(5): checked against TRIED_IDEAS I2 and PLAN.md l.19-20).
+Ranked: guide first then p=1 + FN + variance extrapolation 75%; restricted-class E_FN gradient on the real PP pairing only (C15 stage (c), never run)
+45%; Ising-ground-state sign labels at fixed amplitude (2207.10675) 40%; forward-walked ln g instead of the Jacobi head 30%.
+My check: its "0.18% of walker weight" reuses frac_x_deep, which Astra showed counts row evaluations (walker residence below -7 is tau 1.1e-3);
+its claim that the S_-7 null was predictable by weight counting is therefore unsupported (Astra: 68% power at 1e-5). "6x6 second steps small" is 6x6 (PI: not a verdict).
+
+## T-LEV (takeover, angle lead's call on Fable's step; pre-registered before any number; CPU <= 10 core-h)
+Question: does the fixed-amplitude SECOND sign step have more leverage at 8x8 than at 6x6 (PI's premise "a better sign every round" vs Fable's 2a)?
+m2(x) = [1 - alpha(H_xx - E)] s_G(x)|B_x| - alpha sum_y H_xy s_G(y)|B_y| (s_G = first-step sign, fixed |B|);
+Lambda_L = (1/N) sum_x p(x) |V(x) - K(x)| [sgn m2(x) != s_G(x)], p = walker residence weight by decade with the panel's inclusion weights
+(8x8: sign_k7 960-root panel, p from sign_node prod tau_dec of the sgn(M1) arm; 6x6: exact B2-fixed tables, p exact).
+CALIBRATION GATE (first, LESSONS: check a proxy on known cases): at 6x6 the same proxy for the FIRST step (s0 -> s_G) and the SECOND step must order the
+measured gains (first 5.3-11.4e-6, second -7.6e-8 /site, STEP 0' arm (a)): Lambda_6(first)/Lambda_6(second) >= 10, else the proxy is uninformative
+and nothing below is read. Broken control: proxy with p uniform over decades must change the 8x8 number (shows p acts).
+Reads (recommendations to the PI, not automatic): R = Lambda_8/Lambda_6 <= 3 -> second step at 8x8 likely ~1e-6/site: recommend the PI move effort
+to the guide; R >= 10 -> premise alive: GATE 1-2 plan; between -> GATE 1 only. Bootstrap interval over roots; a read needs the whole interval in a band.
+Caveat: misses the refreshed-amplitude second step (needs the second shell). Prediction (angle lead): R <= 3 [45%], R >= 10 [20%].
+Run dir /scratch/a/A.Otaifi/ansatz_runs/sign_lev (worker).
 
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

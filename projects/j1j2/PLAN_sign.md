@@ -1177,6 +1177,12 @@ ROUND 1 PHASE A RESULT 2026-11-10 (A40 17875220 data 1.55 h, 17877190 fit 1.33 h
  DECISION: grade round 1 now (launchers read by me; Marshall 2 h, net 16 h ceilings, 350 blocks/chain, 2 chains each) and, in parallel, a FIT-RECIPE
  CHECK before round 2 (registered now): 8k roots, steps 60/root and a second seed; adopt for round 2 if held-out disagreement drops > 10% relative;
  n_1 is regraded only if g_1's decision depends on it. <= 2 A40-h (raised to 4 A40-h on measured cost 0.75 h per 30-step fit: three fits ~3.7 h).
+FIT-RECIPE CHECK RESULT 2026-11-10 (A40 17885650-52, 3.70 A40-h; runs/j1j2/sign_bad/r1/fitcheck; worker's table, read): held-out disagreement
+ 0.1029 (30 steps, seed 0) / 0.1019 (60, seed 0) / 0.1028 (30, seed 1) / 0.1025 (60, seed 2); seed spread ~0.1%, recipe effect <= 1% (threshold 10%):
+ KEEP 30 steps/root. Train error falls slightly with steps, held-out does not: the CNN class (or optimiser), not data or length, limits the fit; deepest
+ decades at chance for every fit. Caveat for the kill rule: a round-2 null could be capacity-limited; the diagnosis must test a larger class before a verdict.
+ROUND 2 PHASE A started 2026-11-10 (before g_1, to save wall time; g_1 partial is far below Marshall): labels K[n_1] on the round-1 roots/states (same split),
+ fit n_2 with the round-1 recipe, stage FN of n_2 as for n_1. Run dir sign_bad/r2.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

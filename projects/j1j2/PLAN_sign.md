@@ -1166,6 +1166,15 @@ T-BAD FINAL (registered 2026-11-10 before any round-1 number):
  Data-limited (still improving) -> no verdict, double data.
  Predictions (angle lead): g_1 in [1.5e-3, 3.3e-3] 75%; g_2 > 2 sigma 60%; g_3 > 2 sigma 45%. Control C (SR, continuous phase) after round 2.
  Budget from measured rates: data ~0.5 A40-h/round, fit ~1-2, FN ~2 chains x (1-4) A40-h per sign; ~10 A40-h per round.
+ROUND 1 PHASE A RESULT 2026-11-10 (A40 17875220 data 1.55 h, 17877190 fit 1.33 h; runs/j1j2/sign_bad/r1, sign_bad/r1/; worker's numbers, read):
+ 10240 tempered roots (8192 train / 2048 held-out by chain), 1,468,952 states, labels K[M] (minus share 25.6%). Label controls: 20 states vs direct
+ recomputation 1.5e-10, 0 sign mismatches; wrong alpha changes 3.9-25.6% of labels. Learning curve (held-out disagreement / E_L mean abs err, total units):
+ 2k 0.110 / 3.52; 4k 0.106 / 3.22; 8k 0.103 / 3.00 (no-flip 0.257; Marshall E_L err 4.42). 4k->8k 3% (< 10%): no 16k. Train error RISES with n
+ (0.084 -> 0.099): optimisation/capacity-limited, not data-limited. By |B0|^2 decade: 0.1% at >= -1, 3.3% at -5, 12% at -7, 22% at -9, chance below -13.
+ n_1 = runs/j1j2/sign_bad/r1/fit/net_8192.pkl, sha256 33349343...93ddc. Worse fit than A13 arm M (held-out 6.7% on neighbours), on another amplitude.
+ DECISION: grade round 1 now (launchers read by me; Marshall 2 h, net 16 h ceilings, 350 blocks/chain, 2 chains each) and, in parallel, a FIT-RECIPE
+ CHECK before round 2 (registered now): 8k roots, steps 60/root and a second seed; adopt for round 2 if held-out disagreement drops > 10% relative;
+ n_1 is regraded only if g_1's decision depends on it. <= 2 A40-h.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

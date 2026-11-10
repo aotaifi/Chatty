@@ -451,7 +451,9 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
   Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
-  T-BAD: stage 0 done (hop-dressed FN unaffordable) -> T-BAD FINAL (net-only deployment) round 1 running (worker, run dir sign_bad/r1).
+  T-BAD round 1 FN grades: Marshall 17885644 (2 h), net n_1 17885645 (16 h), theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
+  VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
+  the recipe chosen by the fit check, FN of n_2). Fit-recipe check (worker, <= 4 A40-h) running.
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1174,7 +1176,7 @@ ROUND 1 PHASE A RESULT 2026-11-10 (A40 17875220 data 1.55 h, 17877190 fit 1.33 h
  n_1 = runs/j1j2/sign_bad/r1/fit/net_8192.pkl, sha256 33349343...93ddc. Worse fit than A13 arm M (held-out 6.7% on neighbours), on another amplitude.
  DECISION: grade round 1 now (launchers read by me; Marshall 2 h, net 16 h ceilings, 350 blocks/chain, 2 chains each) and, in parallel, a FIT-RECIPE
  CHECK before round 2 (registered now): 8k roots, steps 60/root and a second seed; adopt for round 2 if held-out disagreement drops > 10% relative;
- n_1 is regraded only if g_1's decision depends on it. <= 2 A40-h.
+ n_1 is regraded only if g_1's decision depends on it. <= 2 A40-h (raised to 4 A40-h on measured cost 0.75 h per 30-step fit: three fits ~3.7 h).
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

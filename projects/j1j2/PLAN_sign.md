@@ -1183,6 +1183,12 @@ FIT-RECIPE CHECK RESULT 2026-11-10 (A40 17885650-52, 3.70 A40-h; runs/j1j2/sign_
  decades at chance for every fit. Caveat for the kill rule: a round-2 null could be capacity-limited; the diagnosis must test a larger class before a verdict.
 ROUND 2 PHASE A started 2026-11-10 (before g_1, to save wall time; g_1 partial is far below Marshall): labels K[n_1] on the round-1 roots/states (same split),
  fit n_2 with the round-1 recipe, stage FN of n_2 as for n_1. Run dir sign_bad/r2.
+ROUND 2 PHASE A RESULT 2026-11-11 (A40 17888468, 1.86 A40-h; runs/j1j2/sign_bad/r2; worker's numbers, minus-share definition checked by me in r2_labels.py):
+ labels K[n_1]: controls pass (20 states vs direct 1.2e-11, 0 mismatches; Marshall in place of n_1 reproduces round 1 on all 1,468,952 states; broken differs).
+ K[n_1] != n_1 on 17.1% of states (0.1% at d >= -1, 6.3% at -5, 20.6% at -7, 38-45% at -9..-11); many repair n_1's own fit errors (n_1 held-out 10.3%).
+ (minus_share 0.499 is the ABSOLUTE sign share, not comparable to round 1's relative 25.6%.)
+ n_2 fit: held-out disagreement 0.1042 (n_1: 0.1029), flips 0.198, keeps 0.069, E_L err 3.37 vs Marshall 4.69; deep decades near chance as before.
+ n_2 = runs/j1j2/sign_bad/r2/fit/net_8192.pkl sha256 c7b16b7b...6c (checked). FN of n_2 submitted (launcher read by me: copy of r1 with paths/seeds 41/42).
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

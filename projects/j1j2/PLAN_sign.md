@@ -451,7 +451,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
   Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
-  T-BAD round 1 FN grades: Marshall 17885644 (2 h), net n_1 17885645 (16 h), theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
+  T-BAD round 1 FN grades: Marshall 17885644 DONE e_0 = -0.495522(23) QUOTABLE; net n_1 17885645 (16 h), theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
   the recipe chosen by the fit check, FN of n_2). Fit-recipe check (worker, <= 4 A40-h) running.
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.

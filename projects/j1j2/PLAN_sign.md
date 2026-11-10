@@ -451,7 +451,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
   Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
-  T-BAD round 1 FN grades: Marshall 17885644 DONE e_0 = -0.495522(23) QUOTABLE; net n_1 17885645 (16 h), theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
+  T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
   the recipe chosen by the fit check, FN of n_2). Round-2 FN of n_2: 17893815 (16 h), watcher 759208 (PPID 1); gate r2/code/r2_analyze_fn.py.
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
@@ -1183,6 +1183,10 @@ FIT-RECIPE CHECK RESULT 2026-11-10 (A40 17885650-52, 3.70 A40-h; runs/j1j2/sign_
  decades at chance for every fit. Caveat for the kill rule: a round-2 null could be capacity-limited; the diagnosis must test a larger class before a verdict.
 ROUND 2 PHASE A started 2026-11-10 (before g_1, to save wall time; g_1 partial is far below Marshall): labels K[n_1] on the round-1 roots/states (same split),
  fit n_2 with the round-1 recipe, stage FN of n_2 as for n_1. Run dir sign_bad/r2.
+ROUND 1 FN RESULT 2026-11-11 (A40 17885644 Marshall, 17885645 net; sign_bad/r1/fn_*/ANALYSIS.md; raw curves quotable_*.png looked at by me: stationary,
+ one single-bin excursion in chain k4 near block 80): e_0 (Marshall x |M1|) = -0.495522(23), e_1 (stored n_1 x |M1|) = -0.498158(17), both QUOTABLE
+ (2 chains each, chi2/dof 0.35 / 0.01). g_1 = 2.636(29)e-3 /site: USEFUL, inside the predicted [1.5, 3.3]e-3 band. Reference sgn(M1) -0.498754(2.3e-6):
+ n_1 closes 82% of the Marshall -> sgn(M1) gap (remaining 5.96e-4). Round 2 FN 17893815 decides whether storage carries a second round.
 ROUND 2 PHASE A RESULT 2026-11-11 (A40 17888468, 1.86 A40-h; runs/j1j2/sign_bad/r2; worker's numbers, minus-share definition checked by me in r2_labels.py):
  labels K[n_1]: controls pass (20 states vs direct 1.2e-11, 0 mismatches; Marshall in place of n_1 reproduces round 1 on all 1,468,952 states; broken differs).
  K[n_1] != n_1 on 17.1% of states (0.1% at d >= -1, 6.3% at -5, 20.6% at -7, 38-45% at -9..-11); many repair n_1's own fit errors (n_1 held-out 10.3%).

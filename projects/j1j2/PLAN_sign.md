@@ -452,7 +452,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD: stage 0 done (hop-dressed FN unaffordable) -> T-BAD FINAL (net-only deployment) round 1 running (worker, run dir sign_bad/r1).
-  FN-trained sign: Astra's 6x6 information-cost test (<= 8 CPU core-h) run in parallel (T-FNI).
+  FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
 - Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmitted as cj-9a275217f646 (23:45, items 1-7). Next: cheap test (<= 8 core-h
@@ -1193,6 +1193,14 @@ target, same data/cost, held-out roots; (3) exact Q (and FN solve if the margin 
 g = u/a vs exact g, and the effective sample size it implies. Reads as in ASTRA_fnsign.md section 5 (mechanics pass; estimator passes only if its error
 < descent margin). Scope: estimator information cost on a GOOD 6x6 parent; no verdict on 8x8 or on bad starts. Run dir sign_fni (worker).
 
+T-FNI RESULT 2026-11-10 (CPU 2.9 core-h; Slurm 17875420; sign_fni/{RESULT.md,result.json}; key numbers checked by me in result.json):
+ Step 1 PASS: cut bound Q reproduced to 8e-14 (lanczos +8.97e-8, hybrid -7.84e-9 /site); g = 1, diagonal-only, mixed-as-pure controls all fail (6-91%).
+ Step 2 (deviation: no stored class fits this parent; 6-parameter head on the frozen 1-PP margin): FN-objective head Q -1.05e-11 /site (746x smaller than
+ the hybrid cut), supervised head +9.18e-8 (worse); optimiser hit its 48-evaluation cap. Step 3: mechanics pass, dE_FN <= Q holds for every sign
+ (hybrid dE -1.25e-8 vs Q -7.84e-9; random cut +3.1e-8); no false certified decrease. Step 4 FAIL (certificate level): the deployable g estimate
+ (one Jacobi ratio, median error 0.65-1.8%) has Sum|dW| 6-10x the descent margin; certifying the hybrid margin needs ~1e9 independent roots.
+ Reading: FN-energy training of a stored sign works in exact arithmetic but its walker estimator cannot certify the TINY margins of a good 6x6 parent
+ (~1e-8/site). Scope: good parent only; from a bad start margins are ~1e-3, so the same estimator error may be affordable there (untested). Parked behind T-BAD.
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own

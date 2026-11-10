@@ -448,7 +448,12 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 
 ## Running
 - T-BAD (PI GO): cost probe done (neither design fits 20 A40-h); design finalised after Astra QUESTION8 (6) (resubmit 23:45).
-- TAKEOVER from 2026-11-09 19:50 (PI: "ask Astra about the FN-trained sign now and /takeover"); check-in 2026-11-10 09:00.
+- TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
+  Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
+  each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
+  T-BAD branches: stage 0 FN bill <= ~10 A40-h per round-grade -> run round 1 on |M1| (data 8k packets, CNN fit, FN of M and S_1), then round 2;
+  bill far larger -> net-only FN grades (cheap) as the decision metric, dressed grades on a subset, and record the scope change.
+  FN-trained sign: Astra's 6x6 information-cost test (<= 8 CPU core-h) run in parallel (T-FNI).
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
 - Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmitted as cj-9a275217f646 (23:45, items 1-7). Next: cheap test (<= 8 core-h
@@ -1162,6 +1167,13 @@ restricted FN-aware learner gives a useful stored second update at 8x8: 30-40%. 
 an information-cost test of the estimator, not a verdict on 8x8. Not run yet (T-BAD first); offered at the check-in.
 T-RG (section 7): cost kill stands; my diagnosis double-counted pruning (~25 is already the post-pruning paid fan-out; 87-111 candidates per level
 would need ~97% pruning). Only variant worth a capped screen: deeper gate k = -8/-9 (<= 4 core-h), if the angle keeps exact recursion open.
+## T-FNI (takeover; Astra ASTRA_fnsign.md section 5, registered there before any number; CPU <= 8 core-h)
+Information-cost test of an FN-trained stored sign on the exact 6x6 fixed-B2 parent (sign_q0r): (1) reproduce full-cut Q for saved cuts + controls
+(g = 1, off-diagonal omitted must fail); (2) train one frozen sign class's small parameter subset once on the exact-u cut objective vs the supervised
+target, same data/cost, held-out roots; (3) exact Q (and FN solve if the margin warrants) for the hardened sign; (4) error of a deployable estimate of
+g = u/a vs exact g, and the effective sample size it implies. Reads as in ASTRA_fnsign.md section 5 (mechanics pass; estimator passes only if its error
+< descent margin). Scope: estimator information cost on a GOOD 6x6 parent; no verdict on 8x8 or on bad starts. Run dir sign_fni (worker).
+
 ## Queue (not run; PI sets priority)
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own

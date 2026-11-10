@@ -451,8 +451,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
   Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
-  T-BAD branches: stage 0 FN bill <= ~10 A40-h per round-grade -> run round 1 on |M1| (data 8k packets, CNN fit, FN of M and S_1), then round 2;
-  bill far larger -> net-only FN grades (cheap) as the decision metric, dressed grades on a subset, and record the scope change.
+  T-BAD: stage 0 done (hop-dressed FN unaffordable) -> T-BAD FINAL (net-only deployment) round 1 running (worker, run dir sign_bad/r1).
   FN-trained sign: Astra's 6x6 information-cost test (<= 8 CPU core-h) run in parallel (T-FNI).
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1147,6 +1146,26 @@ a full row of the ViT + hop sign costs 2.35 s on an A40, so FN on the A13 amplit
 MY DECISION (takeover): price FN before any learning spend. Stage 0 on the |M1| amplitude (T-NODE-validated GFMC, cheap amplitude) instead of the ViT:
 time FN c = 0 per move for Marshall x |M1| (bare), a stored CNN sign (net-only), and net + hop (deployed S_r); short Marshall x |M1| FN run (round-0 point).
 Cost <= 2 A40-h. With |M1| the A13 round 1 must be redone (its labels used the ViT amplitude). Full T-BAD budget goes to the PI at 09:00 with these numbers.
+STAGE 0 RESULT 2026-11-10 (A40 jobs 17872472/3, 17874751; 2.28 A40-h; sign_bad/stage0/STAGE0.md, read): s/move at M 1024: sgn(M1) 4.85e-3, Marshall 4.9e-3,
+stored CNN (net-only) 1.61e-2, deployed net + one hop 0.77 (+-30%; 87% sign evaluation, ~1e4 unique net states per move). Controls pass (generic path =
+BareM1Sign bitwise 20 blocks; broken differs 6554/6554; hop sign vs recomputation 4.5e-11, 0 mismatches). Round 0 Marshall x |M1|: -0.495471 / -0.495477
+(225 blocks/chain, NOT QUOTABLE, plot only), ~3.3e-3 above sgn(M1). FN on the deployed hop sign: 292-1837 A40-h per chain at sigma 1e-5 = UNAFFORDABLE.
+DECISION (takeover, branch pre-stated in Running): deploy and FN-grade the STORED NET ALONE each round (the scalable deployment: per walker step cost =
+one net evaluation per neighbour, 3.3x bare); the hop is used only offline to make labels. Scope change recorded: this tests "store each round's one-step
+sign and use the stored sign", not Astra's "net + hop" deployment. Finding in itself: a one-hop dressed sign costs ~150x per FN walker step at 8x8.
+T-BAD FINAL (registered 2026-11-10 before any round-1 number):
+ recurrence: n_0 = Marshall M; labels_r = K[n_r](z) = n_r(z) sgn[1 + alpha(E_L(|B0| n_r; z) - E)] on training states z (root + all valid one-swap neighbours),
+ alpha -0.1754318714549749, E -31.915135844116154 (the loop's sign step, = threshold T = E - 1/alpha); fit n_{r+1} (A13 CNN class, D4 x flip averaged,
+ Marshall x sgn(logit)); deploy n_{r+1}. Amplitude fixed |B0| = |M1| everywhere. Data: tempered (beta 1/2) root packets with two-hop |B0| sets;
+ learning curve 2k/4k/8k packets (held-out label disagreement and held-out complete-neighbourhood E_L error); final net from 8k; doubling to 16k if 4k->8k
+ still improves held-out error by > 10% (relative).
+ Metric: e_r = FN c = 0 energy/site of (|B0|, n_r), 2 chains from the T-NODE starts, quotable.py; sigma per arm <= 3e-5 (gains from a bad start are
+ >> 1e-5; refine only where a decision needs it). g_r = e_{r-1} - e_r, sigma(g) from both arms.
+ Reads: round r USEFUL if g_r > 2 sigma(g_r). KILL of "storage carries the loop past one round": g_2 not beyond 2 sigma with data adequate
+ (4k->8k change < 10%) -> diagnose (storage loss: compare held-out label error of n_2 vs n_1; and the exact one-step leverage of K[n_1] on a panel), Astra.
+ Data-limited (still improving) -> no verdict, double data.
+ Predictions (angle lead): g_1 in [1.5e-3, 3.3e-3] 75%; g_2 > 2 sigma 60%; g_3 > 2 sigma 45%. Control C (SR, continuous phase) after round 2.
+ Budget from measured rates: data ~0.5 A40-h/round, fit ~1-2, FN ~2 chains x (1-4) A40-h per sign; ~10 A40-h per round.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

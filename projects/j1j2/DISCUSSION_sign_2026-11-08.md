@@ -142,3 +142,6 @@ P14 (PI, 2026-11-11) Does one global Lanczos sign step lose power with size, and
    copies; on the coupled 8x8 lattice it LOST to the global rule (-2.84(32)e-3 vs -3.96(24)e-3 /site from Marshall; window-energy noise sd 1.1 per 4x4
    window). So: the size-consistency effect is real algebra, but not a concern up to 14x14, and the local fix is not ready (needs a lower-noise window
    statistic before ~16x16). Sources: TRIED_IDEAS D3, D4; RESEARCH_MAP l.140; results/local_krylov.
+P15 (PI, 2026-11-11) PI does not expect patching to help: the sign comes from entanglement/frustration, highly non-local. Agreed with evidence
+   (D3 local rule lost at 8x8; AR2 local add-ons explain 2-13%; A44 local CNN patches -0.7%). DECISION: keep the global step; watch the size effect;
+   at large L prefer more projection (e^{-tau H}, which FN already applies) over patches.

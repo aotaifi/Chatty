@@ -1235,6 +1235,8 @@ T-FNI RESULT 2026-11-10 (CPU 2.9 core-h; Slurm 17875420; sign_fni/{RESULT.md,res
  Reading: FN-energy training of a stored sign works in exact arithmetic but its walker estimator cannot certify the TINY margins of a good 6x6 parent
  (~1e-8/site). Scope: good parent only; from a bad start margins are ~1e-3, so the same estimator error may be affordable there (untested). Parked behind T-BAD.
 ## Queue (not run; PI sets priority)
+- WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
+  TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail
   (f_J(x) < -0.5) is 8 / 35 / 205 of 2e6 draws at decades -7/-8/-9 under the net's own sign sgn(M1), vs 3-10% of x under s_G. Mechanism: B's own
   nodes leave kept bonds around every x (SK stays large); s_G's nodes cut through regions where |B| has no node and strand x with few kept bonds,

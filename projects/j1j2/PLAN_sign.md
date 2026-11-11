@@ -1297,6 +1297,10 @@ walk, validated against exact 6x6 = gate 2 of "NEXT QUESTION AT 8x8": <= 48 CPU 
 during stage 0, then FN. On (2): our generic path equals BareM1Sign bitwise (stage 0 control); the s306 amplitude loader and the Pfaffian angle's
 launcher are compared at stage 0 before reusing their arm.
 
+PAIRED FN ESTIMATOR (lead 2026-11-12: build first, SHARED tool under ansatz/code/ with README; validate vs exact 6x6 incl. a broken reweighting that
+must miss; report weight distribution near flips at 6x6 and an 8x8 pilot; pointer to the lead when gate 2 passes; <= 48 CPU core-h + build).
+Design asked of Astra first (cj-1470845f5b1a, astra/paired_fn/QUESTION.md -> ASTRA_paired.md); build by a worker to that spec.
+
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

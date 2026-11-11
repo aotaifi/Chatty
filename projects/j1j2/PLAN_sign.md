@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round-2 FN of n_2: 17893815 (16 h), watcher 759208 (PPID 1); gate r2/code/r2_analyze_fn.py.
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 phase A running (worker, sign_bad/r3).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1193,6 +1193,12 @@ ROUND 2 PHASE A RESULT 2026-11-11 (A40 17888468, 1.86 A40-h; runs/j1j2/sign_bad/
  (minus_share 0.499 is the ABSOLUTE sign share, not comparable to round 1's relative 25.6%.)
  n_2 fit: held-out disagreement 0.1042 (n_1: 0.1029), flips 0.198, keeps 0.069, E_L err 3.37 vs Marshall 4.69; deep decades near chance as before.
  n_2 = runs/j1j2/sign_bad/r2/fit/net_8192.pkl sha256 c7b16b7b...6c (checked). FN of n_2 submitted (launcher read by me: copy of r1 with paths/seeds 41/42).
+ROUND 2 FN RESULT 2026-11-11 (A40 17893815; sign_bad/r2/fn_net/ANALYSIS.md; raw curve quotable_n2.png looked at by me: stationary, chains overlap):
+ e_2 (stored n_2 x |M1|) = -0.498658(9), QUOTABLE (chi2/dof 0.02). g_2 = e_1 - e_2 = 5.00(19)e-4 /site: USEFUL (26 sigma). Prediction (g_2 > 2 sigma, 60%) held.
+ Gap to sgn(M1) -0.498754: 3.232e-3 (Marshall) -> 5.96e-4 (n_1) -> 0.96e-4 (n_2): contraction x5.4 then x6.2 per round.
+ READING: from a bad start at 8x8, storing each round's one-step sign in a CNN and deploying the stored net carries the loop through TWO rounds with
+ large, contracting gains, at a per-walker-step cost of one net evaluation per neighbour (3.3x bare). Fixed amplitude |M1|; the net class is capacity-limited.
+ Next: round 3 (labels K[n_2], same pipeline; g_3 now ~1e-4 scale, sigma per arm ~1e-5 suffices); then control C (SR, continuous phase, matched compute).
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

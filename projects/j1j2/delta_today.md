@@ -1600,3 +1600,4 @@
 2026-11-11 08:09 VERDICT job pool_s306_20261111_0709: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8_s306/prep/pool_s/ANALYSIS.md]
 - 2026-11-11 pfaffian angle: session messaging to lead restored; board stays as fallback (watcher kept).
 - 2026-11-11 FULL point-group evaluation of retrained 8x8 base s306 (2 chains 51/52, eval_combine.sh run by the lead): -0.49891(1.4e-6) QUOTABLE, 2.4e-5 BELOW published Nomura-Imada -0.498886 (simple projection), 5.3e-5 above Varbench -0.498963; s307 full replica pending (cont 4203776/7). Migrate: PLAN Running rewritten.
+- 2026-11-11 09:30 lead (fresh session after migrate): waits re-armed: VERDICT 4203776/7 (s307 full eval, Paderborn PENDING, est. start 11-15 05:35; durable watchers 869348/869428 PPID 1), /scratch 990 GiB (now 958.9G), board '-> LEAD' (3 min). Pfaffian 'simple' worker in progress; no R1 launcher yet.

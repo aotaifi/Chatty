@@ -1262,6 +1262,31 @@ T-FNI RESULT 2026-11-10 (CPU 2.9 core-h; Slurm 17875420; sign_fni/{RESULT.md,res
  (one Jacobi ratio, median error 0.65-1.8%) has Sum|dW| 6-10x the descent margin; certifying the hybrid margin needs ~1e9 independent roots.
  Reading: FN-energy training of a stored sign works in exact arithmetic but its walker estimator cannot certify the TINY margins of a good 6x6 parent
  (~1e-8/site). Scope: good parent only; from a bad start margins are ~1e-3, so the same estimator error may be affordable there (untested). Parked behind T-BAD.
+## T-STRONG (lead's question 2026-11-11, PI yes; DESIGN ONLY, nothing runs before T-CAP8 and CONTROL C close)
+Question: can ONE stored sign round started FROM a strong network's own sign end BELOW it? Base: rb8_retrain s306 (sha 45fa54e6, 'simple' projection,
+full-projection VMC -0.49891 on 2 seeds). Bar: FN c = 0 p = 0 of the base with its own sign (Pfaffian angle runs it), same code path as T-BAD.
+Mechanism (the term a sign round can lower): at fixed amplitude a, E_FN[a, s] changes by a sign change on a set F through the boundary bonds only
+(ASTRA_node eq 3/5: dE = -sum_{dF} t_xy a_x a_y int (u_x/a_x + u_y/a_y)^2 dlambda). One Lanczos step flips x where 1 + alpha(E_L(x) - E) < 0, i.e. where the
+guide's local energy is far above E because its node blocks bonds (large V(x)); those flips turn blocked bonds into kept ones where u is still large and
+lower the sign-flip potential the walkers feel. The network's own sign has no such step built in; VMC optimised it for the variational energy, which can
+move against E_FN (6x6: E_FN -5.27e-6 while E_VMC +2.04e-6). So the available gain is G_exact = E_FN[a, s_base] - E_FN[a, s_G], the exact one-step
+sign at fixed amplitude. A stored round can only reach G_exact minus its storage loss L.
+Why the gate (a) failures need not apply (and where they still might): gate (a) graded TRAINED REPLACEMENT signs on the label metric eps^2, and training moved
+errors into high-amplitude decades (-2..-5) where the old sign was nearly right. Here: (i) storage is RESIDUAL, s = s_base x c(x) with c = flip indicator
+trained on K[s_base]/s_base with a strong no-flip prior, so the base sign is kept exactly wherever c = +1 and copy errors can only be false or missed flips;
+(ii) grading is the deployed FN energy, not eps^2. Where they still might apply: false flips in the bulk (P3: a stored sign differing in the bulk cost
++4.0(1.3)e-5 on |M1|) and the 64x6 class (held-out 10% in T-BAD, chance below d -11).
+Size of G_exact (estimates, not measurements): 6x6 exact, sgn(psi_P) -> s_G on B_6: 1.06e-6 (A47); 8x8 first-step weight ~28x -> <= ~3e-5. Against:
+A13 arm V (ViT sign) one Krylov step was a VMC null step at +-3e-6; T-NODE: the deep part (d <= -7) gives no node gain. So G_exact is likely 0.5-3e-5.
+Prediction (angle lead): stored round below the base by > 2 sigma: 20% (lead 25%). Lower because T-BAD round 3 already stalls 4.5(1.0)e-5 above sgn(M1)
+with gains shrinking x2, which suggests a storage loss of a few 1e-5 for this class near a strong sign, the same size as G_exact. Rises to ~30% if T-CAP8
+shows the 64x10 net lowers e_3 beyond 2 sigma at fixed labels (storage loss reducible).
+Kill test: g_S = E_FN[a, s_base] - E_FN[a, s_base c] not beyond 2 sigma(g_S) with sigma(g_S) <= 6e-6 -> KILL for this class at 8x8 (diagnose: false/missed
+flip rates by decade; Astra). Stage 0 gate (cheap, before any FN): labels K[s_base] on a T-BAD-style sample at fixed |base| (flip fraction per decade);
+residual CNN fit; if held-out FALSE flips in decades >= -5 exceed the true flip rate there, stop without FN (the stored round would add bulk errors).
+Cost: stage 0 <= 3 A40-h (labels need |base| on two-hop sets; base is RBM+PP, cheaper than the CNN); stage 1 FN, two arms, sigma per arm ~4.2e-6:
+~4.5x T-BAD's 350 blocks -> ~60 A40-h (net arm) + ~20 (base arm), i.e. ~80 A40-h or ~25 H100-h; theorie H200 from 11-22 or Paderborn cont preferred.
+
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

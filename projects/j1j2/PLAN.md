@@ -500,6 +500,9 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
   ~400^k at 14x14 (Queue).
 
 ## Queue (CLAUDE.md point 4: no run, no worker; the PI picks the next one when the open question closes)
+- 10x10 stage (PI agreed 2026-11-11): gated on the 8x8 retrained-base rounds accumulating. If they do: (1) pp2_lemma multi-word key
+  (Pfaffian angle, queued), (2) 10x10 speed test < 1 H100-h, (3) budget decision with the PI (one round + headline ~83/248/500 H100-h;
+  base rbL10_prod params_04150, 3.6e-4 above published; proposals/2026-11-11_10x10_prep.md). If not: 10x10 not worth the spend.
 STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then lr scan, 280-step warm starts, 2.4 H100-h):
 1. Verdict: SWITCH from short warm-start tuning scans to one standard production retrain; short scans cannot separate "slow" from "stuck".
 2. Thought: shift and lr are not the limit (gains 1.5-2.3e-5 +- 1e-5 per 280 steps in every arm, single chains = noise level); the loop needs a

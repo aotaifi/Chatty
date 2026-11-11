@@ -569,14 +569,19 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-05 11:00, lead under takeover; jobs owned by the angles, which watch their own)
-- Pfaffian angle: V replica with a new pool (c4, A40 17741531 step 1090/1500 -> tab/aug/readout ~19:00); M5' rerun as was (A40 17748827
-  step 1360/1500 -> tab 17748829 -> readout + plateau ~15:30; lead pred "structure" ~65%); 8x8 readiness after Astra cj-6a20013aa7ba
-  (GPU readiness GO, production R0/c1/R1 NO-GO until: 8x8 sign eps^2 < 0.3 on decades8 draws, paired c1, pool by bond-weight ESS, label
-  cost, f0 interval): paired-c1 6x6 pilot (CPU), bond-ESS/f0/E' checks (CPU), H100 benchmark (<= 2 H100-h); 8x8 x-draws 1.1e6 (CPU).
-- Sign angle: T-SIGN8 (A40 17753590; M1 copy, frozen RBM, complex-phase pairing; plateau, cap 20000 steps) -> eps^2 gate; T-DEEP2.
-- Proposed angle for the PI to start after M5': architecture for the Jacobi loop (proposals/2026-11-05_architecture_angle_brief.md).
-- /scratch 946.5 GiB of 972.8 soft; lead watch at 990 GiB.
+## Running (2026-11-11 migrate; lead-owned unless noted; every job has a watcher writing VERDICT lines to delta_today.md)
+- 8x8 retrained base (lead worker, now released): params rb8_retrain/s306 (sha 45fa54e6), s307 (b86a0f36); QUOTABLE evals
+  (experiments/rbmpp_6x6/m13_8x8_retrain/eval_combine.sh): simple -0.498838(2) / -0.498841(2); FULL s306 -0.49891(1.4e-6) (2 chains,
+  rb8_retrain/s306/ev_full_5{1,2}); s307 full replica PENDING Paderborn cont 4203776/4203777 (run dirs rb8_retrain/s307/ev_full_5{3,4}).
+  Published bars: Nomura-Imada RBM+PP -0.498886(1), Varbench -0.498963(2).
+- Pfaffian angle (local_d60cd248, PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"; brief proposals/2026-11-11_R123_retrained_brief.md):
+  adding the 'simple' projection to the pipeline (code copies, identity test; ~2x cost); then R1-R3 at fixed own sign, bare grade per
+  round, kill if round gain < 0.5 x previous; R2 class from the K=3 test (A40 17871864, running); headline only if rounds accumulate;
+  ceiling 40 H100-h. Also queued: pp2_lemma multi-word dedup key (PI OK). c=0 control: identity bound (fit A40 17852869).
+- Sign angle (local_3026e44f, PLAN_sign.md): T-BAD (Marshall start, rounds 2-3 at 8x8, <= 20 A40-h) and T-JOINT (with Astra);
+  S_-7 label route parked; T-NODE killed.
+- Lead <-> Pfaffian fallback channel: MESSAGE_BOARD_lead_pfaffian.md (when session messaging fails, e.g. desktop app disconnected).
+- /scratch 958.7 GiB of 972.8 soft / 1024 hard; lead watch at 990 GiB (re-arm after a clear).
 
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.

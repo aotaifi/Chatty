@@ -1594,3 +1594,9 @@
 - 2026-11-11 06:10 pfaffian angle: emergency board MESSAGE_BOARD_lead_pfaffian.md live (lead replied 06:01/06:02); decisions recorded in PLAN_pfaffian.md.
 - 2026-11-11 10x10 prep (worker; proposals/2026-11-11_10x10_prep.md): best warm start rbL10_prod params_04150 (sha efa87657; translations x flip, 200 images; training last-20% -0.497268, schedule-flattened, not converged) is 3.6e-4 above published RBM+PP -0.497629(1) (2005.14142), ~1.95e-4 after the 8x8 lessons (unmeasured). One round + headline at 10x10: ~83 / 248 / 500 H100-h (low/central/high, retrain incl.; headline 84%, r^4-r^5 scaling least certain) + 1.5-5.8e4 core-h CPU; blocker: pp2_lemma uint64 key.
 - 2026-11-11 PI agreed: 10x10 gated on the 8x8 rounds accumulating; then key fix, 10x10 speed test, budget decision with the PI (PLAN Queue).
+2026-11-11 07:15 VERDICT job 17893815: COMPLETED, READ g_2 = e_1 - e_2 = 0.0005 +- 1.9e-05 per site (e_1 net n_1, e_2 net n_2); both arms quotable: True; USEFUL (g_2 > 2 sigma): True [/scratch/a/A.Otaifi/ansatz_runs/sign_bad/r2/fn_net/ANALYSIS.md]
+- 2026-11-11 07:15 sign angle T-BAD ROUND 2: g_2 = 5.00(19)e-4/site USEFUL (e_2 -0.498658(9)); gap to sgn(M1) contracts x5.4 then x6.2; round 3 started.
+- 2026-11-11 sign angle: message to the lead with T-BAD rounds 1-2 failed twice (host unreachable); result is in PLAN_sign 'ROUND 2 FN RESULT' for the lead to read; retry at next turn.
+2026-11-11 08:09 VERDICT job pool_s306_20261111_0709: STALLED [/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8_s306/prep/pool_s/ANALYSIS.md]
+- 2026-11-11 pfaffian angle: session messaging to lead restored; board stays as fallback (watcher kept).
+- 2026-11-11 FULL point-group evaluation of retrained 8x8 base s306 (2 chains 51/52, eval_combine.sh run by the lead): -0.49891(1.4e-6) QUOTABLE, 2.4e-5 BELOW published Nomura-Imada -0.498886 (simple projection), 5.3e-5 above Varbench -0.498963; s307 full replica pending (cont 4203776/7). Migrate: PLAN Running rewritten.

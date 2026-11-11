@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 FN 17900939 running; storage screen done (round 4: warm start, half steps).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 and CONTROL C running; storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1213,6 +1213,20 @@ STORAGE SCREEN RESULT 2026-11-11 (A40 17901025-27, 17900956 bench; 2.51 A40-h; r
  0.0913 / 2.62 at 1.8x cost (-7.4% disagreement, better at d -7..-13 by 0.01-0.03); (c) 128x6 not run (3.5x per step). Rule: (b) adopted for round 4
  (same accuracy, half the training cost); warm start gives no accuracy gain. (d) is the only real accuracy gain, below the 10% bar and costlier per walker
  step; kept as the candidate if round 3/4 stall. Depth helps more than training length: consistent with a class limit.
+ROUND 3 FN RESULT 2026-11-11 (A40 17900939; sign_bad/r3/fn_net/ANALYSIS.md; raw curve quotable_n3.png looked at by me: stationary within noise, chain k3
+ possibly drifting up ~1e-4 over the last third; k4 fifths chi2/dof 2.08, p 0.08; chains agree chi2/dof 1.17; scatter error quoted):
+ e_3 = -0.498709(10). g_3 = e_2 - e_3 = 5.1(13)e-5: USEFUL (3.9 sigma). Prediction (g_3 > 2 sigma, 45%) held.
+ Sequence e_0..e_3: -0.495522(23), -0.498158(17), -0.498658(9), -0.498709(10). Gap to sgn(M1) -0.498754: 3.23e-3, 5.96e-4, 9.6e-5, 4.5(1.0)e-5;
+ contraction x5.4, x6.2, x2.1: the gains are slowing; the loop has not yet reached the VMC-trained sign.
+ Reading (hypothesis): the storage loss (CNN at chance below d -11) is starting to dominate the one-step gain. Test of it below (T-CAP8).
+NEXT, registered 2026-11-11 before any number (takeover):
+ T-CAP8 (capacity attribution at fixed labels): FN c = 0 of the screen arm (d) net (64x10, round-3 labels, sha 86c5dc8e...499e) vs e_3 (64x6, same labels).
+  Prediction: e(d) below e_3 by > 2 sigma, 40%. If yes, storage capacity limits the loop -> round 4 with the deeper class; if no, labels/step limit -> round 4
+  with the current class to test convergence. 2 chains, 350 blocks, seeds 61/62.
+ CONTROL C (SR, PI's question 2026-11-11 "is the loop cheaper than VMC"): same 64x6 CNN class with a continuous phase output theta(x) (psi = |B0| e^{i theta}),
+  from Marshall (theta = 0 relative to Marshall), SR/minSR on the variational energy at fixed |B0|, matched compute = labels + fits of rounds 1-3
+  (~7.7 A40-h); hard sign extracted from cos(theta) with a frozen convention; graded by the same FN c = 0. Reads: e_C <= e_3 at matched compute -> the loop has
+  no demonstrated advantage at 8x8 (not a statement about larger L); e_C clearly above e_3 -> loop beats gradient training of the same class.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

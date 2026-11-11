@@ -1287,6 +1287,16 @@ residual CNN fit; if held-out FALSE flips in decades >= -5 exceed the true flip 
 Cost: stage 0 <= 3 A40-h (labels need |base| on two-hop sets; base is RBM+PP, cheaper than the CNN); stage 1 FN, two arms, sigma per arm ~4.2e-6:
 ~4.5x T-BAD's 350 blocks -> ~60 A40-h (net arm) + ~20 (base arm), i.e. ~80 A40-h or ~25 H100-h; theorie H200 from 11-22 or Paderborn cont preferred.
 
+LEAD'S CONDITIONS (2026-11-12): stage 0 GO after T-CAP8 + CONTROL C close (no re-ask). Before FN: (1) resolution: grade g_S PAIRED with sigma <= 2.5e-6, or
+state why not and the unpaired cost; (2) reuse the Pfaffian angle's B_0' FN p=0 arm on the same s306 base if the codes match; send launcher + GPU-h before
+submission; R1 of the loop has priority on shared GPUs.
+MY ANSWER on (1): common-random-number pairing in this GFMC code gives nothing: T-NODE measured block-energy correlations +0.039 / -0.016 / -0.015 after
+burn, population hashes never re-align (ASTRA_node.md section 1), paired sigma 3.8e-6 vs unpaired 3.6e-6. Unpaired sigma(g) 2.5e-6 needs sigma per arm
+1.8e-6 = ~26x T-BAD's 350 blocks: ~360 A40-h for the net arm alone: not reasonable. A real paired estimator (correlated sampling of the two guides on one
+walk, validated against exact 6x6 = gate 2 of "NEXT QUESTION AT 8x8": <= 48 CPU core-h + 1-2 days of driver build) is the route; build and validate it
+during stage 0, then FN. On (2): our generic path equals BareM1Sign bitwise (stage 0 control); the s306 amplitude loader and the Pfaffian angle's
+launcher are compared at stage 0 before reusing their arm.
+
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

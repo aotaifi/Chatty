@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 phase A running (worker, sign_bad/r3).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 FN 17900939 running; storage screen (warm start, wider/deeper CNN) running.
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1199,6 +1199,15 @@ ROUND 2 FN RESULT 2026-11-11 (A40 17893815; sign_bad/r2/fn_net/ANALYSIS.md; raw 
  READING: from a bad start at 8x8, storing each round's one-step sign in a CNN and deploying the stored net carries the loop through TWO rounds with
  large, contracting gains, at a per-walker-step cost of one net evaluation per neighbour (3.3x bare). Fixed amplitude |M1|; the net class is capacity-limited.
  Next: round 3 (labels K[n_2], same pipeline; g_3 now ~1e-4 scale, sigma per arm ~1e-5 suffices); then control C (SR, continuous phase, matched compute).
+ROUND 3 PHASE A RESULT 2026-11-11 (A40 17899661, 2.94 A40-h; runs/j1j2/sign_bad/r3; worker's numbers, launcher diff vs r2 read in its report):
+ labels K[n_2]: controls pass (direct 1.2e-11, 0 mismatches; n_1 in place reproduces round 2 on all states; broken 16.6%). Flips K[n_2] != n_2 12.3%
+ (round 2: 17.1%); 13.5% at d -7, 31-40% at -9..-12. n_3 held-out disagreement 0.0986 (n_1 0.1029, n_2 0.1042), E_L err 2.62 (heavy-tailed, rms 7.9).
+ n_3 sha256 5b8b6dc4...a8f1. FN of n_3: 17900939 (16 h), watcher 2544452 (PPID 1); gate r3/code/r3_analyze_fn.py (g_3 = e_2 - e_3).
+STORAGE SCREEN (PI asked 2026-11-11 whether this is the best training; registered before any number; offline on the round-3 labels, <= 3 A40-h):
+ arms at 8192 roots, same held-out table: (a) warm start from n_2, same steps; (b) warm start, half the steps; (c) wider CNN 128 channels x 6 from scratch;
+ (d) deeper 64 x 10 from scratch. Baseline n_3 (0.0986 / 2.62). Adopt for round 4 an arm that lowers held-out E_L error or disagreement by > 10% relative,
+ or matches them at < 60% of the cost (seed spread ~0.1-2%). Label accuracy is a screen only; the FN grade of round 4 decides. Pair-product full-projection
+ class: a larger build, deferred.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

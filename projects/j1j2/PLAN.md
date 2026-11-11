@@ -624,5 +624,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): At 8x8 one loop round improves fixed node by 4.7e-5 at a fixed sign, but after the final Lanczos step only about a third survives (1.5e-5, 2.7 sigma, below the registered 3 sigma): the round and the step fix largely the same error.
-- NEXT (open, high): Understand why the round and the Lanczos step overlap before any further 8x8 spend; the PI decides whether several rounds or a better per-round sign come next.
+- STATUS (in progress, high): The retrained 8x8 starting network is much better (-0.498838 vs -0.498671); one loop round on the old network gained 4.7e-5 alone but only about 1.5e-5 after the final Lanczos step (below the 3 sigma bar).
+- NEXT (in progress, high): Three loop rounds on the retrained network, graded cheaply after each; the expensive final comparison runs only if the gains keep adding up.

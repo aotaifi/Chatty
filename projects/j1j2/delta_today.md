@@ -1646,3 +1646,6 @@
 - 2026-11-12 pfaffian angle: base-arm FN p=0 of s306 registered (lead/PI); worker staging.
 - 2026-11-12 sign angle: T-STRONG approved by lead (stage 0 GO after T-CAP8 + control C); pairing in current code measured useless (T-NODE), paired estimator build proposed.
 - 2026-11-12 00:01 lead: sign angle: same-seed pairing in GFMC is useless (T-NODE corr ~0, paired 3.8e-6 vs unpaired 3.6e-6; ASTRA_node.md s1); unpaired sigma 2.5e-6 ~360 A40-h -> lead approved building a correlated-sampling paired estimator (<= 48 core-h + build, exact-6x6 gate + broken-version test + weight distribution near flips) as a SHARED tool for loop grades/headline too; Pfaffian angle informed via board.
+- 2026-11-12 sign angle: paired FN estimator (shared tool, lead's request): Astra cj-1470845f5b1a asked for the design before the build.
+- 2026-11-12 00:05 sign angle: Astra cj-1470845f5b1a (paired estimator design) failed on Codex quota (reset 09:57); resubmit timer armed for 10:00.
+- 2026-11-12 00:04 lead: B_0' FN p=0 registered by Pfaffian angle (PLAN_pfaffian 'BASE ARM FN p=0', M 1024, >=3 chains x >=256 blocks, seeds 301+; pred -0.49892..-0.49896). Lead's range -0.49894..-0.49897 WITHDRAWN: anchored on the full-projection VMC; the guide is 'simple' (VMC -0.498838). Full-projection guide = next lever for the published bar if needed (price recorded at rate measurement).

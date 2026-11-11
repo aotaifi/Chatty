@@ -503,6 +503,15 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
 - 10x10 stage (PI agreed 2026-11-11): gated on the 8x8 retrained-base rounds accumulating. If they do: (1) pp2_lemma multi-word key
   (Pfaffian angle, queued), (2) 10x10 speed test < 1 H100-h, (3) budget decision with the PI (one round + headline ~83/248/500 H100-h;
   base rbL10_prod params_04150, 3.6e-4 above published; proposals/2026-11-11_10x10_prep.md). If not: 10x10 not worth the spend.
+STEP BACK 2026-11-11 (big picture, PI request, not a failure):
+1. Verdict: CONTINUE R1-R3 as registered; move the base's FN arm (B_0' FN p=0, then p=1 in the headline) forward: it answers 'below every published
+   8x8 number with the given sign' (Varbench -0.498963(2), plain VMC) and is the bar every round must beat. Name the sign question as the gate of 'better every round'.
+2. Thought: a fixed-sign amplitude round and the Lanczos step both apply H once, so the round's value vs B_0'+p=1 is at most ~ one extra Lanczos step
+   (old base: 1/3 survived). Lasting gains need the class to grow per round (CIPSI-DMC, Caffarel et al. 1607.06742, abstract only: nodes improve
+   by adding selected terms each iteration, = our fresh PP per round / K=3) and a sign that ends BELOW the network's own; T-BAD so far climbs
+   toward sgn(M1) from Marshall (4.5e-5 above after 3 rounds, contraction x6 -> x2), and 12 trained 8x8 signs were worse than the untrained one.
+3. Cheapest next test: B_0' FN p=0 at the 'simple' projection, ~1 H100-h (unsized; Pfaffian angle sizes it, reusable as the headline's base arm).
+   Prediction: -0.49894..-0.49897 (old base FN p=0 gained 8.3e-5 over VMC; gain shrinks with a better base). Nobody has published NQS-guided lattice FN for J1-J2 at 0.5.
 STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then lr scan, 280-step warm starts, 2.4 H100-h):
 1. Verdict: SWITCH from short warm-start tuning scans to one standard production retrain; short scans cannot separate "slow" from "stuck".
 2. Thought: shift and lr are not the limit (gains 1.5-2.3e-5 +- 1e-5 per 280 steps in every arm, single chains = noise level); the loop needs a

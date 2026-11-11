@@ -572,7 +572,9 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 ## Running (2026-11-11 migrate; lead-owned unless noted; every job has a watcher writing VERDICT lines to delta_today.md)
 - 8x8 retrained base (lead worker, now released): params rb8_retrain/s306 (sha 45fa54e6), s307 (b86a0f36); QUOTABLE evals
   (experiments/rbmpp_6x6/m13_8x8_retrain/eval_combine.sh): simple -0.498838(2) / -0.498841(2); FULL s306 -0.49891(1.4e-6) (2 chains,
-  rb8_retrain/s306/ev_full_5{1,2}); s307 full replica PENDING Paderborn cont 4203776/4203777 (run dirs rb8_retrain/s307/ev_full_5{3,4}).
+  rb8_retrain/s306/ev_full_5{1,2}); s307 full replica: theorie A40 pair (PI go 11-11; probe 17903352 14.6 s/sweep, ~6.5 h/chain) 17903489 (seed 55, running) / 17903491 (56, PENDING
+  QOSMaxGRESPerUser: 3-GPU cap, starts when an angle A40 frees), gate eval_combine_a40.sh, run dirs rb8_retrain/s307/ev_full_5{5,6};
+  backup Paderborn cont 4203776/4203777 (ev_full_5{3,4}, est. start 11-15): ask the PI to cancel once 55/56 are QUOTABLE.
   Published bars: Nomura-Imada RBM+PP -0.498886(1), Varbench -0.498963(2).
 - Pfaffian angle (local_d60cd248, PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"; brief proposals/2026-11-11_R123_retrained_brief.md):
   adding the 'simple' projection to the pipeline (code copies, identity test; ~2x cost); then R1-R3 at fixed own sign, bare grade per

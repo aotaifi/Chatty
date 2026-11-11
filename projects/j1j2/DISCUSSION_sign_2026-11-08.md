@@ -135,3 +135,10 @@ P13 (PI, 2026-11-09, on Fable's "the guide is the lever") The goal is a SCALABLE
    method that improves the sign. Agreed. Fable's second-order argument assumes a good start; from Marshall our own records show repeated steps keep
    gaining (A1, C1, A13). T-LEV (good-start regime) stopped. Hypothesis: storage works while sign errors are in the bulk (bad start, A13), fails when
    only deep-tail errors remain (A48). Next: an every-round test from a deliberately bad start at 8x8; design at the check-in, Astra first.
+
+P14 (PI, 2026-11-11) Does one global Lanczos sign step lose power with size, and is the local fix ready? Angle lead's CORRECTION of what he told the PI:
+   the "half at ~370 sites" is the decoupled-4x4-copies toy with a Marshall-level defect density (D3); for ViT-quality guides the dilution sets in only at
+   N_1/2 ~ 6e3 - 6.5e4 sites (D4, to 14x14 measured), and for a Marshall start at ~300-1000 sites. The local rule kept the full gain only on decoupled
+   copies; on the coupled 8x8 lattice it LOST to the global rule (-2.84(32)e-3 vs -3.96(24)e-3 /site from Marshall; window-energy noise sd 1.1 per 4x4
+   window). So: the size-consistency effect is real algebra, but not a concern up to 14x14, and the local fix is not ready (needs a lower-noise window
+   statistic before ~16x16). Sources: TRIED_IDEAS D3, D4; RESEARCH_MAP l.140; results/local_krylov.

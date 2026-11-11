@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 FN 17900939 running; storage screen (warm start, wider/deeper CNN) running.
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3 FN 17900939 running; storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1208,6 +1208,11 @@ STORAGE SCREEN (PI asked 2026-11-11 whether this is the best training; registere
  (d) deeper 64 x 10 from scratch. Baseline n_3 (0.0986 / 2.62). Adopt for round 4 an arm that lowers held-out E_L error or disagreement by > 10% relative,
  or matches them at < 60% of the cost (seed spread ~0.1-2%). Label accuracy is a screen only; the FN grade of round 4 decides. Pair-product full-projection
  class: a larger build, deferred.
+STORAGE SCREEN RESULT 2026-11-11 (A40 17901025-27, 17900956 bench; 2.51 A40-h; runs/j1j2/sign_bad/screen; worker's table, read):
+ held-out disagreement / E_L abs err: n_3 0.0986 / 2.62; (a) warm, full steps 0.0984 / 2.64; (b) warm, half steps 0.0989 / 2.65 at 51% cost; (d) 64x10
+ 0.0913 / 2.62 at 1.8x cost (-7.4% disagreement, better at d -7..-13 by 0.01-0.03); (c) 128x6 not run (3.5x per step). Rule: (b) adopted for round 4
+ (same accuracy, half the training cost); warm start gives no accuracy gain. (d) is the only real accuracy gain, below the 10% bar and costlier per walker
+ step; kept as the candidate if round 3/4 stall. Depth helps more than training length: consistent with a class limit.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

@@ -1664,3 +1664,13 @@
 - 2026-11-12 02:01 lead: headline B arm (s306 + p=1 FN, runs/j1j2/headline_s306) APPROVED: VMC-constants job (with rb8_prod alpha/E reproduction as control) then FN 4 x (150+400) blocks M 256 seeds 601-604, afterok; ~13.7 H100-h (13.2-17.8) cont; sigma target 4e-6; vs Varbench -0.498963 and M1 p=1 -0.498946.
 - 2026-11-12 pfaffian angle: headline B arm submitted, Paderborn cont VMC 4222358 + FN 4222359 (afterok); watchers PPID 1.
 - 2026-11-12 02:07 lead verified: B arm VMC 4222358 PENDING (Priority, est. start 11-20 14:20), FN 4222359 PENDING Dependency (wall 7 d by the lead's wording -> asked to lower to 24 h); watchers 2445996/2446747 PPID 1; lead wait armed on VERDICT 4222359.
+- 2026-11-12 pfaffian angle: FN 4222359 TimeLimit 7-00 -> 24:00 (lead).
+2026-11-12 05:25 VERDICT job 17905447: COMPLETED, READ d = e_3 - e_deep = 2.2e-05 +- 1.4e-05 per site; both arms QUOTABLE: True; DEEPER BETTER (d > 2 sigma): False [/scratch/a/A.Otaifi/ansatz_runs/sign_bad/cap8/fn_net/ANALYSIS.md]
+- 2026-11-12 05:25 sign angle T-CAP8: deeper net e = -0.498731(9) vs e_3 -0.498709(10): d 2.2(14)e-5, 1.6 sigma, inconclusive; round 4 held (unresolvable unpaired); paired estimator is the bottleneck.
+2026-11-12 06:23 VERDICT job 17924353: COMPLETED, CCTRAIN_DONE rc=0 (2026-11-12T06:21:33); 4 CHECKPOINT lines present (steps 354/722/1090/1457). Gate is a grep, so I read the files with the Grep tool and not Bash; no quotable.py or plot was run. [/scratch/a/A.Otaifi/ansatz_runs/sign_bad/ctrlC/train/ANALYSIS.md]
+- 2026-11-12 sign angle CONTROL C phase 1 (7.9 A40-h): SR E_var -0.49695(32), hard sign flips ~1.6% vs Marshall (loop 28%); FN grade being submitted.
+- 2026-11-12 sign angle CONTROL C FN submitted 17928795 (watcher 3173942).
+2026-11-12 08:44 VERDICT job ess_x3_17928238: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/pfaffian_8x8_s306/ess_x3/ANALYSIS.md]
+- 2026-11-12 s306 expansion sizing (worker; ess_x3/ess_x3.json, f_J job 17928238): beta-0.25 expansion needed 2.4e6 draws (1.7e6 linear) for 3P at -9, = 1296 core-h total at thin 2 (x3 594 measured) / 1508 with x3 806: ABOVE 1.2e3, nothing released, 17903298 and 17901202 still held.
+- 2026-11-12 pfaffian angle: s306 expansion sizing ~2.4e6 beta-.25 draws (-9 ESS ~m^0.91), stage-1 total ~1.3e3 core-h > 1.2e3; asked lead for 1.35e3 (board).
+- 2026-11-12 08:50 lead: s306 pool ceiling raised 1.2e3 -> 1.35e3 core-h (measured 0.514 core-s/walker-sweep; bond ESS sublinear at -9, m^0.91; expansion resized to 2.4e6 beta-0.25 draws). No further extension without the lead.

@@ -35,3 +35,12 @@ R1' keeps priority: the s306 pool x3 runs at ~78%, the labels follow on CPU, the
 2026-11-12 02:04 PFAFFIAN -> LEAD: Submitting the B arm now. VMC wall 04:00; FN at the partition maximum with maxsec under the wall; afterok on the VMC job. Job ids, State/Reason, watcher PPIDs and the measured GPU s/block follow here.
 2026-11-12 02:05 PFAFFIAN -> LEAD: B arm submitted on cont: VMC 4222358 (watcher 2445996, PPID 1) and FN 4222359 afterok (watcher 2446747, PPID 1). The measured GPU s/block follows once FN starts.
 2026-11-12 02:07 LEAD -> PFAFFIAN: Verified 4222358 PENDING (est. start 11-20 14:20, estimates have been days off both ways) and 4222359 PENDING Dependency, watchers PPID 1. My wording 'partition maximum' was wrong: FN 4222359 got 7-00:00:00, which hurts backfill. Lower it with 'scontrol update JobId=4222359 TimeLimit=24:00:00' (decrease is allowed; maxsec 62000 s fits) and confirm here. No other change.
+2026-11-12 02:10 PFAFFIAN -> LEAD: Done. 4222359 TimeLimit is now 1-00:00:00 and 4222358 is still PENDING (Priority). After the update squeue shows 4222359's reason as None, not Dependency; the afterok dependency was set at submission and I made no other change.
+2026-11-12 08:48 PFAFFIAN -> LEAD: The s306 deep expansion is sized above your 1.2e3 core-h ceiling: central ~1.3e3 total. I'm asking for 1.35e3. Measured on 10 finished x3 files (ess_x3.json; the code reproduces the pilot's ESS exactly):
+- Bond ESS grows as m^1.00 at -2..-7, m^0.96 at -8, m^0.91 at -9: SUBLINEAR at depth, unlike pool_x2.
+- Full x3 (40 tasks) reaches 3P at -2..-6; projected -7 45.9e3, -8 30.8e3, -9 14.6e3.
+- 3P at every decade, plus 20% at -9, needs ~2.4e6 beta-0.25 draws by the fit (1.7e6 linear), 3.7x the held 656k.
+- Cost at the measured 0.514 core-s/walker-sweep: x3 ~594 core-h (not 806) plus expansion 702 at thin 2 = ~1.3e3 core-h.
+- Releasing only the held 656k leaves -9 at ~0.55 of 3P.
+Proposal: ceiling 1.35e3, with a resized held copy (2.4e6 draws, thin forced to 2) released. The held 17903298 and 17901202 stay untouched. Yes or no?
+2026-11-12 08:50 LEAD -> PFAFFIAN: YES: ceiling 1.35e3 core-h theorie CPU for the s306 pool (x3 ~594 + resized expansion 2.4e6 beta-0.25 draws, thin 2, ~702). Release the resized copy; leave 17903298/17901202 held as you said. Because bond ESS grows sublinearly at -9 (m^0.91), if the gate still misses 3P at -9 after this, report the shortfall rather than extending: we then decide between a deeper rung and accepting -9 at its measured ESS.

@@ -648,5 +648,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): The retrained 8x8 starting network is much better (-0.498838 vs -0.498671); one loop round on the old network gained 4.7e-5 alone but only about 1.5e-5 after the final Lanczos step (below the 3 sigma bar).
-- NEXT (in progress, high): Three loop rounds on the retrained network, graded cheaply after each; the expensive final comparison runs only if the gains keep adding up.
+- STATUS (in progress, high): The retrained 8x8 network is confirmed on two seeds (-0.49891, better than the published RBM+PP), but fixed-node from it alone (-0.498878) does not beat the best published 8x8 number (-0.498963); its remaining error seems to sit in its sign.
+- NEXT (in progress, high): First loop round on the retrained network (sample pool on CPU, then about 5.5 H100-hours); the network + one Lanczos step + fixed-node comparison run is queued at Paderborn.

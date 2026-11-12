@@ -1704,3 +1704,4 @@
 - 2026-11-12 11:08 PLAN: 'Motivation' section added (PI's 8 questions with the lead's current one-line take; to steer by, not to act on).
 - 2026-11-12 11:20 compute scout (worker): only A40-24gb 15.5 s/sweep and A40-16gb 17.2 s/sweep measured (full A40 14.6, H100 ~2.7); H100/H200/A100/V100/2080Ti all allocated, probes cancelled; A40-8gb OOM, P5000 >45 s, ws CPU 6 thr >220 s/sweep; table: projects/j1j2/cluster/COMPUTE_SCOUT_2026-11-12.md (jobs 17930393-17930538, dirs /scratch/a/A.Otaifi/rbmpp8/scout/).
 - 2026-11-12 11:14 lead MIGRATE: PLAN Running rewritten; 5 LESSONS rows added (duplicates, cont estimates, FN burn, same-seed pairing, one constant set); scout worker wrapping up.
+2026-11-12 11:14 VERDICT job scout_20261112: all sc_* probe jobs left the queue; results in /scratch/a/A.Otaifi/rbmpp8/scout/*/slurm-*.out

@@ -616,7 +616,9 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   CONTROL C FN 17928795 pending. T-STRONG (residual flip mask on s306) designed; stage 0 (<= 3 A40-h) waits for consts_s306_p1.json.
   Paired FN estimator (Astra astra/paired_fn/ASTRA_paired.md, coupled populations) being built in ansatz/code/paired_fn/: stage 1, then the
   early rho probe (~0.25 A40-h, s306 vs s306 x random mask + A=B arm), STOP the build if rho < 0.5. All sign FN grades wait for it.
-- Compute scout (lead worker, 11-12): GPU/CPU probes under /scratch/a/A.Otaifi/rbmpp8/scout/, table cluster/COMPUTE_SCOUT_2026-11-12.md.
+- Compute scout DONE (cluster/COMPUTE_SCOUT_2026-11-12.md): only idle extra GPUs = cip A40 slices, 24gb 15.5 s/sweep (5.7x H100), 16gb 17.2 (6.4x);
+  8gb OOM (eval needs ~10 GiB); P5000 > 17x; ws CPU > 80x. theorie H100 NVL / H200 NVL / A100 / 2080 Ti / V100 test-only starts 11-22..24 (unmeasured).
+  Caps: 4 H100 NVL, 2 H200 NVL, 8 jobs on inter; 3 GPUs on cip (shared with the angles).
 - Channels: session messaging to the Pfaffian angle often fails -> MESSAGE_BOARD_lead_pfaffian.md + a 3-min board wait. /scratch 884 GiB (11-12).
 
 ## Budget

@@ -1311,8 +1311,18 @@ launcher are compared at stage 0 before reusing their arm.
 
 PAIRED FN ESTIMATOR (lead 2026-11-12: build first, SHARED tool under ansatz/code/ with README; validate vs exact 6x6 incl. a broken reweighting that
 must miss; report weight distribution near flips at 6x6 and an 8x8 pilot; pointer to the lead when gate 2 passes; <= 48 CPU core-h + build).
-Design asked of Astra first (cj-1470845f5b1a, astra/paired_fn/QUESTION.md -> ASTRA_paired.md); build by a worker to that spec.
+Design asked of Astra first (cj-1470845f5b1a failed on quota; resubmitted cj-c9a7d4cfa462, astra/paired_fn/QUESTION.md -> ASTRA_paired.md); build by a worker to that spec.
 
+T-STRONG STAGE 0 (lead GO 2026-11-12, start now; registered before any number; <= 3 A40-h; NO FN until the paired estimator passes its 6x6 gate at sigma <~ 3e-6):
+ base s306 (rb8_retrain params_final sha 45fa54e6, 'simple' projection, 256 images; own sign sgn Re w psi), amplitude |s306|, code path = the Pfaffian angle's
+ base_s306_p0 run (runs/j1j2/base_s306_p0/code; FN p=0 bar -0.4988780(27), Paderborn 4222088). Sample: T-BAD layout (tempered beta 1/2 of |s306|^2, 2560 chains x 4
+ roots, 80/20 by chain, roots + all one-swap neighbours). Labels K[s_base](z) = s_base(z) sgn[1 + alpha(E_L(|s306| s_base; z) - E)], alpha and E the loop's
+ sign-step constants for this base (from the base's own consts; state them). Report flip rate K != s_base per |s306|^2 decade.
+ Residual mask: c(z) = K/s_base learned by the 64x6 CNN (BCE), deployed flip only where logit < -tau, tau chosen on the TRAIN split so that train false flips
+ in decades >= -5 do not exceed train true flips there. Held-out gate: false-flip rate vs true-flip rate per decade; STOP (no FN ever for this design) if
+ held-out false flips in decades >= -5 exceed the true flip rate there. Also report missed flips per decade and the fraction of true flips captured.
+ Prediction (angle lead): flip rate above d -5 below 0.5% [70%]; gate passes [45%].
+ Lead's follow-up to Astra (after cj-c9a7d4cfa462 lands): can the paired estimator grade a p=1 guide (Pfaffian headline B_k + p=1 vs B_0' + p=1)?
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

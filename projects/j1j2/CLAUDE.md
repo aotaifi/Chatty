@@ -54,6 +54,14 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    that would be wrong if the run misses. A pass/fail threshold alone is not a pre-registration. A match confirms
    the mechanism and is not a result; a miss is the result, and the next step changes the named term. Record: the
    O2b round was predicted at 1.4e-5 and measured 1.41e-5; nothing else in five weeks was predicted.
+   The mechanism covers the learning step too: the optimiser and the fit are known functions (on a fixed pool, a
+   deterministic map), so the prediction is derived from them, not left to the run: the share of the target in the
+   network's tangent directions (what it can store), and the learning curve from the Gauss-Newton spectrum along the
+   target (how fast); the measured departure is the nonlinear part, a number with a cause. The physics shapes this
+   math: ask what the physics requires that the class or the update lacks (the missing hexagon move in a trapped
+   QMC chain), add it, predict it works. Record (PI 2026-11-12): the training side was treated as empirical while
+   the one tangent-space check (Test Theta v2: 0-4%) found the missing direction, and the second PP that supplies it
+   stored r 0.49 vs 0.05.
 
 2. **A cause is a mechanism** (replaces Chatty rule 1's "inconclusive (cause: X)"). X is a term in an equation or a
    named structural reason. "Undertrained", "budget", "seed scatter", "Adam", "capacity" are not causes; a row

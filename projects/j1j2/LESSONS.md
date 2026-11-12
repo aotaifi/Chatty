@@ -40,6 +40,8 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - cx_r1fit step acceptance passed a negated step as noise; fit-to-fit E_FN walk +-0.2e-6 makes single fits unquotable | candidate cause of the walk | delta_today 11-03
 - Pick checkpoints on one half of the grading draws and gate on the other (selection bias) | - | PLAN_pfaffian gate (a)
 
+- Every step is a known function, the optimiser and fit included: derive what it must do before running (tangent-space share = what the network can store, Gauss-Newton spectrum along the target = how fast), find the missing ingredient by asking what the physics requires (the hexagon move), predict, then run; 'the learning side is empirical' is a label, not a cause | weeks of training variants labelled empirical; the one tangent check (Theta v2, 0-4%) found the missing direction and two PPs stored r 0.49 vs 0.05 | PI 2026-11-12; CLAUDE.md point 1
+
 - A fired kill test is not a verdict: diagnose (budget, tweak), try cheap variants, ask Astra, then decide | T-IW crossed d only after ~15k steps; a 3k kill would have killed it | PLAN_sign "T-IW RESULT"; PI 11-08
 
 ## Operations

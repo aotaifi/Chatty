@@ -1701,3 +1701,4 @@
 - 2026-11-12 pfaffian angle: the 10:26 'VERDICT job 4222358: FAILED' is the lead's PI-approved cancellation (never started), expected; constants come from A40 17930563.
 - 2026-11-12 sign angle: opinion to lead/PI on the pairing plan: early 8x8 rho probe after stage 1 (stop build if rho < 0.5); expect rho mask > size round > p=1; if low, grade cumulative sign rounds; run R1-R3 unpaired now, do not serialize. Builder told to report after stage 1 with a probe proposal.
 - 2026-11-12 10:49 lead: sign angle's view adopted: early rho gate (0.25 A40-h probe after estimator stage 1, stop if rho < 0.5), parallel order (R1-R3 unpaired now; stage 0 after s306 consts; build alongside); low-rho fallback = bigger effects, no 360 A40-h budget. PLAN step back 11-12 amended.
+- 2026-11-12 11:08 PLAN: 'Motivation' section added (PI's 8 questions with the lead's current one-line take; to steer by, not to act on).

@@ -5,6 +5,16 @@ at >= 8x8, usable on any trained NQS at 10x10-14x14. (Old 2026-10-26 wording 'ad
 The refit loop (store each round in the network) is closed: L8, docs/reports/2026-10-26_l8_loop_round_8x8.md.
 > CORRECTION 2026-10-27 (index): the 10x10-14x14 add-on test is NOT done: the 10x10/12x12 trainings were cancelled and the Paderborn budget revoked 2026-10-26 (delta_today.md 19:10; checkpoints under rbL{10,12}_prod/backup_paderborn), re-opened only for the LP test (see 'Budget'). The Goal is a target, not a result; the deliverable at 10x10-14x14 remains pending, subject to the lead's budget (TRIED_IDEAS.md Contradictions item 12).
 
+## Motivation: the questions the project must answer (PI 2026-11-12; steer by them, not a task list; lead's current one-line take)
+1. How does it work? Trained net guides FN; one Lanczos step corrects; the correction is stored in the net (Jacobi layer); repeat.
+2. How much better than a plain NQS? Old 8x8 net: VMC -0.498674 -> p=1 FN -0.498946 (~half the error); strong net s306: p=1 pending (headline B arm).
+3. Our net vs a plain NQS? Same published class (RBM+PP); the difference is its use: FN guide + stored Jacobi corrections, not the final state.
+4. How hard is the sign/node to learn? Hard: error on ~0.1% of bonds at the node; 12 trained 8x8 signs worse than untrained; residual flip mask on a strong base unmeasured (T-STRONG).
+5. Scaling? Little known: one Lanczos step removes 84% (6x6) -> 47% (8x8); nothing above 8x8 except 10x10 ViT FN p=0 (+5e-6 only).
+6. Do we escape a wrong state? Partly: T-BAD from Marshall gained 2.6e-3, 5e-4, 5e-5 over 3 rounds, stalls 4.5e-5 above the net's own sign; FN alone cannot move a node.
+7. Problems? Copy weighs |psi|^2 where FN needs the near-node bonds (cousin of the SR 'wrong samples' issue); measurement noise ~ the effects (1e-5); Lanczos step cost ~137x plain sampling at 8x8.
+8. Worth it for a trained NQS without retraining? FN p=0 alone small and shrinking with net quality (8.2e-5 old, 4.0e-5 strong 8x8, 5e-6 10x10 ViT); the p=1 step is the main win; strong-net p=1 pending.
+
 ## Where we stand (2026-10-25; energies per site; details and paths in README compress_6x6 "Results: ..." sections)
 - Physics: the energy-relevant error sits on ~0.1% of sign-violating bonds, at near-node cancellation configurations on
   Marshall-violating J1 bonds (N0, not by construction: G-N0c). A hop computes them exactly (G-A2: tail part 0.33 after

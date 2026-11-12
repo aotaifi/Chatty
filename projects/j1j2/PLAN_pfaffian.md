@@ -2301,3 +2301,187 @@ held-out loss 3.905e-3 (K=2 R6 3.871e-3). Checks: mu=0 1.8e-14 / spliced e rel 8
 - K=3 round-6 test: theorie A40 17871864 + 17871865 (above).
 - Headline done (Result HEADLINE 8x8). Duplicate Paderborn cont 4186183 (arm B copy, est. 11-22) pending, cancel needs the PI's word.
 - Open: why the p=1 step and the refit overlap (paper first; cheapest test VMC E_L moments of B_1 vs B_0 per decade, CPU); R0-vs-B 3.8 sigma.
+c=0 control fit A40 17852869: 70.5 s/step (steps 1-50), 1500 steps = 29.4 h > fit_sec 86400 (copied from R1's A40 spec) -> stops at ~step 1225. Held-out c=0 loss 4.6e-2 -> 1.6e-7 by step 40 (the fit reproduces B_0). Decision (no cancel/restart): let it stop; theta_tail by hand over the existing iterates 600..1200 + final (deviation); identity check |Delta ln B| and bond differences vs B_0 on held-out + heavy entries (control: R1's theta_tail must show O(1)). If the bond differences are ~1e-4 or below, propose replacing the A40 grade (FP64-weak, long) with this bound.
+c=0 CONTROL READOUT CHANGED (lead 2026-11-10, registered before the fit ends): the FN bare grade is replaced by an identity bound.
+(1) MAX (plus median, 99%) of |Delta ln B| and of bond differences |Delta e_x - Delta e_y| (Delta = ln|B_net| - ln|B_0|) over held-out AND heavy-wb
+(sum partner wb > 5) entries. (2) Energy bound, board-5 form: dE <= sum over blocked bonds of 2|H_xy| B_x B_y (cosh(de_x - de_y) - 1), estimated on
+pool_s2b with its importance weights, per site; for the control AND for R1's theta_tail. Calibration: R1's value must come out of the order of its
+measured 5e-5 (positive control); otherwise the bound is uncalibrated and the control is graded by FN after all. (3) theta_tail by hand over
+the existing iterates (fit stopped by fit_sec at ~1225 of 1500), deviation recorded. Reading: control bound < 1e-6 per site -> R1's gain ATTRIBUTED
+to the Jacobi target; otherwise as registered before (FN grade).
+
+## R1-R3 ON THE RETRAINED 8x8 BASE (PI GO 2026-11-11; brief proposals/2026-11-11_R123_retrained_brief.md; REGISTERED before any run)
+Base B_0' = rb8_retrain s306 params_final (sha 45fa54e6; real f 64x64 + complex RBM M 16; proj 'simple' = 64 translations x {E, R_pi/2} x flip
+= 256 images; VMC -0.498838(2), replica s307 -0.498841(2); rb8_prod's VMC p=0 was -0.498674(12)). Sign fixed at the base's own sgn(Re w psi).
+Rounds k = 1..3, branch-2 pipeline: pool from B_{k-1}, labels c = 4 f_J under the fixed sign, two-PP refit (R1's fitter and warm rule), bare c = 0
+FN grade of B_k paired against B_0' through the same code. EARLY KILL: gain_k < 0.5 gain_{k-1}. Final headline (B_0' + p=1 vs B_3 + p=1, paired)
+only if the rounds accumulate.
+MECHANISM and predictions (mine, before any number):
+- Round gain = stored fraction r x the round's Jacobi gain: dE_k = r_k G_k (6x6: r_5 0.49 fresh P_2, r_6 0.25 same P_2; q = 0.51).
+- Round 1: G_1 is set by the base's sign-violating bond ratios. The better base (VMC 1.6e-4 below rb8_prod) has fewer bond-ratio errors, so I
+  expect a smaller R1 gain than rb8_prod's -4.7e-5: R1' bare gain 1.5-3.5e-5 (~50%).
+- Rounds 2-3 with the same two-PP class: the 6x6 storage ratio q = 0.51 sits ON the kill threshold (0.5). By that mechanism the kill fires or not
+  at ~50/50, by design. The K=3 round-6 test (A40 17871864, running) measures whether one fresh PP per round restores storage (r >= 0.40).
+  If it does, R2/R3 should add a fresh PP each round (K=3, K=4); if not (<= 0.30), the decline is in the fit and R2 is expected to hit the kill.
+  So the class for R2 is decided by the K=3 readout, before R2's fit.
+- Headline: the p=1 step overlapped with the refit at 8x8 (rb8_prod: 1/3 of the bare gain survived). If that carries over, a > 3-sigma final
+  win needs a cumulative bare gain >= ~6e-5. I put it at ~25% (lead prior 35%).
+FIRST CHECK (CPU): pipeline support for 'simple' (pp2_lemma has full/translations/none; pool_fit hard-codes 'translations' 128 images). Add
+'simple' (rbmpp_lib.set_proj point indices 0, 2) to pp2_lemma, pool_fit (model, canonical keys, warm loader), gfmc_b2 guides, VMC evaluator;
+identity test vs rbmpp_lib's evaluator on s306 (ln psi to 1e-12 on random Sz=0 configs; broken: drop the R_pi/2 images, must differ).
+Cost x~2 per evaluation (256 vs 128 images). Pool re-sized by bond ESS under B_0' (gate as pool_s2b: bond ESS >= 3P per decade -2..-9).
+Budget: ~10 H100-h to the round-3 bare grade (at risk with the 2x), ~20 for the headline, ceiling 40. December express + cont; A40 where sooner.
+GPU steps go to the lead before submission.
+Lead 2026-11-11 (board): 'simple' go at ~2x cost (ceiling 40 covers R1-R3 bare grades; headline cost back to the lead); kill stays 0.5; R2 class
+from K=3 (>= 0.40 fresh PP per round; <= 0.30 run R2 as registered, expect kill). PI OK (lead session): production pp2_lemma multi-word dedup key
+for > 64 sites + collision test (10x10, 14x14) + 8x8 bit-identity; low priority, after the 'simple' worker (both touch pp2_lemma).
+Result 'simple' prep (2026-11-11; pfaffian_8x8_s306/prep/, code ansatz/code/simple/): (a) ln psi s306 vs training-code rbmpp_lib 2.4e-11 on 2000
+configs (broken translations-only 7.2); (b) translations path bit-identical to originals; (c) BareM1Sign 14436 bonds / P1Guide 1718 bonds, 0 sign
+diffs, rel <= 3.2e-10 (broken versions fail); (d) lambda = 0 warm start 1.3e-10 max (float64 slogdet floor; originals show 9e-11 on rb8_prod).
+|B| is NOT C4-invariant under 'simple' (R_pi/2: max |d ln B| 6.6); dedup key stays translation x flip (largest valid). Cost x2.0 for labels, fit,
+grade. Pool under B_0' (6000-draw pilot): decade origin med 2lnB -78.46; bond ESS >= 3P needs ~1.1e6 draws/rung at -9 (+-21%, 180x extrapolation),
+3.7-5.7e5 at -2..-8. Decision: stage-1 = 3 rungs x 4.5e5 + 1e6 beta-0.25 deep expansion (pool_x2 conversion), gate; stop above 900 core-h.
+Constants: w = -1 (Im ln psi = 0 mod pi on 2000 configs), E' = -0.498838 x 64.
+s306 stage-1 pool: measured 1.79 core-h per 1000 draws per rung on cluster nodes (my 0.2-0.3 estimate was wrong); x3 3 rungs x 4.5e5 = 806 core-h released; beta-0.25 expansion resized to ~6.5e5 at thin 2 (~250 core-h), sized after the first 10 x3 tasks' deep bond ESS; stage-1 stop raised to 1100 core-h. Occupancy gate referenced to the pilot = self-consistency only.
+Lead 2026-11-11: s306 pool ceiling 1.2e3 core-h (CPU, critical path); new j1j2 output under /project/theorie/a/A.Otaifi/runs/j1j2 (scratch near quota).
+CORRECTION (2026-11-11): both "pending" Paderborn cont duplicates ran on 2026-11-10 (start estimates said 11-21/11-22). (i) 4186183 = prodB is
+bit-identical to prodBx (same starts and seeds), so its auto-verdict "A - B -3.3 sigma" double-counts arm B and is WRONG; headline stays 2.7 sigma,
+kill fires (README_DUPLICATE.md in headline_p1/prodB; gates must exclude prodB). (ii) 4182798 = the registered c=0 control fit, run to completion
+(1500 steps, done, L_ho 0.046 -> 6.9e-9, 4.1 s/step, 1.74 H100-h cont): its round_1/theta_tail.npy is the registered control network; the A40 copy
+(17852869, FAILED on fit_sec at ~1225) is superseded. Lesson: Paderborn cont start estimates were 11 days off; a duplicate staged with the same
+seeds is not extra data.
+Result R1 ATTRIBUTION CONTROL (2026-11-11; registered control = Paderborn cont 4182798 theta_tail sha f0ad918f, 1500 steps, L_ho 6.9e-9;
+runs/j1j2/ctrl_c0_bound/{bound_R1,bound_ctrl,identity_R1,identity_ctrl}.json; verified totals): board-5 bound per site, pool_s2b weights,
+covered mass 0.9996: R1 theta_tail 1.94e-4 +- 2.5e-5 (measured |E_1 - E_0| 4.95e-5: 3.9x, inside the 10x calibration limit, spread over
+decades -1..-6); CONTROL 3.9e-12 +- 5.7e-13 (< 1e-6 by 5 orders). Bond differences control vs B_0, held-out median/99%/max 5.0e-6 / 1.4e-4 / 5.0e-3,
+heavy 7.5e-5 / 9.0e-4 / 1.2e-2 (R1 heavy 0.52 / 2.2 / 4.2). READING (registered): ATTRIBUTED. The refit machinery without the Jacobi target
+returns B_0 to ~1e-5 in bond ratios; R1's bare gain comes from the c = 4 target. Prediction (lead: B_0 +- 1e-5; mine: 0..+1e-5) HIT.
+Caveat: the bound is an upper bound on |dE| (not the sign); the maxima are from 3200 + 600 sampled entries (lower bounds on the true maxima).
+BASE ARM FN p=0 (lead, PI yes 11-11; REGISTERED 2026-11-12 before staging): B_0' = s306 ('simple', own sign sgn Re[w psi], w = -1), bare c = 0
+FN-GFMC through the 'simple' copy of grade_bare (BareM1Sign), M 1024, dtau 0.1, >= 3 independent chains (distinct |B_0'|^2 starts from the s306
+pool, seeds distinct from every earlier run), >= 256 post-burn blocks per chain, burn 50. Reused as the paired base arm of every R1-R3 bare grade.
+Bar: Varbench -0.498963(2) (plain VMC). Lead prediction -0.49894..-0.49897. Mine: -0.49892..-0.49896 (FN p=0 sat 8.2e-5 below VMC p=0 for
+rb8_prod: -0.498674 -> -0.4987565; s306 VMC -0.498838; a better guide gains less, so ~5-10e-5 -> -0.49889..-0.49894; I put the centre at
+-0.49892, ~50%). Reading: below -0.498963 by >= 2 sigma at sigma <= 5e-6 -> 'below published'; else reported, p=1 decides at the headline.
+Sizing from a measured rate; launcher + H100-h/A40-h to the lead before submission; counts in the R1-R3 40 H100-h ceiling; R1 has priority.
+Lead 2026-11-12: (i) the sign angle builds a correlated-sampling PAIRED FN estimator (PLAN_sign T-STRONG): same-seed pairing in our GFMC decorrelates (T-NODE paired 3.8e-6 vs unpaired 3.6e-6), so the 11-10 headline's A-B 5.6e-6 was effectively unpaired; R1-R3/headline to use it once validated. (ii) Lead adopts my p=0 range -0.49892..-0.49896; if above -0.498963, next lever is the 'full'-projection guide (VMC ~7e-5 lower, ~4x images); rate full/simple to be priced by the base-arm worker.
+Base arm staged (runs/j1j2/base_s306_p0): 4 chains x 650 blocks, M 1024, seeds 501-504, starts s306 stage-1 beta=1 out_3/15/32/39; ~0.85 H100-h (express 90 of 96 remaining min) or ~8-10 A40-h; CPU check 0 sign diffs / 5e-10; 'full'/'simple' cost 3.45x per walker-step (CPU). Waiting for the lead's OK.
+Result BASE ARM FN p=0 (2026-11-12; Paderborn 4222088 express, 0.51 H100-h; runs/j1j2/base_s306_p0/prod/; verified chain means):
+E_p0(s306) = -0.4988780(27) per site (4 chains x 600, QUOTABLE, chain chi2/dof 0.14), vs Varbench -0.498963(2): +8.5e-5 ABOVE (no). Only 4.0e-5
+below s306's VMC -0.498838 (rb8_prod: 8.2e-5). My prediction (-0.49892..-0.49896) MISSED HIGH; the lead's adopted range too. Term that was wrong:
+I scaled the FN-over-VMC gain by guide quality only mildly (5-10e-5); it halved. Variance 1.93e-6 per site^2 per walker-tau (rb8_prod 4.0e-6);
+2.75 s/block at 4 concurrent. CAVEAT: all 4 chains have their second half lower than the first (-1.2, -1.4, -0.1, -1.3e-5; pooled -1.0e-5 +- ~5e-6,
+~2 sigma, same sign 4/4): possible residual relaxation after a 5-tau burn; the converged value may be ~1e-5 lower (-0.49888x). Does not change
+the reading. Next lever for the published bar (lead): 'full'-projection guide (VMC ~7e-5 lower; 3.45x cost) or p=1 at the headline.
+REVISED R1' PREDICTION (2026-11-12, before any pool label or fit; after the base FN p=0): lead hypothesis: s306's remaining error is mostly
+in its sign, which a fixed-sign round cannot touch. Mechanism for the revision: on rb8_prod the R1 bare gain was 4.7e-5 against an FN-over-VMC
+gap of 8.2e-5 (ratio 0.57); the round stores part of the Jacobi correction, which approximates what FN does to the amplitudes near the fixed
+nodes, so it scales with that gap. s306's gap is 4.0e-5 -> R1' bare gain ~0.57 x 4.0e-5 = 2.3e-5 at most; with the stored fraction lower for a
+better-fitted base I predict 0.8-2.0e-5 (~50%). Kill (as for R1): R1' bare not below the base arm by > 3 sigma (sigma ~3-4e-6 paired-unpaired ->
+needs >= ~1.1e-5). Disagreement recorded once: the base arm's halves drift -1.0e-5 (same sign 4/4, ~2 sigma); the lead reads no drift from the
+fifths; R1'-R3' grades will use burn 150 blocks (15 tau) and a halves check.
+HEADLINE B ARM (lead 2026-11-12): B_0' + p=1 FN ('simple', own constants by M1's VMC rule, seeds distinct), cont default QoS (express gone for
+November), sized from a measured p=1 rate; launcher + H100-h to the lead first; R1 keeps priority.
+R1' GRADE DESIGN (lead 2026-11-12, registered before the fit): base arm quoted as -0.4988780(27) with a possible bias up to ~1e-5 high (second
+half -0.498883(~4e-6)); stays 'no'. Since ~1e-5 is the size of the expected R1' gain, the R1' grade must NOT be compared with the 50-burn base
+arm: the base arm is RE-RUN with the same burn (150 blocks) and halves check IN THE SAME JOB as R1''s grade (~0.5 H100-h), new seeds and
+starts; the 4222088 chains are not used in any R1'-R3' comparison. Same for R2'/R3' (base re-run in each job, or one long base arm shared if the
+code and burn are identical).
+Headline B arm staged (runs/j1j2/headline_s306): VMC-constants job ~1.85 H100-h (s306 has no p=1 constants) + FN p=1 4 x (150+400) blocks M 256 seeds 601-604, ~11.9 H100-h (78 s/block projected from CPU ratio); total ~13.7 (13.2-17.8); cont default QoS; waiting for the lead's OK. s306 pool x3 running (~78% at 2026-11-12 ~02:00).
+s306 expansion sizing (2026-11-12; stage1/expansion_sizing.json, runs/j1j2/pfaffian_8x8_s306/ess_x3/): bond ESS ~ m^g, g 1.00 (-2..-7), 0.96 (-8), 0.91 (-9) (sublinear at depth, unlike pool_x2); full x3 projects -9 14.6e3, -8 30.8e3, -7 45.9e3 (-2..-6 pass); 3P everywhere (+20% at -9) needs ~2.4e6 beta-0.25 draws (fit; 1.7e6 linear); x3 measured ~594 core-h + expansion 702 (thin 2) = ~1.3e3 > 1.2e3; asked the lead for 1.35e3. Held 17903298 / 17901202 untouched.
+s306 pool ceiling 1.35e3 core-h (lead 2026-11-12 08:50); expansion 2.4e6 beta-.25 thin 2 released; if -9 still misses 3P: report shortfall, no extension (deeper rung vs accept).
+
+## STATE (2026-11-12 09:10) — running, no VERDICT yet
+- s306 stage-1 pool (R1' critical path): x3 17901200/17901201 (theorie CPU, ~594 core-h) + expansion 17929342 (xe3, 40 x 60000 beta-0.25,
+  thin 2, ~700 core-h); watcher watch_xe3.py (stage1/WATCH_XE3_VERDICT); end ~11-13 02:30-07:30. Held, untouched: 17903298, 17901202.
+  Next: f_J labels (c = 4, sgn(B_0'), E' -0.498838 x 64) on the combined pool -> bond-ESS gate 3P per decade (-9 miss -> report, no extension)
+  -> R1' fit (GPU, launcher to the lead) -> R1' grade with base re-run in the same job (burn 150, halves check).
+- K=3 round-6 test (6x6): theorie A40 fit 17871864 (running since 11-10) + table 17871865 (afterok) + CPU readout chain; decides R2's class.
+- Headline B arm (s306 + p=1): Paderborn cont VMC 4222358 -> FN 4222359 (afterok, 24 h limit); runs/j1j2/headline_s306/.
+- Base arm FN p=0 s306 done: -0.4988780(27) (+8.5e-5 above Varbench; possible ~1e-5 high bias).
+- Comms: session messages to the lead often fail (hook timeout); MESSAGE_BOARD_lead_pfaffian.md is the fallback (watch for '-> PFAFFIAN').
+B arm (lead 2026-11-12 10:27, PI agreed): Paderborn VMC 4222358 cancelled by the lead; FN 4222359 held, dependency cleared. Constants come from the theorie A40 copy (diff sent to the lead); after its gate: install once, post sha, COPY consts_s306_p1.json to Paderborn headline_s306/inputs (the FN job reads it there), then scontrol release 4222359.
+s306 x3 pool COMPLETE (17901200/17901201, 40/40 tasks, 450080 draws/rung, 604 core-h measured): gate PASS (halves max|z| 1.94, median -78.523 vs pilot -78.462, Sz 0 bad, recompute 0.0; occupancy = self-consistency only). A second, independent 10-task sizing (runs/j1j2/pfaffian_8x8_s306/ess10/) put -9 at 1.05-2.2e6 expansion draws (fit 1.43e6), inside the released 2.4e6 (17929342). Its watcher's delta VERDICT line (1808/1231 core-h) used stale rates and is superseded.
+PI rule (11-12, via lead; LESSONS.md Operations): GPU placement chosen on the spot by fastest finish (an idle slower card beats a fast card later). s306 VMC moved to an idle a40-24gb slice; 17930563 to be HELD (not cancelled; cancels need the PI's word here).
+R1' WARM-START RULE (lead 2026-11-12 13:35, registered before any R1' data): if the escape-time estimate (worker r1prime_prediction, part B) is ready before the R1' fit is submitted and shows the symmetric/small-lambda saddle taking a large fraction of 1500 steps (say > 30%), R1' is amended to the residual-fit warm start (P_2 = fit of P_1's residual at O(1) weight), registered before the fit; else the old rule (sep 0.03, t 0.05) stays. Part A gives what the old rule cost on rb8_prod.
+R1' WARM-START DECISION (2026-11-12 ~17:00, before any R1' data; r1prime_prediction/B_main/saddle_first.json, job 17933867): linearised-GN
+escape at s306's R1'-rule warm start (lam_init 0.00969, sep 0.0297) = 20-92 steps = 1.3-6.1% of 1500 (< 30%) -> the OLD RULE STAYS for R1'.
+Curvatures: antisymmetric f1-f2 kappa 72-87 (~100-130 x damping 0.661), lam ~5e3 x damping (not slow); P_2's directions outside P_1's
+tangent (Schur complement) mean 0.50 (0.76 x damping, 46 steps), along the warm noise 0.18 (92 steps). The binding fact is not the saddle:
+94-96% of P_2's first GN update lies inside P_1's tangent (P_2 acts as an extra P_1 step), and the new directions carry 1.3% of the f2
+gradient and 1.1% of the target loss (in-sample, ~4 rows/parameter, biased up). Caveats: GN is PSD (linear relaxation; second-order saddle
+growth not modelled); R1's schedule raises lam_rel to 0.5-1 after ~step 300, so escape must happen early (it does, by this estimate).
+RF warm start evaluated (r1prime_prediction/RF/rf_result.json, job 17933950) in the form 'lam = 1, f_2 = f_1 + 0.03 noise, 200-step f_2-only pre-fit': UNUSABLE (start loss 4.24/4.51 vs 0.569 for the R1' rule, since |P_2/P_1| ~ e^1.64 at lam = 1 breaks B ~ B_0; the linear pre-fit overfits: train 4.24 -> 1.96, held-out 4.51 -> 11.2). Not needed for R1' (rule kept). A corrected recipe (t = 0.05 lam, f_2 = f_1 + early-stopped f_2-block GN delta, accept iff held-out <= 0.569 and sep >= 0.1) is recorded, NOT evaluated; reconsidered before R2' after K=3.
+Result K=3 ROUND-6 TEST (2026-11-12 17:11; exact 6x6 tables; fit A40 17871864, table 17871865, readout 17936914; pfaffian_r6k3/readout/;
+controls theta_5 rel 0.0, theta sha local = cluster): bare e 5.8532e-6, r_6 = 0.4886 (K=2 0.2505; R5 fresh P_2 0.493), aug min 2.5456e-6
+(c* 4.0; K=2 2.814e-6). READING (registered): RESTORES (>= 0.40): one fresh PP per round restores per-round storage. Predictions: architecture
+angle ~0.45 (close), mine 0.33-0.48 (missed slightly high), aug 2.4-2.7e-6 HIT. Caveat (registered): K=3 has ~1.5x K=2's parameters; a fresh
+PP vs more parameters not separated (M5 at round 5 is the nearest control: RBM count did not substitute). Fitted lam (0.145, -0.010),
+mu (0.147, -0.002): both extra PPs end at comparable weight.
+Consequence for R2'/R3' (registered rule): add a fresh PP per round. Note: the 6x6 fresh PPs were DISTINCT TRAINED PPs (sep 0.25); at 8x8 a
+P_1 + noise start puts 94-96% of P_2's first update inside P_1's tangent. Proposal (mine) for R2''s fresh PP: s307 (the independently
+trained replica of s306, same 'simple' class, VMC -0.498841) as P_3's start, mu by the median-0.05 rule; to be registered with its own
+tangent-share check before R2''s fit.
+R1' WARM START, second test (lead 2026-11-12 17:25, registered before the R1' launcher): predict r and bare gain for (i) P_1 + noise (registered) and (ii) P_2 = s307's PP (distinct trained optimum, RBM dropped, |lam P_2/P_1| median 0.05, phase so median Re(lam P_2/P_1) > 0); seal both. If (ii) is predicted clearly higher (outside A's calibration error), R1' uses (ii), registered before submission. Checks: s307 ln|P| same code path to 1e-10; lam = 0 reproduces B_0' exactly.
+R1' PREDICTION, interim (2026-11-12 ~18:30; r1prime_prediction/B_main/tk_result.json): the linearised (deterministic GN) prediction FAILS its
+own held-out test at s306 start (i) with the affordable fit set (49152 entries, ~8 rows/parameter, P 18467): held-out tangent share C
+negative for every estimator (ridge 1e-6 -2.25 ... top-200 eigendirections -0.04), in-sample 0.96 (overfit); the linear curve predicts held-out
+loss RISING 0.569 -> 1.5-2.5. Mechanism of the failure: the real fit is noise-dominated (fresh 8208-entry batches, ~1.3 rows/parameter,
+trust-clipped; R1 had 97% 'noise' steps), not the population GN relaxation; a population estimate needs ~150 rows/parameter (Theta v2) =
+~2.8M entries, the whole pool. Plan: A_main (rb8_prod, 65536 and 131072 entries) gives C_ho(N) at two N and the test vs R1's measured curve;
+r_pred = (extrapolated population share) x (board-5 transfer factor calibrated on R1), LABELLED AN EXTRAPOLATION. Saddle numbers, dL/dlam and
+the P_2-in-P_1 share are point quantities (G, b) and stay valid. s307 checks pass ((a) 4.8e-12, broken 6.3; (b) 0.0, broken 7.0); s307's f is
+CLOSE to s306's (sep 0.147, overlap 0.989; P_2/P_1 same sign on 99.4% of held-out x), i.e. a nearby optimum, not a distinct one like the 6x6
+fresh PPs (sep 0.25); lam 0.0372 real. Decision rule for R1' start unchanged: (ii) only if predicted clearly higher; with this prediction's
+uncertainty the registered (i) is the default.
+R1' WARM START FINAL (2026-11-12 ~19:00, before any R1' data; B_main + B2_main saddle_first.json, same 24576 entries): start (ii) P_2 = s307's f
+is WEAKER than (i) on every valid first-order quantity: dL/dlam (Re) 0.052 vs 31.5 (log units 0.002 vs 0.30); new-direction (Schur) curvature
+0.0097 vs 0.76 lam_d, escape 465 steps (31.0% of 1500, above the 30% rule) vs 46 (3.1%); eigenvalues above damping 4 vs 1469 of 8192;
+new-direction target share 0.22% vs 1.1%; P_2's first update in P_1's tangent 98% vs 94-96%. Cause: s307's pair function is a near-copy of
+s306's (overlap 0.989, sep 0.147, P_2/P_1 real), so lam P_2 is a rescaling of B absorbed by the offset c (corr -0.78), and Im lam / Im f_2
+start at a GN frozen point. DECISION: R1' keeps the registered start (i). The "fresh PP" for R2' must be genuinely distinct (s307 is not);
+to be designed before R2' (e.g. a PP trained on a different sector/projection, or the corrected residual-fit recipe), with these same point
+quantities as the acceptance test.
+MECHANISM HYPOTHESIS for two-PP storage (lead, ~40%; registered 2026-11-12 before any computation; Part C', 6x6 exact):
+B = P_1 + lam P_2 with f_2 = f_1 + delta. The two-PP tangent at theta is span{J(f_1), J(f_1 + delta), d/dlam} with J = d ln P / d f, and
+J(f_1 + delta) = J(f_1) + H(f_1)[delta, .] + O(delta^2), H = d^2 ln Pf = -(1/2) tr(A^-1 dA A^-1 dA) + tr(A^-1 d^2 A)/2. So the second PP adds
+the Hessian-vector directions H[delta, e_k] (one config-space vector per parameter k, along the fit's own delta), which lie outside the single
+PP's tangent (P16: single-PP held-out share 0-4%). Prediction: the round's stored fraction r ~ the share of the round correction inside
+span{J(f_1), H(f_1)[delta_fit, .]} (and the exact two-PP tangent at the fitted point); at 6x6: R5 theta_5 (r 0.49) and K=3 theta_6 (r 0.49) vs
+K=2 R6 (r 0.25). Kill: share at the fitted point < 0.2 when r = 0.49 (second-order directions do not explain storage). If it holds, the R2'
+fresh-PP acceptance test becomes "does the start give second-order directions overlapping the target", not "is P_2 distinct".
+Part C' method (2026-11-12): exact 6x6 shares cost ~100 core-h (15.8M orbits incl. partners); run as the SAMPLED Theta-v2 held-out estimator (P16 calibration 0.013-0.017 vs exact) at N/P >= 100, two orbit sets A->B / B->A, cap 12 core-h, after A_main. Kill unchanged.
+Part C' sized by probe (17939519): 6x6 J costs 22/39 ms per config (576-image 'full' projection); full table at N/P 100 ~50 core-h: approved (cap 60), ordered R5 -> R6 K=2 -> K=3, stop early if R5 trips the kill; exact jvp for H[delta] + FD check.
+R1' PREDICTION, calibration + CORRECTION (2026-11-12 ~22:30; A_main 17933866, B_main, B2_main):
+(1) The deterministic linear-GN curve fails calibration on R1: predicted held-out 0.262 -> 0.84-1.27, measured 0.262 -> 0.188 (fraction removed
+0.281 +- 0.006). Not calibratable (N/P ~21; the real fit uses fresh batches from 1.6M entries). Step-0 loss reproduced exactly.
+(2) Held-out tangent share (fit metric, ridge at lam_rel 0.5): R1 C(65k) -0.075, C(131k) +0.032 (HOB 0.101) -> extrapolated population share
+0.14-0.17; measured fraction 0.281 -> calibration factor ~1.7-2.0 (nonlinear + minibatch part; two N, one seed).
+(3) s306 at equal N (49k): start (i) noise: every estimator <= 0 (ridge 0.5 -0.40/-0.71, top-200 -0.04/-0.16); start (ii) s307: every
+estimator > 0 (ridge 0.5 +0.32/+0.27, top-200 +0.21/+0.17); nested 24k -> 49k: (i) -0.71 -> -0.40, (ii) +0.18 -> +0.32; extrapolated: (i) ~0,
+(ii) ~0.3-0.45. Start losses (held-out): (i) 0.569, (ii) 0.496: adding s307 at |lam P_2/P_1| = 0.05 removes 13% of the copy loss before any
+step (error averaging: s307's errors partly independent of s306's). The earlier "(ii) weaker" reading used in-sample point quantities that
+exclude the lam column; the held-out shares settle it. Caveats: s306 mini-pool 6000 entries/decade (train L0 0.12-0.34 vs held-out 0.50-0.60),
+one seed, two N; B->A reverse negative for both (B only 8k).
+R1' DESIGN FINAL (lead YES 2026-11-12 20:45; registered before any R1' data): warm start (ii) B = P_1 + lam P_2, P_2 = s307's f (RBM dropped),
+|lam P_2/P_1| median 0.05, lam real (mean-phasor rule; lam 0.0372). Grade job: R1' arm + ATTRIBUTION ARM (the (ii) warm start itself, no fit)
++ base re-run, same code, burn 150, halves check. READING: the loop's gain is E(R1') - E(warm arm), NEVER E(R1') - E(base).
+SEALED PREDICTIONS (formulas now; numbers inserted from the bound passes 17940673/17939321 before submission, no later):
+(1) Warm arm vs base: dE_warm = -(fraction of held-out copy loss removed at the start) x G_s306, fraction = 1 - 0.496/0.569 = 0.128.
+    Conversion (assumption: in the quadratic regime of board 5 the FN gain is proportional to the copy-loss fraction removed; R1 check:
+    4.95e-5 / 0.281 = 1.76e-4 vs R1's board-5 bound 1.94e-4, consistent to 10%): G_rb8 = 1.76e-4 per site (measured gain / measured fraction),
+    G_s306 = G_rb8 x proxy_s306 / proxy_rb8, proxy = board-5 bound of the target T vs the base on each pool.
+(2) Loop storage R1' - warm: dE_loop = -(C_inf(ii) 0.3-0.45) x (R1 factor 1.7-2.0) x ... expressed as a copy-loss fraction removed by the
+    fit beyond the start, times G_s306. LABELLED AN EXTRAPOLATION (one seed, two N, low-ESS mini-pool).
+Note for R2': s307 is used; the fresh PP per round needs another source.
+R1' SEALED NUMBERS (2026-11-13 ~00:30, before the pool labels, fit or grade; r1prime_prediction bound passes 17940673/17939321):
+proxy (board-5 bound of T vs base, per site): rb8 1.905e-4(51), s306 1.011e-4(31) (control: R1 theta_tail bound reproduced to all digits).
+G_rb8 = 4.95e-5/0.281 = 1.76e-4(27); G_s306 = G_rb8 x 0.531(22) = 0.935e-4(15).
+(1) WARM ARM vs base: dE_warm = -0.128 x G_s306 = -1.2e-5 (range -1.0 .. -1.6e-5; -1.39e-5 on held-out set B).
+(2) LOOP R1' - warm (EXTRAPOLATION: one seed, two N, low-ESS mini-pool, k from one R1 run): dE_loop = -f x 0.872 x G_s306 with
+    f = min(1, C_inf(ii) 0.30-0.45 x k 1.7-2.0) = 0.51-0.90 -> -4.2 .. -7.3e-5 (with G's error -3.5 .. -8.5e-5).
+TENSION, recorded before data: (1)+(2) = -5.4 .. -8.9e-5 is 3-4x my earlier R1' range 0.8-2.0e-5 (scaling heuristic: R1 gain = 0.57 x the
+FN-over-VMC gap). That heuristic is not a bound (lattice FN at fixed sign depends on the guide's amplitudes on sign-violating bonds; nothing
+caps it at the VMC-FN gap). The two routes name different terms: if R1' lands near 1-2e-5 total, the wrong term is G_s306 = G_rb8 x proxy
+ratio (a bound ratio taken as a gain ratio); if near 5-9e-5, the gap-scaling heuristic is wrong. Proportionality on R1: copy-loss fraction
+0.281 vs energy fraction 4.95e-5/proxy_rb8 = 0.260(40): ratio 1.08(17), consistent; board-5 residual fraction 0.128(100) only within its error.

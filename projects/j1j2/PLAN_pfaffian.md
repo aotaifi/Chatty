@@ -2508,3 +2508,4 @@ What stands: r 0.49 is stored while no linear span at the start or at the fitted
 the storage is a genuinely nonlinear (finite-move) effect of the fit, or the stored part is exactly the part a held-out tangent estimator
 cannot see (high-dimensional, overfit-prone). Mechanism NOT UNDERSTOOD. Whole prediction step ~110 core-h. Note: the delta_today VERDICT line for
 17944129 quotes the fitted-point numbers; the json is the source.
+R1' SEAL ADDENDUM (2026-11-12 23:06, before any R1' data; not a change of the sealed numbers): the share-to-storage factor k is not a constant of the method: rb8_prod R1 k = 1.7-2.0 (population share 0.14-0.17 vs fraction 0.281); 6x6 R5 start share of the exact two-PP tangent +0.07(2) vs r 0.49 -> k ~ 7 (4-12). The R1' prediction uses rb8_prod's k; the R1' grade therefore also tests whether k transfers from rb8_prod to s306. If R1' - warm lands above the sealed range, the wrong term is the transferred k.

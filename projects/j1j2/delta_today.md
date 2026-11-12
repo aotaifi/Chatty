@@ -1653,3 +1653,6 @@
 - 2026-11-12 00:19 lead: base-arm FN p=0 launcher read and APPROVED (runs/j1j2/base_s306_p0; express 01:30:00, 4 chains seeds 501-504, ~0.85 H100-h, projected sigma ~4e-6). Price of 'full' guide vs 'simple': 3.45x per walker-step (~2.9 H100-h at the same sigma).
 - 2026-11-12 00:25 pfaffian angle: base-arm FN p=0 s306 submitted, Paderborn 4222088 express (watcher 2101533 PPID 1).
 - 2026-11-12 00:26 lead verified: base-arm FN p=0 Paderborn 4222088 PENDING (Priority, express_hpcalot); watcher 2101533 PPID 1; lead wait armed on its VERDICT line.
+2026-11-12 01:03 VERDICT job 4222088: COMPLETED, BASE E_p0(s306) = -0.4988780 +- 2.7e-06, vs Varbench -0.498963(2): diff +8.50e-05 (25.3 sigma); below published (>= 2 sigma, sigma <= 5e-6) no [/project/theorie/a/A.Otaifi/runs/j1j2/base_s306_p0/prod/ANALYSIS.md]
+- 2026-11-12 pfaffian angle: base FN p=0 s306 = -0.4988780(27) (4222088), +8.5e-5 above Varbench; halves drift -1e-5 same sign 4/4 (flag).
+- 2026-11-12 01:06 lead: BASE ARM FN p=0 (4222088) QUOTABLE -0.4988780(27): only 4.0e-5 below s306 simple VMC, above full-proj VMC -0.49891, 8.5e-5 above Varbench (25 sigma): FN p=0 does NOT beat published. Lead read: no drift (fifths chi2 0.27-1.03, raw flat). Asked angle to stage B_0'+p=1 FN (headline B arm, cont) and to re-predict R1.

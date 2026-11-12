@@ -585,6 +585,11 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   raw series flat (s307/quotable_full_a40.png); s306 - s307 = 3.9e-7 (0.2 sigma). Retrained base full projection = -0.49891 (2 seeds),
   2.3e-5 below Nomura-Imada. Backup Paderborn cont 4203776/4203777 (ev_full_5{3,4}): cancel asked of the PI 11-11.
   Published bars: Nomura-Imada RBM+PP -0.498886(1), Varbench -0.498963(2).
+- BASE ARM FN p=0 DONE (Paderborn 4222088, runs/j1j2/base_s306_p0/prod, 0.85 H100-h express): B_0' (s306 'simple', own sign) E_FN p=0
+  -0.4988780(27) QUOTABLE (4 chains chi2/dof 0.14, fifths ok, raw flat): 4.0e-5 below its VMC -0.498838 (rb8_prod: 8.2e-5), 3.2e-5 ABOVE the
+  full-projection VMC -0.49891, 8.5e-5 above Varbench -0.498963. Predictions missed high (lead -0.49894..7 withdrawn; angle -0.49892..6).
+  Reading (hypothesis): the better base's error is mostly in its sign -> p=0 and fixed-sign rounds have less headroom; p=1 / sign decide.
+  Next: headline B arm B_0' + p=1 FN staged by the angle (cont), launcher to lead.
 - Pfaffian angle (local_d60cd248, PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"; brief proposals/2026-11-11_R123_retrained_brief.md):
   adding the 'simple' projection to the pipeline (code copies, identity test; ~2x cost); then R1-R3 at fixed own sign, bare grade per
   round, kill if round gain < 0.5 x previous; R2 class from the K=3 test (A40 17871864, running); headline only if rounds accumulate;

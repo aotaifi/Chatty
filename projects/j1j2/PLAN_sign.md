@@ -1359,6 +1359,23 @@ PAIRED ESTIMATOR STAGE 2 + 8x8 PROBE 2026-11-12 (builder's numbers; probe Paderb
  Cheap variant (takeover decision): two more probes at pF = 1e-4 and 1e-5 (<= 0.5 H100-h each). Read: rho >= 0.5 at the density matching T-STRONG's
  stage-0 flip weight -> keep the tool for sign-only residual grades; else stop the build for 8x8 and use the fallback (cumulative effects, coarser bar).
  Prediction (angle lead): rho >= 0.8 at pF = 1e-5 [55%], >= 0.5 at 1e-4 [50%]. For amplitude/size rounds (B_k vs B_0') rho stays unmeasured at 8x8.
+SEALED PREDICTION for the pF 1e-4 / 1e-5 probes (PI rule, projects/j1j2/CLAUDE.md point 1; written 2026-11-12 BEFORE either probe ran):
+ Mechanism: at 8x8 separated arms never re-pair (alpha = matched fraction), so rho = mbar(T) x h(pF):
+   mbar(T) = (tau_s/T)(1 - exp(-T/tau_s))   [run-averaged matched fraction],   tau_s(pF) = tau_s(1e-3) x (1e-3/pF)   [separation flux ~ walker weight on F ~ pF],
+   h(pF) = 1/(1 + kappa_h x 146 pF)          [matched walkers with a flipped neighbour have different E_L; 146 = valid one-swap neighbours].
+ Calibration on probe8_20261112d (pF 1e-3, T = 421 blocks x dtau 0.1 = 42.1 tau): measured mbar = alpha_mean 0.335 -> effective tau_s(1e-3) = 15 tau (the per-walker
+ separation time is 32.3 tau; population branching roughly halves it); h = rho/mbar = 0.25/0.335 = 0.74 -> kappa_h = 2.4. Check: kappa_work = r(1 - rho) = 0.93 x 0.75 = 0.70
+ vs measured 0.65. 6x6 consistency: rho -> 0.88-0.998 as the pair difference shrinks (1e-7, 1e-8 pairs), as the model says.
+ Predictions at the same run length (42 tau):
+   pF 1e-4: tau_s 150 tau, mbar 0.87, h 0.97 -> rho 0.84 (band 0.70-0.93); separation rate 3.1e-3/tau (+-x2).
+   pF 1e-5: tau_s 1500 tau, mbar 0.99, h 0.997 -> rho 0.98 (band 0.93-1.0); separation rate 3.1e-4/tau (+-x2).
+ Miss = the result: separation rate not proportional to pF within x2 names the flux term; rho(1e-4) < 0.6 with the rate as predicted names h (E_L differences at
+ matched walkers) or genealogy.
+ T-STRONG density: pF_eq = walker weight on flipped configurations. Proxy (s306's mask is unmeasured until stage 0): T-NODE S_-7 on |M1|: residence below d -7 1.1e-3
+ x 5.4% root flips = 6e-5 (range 2e-5..2e-4). Production with chains of T_c = 50 tau from shared starts: pF_eq 6e-5 -> tau_s 250 tau, mbar 0.91, h 0.98 -> rho 0.89;
+ pessimistic 2e-4 -> rho 0.68.
+ Need: kappa_work = r(1 - rho), r = 0.93. sigma(diff) 2.5e-6 at the old 5.6e-6 budget needs kappa <= 0.20 -> rho >= 0.785. Any rho > 0 is cheaper than unpaired.
+ So rho at the stage-0 density is predicted > 0.5 (0.68-0.89): the probes are worth their <= 1 H100-h.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

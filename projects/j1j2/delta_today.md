@@ -1683,3 +1683,6 @@
 - 2026-11-12 10:00 sign angle: Astra paired-estimator design resubmitted as cj-c9a7d4cfa462.
 - 2026-11-12 sign angle: answered lead's PI question (stored sign readiness for full loop): residual mask loss unmeasured; cheap s306 round unreadable unpaired (sigma ~1.3e-5); recommend T-STRONG stage 0 now, FN held until paired estimator.
 - 2026-11-12 10:21 lead + PI: full loop (sign + size updated per round) NOT READY: residual-flip sign storage on s306 unmeasured (nearest: 6x6 XL 4.3e-7, 8x8 full PP-phase sign +4.0(1.3)e-5 on |M1|); a full round now would be unreadable (unpaired sigma(diff) ~1.3e-5 vs expected 0.5-3e-5). Decision: R1-R3 at own sign continues; T-STRONG stage 0 now (<= 3 A40-h); all sign FN grades wait for the paired estimator (Astra cj-c9a7d4cfa462, ETA ~11-14); T-CAP8 inconclusive 2.2(14)e-5.
+- 2026-11-12 sign angle: T-STRONG stage 0 registered and started (lead GO); all FN held until the paired estimator passes; (3) not run.
+- 2026-11-12 sign angle T-STRONG stage 0 stopped before compute: no s306 alpha/E; asked the lead.
+- 2026-11-12 10:23 STEP BACK (PI: jumping ahead?): REFINE FIRST: ruler (paired estimator) -> size half (R1-R3) + sign half (T-STRONG stage 0) -> full loop. PLAN 'STEP BACK 2026-11-12'.

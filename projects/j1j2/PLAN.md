@@ -503,6 +503,14 @@ LESSONS: projects/j1j2/LESSONS.md (PI 2026-11-05; overrides root CLAUDE.md §8 f
 - 10x10 stage (PI agreed 2026-11-11): gated on the 8x8 retrained-base rounds accumulating. If they do: (1) pp2_lemma multi-word key
   (Pfaffian angle, queued), (2) 10x10 speed test < 1 H100-h, (3) budget decision with the PI (one round + headline ~83/248/500 H100-h;
   base rbL10_prod params_04150, 3.6e-4 above published; proposals/2026-11-11_10x10_prep.md). If not: 10x10 not worth the spend.
+STEP BACK 2026-11-12 (PI: 'am I jumping ahead to the full loop?'):
+1. Verdict: REFINE FIRST, full loop after. Order: (a) the ruler: paired FN estimator (sign angle, Astra cj-c9a7d4cfa462, 6x6 gate, ETA ~11-14);
+   (b) the size half: R1-R3 at own sign (does the Jacobi copy accumulate at 8x8 after p=1?); (c) the sign half: T-STRONG stage 0 (false-flip rate
+   of a residual mask on s306). Full loop once (a) passes and (b), (c) are each a readable yes.
+2. Thought: every deciding difference is ~1e-5 while unpaired errors are 4e-6 (p=0) to 1.3e-5 (sign FN) and the base itself settled by ~1e-5;
+   a full-loop round mixes three unknowns (sign storage, Jacobi copy, overlap with p=1), so a miss could not name the failing term (agreement point 1).
+   Unasked: if a round is ~ one stored Lanczos step, the honest equal-cost bar is B_k + p=1 vs B_0 + p=(k+1) at p=1's cost.
+3. Cheapest next test: the paired estimator's exact-6x6 gate (<= 48 core-h CPU + build); it sets the resolution of every later grade.
 STEP BACK 2026-11-11 (big picture, PI request, not a failure):
 1. Verdict: CONTINUE R1-R3 as registered; move the base's FN arm (B_0' FN p=0, then p=1 in the headline) forward: it answers 'below every published
    8x8 number with the given sign' (Varbench -0.498963(2), plain VMC) and is the bar every round must beat. Name the sign question as the gate of 'better every round'.

@@ -1339,6 +1339,13 @@ PLAN ADOPTED (lead + PI, 2026-11-12): estimator build with an EARLY 8x8 RHO PROB
  rho < 0.5. Guesses (mine, recorded as guesses): rho mask 0.6-0.9 > size round 0.3-0.6 > p=1 < 0.3. If rho is low, sign tests make the effect bigger
  (cumulative 2-3 sign rounds, weaker start, 10x10) with a coarser bar stated as "cannot see below 1.2e-5"; no 360 A40-h budget. Parallel: R1-R3 unpaired
  (Pfaffian angle), stage 0 waits only for the s306 constants (A40 VMC job by the Pfaffian angle, 11-12 10:32; the lead sends the sha).
+PAIRED ESTIMATOR STAGE 1 PASS 2026-11-12 (ansatz/code/paired_fn, committed; /scratch/a/A.Otaifi/ansatz_runs/paired_fn/stage1/stage1.json, VERDICT_STAGE1 PASS; worker's
+ numbers): rows equal independent rows exactly; joint-generator marginals 4e-16; resampler marginals z <= 1.03; finite-T propagator matches on amplitude-only,
+ sign-only and both pairs (|z| < 2.6); reweight_A raises SupportViolation on sign changes; broken versions miss at 10-437 sigma (inverse ratio, omitted V_sf,
+ omitted changed walls, forced parent law, unchecked reweighting). 6x6: 95-97% of walker pairs still coupled after 30 blocks (bare S0->T0).
+ 8x8 RHO PROBE approved and submitted by the builder (launcher read by me: 30 min, 0.25 A40-h; A = B control 40 blocks first; s306 vs s306 x hash-random flip
+ mask at density 1e-3 of configurations, i.e. uniform over the walker measure: HARSHER than T-STRONG's mask, which flips mostly deep configurations, so its rho
+ is a conservative bound). Gate: stop the build if long-lag rho < 0.5.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

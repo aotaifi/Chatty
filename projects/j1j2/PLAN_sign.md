@@ -1376,6 +1376,10 @@ SEALED PREDICTION for the pF 1e-4 / 1e-5 probes (PI rule, projects/j1j2/CLAUDE.m
  pessimistic 2e-4 -> rho 0.68.
  Need: kappa_work = r(1 - rho), r = 0.93. sigma(diff) 2.5e-6 at the old 5.6e-6 budget needs kappa <= 0.20 -> rho >= 0.785. Any rho > 0 is cheaper than unpaired.
  So rho at the stage-0 density is predicted > 0.5 (0.68-0.89): the probes are worth their <= 1 H100-h.
+ AMENDMENT (same day, before any probe number was seen: the builder had already submitted Paderborn 4227404 / 4227405 when the hold arrived; it reports
+ them only after this seal). The probes run ~1100 blocks = 110 tau, not 42 tau; the SAME equations at T = 110 tau give: pF 1e-4: mbar 0.71, rho 0.68 (band 0.50-0.85);
+ pF 1e-5: mbar 0.96, rho 0.96 (band 0.88-0.99). These 110-tau numbers are the ones to score. Placement note: the builder used Paderborn EXPRESS (<= 1 H100-h)
+ against my takeover rule (no express; reserved for the lead's headline); reported to the lead.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

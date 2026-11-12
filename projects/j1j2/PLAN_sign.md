@@ -1346,6 +1346,19 @@ PAIRED ESTIMATOR STAGE 1 PASS 2026-11-12 (ansatz/code/paired_fn, committed; /scr
  8x8 RHO PROBE approved and submitted by the builder (launcher read by me: 30 min, 0.25 A40-h; A = B control 40 blocks first; s306 vs s306 x hash-random flip
  mask at density 1e-3 of configurations, i.e. uniform over the walker measure: HARSHER than T-STRONG's mask, which flips mostly deep configurations, so its rho
  is a conservative bound). Gate: stop the build if long-lag rho < 0.5.
+PAIRED ESTIMATOR STAGE 2 + 8x8 PROBE 2026-11-12 (builder's numbers; probe Paderborn H100 4227108, paired_fn/probe8_20261112d/result.json; 6x6 job 17932399,
+ stage2/analysis6.json; ~32 CPU core-h + 0.37 H100-h + 0.30 A40-h wasted on jit shapes):
+ 6x6 stage 2 PASS (coarse): 8 exact pairs x 4 ensembles all within 2 sigma (max |z| 1.34); micro-scale pairs resolved: first -5.68(34)e-6 vs exact -5.27e-6,
+ refr2 +2.35(31)e-6 vs +2.39e-6, bareS0T0 +1.59(23)e-6 vs +1.30e-6; rho 0.60-0.998, kappa_work 0.003-0.6 (best for small differences).
+ 8x8 probe: A = B control exact (Delta == 0, zero exclusive hops). s306 vs s306 x hash-random mask pF = 1e-3: Delta = +7.0e-4/site (a LARGE perturbation,
+ walker weight share in F 1e-3), separation time 32 tau, resampling recoupling alpha = matched fraction (0.335: NO net recoupling at 8x8), long-lag rho 0.25
+ (binned 0.34(16)), kappa_work 0.65. REGISTERED GATE FIRED (rho < 0.5): stages 3-4 stopped.
+ DIAGNOSIS (before any verdict, PI rule): the probe mask was harsher than T-STRONG's by design (uniform over the walker measure, 1e-3 weight share; Delta 7e-4
+ is ~25-100x the expected T-STRONG gain). At 8x8 nothing re-pairs once arms separate, so rho is set by the separation time against the energy memory, and
+ separation scales with the exclusive-edge rate ~ the walker weight touching F. A residual mask flips mostly deep configurations (walker weight ~1e-4 or less).
+ Cheap variant (takeover decision): two more probes at pF = 1e-4 and 1e-5 (<= 0.5 H100-h each). Read: rho >= 0.5 at the density matching T-STRONG's
+ stage-0 flip weight -> keep the tool for sign-only residual grades; else stop the build for 8x8 and use the fallback (cumulative effects, coarser bar).
+ Prediction (angle lead): rho >= 0.8 at pF = 1e-5 [55%], >= 0.5 at 1e-4 [50%]. For amplitude/size rounds (B_k vs B_0') rho stays unmeasured at 8x8.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

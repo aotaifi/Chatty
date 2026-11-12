@@ -1690,3 +1690,5 @@
 - 2026-11-12 sign angle: T-STRONG stage 0 waits for the lead's s306 p=1 constants file (headline VMC job on A40).
 - 2026-11-12 sign angle: Astra paired estimator: A-only reweighting invalid; coupled-population design; build + 6x6 validation started (worker, <= 48 core-h).
 - 2026-11-12 10:25 sign angle: paired estimator design (astra/paired_fn/ASTRA_paired.md): reweighting invalid for sign changes (exact counterexample); two coupled populations moving at min(r_A,r_B) per bond, parents coupled by configuration; speedup needs cross-arm rho >= 0.8 (Astra LOW confidence; 80% right estimator to test); build + CPU validation stages 1-4 <= 48 core-h; 8x8 pilot to include one p=1 pair. Lead: if rho < 0.8, fallback = unpaired at measured cost (p=0 grades ~0.5 H100-h/arm for 4e-6 fine; sign FN 2.5e-6 ~360 A40-h/arm not affordable).
+2026-11-12 10:26 VERDICT job 4222358: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/headline_s306/vmc/run_v1/ANALYSIS.md]
+- 2026-11-12 10:27 lead (PI yes): Paderborn 4222358 CANCELLED (not started); FN 4222359 held, dependency cleared, release after consts_s306_p1.json is installed from the A40 VMC run (one set).

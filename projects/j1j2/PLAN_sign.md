@@ -1322,6 +1322,7 @@ T-STRONG STAGE 0 (lead GO 2026-11-12, start now; registered before any number; <
  in decades >= -5 do not exceed train true flips there. Held-out gate: false-flip rate vs true-flip rate per decade; STOP (no FN ever for this design) if
  held-out false flips in decades >= -5 exceed the true flip rate there. Also report missed flips per decade and the fraction of true flips captured.
  Prediction (angle lead): flip rate above d -5 below 0.5% [70%]; gate passes [45%].
+ STAGE 0 STOPPED 2026-11-12 before compute: no sign-step constants (alpha, E) for s306 exist (consts_s306.json has only w); asked the lead which job makes them (headline_s306/vmc?) or to let me compute them from VMC moments; rb8_prod's pair not reused.
  Lead's follow-up to Astra (after cj-c9a7d4cfa462 lands): can the paired estimator grade a p=1 guide (Pfaffian headline B_k + p=1 vs B_0' + p=1)?
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,

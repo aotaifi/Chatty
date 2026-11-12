@@ -2452,7 +2452,7 @@ K=2 R6 (r 0.25). Kill: share at the fitted point < 0.2 when r = 0.49 (second-ord
 fresh-PP acceptance test becomes "does the start give second-order directions overlapping the target", not "is P_2 distinct".
 Part C' method (2026-11-12): exact 6x6 shares cost ~100 core-h (15.8M orbits incl. partners); run as the SAMPLED Theta-v2 held-out estimator (P16 calibration 0.013-0.017 vs exact) at N/P >= 100, two orbit sets A->B / B->A, cap 12 core-h, after A_main. Kill unchanged.
 Part C' sized by probe (17939519): 6x6 J costs 22/39 ms per config (576-image 'full' projection); full table at N/P 100 ~50 core-h: approved (cap 60), ordered R5 -> R6 K=2 -> K=3, stop early if R5 trips the kill; exact jvp for H[delta] + FD check.
-R1' PREDICTION, calibration + CORRECTION (2026-11-12 ~22:30; A_main 17933866, B_main, B2_main):
+R1' PREDICTION, calibration + CORRECTION (2026-11-12 ~21:15, timestamp corrected from '~22:30'; A_main 17933866, B_main, B2_main):
 (1) The deterministic linear-GN curve fails calibration on R1: predicted held-out 0.262 -> 0.84-1.27, measured 0.262 -> 0.188 (fraction removed
 0.281 +- 0.006). Not calibratable (N/P ~21; the real fit uses fresh batches from 1.6M entries). Step-0 loss reproduced exactly.
 (2) Held-out tangent share (fit metric, ridge at lam_rel 0.5): R1 C(65k) -0.075, C(131k) +0.032 (HOB 0.101) -> extrapolated population share
@@ -2474,7 +2474,7 @@ SEALED PREDICTIONS (formulas now; numbers inserted from the bound passes 1794067
 (2) Loop storage R1' - warm: dE_loop = -(C_inf(ii) 0.3-0.45) x (R1 factor 1.7-2.0) x ... expressed as a copy-loss fraction removed by the
     fit beyond the start, times G_s306. LABELLED AN EXTRAPOLATION (one seed, two N, low-ESS mini-pool).
 Note for R2': s307 is used; the fresh PP per round needs another source.
-R1' SEALED NUMBERS (2026-11-13 ~00:30, before the pool labels, fit or grade; r1prime_prediction bound passes 17940673/17939321):
+R1' SEALED NUMBERS (2026-11-12 ~21:40 (timestamp corrected; first written as 11-13 00:30 in error), before the pool labels, fit or grade; r1prime_prediction bound passes 17940673/17939321):
 proxy (board-5 bound of T vs base, per site): rb8 1.905e-4(51), s306 1.011e-4(31) (control: R1 theta_tail bound reproduced to all digits).
 G_rb8 = 4.95e-5/0.281 = 1.76e-4(27); G_s306 = G_rb8 x 0.531(22) = 0.935e-4(15).
 (1) WARM ARM vs base: dE_warm = -0.128 x G_s306 = -1.2e-5 (range -1.0 .. -1.6e-5; -1.39e-5 on held-out set B).

@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C FN moved to two cip a40-24gb slices (PI placement rule): k3 17931121, k4 17931262 (resubmitted after yielding the slot to the s306 constants job; --dependency=after:17931202), watchers 4143390/4705; 17928795 cancelled (own, pending); gate on fn_net_slice/out after both VERDICT lines; storage screen done (round 4: warm start, half steps).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C DONE: loop beats SR at matched compute by 1.06e-3/site (59 sigma); storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1239,6 +1239,12 @@ CONTROL C PHASE 1 RESULT 2026-11-12 (A40 17924353 7.72 h + probe 17905531 0.2 h;
  so production started at 0.3 rad rms (accepted by me; recorded deviation from "small"). E_var -0.49367 -> -0.49695(32), still falling slowly;
  hard sign flips only ~1.6% of sampled configurations vs Marshall (loop n_1: 28% of tempered states); hard-sign variational E -0.4958..-0.4971, flat
  after 50%. Suggestive of the Marshall trap (gradient training barely moves the sign), NOT a verdict: FN of the hard sign decides (gate reports D vs e_0..e_3).
+CONTROL C RESULT 2026-11-12 (cip a40-24gb slices 17931121 k3, 17931262 k4 (k4 stopped at maxsec, 322 of 350 measured blocks); ctrlC/fn_net_slice/fn_summary.json, w_k4/ANALYSIS.md):
+ e_C (SR-trained phase net, hard sign, 7.7 A40-h, matched to the loop's rounds 1-3) = -0.497651(15), QUOTABLE (chains chi2/dof 0.58).
+ vs the loop: D_0 = -2.13e-3 (C beats Marshall), D_1 = +5.07e-4, D_2 = +1.007e-3, D_3 = +1.058(18)e-3: LOOP_BEATS_C at 59 sigma (registered read on e_3).
+ The loop's ROUND 1 alone (~2.9 A40-h of labels + fit) is already 5.1e-4 below SR at 7.7 A40-h. Scope: one SR setting (minSR, eta 0.05, 0.3 rad start, 1024 samples),
+ still falling slowly at the end; hard sign moved only 1.6% of configurations from Marshall (the Marshall-trap picture of 2002.04613). It does NOT show SR cannot
+ get there with other settings or more compute; it shows the loop is far cheaper for this class at 8x8 from a bad start.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

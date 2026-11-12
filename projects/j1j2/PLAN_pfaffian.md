@@ -2498,3 +2498,13 @@ Part C: fitted pairs overlap 0.997 (8x8) / 0.991 (6x6), same translation-average
 d-enriched; |de_y - de_x| on R1 bonds follows the across-bond change of lam P_2/P_1 (Spearman 0.52 phase, 0.42 modulus).
 Cost: r1prime_prediction ~95 core-h total (A/B ~59, C' ~36 stopped at R5). Reduce 17941240 pending DependencyNeverSatisfied (2 tasks died rc
 132 on v2-only node th-cl-uv201): needs a PI-approved cancel.
+Part C' answer (cprime.py L19/L58/L95/L65/L83/L94): the FULL R5 correction (ln T_5 - ln B(theta_4)) was projected, but J/H/two-PP tangent were evaluated at the FITTED theta_5, not the start. Start variant (shares at theta_4 + warm P_2) run at N/P 100 (~18 core-h; 10 core-h would only allow N/P 55, uncalibrated). Kill: start share < 0.2 with r 0.49 -> hypothesis dead.
+Result PART C' START VARIANT (2026-11-12 23:05; SAMPLED Theta-v2, Cprime/cprime_R5start.json, jobs 17944127/17944128/17944129; full R5
+correction at the round-5 warm start theta_4 + warm L-SWO P_2, lam 0.1, sep 0.085; 100-195 rows/parameter; +-0.02): best held-out share
+(a) J(f_1) -0.03, (b) J(f_1) + H[delta_start] -0.04, (c) exact two-PP tangent +0.07 (other estimators -0.02..-0.11), random control <= -0.08;
+in-sample 0.2-0.58 for every span incl. the control (overfit, nothing generalises); positive control: the same estimator reads +0.32 on s306
+start (ii). REGISTERED KILL FIRES at the start too: the second-order (Hessian-vector) mechanism is DEAD as an explanation of two-PP storage.
+What stands: r 0.49 is stored while no linear span at the start or at the fitted point holds > 0.07 of the correction on held-out orbits, so
+the storage is a genuinely nonlinear (finite-move) effect of the fit, or the stored part is exactly the part a held-out tangent estimator
+cannot see (high-dimensional, overfit-prone). Mechanism NOT UNDERSTOOD. Whole prediction step ~110 core-h. Note: the delta_today VERDICT line for
+17944129 quotes the fitted-point numbers; the json is the source.

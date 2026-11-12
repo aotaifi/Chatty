@@ -2485,3 +2485,16 @@ FN-over-VMC gap). That heuristic is not a bound (lattice FN at fixed sign depend
 caps it at the VMC-FN gap). The two routes name different terms: if R1' lands near 1-2e-5 total, the wrong term is G_s306 = G_rb8 x proxy
 ratio (a bound ratio taken as a gain ratio); if near 5-9e-5, the gap-scaling heuristic is wrong. Proportionality on R1: copy-loss fraction
 0.281 vs energy fraction 4.95e-5/proxy_rb8 = 0.260(40): ratio 1.08(17), consistent; board-5 residual fraction 0.128(100) only within its error.
+Result PART C' (two-PP storage mechanism, 2026-11-12 22:31; SAMPLED Theta-v2, not exact; r1prime_prediction/Cprime/cprime_R5.json, reduce
+17943843; 100-195 rows/parameter; calibration +-0.02): held-out share of the R5 correction at the fitted theta_5: (a) single PP -0.016, (b) +
+H[delta] -0.001, random-delta control -0.049, (c) exact two-PP tangent +0.018; r_5 = 0.49. REGISTERED KILL FIRES (< 0.2): linear first- and
+second-order directions AT THE FITTED POINT do not hold the stored correction. R6 not run. eps check: FD H[delta] -> exact jvp linearly.
+DIAGNOSIS (before calling the hypothesis dead): the test measured tangents at the END point, while the hypothesis concerns the FINITE move
+ln B(theta_5) - ln B(theta_4) = J Delta + (1/2) Delta.H.Delta + ...; storage may sit in the quadratic remainder of the finite move, which no
+tangent at either end contains. Cheapest untried variant: decompose the actual move on held-out orbits into J(theta_4) Delta and the remainder,
+and measure each part's share of the R5 correction (sampled, ~1 jvp per orbit, ~10 core-h). Not run; the mechanism of two-PP storage stays
+NOT UNDERSTOOD (the tangent-share route, single PP 0-4% and now two-PP <= 0.02 at the end point, does not explain r 0.49).
+Part C: fitted pairs overlap 0.997 (8x8) / 0.991 (6x6), same translation-averaged irreps (that average holds ~2% of ||f||^2), f_2 - f_1
+d-enriched; |de_y - de_x| on R1 bonds follows the across-bond change of lam P_2/P_1 (Spearman 0.52 phase, 0.42 modulus).
+Cost: r1prime_prediction ~95 core-h total (A/B ~59, C' ~36 stopped at R5). Reduce 17941240 pending DependencyNeverSatisfied (2 tasks died rc
+132 on v2-only node th-cl-uv201): needs a PI-approved cancel.

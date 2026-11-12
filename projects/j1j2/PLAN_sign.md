@@ -1324,6 +1324,16 @@ T-STRONG STAGE 0 (lead GO 2026-11-12, start now; registered before any number; <
  Prediction (angle lead): flip rate above d -5 below 0.5% [70%]; gate passes [45%].
  STAGE 0 STOPPED 2026-11-12 before compute: no sign-step constants (alpha, E) for s306 exist (consts_s306.json has only w); lead: one constant set only, from the headline VMC job (headline_s306/scripts/vmc.sbatch, rerun by the Pfaffian angle on theorie A40, ~10 A40-h), installed at headline_s306/inputs/consts_s306_p1.json; the lead sends path + sha when its gate passes; stage 0 waits.
  Lead's follow-up to Astra (after cj-c9a7d4cfa462 lands): can the paired estimator grade a p=1 guide (Pfaffian headline B_k + p=1 vs B_0' + p=1)?
+ASTRA ON THE PAIRED ESTIMATOR (cj-c9a7d4cfa462, /scratch/a/A.Otaifi/astra/paired_fn/ASTRA_paired.md, read): A-only path reweighting is INVALID for sign
+ changes (B opens bonds absent from A's walk; exact counterexample). Recommended: one joint run of two COUPLED populations, each with its own configuration,
+ rates, weights and multinomial resampling marginal: per bond b, both arms swap at min(r_A, r_B), A-only / B-only at the remainders; at block ends a maximal
+ categorical coupling of the two parent laws by configuration. Cut formula Q_A is a derivative/bound, not the finite difference (FNI: Q -7.84e-9 vs
+ Delta -1.25e-8); measuring both E_L on A's walk misses a first-order response term. Efficiency: sigma^2 x GPU-h = c_pair (S_A + S_B - 2 S_AB); reaching
+ 2.5e-6 at the old budget needs kappa_work <= 0.20 (rho >= 0.80 at equal cost); book NO speedup until a pilot measures rho. Staged validation:
+ rows/finite propagators -> exact 6x6 calibration (>= 4 ensembles, sigma <= |Delta|/3) -> systematics (M, dtau, memory) -> broken versions miss
+ (wrong ratio, omitted V_sf) -> 8x8 pilot (owner's OK). Astra 80% that this is the right estimator to test, LOW that it reaches 2.5e-6 at the old budget.
+BUILD (takeover decision, lead GO): shared tool ansatz/code/paired_fn/ (README, Astra's interface section 5), validation stages 1-4 on CPU (<= 48 core-h),
+ worker; 8x8 pilot only after I read stage 4.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

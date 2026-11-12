@@ -1686,3 +1686,4 @@
 - 2026-11-12 sign angle: T-STRONG stage 0 registered and started (lead GO); all FN held until the paired estimator passes; (3) not run.
 - 2026-11-12 sign angle T-STRONG stage 0 stopped before compute: no s306 alpha/E; asked the lead.
 - 2026-11-12 10:23 STEP BACK (PI: jumping ahead?): REFINE FIRST: ruler (paired estimator) -> size half (R1-R3) + sign half (T-STRONG stage 0) -> full loop. PLAN 'STEP BACK 2026-11-12'.
+- 2026-11-12 10:23 lead: s306 p=1 constants needed by sign T-STRONG stage 0 and the headline; one set rule: Pfaffian angle to run the headline VMC job on a theorie A40 now (~10 A40-h) and install consts_s306_p1.json once; 4222358 cancel asked of the PI (two producers would write two sets).

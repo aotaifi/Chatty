@@ -1,0 +1,180 @@
+# Change 1 (workflow review 2026-11-12): edits to files outside git, as unified diffs (old -> new). Revert with patch -R.
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -61,7 +61,8 @@
+ contribution; the same idea stated flatly is noise. Keep the register
+ of a careful colleague: "breakthrough" or "clearly" need a number behind them, and your
+ enthusiasm should not rise because the PI liked your last idea. Drop a refuted idea in a
+-sentence, but only once it fails the kill test written before the run; any other failure
++sentence, but only once it fails the kill test written before the run and you have diagnosed why
++the test fired (a run too short for its predicted learning curve is not a refutation); any other failure
+ leaves it open, with a line on whether the method or its implementation failed and the
+ cheapest untried variant with its cost. Closing a major angle is the PI's call; you
+ recommend it. (October 2026: percolation, the ansatz search and
+@@ -96,9 +97,9 @@
+ test; the next step must change that term, and a new test that does not is drift, not
+ progress. Do not follow whichever number moved last. Reason with the PI on paper first and run
+ only what the equations leave open. (October 2026: the j1j2 loop drifted for weeks through
+-Lanczos steps and seven ansatz candidates while the cause was one term, a copy loss that
+-weighs errors by psi^2 where the fixed-node energy weighs pairs across the node; an hour of
+-derivation and a seconds-long exact check found it.)
++Lanczos steps and seven ansatz candidates while the cause sat in one term, the log of a
++vanishing amplitude near the node, which an afternoon's derivation found; the first written
++diagnosis, a psi^2-weighted copy loss, was itself wrong on reading the code.)
+ 
+ **The critical path.** Rigour without a finishing rule turns into thorough wandering: every
+ check is locally defensible, so drifting never feels like drifting. Name the one step that
+@@ -137,7 +138,9 @@
+ angle leads run on Opus at medium effort, workers on Sonnet at medium effort. You choose the
+ model and effort of each worker and angle lead its task needs; when a design or derivation of
+ your own needs more thinking, ask the PI to raise your effort with `/effort`. This is firm: the lead does not write
+-launchers, stage run directories, run `sbatch` or extract in bulk, however small the edit looks.
++launchers, stage run directories, run `sbatch` or extract in bulk, however small the edit looks. One exception: when the permission
++system refuses a worker's submission of a launcher you have read and approved, submit it yourself
++and record that you did.
+ (October 2026: six arrays staged inline in two days crowded the physics out of the lead's
+ context.)
+ 
+@@ -343,7 +346,8 @@
+   `delta_today.md`. The manifest takes each age and owner from `stat` on the real
+   filesystem path (not .git object dates, not a synced copy) and lists nothing under
+   7 days old or referenced by a running job or angle, without the PI's explicit say-so;
+-- editing production source;
++- editing production source on its main line (editing it on a branch or worktree is pre-approved;
++  merging back is not);
+ - spending beyond the project's stated budget;
+ - emailing anyone else.
+ 
+--- a/j1j2/CLAUDE.md
++++ b/j1j2/CLAUDE.md
+@@ -10,15 +10,14 @@
+ | dated log, append only | delta_today.md -> Chatty/organize/projects/j1j2/delta_today.md |
+ | project files (repo worktree, edit and commit HERE) | /project/theorie/a/A.Otaifi/Chatty/organize (= ~/Chatty-organize), subdir projects/j1j2 (link: repo/) |
+ | main checkout (do not edit; another agent's state) | /project/theorie/a/A.Otaifi/Chatty |
+-| repo rules (research rules 1-9, push procedure) | Chatty/organize/CLAUDE.md, AGENTS.md |
++| rules | repo/CLAUDE.md (the PI's agreement, research rules included); Chatty/organize/CLAUDE.md (git, cluster, layout) |
+ | everything tried, with deciding numbers | repo/TRIED_IDEAS.md (grep before proposing anything) |
+ | root problem and its three issues | repo/STORAGE_PROBLEM.md |
+ | equation board | https://claude.ai/artifact/LwUGJoTxGJku3k6mTVgMVP |
+-| angle plans | repo/PLAN_ansatz.md, repo/PLAN_conceptual.md |
++| angle plans | repo/PLAN_<angle>.md, open ones listed in PLAN.md 'Angles' |
+ | run data | Chatty/runs/<name> (old paths: Chatty/runs/PATHS_MOVED.tsv); /scratch/a/A.Otaifi/{ansatz_runs,l8,local_product,gfmc_m13b,rbmpp8,rbmppL} |
+-| handoff notes | Chatty/organize/handoffs/ |
++| handoff notes | repo/handoffs/ (notes before 2026-11-12 also in Chatty/organize/handoffs/) |
+ | June predecessor | Chatty/sign_prob/ |
+ 
+-## State (2026-10-27)
+-Root problem agreed with the PI: storing the fixed-node state in a network near the nodes (STORAGE_PROBLEM.md).
+-Test T-Lfix (pair loss vs log loss, exact 4x4 then 6x6) pre-registered there.
++## State
++In PLAN.md only (Cockpit, Running, Queue); this file holds no state.
+--- a/skills/cluster-jobs/SKILL.md
++++ b/skills/cluster-jobs/SKILL.md
+@@ -15,10 +15,14 @@
+     stated "X h against Y h". If it does not fit, cut samples.
+   - Disk: apparent output per job times jobs, against `lfs quota -h -u $USER /scratch` and
+     `/scratch/a/A.Otaifi/QUOTA_ALERT.txt` (`quota -s` does not work here).
+-  - Where (PI, 2026-10-22): GPU runs go to Paderborn PC2 Otus, partition `gpu_h100` (VPN + `ssh -o HostName=login4
+-    paderborn`; setup, account and venv in /project/theorie/a/A.Otaifi/paderborn/README.md); there an H100 ran our
+-    exact 6x6 solves 4x faster than an RTX 2080 Ti and 12x faster than an A40 slice. CPU-heavy runs go to the
+-    workstations ws1/ws2, whose CPUs are stronger than the cluster nodes. The theorie Slurm cluster is the fallback.
++  - Where (PI, 2026-10-22, amended 2026-11-12): a GPU job goes on the card that finishes first. Paderborn PC2 Otus,
++    partition `gpu_h100` (VPN + `ssh -o HostName=login4 paderborn`; setup, account and venv in
++    /project/theorie/a/A.Otaifi/paderborn/README.md), is the default when its estimated start is within about a day;
++    there an H100 ran our exact 6x6 solves 4x faster than an RTX 2080 Ti and 12x faster than an A40 slice. When a queue
++    blocks, check idle cards (`sinfo -p cip,inter -o '%N %G %t'`) and `sbatch --test-only` start times and decide on the
++    spot from known speeds (no new probes): a slower card that starts now beats a fast one that starts in a day. CPU-heavy
++    runs go to the workstations ws1/ws2, whose CPUs are stronger than the cluster nodes. The theorie Slurm cluster is the
++    CPU fallback.
+   - CPU shows ~50% because `--hint=nomultithread` gives each rank a full core; keep it.
+ - **No placement flags on inference.** `--nodes=1` once cost 48x on one job and nothing on
+   another; test placement by running both ways.
+--- a/memory/project_j1j2_state_and_records.md
++++ b/memory/project_j1j2_state_and_records.md
+@@ -1,6 +1,6 @@
+ ---
+ name: project-j1j2-state-and-records
+-description: "j1j2 (J1-J2 FN/Krylov loop): where every record lives (it is fragmented), how the lead talks to the angles, and a pointer to the current state in PLAN.md"
++description: "j1j2 (J1-J2 FN/Krylov loop): which files to read first, how the lead talks to the angles; pointers only, the state is in PLAN.md"
+ metadata:
+   node_type: memory
+   type: project
+@@ -8,21 +8,14 @@
+   modified: 2026-11-12T06:22:29.529Z
+ ---
+ 
+-**Where the records live (check all; PLAN.md's dead-end list is incomplete).**
++**Where the records live (pointers only; no state here, it expires).**
+ - Repo worktree: /project/theorie/a/A.Otaifi/Chatty/organize/projects/j1j2 (= ~/Chatty-organize, branch j1j2-organize, push HEAD:main; never edit ~/Chatty directly).
+-  Current state: PLAN.md (Cockpit, Running, Queue, STEP BACK lines); dated log: delta_today.md; agreement: CLAUDE.md (points 1-8); LESSONS.md (shared with the angles, read before designing a test).
+-  History/index: TRIED_IDEAS.md (everything tried, with deciding numbers), RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md, STORAGE_PROBLEM.md, FOUNDATIONS.md, experiments/compress_6x6/README.md, docs/reports/, ../../handoffs/.
+-- Angle plan files: PLAN_pfaffian.md (loop rounds R1-R3, headline arms), PLAN_sign.md (sign loop T-BAD, T-STRONG, paired estimator).
+-- Run data: /project/theorie/a/A.Otaifi/runs/j1j2/ (new, from 2026-11), Chatty/runs/<name> (moved 2026-10-24), /scratch/a/A.Otaifi/{rbmpp8,rbmppL,ansatz_runs,l8,...}; Paderborn /scratch/hpc-prf-ppdmrg/hpcalot/.
+-- June predecessor: Chatty/sign_prob/, see [[project_nqs_guided_fixed_node_qmc]].
++  Read first: CLAUDE.md (the agreement, research rules included) and PLAN.md (the state: Cockpit, Running, Queue). LESSONS.md before designing a test;
++  TRIED_IDEAS.md before proposing anything (it indexes every older record file; PLAN.md's dead-end list is incomplete). Angle plans: PLAN_<angle>.md, open ones listed in PLAN.md 'Angles'.
++- Paths and run-data locations: the table in /project/theorie/a/A.Otaifi/j1j2/CLAUDE.md. June predecessor: Chatty/sign_prob/, see [[project_nqs_guided_fixed_node_qmc]].
+ 
+ **Talking to the angles.** Session messaging to the Pfaffian angle often fails (hook timeout, desktop app disconnected); then use
+ projects/j1j2/MESSAGE_BOARD_lead_pfaffian.md (append `YYYY-MM-DD HH:MM LEAD -> PFAFFIAN: ...`) and arm a 3-min background wait for new `-> LEAD` lines.
+ 
+-**State (2026-11-12, short; PLAN.md is authoritative).** Retrained 8x8 RBM+PP base s306/s307: full-projection VMC -0.49891 on 2 seeds
+-(below Nomura-Imada -0.498886, above Varbench -0.498963). Its FN p=0 ('simple' guide) -0.498878(3): does not beat published; the base's
+-remaining error looks like sign error. Running: loop R1-R3 prep (Pfaffian angle), base + p=1 FN arm (cont), sign angle T-STRONG design and a
+-shared paired (correlated-sampling) FN estimator. Old-base loop round: 2.7 sigma below its competitor, kill fired.
+-
+ **Why:** the PI said "we keep missing stuff" after ideas were re-proposed that had already been tested.
+-**How to apply:** first tool call of any proposal = grep TRIED_IDEAS.md and the files above ([[feedback-check-fragmented-records-before-proposing]]); read PLAN.md before any j1j2 answer.
++**How to apply:** first tool call of any proposal = grep TRIED_IDEAS.md ([[feedback-check-fragmented-records-before-proposing]]); read PLAN.md before any j1j2 answer.
+--- a/memory/feedback_check_fragmented_records_before_proposing.md
++++ b/memory/feedback_check_fragmented_records_before_proposing.md
+@@ -1,6 +1,6 @@
+ ---
+ name: feedback-check-fragmented-records-before-proposing
+-description: "j1j2 history is split across many files; grep TRIED_IDEAS.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md before proposing any idea"
++description: "j1j2 history is split across many files; grep TRIED_IDEAS.md (the index of all of them) before proposing any idea"
+ metadata:
+   node_type: memory
+   type: feedback
+@@ -8,7 +8,7 @@
+   modified: 2026-10-27T09:03:55.701Z
+ ---
+ 
+-Before proposing a method in j1j2 (Chatty/organize/projects/j1j2), grep projects/j1j2/TRIED_IDEAS.md (index built 2026-10-27), and if that is missing or silent, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md, RESEARCH_MAP.md and `git log --all --grep`. PLAN.md's dead-end list is NOT complete.
++Before proposing a method in j1j2 (Chatty/organize/projects/j1j2), grep projects/j1j2/TRIED_IDEAS.md (the index built 2026-10-27 from STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md, RESEARCH_MAP.md and the rest; those files may move to archive/), and if it is silent, `git log --all --grep`. PLAN.md's dead-end list is NOT complete.
+ 
+ **Why:** on 2026-10-27 a step-back proposed training the guide on its own lattice fixed-node energy; the PI pointed out it had been tried. It had: 2026-10-01/02 (STATUS.md, 8x8 mixed E_FN force/QGT, physical E_FN worse by +0.046). The same day the "local Krylov" idea had also been tested before (RESEARCH_MAP 2026-10-13, Chatty/runs/local_krylov). Both cost worker time and the PI's trust.
+ 
+--- a/memory/feedback_equations_before_new_ideas.md
++++ b/memory/feedback_equations_before_new_ideas.md
+@@ -12,11 +12,11 @@
+ method, ansatz or test. Keep that term as the root question until it is fixed or proven unfixable.
+ 
+ **Why:** PI 2026-10-27: the j1j2 project drifted for months (Lanczos steps, seven ansatz candidates, pre-images) while
+-the root was one line: copy losses weigh errors by psi^2, the fixed-node energy weighs pairs across the node by the
+-large side psi(y)^2 (r - r*)^2 / r, and log-output networks cannot make the near-node dip. An hour of derivation
+-and a seconds-long exact 4x4 check found it (handoffs/2026-10-27-fn-error-weights.md). I kept choosing the next
+-testable idea over the one equation that explained the last failure.
++the cause sat in one term, the log of a vanishing amplitude near the node, which an afternoon's derivation found
++(projects/j1j2/CLAUDE.md). The first written diagnosis (copy losses weigh errors by psi^2) was itself wrong on reading the
++code (projects/j1j2/STORAGE_PROBLEM.md, 'Independent review 2026-10-27'), which is why a derivation that gates a run gets
++reviewed (agreement point 6). I kept choosing the next testable idea over the one equation that explained the last failure.
+ 
+ **How to apply:** for each failed test, state in one equation which term produced the miss, put it on the
+ equation board ([[reference-j1j2-equation-board]]), and judge the next step by whether it changes that term.
+-Related: [[feedback-reread-before-closing]], CLAUDE.md research rules 1 and 8.
++Related: [[feedback-reread-before-closing]], projects/j1j2/CLAUDE.md points 1-2, root CLAUDE.md §1 'Diagnose with an equation'.
+--- a/memory/MEMORY.md
++++ b/memory/MEMORY.md
+@@ -2,9 +2,9 @@
+ - [Consolidate own project only](feedback_consolidate_own_project_only.md) — /consolidate-memory in a lead session touches only that project's entries; dir is shared
+ 
+ ## j1j2
+-- [j1j2 state and records](project_j1j2_state_and_records.md) — where every j1j2 record lives; read before any j1j2 answer
++- [j1j2 state and records](project_j1j2_state_and_records.md) — which j1j2 files to read first (pointers only); read before any j1j2 answer
+ - [j1j2 equation board](reference_j1j2_equation_board.md) — artifact LwUGJoTxGJku3k6mTVgMVP; add every equation discussed
+-- [Check fragmented j1j2 records first](feedback_check_fragmented_records_before_proposing.md) — grep TRIED_IDEAS/STATUS/ledger before proposing
++- [Check fragmented j1j2 records first](feedback_check_fragmented_records_before_proposing.md) — grep TRIED_IDEAS.md (the index) before proposing
+ - [Equations before new ideas](feedback_equations_before_new_ideas.md) — on a failure, write the failing term as an equation first
+ - [NQS-guided fixed-node QMC (June)](project_nqs_guided_fixed_node_qmc.md) — June sign_prob predecessor; portable sign nets negative
+ 

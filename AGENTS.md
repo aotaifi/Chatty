@@ -2,7 +2,10 @@
 
 This repository is the durable source of truth for long-running research work.
 
-## Long-running research jobs
+## Long-running research jobs (ChatGPT loop only)
+
+This section and the watcher emails are for the ChatGPT agent on the Mac. Claude and Codex sessions follow
+`/project/theorie/a/A.Otaifi/CLAUDE.md` §5 and `/project/theorie/a/A.Otaifi/WORKER.md` instead.
 
 Do not keep a ChatGPT turn open merely to wait for a simulation, benchmark,
 download, or other long-running Mac process.
@@ -27,15 +30,9 @@ See `tools/local_loop/README.md` for the watcher interface.
 
 ## J1-J2 project
 
-1. Read `projects/j1j2/STATUS.md` first.
-2. Read `projects/j1j2/FAILED_ROUTES.md` before reviving an old idea.
-3. Treat files on this Mac as persistent working state; do not rely on a chat sandbox.
-4. Keep decisive numerical outputs under `projects/j1j2/results/`.
-5. Keep reproducible tests under `projects/j1j2/experiments/` or `scripts/`.
-6. After a decisive result, update STATUS.md before ending the session.
-7. Record why a route failed, not just that it failed.
-8. Do not overwrite established results without evidence.
-9. Cluster access is intentionally not configured here yet.
+Read `projects/j1j2/CLAUDE.md` and `projects/j1j2/PLAN.md` first; `PLAN.md` is the current state. Everything tried is
+indexed in `projects/j1j2/TRIED_IDEAS.md`; grep it before reviving an old idea. Do not overwrite established results
+without evidence, and record why a route failed, not just that it failed.
 
 ## Where everything lives now (changed 2026-10-24, PI decision: one Chatty, no clutter)
 

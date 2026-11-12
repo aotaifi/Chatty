@@ -3,7 +3,7 @@
 HOW TO USE (5 lines)
 1. Before proposing anything, `grep -i -E "key|words|synonyms" projects/j1j2/TRIED_IDEAS.md` (try the plain name AND the file names: E_FN, HF force, write-back, refit, re-base, hop-aware, bond field, KKT, LP, pre-image, ...).
 2. If a row matches, read its pointer (file + section or commit) before arguing; PLAN.md "Dead ends" is NOT complete, this index is wider.
-3. A verdict "fails" is only as good as its cause column; "inconclusive (cause: X)" means the idea is still open once X is fixed (CLAUDE.md rule 1).
+3. A verdict "fails" is only as good as its cause column. A cause is a term in an equation or a named structural reason; a row whose cause is "undertrained", "budget", "seed scatter", "Adam" or "capacity" is "not understood", and no variant runs until it is (CLAUDE.md point 2).
 4. Section "Contradictions" lists ideas the source files disagree on; do not trust either side without the raw file.
 5. Paths are relative to projects/j1j2/ unless absolute. Energies per site, dE = E - E0, unless "total". "no number found" = I could not pin a deciding number in the sources read. After any new test, append a row here.
 

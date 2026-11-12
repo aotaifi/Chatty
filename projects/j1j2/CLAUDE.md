@@ -66,7 +66,9 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
 2. **A cause is a mechanism** (replaces Chatty rule 1's "inconclusive (cause: X)"). X is a term in an equation or a
    named structural reason. "Undertrained", "budget", "seed scatter", "Adam", "capacity" are not causes; a row
    carrying one is "not understood", and no variant of that idea runs until it is. Record: these labels kept twelve
-   variants of one idea alive without a second look at the idea.
+   variants of one idea alive without a second look at the idea. A fired kill test still gets its diagnosis before
+   its verdict (LESSONS.md, PI 11-08), and a longer or retuned run is allowed only when the learning curve
+   predicted from the step's equations (point 1) puts the pass beyond the kill point (T-IW crossed at ~15k steps).
 
 3. **Step back counts mechanisms, not names** (sharpens root §1 "Stepping back"). Two failed variants resting on one
    mechanism fire the step-back, whatever they are called. TRIED_IDEAS.md carries a mechanism column.
@@ -102,10 +104,29 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    problem is under 70%, the lead consults Astra (Codex gpt-6-astra, xhigh, workspace-write so it can run its own CPU checks under /scratch/a/A.Otaifi/astra/,
    no jobs, no deletions; codex-jobs MCP) with the question and the
    files but without its own conclusion, then decides and records both. The decision stays with the lead. Record: Astra's first
-   review (ansatz/REVIEW_astra_pfaffian_2026-10-28.md) caught five overclaims in one pass.
+   review (ansatz/REVIEW_astra_pfaffian_2026-10-28.md) caught five overclaims in one pass. Which reviewer: Astra for
+   pivotal calls under 70%; otherwise a worker given the question without our view, derivations that gate a run
+   included (point 6). The "Opus design partner" of the old Chatty rule 3 is retired.
 
 ## What we kept
 
 Evidence (§4), statistics and jobs (§5), permissions (§6), limits (§7), communication (§3), workers and angles (§1)
 of the root file apply as written: a worker still runs every run, a number still carries its path, the PI is still
 asked only what only the PI knows.
+
+Folded in from the Chatty CLAUDE.md research rules (2026-11-12; "Chatty rule N" above uses their old numbers, the
+replaced ones are 1, 3, 4, 8):
+- Check the method before relaying a result: for every worker verdict read the run setup (optimiser: SR, minSR or
+  natural gradient for NQS, not Adam; loss converged; learning rates; sample sizes; the state-of-the-art method used)
+  and re-derive load-bearing numbers from the raw files (rule 2).
+- Fair comparisons only: same-capacity controls at equal cost, published baselines (e.g. a Lanczos step + variance
+  extrapolation), calibrated referees; withdraw numbers that rest on an uncalibrated estimator (rule 5).
+- Check the literature before any "state of the art" claim (results/literature/J1J2_BENCHMARKS_COST.md) (rule 6).
+- Independent adversarial reviews at decision points: the reviewer finds the loopholes, we fix them (rule 7, point 6).
+- Viability: a result matters if it scales to sizes where others have no result, or is cheaper than brute-force NQS
+  at equal accuracy, or repairs other people's networks (rule 9).
+- Never wave a risk through as "one catch": say what could break, how large (measured), how it is monitored, and the
+  test that settles it, written before the run.
+- Before proposing any idea, grep TRIED_IDEAS.md (built from every older record file; PLAN.md's dead-end list is not
+  complete), and add a row whenever a test closes.
+- Handoff notes go to projects/j1j2/handoffs/ only.

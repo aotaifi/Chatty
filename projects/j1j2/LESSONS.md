@@ -2,10 +2,10 @@
 
 Read before designing any test; add a row when a lesson cost a run or a wrong number. One line each: lesson | what it cost | record.
 File it under its topic (no dated blocks); if it repeats a row, sharpen that row instead. Each angle adds its own; nobody deletes
-another's row (merging duplicates keeps every number and record). A lesson that becomes a firm rule also goes into CLAUDE.md.
+another's row (merging duplicates keeps every number and record). A lesson that becomes a firm rule moves into CLAUDE.md, and its row here shrinks to a pointer (rule, cost, record).
 
 ## First: predict from the equations
-- Every step is a known function, the optimiser and fit included: derive what it must do before running (tangent-space share = what the network can store, Gauss-Newton spectrum along the target = how fast), find the missing ingredient by asking what the physics requires (the hexagon move), predict, then run; 'the learning side is empirical' is a label, not a cause | weeks of training variants labelled empirical; the one tangent check (Theta v2, 0-4%) found the missing direction and two PPs stored r 0.49 vs 0.05 | PI 2026-11-12; CLAUDE.md point 1
+- Predict every step from its equations, the optimiser and fit included (rule: CLAUDE.md point 1) | weeks of training variants labelled empirical; the one tangent check (Theta v2, 0-4%) found the missing direction and two PPs stored r 0.49 vs 0.05 | PI 2026-11-12; CLAUDE.md point 1
 - A fired kill test is not a verdict: diagnose (budget, tweak), try cheap variants, ask Astra, then decide | T-IW crossed d only after ~15k steps; a 3k kill would have killed it | PLAN_sign "T-IW RESULT"; PI 11-08
 
 ## Objectives, targets and weights

@@ -1,40 +1,18 @@
 # CLAUDE.md — working rules for Claude on the Chatty repository
 
-Read projects/j1j2/RESEARCH_MAP.md first for the state of the J1-J2 project; AGENTS.md holds the other agent's (ChatGPT loop) rules.
-
-## Research rules (from the PI)
-1. **No failure without an understood cause.** When something does not work, ask why, using our own reasoning and the literature, and try a better method. Declare a route failed only when the cause is pinned to a conceptual limit that cannot be fixed. Until then, label it "inconclusive (cause: X)".
-2. **Check the method before relaying a result.** For every worker verdict, read the run setup: optimizer (for NQS use SR/minSR/natural gradient, not Adam), whether the loss had converged, learning rates, sample sizes, whether the state-of-the-art method was used. Re-derive load-bearing numbers from the raw files.
-3. **Think before testing.** Design discussion (with an Opus design partner) and the literature first; small decisive tests are fine to inform a decision; no blind test campaigns.
-4. **Pre-register pass/fail criteria** in the repo before a decisive run.
-5. **Fair comparisons only:** same-capacity controls at equal cost, published baselines (e.g. a Lanczos step + variance extrapolation), calibrated referees. Withdraw numbers that rest on an uncalibrated estimator.
-6. **Check the literature before any "state of the art" claim** (results/literature/J1J2_BENCHMARKS_COST.md).
-7. **Independent adversarial reviews** at decision points. The reviewer's job is to find the loopholes, ours is to fix them, not to give up.
-8. **Keep the project's core idea alive.** When a test fails, diagnose and fix rather than drifting to a different method. Diagnose means: write the failing term as an equation on the j1j2 equation board (artifact https://claude.ai/artifact/LwUGJoTxGJku3k6mTVgMVP) before any new method or test (2026-10-27: the root of the refit tax was one loss-weighting term, found by derivation after weeks of new methods).
-9. **Viability:** a result matters if it scales to sizes where others have no result, or is cheaper than brute-force NQS at equal accuracy, or works as an add-on that repairs other people's networks.
-
-## Working style with the PI
-- Be the project lead: own opinions, disagree when warranted, organise the discussion, keep RESEARCH_MAP.md current. Not "Understood" — discuss.
-- Concise: lead with the result; 3-line answers by default; full detail only when asked or when it is pedagogically needed.
-- Figures presentable on the first try (few curves, points + thin lines, panel letters, log10-exponent axes, no overlaps); at most two plots when asked for a quick look.
-- Explain plainly when asked; avoid jargon or define it.
-- Status/results: for each run, describe the steps actually done in plain words (guide, what was computed, trained, measured), then the result in one line. Define every technical term in the same message the first time it appears; never rely on earlier explanations.
-- Never wave a risk through as "one catch" or "works with a minor edit". State each risk rigorously: what could break, how large it is (measured, not guessed), how it is monitored, and the test that settles it, written down before the run.
+The J1-J2 project's rules and state: read projects/j1j2/CLAUDE.md (the PI's agreement; it also holds the research rules
+that used to stand here, folded in 2026-11-12) and projects/j1j2/PLAN.md first. Rules for all the PI's projects:
+/project/theorie/a/A.Otaifi/CLAUDE.md. AGENTS.md is the ChatGPT-loop agent's file; only its section "Where everything lives now"
+applies to Claude.
 
 ## Operations
 - Work in the git worktree ~/Chatty-organize (branch j1j2-organize); never edit ~/Chatty directly (another agent's uncommitted state). Commit, `git fetch && git merge --ff-only origin/main`, `git push origin HEAD:main`, `git -C ~/Chatty merge --ff-only origin/main`. Always push. No files > 5 MB in git.
-- Cluster ws1 (LMU theorie; if ws1 = th-ws-7010m52 refuses SSH, use th-ws-7010m53, m47 or m42: same home, /project and Slurm; poll sparingly, never `until ssh ... pgrep -f` loops): full A40 `--gres=gpu:a40:1` (cip,inter) or RTX 2080 Ti `--partition=inter --gres=gpu:rtx2080ti:1`; V100 fails; a40-NNgb vGPU slices work only with the jax 0.8.2 venv (projects/j1j2/cluster/A40_SLICES_HOWTO.md; often idle); ViT at full fp32. Large files on /project, not /home. Prefer Paderborn H100s when available (login1 if login2 is down).
-- Never run chatty-slurm-watch or tools/local_loop watchers; workers poll their own jobs. Never print credentials.
-- Workers: Sonnet for routine jobs, Opus for design-heavy ones; brief them with the state-of-the-art method and ask for convergence evidence.
+- Cluster ws1 (LMU theorie; if ws1 = th-ws-7010m52 refuses SSH, use th-ws-7010m53, m47 or m42: same home, /project and Slurm; poll sparingly, never `until ssh ... pgrep -f` loops): full A40 `--gres=gpu:a40:1` (cip,inter) or RTX 2080 Ti `--partition=inter --gres=gpu:rtx2080ti:1`; V100 fails; a40-NNgb vGPU slices work only with the jax 0.8.2 venv (projects/j1j2/cluster/A40_SLICES_HOWTO.md; often idle); ViT at full fp32. Large files on /project, not /home. GPU placement: the card that finishes first (cluster-jobs skill; Paderborn login1 if login2 is down).
+- Never run chatty-slurm-watch or tools/local_loop watchers; whoever submits a job owns it and waits without polling
+  (/project/theorie/a/A.Otaifi/WORKER.md, root CLAUDE.md §5). Never print credentials.
 - Delete run data on ws1 only if the quota is critical; other campaigns' data: ask their owner session (e.g. ruby_runs).
 
 ## Directory layout changed 2026-10-24
 Read the section "Where everything lives now" in AGENTS.md first. Short form: all former `chatty_*` dirs are `Chatty/runs/<name>/`,
 `~/chatty_admin` is `Chatty/admin/` (the "scripts in ws1:~/chatty_admin" above means that directory now), and this worktree lives at
 `Chatty/organize/` with `~/Chatty-organize` kept as a symlink. Old-to-new paths: `Chatty/runs/PATHS_MOVED.tsv`.
-
-## Before proposing any idea (added 2026-10-27; ideas were re-proposed twice in one day)
-grep `projects/j1j2/TRIED_IDEAS.md` (index of ~180 tried ideas with deciding numbers and pointers). PLAN.md's dead-end list is not
-complete; the records are split across PLAN.md, RESEARCH_MAP.md, STATUS.md, AMPLITUDE_LEARNING_LEDGER.md, FAILED_ROUTES.md,
-delta_today.md, experiments/compress_6x6/README.md and the June predecessor Chatty/sign_prob/. Add a row to TRIED_IDEAS.md whenever
-a test closes.

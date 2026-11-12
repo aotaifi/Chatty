@@ -49,3 +49,10 @@ Each angle adds its own; nobody deletes another's row. A lesson that becomes a f
 - Check a peer's units: a parenthesised error off by 10x turns a 1.2-sigma pass into a 12-sigma miss | c3 notation | PLAN_pfaffian c3
 - A peer's "being submitted now" is not a submission: arm a wait on the job id or progress file in the same turn | 8x8 R1 fit never submitted, ~2 days lost (11-06 -> 11-08) | delta_today 11-08
 - A configuration key must fit the lattice: pp2_lemma dedup keys by one uint64, so it collides above 64 sites (14x14 collision shown) | caught before any 10x10 use | Astra cj-852432069699, arch_tied/ANSWER.md
+
+## Added by the project lead 2026-11-12
+- Two jobs with the same chain table and seeds are ONE sample; a gate pooling them halves the error | 11-10 headline read 3.3 sigma, true 2.7 (prodB = prodBx byte-identical) | delta_today 11-11; headline_p1/prodB/README_DUPLICATE.md
+- Paderborn cont start estimates are days off in both directions; a 'backup' copy of a run must use distinct seeds or be cancelled | 4186183, 4203776 started days early | delta_today 11-11/12
+- FN chains started from |B|^2 draws still settle by ~1e-5 after a 50-block (5 tau) burn; use 150 blocks + a halves check, and never compare arms with different burns | base arm 4222088 halves -1.2e-5 in 3/4 chains | PLAN_pfaffian 'R1' GRADE DESIGN'
+- Same seeds and starts do not pair branching FN runs: populations decorrelate within a few blocks (block corr ~0.04; paired 3.8e-6 vs unpaired 3.6e-6) | T-NODE | ASTRA_node.md s1; astra/paired_fn/ASTRA_paired.md
+- One constant set (alpha, E, w) per base, produced once by one job with an install guard; a second producer must not run | s306 p=1 constants nearly computed twice (Paderborn + sign angle) | delta_today 11-12

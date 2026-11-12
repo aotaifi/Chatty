@@ -599,26 +599,25 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-11 migrate; lead-owned unless noted; every job has a watcher writing VERDICT lines to delta_today.md)
-- 8x8 retrained base (lead worker, now released): params rb8_retrain/s306 (sha 45fa54e6), s307 (b86a0f36); QUOTABLE evals
-  (experiments/rbmpp_6x6/m13_8x8_retrain/eval_combine.sh): simple -0.498838(2) / -0.498841(2); FULL s306 -0.49891(1.4e-6) (2 chains,
-  rb8_retrain/s306/ev_full_5{1,2}); s307 full replica DONE (A40 17903489/17903491, seeds 55/56, eval_combine_a40.sh): -0.4989096(14) QUOTABLE, chains chi2/dof 0.37,
-  raw series flat (s307/quotable_full_a40.png); s306 - s307 = 3.9e-7 (0.2 sigma). Retrained base full projection = -0.49891 (2 seeds),
-  2.3e-5 below Nomura-Imada. Backup Paderborn cont 4203776/4203777 (ev_full_5{3,4}): cancel asked of the PI 11-11.
-  Published bars: Nomura-Imada RBM+PP -0.498886(1), Varbench -0.498963(2).
-- BASE ARM FN p=0 DONE (Paderborn 4222088, runs/j1j2/base_s306_p0/prod, 0.85 H100-h express): B_0' (s306 'simple', own sign) E_FN p=0
-  -0.4988780(27) QUOTABLE (4 chains chi2/dof 0.14, fifths ok, raw flat): 4.0e-5 below its VMC -0.498838 (rb8_prod: 8.2e-5), 3.2e-5 ABOVE the
-  full-projection VMC -0.49891, 8.5e-5 above Varbench -0.498963. Predictions missed high (lead -0.49894..7 withdrawn; angle -0.49892..6).
-  Reading (hypothesis): the better base's error is mostly in its sign -> p=0 and fixed-sign rounds have less headroom; p=1 / sign decide.
-  Next: headline B arm B_0' + p=1 FN staged by the angle (cont), launcher to lead.
-- Pfaffian angle (local_d60cd248, PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"; brief proposals/2026-11-11_R123_retrained_brief.md):
-  adding the 'simple' projection to the pipeline (code copies, identity test; ~2x cost); then R1-R3 at fixed own sign, bare grade per
-  round, kill if round gain < 0.5 x previous; R2 class from the K=3 test (A40 17871864, running); headline only if rounds accumulate;
-  ceiling 40 H100-h. Also queued: pp2_lemma multi-word dedup key (PI OK). c=0 control: identity bound (fit A40 17852869).
-- Sign angle (local_3026e44f, PLAN_sign.md): T-BAD (Marshall start, rounds 2-3 at 8x8, <= 20 A40-h) and T-JOINT (with Astra);
-  S_-7 label route parked; T-NODE killed.
-- Lead <-> Pfaffian fallback channel: MESSAGE_BOARD_lead_pfaffian.md (when session messaging fails, e.g. desktop app disconnected).
-- /scratch 958.7 GiB of 972.8 soft / 1024 hard; lead watch at 990 GiB (re-arm after a clear).
+## Running (2026-11-12 migrate; lead in TAKEOVER since 11-11 23:59; every job has a watcher writing VERDICT lines to delta_today.md)
+- 8x8 retrained base DONE: s306 (sha 45fa54e6) / s307 (b86a0f36). Simple VMC -0.498838(2) / -0.498841(2); FULL projection s306 -0.4989092(14)
+  (ev_full_5{1,2}), s307 -0.4989096(14) (A40 ev_full_5{5,6}, eval_combine_a40.sh), 0.2 sigma apart. Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
+- BASE ARM FN p=0 DONE (4222088, runs/j1j2/base_s306_p0/prod): -0.4988780(27), second half -0.498883 (settling ~1e-5) -> 'no' vs Varbench.
+  Not reused in any round comparison: each round's grade re-runs the base arm with burn 150 in the same job (PLAN_pfaffian 'R1' GRADE DESIGN').
+- HEADLINE B ARM (B_0' + p=1 FN, runs/j1j2/headline_s306, ~13.7 H100-h, sigma target 4e-6): s306 p=1 constants from theorie A40 17930563
+  (hs306vmcA40_v1, vmc_a40.sbatch, test-only start 11-13 ~14:00, ~10 A40-h; install guard refuses a second set); Paderborn VMC 4222358
+  CANCELLED (PI yes); FN Paderborn 4222359 HELD (dependency cleared): release with 'scontrol release 4222359' once consts_s306_p1.json is
+  installed and copied (sha both sides). Same file feeds the sign angle's T-STRONG stage 0.
+- Pfaffian angle (local_d60cd248; PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"): 'simple' projection in pipeline copies (identity 2.4e-11);
+  s306 pool: x3 DONE (gate PASS, 604 core-h); deep expansion 17929342 (2.4e6 beta-0.25 draws, ceiling 1.35e3 core-h total) running.
+  Next: R1 fit (~3.5 H100-h) + bare grade (~2 H100-h) -> launcher to the lead. K=3 round-6 test A40 17871864 running (R2 class).
+  Kill: round k gain < 0.5 x round k-1. Ceiling 40 H100-h for R1-R3 + headline.
+- Sign angle (local_3026e44f; PLAN_sign.md): T-BAD rounds 1-3 g = 2.64e-3, 5.0e-4, 5.1(13)e-5 (USEFUL); T-CAP8 inconclusive 2.2(14)e-5;
+  CONTROL C FN 17928795 pending. T-STRONG (residual flip mask on s306) designed; stage 0 (<= 3 A40-h) waits for consts_s306_p1.json.
+  Paired FN estimator (Astra astra/paired_fn/ASTRA_paired.md, coupled populations) being built in ansatz/code/paired_fn/: stage 1, then the
+  early rho probe (~0.25 A40-h, s306 vs s306 x random mask + A=B arm), STOP the build if rho < 0.5. All sign FN grades wait for it.
+- Compute scout (lead worker, 11-12): GPU/CPU probes under /scratch/a/A.Otaifi/rbmpp8/scout/, table cluster/COMPUTE_SCOUT_2026-11-12.md.
+- Channels: session messaging to the Pfaffian angle often fails -> MESSAGE_BOARD_lead_pfaffian.md + a 3-min board wait. /scratch 884 GiB (11-12).
 
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.

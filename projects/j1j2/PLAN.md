@@ -511,6 +511,9 @@ STEP BACK 2026-11-12 (PI: 'am I jumping ahead to the full loop?'):
    a full-loop round mixes three unknowns (sign storage, Jacobi copy, overlap with p=1), so a miss could not name the failing term (agreement point 1).
    Unasked: if a round is ~ one stored Lanczos step, the honest equal-cost bar is B_k + p=1 vs B_0 + p=(k+1) at p=1's cost.
 3. Cheapest next test: the paired estimator's exact-6x6 gate (<= 48 core-h CPU + build); it sets the resolution of every later grade.
+   AMENDED same day (sign angle's view, lead agrees): not serialized. R1-R3 runs now unpaired (p=0 grades ~1.2 H100-h/arm for sigma(diff) 2.5e-6);
+   early rho gate after estimator stage 1: ~0.25 A40-h coupled 8x8 probe (s306 vs s306 x random sparse flip mask + A=B arm), stop the build if rho < 0.5;
+   guesses rho: sign-only mask 0.6-0.9, size round 0.3-0.6, p=1 pairs < 0.3. If low: grade bigger effects (cumulative sign rounds, weaker start, 10x10).
 STEP BACK 2026-11-11 (big picture, PI request, not a failure):
 1. Verdict: CONTINUE R1-R3 as registered; move the base's FN arm (B_0' FN p=0, then p=1 in the headline) forward: it answers 'below every published
    8x8 number with the given sign' (Varbench -0.498963(2), plain VMC) and is the bar every round must beat. Name the sign question as the gate of 'better every round'.

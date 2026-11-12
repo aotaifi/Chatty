@@ -1334,6 +1334,11 @@ ASTRA ON THE PAIRED ESTIMATOR (cj-c9a7d4cfa462, /scratch/a/A.Otaifi/astra/paired
  (wrong ratio, omitted V_sf) -> 8x8 pilot (owner's OK). Astra 80% that this is the right estimator to test, LOW that it reaches 2.5e-6 at the old budget.
 BUILD (takeover decision, lead GO): shared tool ansatz/code/paired_fn/ (README, Astra's interface section 5), validation stages 1-4 on CPU (<= 48 core-h),
  worker; 8x8 pilot only after I read stage 4.
+PLAN ADOPTED (lead + PI, 2026-11-12): estimator build with an EARLY 8x8 RHO PROBE right after stage 1 (~0.25 A40-h; s306 vs s306 x random sparse flip mask at the
+ expected density; A = B sanity arm must give rho = 1, a broken coupling must not): report separation time, recoupling rate, long-lag rho; STOP the build if
+ rho < 0.5. Guesses (mine, recorded as guesses): rho mask 0.6-0.9 > size round 0.3-0.6 > p=1 < 0.3. If rho is low, sign tests make the effect bigger
+ (cumulative 2-3 sign rounds, weaker start, 10x10) with a coarser bar stated as "cannot see below 1.2e-5"; no 360 A40-h budget. Parallel: R1-R3 unpaired
+ (Pfaffian angle), stage 0 waits only for the s306 constants (A40 VMC job by the Pfaffian angle, 11-12 10:32; the lead sends the sha).
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

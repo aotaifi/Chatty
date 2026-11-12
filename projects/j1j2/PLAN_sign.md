@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C running; storage screen done (round 4: warm start, half steps).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C FN being submitted; storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1233,6 +1233,12 @@ T-CAP8 RESULT 2026-11-12 (A40 17905447; sign_bad/cap8/fn_net/ANALYSIS.md; raw cu
  alone is not a verdict). Registered branch said "round 4 with the current class"; I HOLD round 4 instead (decision, takeover): its expected gain (~1e-5) is
  below the unpaired resolution (sigma(g) ~1.3e-5), so it would read null whatever happens. The paired FN estimator is now the bottleneck for T-BAD round 4,
  T-CAP8's resolution and T-STRONG alike.
+CONTROL C PHASE 1 RESULT 2026-11-12 (A40 17924353 7.72 h + probe 17905531 0.2 h; sign_bad/ctrlC; worker's numbers, launcher read by me):
+ minSR (written here; validated: gradient vs autodiff 8e-14 / FD 2e-8, broken Re-for-Im off by 4.2; E_L of theta = pi set vs r1_lib 2.1e-14) on psi = |M1| M e^{i theta},
+ 64x6 CNN phase, 1457 steps at matched compute 7.72 A40-h. theta = 0 is a stationary point (E_L real): a 0.02 rad start collapsed back to Marshall on 4x4,
+ so production started at 0.3 rad rms (accepted by me; recorded deviation from "small"). E_var -0.49367 -> -0.49695(32), still falling slowly;
+ hard sign flips only ~1.6% of sampled configurations vs Marshall (loop n_1: 28% of tempered states); hard-sign variational E -0.4958..-0.4971, flat
+ after 50%. Suggestive of the Marshall trap (gradient training barely moves the sign), NOT a verdict: FN of the hard sign decides (gate reports D vs e_0..e_3).
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

@@ -21,7 +21,7 @@ ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--pF', 
 ap.add_argument('--M', type=int, default=1024); ap.add_argument('--dtau', type=float, default=0.1); ap.add_argument('--control_blocks', type=int, default=40)
 ap.add_argument('--burn', type=int, default=30); ap.add_argument('--blocks', type=int, default=100000); ap.add_argument('--maxsec', type=float, default=700)
 ap.add_argument('--seed', type=int, default=306); ap.add_argument('--X0', default='/project/theorie/a/A.Otaifi/runs/j1j2/base_s306_p0/inputs/X0_B0s_0.npy')
-ap.add_argument('--wchunk', type=int, default=128)
+ap.add_argument('--wchunk', type=int, default=128); ap.add_argument('--sa_sec', type=float, default=240)
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); T0 = time.time(); prog = open(f'{a.out}/progress.txt', 'a')
 def P(m):
     line = f'{time.strftime("%Y-%m-%dT%H:%M:%S")} PROGRESS {m}'; print(line, flush=True); prog.write(line + '\n'); prog.flush()
@@ -47,11 +47,13 @@ class Cached(GB.GuideRec):
     """BareM1Sign with a per-configuration cache of one_swap_ratios (shared by both arms) and an optional sign mask."""
     use_mask = False
     def ratios(self, X):
+        if len(CACHE) > 150000: CACHE.clear()                            # clear BEFORE the lookup, never mid-call
         k = cfg_keys(X); need = [i for i, kk in enumerate(k) if int(kk) not in CACHE]
         CST['hit'] += len(k) - len(need); CST['miss'] += len(need)
         if need:
-            lB, r, _, _ = G2.BareM1Sign.ratios(self, X[need])
-            if len(CACHE) > 150000: CACHE.clear()
+            Xn = X[need]; q = len(need); W = self.wc; pad = (-q) % W          # pad to whole chunks of wchunk: one jit shape, no per-size recompiles
+            if pad: Xn = np.concatenate([Xn, np.repeat(Xn[:1], pad, 0)])
+            lB, r, _, _ = G2.BareM1Sign.ratios(self, Xn); lB = np.asarray(lB)[:q]; r = np.asarray(r)[:q]
             for j, i in enumerate(need): CACHE[int(k[i])] = (lB[j], r[j])
         lB = np.array([CACHE[int(kk)][0] for kk in k]); r = np.stack([CACHE[int(kk)][1] for kk in k])
         self.last_lb = 2.0 * np.real(lB); return lB, r, lB, r
@@ -94,12 +96,26 @@ probe = dict(blocks_measured=nb, sec_per_block=o['wall'] / len(s['delta']), cach
              cut_rate=float(np.sum(s['cut_flux'][m]) / max(np.sum(s['matched_time'][m]), 1e-300)),
              hops=dict(shared=float(np.sum(s['shared'][m])), A_only=float(np.sum(s['A_only'][m])), B_only=float(np.sum(s['B_only'][m]))),
              F_count_A=float(np.nanmean(s['F_count_A'][m])), F_weight_A=float(np.nanmean(s['F_weight_A'][m])), ess_A=float(np.nanmean(s['A_ess'][m])),
-             ess_B=float(np.nanmean(s['B_ess'][m])), mmax_B=float(np.nanmax(s['B_mmax'][m])))
+             ess_B=float(np.nanmean(s['B_ess'][m])), mmax_B=float(np.nanmax(s['B_mmax'][m])),
+             F_count_B=float(np.nanmean(s['F_count_B'][m])), F_weight_B=float(np.nanmean(s['F_weight_B'][m])),
+             F_ess_frac_A=float(np.nanmean(s['F_ess_frac_A'][m])), F_ess_frac_B=float(np.nanmean(s['F_ess_frac_B'][m])),
+             blocks_with_F_A=int(np.sum(s['F_count_A'][m] > 0)))
 probe['separation_time'] = 1.0 / probe['sep_rate'] if probe['sep_rate'] > 0 else float('inf')
-if nb >= 64:
-    probe['pair'] = AN.pair_stats(eA, eB, NS=64)
-    for g in ('A', 'B'): np.save(f'{a.out}/E_{g}.npy', s[f'emix_{g}'][m] / 64)
-    np.save(f'{a.out}/E_D.npy', (eB - eA) / 64)
+for g in ('A', 'B'): np.save(f'{a.out}/E_{g}.npy', s[f'emix_{g}'][m] / 64)
+np.save(f'{a.out}/E_D.npy', (eB - eA) / 64); res['probe'] = probe; dump()
+P(f'PROBE coupled done: {nb} measured blocks, {probe["sec_per_block"]:.2f} s/block')
+# ---- standalone arms (multinomial, same engine, mode single) for kappa_work: S_A^sa, S_B^sa and their costs
+sa = {}
+for nm, g, sd in (('A', pA, a.seed + 2), ('B', pB, a.seed + 3)):
+    CACHE.clear()
+    o2 = E.run(g, None, X0, mode='single', dtau=a.dtau, burn_blocks=a.burn, measure_blocks=a.blocks, pair_seed=sd, NS=64, progress_every=20, log=P, maxsec=a.sa_sec)
+    s2 = o2['series']; m2 = ~s2['burn']; sa[nm] = dict(E=s2['emix_A'][m2], c=o2['wall'] / len(s2['emix_A']), n=int(m2.sum()))
+    np.save(f'{a.out}/E_{nm}_standalone.npy', s2['emix_A'][m2] / 64)
+    probe[f'standalone_{nm}'] = dict(blocks=sa[nm]['n'], sec_per_block=sa[nm]['c'], mean_site=float(np.mean(s2['emix_A'][m2]) / 64)); dump()
+if nb >= 64 and min(sa['A']['n'], sa['B']['n']) >= 64:
+    probe['pair'] = AN.pair_stats(eA, eB, probe['sec_per_block'], sa['A']['E'], sa['B']['E'], sa['A']['c'], sa['B']['c'], NS=64)
+    for nbins in (16, 32):
+        if nb >= 4 * nbins: probe[f'rho_binned_{nbins}'] = AN.rho_binned(eA, eB, nbins)
 res['probe'] = probe; res['status'] = 'DONE'; dump()
 P(f'PROBE8_DONE control_passed={ctl["passed"]} blocks {nb} same_post {probe["same_post_mean"]:.3f} alpha {probe["alpha_mean"]:.3f} '
   f'sep_time {probe["separation_time"]:.3g} rho {probe.get("pair", {}).get("rho", float("nan")):.3f}')

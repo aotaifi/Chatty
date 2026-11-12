@@ -64,3 +64,12 @@ def combine(means, errs):
     scat = float(m.std(ddof=1) / np.sqrt(len(m))) if len(m) > 1 else float('nan')
     chi2 = float((((m - mu) / e) ** 2).sum())
     return dict(mean=mu, err_w=se, err_scatter=scat, err=max(se, scat if np.isfinite(scat) else 0), chi2=chi2, dof=len(m) - 1)
+
+
+def rho_binned(eA, eB, nbins=32):
+    """long-lag correlation: Pearson correlation of the two arms' means over nbins contiguous bins (bin length n/nbins blocks), with a
+    jackknife error over bins.  Approaches the long-run rho = S_AB / sqrt(S_A S_B) when the bin length exceeds the correlation time."""
+    eA = np.asarray(eA, float); eB = np.asarray(eB, float); L = len(eA) // nbins
+    a = eA[:L * nbins].reshape(nbins, L).mean(1); b = eB[:L * nbins].reshape(nbins, L).mean(1)
+    r = float(np.corrcoef(a, b)[0, 1]); jk = np.array([np.corrcoef(np.delete(a, i), np.delete(b, i))[0, 1] for i in range(nbins)])
+    return dict(rho=r, err=float(np.sqrt((nbins - 1) / nbins * np.sum((jk - jk.mean()) ** 2))), bin_len=L, nbins=nbins)

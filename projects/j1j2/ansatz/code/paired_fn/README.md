@@ -46,11 +46,14 @@ finite-M limit, not bitwise.
 | stage | status | evidence |
 |---|---|---|
 | 1 rows / finite propagators | **PASS** (32 checks) | `/scratch/a/A.Otaifi/ansatz_runs/paired_fn/stage1/stage1.json`, `stage1.log` |
-| 2 exact 6x6 calibration | not started (lead's amendment: stop after stage 1 for the 8x8 probe proposal) | |
-| 3 systematics (M, dtau, burn) | not started | |
-| 4 broken versions at 6x6 | not started | |
-| 8x8 rho probe | launcher written, not submitted, not smoke-tested | `probe8_a40.sbatch` |
-Status labels: algebra-pass (stage 1) / calibration-pass (stage 2) / production-qualified (stages 3-4 + 8x8 pilot). Current: **algebra-pass**.
+| 2 exact 6x6 calibration | **PASS** (coarse): 8 pairs x 4 ensembles, every pair within 2 sigma (max abs z 1.34); resolved (sigma <= abs(Delta)/3): first, refr2, bareS0T0; the 1e-7 and 1e-8 pairs are unresolved (sigma/(abs(Delta)/3) 1.9-13); fixed2 NOT QUOTABLE | `/scratch/a/A.Otaifi/ansatz_runs/paired_fn/stage2/analysis6.json`, job 17932399 |
+| 3 systematics (M, dtau, burn) | partial, stopped by the 8x8 rho gate: M512 (4 ens), dt005 and dt02 (1 ens each) consistent with exact | `/scratch/a/A.Otaifi/ansatz_runs/paired_fn/stage34`, job 17933612 (cancelled) |
+| 4 broken versions at 6x6 | not run (stopped by the 8x8 rho gate) | |
+| 8x8 rho probe | done: control A = B exact; long-run rho 0.25, kappa_work 0.65 on s306 vs s306 x random mask pF 1e-3 | `/scratch/a/A.Otaifi/ansatz_runs/paired_fn/probe8_20261112d/result.json`, Paderborn 4227108 |
+Guides: `build_check6.json` (job 17931849): 11 guides reproduce stored E_guide_var (<= 3e-14) or exact F (diff 0, 6 solves); its only failure was an additive
+constant in la_a.npy (check fixed). Caveat: the c-guides with fJ-undefined rows put ~all of |psi|^2 on one dead-end orbit (T1B1_c30: orbit 148821, mass 1-1e-11);
+never start walkers from such a guide's |psi|^2 (use the pair's A guide or 'uniform').
+Status labels: algebra-pass (stage 1) / calibration-pass (stage 2) / production-qualified (stages 3-4 + 8x8 pilot). Current: **calibration-pass at 6x6** (coarse; micro-scale pairs resolved), not production-qualified.
 
 Stage 1 content: production `TableGuide` rows == independent dense rows (max err 0); E_L == (H psi)/psi; joint generator marginals
 (4e-16, 6e-16); resampler marginals and P(equal configuration) = alpha (z <= 1.03, broken force-A law z = 383); finite-T propagator

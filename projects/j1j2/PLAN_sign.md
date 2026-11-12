@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 FN 17905447 (29 h ceiling, watcher 3719308) and CONTROL C build running; storage screen done (round 4: warm start, half steps).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C running; storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
@@ -1227,6 +1227,12 @@ NEXT, registered 2026-11-11 before any number (takeover):
   from Marshall (theta = 0 relative to Marshall), SR/minSR on the variational energy at fixed |B0|, matched compute = labels + fits of rounds 1-3
   (~7.7 A40-h); hard sign extracted from cos(theta) with a frozen convention; graded by the same FN c = 0. Reads: e_C <= e_3 at matched compute -> the loop has
   no demonstrated advantage at 8x8 (not a statement about larger L); e_C clearly above e_3 -> loop beats gradient training of the same class.
+T-CAP8 RESULT 2026-11-12 (A40 17905447; sign_bad/cap8/fn_net/ANALYSIS.md; raw curve quotable_deep.png looked at by me: stationary, chains overlap):
+ e_deep (64x10, round-3 labels) = -0.498731(9), e_3 (64x6) = -0.498709(10): d = 2.2(14)e-5, 1.6 sigma: NOT beyond 2 sigma (prediction 40% did not hold),
+ but a lean of half the remaining gap to sgn(M1) (e_deep is 2.3e-5 above it). Reading: INCONCLUSIVE at this resolution (Astra's rule: "not beyond 2 sigma"
+ alone is not a verdict). Registered branch said "round 4 with the current class"; I HOLD round 4 instead (decision, takeover): its expected gain (~1e-5) is
+ below the unpaired resolution (sigma(g) ~1.3e-5), so it would read null whatever happens. The paired FN estimator is now the bottleneck for T-BAD round 4,
+ T-CAP8's resolution and T-STRONG alike.
 ## T-RG RESULT 2026-11-09 (Slurm 17867357, 36 tasks rc 0, ~1.5 core-h; sign_rg/{RESULT.md,result.json}; numbers checked by me in result.json)
 KILL FIRED: C3/C2 = 18.3, 95% [17.1, 19.5] (C3 a lower bound: 5/18 requests capped at 600 s). C1 0.25 s (7.6 calls), C2 5.46 s (168), C3 >= 99.7 s (>= 3171).
 Gating the lower rounds cut C2 ~10x vs T-K7's ungated recursion, but the ratio per round stays ~18.

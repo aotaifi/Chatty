@@ -453,7 +453,7 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
   each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
   T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
   VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C FN being submitted; storage screen done (round 4: warm start, half steps).
+  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C FN 17928795 (16 h, watcher 3173942 PPID 1; gate reports D vs e_0..e_3, read on e_3); storage screen done (round 4: warm start, half steps).
   FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
   Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
 - Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).

@@ -460,6 +460,15 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
    Opinion for the PI (mine, ~65%, off the critical path as T-STRONG stands): the PI's stated edge is LARGE L from a bad start; T-STRONG at 8x8 targets ~1e-5/site at best.
    The scalability test (T-BAD storage loss vs L) matters more; its cost is not yet sized.
 
+## G(-5) BUILD + TIMING RESULT 2026-11-13 (cip 17967173, 0.33 A40-h; paired_fn/gated/{controls23.json,timing_a40s24/result.json}; controls read by me)
+ Provider ansatz/code/paired_fn/gated_sign.py (GatedGuide, constants from consts_s306_p1.json sha 54add61c, MREF -78.46170). Controls pass and fail when broken:
+ gate -inf vs A: Delta 0 over 20 blocks (broken hashed flips: 0.056); gate +inf vs stage-0 K[s306] on 2699 states: 0 mismatches (alpha flipped: 433); gate -5 flip rates
+ -5/-6/-7: 0.17(3)% / 0.88(7)% / 3.18(12)% vs stage 0 0.22% / 0.94% / 3.0%, 0 state-by-state disagreements.
+ COST: paired gate -5 ~131 s/block vs 10.5 plain (12.5x), GPU-bound: 10.5% of walker neighbours sit at d <= -5 (~14 per row), each needs its own E_L. 600 blocks = ~22 A40-h.
+ Precision: flipped neighbours ~0.7% -> separation like the pF 1e-4 probe (sigma 4.1e-6 per 600 blocks at rho 0.74). That detects the >= 1e-5 branch at ~2.5 sigma but cannot fire
+ the registered kill (needs sigma <= 2.5e-6). Short restarted chains (T_c ~20 tau, rho ~0.9 by the validated model) give sigma ~2.5e-6 for ~26 A40-h. Beyond my 8 A40-h takeover
+ default: decision with the lead (slot owner).
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.

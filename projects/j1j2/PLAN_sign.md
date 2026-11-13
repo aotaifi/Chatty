@@ -1419,6 +1419,22 @@ THRESHOLD SWEEP RESULT 2026-11-13 (worker; sign_strong/s0w/{sweep.json,sweep_tab
  a spin-input CNN must reproduce that whole sum near its threshold, and the near-threshold states are exactly the rare mid-decade flips. Not tested: a pass of a weighted net
  (the sweep tests only a logit shift); a regression target (the continuous v = 1 + alpha(E_L - E), Astra's pole-free u = P/D) instead of the hard sign; inputs from the base
  network itself. Next: Astra on the class question (QUESTION9) before any verdict.
+ASTRA ON THE CLASS (cj-074111444526, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_class8.md, read in full; audit_class8_symmetry.{py,json}):
+ KEY FINDING: s306's 'simple' projection ({E, R_pi/2} x translations x flip; not a group) is NOT D4 invariant, so its labels are not either, but the CNN (s8_net.py) trains with
+ random D4 images under the ORIGINAL label and deploys the D4-averaged logit: an enforced symmetry the teacher violates. Direct check: all 9 selected held-out flip orbits at
+ d -7/-6/-5 carry both labels across their 8 D4 images (lower bound 19/96 errors on that enriched panel; e.g. a -7 flip with v = -17.9 whose 7 other orientations have v > 0);
+ translation and spin inversion preserve labels to 1.8e-14; the wrong "all D4 labels equal" assumption fails on 9/12 orbits. Exact sorted-score replay: no per-decade threshold
+ reaches 50% capture with FP <= TP (largest capture with FP <= TP: 0.09% / 0.27% / 0% at -7/-6/-5). Correction to my equation: flips are NOT all near-threshold (median v
+ -0.43/-0.38/-0.28; only 16-25% have |v| < 0.1). T-NODE does not fix which s306 decades matter (exact cut formula; no per-decade bound).
+ Ranking: base-feature head with bounded target u_rel > symmetry-correct spin CNN > bigger spin class > regression alone > T-JOINT as is. Recommended FIRST (diagnostic value):
+ the same 64x6 CNN with translation + spin inversion only (no D4 augmentation or averaging), inner chain-separated validation for the threshold, screen per decade -7/-6/-5:
+ capture >= 50% and FP/TP <= 1 (a pass needs a FRESH panel before any FN claim). ~0.75 A40-h.
+ MY ADDITION (hypothesis): T-BAD used |M1| = rb8_prod, 'translations' projection, also NOT rotation-projected, with the same D4-enforcing CNN, so its "class-limited" fits and the
+ round-3 slowdown may partly be this obstruction. Cheap test: the D4-orbit contradiction rate of the T-BAD round-3 labels (CPU, Astra's audit adapted) and a symmetry-correct
+ refit of the round-3 labels vs n_3's held-out 0.0986.
+REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pass (capture >= 50% and FP/TP <= 1 at each of -7/-6/-5) 25%; improvement in capture at
+ fixed FP/TP <= 1 by >= 5x 50%. (S2) T-BAD r3 labels: D4 orbit contradiction present (>= 1 of 9 sampled flip orbits) 70%; symmetry-correct refit lowers held-out
+ disagreement by > 10% relative (below 0.089) 40%. Budget <= 2.5 A40-h on inter (not the cip slots reserved for R1').
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

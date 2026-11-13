@@ -446,6 +446,20 @@ sgn psi_P. Mechanism: the gradient on m is scaled by A/(1+A), and the 88% agreei
 A is small: a saddle. This is A10 again: learning only the flips on top of a fixed base does not train. Second failed parametrisation of the
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
+## STEP-BACK 4 (2026-11-13 ~19:45; trigger: second failed stored-mask design for T-STRONG, stage-0 threshold sweep then S1/S3)
+1. Verdict: SWITCH the next T-STRONG step from "a better mask" to "measure the ceiling": G(-5) = E_FN[s306 with exact one-step sign s_G at |s306|^2 decades <= -5] - E_FN[s306],
+   paired estimator, nothing stored. Every mask test so far was bounded by G_exact, which is an ESTIMATE (0.5-3e-5, line "Size of G_exact"), never measured for s306.
+2. Thought that changed it: a stored mask can only reach G minus its storage loss; T-NODE (A49) already found no node gain from the exact sign at d <= -7 on |M1| (+8.0(4.1)e-6).
+   Cut formula: boundary weight ~ a_x a_y, so d -5/-6 (flip rate 0.22% / 0.94%) carry ~100x more weight per flipped bond than -7; the untried gate is -5, not a better classifier.
+   Literature (3 queries): Clark & Changlani arXiv:1404.2296 (abstract only) combine FN + Lanczos steps on tensor networks (triangular Heisenberg, up to 57% of remaining
+   energy); nothing on the FN gain of a one-step sign near a strong trial. My guess stands as unpublished.
+3. Cheapest next test: build a gated-exact-sign provider for s306 in paired_fn + timing probe (worker, <= 0.5 A40-h + CPU); then one paired run sized from the timing.
+   REGISTERED (before any number): gain -Delta >= 1e-5 30%; |Delta| < 3e-6 40%; between 30%. KILL for the T-STRONG stored-mask path: 2-sigma upper bound on the gain < 5e-6
+   -> nothing at a strong 8x8 start is worth storing; the angle's weight goes to the bad-start loop at larger L (PI's scalability question).
+   Passed over: base-feature head with u_rel (Astra's top representation) -- deferred until the ceiling is known; Astra (2) on S1/S2 (parked).
+   Opinion for the PI (mine, ~65%, off the critical path as T-STRONG stands): the PI's stated edge is LARGE L from a bad start; T-STRONG at 8x8 targets ~1e-5/site at best.
+   The scalability test (T-BAD storage loss vs L) matters more; its cost is not yet sized.
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.

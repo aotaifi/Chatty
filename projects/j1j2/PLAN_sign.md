@@ -1438,7 +1438,7 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
  S0 RESULT (CPU, sign_sym/s0/s0_audit_tbad.json): T-BAD r3 labels (|M1| amplitude, n_2): 8 of 9 sampled flip orbits contradictory across D4 (8/12 overall; lower bound
  15/96 on the enriched panel); controls pass (identity 5.6e-12, translation/spin-flip preserve labels). Prediction (>= 1 of 9, 70%) held: T-BAD trained under the same obstruction.
  sym option verified (sym='d4' reproduces the old net bit for bit, incl. 40 training steps; 'tflip' differs on rotation by up to 0.91). S1/S2 fits: inter queue ~10 days, so
- placed on one cip slice, requeueable (yield to R1' if it pends because of us), ~0.8 A40-h each, sequential.
+ placed on one cip a40-24gb slice, requeueable: S1 17954436, S2 17954437 (afterany), 4 h ceilings, setsid watchers; gate sign_sym/code/sym_gate.py (worker follows).
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

@@ -1819,3 +1819,4 @@
 - 2026-11-13 sign angle: S1 17954436 / S2 17954437 submitted on a cip slice (requeueable); probe pF 1e-5 17953667 running, pF 1e-4 17953668 queued after it.
 2026-11-13 13:08 VERDICT job 17954436: COMPLETED, S1: NOT PASS (screen [False, False, False]); pooled TP 43 vs D4 6 [/scratch/a/A.Otaifi/ansatz_runs/sign_sym/s1/ANALYSIS.md]
 2026-11-13 15:00 Write-up angle started (PI request): session local_71c014c5, detached; deck first, then paper; pointer in PLAN.md.
+- 2026-11-13 16:00 writeup angle: progress deck v1 published (HUUw7PgKxHxcE4RHia9mYJ, docs/j1j2_progress_deck.html); 6x6 CNN-MPS bar conflict (2.28 vs 2.65e-6) sent to the lead on MESSAGE_BOARD_lead_writeup.md.

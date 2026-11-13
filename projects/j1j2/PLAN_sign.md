@@ -1328,7 +1328,13 @@ T-STRONG STAGE 0 (lead GO 2026-11-12, start now; registered before any number; <
  in decades >= -5 do not exceed train true flips there. Held-out gate: false-flip rate vs true-flip rate per decade; STOP (no FN ever for this design) if
  held-out false flips in decades >= -5 exceed the true flip rate there. Also report missed flips per decade and the fraction of true flips captured.
  Prediction (angle lead): flip rate above d -5 below 0.5% [70%]; gate passes [45%].
- STAGE 0 STOPPED 2026-11-12 before compute: no sign-step constants (alpha, E) for s306 exist (consts_s306.json has only w); lead: one constant set only, from the headline VMC job (headline_s306/scripts/vmc.sbatch, rerun by the Pfaffian angle on theorie A40, ~10 A40-h), installed at headline_s306/inputs/consts_s306_p1.json; the lead sends path + sha when its gate passes; stage 0 waits.
+ SEALED PREDICTION (2026-11-13, before any stage-0 number; constants = headline_s306/inputs/consts_s306_p1.json sha 54add61c..., alpha -0.17605(337e-5),
+ E -31.926142, read not recomputed). Basis: labels from a near-converged sign put flips in the tail: T-BAD K[n_2] vs n_2 (n_2 ~1e-4 above sgn(M1)): 0 at d >= -1, 0.2% at -3,
+ 2.5% at -5, 13.5% at -7, 31% at -9..-12; S_-7 on sgn(M1): s_G != s0 at 5.4% of deep roots, 24% of deep neighbours. s306 is a better sign than n_2 and than M1 (VMC
+ 1.6e-4 below M1), so per decade I predict flip rates of: <= 0.1% at d >= -3; 0.3-1.5% at -5; 3-10% at -7; 15-30% at -9..-11 (each band ~60%); overall ~2-6% of tempered
+ states. Gate (held-out false flips in d >= -5 do not exceed true flips there): passes 45% (the 64x6 CNN had ~10% held-out disagreement on T-BAD labels; with
+ flips ~1% at -5 the no-flip prior must hold false flips below ~1%). If the gate passes, G_exact stays 0.5-3e-5 and the stored round below the base by > 2 sigma 20%.
+STAGE 0 (previously stopped 2026-11-12: no sign-step constants (alpha, E) for s306 exist (consts_s306.json has only w); lead: one constant set only, from the headline VMC job (headline_s306/scripts/vmc.sbatch, rerun by the Pfaffian angle on theorie A40, ~10 A40-h), installed at headline_s306/inputs/consts_s306_p1.json; the lead sends path + sha when its gate passes; stage 0 waits.
  Lead's follow-up to Astra (after cj-c9a7d4cfa462 lands): can the paired estimator grade a p=1 guide (Pfaffian headline B_k + p=1 vs B_0' + p=1)?
 ASTRA ON THE PAIRED ESTIMATOR (cj-c9a7d4cfa462, /scratch/a/A.Otaifi/astra/paired_fn/ASTRA_paired.md, read): A-only path reweighting is INVALID for sign
  changes (B opens bonds absent from A's walk; exact counterexample). Recommended: one joint run of two COUPLED populations, each with its own configuration,

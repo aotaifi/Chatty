@@ -1,0 +1,12 @@
+<section id="loop" class="slide" data-transition="fade">
+<h2 class="t">The loop</h2>
+<div class="eqs">
+<div class="eqrow"><p class="lab">1 · Guide</p><img src="/_blob/5efe543ce49f8da5b0843ee17c7bc882" alt="psi_k(x) = S_k(x) |B_k(x)|" style="width:410px;height:50px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">2 · Target</p><img src="/_blob/fd39c671c0016bfca995be0d40f4c901" alt="T_k = |B_k| exp(c f_J[B_k])" style="width:339px;height:58px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">3 · Copy</p><img src="/_blob/755d92cf0f7a439a7902ccacfde572b8" alt="B_{k+1} = argmin over theta of the fit loss between B_theta and T_k" style="width:490px;height:75px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">4 · Sign</p><img src="/_blob/d48a157d80f39cfd5b0a51099a45807a" alt="S_{k+1} = sign of (1 + alpha (H - E)) psi_k" style="width:590px;height:59px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">Readout</p><img src="/_blob/560dd440734d59508755e34a9c211906" alt="FN-GFMC with guide (1 + alpha (H - E)) psi_k" style="width:795px;height:50px;object-fit:contain"></div>
+</div>
+<p class="cap">S: sign network. B: pair-product network. The copy needs no labels: the target is exact at every sampled configuration.</p>
+<aside>One round: the guide is a stored sign times the network amplitude (1); the target multiplies the amplitude by its own Jacobi factor (2); the network is refitted to the target, label-free, walkers only for E' and c (3); the sign of one Lanczos step is stored in the sign network (4). The final energy is FN-GFMC with one Lanczos step on the guide (p = 1). Walker cost stays one level per round because the round lives in the network, not in nested steps. Sources: PLAN.md lines 2-3 (goal), 458-471 (label-free round, stored sign), board blocks 20, 25, 27. c* = 3.9-4.0 everywhere (PLAN_pfaffian.md).</aside>
+</section>

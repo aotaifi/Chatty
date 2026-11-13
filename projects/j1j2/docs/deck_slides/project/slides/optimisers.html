@@ -1,0 +1,15 @@
+<section id="optimisers" class="slide" data-transition="fade">
+<h2 class="t">Optimisation methods</h2>
+<table class="tb">
+<tr><th style="width:38%">method</th><th style="width:26%">used for</th><th style="width:36%">outcome</th></tr>
+<tr><td>SR / minSR</td><td>base networks</td><td>strong 8 × 8 base</td></tr>
+<tr><td>Gauss–Newton step</td><td>storing a round</td><td>linear share 0–0.04</td></tr>
+<tr><td>label-free Jacobi refit</td><td>storing a round</td><td>keeps 37% of a round</td></tr>
+<tr><td>refit to exact fixed-node labels</td><td>storing a round</td><td>keeps 15%</td></tr>
+<tr><td>training on the fixed-node energy</td><td>guide</td><td>exact 4 × 4 works, sampled 8 × 8 fails</td></tr>
+<tr><td>tail averaging of the fit</td><td>ending a round</td><td>removes the fit-to-fit scatter</td></tr>
+<tr><td>full symmetry projection</td><td>base, sign labels</td><td>reduced projection breaks the sign labels</td></tr>
+<tr><td>cross-entropy and its weighted forms</td><td>sign networks</td><td>fail at 8 × 8</td></tr>
+</table>
+<aside>SR/minSR: base retrain lr 0.05 to 0.005, 16384 samples, 3000 steps (PLAN_pfaffian); Control C used minSR on the sign phase and lost to the loop by 1.058(18)e-3. Damped Gauss-Newton in the copy metric: held-out linear share -0.02..0.04 (Test Theta v2). Label-free Jacobi refit (L-SWO) stores 37% of a round vs 15% with exact FN labels (R1b), both converged (PLAN.md 460-461). Hellmann-Feynman training on E_FN: exact 4x4 works; sampled 8x8 passed its surrogate but the physical E_FN got worse by +0.046 total; walkers needed for force cosine 0.7 grow 8e4 to 2.5e8 near the fixed point (PLAN.md 405-407, TRIED_IDEAS C15, E3). Polyak tail averaging of fit checkpoints: 1.252e-5 vs best single 1.287e-5, removes the +-0.2e-6 walk of E_FN between fits (TRIED_IDEAS P19). Symmetry: full group projection beats translations-only and the reduced 'simple' projection (RBM+PP 6x6 4.74e-5; LESSONS 45); the 'simple' projection is not a group, which makes sign labels contradict under D4 (PLAN_sign.md 1422-1431). Sign losses: BCE, importance-weighted BCE, Huber, edge loss: held-out BCE does not track the energy cost; all 8x8 recipes worse than the untrained sign (LESSONS 25, TRIED_IDEAS A48). Adam: Euclidean MLE on the 8x8 ViT fails (replica cosine -0.853, B6); the project uses SR/minSR for NQS.</aside>
+</section>

@@ -8,15 +8,16 @@ angles' PLAN files, no paper edits before the PI agrees the story.
 The PI signs off a compiled paper in which every number has a source line (value, sentence, file:line, script).
 
 ## Step 1: progress deck for the PI (both lines) -- v1 PUBLISHED 2026-11-13, awaiting the PI
-Deck: https://claude.ai/artifact/HUUw7PgKxHxcE4RHia9mYJ (source docs/j1j2_progress_deck.html; figures docs/deck_figs/figs.py, paper-plots style).
+Deck v2 (Claude Slides, PI 2026-11-13 'we need slides', audience style, sources in speaker notes): https://claude.ai/artifact/GzUnLPRb3tEiAR7vd8E2JW
+(source docs/deck_slides/project/; equations: docs/deck_slides/eq.py, pdflatex + pdftocairo -svg, uploaded as SVG assets; figures docs/deck_figs/).
+v1 (plain HTML page, superseded): https://claude.ai/artifact/HUUw7PgKxHxcE4RHia9mYJ.
 PI 2026-11-13: finish the slides before any paper work.
 Open number questions sent to the lead (MESSAGE_BOARD_lead_writeup.md): 6x6 CNN-MPS bar 2.28e-6 (2603.14425) vs 2.65e-6 (2611.04333).
 Done when: the PI has seen the deck and either signs it off or has no further changes.
 Content (brief): (1) the loop as equations; (2) bottlenecks with deciding numbers; (3) progress per line, side by side
 (loop/storage incl. Pfaffian angle | sign angle); (4) networks and optimisers with what each achieved; (5) the motivating
 question, where the evidence stands.
-Format: plain HTML artifact with MathJax (equations rendered); the Slides artifact type cannot render TeX (no scripts or
-network outside sandboxed embeds), so it was not used. Every number on a slide has its source line in the slide footer.
+Format: Claude Slides; equations as LaTeX-rendered SVG images; no paths or file names on slides (PI: slides are for an audience); every number's source in the speaker notes.
 Sources read: PLAN.md (all), equation board LwUGJoTxGJku3k6mTVgMVP, delta_today.md 11-12..13; worker extractions of
 PLAN_pfaffian.md, PLAN_sign.md + DISCUSSION_sign, TRIED_IDEAS/LESSONS/FOUNDATIONS/paper/benchmarks (scratchpad extract_*.md).
 

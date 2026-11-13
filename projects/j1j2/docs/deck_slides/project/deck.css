@@ -1,0 +1,28 @@
+:root{--bg:#F7F8FA;--bg2:#EDF0F4;--ink:#15233D;--muted:#4A5568;--rule:#D5DBE3;--accent:#1E5AA0;--bad:#B4432A;--pend:#8A6A12;--good:#21734B;--card:#FFFFFF;--night:#15233D;--light:#F2F4F7}
+section{counter-increment:page}
+.slide{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px 128px 128px;display:flex;flex-direction:column;gap:48px}
+.alt{background:var(--bg2)}
+.t{font-family:'Source Serif 4',Georgia,serif;font-size:64px;font-weight:600;line-height:1.1;color:var(--ink)}
+.lead{font-size:36px;line-height:1.35;color:var(--muted)}
+.cap{font-size:28px;line-height:1.35;color:var(--muted)}
+.eqs{display:flex;flex-direction:column;gap:36px}
+.eqrow{display:flex;align-items:center;gap:40px}
+.lab{font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);width:300px;flex:none}
+.figrow{display:flex;gap:56px;align-items:center}
+.figbox{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:12px;display:flex;justify-content:center}
+.stats{display:flex;flex-direction:column;gap:40px;flex:1}
+.stat{display:flex;flex-direction:column;gap:6px}
+.big{font-family:'Source Serif 4',Georgia,serif;font-size:64px;font-weight:600;line-height:1.05;color:var(--accent)}
+.big.bad{color:var(--bad)}
+.big.pend{color:var(--pend)}
+.k{font-size:26px;line-height:1.35;color:var(--muted)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:32px 36px;display:flex;flex-direction:column;gap:12px}
+.ch{font-size:34px;font-weight:600;line-height:1.2;color:var(--ink)}
+.row{display:flex;gap:20px;align-items:baseline}
+.rk{font-size:22px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);width:150px;flex:none}
+.rv{font-size:27px;line-height:1.35;color:var(--ink)}
+.tb{font-size:26px;color:var(--ink);width:100%}
+.cover{background:var(--night);color:var(--light);font-family:'IBM Plex Sans',Arial,sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px}
+.cover .ct{font-family:'Source Serif 4',Georgia,serif;font-size:88px;font-weight:600;line-height:1.1;color:var(--light)}
+.cover .cs{font-size:36px;line-height:1.4;color:#B9C6D8}

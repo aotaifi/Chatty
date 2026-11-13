@@ -1,0 +1,12 @@
+<section id="r6x6" class="slide alt" data-transition="fade">
+<h2 class="t">Loop rounds at 6 × 6</h2>
+<div class="figrow">
+<div class="figbox"><img src="/_blob/009520ed4b97ecd161d7648f78146c93" alt="Fixed-node error per site of the augmented guide versus loop round at 6x6: one pair product falls from 6.07 to 4.14e-6 and stalls; two pair products reach 3.26 and 2.81e-6; three pair products 2.55e-6; two pair products with a stored sign 4.12 and 3.70e-6. Dashed lines: RBM+PP plus Lanczos plus fixed node 5.57e-6, published CNN-MPS 2.65e-6 and 2.28e-6." style="width:900px;height:620px;object-fit:contain"></div>
+<div class="stats">
+<div class="stat"><p class="big">0.49</p><p class="k">share of a round stored with two or three pair products; one pair product stalls at 0.04</p></div>
+<div class="stat"><p class="big">2.81 vs 5.57</p><p class="k">× 10⁻⁶ per site: loop vs the same base with a Lanczos step and fixed node</p></div>
+<div class="stat"><p class="big bad">2.28–2.65</p><p class="k">× 10⁻⁶: best published network (CNN-MPS), not yet reached</p></div>
+</div>
+</div>
+<aside>Exact 6x6 tables (no sampling), one sign: s_G, the competitor's signed-Lanczos sign; error = E_FN - E0 per site of the augmented guide B e^(c f_J). One PP rounds 1-4: 6.07, 5.29, 4.64 (tail average), 4.37e-6, r 0.145, 0.109, 0.043 (equation board block 27); one-PP control at round 5: 4.13/4.15e-6. Two PP (|P1 + lambda P2|): round 5 3.26/3.29e-6 (two seeds), r 0.49 vs 0.046; round 6 2.81e-6, r 0.25 (PLAN.md 476-477, pfaffian_r5, pfaffian_r6). Three PP, fresh PP at round 6: r 0.4886, 2.546e-6 (TRIED_IDEAS P31, pfaffian_r6k3). Same parameter count as PP + RBM: r 0.12, 4.01e-6, so structure, not count (PLAN.md 478). Stored deployable sign (complex-PP phase): 4.12e-6 (R5), 3.70e-6 (R6); two mixed phase nets 3.56e-6 at R6 (PLAN.md 490-491; PLAN_sign.md 530-539). Floor at this sign: at most 0.83e-6 (PLAN.md 495). Competitor 5.574e-6 (PLAN.md 81). Published CNN-MPS: 2.65e-6 from arXiv 2611.04333 (PLAN.md 555) and 2.28e-6 from arXiv 2603.14425 (benchmarks file line 261), both against our E0 = -18.137147540071613/36; the conflict is with the lead. Storage also survives sampling: r from 4e5 sampled configurations 0.464 vs 0.493 exact, two pools r_V/r = 0.916(24) (PLAN.md 487-489).</aside>
+</section>

@@ -1,0 +1,14 @@
+<section id="question" class="slide alt" data-transition="fade">
+<h2 class="t">Where the question stands</h2>
+<table class="tb">
+<tr><th style="width:44%">claim</th><th style="width:16%">status</th><th style="width:40%">evidence</th></tr>
+<tr><td>the network stores the correction</td><td style="color:#21734B">yes, 6 × 6</td><td>half a round per round</td></tr>
+<tr><td>beats the same base with a Lanczos step</td><td style="color:#21734B">yes, 6 × 6</td><td>2.81 vs 5.57 × 10⁻⁶</td></tr>
+<tr><td>beats the best published network</td><td style="color:#B4432A">no</td><td>2.55 vs 2.28–2.65 × 10⁻⁶</td></tr>
+<tr><td>rounds add up at 8 × 8</td><td style="color:#8A6A12">open</td><td>weak base 2.7σ; strong base running</td></tr>
+<tr><td>a stored sign improves a strong network</td><td style="color:#B4432A">no</td><td>12 of 12 trained signs worse</td></tr>
+<tr><td>repairs another group's network</td><td style="color:#B4432A">no at p = 0</td><td>10 × 10 ViT: +5(6) × 10⁻⁶</td></tr>
+<tr><td>beats brute-force networks at 10 × 10+</td><td>untested</td><td>waits for 8 × 8</td></tr>
+</table>
+<aside>Stores: 6x6 two or three PP, r 0.49 per round, only nonlinearly (tangent share 0-0.04), mechanism unknown. Same-base comparison: 6x6 loop 2.81e-6 (exact sign s_G) and 3.56e-6 (stored deployable sign) vs RBM+PP + one Lanczos step + FN 5.574e-6. Best published: our best 6x6 guide 2.546e-6 (three PP) vs CNN-MPS 2.65e-6 (arXiv 2611.04333) or 2.28e-6 (arXiv 2603.14425); which bar holds is with the lead. 8x8: weak base one round -1.55(56)e-5 at 2.7 sigma (kill fired by its 3-sigma rule); strong base sealed -4.2..-7.3e-5, fit running. Sign: twelve trained 8x8 signs all worse than the untrained sgn(M1) on the loop label metric (0.64-0.70 vs 0.40); from Marshall the loop stalls 4.5(10)e-5 above sgn(M1). Repair: published 10x10 ViT, FN without a Lanczos step, -0.497682(4) vs VMC -0.497677(5), gain 5(6)e-6 (PLAN.md 53-55); the ViT's error is in its sign, which p = 0 cannot change; p = 1 untested at 10x10. 10x10 stage is gated on the 8x8 rounds adding up (PLAN.md 513-515).</aside>
+</section>

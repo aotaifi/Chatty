@@ -1,0 +1,10 @@
+<section id="fixednode" class="slide" data-transition="fade">
+<h2 class="t">Lattice fixed node</h2>
+<div class="eqs">
+<div class="eqrow"><p class="lab">Hamiltonian</p><img src="/_blob/b2a9fee010468563b74ace760a4193fc" alt="H_FN of psi = H kept plus diag V_psi, V_psi(x) = sum over blocked y of |H_xy| times |psi(y)/psi(x)|" style="width:1100px;height:128px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">Bound</p><img src="/_blob/f2772412943300a03a4070bcf33b8193" alt="E_FN of psi = lowest eigenvalue of H_FN, at least E_0" style="width:584px;height:59px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">Jacobi factor</p><img src="/_blob/ec5f5780a3a3d0d84f75e76dcc94c320" alt="f_J(x) = log of sum over kept z of |H_xz||B(z)| divided by (H_xx + V_B(x) - E') |B(x)|" style="width:707px;height:120px;object-fit:contain"></div>
+</div>
+<p class="cap">A bond is blocked when the guide's sign makes its hop positive. f_J is one Jacobi step of the fixed-node equation, computed from the network with one neighbour sum.</p>
+<aside>Equations from the j1j2 equation board (blocks 4 and 20). FN-GFMC samples the ground state of H_FN; its energy is an upper bound on E0 for any guide. The guide's amplitude enters only through V_psi. f_J(x) = 0 where the network already solves the fixed-node equation at x. One round's exact fixed-node correction is about 1.1-1.3 times the guide's own f_J (eps^2 0.078 round 1, 0.058 round 2; PLAN.md lines 450-455, Tests L and K3, pfaffian_l, pfaffian_k).</aside>
+</section>

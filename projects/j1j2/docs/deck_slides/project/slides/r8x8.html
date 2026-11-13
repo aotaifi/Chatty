@@ -1,0 +1,12 @@
+<section id="r8x8" class="slide alt" data-transition="fade">
+<h2 class="t">First round at 8 × 8</h2>
+<div class="figrow">
+<div class="figbox"><img src="/_blob/291a97c42876a9a7837ec5991a430f85" alt="(a) 8x8 energy per site plus 0.4989 in units of 1e-5: M1 network at VMC, fixed node, VMC with one Lanczos step and fixed node with one step; strong base s306 at VMC and with one Lanczos step. (b) Fixed node with one Lanczos step: M1, base B0 and base after one round B1, with the Varbench line." style="width:900px;height:620px;object-fit:contain"></div>
+<div class="stats">
+<div class="stat"><p class="big bad">−1.55(56)</p><p class="k">× 10⁻⁵ per site: one round, after the Lanczos step; 2.7σ</p></div>
+<div class="stat"><p class="big">1/3</p><p class="k">of the round survives the Lanczos step: both correct the same error</p></div>
+<div class="stat"><p class="big pend">−4.2 to −7.3</p><p class="k">× 10⁻⁵: predicted first round on the strong network, fit running</p></div>
+</div>
+</div>
+<aside>Weak base (rb8_prod, VMC -0.498671): one round bare gains 4.65e-5 (FN p=0, -0.498803 vs -0.498755). With one Lanczos step: B1 -0.4989545(34) vs B0 -0.4989390(45), difference -1.55e-5 +- 5.6e-6, 2.7 sigma; registered pass needed 3 sigma, so the kill fired (headline_p1/prodA/ANALYSIS.md, 5 + 4 chains, quotable). B1 vs M1 p=1: -8.5(6.1)e-6, 1.4 sigma. The step gains 1.83e-4 on B0 and 1.52e-4 on B1 (PLAN.md 482-486). M1: VMC -0.498674(12), FN p=0 -0.4987565(28), VMC p=1 -0.498923(17), FN p=1 -0.498946(5) (PLAN.md 26-27). Strong base s306: VMC full projection -0.4989092(14); VMC with one Lanczos step -0.498954 (delta_today 11-13 05:41; no error bar recorded, open symbol). Published: Varbench RBM+PP -0.498963(2) (VB, arXiv 2302.04919 via ketworks), Nomura-Imada -0.498886(1) (NI, 2005.14142), DMRG extrapolated -0.4992(1). Sealed prediction for the strong base (commit 608e31d): warm start alone -1.2e-5, loop gain beyond warm start -4.2 to -7.3e-5 (an extrapolation; PLAN.md 609-613). The s306 + p=1 fixed-node arm starts about 19 Nov on Paderborn.</aside>
+</section>

@@ -1,0 +1,16 @@
+<section id="networks" class="slide" data-transition="fade">
+<h2 class="t">Networks</h2>
+<table class="tb">
+<tr><th style="width:38%">network</th><th style="width:28%">used for</th><th style="width:34%">best result</th></tr>
+<tr><td>RBM + pair product</td><td>base guide</td><td>8 × 8: −0.4989092(14)</td></tr>
+<tr><td>complex pair product</td><td>amplitude copy</td><td>copy loss half the real one</td></tr>
+<tr><td>one pair product × Jacobi factor</td><td>loop rounds 1–4</td><td>stalls at share 0.04</td></tr>
+<tr><td>two or three pair products</td><td>loop rounds 5–6</td><td>2.81 / 2.55 × 10⁻⁶</td></tr>
+<tr><td>RBM residual, feature banks</td><td>storing a round</td><td>fail</td></tr>
+<tr><td>CNN sign, 6 × 6</td><td>stored sign</td><td>4.3 × 10⁻⁷, not deployable</td></tr>
+<tr><td>complex pair-product phase</td><td>deployable sign</td><td>0.7–0.9 × 10⁻⁶</td></tr>
+<tr><td>CNN sign, 8 × 8</td><td>sign rounds</td><td>4.5 × 10⁻⁵ above own sign</td></tr>
+<tr><td>published ViT, 10 × 10</td><td>add-on test</td><td>no gain at p = 0</td></tr>
+</table>
+<aside>RBM+PP (own JAX, symmetry-projected, SR): 6x6 4.74e-5 above E0 with full projection; 8x8 M1 -0.498674(12); strong base s306 real f 64x64 + complex RBM M=16, full projection -0.4989092(14) (TRIED_IDEAS G2, PLAN.md 603). Complex PP + 3x3 backflow copy: copy loss 0.94e-5 vs real 1.80e-5, complex parameters remove the network's own near-zeros (PLAN.md 440-441). One PP with e^(c f_J): rounds 1-4, r falls to 0.043 (board 27). Two PP |P1 + lambda P2|: r 0.49, aug 3.26 then 2.81e-6; fresh third PP r 0.49, 2.546e-6; walker 10.9x plain at 10x10 (PLAN.md 476-478, TRIED_IDEAS P31). RBM residual (M-R): tax/gain 0.94; finite-weight RBM feature bank eps^2 0.95-0.98; primitive PP Jacobi dictionary eps^2 >= 0.97: all killed (TRIED_IDEAS P6, P11, P13). Architecture angle (gated hybrids, local add-ons, tied PP sums, Pfaffian sums): all fail (AR1-AR4). XL CNN sign 6x6: tax 4.25e-7, two seeds, ~3e13 MAC per move; L CNN 64x6: 1.08e-6 (PLAN_sign.md 166-181, 629). Complex-PP phase sign, 2593 parameters: 0.70-0.88e-6 (PLAN_sign.md 530-539). 8x8 CNN sign 64x6, D4-averaged: round 3 -0.498709(10), 4.5(10)e-5 above sgn(M1). 8x8 supervised PP / frozen-RBM phases: eps^2 0.54-0.70 vs 0.40 untrained. Published 10x10 ViT (nqs-models): FN p=0 -0.497682(4) vs VMC -0.497677(5), gain 5(6)e-6 (PLAN.md 53-55, docs/reports/2026-11-03_addon_10x10_vit_fn.md); p=1 untested.</aside>
+</section>

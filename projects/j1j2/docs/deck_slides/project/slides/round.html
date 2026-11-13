@@ -1,0 +1,14 @@
+<section id="round" class="slide" data-transition="fade">
+<h2 class="t">What a round should buy</h2>
+<div class="eqs">
+<div class="eqrow"><p class="lab">Stored share</p><img src="/_blob/652e5076c7f40dd763bea731c95e8c03" alt="r_{k+1} = (e(B_k) - e(B_{k+1})) / (e(B_k) - e(T_k)), with e = (E_FN - E_0)/N" style="width:826px;height:107px;object-fit:contain"></div>
+<div class="eqrow"><p class="lab">p nested steps</p><img src="/_blob/9d939b0fdcb74591b90c48e6b77b2486" alt="cost proportional to d to the power p+1, d about 2N" style="width:492px;height:53px;object-fit:contain"></div>
+</div>
+<table class="tb">
+<tr><th style="width:62%">one Lanczos step on top of the network, per walker move</th><th style="width:38%">cost / plain network</th></tr>
+<tr><td>pair product with fast updates, 6 × 6</td><td>5.4 ×</td></tr>
+<tr><td>two pair products, 10 × 10</td><td>10.9 ×</td></tr>
+<tr><td>generic neural network, 14 × 14</td><td>≈ 2N ≈ 400 ×</td></tr>
+</table>
+<aside>r = 1 means the whole round is kept by the network; r = 0 means nothing is stored. The loop keeps one correction level in the network at constant walker cost; p nested Lanczos steps need d^(p+1) ratios per move (d about 2N neighbours). Against ONE Lanczos step the loop has no depth advantage (both keep one level); its edge exists only against nested steps (Astra campaign audit, PLAN.md lines 357-359). Costs: board block 23; PLAN.md lines 506-508 (5.4x measured 6x6, backflow 36.5x, generic NN factor d about 2N), 477 (two PP 10.9x at 10x10).</aside>
+</section>

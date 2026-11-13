@@ -1439,6 +1439,15 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
  15/96 on the enriched panel); controls pass (identity 5.6e-12, translation/spin-flip preserve labels). Prediction (>= 1 of 9, 70%) held: T-BAD trained under the same obstruction.
  sym option verified (sym='d4' reproduces the old net bit for bit, incl. 40 training steps; 'tflip' differs on rotation by up to 0.91). S1/S2 fits: inter queue ~10 days, so
  placed on one cip a40-24gb slice, requeueable: S1 17954436, S2 17954437 (afterany), 4 h ceilings, setsid watchers; gate sign_sym/code/sym_gate.py (worker follows).
+## S1/S2 RESULT 2026-11-13 (cip 17954436 / 17954437; sign_sym/s{1,2}/gate.txt and fit/fit_8192.json, read by me): KILL FIRED on the symmetry hypothesis, diagnosis below, Astra cj-a4957bc0913f pending
+ S1 (s306, strong labels), symmetry-correct (tflip) vs D4: capture 0.036 / 0.011 / 0.000 at -7/-6/-5 with FP/TP 12.9 / 50.5 / none. Oracle capture at FP <= TP: tflip 0 / 0 / 0,
+ D4 0.0009 / 0.0027 / 0. Registered: pass 25% -> NO; >= 5x capture at FP/TP <= 1, 50% -> NO (tflip is worse at the oracle threshold).
+ S2 (T-BAD r3 labels): held-out disagreement tflip 0.1176 vs D4 (n_3) 0.0986 (flips 0.191 vs 0.157, keeps 0.087 vs 0.074); train_err 0.018 vs 0.093. Registered drop
+ below 0.0887 (40%) -> NO; it ROSE 19%. Held-out curves (20 checkpoints): tflip minimum 0.111 (step 36870) is above every D4 checkpoint (max 0.107), so early stopping does not rescue it.
+ Diagnosis (equation): held_err = eps_approx + eps_est. Removing D4 cuts the fit floor 5x (train 0.093 -> 0.018) but raises eps_est by more at every step; D4 augmentation is worth
+ ~8x data, more than the label contradictions it injects. The binding term at 1.2M states is estimation, not the symmetry obstruction. The obstruction is real (S0: 8/9 orbits
+ contradictory) but not what limits the store. Untried cheapest variants (not run, await Astra): D4-equivariant backbone + small non-D4 head; augmentation by any label-preserving
+ subgroup; more labels. Verdict on "the D4 obstruction causes the mask failure / T-BAD slowdown": refuted at this data size, pending Astra's break attempt.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

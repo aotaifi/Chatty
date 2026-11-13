@@ -1407,6 +1407,9 @@ T-STRONG STAGE 0 RESULT 2026-11-13 (A40 jobs 17950928-30 + labels 17951033/34/10
  decade, capped at 100), same class and data, tau chosen on train so that false flips <= true flips captured in d -8..-5. Reads: captured fraction >= 50% at d -7..-5 with
  false/captured <= 1 -> a usable mask, then decide FN (paired estimator permitting); captured < 20% -> the 64x6 class cannot store the strong-start sign step at 8x8 (record,
  Astra before verdict). Prediction: usable 35%. Cost ~1 A40-h.
+ AMENDED (lead, 2026-11-13): first a THRESHOLD SWEEP of the existing net on held-out states (minutes; a class weight w only shifts the BCE-optimal logit by ~log w), per
+ decade and in energy cost (cost(z) = |B0(z)| sum_y |H_zy| |B0(y)|, tempered-to-|B0|^2 reweighted bond weight). If no threshold reaches capture >= 50% at d -7..-5 with
+ false <= captured (counts and cost), skip the weighted run: the limit is the features -> class question to Astra. Else seal the operating point, then run it.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

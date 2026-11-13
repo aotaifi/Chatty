@@ -34,6 +34,8 @@ another's row (merging duplicates keeps every number and record). A lesson that 
 - Pick checkpoints on one half of the grading draws and gate on the other (selection bias) | - | PLAN_pfaffian gate (a)
 - cx_r1fit step acceptance passed a negated step as noise; fit-to-fit E_FN walk +-0.2e-6 makes single fits unquotable | candidate cause of the walk | delta_today 11-03
 
+- A gate on false positives alone passes a classifier that never fires; gate on capture AND false rate, in energy-weighted units | T-STRONG stage 0 mask passed (1 false vs 88 true at d >= -5) while capturing 0/79 flips there | PLAN_sign "T-STRONG STAGE 0 RESULT"
+
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"
 - A complex perturbation of a real Psi flips signs where |Re Psi| < eps^2 |Psi_2|; the normalised margin Re(Psi)/|Psi| has zero gradient at real Psi. Use a real f with m = Psi / sum|terms| | 2.1% step-0 flips | PLAN_sign "T-SIGN8 GATE 0 FAIL"

@@ -469,6 +469,14 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
  the registered kill (needs sigma <= 2.5e-6). Short restarted chains (T_c ~20 tau, rho ~0.9 by the validated model) give sigma ~2.5e-6 for ~26 A40-h. Beyond my 8 A40-h takeover
  default: decision with the lead (slot owner).
 
+## G(-5) PRODUCTION (lead approved 2026-11-13, -5 gate as designed; registered before submission)
+ Design: A = s306 (probe8 guide), B = gated_sign.py at d_gate -5; coupled paired engine; chain table of 4 restarted chains, each 20 burn + 150 measured blocks (dtau 0.1,
+ ~17 tau per chain; validated rho model: mbar 0.94, rho ~0.9), distinct X0 starts and seeds from the s306 X0 pool. Errors from the 4-chain scatter (and pooled long-run variance;
+ quote the larger). Target sigma ~2.5e-6/site. Registered outcomes as in STEP-BACK 4 (gain >= 1e-5 30%; |Delta| < 3e-6 40%); KILL: 2-sigma upper bound on the gain < 5e-6.
+ Placement (lead): identical copy on Paderborn H100 (--qos=express_hpcalot, lead's grant, <= 40 H100-h) AND requeueable on the one cip a40-24gb slice, same chain table and seeds.
+ RULE: the first copy to finish with done=true is THE result; the other is cancelled on sight; the two are one sample, never pooled. R1' takes the cip slice the moment its labels exist.
+ Job ids: (to be posted at submission)
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.

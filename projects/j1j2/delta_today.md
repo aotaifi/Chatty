@@ -1800,3 +1800,8 @@
 - 2026-11-13 07:05 R1' placement approved: fit on cip a40-24gb (98.7 s/step clean, 41 h; 183-216 contended) + Paderborn cont copy UNHELD (start est 11-18, ~3.4 H100-h); first finished done=true fit is R1''s; grade placed at fit end (Paderborn 0.7 h vs slices 3.5 h on 3). Table: runs/j1j2/r1prime_placement/PLACEMENT_TABLE.txt.
 - 2026-11-13 07:06 pfaffian angle: R1' fit placement rule registered (slice + unheld Paderborn copy; first finished done=true wins).
 - 2026-11-13 09:00 lead check-in: PLAN Running + Cockpit rewritten; queue: s306 expansion 3 tasks left, T-STRONG stage 0 fit 17950930 pending, 4222359 pending (11-19), 17930563 held; /scratch 888 GiB. Next check-in 2026-11-14 09:00.
+- 2026-11-13 09:57 lead: PI confirms TAKEOVER still applies (11-11 defaults). 17930563 (held duplicate constants job, never ran) CANCELLED by the lead (PI: 'you are lead and decide').
+2026-11-13 09:59 VERDICT job 17930563: FAILED [/scratch/a/A.Otaifi/ansatz_runs/headline_s306_a40/vmc/run_v1/ANALYSIS.md]
+- 2026-11-13 10:01 pfaffian angle: lead cancelled held duplicate 17930563 (never ran; PI: lead decides); a CANCELLED verdict for it is expected.
+- 2026-11-13 10:01 17930563 FAILED verdict = the lead's cancel, expected.
+- 2026-11-13 10:24 wiki: ingested 2606.02794 (rende2026scaling, commit 034db4c7): no energies, no 6x6-10x10; square J2=0.5 L=12-20 only; alpha 0.86(3) (lead refit 0.861 from fig2 csv; weighted chi2 556/15, quoted error excludes misfit); size collapse N=144-400; ViT, minSR (MARCH), no symmetries in main data, no Lanczos/FN; ~1e5 A100-h. Wiki projects/j1j2/ folder not created (worker not allowed); hot_cache text in docs/ingest_2606.02794.md.

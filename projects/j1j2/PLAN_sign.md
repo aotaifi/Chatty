@@ -446,19 +446,12 @@ sgn psi_P. Mechanism: the gradient on m is scaled by A/(1+A), and the 88% agreei
 A is small: a saddle. This is A10 again: learning only the flips on top of a fixed base does not train. Second failed parametrisation of the
 residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce sgn psi_P, tax ~4.1e-6) to save ~6 A40-h (PI's call).
 
-## Running
-- T-BAD (PI GO): cost probe done (neither design fits 20 A40-h); design finalised after Astra QUESTION8 (6) (resubmit 23:45).
-- TAKEOVER from 2026-11-09 19:50, EXTENDED 2026-11-10 ~01:00 (PI: "I won't be here at 9, you have the lead till I come back, together with decisions").
-  Rules I set for myself: size every job from measured rates (j1j2 GPU budget is efficiency, no ceiling; theorie A40/H200, Paderborn cont; no express);
-  each stage pre-registered in this file before its numbers; Astra on every fired kill; no cancels of others' jobs, deletions, paper or emails.
-  T-BAD round 1 FN grades: Marshall e_0 = -0.495522(23), net n_1 e_1 = -0.498158(17), g_1 = 2.636(29)e-3 USEFUL, theorie A40, PENDING (Priority); watchers 3953856 / 3954632 (PPID 1),
-  VERDICT lines in delta_today.md; gate sign_bad/r1/code/r1_analyze_fn.py. Next: g_1 = e_M - e_n1 per T-BAD FINAL; then round 2 (labels K[n_1], fit with
-  the recipe chosen by the fit check, FN of n_2). Round 2: e_2 = -0.498658(9), g_2 = 5.00(19)e-4 USEFUL. Round 3: e_3 = -0.498709(10), g_3 = 5.1(13)e-5 USEFUL, gains slowing; T-CAP8 inconclusive (deeper net -2.2(14)e-5, 1.6 sigma); round 4 HELD until the paired estimator; CONTROL C DONE: loop beats SR at matched compute by 1.06e-3/site (59 sigma); storage screen done (round 4: warm start, half steps).
-  FN-trained sign: T-FNI done (estimator fails on a good parent's tiny margins; bad start untested), parked behind T-BAD.
-  Defaults (PI may override): CPU <= 40 core-h, theorie A40 <= 8 A40-h, no Paderborn express, no cancels/deletes/paper/emails beyond takeover rules.
-- Fresh-eyes consult done (section FRESH-EYES CONSULT). T-LEV stopped (wrong regime; see T-LEV).
-- Astra on the FN-trained stored sign (QUESTION8.md -> ASTRA_fnsign.md): cj-3cde43955281 failed on Codex quota; resubmitted as cj-9a275217f646 (23:45, items 1-7). Next: cheap test (<= 8 core-h
-  or <= 4 A40-h) pre-registered and run if Astra rates it viable; otherwise record and bring to the PI.
+## Running (rewritten 2026-11-13 ~19:30)
+- Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
+  fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.
+- Settled 11-13: symmetry branch closed (A51; S1/S2/S3); paired estimator passes its 8x8 rho gate (RHO PROBE RESULT below).
+- Open: T-STRONG has an estimator but no mask worth grading (stage-0 threshold sweep and S1 capture <= 4% at FP/TP <= 1). Next candidate: Astra's top-ranked base-feature head
+  with bounded u_rel target (ASTRA_class8.md); to be registered before any run. T-BAD round 4 HELD.
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.
@@ -1464,6 +1457,16 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
  READ: the symmetry-breaking part the tflip net learned carries no information that generalises: <= 0.1% absolute on held-out (bootstrap upper edge). The D4 obstruction is real on
  labels (S0) but measured irrelevant to the store's held-out error at this data size. Closing the symmetry branch for the stored sign; Astra (2) (frozen backbone + ridge head on
  orientation features, 0.2-1 GPU-h, predicted 0.097) goes to Queue, not run: even its predicted best (1.6%) cannot move an FN energy we can resolve.
+## RHO PROBE RESULT 2026-11-13 (cip a40-24gb 17953667 pF 1e-5, 17953668 pF 1e-4; paired_fn/probe8_pF1e-{5,4}/{result.json,E_A.npy,E_B.npy}; rho recomputed by me,
+ paired_fn/rho_probe_lead_read.json; worker's numbers agree). Run length 600 blocks = 60 tau (not 110: 28-30 s/block measured). Control A=B: max|delta| 0 over 40 blocks, both.
+ | pF | rho long-run | halves | rho binned 16 / 32 | sep rate /tau | alpha | delta/site | sigma/site | A40-h |
+ | 1e-5 | 0.978 | 0.984 / 0.969 | 0.977(11) / 0.983(9) | 3.31e-4 | 0.991 | 8.3e-6 | 1.4e-6 | 4.8 |
+ | 1e-4 | 0.741 | 0.729 / 0.807 | 0.787(123) / 0.792(56) | 3.02e-3 | 0.918 | 7.11e-5 | 4.1e-6 | 2.9 |
+ Sealed model evaluated at the measured T = 60 tau (same equations, read off the seal): rho 0.977 / 0.796, sep rate 3.1e-4 / 3.1e-3. HELD: separation flux proportional to pF
+ within 7%; rho(1e-5) exact to 0.001; rho(1e-4) 0.74 long-run vs 0.80 (binned 0.79), inside the 0.50-0.85 band. Gate (stop if rho < 0.5 at T-STRONG's density, proxy 6e-5,
+ pessimistic 2e-4): PASSES at <= 1e-4; at 2e-4 the model gives ~0.6 at 60 tau, so production chains stay short (T_c ~50 tau from shared starts).
+ Not measured: kappa_work (standalone arms got 1 block: 200 s sa_sec spent on burn). Rough cost ratio from s/block: paired 14.6-24.7 vs standalone ~10.8 per arm.
+ Single run per pF (no second chain): rho is a design number, not a physics result. The estimator is ready; the limit for T-STRONG is the mask, not the grader.
 ## Queue (not run; PI sets priority)
 - Astra (2) on S1/S2: frozen D4 backbone + ridge head on (h - P h); 0.2-1 A40-h; predicted S2 0.097; parked after S3 (ASTRA_sym.md).
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,

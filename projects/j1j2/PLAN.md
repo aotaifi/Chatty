@@ -599,27 +599,25 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-12 migrate; lead in TAKEOVER since 11-11 23:59; every job has a watcher writing VERDICT lines to delta_today.md)
-- 8x8 retrained base DONE: s306 (sha 45fa54e6) / s307 (b86a0f36). Simple VMC -0.498838(2) / -0.498841(2); FULL projection s306 -0.4989092(14)
-  (ev_full_5{1,2}), s307 -0.4989096(14) (A40 ev_full_5{5,6}, eval_combine_a40.sh), 0.2 sigma apart. Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
-- BASE ARM FN p=0 DONE (4222088, runs/j1j2/base_s306_p0/prod): -0.4988780(27), second half -0.498883 (settling ~1e-5) -> 'no' vs Varbench.
-  Not reused in any round comparison: each round's grade re-runs the base arm with burn 150 in the same job (PLAN_pfaffian 'R1' GRADE DESIGN').
-- HEADLINE B ARM (B_0' + p=1 FN, runs/j1j2/headline_s306, ~13.7 H100-h, sigma target 4e-6): s306 p=1 constants from theorie A40 17930563
-  (hs306vmcA40_v1, vmc_a40.sbatch, test-only start 11-13 ~14:00, ~10 A40-h; install guard refuses a second set); Paderborn VMC 4222358
-  CANCELLED (PI yes); FN Paderborn 4222359 HELD (dependency cleared): release with 'scontrol release 4222359' once consts_s306_p1.json is
-  installed and copied (sha both sides). Same file feeds the sign angle's T-STRONG stage 0.
-- Pfaffian angle (local_d60cd248; PLAN_pfaffian.md "R1-R3 ON THE RETRAINED 8x8 BASE"): 'simple' projection in pipeline copies (identity 2.4e-11);
-  s306 pool: x3 DONE (gate PASS, 604 core-h); deep expansion 17929342 (2.4e6 beta-0.25 draws, ceiling 1.35e3 core-h total) running.
-  Next: R1 fit (~3.5 H100-h) + bare grade (~2 H100-h) -> launcher to the lead. K=3 round-6 test A40 17871864 running (R2 class).
-  Kill: round k gain < 0.5 x round k-1. Ceiling 40 H100-h for R1-R3 + headline.
-- Sign angle (local_3026e44f; PLAN_sign.md): T-BAD rounds 1-3 g = 2.64e-3, 5.0e-4, 5.1(13)e-5 (USEFUL); T-CAP8 inconclusive 2.2(14)e-5;
-  CONTROL C FN 17928795 pending. T-STRONG (residual flip mask on s306) designed; stage 0 (<= 3 A40-h) waits for consts_s306_p1.json.
-  Paired FN estimator (Astra astra/paired_fn/ASTRA_paired.md, coupled populations) being built in ansatz/code/paired_fn/: stage 1, then the
-  early rho probe (~0.25 A40-h, s306 vs s306 x random mask + A=B arm), STOP the build if rho < 0.5. All sign FN grades wait for it.
-- Compute scout DONE (cluster/COMPUTE_SCOUT_2026-11-12.md): only idle extra GPUs = cip A40 slices, 24gb 15.5 s/sweep (5.7x H100), 16gb 17.2 (6.4x);
-  8gb OOM (eval needs ~10 GiB); P5000 > 17x; ws CPU > 80x. theorie H100 NVL / H200 NVL / A100 / 2080 Ti / V100 test-only starts 11-22..24 (unmeasured).
-  Caps: 4 H100 NVL, 2 H200 NVL, 8 jobs on inter; 3 GPUs on cip (shared with the angles).
-- Channels: session messaging to the Pfaffian angle often fails -> MESSAGE_BOARD_lead_pfaffian.md + a 3-min board wait. /scratch 884 GiB (11-12).
+## Running (2026-11-13 09:00 check-in; every job has a watcher writing VERDICT lines to delta_today.md)
+- 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
+  ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
+- s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;
+  runs/j1j2/headline_s306/inputs/consts_s306_p1.json sha 54add61c (copied to Paderborn, same sha). The ONE set; full-A40 copy 17930563 HELD (never to run).
+- HEADLINE B ARM (s306 + p=1 FN, ~13.7 H100-h): Paderborn 4222359 released, PENDING, start est 11-19 21:15. Stays there: FN p=1 driver is ~15x H100
+  on an a40-24gb slice (probe 17950878, 294 s/block), and the cip slots go to R1'.
+- R1' (open question's size half; PLAN_pfaffian 'R1-R3 ON THE RETRAINED 8x8 BASE'): warm start (ii) = B_0' + lam s307's PP at 0.05 (held-out
+  tangent share +0.32 vs (i) -0.40); grade = R1' + warm-start arm (no fit) + base re-run, burn 150, halves check, one job; loop gain = R1' - warm.
+  SEALED (608e31d/859fc7d/cccbc3b): warm -1.2e-5 (-1.0..-1.6e-5); loop -4.2..-7.3e-5 (extrapolation; share-to-storage k 1.7-2.0 at rb8, ~7 at 6x6,
+  so the grade also tests k's transfer); old heuristic 0.8-2.0e-5. Waits for the s306 pool expansion 17929342 (3 tasks left) + labels; then the fit on
+  cip a40-24gb (98.7 s/step, ~41 h) AND an unheld Paderborn cont copy (est. 11-18); first finished done=true fit counts (PLAN_pfaffian 'R1' FIT PLACEMENT RULE').
+  Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
+- Sign angle (PLAN_sign.md): T-STRONG stage 0 (residual flip mask on s306; sealed c61bf1e: flip rate <= 0.1% at d >= -3 .. 15-30% at -9..-11; gate 45%)
+  fit 17950930 PENDING. Paired estimator: 6x6 PASS; 8x8 rho 0.25 at pF 1e-3; sealed rho 0.68 (1e-4), 0.96 (1e-5), 0.89 at the T-STRONG density;
+  probes Paderborn 4227404/5. CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
+- Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).
+- Workflow angle (local_c7d4e44d, PLAN_workflow.md): rule-conflict review, reports to the PI. Records inventory: docs/consolidation_2026-11-12.md (nothing moved; PI reading).
+- Channels: board MESSAGE_BOARD_lead_pfaffian.md (3-min lead wait); sign angle by session message. /scratch 888 GiB.
 
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.
@@ -670,5 +668,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
 ## Cockpit
-- STATUS (in progress, high): The retrained 8x8 network is confirmed on two seeds (-0.49891, better than the published RBM+PP), but fixed-node from it alone (-0.498878) does not beat the best published 8x8 number (-0.498963); its remaining error seems to sit in its sign.
-- NEXT (in progress, high): First loop round on the retrained network (sample pool on CPU, then about 5.5 H100-hours); the network + one Lanczos step + fixed-node comparison run is queued at Paderborn.
+- STATUS (in progress, high): The strong 8x8 network plus one Lanczos step is ready for its fixed-node run (queued, ~11-19); the first loop round on it has a written prediction and starts once its sample pool is done today.
+- NEXT (in progress, high): First loop round on the strong 8x8 network (fit ~2 days on a free GPU slice), graded against the same network with no loop training.
+- NEXT (in progress, medium): Sign side: test how often a stored sign correction on the strong network flips right signs (small GPU job, queued).

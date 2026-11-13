@@ -1799,3 +1799,4 @@
 - 2026-11-13 07:02 pfaffian angle: R1' placement measured (slice fit 98.7 s/step, grade 15x H100); plan sent to lead.
 - 2026-11-13 07:05 R1' placement approved: fit on cip a40-24gb (98.7 s/step clean, 41 h; 183-216 contended) + Paderborn cont copy UNHELD (start est 11-18, ~3.4 H100-h); first finished done=true fit is R1''s; grade placed at fit end (Paderborn 0.7 h vs slices 3.5 h on 3). Table: runs/j1j2/r1prime_placement/PLACEMENT_TABLE.txt.
 - 2026-11-13 07:06 pfaffian angle: R1' fit placement rule registered (slice + unheld Paderborn copy; first finished done=true wins).
+- 2026-11-13 09:00 lead check-in: PLAN Running + Cockpit rewritten; queue: s306 expansion 3 tasks left, T-STRONG stage 0 fit 17950930 pending, 4222359 pending (11-19), 17930563 held; /scratch 888 GiB. Next check-in 2026-11-14 09:00.

@@ -1435,6 +1435,10 @@ ASTRA ON THE CLASS (cj-074111444526, /scratch/a/A.Otaifi/astra/sign_ideas/ASTRA_
 REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pass (capture >= 50% and FP/TP <= 1 at each of -7/-6/-5) 25%; improvement in capture at
  fixed FP/TP <= 1 by >= 5x 50%. (S2) T-BAD r3 labels: D4 orbit contradiction present (>= 1 of 9 sampled flip orbits) 70%; symmetry-correct refit lowers held-out
  disagreement by > 10% relative (below 0.089) 40%. Budget <= 2.5 A40-h on inter (not the cip slots reserved for R1').
+ S0 RESULT (CPU, sign_sym/s0/s0_audit_tbad.json): T-BAD r3 labels (|M1| amplitude, n_2): 8 of 9 sampled flip orbits contradictory across D4 (8/12 overall; lower bound
+ 15/96 on the enriched panel); controls pass (identity 5.6e-12, translation/spin-flip preserve labels). Prediction (>= 1 of 9, 70%) held: T-BAD trained under the same obstruction.
+ sym option verified (sym='d4' reproduces the old net bit for bit, incl. 40 training steps; 'tflip' differs on rotation by up to 0.91). S1/S2 fits: inter queue ~10 days, so
+ placed on one cip slice, requeueable (yield to R1' if it pends because of us), ~0.8 A40-h each, sequential.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

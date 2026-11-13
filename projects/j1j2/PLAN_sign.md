@@ -1410,6 +1410,15 @@ T-STRONG STAGE 0 RESULT 2026-11-13 (A40 jobs 17950928-30 + labels 17951033/34/10
  AMENDED (lead, 2026-11-13): first a THRESHOLD SWEEP of the existing net on held-out states (minutes; a class weight w only shifts the BCE-optimal logit by ~log w), per
  decade and in energy cost (cost(z) = |B0(z)| sum_y |H_zy| |B0(y)|, tempered-to-|B0|^2 reweighted bond weight). If no threshold reaches capture >= 50% at d -7..-5 with
  false <= captured (counts and cost), skip the weighted run: the limit is the features -> class question to Astra. Else seal the operating point, then run it.
+THRESHOLD SWEEP RESULT 2026-11-13 (worker; sign_strong/s0w/{sweep.json,sweep_table.txt}; 41 thresholds on the stage-0 net's held-out logits): read (2): NO threshold works.
+ First threshold with capture >= 50% at each of d -7/-6/-5 (t = 2.47): captured 0.65/0.55/0.56 (~710/200/44) vs false 6701/2985/980, i.e. 5-20x more false than captured;
+ at t = 3.0 pooled d -8..-5: 3605 captured vs 34385 false, held-out disagreement 32% (no-flip 11%). Where false <= captured, capture < 1%. Energy-weighted (lower bound:
+ only 3.6% of neighbours present in the table): false cost > captured cost at every threshold (t 3.0: 1.06 vs 0.154 over d -8..-5). The weighted BCE run is SKIPPED.
+ Reading (kill of "imbalance" fired; diagnosis, not a verdict): the CNN's logit does not separate flip from no-flip states at mid decades, so the limit is the features/class.
+ Equation: the label is sgn[1 + alpha(E_L^{s306}(z) - E)], a threshold on the base guide's local energy = sum over ~146 neighbours of H_zy psi(y)/psi(z) of a Pfaffian+RBM;
+ a spin-input CNN must reproduce that whole sum near its threshold, and the near-threshold states are exactly the rare mid-decade flips. Not tested: a pass of a weighted net
+ (the sweep tests only a logit shift); a regression target (the continuous v = 1 + alpha(E_L - E), Astra's pole-free u = P/D) instead of the hard sign; inputs from the base
+ network itself. Next: Astra on the class question (QUESTION9) before any verdict.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

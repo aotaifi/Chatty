@@ -1448,6 +1448,14 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
  ~8x data, more than the label contradictions it injects. The binding term at 1.2M states is estimation, not the symmetry obstruction. The obstruction is real (S0: 8/9 orbits
  contradictory) but not what limits the store. Untried cheapest variants (not run, await Astra): D4-equivariant backbone + small non-D4 head; augmentation by any label-preserving
  subgroup; more labels. Verdict on "the D4 obstruction causes the mask failure / T-BAD slowdown": refuted at this data size, pending Astra's break attempt.
+## ASTRA on S1/S2 (cj-a4957bc0913f, /scratch/a/A.Otaifi/astra/sign_sym/ASTRA_sym.md, read) 2026-11-13: my diagnosis CORRECTED
+ Wrong in my S1/S2 line: "D4 augmentation is worth ~8x data". Training draws ONE transformed image per sampled state in both arms (s8_net_sym.py:146); the arms differ in
+ regularisation, objective and eval averaging (2 vs 16 images) together. train_err uses only the first 50k training states (r1_fit_sym.py:77), so 0.018 can be memorisation.
+ S2 "on_flips" means y<0 vs Marshall, not Lanczos flips (y != n_rel). Every nonidentity D4 element has a label counterexample: no label-preserving point subgroup exists.
+ What stands: the same-budget drop-in tflip remedy is closed (Astra ~95%); H (D4 obstruction contributes) is NOT closed. Astra's ranked tests, predictions on S2 error:
+ (1) f_D + lambda (f_T - P f_T), one scalar, 0.1-0.3 GPU-h, predicts 0.098; (2) frozen D4 backbone + ridge head on (h - P h), 0.2-1 GPU-h, 0.097; (3) tflip wd 1e-2, 1-3 GPU-h, 0.108.
+ None predicted to pass S1. REGISTERED before running (1) (my number): lambda* > 0 AND test error <= 0.0937 (5% below n_3) 20%; lambda* ~ 0 or gain < 2% 65%.
+ Run (1) on CPU (no cip slot), validation chains pick lambda, separate test chains score it.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

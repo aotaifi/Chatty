@@ -475,7 +475,9 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
  quote the larger). Target sigma ~2.5e-6/site. Registered outcomes as in STEP-BACK 4 (gain >= 1e-5 30%; |Delta| < 3e-6 40%); KILL: 2-sigma upper bound on the gain < 5e-6.
  Placement (lead): identical copy on Paderborn H100 (--qos=express_hpcalot, lead's grant, <= 40 H100-h) AND requeueable on the one cip a40-24gb slice, same chain table and seeds.
  RULE: the first copy to finish with done=true is THE result; the other is cancelled on sight; the two are one sample, never pooled. R1' takes the cip slice the moment its labels exist.
- Job ids: (to be posted at submission)
+ Job ids: cip 17968152 (RUNNING from 2026-11-13 20:14, control passed; run dir runs/j1j2/sign_strong/g5/cip; setsid watcher g5_watch.sh, job_finish.sh last).
+ Paderborn 4245313 CANCELLED by me unstarted: express_hpcalot GrpTRESMins gres/gpu:h100 = 1757 of 1800 min used (43 min left, cannot fit 8 h); normal/cont earliest start
+ 2026-11-18, after the cip copy's ~25 h. So the cip copy is the only copy; first-finisher rule moot. Broken-control abort of gated_prod verified (CPU smoke: max|delta| 8.6 -> ABORT exit 3).
 
 ## Running (rewritten 2026-11-13 ~19:30)
 - Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every

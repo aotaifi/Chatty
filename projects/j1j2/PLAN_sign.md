@@ -1392,6 +1392,21 @@ SEALED PREDICTION for the pF 1e-4 / 1e-5 probes (PI rule, projects/j1j2/CLAUDE.m
  them only after this seal). The probes run ~1100 blocks = 110 tau, not 42 tau; the SAME equations at T = 110 tau give: pF 1e-4: mbar 0.71, rho 0.68 (band 0.50-0.85);
  pF 1e-5: mbar 0.96, rho 0.96 (band 0.88-0.99). These 110-tau numbers are the ones to score. Placement note: the builder used Paderborn EXPRESS (<= 1 H100-h)
  against my takeover rule (no express; reserved for the lead's headline); reported to the lead.
+T-STRONG STAGE 0 RESULT 2026-11-13 (A40 jobs 17950928-30 + labels 17951033/34/107; runs/j1j2/sign_strong/s0/r/{ctl1,ctl2}.json, fit/fit_8192.json; read and recomputed per
+ decade by me): controls pass (s306 evaluator vs the Pfaffian angle's: dlnpsi 2e-13, 0 sign mismatches over 2656 neighbours, broken w differs 1241; labels vs direct 1.6e-10,
+ 0 mismatches; alpha = 0 -> no flips; wrong alpha changes 3.8-5.6%). Constants read from consts_s306_p1.json (sha 54add61c).
+ Flip rate K[s306] != s306 on 1,455,822 tempered states: 11.4% overall; by |s306|^2 decade: 0 at d >= -2, 1.2e-5 at -3, 3.4e-4 at -4, 0.22% at -5, 0.94% at -6, 3.0% at -7,
+ 7.5% at -8, 15% at -9, 24% at -10, 33% at -11, 42-60% below -12. vs the sealed bands: d >= -3 hit; -5 0.22% (band 0.3-1.5%: miss low); -7 3.0% (band 3-10%: edge);
+ -9..-11 15-33% (band 15-30%: hit); overall 11% (2-6%: MISS: the tempered sample puts most states in deep decades; my overall share used the wrong weight).
+ Mask (64x6 CNN, BCE on c = K/s306, tau = 0 by the rule): registered GATE PASS (held-out false flips d >= -5: 1 vs 88 true), but VACUOUSLY: the mask captures
+ 0/79 true flips at -5, 0.3% at -6, 0.5% at -7, 1.1% at -8, 3.2% at -9, 7.1% at -10, 16% at -11, 33-100% only below -12 (where it also has 9-43% false flips).
+ Held-out disagreement 10.0% vs no-flip 11.1%. MY ERROR: the gate checked false flips only, not capture; a mask that never flips passes it.
+ Reading: the stored round would change the node only in the deepest decades, where T-NODE found no node gain even for EXACT flips (+8.0(4.1)e-6). The FN stage on this
+ mask is not worth running. Diagnosis (equation): BCE with positives at 0.2-7% in d -5..-8 is minimised by "no flip" there (class imbalance; the loss gain from a correct
+ rare flip is smaller than the loss of the false flips it brings). Cheapest variant (registered now, before any number): class-weighted BCE (weight on flips = 1/flip rate per
+ decade, capped at 100), same class and data, tau chosen on train so that false flips <= true flips captured in d -8..-5. Reads: captured fraction >= 50% at d -7..-5 with
+ false/captured <= 1 -> a usable mask, then decide FN (paired estimator permitting); captured < 20% -> the 64x6 class cannot store the strong-start sign step at 8x8 (record,
+ Astra before verdict). Prediction: usable 35%. Cost ~1 A40-h.
 ## Queue (not run; PI sets priority)
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.

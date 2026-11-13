@@ -1456,7 +1456,16 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
  (1) f_D + lambda (f_T - P f_T), one scalar, 0.1-0.3 GPU-h, predicts 0.098; (2) frozen D4 backbone + ridge head on (h - P h), 0.2-1 GPU-h, 0.097; (3) tflip wd 1e-2, 1-3 GPU-h, 0.108.
  None predicted to pass S1. REGISTERED before running (1) (my number): lambda* > 0 AND test error <= 0.0937 (5% below n_3) 20%; lambda* ~ 0 or gain < 2% 65%.
  Run (1) on CPU (no cip slot), validation chains pick lambda, separate test chains score it.
+## S3 RESULT (Astra test 1, lambda blend) 2026-11-13 (CPU ws1 1.5 core-h; sign_sym/s3/{result.json,logits.npz,control.json}; test numbers recomputed by me from logits.npz)
+ g = f_D + lambda (f_T - P f_T); lambda picked on validation chains ((origin//5) even, 147k states), scored on test chains (odd, 147k). lambda* = 0.1 (val 0.09815 -> 0.09736).
+ TEST: 0.09909 -> 0.09890, delta -0.00018 (95% chain bootstrap [-0.00098, +0.00063]) = 0.2%, zero within errors. f_T alone 0.1196. By decade -7/-6/-5: 0.1083->0.1078, 0.0531->0.0534, 0.0200->0.0202.
+ Controls: P f_T D4-invariant to 1.5e-5 (f_T itself moves by up to 28 under rotation); rms(f_T - P f_T) = 4.9 vs rms f_T 37.7.
+ Registered: pass (lambda*>0 and test <= 0.0937) 20% -> NO; "gain < 2%" 65% -> HELD. Astra predicted 0.098 (measured 0.0989).
+ READ: the symmetry-breaking part the tflip net learned carries no information that generalises: <= 0.1% absolute on held-out (bootstrap upper edge). The D4 obstruction is real on
+ labels (S0) but measured irrelevant to the store's held-out error at this data size. Closing the symmetry branch for the stored sign; Astra (2) (frozen backbone + ridge head on
+ orientation features, 0.2-1 GPU-h, predicted 0.097) goes to Queue, not run: even its predicted best (1.6%) cannot move an FN energy we can resolve.
 ## Queue (not run; PI sets priority)
+- Astra (2) on S1/S2: frozen D4 backbone + ridge head on (h - P h); 0.2-1 A40-h; predicted S2 0.097; parked after S3 (ASTRA_sym.md).
 - WATCH (PI 2026-11-11, DISCUSSION P14/P15): keep the global Lanczos sign step up to 14x14 (dilution measured only beyond ~1e3 sites for good guides,
   TRIED_IDEAS D4). No patch/local rule (PI: sign is non-local; local rule lost at 8x8, D3; AR2, A44). Above ~16x16 revisit with more projection (e^{-tau H}), not patches.
 - Evidence for T-JOINT (Pfaffian angle OBSERVATION 2026-11-05, PLAN_pfaffian.md; same-x check sg_check.py running): on the 8x8 pool the heavy-x tail

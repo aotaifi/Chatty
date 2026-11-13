@@ -667,6 +667,8 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Relaxing the FN constraint (released node, FN-SR / gamma-FN): released node costs Delta_B 0.385/site (DESIGN_scalable_loop:504);
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
+- Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
+
 ## Cockpit
 - STATUS (in progress, high): The strong 8x8 network plus one Lanczos step is ready for its fixed-node run (queued, ~11-19); the first loop round on it has a written prediction and starts once its sample pool is done today.
 - NEXT (in progress, high): First loop round on the strong 8x8 network (fit ~2 days on a free GPU slice), graded against the same network with no loop training.

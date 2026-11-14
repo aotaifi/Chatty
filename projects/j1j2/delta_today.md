@@ -1853,3 +1853,4 @@
 2026-11-14 17:32 Lead guard: labels 17985658 at 276/280 COMPLETED, 4 tasks still running; no stall. Guard moved to 20:30.
 2026-11-14 17:55 VERDICT job 17985658: COMPLETED, POOL GATE PASS: min bond ESS 59171 at decade -2 = 1.068 x 3P (55398); decades short []; pool.npz sha 2141b1e3d9ec, S 2123549 [/project/theorie/a/A.Otaifi/runs/j1j2/pfaffian_8x8_s306/pool_comb/lab/ANALYSIS.md]
 2026-11-14 17:57 R1' labels gate verified PASS (min bond ESS 59171 at -2, sha 2141b1e3); worker submitting R1' fit copies.
+2026-11-14 17:59 R1' label gate PASS verified (17985658; bond ESS -2..-9 min 59171 >= 55398; pool sha 2141b1e3). Lead cancelled held superseded s306 arrays 17903298, 17901202 (never ran; replaced by xe3 17929342; PI delegation 11-13). Fit copies being submitted.

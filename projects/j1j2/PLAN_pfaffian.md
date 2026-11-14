@@ -2515,3 +2515,11 @@ R1' placement plan (2026-11-13; r1prime_placement/PLACEMENT_TABLE.txt): fit on a
 R1' FIT PLACEMENT RULE (lead 2026-11-13 07:05, registered before any R1' fit): two copies, same spec/seeds/start: theorie a40-24gb slice (48 h wall, fit_sec 165000) + Paderborn cont H100 copy submitted UNHELD (a hold stops age-priority accrual). The copy that FINISHES first with done=true is R1''s fit; the other is not graded. If the slice copy finishes (or projects to finish) before the Paderborn copy starts, the lead asks the PI to cancel the pending Paderborn copy; if Paderborn starts first, both run. Step-50 projection check on the slice.
 Queue (lead FYI 2026-11-13): V-score scaling exponent alpha for our PP class (Rende et al. 2606.02794, ViT alpha 0.86(3) at J2=0.5, L=12-20) would make 'is RBM+PP the right class' one comparable number; later, not on the R1' path.
 s306 pool labels (2026-11-14): theorie 17985658 (280 tasks, ~380 core-h, ETA ~11:15-13:15), run dir runs/j1j2/pfaffian_8x8_s306/pool_comb/lab, merged pool -> pool_comb/pool/pool.npz; gate bond ESS >= 3P per decade (-9 short -> report, no extension).
+R1' SEAL CORRECTION (2026-11-14 09:44, BEFORE any R1' data; found by the fit-staging CPU check, r1prime_fit/cpu_check/cpu_check_Bpool.json):
+the sealed (1) used the copy-loss fraction 1 - 0.496/0.569 = 0.128, but 0.569 is the START (i) loss (P_1 + noise P_2, which is WORSE than the
+base alone). On the same held-out batch (B_pool seed 5001, 4096 entries) the base alone (lam = 0) has 0.5114, so the warm arm removes
+1 - 0.4961/0.5114 = 0.030 of the base's copy loss. Corrected predictions (same formulas, correct reference):
+(1') WARM ARM vs base: dE_warm = -0.030 x G_s306 (0.935e-4(15)) = -2.8e-6 (range -2.3 .. -3.4e-6).
+(2') LOOP R1' - warm: dE_loop = -f x 0.970 x G_s306, f = 0.51-0.90 -> -4.6 .. -8.1e-5 (EXTRAPOLATION, caveats as before).
+The original sealed numbers stay in the record above; (1')/(2') are the ones the grade tests. Also noted: start (i) at lam 0.0097 raised the
+held-out copy loss above the base (0.569 vs 0.511).

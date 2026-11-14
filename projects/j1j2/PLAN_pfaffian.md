@@ -2523,3 +2523,4 @@ base alone). On the same held-out batch (B_pool seed 5001, 4096 entries) the bas
 (2') LOOP R1' - warm: dE_loop = -f x 0.970 x G_s306, f = 0.51-0.90 -> -4.6 .. -8.1e-5 (EXTRAPOLATION, caveats as before).
 The original sealed numbers stay in the record above; (1')/(2') are the ones the grade tests. Also noted: start (i) at lam 0.0097 raised the
 held-out copy loss above the base (0.569 vs 0.511).
+R1' fit launchers read and approved (2026-11-14 09:44): ansatz/code/launch_r1prime_{slice,pdb}.sh (+ r1prime_{slice,pdb}.sbatch, r1prime_lib.sh); slice cip a40-24gb 48 h fit_sec 165000, pdb gpu_h100 default QoS 8 h fit_sec 25000; spec diff vs R1 = 16 registered keys (r1prime_fit/slice/spec_r1prime.DRYRUN_diff_vs_R1.txt); both refuse until pool_comb/pool/pool.npz.sha256 exists. CPU check: start (ii) held-out 0.4961393341 (= prediction, rel 3e-16); lam = 0 reproduces s306 ln|B| to 0.0. On the labels VERDICT: gate_all.py -> PASS -> '--submit' both.

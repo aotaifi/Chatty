@@ -2527,3 +2527,12 @@ R1' fit launchers read and approved (2026-11-14 09:44): ansatz/code/launch_r1pri
 Lead 2026-11-14 10:19: R1' launchers approved by the lead too; step-50 rule: >110 s/step while the sign angle's G(-5) 17968152 shares the cip host (until ~21:00) is contention, re-project after it ends; report only if the clean rate > 110 s/step. If the clean slice projection finishes before the Paderborn copy starts, the lead cancels the pending pdb copy (PI delegated 11-13).
 2026-11-14 17:59 R1' fit copies: slice 17990426 RUNNING, pdb 4255548 PENDING; watchers 335566/337337 (PPID 1).
 Lead 2026-11-14 18:03: slice 17990426 on cip-cl-h01g06n1, G(-5) on h01g05n2: no contention; the step-50 110 s/step rule applies as written.
+
+R1' HELD-OUT RISE: PREDICTIONS WRITTEN BEFORE THE DECOMPOSITION (2026-11-14 19:30; lead 19:32 board; worker runs/j1j2/r1prime_fit/diag_ho, not yet read).
+Observed: slice 17990426 L_ho (fixed 4096-row held-out batch) 0.541/0.531/1.68/1.58/2.08/1.99 at steps 0/10/20/30/40/50; L_tr (fixed 4096-row train batch) 0.118/0.101/0.105/0.113/0.127/0.122. Pdb copy 4255548 HELD (2026-11-14 19:30, scontrol hold, reversible).
+Near-node hypothesis: per-row loss l_i ~ w_i (ln|B(x_i)| - ln T_i - c)^2 has a heavy tail from rows where |B| = |P_1 + lam P_2| -> 0, and the fit moves those near-zeros onto held-out configurations.
+ (a) the step-0 excess (L_ho - L_tr = 0.42) sits in <= ~1% of held-out rows (<= ~41 rows), concentrated in the deepest decades or where |P_1 + lam P_2|/|P_1| is small;
+ (b) the per-row median loss is about equal in train and held-out at step 0;
+ (c) the step 20-50 rise (seen at step 150) sits in the same rows or their neighbours, with |B_theta| moving toward 0 there.
+Kill: the excess is spread evenly over rows and decades -> hypothesis dead; cause = a distribution mismatch between the two batches (sampler code / decade weights). First explain the step-0 gap: are train and held-out batches drawn by the same code with the same decade weights?
+Branches: few near-zero rows that the design tolerates (the gate on L_ho is then a test of a few rows) -> release 4255548, propose a gate read on a tail-robust held-out statistic, registered before step 150 is read; design changes (e.g. the loss must regularise near-zeros of B) -> the lead cancels 4255548, redesign on paper first; distribution mismatch -> fix the sampler, re-stage.

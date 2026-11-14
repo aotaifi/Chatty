@@ -479,8 +479,21 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
  Paderborn 4245313 CANCELLED by me unstarted: express_hpcalot GrpTRESMins gres/gpu:h100 = 1757 of 1800 min used (43 min left, cannot fit 8 h); normal/cont earliest start
  2026-11-18, after the cip copy's ~25 h. So the cip copy is the only copy; first-finisher rule moot. Broken-control abort of gated_prod verified (CPU smoke: max|delta| 8.6 -> ABORT exit 3).
 
+## G(-5) RESULT 2026-11-15 (cip 17968152 COMPLETED, 4/4 chains; runs/j1j2/sign_strong/g5/cip/{result.json,ANALYSIS.md,gate/}; gate run by me, auto-analysis blocked: no brief)
+- KILL FIRED (as registered): Delta = E_FN[B gate -5] - E_FN[s306] = +6.4e-6 +- 3.5e-6 /site (pooled; chain scatter 2.6e-6, chi2/dof 0.62); chains +2.8/+1.2/+11.7/+10.0e-6.
+  Gain upper 2 sigma = +0.6e-6 < 5e-6 (t3 95%: +1.9e-6 scatter, +4.7e-6 pooled). quotable.py: NOT QUOTABLE (150 blocks/chain too few for its binning;
+  binning levels flat, raw plot gate/dsite_raw.png flat). Burn: drop 50 measured +6.2(2.2)e-6; halves +2.0(5.0) vs +10.8(5.4)e-6. Leans COST at 1.8 sigma,
+  same sign as T-NODE (+8.0(4.1)e-6, gate -7, different guide B0): not pooled (different guides/gates).
+- Mechanism (equation, re-derived; the 11-03 offset derivation said the same, lead review delta 11-03): E_L - H_xx = V - K (violated minus kept bond weight).
+  Single flip at x: dE_var = 4 a_x^2 (H_xx - E_L(x)); FN diagonal penalty changes by K - V. Helps iff E_L(x) > H_xx. Lanczos (alpha = -0.176) flips iff
+  E_L(x) > E + 1/|alpha| = E + 5.68. At J2 = 0.5 min H_xx = -16 (Neel = stripe), so kappa_x = H_xx - E >= 15.9 for EVERY x: window E+5.68 < E_L < H_xx always open,
+  each flip in it costs 4 a_x^2 (H_xx - E_L) > 0. Not checked: FN weight phi != psi, adjacent flips, the gate boundary (Astra ASTRA_node eq 5/7 is the FN form).
+- Astra cj-8a965a47de4e (/scratch/a/A.Otaifi/astra/sign_g5) asked: kill arithmetic and error honesty, the equation, noise vs window, the hybrid F' = F & {E_L > H_xx}.
+- Proposed next (NOT run, after Astra): VMC decomposition of (4/N) E_{|psi|^2}[1_F (H_xx - E_L)] into window and good flips at gates -5 and -7 (CPU/1 A40-h);
+  prediction to register before it runs. Path closed for the Lanczos mask; F' is a new hypothesis, not a reopening.
+
 ## Running (rewritten 2026-11-13 ~19:30)
-- Nothing running on the sign angle. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
+- 2026-11-15: G(-5) done, KILL fired (G(-5) RESULT above); nothing on Slurm; Astra cj-8a965a47de4e running. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.
 - Settled 11-13: symmetry branch closed (A51; S1/S2/S3); paired estimator passes its 8x8 rho gate (RHO PROBE RESULT below).
 - Open: T-STRONG has an estimator but no mask worth grading (stage-0 threshold sweep and S1 capture <= 4% at FP/TP <= 1). Next candidate: Astra's top-ranked base-feature head

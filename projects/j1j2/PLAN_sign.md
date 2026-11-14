@@ -492,6 +492,20 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - Proposed next (NOT run, after Astra): VMC decomposition of (4/N) E_{|psi|^2}[1_F (H_xx - E_L)] into window and good flips at gates -5 and -7 (CPU/1 A40-h);
   prediction to register before it runs. Path closed for the Lanczos mask; F' is a new hypothesis, not a reopening.
 
+## T-VARDEC (lead GO 2026-11-15, cip slice, <= 1 A40-h; REGISTERED before any number)
+Exact identity (psi_B = psi_A - 2 psi_F, same |psi|, a^2 = |psi|^2/||psi||^2):
+  dE_var = E_var[B] - E_var[A] = 4 sum_{x in F} a_x^2 (H_xx - E_L(x))  +  4 sum_{x != y in F} psi_x H_xy psi_y / ||psi||^2   (single-flip + adjacent-pair term)
+         = E_{|psi|^2}[E_L^B - E_L^A]  (paired VMC, exact, no FN).  Per site: /64.  Window flips: x in F with E_L(x) < H_xx (each raises E_var).
+Measure on s306 at gates -5 and -7: flipped |psi|^2-mass m_F; window share of m_F; single-flip term, pair term, and their sum vs the direct paired E_L^B - E_L^A.
+PREDICTION (mine, before any number): at a deep x, V and K are ratio sums |psi(y)/psi(x)| ~ 10^2, so |V - K| >> kappa - 5.68 ~ 10 and Lanczos flips ~ {V > K}: mostly GOOD.
+  gate -5: m_F 1e-4 [3e-5, 3e-4]; window share of m_F 20% [5, 40]%; dE_var/site NEGATIVE, -1e-4 [-5e-4, -3e-5] (65%); pair term < 20% of single-flip term.
+  gate -7: dE_var/site negative, -5e-5 [-3e-4, -1e-5].
+  I.e. I predict the window exists but does NOT dominate: the single-flip phi = psi picture predicts a variational GAIN where FN measured a cost.
+CRITERION: the window mechanism (single flip, phi = psi) explains G(-5) only if dE_var(-5) > 0 and inside the measured 2 sigma [-0.6, +13.4]e-6, with window flips
+  carrying > 50% of the positive part. dE_var(-5) < 0 beyond 2 sigma -> the missing term is phi != psi (FN weight on deep x is not a^2; ASTRA_node eq 5/7), unless
+  the pair term alone flips the sign (then: adjacent flips). T-NODE (+8.0(4.1)e-6) used |B0| x sgn(M1), not s306: gate -7 here is a sign/order check only.
+Controls: gate -inf dE = 0 exactly; alpha_flip broken arm large; per-sample identity single + pair == E_L^B - E_L^A to 1e-10. Error target max(3e-6, |dE|/5) per site.
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - 2026-11-15: G(-5) done, KILL fired (G(-5) RESULT above); nothing on Slurm; Astra cj-8a965a47de4e running. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.

@@ -1851,3 +1851,5 @@
 2026-11-14 09:45 Pfaffian seal correction before any R1' data (commit 66550e6, verified pre-label-completion): warm-arm reference loss was start (i) 0.569, base alone 0.5114 -> warm removes 3.0% not 12.8%; corrected warm vs base -2.8e-6 (-2.3..-3.4e-6), loop R1' - warm -4.6..-8.1e-5 (extrapolation). Fit copies pre-staged, sha-gated on pool gate.
 2026-11-14 10:19 Lead read and approved R1' fit launchers (slice + pdb); notes on board (G8_* env unused in fit path; slice contention with G(-5) until ~21:00). Labels 17985658 ETA revised 15-16:00.
 2026-11-14 17:32 Lead guard: labels 17985658 at 276/280 COMPLETED, 4 tasks still running; no stall. Guard moved to 20:30.
+2026-11-14 17:55 VERDICT job 17985658: COMPLETED, POOL GATE PASS: min bond ESS 59171 at decade -2 = 1.068 x 3P (55398); decades short []; pool.npz sha 2141b1e3d9ec, S 2123549 [/project/theorie/a/A.Otaifi/runs/j1j2/pfaffian_8x8_s306/pool_comb/lab/ANALYSIS.md]
+2026-11-14 17:57 R1' labels gate verified PASS (min bond ESS 59171 at -2, sha 2141b1e3); worker submitting R1' fit copies.

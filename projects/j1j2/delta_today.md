@@ -1861,3 +1861,4 @@
 2026-11-14 19:27 R1' fit 17990426 step-50 98.7 s/step OK (<=110). Angle flags held-out loss rise 0.53->~2.0 by step 20-50 (train flat 0.10-0.13; step-0 gap 0.54 vs 0.12). Lead asked: hold pdb 4255548 pending the per-row decomposition (~22:10), check the batch draws, and written predictions for the near-node hypothesis (board 19:32).
 2026-11-14 19:30 R1' pdb copy 4255548 held (lead's instruction 19:32, reversible); predictions (a)-(c) and the kill written in PLAN_pfaffian.md before the decomposition is read.
 2026-11-14 19:31 pdb 4255548 held by the angle (board 19:30); predictions (a)-(c) and kill written in PLAN_pfaffian.md before the decomposition.
+2026-11-14 19:44 R1' held-out decomposition read: one decade -9 row (wb 204/250) is 80% of L_ho0; no cancellation; medians equal; gate proposal (trimmed L_ho, fixed indices) registered before step 150; seal (1') risk check started.

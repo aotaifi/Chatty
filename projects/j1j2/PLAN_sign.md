@@ -492,6 +492,21 @@ residual -> step-back on arm 3; recommend cancelling 17697011 (it will reproduce
 - Proposed next (NOT run, after Astra): VMC decomposition of (4/N) E_{|psi|^2}[1_F (H_xx - E_L)] into window and good flips at gates -5 and -7 (CPU/1 A40-h);
   prediction to register before it runs. Path closed for the Lanczos mask; F' is a new hypothesis, not a reopening.
 
+ASTRA on G(-5) (cj-8a965a47de4e, /scratch/a/A.Otaifi/astra/sign_g5/ASTRA_g5.md, read in full) 2026-11-15: KILL STANDS as an operational stop for THIS target.
+- Arithmetic re-done: 6.418, pooled 3.518, scatter 2.587 (e-6). Kill fails only if sigma >= 5.71 (1.62x). Blocking 1..30 shows no error growth.
+  CORRECTIONS to me: blocks are 0.1 tau, so each chain is 2 tau burn + 15 tau measured (the ~100 was aggregate walker time). Drop-50 with the registered
+  larger error is +6.15 +- 4.46 (not 2.24); gain upper 2 sigma +2.8e-6 < 5e-6, still fires. Pairing cancels noise, not relaxation or population bias;
+  A=B = 0 cannot test either. p(two-sided, Delta = 0) ~ 0.07: zero is still plausible.
+- The equation is right for an isolated flip, but "helps iff E_L > H_xx" is wrong for FN. Exact for a set F: dE_var = -4 sum_{bonds with ONE end in F} t_xy a_x a_y
+  (my single-flip sum needs +8 sum over internal bonds). FN: Q(phi) = -sum_{dF} t a a (phi_x/a_x + phi_y/a_y)^2, Q(phi_B) <= dE_FN <= Q(phi_A).
+  Counterexample (3 states, diagonalised): E_L > H_xx flip lowers E_var by 2/3 but raises E_FN by 1.02. So a variational gain does not imply an FN gain.
+- Since H_xx > E + 1/|alpha| everywhere, F' = {decade <= -5, E_L > H_xx}: no Lanczos condition is left. Its single-flip proxy is <= 0 by
+  construction (no test); only the boundary cut sum can fail. Astra: 20% that F' gains >= 5e-6/site.
+- G(-5) is NOT a ceiling over stored masks: an imperfect mask can omit harmful flips and beat the exact one. The stop holds for "store the Lanczos labels".
+- Provenance CORRECTION: s306 is RBM+PP (grade_bare.build_guide: PP2.from_rbmpp_npz), not a CNN. The 64x6 CNN was the S1/S2 stored sign net.
+- Consequence for T-VARDEC: it measures dE_var only. Even a precise positive value shows a trial-energy mechanism, not the FN cost. FN needs Q(phi_A) (phi/a at
+  both bond ends; forward walking), not yet designed.
+
 ## T-VARDEC (lead GO 2026-11-15, cip slice, <= 1 A40-h; REGISTERED before any number)
 Exact identity (psi_B = psi_A - 2 psi_F, same |psi|, a^2 = |psi|^2/||psi||^2):
   dE_var = E_var[B] - E_var[A] = 4 sum_{x in F} a_x^2 (H_xx - E_L(x))  +  4 sum_{x != y in F} psi_x H_xy psi_y / ||psi||^2   (single-flip + adjacent-pair term)

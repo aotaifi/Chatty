@@ -552,6 +552,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Sign tax over many rounds (sign angle 2026-11-04; the PI's 14x14 worry, errors accumulating over sign updates): in the 8x8 loop build,
   re-store the sign after every sign update and grade the tax per round; flat = OK, growing = the sign must be re-trained from scratch
   or the class changed. Lead: include as a per-round readout of the 8x8 loop (no extra run), not a separate test.
+- Competitor bar CORRECTED 2026-11-14 (write-up angle caught it, lead verified in both papers): the strongest published 6x6 network is the ORIGINAL CNN-MPS D=20, -0.50380737(5) = 2.28e-6/site above our E0 (2603.14425 text, Fig. 2); the line below is LaQX's re-implementation (2611.04333 Sec. 4.2), not the bar. Our K=3 guide 2.546e-6 is 0.27e-6 ABOVE it.
 - Competitor bar (LaQX review 2026-11-04, PLAN_tooling.md): published plain VMC CNN-MPS at 6x6 is -0.5038070(2), 2.65e-6/site above our E0 -18.137147540071613/36
   (arXiv 2611.04333 SciPost TeX l.763; CORRECTED 2026-11-04 by the Opus review, lead re-derived: 3.2e-6 was vs the paper's rounded ED), BELOW our best loop guide
   (2.81e-6 exact sign; 3.56e-6 stored sign) and

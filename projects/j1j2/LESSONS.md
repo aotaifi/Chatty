@@ -16,7 +16,7 @@ another's row (merging duplicates keeps every number and record). A lesson that 
 - The loop gains come from the TARGET and the CLASS, not the weighting: label-free A e^{c f_J} stored 37% vs 15% with FN labels; two PPs r 0.49 vs 0.05 | weeks of loss variants (B16-B27, F1/F2/T1s) | PLAN.md "What we understand"; PLAN_pfaffian R5
 - Pointwise labels from walker counts are 20-70x noisier than a round's correction (rms 0.006 in ln phi); use exact per-sample targets | Test W | PLAN.md "What we understand"
 - f0 is the n-weighted SIGNED q.9999 of c f_J / c, not an |f_J| or |B|^2 quantile; non-finite f_J rows are a node, not 0 | f_J defect audit 11-03 | PLAN.md "Step back 2026-11-03"
-- Compare against the strongest published network, measured on our own E0, not a competitor we built; re-derive a published gap from the raw energy | CNN-MPS bar 3.2 -> 2.65e-6 (rounded ED) | PLAN.md Queue "Competitor bar"
+- Compare against the strongest published network, measured on our own E0, not a competitor we built; re-derive a published gap from the raw energy | CNN-MPS bar 3.2 -> 2.65e-6 (rounded ED) -> 2.28e-6 (the bar was a re-implementation, 2611.04333, not the original 2603.14425; caught by the write-up angle 11-13) | PLAN.md Queue "Competitor bar"
 
 ## Diagnostics, surrogates and proxies
 - Check a proxy or diagnostic on the known (passing) cases before using it, and then directionally on controlled perturbations (isolated, cluster flips): 2-3 correlated known cases prove little | '61% off-training-set' misled; Gate S added and later shown a false positive | PLAN_sign "T-BOND"; ASTRA_eps2.md (3)

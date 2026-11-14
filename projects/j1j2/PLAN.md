@@ -600,7 +600,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-13 09:00 check-in; every job has a watcher writing VERDICT lines to delta_today.md)
+## Running (2026-11-14 18:05; every job has a watcher writing VERDICT lines to delta_today.md)
 - 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
 - s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;
@@ -609,13 +609,16 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   on an a40-24gb slice (probe 17950878, 294 s/block), and the cip slots go to R1'.
 - R1' (open question's size half; PLAN_pfaffian 'R1-R3 ON THE RETRAINED 8x8 BASE'): warm start (ii) = B_0' + lam s307's PP at 0.05 (held-out
   tangent share +0.32 vs (i) -0.40); grade = R1' + warm-start arm (no fit) + base re-run, burn 150, halves check, one job; loop gain = R1' - warm.
-  SEALED (608e31d/859fc7d/cccbc3b): warm -1.2e-5 (-1.0..-1.6e-5); loop -4.2..-7.3e-5 (extrapolation; share-to-storage k 1.7-2.0 at rb8, ~7 at 6x6,
-  so the grade also tests k's transfer); old heuristic 0.8-2.0e-5. Waits for the s306 pool expansion 17929342 (3 tasks left) + labels; then the fit on
-  cip a40-24gb (98.7 s/step, ~41 h) AND an unheld Paderborn cont copy (est. 11-18); first finished done=true fit counts (PLAN_pfaffian 'R1' FIT PLACEMENT RULE').
+  SEALED (608e31d/859fc7d/cccbc3b; corrected BEFORE data 66550e6: warm-arm reference was start (i), not the base): warm vs base -2.8e-6
+  (-2.3..-3.4e-6); loop R1' - warm -4.6..-8.1e-5 (extrapolation; tests k's transfer). Labels 17985658 gate PASS (bond ESS min 59171 >= 55398,
+  pool sha 2141b1e3). FIT RUNNING: slice 17990426 (cip a40-24gb, from 11-14 17:58, ~41 h at 98.7 s/step; step-50 projection ~19:30, rule <= 110 s/step)
+  + Paderborn cont 4255548 PENDING; first finished done=true counts. Grade (lead's go) after the fit.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
-- Sign angle (PLAN_sign.md): T-STRONG stage 0 (residual flip mask on s306; sealed c61bf1e: flip rate <= 0.1% at d >= -3 .. 15-30% at -9..-11; gate 45%)
-  fit 17950930 PENDING. Paired estimator: 6x6 PASS; 8x8 rho 0.25 at pF 1e-3; sealed rho 0.68 (1e-4), 0.96 (1e-5), 0.89 at the T-STRONG density;
-  probes Paderborn 4227404/5. CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
+- Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
+  (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
+  G(-5) = gain from the exact one-step sign at decades <= -5, cip 17968152 (~25 h, ends ~21:00 11-14); kill: 2-sigma upper < 5e-6 closes the stored-mask path.
+  CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
+- Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).
 - Workflow angle (local_c7d4e44d, PLAN_workflow.md): rule-conflict review, reports to the PI. Records inventory: docs/consolidation_2026-11-12.md (nothing moved; PI reading).
 - Channels: board MESSAGE_BOARD_lead_pfaffian.md (3-min lead wait); sign angle by session message. /scratch 888 GiB.

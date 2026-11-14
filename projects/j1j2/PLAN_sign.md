@@ -523,6 +523,8 @@ DECISION TABLE (written 2026-11-15 before launch, lead's request). The Lanczos s
   A. dE_var(F,-5) inside [-0.6, +13.4]e-6: the trial energy tracks FN for this mask class. Then dE_var(F',-5) <= -1e-5/site -> paired FN run of F' (G(-5) design, 150-block
      burn = 15 tau per LESSONS 32 + 150 measured; ~12 h/chain x 4 ~ 50 h cip, scaled from 7 h per 170 blocks); kill registered then: 2 sigma upper bound on the gain < 5e-6.
      dE_var(F',-5) > -1e-5 -> F' stops (no FN run).
+     A makes F' a CANDIDATE only: the ~50 h FN run waits for the PI's choice between F' and T-BAD. The report states that the agreement rests on ONE calibration
+     point inside a wide interval (FN 2 sigma width 1.4e-5).
   B. dE_var(F,-5) < -0.6e-6 beyond 2 sigma (a trial-energy gain where FN measured none; my prediction, 65%): the trial energy does not predict FN here -> no FN run on
      T-VARDEC grounds; next = design Q(phi_A) by forward walking (phi/a at both ends of the boundary bonds), paper first.
   C. dE_var(F,-5) > +13.4e-6: the trial energy over-predicts the cost -> treat as B.

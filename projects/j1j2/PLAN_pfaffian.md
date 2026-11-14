@@ -2553,3 +2553,9 @@ Reported, not gating: trimmed L_ho (step-0 HOB top-10 removed), and db at the st
 Undecidable branch: if sigma_D is too large to decide either way (|D| < 2 sigma_D and 2 sigma_D larger than the predicted fit gain, i.e. the 0.030 fraction of L_ho(0)), the finding is that the pool's decade -9 bond-ESS is too low to grade the fit; it goes to the lead before any grade.
 The same full-held-out paired statistic is also computed at the step-150 theta (diagnostic only).
 SEAL (1'): recomputed on the full held-out set of the B_pool pool (base lam=0 vs start (ii)), with a row-bootstrap sigma, before any grade data exist. If the fraction moves, old and new values are recorded with the reason, as in 66550e6.
+
+R1' SEAL CORRECTION 2 (2026-11-14 19:59, BEFORE any R1' grade data; diag_ho/bpool_check.json, full_Bpool_boot.json, full_Bpool_boot_plain.json).
+Reason: the 0.030 in (1') came from ONE 4096-row held-out batch of B_pool (seed 5001). One decade -9 row (pool_idx 20931, wb 82/12, lnB - lnT 2.60) carries 0.809 of the base's 0.5114 there; with the top 10 removed the mean is 0.0795. The 0.030 was a one-row number.
+Full held-out set of B_pool (9663 rows, decade-stratified, c recomputed per resample, 1000 bootstrap resamples, same rows for both): L_base 0.21272, L_start(ii) 0.20989, D 0.0028(40), fraction removed 0.013(15) (16-84% -0.011..0.022); plain-weight variant 0.019(17).
+(1'') WARM ARM vs base: dE_warm = -0.013(15) x G_s306 (0.935e-4(15)) = -1.2(1.4)e-6: consistent with zero; the warm arm has no resolvable predicted gain. Old (1') -2.8e-6 (range -2.3..-3.4e-6) is superseded; its range ignored the batch's row noise.
+(2'') LOOP R1' - warm: the factor 0.970 becomes 0.987(15), so -f x 0.987 x G_s306 = -4.6..-8.3e-5 (EXTRAPOLATION, as before). This is a negligible change.

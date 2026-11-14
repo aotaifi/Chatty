@@ -1865,3 +1865,4 @@
 2026-11-14 19:46 R1' step-0 decomposition (diag_ho/step0.json): one decade -9 held-out row (wb 204) carries 80% of L_ho0; batches match. Lead rejected the trimmed-L_ho gate (it drops the highest-bond-weight rows); gate = paired full-held-out L_ho with row-bootstrap sigma. Seal (1') to be recomputed on the full held-out set before the grade (board 19:52).
 2026-11-14 19:47 R1' fit gate replaced (lead 19:52): full held-out paired L_ho difference > 2 sigma (row bootstrap); trimmed rejected; seal (1') to be recomputed on the full held-out set before grade data.
 2026-11-14 19:50 Angle registered the full-held-out paired gate (cd67b07) before step 150; seal (1') recompute on the full held-out set running.
+2026-11-14 19:59 R1' seal correction 2 before grade data: (1') 0.030 was a one-row batch number; full held-out fraction 0.013(15) -> (1'') warm arm -1.2(1.4)e-6; (2'') -4.6..-8.3e-5. Full held-out CPU array approved (diag_ho/full_ho_comb.sbatch).

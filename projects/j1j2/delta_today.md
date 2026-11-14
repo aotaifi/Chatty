@@ -1866,3 +1866,5 @@
 2026-11-14 19:47 R1' fit gate replaced (lead 19:52): full held-out paired L_ho difference > 2 sigma (row bootstrap); trimmed rejected; seal (1') to be recomputed on the full held-out set before grade data.
 2026-11-14 19:50 Angle registered the full-held-out paired gate (cd67b07) before step 150; seal (1') recompute on the full held-out set running.
 2026-11-14 19:59 R1' seal correction 2 before grade data: (1') 0.030 was a one-row batch number; full held-out fraction 0.013(15) -> (1'') warm arm -1.2(1.4)e-6; (2'') -4.6..-8.3e-5. Full held-out CPU array approved (diag_ho/full_ho_comb.sbatch).
+2026-11-14 20:00 [diag_ho worker] submitted job 17991483 (array 0-15, small, 12G, 40 min): full held-out pool_comb at step-0 warm theta, TAG full_comb_step0, run dir /project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/arr_step0
+2026-11-14 20:02 Verified seal correction 2 (97c4ba9): full held-out (9663 rows) fraction 0.013(15) x G 0.935e-4 = warm arm -1.2(1.4)e-6 (old -2.8e-6 was one row); loop R1'-warm -4.6..-8.3e-5 unchanged. Full held-out pair array (424585 rows, 7.4 core-h) running.

@@ -1860,3 +1860,4 @@
 2026-11-14 19:26 R1' slice step-50 98.7 s/step OK (41.1 h); held-out loss rising 0.54->1.99 by step 50 (train flat 0.12); per-row diagnosis worker started (runs/j1j2/r1prime_fit/diag_ho).
 2026-11-14 19:27 R1' fit 17990426 step-50 98.7 s/step OK (<=110). Angle flags held-out loss rise 0.53->~2.0 by step 20-50 (train flat 0.10-0.13; step-0 gap 0.54 vs 0.12). Lead asked: hold pdb 4255548 pending the per-row decomposition (~22:10), check the batch draws, and written predictions for the near-node hypothesis (board 19:32).
 2026-11-14 19:30 R1' pdb copy 4255548 held (lead's instruction 19:32, reversible); predictions (a)-(c) and the kill written in PLAN_pfaffian.md before the decomposition is read.
+2026-11-14 19:31 pdb 4255548 held by the angle (board 19:30); predictions (a)-(c) and kill written in PLAN_pfaffian.md before the decomposition.

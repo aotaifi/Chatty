@@ -1862,3 +1862,4 @@
 2026-11-14 19:30 R1' pdb copy 4255548 held (lead's instruction 19:32, reversible); predictions (a)-(c) and the kill written in PLAN_pfaffian.md before the decomposition is read.
 2026-11-14 19:31 pdb 4255548 held by the angle (board 19:30); predictions (a)-(c) and kill written in PLAN_pfaffian.md before the decomposition.
 2026-11-14 19:44 R1' held-out decomposition read: one decade -9 row (wb 204/250) is 80% of L_ho0; no cancellation; medians equal; gate proposal (trimmed L_ho, fixed indices) registered before step 150; seal (1') risk check started.
+2026-11-14 19:46 R1' step-0 decomposition (diag_ho/step0.json): one decade -9 held-out row (wb 204) carries 80% of L_ho0; batches match. Lead rejected the trimmed-L_ho gate (it drops the highest-bond-weight rows); gate = paired full-held-out L_ho with row-bootstrap sigma. Seal (1') to be recomputed on the full held-out set before the grade (board 19:52).

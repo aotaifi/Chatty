@@ -506,6 +506,17 @@ CRITERION: the window mechanism (single flip, phi = psi) explains G(-5) only if 
   the pair term alone flips the sign (then: adjacent flips). T-NODE (+8.0(4.1)e-6) used |B0| x sgn(M1), not s306: gate -7 here is a sign/order check only.
 Controls: gate -inf dE = 0 exactly; alpha_flip broken arm large; per-sample identity single + pair == E_L^B - E_L^A to 1e-10. Error target max(3e-6, |dE|/5) per site.
 
+LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + wiki):
+- Published in the variational form. Westerhout, Katsnelson & Bagrov, Commun. Phys. 6, 275 (2023), arXiv 2207.10675 (read via the wiki page westerhout2023many.md,
+  not the paper): at fixed |psi| the energy is an Ising model on basis states, J_xy = |psi_x||psi_y| H_xy. F' = {E_L > H_xx} is one zero-temperature
+  single-spin-flip descent step on it. Their greedy solver needs whole-cluster flips (Methods step d) and exact amplitudes. They test exact signs only up to 16
+  sites of J1-J2. ten Haaf et al. PRB 51, 13039 (cond-mat/9412037) give the FN upper bound. Carleo et al. 1003.3696 improve FN by gamma interpolation, not by
+  moving the sign. I found no local sign rule applied inside lattice FN (absence after 5 queries, not proven).
+- Assumption that breaks for adjacent flips: the field E_L(x) - H_xx uses the neighbours' OLD signs. If x and a neighbour y both flip, the bond term
+  4 psi_x H_xy psi_y keeps its sign, so a simultaneous flip is not a descent step (T-VARDEC pair term). A sequential sweep with updated fields restores descent,
+  but the sign is then order-dependent and no longer a function of x alone, so walker-time evaluation breaks. Fixed |psi| != phi_FN, and != exact |psi_0|, is
+  the second broken assumption.
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - 2026-11-15: G(-5) done, KILL fired (G(-5) RESULT above); nothing on Slurm; Astra cj-8a965a47de4e running. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.

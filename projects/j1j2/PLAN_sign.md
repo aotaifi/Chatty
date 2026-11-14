@@ -519,6 +519,14 @@ PREDICTION (mine, before any number): at a deep x, V and K are ratio sums |psi(y
 CRITERION: the window mechanism (single flip, phi = psi) explains G(-5) only if dE_var(-5) > 0 and inside the measured 2 sigma [-0.6, +13.4]e-6, with window flips
   carrying > 50% of the positive part. dE_var(-5) < 0 beyond 2 sigma -> the missing term is phi != psi (FN weight on deep x is not a^2; ASTRA_node eq 5/7), unless
   the pair term alone flips the sign (then: adjacent flips). T-NODE (+8.0(4.1)e-6) used |B0| x sgn(M1), not s306: gate -7 here is a sign/order check only.
+DECISION TABLE (written 2026-11-15 before launch, lead's request). The Lanczos set F at gate -5 is the calibration point: its FN Delta is measured (+6.4(3.5)e-6, 2 sigma [-0.6, +13.4]).
+  A. dE_var(F,-5) inside [-0.6, +13.4]e-6: the trial energy tracks FN for this mask class. Then dE_var(F',-5) <= -1e-5/site -> paired FN run of F' (G(-5) design, 150-block
+     burn = 15 tau per LESSONS 32 + 150 measured; ~12 h/chain x 4 ~ 50 h cip, scaled from 7 h per 170 blocks); kill registered then: 2 sigma upper bound on the gain < 5e-6.
+     dE_var(F',-5) > -1e-5 -> F' stops (no FN run).
+  B. dE_var(F,-5) < -0.6e-6 beyond 2 sigma (a trial-energy gain where FN measured none; my prediction, 65%): the trial energy does not predict FN here -> no FN run on
+     T-VARDEC grounds; next = design Q(phi_A) by forward walking (phi/a at both ends of the boundary bonds), paper first.
+  C. dE_var(F,-5) > +13.4e-6: the trial energy over-predicts the cost -> treat as B.
+  Inconclusive (error > |dE|/2 or < 50 flipped samples in a part): report, no decision; no extension without the lead.
 Controls: gate -inf dE = 0 exactly; alpha_flip broken arm large; per-sample identity single + pair == E_L^B - E_L^A to 1e-10. Error target max(3e-6, |dE|/5) per site.
 
 LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + wiki):

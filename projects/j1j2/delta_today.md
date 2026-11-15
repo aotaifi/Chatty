@@ -1985,3 +1985,8 @@
 2026-11-15 13:47 GN tangent-share SIZING PROBE job 17998307 (small, 1 core, th-cl-cappm21, 384 train rows, COMPLETED 2:41, MaxRSS 9.95 GB; diag_ho/gn/gn.py, probe/p.npz): 0.325 s/row (vjp x3 + fwd 0.22+0.07, dsyrk 0.06); N_train 1,698,964 -> 153 core-h per theta, above the 40 core-h limit: STOPPED, nothing submitted beyond the probe; sizing to lead.
 2026-11-15 13:51 GN check (i) job 17998342 (small, 4 cores, 2000 train rows theta_0, acc+merge+dense lstsq; gn/chk1/); watcher gn_watch.sh armed (setsid).
 2026-11-15 13:51 GN share: 373k pi-weighted train sample + all held-out at both thetas, ~125 core-h CPU; in-sample (upper) and held-out (lower) bracket C. Lead accepts.
+2026-11-15 13:52 VERDICT job 17998342: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/gn/chk1/ANALYSIS.md]
+2026-11-15 13:52 GN check (i) 2000 train rows theta_0 acc+merge+dense lstsq job 17998380 (watcher gn_watch.sh armed, run dir /project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/gn/chk1)
+2026-11-15 14:11 VERDICT job 17997721: COMPLETED, M64_GATE PASS (rule: fail iff |d|>2e-4 AND |z|>2). e_0(M64) = -0.494113 ± 8.6e-5 (n=300), e_0(M16) = -0.493769 ± 2.06e-4 (n=330+330), diff = -3.44e-4, z = -1.54. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/m64/ANALYSIS.md]
+2026-11-15 14:54 VERDICT job 17998002: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4/fit/ANALYSIS.md]
+- 2026-11-15 sign angle: T-SEP prep: cnn_sign providers validated (751fadc; A=B 0.0, rows bitwise, labels 0/1000, broken arms miss); r4 labels K[n_3] done (17998002, controls pass, flips 11.6%); fit stage failed (r1_fit copy lacked --init) -> refit with screen r1_fit.py by a fresh worker, then flip weights, rho probes, launcher.

@@ -680,6 +680,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
 
 ## Cockpit
-- STATUS (in progress, high): The strong 8x8 network plus one Lanczos step is ready for its fixed-node run (queued, ~11-19); the first loop round on it has a written prediction and starts once its sample pool is done today.
-- NEXT (in progress, high): First loop round on the strong 8x8 network (fit ~2 days on a free GPU slice), graded against the same network with no loop training.
-- NEXT (in progress, medium): Sign side: test how often a stored sign correction on the strong network flips right signs (small GPU job, queued).
+- STATUS (in progress, high): The first loop round on the strong 8x8 network has finished training; its fixed-node energy test against the untrained network runs today (8 chains per arm).
+- NEXT (in progress, high): Read the energy test: does the loop round lower the fixed-node energy, and by the predicted 5-8e-5 per site or the smaller ~1.4e-5 the held-out data suggest?
+- NEXT (open, medium): Sign side: stored sign masks at 8x8 closed operationally; PI to choose the next sign question (scaling of the sign storage loss with lattice size recommended).

@@ -1924,3 +1924,6 @@
 2026-11-15 08:25 R1' fit ended 4255548 1500/1500; end full held-out D +0.0011(110) undecidable -> grade decides; trimmed +0.0167(23). Lead approved the 3-arm grade launcher (runs/j1j2/r1prime_grade, ~3.0 H100-h) plus a twin prod2 (k4-7, new X0, seeds 705-708) so each arm has 8 chains, given the chain offsets seen in headline B; 6.0 H100-h total.
 2026-11-15 08:26 R1' grade: lead OK (08:40) with amendment prod2 (k4-k7); LEAD_OK written; worker submitting.
 2026-11-15 08:28 R1' grade amendment registered (b6b73b6), LEAD_OK written; worker submits prod then prod2; ids to follow.
+2026-11-15T08:29:53+01:00 r1prime_grade prod submitted: Paderborn job 4271870 (3 arms x 4 chains k0-k3, seeds 701-704, theta_tail sha 15cff596), run dir runs/j1j2/r1prime_grade/prod, watcher pid 3995877
+2026-11-15T08:36:03+01:00 r1prime_grade prod2 submitted on Paderborn: job 4271928 (PENDING; watcher pid 4061749, ppid 1); prod is job 4271870
+2026-11-15 08:38 R1' grade jobs verified on Paderborn: prod 4271870 (PENDING, est start 08:38), prod2 4271928 (PENDING). 8-chain gate: analyze_r1prime_grade.py prod prod2 (tested on synthetic offsets). X0_4..7 seeded draw from the remaining stage-1 tasks; X0_0..3 hand-picked (no recorded rule).

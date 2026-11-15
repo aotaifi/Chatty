@@ -13,16 +13,16 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--consts', required=True); ap.add_argument('--consts_sha', required=True)
 ap.add_argument('--chains', type=int, default=1000); ap.add_argument('--nsamp', type=int, default=4); ap.add_argument('--burn_sweeps', type=int, default=40); ap.add_argument('--thin_sweeps', type=int, default=2)
 ap.add_argument('--beta', type=float, default=0.5); ap.add_argument('--seed', type=int, default=11); ap.add_argument('--chunk', type=int, default=128); ap.add_argument('--maxroots', type=int, default=0)
-ap.add_argument('--controls_only', action='store_true')
+ap.add_argument('--controls_only', action='store_true'); ap.add_argument('--start', default='shipped', choices=['shipped', 'neel']); ap.add_argument('--sampler_only', action='store_true'); ap.add_argument('--no_sampler_gate', action='store_true', help='SMOKE ONLY (tiny chain counts); recorded in sampler_meta.json')
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
 P = lambda *s: print(time.strftime('%H:%M:%S'), 'PROGRESS', *s, flush=True)
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()
 import vitlib as VL, vmc10 as VM
-from vitlib import BI, BJ, HW, JB, N, NB
+from vitlib import BI, BJ, HW, JB, N, NB, L
 cs = sha(a.consts); want = open(a.consts_sha).read().split()[0]
 if cs != want: sys.exit(f'LABELS: consts sha256 mismatch {cs} != {want}')
 C0 = json.load(open(a.consts)); ALPHA = float(C0['alpha']); EREF = float(C0['E']); P('consts', a.consts, cs, 'alpha', ALPHA, 'E', EREF)
-ev = VL.make_vit('f32h'); S = VL.shipped(); CH = 1024
+ev = VL.make_vit('f32h'); S = VL.shipped(); CH = 1024; CHS = min(a.chains, 1024)   # sampler chunk = number of chains (no padding waste)
 def pack(Z): return np.packbits(np.asarray(Z) > 0, axis=1)
 def unpack(B): return np.where(np.unpackbits(B, axis=1)[:, :N] > 0, 1.0, -1.0).astype(np.float32)
 def lab(ELM, alpha=ALPHA, E=EREF):
@@ -30,23 +30,41 @@ def lab(ELM, alpha=ALPHA, E=EREF):
 
 # ---------------------------------------------------------------------------------------------- sampler
 fs = a.out + '/samples.npz'
+def sampler_gate(tl, te, burn_sweeps, zmax=3.0):
+    """Equilibration gate.  tl, te: (sweeps, chains) trajectories of log|psi|^2 and of the diagonal-energy proxy H_zz (per chain, recorded every sweep = 100 proposals).  Windows: the span [burn/2, end] split in halves A, B;
+    per-chain window means, d_c = mean_B - mean_A, z = mean(d) / (std(d)/sqrt(C)).  passed iff |z| < zmax for both quantities (a drifting ensemble = burn too short)."""
+    nsw, C = tl.shape; lo = burn_sweeps // 2; h = (nsw - lo) // 2; out = {}
+    for nm, t in (('log_psi2', tl), ('diag_energy', te)):
+        A = t[lo:lo + h].mean(0); B = t[lo + h:nsw].mean(0); d = B - A; z = float(d.mean() / (d.std(ddof=1) / np.sqrt(C)))
+        out[nm] = dict(mean_A=float(A.mean()), mean_B=float(B.mean()), diff=float(d.mean()), chain_sd=float(d.std(ddof=1)), z=z)
+    out['windows_sweeps'] = dict(A=[lo, lo + h], B=[lo + h, nsw]); out['passed'] = bool(all(abs(out[k]['z']) < zmax for k in ('log_psi2', 'diag_energy'))); return out
+def neel():
+    x = np.array([1.0 if (i % L + i // L) % 2 == 0 else -1.0 for i in range(N)], np.float32); assert x.sum() == 0; return x
 if os.path.exists(fs):
     d = np.load(fs); roots = d['X']; chain = d['chain']; P('samples reloaded', len(roots))
 elif not a.controls_only:
     rng = np.random.default_rng(a.seed); C = a.chains; assert C <= len(S)
-    X = S[rng.choice(len(S), C, replace=False)].copy(); lp = ev(X, CH).real; rec = []; lpm = []; t0 = time.time(); acc = 0.0
+    X = (S[rng.choice(len(S), C, replace=False)].copy() if a.start == 'shipped' else np.tile(neel(), (C, 1))); lp = ev(X, CHS).real; rec = []; lpm = []; t0 = time.time(); acc = 0.0; TL = []; TE = []
     times = [a.burn_sweeps * N + k * a.thin_sweeps * N for k in range(1, a.nsamp + 1)]; step = 0; ar = np.arange(C)
     while step < times[-1]:
         anti = X[:, BI] != X[:, BJ]; na = anti.sum(1); b = np.argmax(rng.random(anti.shape) * anti, 1)
         Y = X.copy(); Y[ar, BI[b]], Y[ar, BJ[b]] = X[ar, BJ[b]], X[ar, BI[b]]
-        lq = ev(Y, CH).real; nay = (Y[:, BI] != Y[:, BJ]).sum(1)
+        lq = ev(Y, CHS).real; nay = (Y[:, BI] != Y[:, BJ]).sum(1)
         ok = np.log(rng.random(C)) < 2 * a.beta * (lq - lp) + np.log(na / nay); X[ok] = Y[ok]; lp = np.where(ok, lq, lp); acc += ok.mean(); step += 1
+        if step % N == 0: TL.append(2 * lp.copy()); TE.append(VL.diag0(X))
         if step in times: rec.append(X.copy()); lpm.append(float(lp.mean())); P('sample time', step, 'mean log|psi|', lpm[-1], 'acc', acc / step)
         if step % 200 == 0: P('sampler step', step, '/', times[-1], 'sec', f'{time.time() - t0:.0f}')
     roots = np.concatenate(rec).astype(np.int8); chain = np.tile(np.arange(C), a.nsamp)
-    np.savez(fs, X=roots, chain=chain, times=np.array(times), mean_lp=np.array(lpm), acc=acc / step)
-    json.dump(dict(mean_lp_by_sample=lpm, acc=acc / step, sec=time.time() - t0, args=vars(a), mref10=float(np.median(2 * ev(S[:2048], CH).real))), open(a.out + '/sampler_meta.json', 'w'))
+    np.savez(fs, X=roots, chain=chain, times=np.array(times), mean_lp=np.array(lpm), acc=acc / step, TL=np.array(TL), TE=np.array(TE))
+    json.dump(dict(mean_lp_by_sample=lpm, acc=acc / step, sec=time.time() - t0, args=vars(a), mref10=float(np.median(2 * ev(S[:2048], CH).real))), open(a.out + '/sampler_meta.json', 'w'), default=float)
     P('sampler done', len(roots), 'roots; mean log|psi| per sample time', lpm)
+# ---- sampler equilibration gate (before any labelling; also on a reloaded samples.npz)
+if not a.controls_only:
+    dz = np.load(fs); g = sampler_gate(dz['TL'], dz['TE'], a.burn_sweeps); meta = json.load(open(a.out + '/sampler_meta.json')); meta['gate'] = g; meta['passed'] = g['passed']; json.dump(meta, open(a.out + '/sampler_meta.json', 'w'), indent=1, default=float)
+    P('SAMPLER_GATE', 'PASS' if g['passed'] else 'FAIL', json.dumps({k: g[k] for k in ('log_psi2', 'diag_energy')}))
+    if a.no_sampler_gate: meta['passed'] = 'skipped (smoke)'; json.dump(meta, open(a.out + '/sampler_meta.json', 'w'), indent=1, default=float)
+    elif not g['passed']: P('R1_LABELS_ABORT sampler not equilibrated (sampler_meta.json passed=false)'); sys.exit(4)
+    if a.sampler_only: sys.exit(0)
 if a.maxroots: roots = roots[:a.maxroots]; chain = chain[:a.maxroots]
 
 # ---------------------------------------------------------------------------------------------- one root
@@ -66,7 +84,7 @@ def load_chunks():
     return out
 
 # ---------------------------------------------------------------------------------------------- controls
-def controls(nroots_generic=4, n_direct=20, tol=2e-4):
+def controls(nroots_generic=4, n_direct=20, tol=2e-3):   # tol: f32h batch-composition noise on E_L is ~4e-4 (seen); bugs give >= 0.2 (corrupted-ratio control: 0.39)
     ch = load_chunks(); assert ch, 'no chunks'; res = {}
     L1all = np.concatenate([unpack(c['L1b']) for c in ch]); ELall = np.concatenate([c['ELM'] for c in ch]); yall = np.concatenate([c['y'] for c in ch]); fall = np.concatenate([c['f'] for c in ch])
     rng = np.random.default_rng(7); pick = rng.choice(len(L1all), n_direct, replace=False); dev = []; mism = 0; edge = 0; rows = []

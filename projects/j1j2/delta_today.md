@@ -1949,3 +1949,9 @@
 2026-11-15 11:32 Lead read the T-BAD10 round-1 launcher (runs/j1j2/sign_bad10/r1); OK conditional on: one code for both FN arms (e0ext uses the step0 code copy) or an A=B bit check; an M=16 vs M=64 population-bias bound on e_0 (< 2e-4); sigma(g_1) sized from step 0; the halves check and the VMC equilibration as hard gates.
 2026-11-15 11:32 VERDICT job ttan_r3b: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round3/ANALYSIS.md]
 2026-11-15 11:32 T-BAD10 r1 changes accepted: one code or an A=B check; an M=64 e_0 gate |dM| < 2e-4; sigma(g_1) <= 2e-4 (step 0 e_0 1.2-1.5e-4 per 2x250 blocks); halves in the verdict; sampler gate. ~17.5 A40-h. Ids to follow.
+2026-11-15 11:37 VERDICT job ttan_r2: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round2/ANALYSIS.md]
+2026-11-15 11:46 VERDICT job 17997518: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke/ANALYSIS.md]
+2026-11-15 11:47 VERDICT job 17997633: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke3/ANALYSIS.md]
+2026-11-15 11:52 VERDICT job 17997651: COMPLETED, NOT QUOTABLE: E_mix: fn1/E_mix.npy and fn2/E_mix.npy have only 3 samples each, too short for a binning analysis [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke3/ANALYSIS.md]
+- 2026-11-15 sign worker: T-BAD10 round-1 chain submitted (afterok): e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers PPID 1
+2026-11-15 11:54 T-BAD10 r1 submitted, verified: e0ext 17997720 RUNNING; m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725 (afterok). m64 gate = |dM|>2e-4 AND |z|>2 (low power); lead: g_1 resolved only if g_1 - 2-sigma |dM| bound > 2 sigma(g_1).

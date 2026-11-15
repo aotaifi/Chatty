@@ -567,9 +567,24 @@ LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + 
   but the sign is then order-dependent and no longer a function of x alone, so walker-time evaluation breaks. Fixed |psi| != phi_FN, and != exact |psi_0|, is
   the second broken assumption.
 
+## T-BAD10 (DECIDED by me 2026-11-15 under takeover, PI: "you have a goal ... should have decided"; registered before any number)
+Why this, not 8x8 round 4: the PI's goal is a better sign every round from a BAD start at LARGE L. At 8x8, round 4 sits 4.5e-5 from the VMC sign (good-start tail),
+ needs ~1e-5 resolution, and its paired feasibility depends on an unmeasured flip weight. 10x10 from Marshall is the bad-start regime: round gains are ~1e-3, resolvable
+ unpaired, and it measures the scalability question directly (does storage loss grow with L?).
+Design: amplitude fixed = |published 10x10 ViT| (experiments/addon_10x10, /scratch/a/A.Otaifi/vit10_runs; FN p=0 driver gfmc_guide.py validated 11-03). Sign recurrence as T-BAD FINAL:
+ n_0 = Marshall; labels K[n_r] = n_r sgn[1 + alpha(E_L(|ViT| n_r) - E)] on tempered root packets + one-swap neighbours; fit n_{r+1} (64x10 CNN, recipe of screen arm d,
+ size-agnostic convolution); grade e_r = FN c = 0 energy/site of (|ViT|, n_r), 2 chains, sigma per arm <= 5e-5. alpha and E: VMC one-step moments of (|ViT|, n_r), read and not recomputed.
+Step 0 (now, cip slice, <= 2 A40-h): cost probe (ViT evals/s on A40 for one-swap batches; projected label cost per 1k packets; FN s/block for (|ViT|, CNN sign));
+ e_0 = FN of (|ViT|, Marshall) short (sigma <= 1e-4); alpha_0, E_0 from VMC. Size rounds 1-2 from these rates; packets 2k if 8k is unaffordable
+ (8x8 learning curve: 2k -> 8k changed held-out error by 7%).
+Predictions (mine): e_0 - e_ViT(sign of the ViT, -0.497682) in [2e-3, 6e-3]/site (8x8 Marshall gap was 3.2e-3) 70%; g_1 >= 1e-3 70%; g_2 > 2 sigma 65%;
+ contraction gap_1/gap_0 at 10x10 WORSE than 8x8's 0.18 (storage loss grows with L) 55%.
+KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
+Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
+
 ## Running (rewritten 2026-11-13 ~19:30)
 - 2026-11-15 night: nothing running. G(-5) kill (Astra: stands for Lanczos labels); T-VARDEC branch C; F' trial gain 9x below bar -> 8x8 stored-mask routes closed OPERATIONALLY.
-  Waiting on the PI: T-BAD (storage loss vs L) vs nothing; G_max bound (~4-6 A40-h) PARKED until then. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
+  DECIDED (takeover): T-BAD10 (bad-start loop at 10x10, section above), step 0 cost probe running; G_max PARKED; 8x8 round 4 PARKED. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.
 - Settled 11-13: symmetry branch closed (A51; S1/S2/S3); paired estimator passes its 8x8 rho gate (RHO PROBE RESULT below).
 - Open: T-STRONG has an estimator but no mask worth grading (stage-0 threshold sweep and S1 capture <= 4% at FP/TP <= 1). Next candidate: Astra's top-ranked base-feature head

@@ -585,6 +585,16 @@ Mechanism behind g_1 >= 1e-3: g_1 = gap_0 (1 - c_1). gap_0 = e_0 - e_ref is the 
 Cap (lead, takeover default): each test <= 40 H100-h (A40 converted by the measured ratio); each round sized from the step-0 rates.
 KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
+T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP; CPU ws1/ws2; registered before any number):
+ Can the 64x6 sign CNN even represent each round's label change near its current weights? Linearise the logit l(z; theta) at n_r: target t(z) = -2 l(z) on flipped
+ states (K[n_r] != n_r), 0 on kept ones; damped Gauss-Newton fit in sample space (as PLAN_pfaffian Test Theta v2, C(GN) and C(200)) on training states; share
+ C = 1 - |t - J dtheta|^2 / |t|^2 on held-out states (same split as the fits), plus the fraction of held-out flips reproduced while keeps stay kept.
+ Rounds 2 (K[n_1] at n_1) and 3 (K[n_2] at n_2), with existing labels and nets (runs/j1j2/sign_bad/r{1,2,3}). Retrospective test that can fail: realized contraction
+ x6.2 at round 2 and x2.1 at round 3.
+ Prediction (mine): C(r3) < 0.5 C(r2) [55%]; C(r3) < 0.1 [50%].
+ Decision: C drops >= 2x AND C(r3) < 0.1 -> the fixed class limits storage -> next arm = grown sign class per round (fresh head beside the frozen n_k, initialised so
+ the output equals n_k exactly; ask the Pfaffian angle for the construction), and T-SEP is not needed for that decision. C does not drop -> storage is not the limit by
+ this measure -> T-SEP decides (label quality). Controls: a broken target (labels shuffled across states) must give C ~ 0; identity check of J against finite differences.
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

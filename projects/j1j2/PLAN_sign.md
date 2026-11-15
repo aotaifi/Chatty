@@ -588,6 +588,10 @@ Step 0 jobs: 17996493 (probe 0a), 17996634 (production 0b)
 Reading rule (lead, before data): RESOLVED if g_1 - (|dM| + 2 sigma_d from m64) > 2 sigma(g_1); INCONCLUSIVE (bias-limited, next: longer m64) if only the bound fails;
  KILL INPUT only if g_1 itself is not beyond 2 sigma(g_1).
 Round 1 jobs: e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers 600143 600152 600156 600161 600166 600170
+ROUND 1 ATTEMPT 1 STOPPED 2026-11-15 by the VMC gate (17997722): the subsampled h2 estimator is ~33x noisier per sample than exact (alpha -0.51(2.69), rel err 5.3).
+ e0ext: chains -0.493589(139) / -0.494001(158), 2.0 sigma apart (NOT QUOTABLE); m64 -0.494113(86) lies below both: hint of an M16 population bias of a few 1e-4 (z -1.54). 3.8 A40-h spent.
+ DECISIONS (takeover): exact two-hop VMC with 400 samples in >= 8 chains (step 0 had 12% at 122); grade BOTH arms at M=64 (e_0: m64 chain + a new M64 chain;
+ n_1: 2 M64 chains); bias bound B64 = (|dM| + 2 sigma_d)/3 replaces B_M in the three-branch reading rule; dead fit/fn jobs 17997724/5 cancelled; cap 24 A40-h.
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
 T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP; CPU ws1/ws2; registered before any number):
  Can the 64x6 sign CNN even represent each round's label change near its current weights? Linearise the logit l(z; theta) at n_r: target t(z) = -2 l(z) on flipped
@@ -630,7 +634,10 @@ T-SEP DESIGN (registered 2026-11-15 before any number; lead granted a 2nd cip sl
  Branches: G_exact > 2 sigma and G_exact - G_stored > 2 sigma (f < 0.5) -> STORAGE limits -> next arm: grown head aimed at decades -9..-5 (T-TAN per-decade collapse).
  G_exact not beyond 2 sigma -> the LABEL limits (the one-step label carries no gain at round 4) -> label work, e.g. amplitude-aware labels or the joint loop.
  f >= 0.5 with G_exact > 2 sigma -> storage is adequate and the loop is near its one-step fixed point.
- r4_phaseA job 17998002, watcher 822895
+ r4_phaseA job 17998002, watcher 822895 (labels done, controls pass; fit stage FAILED: r1_fit.py copy lacked --init)
+ r4 fit-only job 17999079 (cip a40-24gb, r4/code/r4_fit.sbatch, watcher pid 1325694, run dir runs/j1j2/sign_bad/r4/fit)
+ rho probe, arm exact job 17999272 (afterany 17999079; watcher 1425936; /scratch/a/A.Otaifi/ansatz_runs/sign_bad/sep/probe_exact)
+ rho probe, arm stored4 job 17999273 (afterany 17999272; watcher 1425937; .../sep/probe_stored4)
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

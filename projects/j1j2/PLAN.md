@@ -629,7 +629,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
   G(-5) DONE: KILL FIRED, Delta +6.4(3.5)e-6 (Astra cj-8a965a47de4e: stands for storing Lanczos labels; NOT a ceiling over masks). T-VARDEC (17994730)
   branch C: trial-energy cost +2.44(25)e-5, 98.6% window flips; F' gain -0.56(14)e-6 (1/9 of the bar). Stored masks at 8x8 closed OPERATIONALLY.
-  PI to choose: T-BAD storage loss vs L (lead recommends) or G_max bound (~4-6 A40-h). No runs meanwhile. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
+  Next: T-BAD10 (10x10 bad-start sign loop; PLAN_sign e15d1af), step-0 cost probe on cip; G_max and 8x8 round 4 parked. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
   CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
 - Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).
@@ -689,4 +689,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 ## Cockpit
 - STATUS (in progress, high): The first loop round on the strong 8x8 network has finished training; its fixed-node energy test against the untrained network runs today (8 chains per arm).
 - NEXT (in progress, high): Read the energy test: does the loop round lower the fixed-node energy, and by the predicted 5-8e-5 per site or the smaller ~1.4e-5 the held-out data suggest?
-- NEXT (open, medium): Sign side: stored sign masks at 8x8 closed operationally; PI to choose the next sign question (scaling of the sign storage loss with lattice size recommended).
+- NEXT (in progress, medium): Sign side: stored sign masks at 8x8 closed; now the bad-start sign loop at 10x10, where round gains are large enough to see without pairing (cost probe running).

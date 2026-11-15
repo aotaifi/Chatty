@@ -2616,3 +2616,19 @@ Attribution E(warm) - E(base) = -0.04(31)e-5, consistent with zero and with the 
 The proxy matched: the post-fit, unregistered, derived expectation from the held-out loss without the 5 worst rows (fraction 0.145(19) x G_s306) was -1.36(18)e-5; measured -1.20(23)e-5, 0.5 sigma apart. So the trimmed held-out copy loss maps to energy through G_s306 at this size.
 Term that missed in (2''): f, the realised fraction of the copy loss the fit removes. (2'') took f = 0.51-0.90 from the tangent-share analysis; the fit realised 0.145(19) on held-out. The fit stored 3.5-6x less than the linear tangent share allowed. Candidate causes, NOT tested: (a) the 1/P_1 near-node non-linearity (the linear map fails exactly at the high-wb rows: corr 0.09); (b) the tangent share was measured on train rows, while the held-out generalisation is worse; (c) finite steps / trust region. Next: diagnose f on paper before R2' (CLAUDE.md point 2: no variant until the term is understood).
 Brief early kill: gain_1 (R1') = -1.20e-5 is the reference for R2' (kill if |gain_2| < 0.5 x 1.20e-5).
+
+R1' STORAGE FRACTION f: PAPER DIAGNOSIS (2026-11-15 12:10; lead 12:20; registered before the computation it calls for).
+Definitions, on one estimand (decade-balanced rows, bond-weighted copy loss, c re-fitted per theta):
+  L_S(theta) = sum_{i in S} pi_i l_i(theta),  l_i = ex_i^2 + sum_b w_ib db_ib^2,  db_ib = [ln B_theta(x_i) - ln B_theta(y_ib)] - [ln T(x_i) - ln T(y_ib)]
+  f_S = 1 - L_S(theta_end)/L_S(theta_0),  S = held-out (HO) or train (TR).
+  Linearise along the step dtheta = theta_end - theta_0:  ln B_end(x) = ln B_0(x) + g(x).dtheta + N(x),  g = d ln|B|/d theta at theta_0 (one jvp per configuration).
+  f_S = f_S^lin + f_S^nl,  f_S^lin = 1 - L_S^lin/L_S(theta_0) with N set to 0.
+  The sealed (2'') used f = C_inf x k: C_inf (population held-out tangent share at the start, 0.30-0.45, extrapolated) and k = 1.7-2.0, transferred from rb8_prod R1 (k = R1 fraction 0.281 / R1 population share 0.14-0.17).
+Data already in hand: realised f_HO (trimmed, 5 rows out) = 0.145(19); the fixed 4096-row TRAIN batch (top-1 share 6%) fell 0.1182 -> 0.0769 (mean of the last 300 steps), so f_TRB = 0.35. The train curve is near-flat at the end (window means 0.0824/0.0779/0.0769 over steps 600-1500). So f_TRB ~ C_inf already; the shortfall vs the seal sits in k (sealed 1.7-2.0, realised f_HO/f_TRB = 0.41).
+Three candidates for the term that sets f_HO = 0.145, each with a number it predicts:
+ (a) NEAR-NODE NON-LINEARITY: the step is good to first order on held-out rows, but N destroys it. Predicts f_HO^lin(trimmed) >= 0.30, the gap f^lin - f concentrated in rows with |g.dtheta| > 1 (decades -9..-7), and f_TR^lin ~ f_TR.
+ (b) GENERALISATION (train vs held-out tangent share): the step is linear on held-out but points along directions only the train rows support. Predicts f_HO^lin ~ f_HO ~ 0.15 (within 0.05), and f_TR (full train set, not the batch) ~ 0.35, well above f_HO.
+ (c) FINITE STEPS / UNDER-FIT: the train set is not fitted either; the batch's 0.35 is unrepresentative. Predicts f_TR (full train set) ~ 0.15 ~ f_HO.
+Kill of this diagnosis: none of (a)-(c) fits, e.g. f_HO^lin < f_HO by more than the error.
+Second item, same computation: k's calibration rests on R1's held-out fraction 0.281, read on ONE 4096-row batch of the same heavy-tailed kind. Recompute R1's fraction on its full held-out set (theta_0 vs R1 theta_tail). G_rb8 = 4.95e-5/0.281, and hence G_s306, rest on the same number: if it moves, the proxy match -1.36e-5 vs -1.20e-5 may be a coincidence, and that goes on record.
+Cost: one jvp + residual pass over all held-out rows and an equal-size train sample of pool_comb (~2 x 3.7 core-h with the approved full_ho array), plus R1's full held-out pair (~7 core-h). CPU only.

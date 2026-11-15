@@ -543,6 +543,18 @@ VERDICT against the table: dE_var(F,-5) = +2.44e-5 > +13.4e-6 -> BRANCH C (treat
 My registered prediction FAILED on sign (predicted -1e-4), window share (20%) and pair term (< 20% of single; measured 48%); m_F inside [3e-5, 3e-4]. The miss: at a^2-weighted
   flipped states |V - K| is NOT >> 10; flips sit just above E_L = E + 5.68, inside the window.
 F' (no decision under C): its trial-energy gain is -5.6e-7/site, 9x below the 5e-6 bar. An FN gain >= 5e-6 would need phi/a amplification ~10x on its boundary bonds.
+Q-BOUND ON PAPER (lead 2026-11-15: "can ANY sign change at d <= -5 on s306 gain >= 5e-6 in FN?"; no runs)
+- Exact and rigorous: E_FN[B] >= E0 for every sign, so gain <= E_FN[s306] - E0. This is useless here unless E0(8x8) is known to ~5e-6/site, and it is not.
+- Exact for each F (ten Haaf + Rayleigh, Astra): gain(F) = -dE_FN <= -Q(phi_B) = sum_{dF} t_xy a_x a_y (r_x + r_y)^2, r = phi_B/a >= 0 (t > 0 = bond violated in A).
+  It needs B's own walk, one run per F, so maximizing over F is not tractable.
+- First order in the flipped mass (phi_B ~ phi_A; m_F ~ 5e-5): gain over ALL F inside {d <= -5} <= G_max = sum over violated bonds (t > 0) with >= 1 end at d <= -5 of
+  t a_x a_y (r_x + r_y)^2, with r = phi_A/a. Every flip set fixes a subset of these bonds and pays for the bonds it breaks, so G_max is an upper bound at this order.
+  It is not rigorous beyond first order. It needs r at BOTH bond ends, but forward walking gives r only at the walker. Because r >= 0, (r_x + r_y)^2 <= 2(r_x^2 + r_y^2),
+  so G_max <= 2 sum t a_x a_y (r_x^2 + r_y^2): a pure DIAGONAL estimator, standard forward walking.
+  Cost: an engine change (save walker configurations and forward-walking weights; 6x6 exact check against ED of H_eff) plus one 8x8 A-arm run (~4-6 A40-h). Not built.
+- Answer now: NO bound exists from data in hand. The 8x8 mask question is closed OPERATIONALLY (Lanczos labels: G(-5) kill; local-field rule F': trial gain 9x below
+  the bar), not closed for good. My guess, not a claim: G_max < 5e-6 (65%), given FN/trial = 0.26 at G(-5) and F' trial gain 5.6e-7. Building G_max
+  serves only this closure; on the PI's large-L goal I would not spend on it before the T-BAD decision.
 
 LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + wiki):
 - Published in the variational form. Westerhout, Katsnelson & Bagrov, Commun. Phys. 6, 275 (2023), arXiv 2207.10675 (read via the wiki page westerhout2023many.md,

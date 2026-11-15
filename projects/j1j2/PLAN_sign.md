@@ -579,6 +579,10 @@ Step 0 (now, cip slice, <= 2 A40-h): cost probe (ViT evals/s on A40 for one-swap
  (8x8 learning curve: 2k -> 8k changed held-out error by 7%).
 Predictions (mine): e_0 - e_ViT(sign of the ViT, -0.497682) in [2e-3, 6e-3]/site (8x8 Marshall gap was 3.2e-3) 70%; g_1 >= 1e-3 70%; g_2 > 2 sigma 65%;
  contraction gap_1/gap_0 at 10x10 WORSE than 8x8's 0.18 (storage loss grows with L) 55%.
+Mechanism behind g_1 >= 1e-3: g_1 = gap_0 (1 - c_1). gap_0 = e_0 - e_ref is the FN error of the Marshall sign, an intensive bulk quantity (the J2 frustration sets
+ the density of wrong-sign weight per site); 8x8: 3.23e-3. c_1 = the fraction of gap_0 left after one stored round = (one-step residual) + (storage loss); 8x8: 0.18.
+ With gap_0 >= 2e-3 and c_1 <= 0.5 (storage loss at most ~2.5x 8x8's), g_1 >= 1e-3. g_1 < 1e-3 means c_1 > 0.5 or a small gap_0; e_0 from step 0 separates the two.
+Cap (lead, takeover default): each test <= 40 H100-h (A40 converted by the measured ratio); each round sized from the step-0 rates.
 KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
 

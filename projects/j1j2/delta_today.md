@@ -1956,3 +1956,4 @@
 - 2026-11-15 sign worker: T-BAD10 round-1 chain submitted (afterok): e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers PPID 1
 2026-11-15 11:54 T-BAD10 r1 submitted, verified: e0ext 17997720 RUNNING; m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725 (afterok). m64 gate = |dM|>2e-4 AND |z|>2 (low power); lead: g_1 resolved only if g_1 - 2-sigma |dM| bound > 2 sigma(g_1).
 2026-11-15 11:55 T-BAD10 resolution rule registered (PLAN_sign a7c9a8c); lead asked that a bias-limited result be filed as inconclusive (longer m64), not a kill.
+2026-11-15 11:55 T-BAD10 branches split (resolved / inconclusive bias-limited / kill input), before data.

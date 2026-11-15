@@ -584,6 +584,7 @@ Mechanism behind g_1 >= 1e-3: g_1 = gap_0 (1 - c_1). gap_0 = e_0 - e_ref is the 
  With gap_0 >= 2e-3 and c_1 <= 0.5 (storage loss at most ~2.5x 8x8's), g_1 >= 1e-3. g_1 < 1e-3 means c_1 > 0.5 or a small gap_0; e_0 from step 0 separates the two.
 Cap (lead, takeover default): each test <= 40 H100-h (A40 converted by the measured ratio); each round sized from the step-0 rates.
 KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
+Step 0 jobs: 17996493 (probe 0a), 17996634 (production 0b)
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
 T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP; CPU ws1/ws2; registered before any number):
  Can the 64x6 sign CNN even represent each round's label change near its current weights? Linearise the logit l(z; theta) at n_r: target t(z) = -2 l(z) on flipped
@@ -597,6 +598,15 @@ T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP
  this measure -> T-SEP decides (label quality). CALIBRATION (lead): compare C with the share each round actually stored = held-out flip reproduction (and the
  keeps-kept rate) of the fitted n_{r+1} against K[n_r], same states and split. If C does not track the realised share at round 2 (within a factor 2), C is not trusted
  at round 3 and T-SEP decides. Controls: a broken target (labels shuffled across states) must give C ~ 0; identity check of J against finite differences.
+T-TAN jobs: ws1 th-ws-7010m51 pid 130008 (round 2), ws2 th-ws-7010m52 pid 3698044 (round 3); run dir /project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan
+T-BAD10 STEP 0 RESULT 2026-11-15 (cip 17996493 probe, 17996634 prod, ~1.7 A40-h; runs/j1j2/sign_bad10/step0; worker's numbers, raw plot prod/e0_quotable.png looked at by the worker):
+ e_0 (Marshall x |ViT|, M 16) = -0.49378(15)/site, NOT QUOTABLE (chain 2 has 249 of 256 blocks; chains agree chi2/dof 1.35). e_0 - e_ViT = 3.9e-3, inside the predicted [2e-3, 6e-3].
+ Control: ViT's own sign -0.497713(24) vs 11-03 -0.497682(4), 1.3 sigma. alpha_0 -0.170(20), E_0 -0.49223/site (122 samples: too few, 12% alpha error).
+ Rates: ViT 3.0e3 configs/s (f32h); two-hop set 25k states = 8.3 s; labels ~3.1 A40-h per 1000 roots (2.4 for Marshall); fit 64x10 ~1.8 A40-h; FN M16 ~7.5 s/block;
+ Marshall per-block sd 2.3-3.0e-3 (the ViT sign's is 10x smaller).
+ROUND 1 SIZED (my decision, before any round-1 number): 4000 roots (8x8: 2k -> 8k gained 7% in held-out error); first alpha_0, E_0 from VMC with >= 4000 samples in >= 4 chains
+ (minutes); labels K[Marshall] ~9.6 A40-h; fit 64x10 ~1.8; e_0 extended to >= 300 blocks/chain (quotable, sigma ~1.5e-4 suffices for g_1 ~ 1e-3); FN of n_1, 2 chains,
+ sigma <= 1e-4. Total ~15 A40-h (~5 H100-h at ~3x), under the 40 H100-h cap. The lead reads the launcher before submission.
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

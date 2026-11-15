@@ -610,6 +610,17 @@ T-BAD10 STEP 0 RESULT 2026-11-15 (cip 17996493 probe, 17996634 prod, ~1.7 A40-h;
 ROUND 1 SIZED (my decision, before any round-1 number): 4000 roots (8x8: 2k -> 8k gained 7% in held-out error); first alpha_0, E_0 from VMC with >= 4000 samples in >= 4 chains
  (minutes); labels K[Marshall] ~9.6 A40-h; fit 64x10 ~1.8; e_0 extended to >= 300 blocks/chain (quotable, sigma ~1.5e-4 suffices for g_1 ~ 1e-3); FN of n_1, 2 chains,
  sigma <= 1e-4. Total ~15 A40-h (~5 H100-h at ~3x), under the 40 H100-h cap. The lead reads the launcher before submission.
+T-TAN RESULT 2026-11-15 (CPU ws1/ws2, ~27-42 core-h, over the 20 cap; runs/j1j2/sign_bad/ttan/round{2,3}/result.json, numbers re-read by me; one 24k-state train draw, no seed repeat):
+ | round | C(GN) | C(200) | flips stored by the actual refit | flips, linear GN | keeps kept (refit) |
+ | 2 | 0.196 | 0.181 | 0.523 | 0.364 | 0.974 |
+ | 3 | 0.142 | 0.142 | 0.307 | 0.178 | 0.989 |
+ Controls: J vs finite differences 3e-5; shuffled target C -0.04..0.02; positive control C 0.99999994. Calibration: linear flip reproduction tracks the refit within 2x (0.70, 0.58) -> trusted.
+ VERDICT by the registered rule: C(r3)/C(r2) = 0.72 (not <= 0.5) and C(r3) = 0.14 (not < 0.1) -> the fixed class is NOT shown to limit storage -> T-SEP decides.
+ Both my predictions failed (55%, 50%).
+ Facts outside the rule: the stored share of each round's flips fell from 52% to 31%. Per decade, C collapsed at -9..-5 (r2 0.12-0.29 -> r3 -0.05-0.13), where walker
+ weight sits, while -13..-11 stayed 0.4-0.5. The refit became more conservative (keeps 0.974 -> 0.989). Hypothesis (not a claim): the mid-decade flips leave the
+ tangent space; a grown head aimed at decades -9..-5 is the variant to test if T-SEP says storage.
+ Housekeeping: ~9 GB of intermediate matrices are left in my session scratchpad (ttan_r2, ttan_r3); they go to the next cleanup manifest.
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

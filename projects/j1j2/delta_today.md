@@ -1947,3 +1947,5 @@
 2026-11-15 11:23 VERDICT job ttan_r3: STALLED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round3/ANALYSIS.md]
 2026-11-15 11:29 VERDICT job 17997465: COMPLETED, all five smoke stages meet their pass conditions in all.log. Last line is SMOKE_DONE, with no FAIL anywhere. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke/ANALYSIS.md]
 2026-11-15 11:32 Lead read the T-BAD10 round-1 launcher (runs/j1j2/sign_bad10/r1); OK conditional on: one code for both FN arms (e0ext uses the step0 code copy) or an A=B bit check; an M=16 vs M=64 population-bias bound on e_0 (< 2e-4); sigma(g_1) sized from step 0; the halves check and the VMC equilibration as hard gates.
+2026-11-15 11:32 VERDICT job ttan_r3b: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round3/ANALYSIS.md]
+2026-11-15 11:32 T-BAD10 r1 changes accepted: one code or an A=B check; an M=64 e_0 gate |dM| < 2e-4; sigma(g_1) <= 2e-4 (step 0 e_0 1.2-1.5e-4 per 2x250 blocks); halves in the verdict; sampler gate. ~17.5 A40-h. Ids to follow.

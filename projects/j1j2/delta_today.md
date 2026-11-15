@@ -1927,3 +1927,5 @@
 2026-11-15T08:29:53+01:00 r1prime_grade prod submitted: Paderborn job 4271870 (3 arms x 4 chains k0-k3, seeds 701-704, theta_tail sha 15cff596), run dir runs/j1j2/r1prime_grade/prod, watcher pid 3995877
 2026-11-15T08:36:03+01:00 r1prime_grade prod2 submitted on Paderborn: job 4271928 (PENDING; watcher pid 4061749, ppid 1); prod is job 4271870
 2026-11-15 08:38 R1' grade jobs verified on Paderborn: prod 4271870 (PENDING, est start 08:38), prod2 4271928 (PENDING). 8-chain gate: analyze_r1prime_grade.py prod prod2 (tested on synthetic offsets). X0_4..7 seeded draw from the remaining stage-1 tasks; X0_0..3 hand-picked (no recorded rule).
+2026-11-15T08:55:59+01:00 r1prime_grade OOM check clean for jobs 4271870 (prod) and 4271928 (prod2): peak 91235 MiB of 95830, no OOM lines, 12/12 chains writing blocks each
+2026-11-15 08:57 Grade 4271870/4271928 RUNNING since 08:40 (24 chains), GPU memory 91.2/95.8 GB creeping; lead registered: an OOM-lost chain -> the gate runs on the survivors (>= 6 per arm), no partial blocks. Finish ~12:55.

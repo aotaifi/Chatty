@@ -1914,3 +1914,4 @@
 2026-11-15 05:39 VERDICT job 17995598: COMPLETED, shards complete and finite, run merge + boot [/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/arr_step300/ANALYSIS.md]
 2026-11-15 05:46 R1' step-300 read (pdb theta): D full -0.0013(62), without the 5 worst rows +0.0082(22); stop rule not fired; the fit runs on; near-node damage shrank (-0.102 -> -0.031 in decade -9).
 2026-11-15 05:50 R1' step 300 (pdb): stop rule NOT fired; full D -0.0013(62), trimmed +0.0082(22) (improves, 3.7 sigma); near-node damage shrank. Lead registered: an undecidable end gate goes to the paired grade; full D worse > 2 sigma -> no grade; trimmed worse -> lead first; report the decade -3/-2 share.
+2026-11-15 05:53 R1' end rule registered (lead 05:55): undecidable full D -> the grade decides; grade launcher staged in advance, to the lead before submission.

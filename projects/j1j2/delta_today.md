@@ -1900,3 +1900,5 @@
 2026-11-15 02:50 Tangent test CONFIRMED (5 worst rows 26-73x the decade -9 median, f1 block of P_1). pool_fit cannot resume -> lead approved releasing Paderborn 4255548 for a ~05:00 step-300 read; slice cancelled once pdb has a clean rate; both cancelled if the stop fires (<= ~1.5 H100-h).
 2026-11-15 02:51 R1' pdb copy 4255548 released (lead's word 02:52), PENDING Priority.
 2026-11-15 02:51 pdb 4255548 released, PENDING (Priority); angle posts start + H100 step-50 rate, then lead cancels slice 17990426.
+2026-11-15 03:41 VERDICT job 4222359: COMPLETED, HEADLINE_B E_p1(s306) NOT QUOTABLE (estimate -0.4989726 +- 2.6e-06; chains disagree, chi2/dof 5.7, 2.4 sigma); vs Varbench -9.65e-06 (-2.9 sigma); vs M1 p=1 -2.66e-05 (-4.7 sigma) [/project/theorie/a/A.Otaifi/runs/j1j2/headline_s306/fn/prod/ANALYSIS.md]
+2026-11-15 03:44 Headline B 4222359 VERDICT NOT QUOTABLE. Lead check: chains -0.4989834/-0.4989707/-0.4989853/-0.4989603 (chi2/dof 5.7); fifths trendless, binning flat; walker observables do not track the offset; cause not understood. Recorded in PLAN.md; write-up told not to quote. Extension (+400 blocks, ~12 H100-h) left to the PI.

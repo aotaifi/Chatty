@@ -605,8 +605,13 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
 - s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;
   runs/j1j2/headline_s306/inputs/consts_s306_p1.json sha 54add61c (copied to Paderborn, same sha). The ONE set; full-A40 copy 17930563 HELD (never to run).
-- HEADLINE B ARM (s306 + p=1 FN, ~13.7 H100-h): Paderborn 4222359 released, PENDING, start est 11-19 21:15. Stays there: FN p=1 driver is ~15x H100
-  on an a40-24gb slice (probe 17950878, 294 s/block), and the cip slots go to R1'.
+- HEADLINE B ARM DONE 2026-11-15 03:41 (Paderborn 4222359, started early; runs/j1j2/headline_s306/fn/prod/{ANALYSIS.md,raw_E_HS.png}): NOT QUOTABLE.
+  Chains (E/site) -0.4989834(58) -0.4989707(51) -0.4989853(58) -0.4989603(45), chi2/dof 5.7 (3 dof). Lead's check: fifths trendless in every chain, binning
+  flat ~5e-6 to bin 40 (bin 80: 8.7/3.8/4.9/1.8e-6), lb_med / deep-decade share / elvar do not track the offset. So a chain-level offset up to 2.5e-5 that
+  persists 40 tau: a mode slower than the run or start-dependent bias, cause NOT understood. Scatter-only reading -0.498975(6) (Varbench -0.498963(2):
+  -1.2e-5, 2.1 sigma), labelled not quotable. Paired grades (A and B share walkers) are protected; absolute FN numbers from this engine are not, at 1e-5.
+  Next (PI decides; not on the critical path): extend the same 4 chains +400 blocks (~12 H100-h, normal QoS). Slow mode -> chi2/dof falls toward 1;
+  start-dependent trap -> offsets persist. Write-up told not to quote it.
 - R1' (open question's size half; PLAN_pfaffian 'R1-R3 ON THE RETRAINED 8x8 BASE'): warm start (ii) = B_0' + lam s307's PP at 0.05 (held-out
   tangent share +0.32 vs (i) -0.40); grade = R1' + warm-start arm (no fit) + base re-run, burn 150, halves check, one job; loop gain = R1' - warm.
   SEALED (608e31d/859fc7d/cccbc3b; corrected BEFORE data 66550e6: warm-arm reference was start (i), not the base): warm vs base -2.8e-6

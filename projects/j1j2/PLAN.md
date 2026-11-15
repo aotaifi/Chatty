@@ -620,10 +620,10 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   sha 15cff596 (slice 17990426 cancelled by lead, vGPU time-sliced to 237 s/step). Held-out (424585 rows, paired, bootstrap): step 150 D -0.0154(85),
   step 300 -0.0013(62) (stop rule not fired), end +0.0011(110) UNDECIDABLE -> grade decides (end rule 8267af0). Trimmed (5 near-node rows fixed at
   step 150) end +0.0167(23): derived R1' - warm ~ -1.4e-5 (unvalidated), 3.5-6x short of (2''). Near-node sensitivity d ln|P_1| ~ 1/P_1 confirmed
-  (tangent 26-73x), transient not runaway. GRADE RUNNING: Paderborn prod 4271870 + prod2 4271928 (3 arms B0s/WARM/R1P x 8 chains, burn 150 + 600,
-  ~6 H100-h; runs/j1j2/r1prime_grade/{prod,prod2}); gate analyze_r1prime_grade.py prod prod2; decisions on the unpaired chain-scatter error.
-  Verdicts: R1'-warm inside (2'') -> mechanism confirmed, R2' next; ~ -1.4e-5 -> G_s306 term wrong (bound ratio as gain ratio); chi2/dof > 2 in an
-  arm -> finding, no number.
+  (tangent 26-73x), transient not runaway. GRADED 2026-11-15 12:06 (Paderborn 4271870 + 4271928, 3 arms x 8 chains; lead re-derived from E_mix.npy; report
+  docs/reports/2026-11-15_r1prime_grade_8x8.md): LOOP GAIN E(R1') - E(warm) = -1.20(23)e-5/site, 5.2 sigma, 8/8 chain diffs negative; warm - base
+  -0.04(31)e-5 (= sealed 1''). Sealed (2'') MISSED at 0.14-0.26x; the trimmed held-out proxy predicted it (0.5 sigma). Missed term: stored fraction f 0.145
+  vs 0.51-0.90 allowed; cause NOT understood -> Pfaffian angle diagnoses f on paper before R2'. R2' early kill |gain_2| < 6.0e-6.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
 - Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
@@ -687,6 +687,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
 
 ## Cockpit
-- STATUS (in progress, high): The first loop round on the strong 8x8 network has finished training; its fixed-node energy test against the untrained network runs today (8 chains per arm).
-- NEXT (in progress, high): Read the energy test: does the loop round lower the fixed-node energy, and by the predicted 5-8e-5 per site or the smaller ~1.4e-5 the held-out data suggest?
-- NEXT (in progress, medium): Sign side: stored sign masks at 8x8 closed; now the bad-start sign loop at 10x10, where round gains are large enough to see without pairing (cost probe running).
+- STATUS (in progress, high): One loop round on the strong 8x8 network lowers the fixed-node energy by 1.2e-5 per site (5 sigma), a real gain but 4-7x below our prediction.
+- NEXT (in progress, high): Find on paper why the network stores only 15% of each round's correction before running round 2; then a joint sign-and-amplitude loop test.
+- NEXT (in progress, medium): Sign side: bad-start sign loop at 10x10, round 1 running (gains large enough to see directly).

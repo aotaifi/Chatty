@@ -2632,3 +2632,4 @@ Three candidates for the term that sets f_HO = 0.145, each with a number it pred
 Kill of this diagnosis: none of (a)-(c) fits, e.g. f_HO^lin < f_HO by more than the error.
 Second item, same computation: k's calibration rests on R1's held-out fraction 0.281, read on ONE 4096-row batch of the same heavy-tailed kind. Recompute R1's fraction on its full held-out set (theta_0 vs R1 theta_tail). G_rb8 = 4.95e-5/0.281, and hence G_s306, rest on the same number: if it moves, the proxy match -1.36e-5 vs -1.20e-5 may be a coincidence, and that goes on record.
 Cost: one jvp + residual pass over all held-out rows and an equal-size train sample of pool_comb (~2 x 3.7 core-h with the approved full_ho array), plus R1's full held-out pair (~7 core-h). CPU only.
+2026-11-15 12:14 Lead 12:25: f diagnosis approved; f_TRB 0.35 is also a single-batch number, so it is read only after the full-train f_TR; record either outcome of R1's 0.281 recheck.

@@ -1934,3 +1934,4 @@
 2026-11-15 09:00 Crash rule registered by angle; gate updated to survivors (>= 6/arm), synthetic test before data.
 - 2026-11-15 sign angle: PI: decide instead of waiting. DECIDED T-BAD10 (bad-start sign loop at 10x10 on |ViT|, rounds from Marshall; registered predictions); step 0 cost probe (<= 2 A40-h, cip) briefed.
 2026-11-15 09:05 Sign angle chose T-BAD10 (10x10 bad-start sign loop, ViT amplitude, Marshall start, CNN storage, FN grade per round; PLAN_sign e15d1af), stating that the PI told it directly to decide under takeover. Step 0 cost probe <= 2 A40-h on cip. Parked: 8x8 round 4, G_max. Lead: <= 40 H100-h per test, kill before round 1, launcher to lead.
+2026-11-15 09:06 T-BAD10 registered: g_1 = gap_0 (1 - c_1) (8x8: gap_0 3.23e-3, c_1 0.18); kill = g_1 or g_2 not beyond 2 sigma -> diagnosis + Astra; <= 40 H100-h per test; round-1 launcher to lead.

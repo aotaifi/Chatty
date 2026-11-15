@@ -1973,3 +1973,5 @@
 - 2026-11-15 sign angle: T-TAN (CPU) done: C(GN) 0.196 -> 0.142 (ratio 0.72), stored flip share 0.52 -> 0.31; registered rule -> class not shown limiting, T-SEP decides; predictions failed; mid-decade (-9..-5) C collapse noted. Spurious ttan watcher VERDICT lines (r3 STALLED, r3b/r2 FAILED) are false; valid ones ttan_r2c/ttan_r3c.
 2026-11-15 12:33 T-TAN (sign): fixed class NOT shown to limit storage (C 0.196 -> 0.142); per-decade collapse at -9..-5; T-SEP decides. Lead granted a second cip slice for T-SEP after the provider gate; asked the Pfaffian angle for per-decade f to compare with T-TAN's band.
 2026-11-15 12:34 T-SEP registered (PLAN_sign 2003aee): f = G_stored/G_exact vs n_3; pred G_exact 1.5e-5, f 0.4, storage-limited 55%; rho probe first (fallback exact 6x6, mechanism-only); launcher to lead.
+2026-11-15 12:34 VERDICT job 17997872: COMPLETED, shards complete and finite, run merge + boot (GATE rows 399707, finite True) [/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/r1/arr_end/ANALYSIS.md]
+2026-11-15 12:38 Pfaffian f diagnosis bins per decade in the sign angle's |B|^2 convention for a direct comparison.

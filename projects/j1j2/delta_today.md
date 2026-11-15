@@ -1923,3 +1923,4 @@
 2026-11-15 08:23 R1' fit ended (4255548, done 1500/1500). End full held-out D +0.0011(110), undecidable; without 5 rows +0.0167(23). END RULE -> the grade decides; grade launcher staged, sent to the lead for LEAD_OK.
 2026-11-15 08:25 R1' fit ended 4255548 1500/1500; end full held-out D +0.0011(110) undecidable -> grade decides; trimmed +0.0167(23). Lead approved the 3-arm grade launcher (runs/j1j2/r1prime_grade, ~3.0 H100-h) plus a twin prod2 (k4-7, new X0, seeds 705-708) so each arm has 8 chains, given the chain offsets seen in headline B; 6.0 H100-h total.
 2026-11-15 08:26 R1' grade: lead OK (08:40) with amendment prod2 (k4-k7); LEAD_OK written; worker submitting.
+2026-11-15 08:28 R1' grade amendment registered (b6b73b6), LEAD_OK written; worker submits prod then prod2; ids to follow.

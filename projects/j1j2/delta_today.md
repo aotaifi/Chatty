@@ -1898,3 +1898,4 @@
 2026-11-15 02:48 R1' slice 17990426 slowed 98.7 -> 237 s/step from step ~165 (~22:40): vGPU A40-24Q at 46%, likely a sibling-slice tenant. Step 300 now ~07:15; at this rate it would hit fit_sec near step ~790. Pfaffian angle asked to decide resume/placement (board 02:55).
 2026-11-15 02:50 R1' tangent test CONFIRMED (worst-5 34x the decade -9 median). Slice slowed to 237 s/step (vGPU sharing), cannot finish inside fit_sec. 02:50 I released 4255548 by mistake against the lead's hold and re-held it (never started). Proposed release to the lead.
 2026-11-15 02:50 Tangent test CONFIRMED (5 worst rows 26-73x the decade -9 median, f1 block of P_1). pool_fit cannot resume -> lead approved releasing Paderborn 4255548 for a ~05:00 step-300 read; slice cancelled once pdb has a clean rate; both cancelled if the stop fires (<= ~1.5 H100-h).
+2026-11-15 02:51 R1' pdb copy 4255548 released (lead's word 02:52), PENDING Priority.

@@ -568,7 +568,8 @@ LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + 
   the second broken assumption.
 
 ## Running (rewritten 2026-11-13 ~19:30)
-- 2026-11-15: G(-5) done, KILL fired (G(-5) RESULT above); nothing on Slurm; Astra cj-8a965a47de4e running. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
+- 2026-11-15 night: nothing running. G(-5) kill (Astra: stands for Lanczos labels); T-VARDEC branch C; F' trial gain 9x below bar -> 8x8 stored-mask routes closed OPERATIONALLY.
+  Waiting on the PI: T-BAD (storage loss vs L) vs nothing; G_max bound (~4-6 A40-h) PARKED until then. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
   fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.
 - Settled 11-13: symmetry branch closed (A51; S1/S2/S3); paired estimator passes its 8x8 rho gate (RHO PROBE RESULT below).
 - Open: T-STRONG has an estimator but no mask worth grading (stage-0 threshold sweep and S1 capture <= 4% at FP/TP <= 1). Next candidate: Astra's top-ranked base-feature head

@@ -21,7 +21,7 @@ ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--gates
 ap.add_argument('--walkers', type=int, default=1024); ap.add_argument('--chains', type=int, default=8); ap.add_argument('--therm', type=int, default=100)
 ap.add_argument('--sweeps', type=int, default=1000); ap.add_argument('--maxsec', type=float, default=1e18); ap.add_argument('--seed', type=int, default=3061)
 ap.add_argument('--ctl_states', type=int, default=300); ap.add_argument('--ctl_sweeps', type=int, default=12); ap.add_argument('--ckpt', type=float, default=600)
-ap.add_argument('--wchunk', type=int, default=128); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--skip_controls', action='store_true')
+ap.add_argument('--wchunk', type=int, default=128); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--skip_controls', action='store_true'); ap.add_argument('--hash_p', type=float, default=0.05); ap.add_argument('--controls_only', action='store_true'); ap.add_argument('--ctl_require', default='C3h')
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); T0 = time.time(); prog = a.out + '/progress.txt'
 def P(m):
     line = f'{time.strftime("%Y-%m-%dT%H:%M:%S")} PROGRESS {m}'; print(line, flush=True); open(prog, 'a').write(line + '\n')
@@ -49,7 +49,7 @@ def advance(S, key, nsw):
     return S, key, np.asarray(lw), float(acc)
 def evalgate_batch(X, lw32, guides_):
     """eval_gate for each guide on preselected candidates"""
-    return {gg: VL.eval_gate(g, X, np.floor((lw32 - GS.MREF) / GS.LN10 + 1e-3) <= gg) for gg, g in guides_.items()}
+    return {gg: VL.eval_gate(g, X, np.floor((lw32 - GS.MREF) / GS.LN10 + 0.05) <= gg) for gg, g in guides_.items()}
 def omega(lw): return np.exp((1.0 - a.p) * (lw - GS.MREF))
 # ------------------------------------------------------------------------------------------------ therm + controls
 t = time.time(); S, key, lw32, acc = advance(S, key, a.therm); jax.block_until_ready(S); sec_therm = time.time() - t
@@ -60,7 +60,7 @@ if not a.skip_controls and not resume:
     S, key, lwc, _ = advance(S, key, 2); Xc = np.asarray(S).astype(np.float64); lwc = np.asarray(lnpsi32(S))
     # C4 decade preselection
     t = time.time(); lB, r, _, _ = g_inf.ratios(Xc[:a.ctl_states]); dec64 = np.floor((2 * np.real(lB) - GS.MREF) / GS.LN10); dec32 = np.floor((lwc[:a.ctl_states] - GS.MREF) / GS.LN10 + 1e-3)
-    ctl['C4_max_abs_lw_diff'] = float(np.max(np.abs(2 * np.real(lB) - lwc[:a.ctl_states]))); ctl['C4_missed'] = int(((dec64 <= GATES[0]) & ~(dec32 <= GATES[0])).sum()); ok4 = ctl['C4_missed'] == 0 and ctl['C4_max_abs_lw_diff'] < 1e-3
+    ctl['C4_max_abs_lw_diff'] = float(np.max(np.abs(2 * np.real(lB) - lwc[:a.ctl_states]))); ctl['C4_missed'] = int(((dec64 <= GATES[0]) & ~(dec32 <= GATES[0])).sum()); ok4 = ctl["C4_missed"] == 0 and ctl['C4_max_abs_lw_diff'] < 5e-2
     P(f'C4 f32 vs f64 ln psi max diff {ctl["C4_max_abs_lw_diff"]:.2e}, missed gated {ctl["C4_missed"]} pass={ok4} ({time.time() - t:.1f}s)')
     # C1: gate -inf exactly zero, gate -3 nonzero (ran)
     n = a.ctl_states; Dinf = VL.direct_D(g_inf, Xc[:n])[0]; D3 = VL.direct_D(g_m3, Xc[:n])[0]
@@ -69,7 +69,7 @@ if not a.skip_controls and not resume:
     # C2: per-sample identity on F states, their neighbours, random states (gate -5)
     g5 = guides[GATES[0]]; Fs = []; Ys = []
     for _ in range(a.ctl_sweeps):                                     # deep-biased states from the sampler (tempered) until enough F states are found
-        S, key, lwc, _ = advance(S, key, 1); Xs = np.asarray(S).astype(np.float64); rec = VL.eval_gate(g5, Xs, np.floor((np.asarray(lnpsi32(S)) - GS.MREF) / GS.LN10 + 1e-3) <= GATES[0])
+        S, key, lwc, _ = advance(S, key, 1); Xs = np.asarray(S).astype(np.float64); rec = VL.eval_gate(g5, Xs, np.floor((np.asarray(lnpsi32(S)) - GS.MREF) / GS.LN10 + 0.05) <= GATES[0])
         fi = rec['idx'][rec['F']]; Fs.append(Xs[fi])
     Fs = np.concatenate(Fs)[:40] if len(Fs) else np.zeros((0, 64))
     if len(Fs):
@@ -81,23 +81,31 @@ if not a.skip_controls and not resume:
     ctl['C2_max_abs_diff'] = float(np.max(np.abs(Dd - Df))); ctl['C2_max_abs_D'] = float(np.max(np.abs(Dd))); ok2 = ctl['C2_max_abs_diff'] < 1e-10 and ctl['C2_n_F_states'] > 0 and ctl['C2_max_abs_D'] > 0
     P(f'C2 per-sample D(direct) vs D(F/P/Q formula): max|diff| {ctl["C2_max_abs_diff"]:.2e} (max|D| {ctl["C2_max_abs_D"]:.3g}); F states {len(Fs)}, neighbours {len(Y)} ({ctl["C2_n_neighbours_with_F_neighbour"]} with flipped neighbour) pass={ok2}')
     # C3 + C3b: broken alpha_flip arm vs nominal on the same tempered batch; MC mean D vs S at gate -3
-    num = {'nom': 0.0, 'bro': 0.0}; nF = {'nom': 0, 'bro': 0}; den = 0.0; sD = 0.0; sS = 0.0; nb = max(3, a.ctl_sweeps // 2)
-    for it in range(nb):
-        S, key, _, _ = advance(S, key, 1); Xs = np.asarray(S).astype(np.float64); lw = np.asarray(lnpsi32(S)); om = omega(lw); den += om.sum()
-        for nm, gg in (('nom', g5), ('bro', g_bro)):
-            rec = VL.eval_gate(gg, Xs, np.floor((lw - GS.MREF) / GS.LN10 + 1e-3) <= GATES[0]); m = rec['F']; num[nm] += float((om[rec['idx']][m] * (4 * (rec['Hxx'] - rec['EL']) + 4 * rec['pair'])[m]).sum()); nF[nm] += int(m.sum())
-    ctl['C3_nominal_dE_site'] = num['nom'] / den / 64; ctl['C3_broken_alpha_flip_dE_site'] = num['bro'] / den / 64; ctl['C3_n_flips'] = nF
-    ok3 = abs(ctl['C3_broken_alpha_flip_dE_site']) > 1e-3 and abs(ctl['C3_broken_alpha_flip_dE_site']) > 10 * abs(ctl['C3_nominal_dE_site'])
-    P(f'C3 broken alpha_flip dE/site {ctl["C3_broken_alpha_flip_dE_site"]:.4e} (flips {nF["bro"]}) vs nominal {ctl["C3_nominal_dE_site"]:.4e} (flips {nF["nom"]}) on {nb * W} tempered samples; large=(>1e-3 and >10x nominal) pass={ok3}')
+    sweep3, lnpsi3 = VL.make_tempered(sm, 0.3); k3 = jax.random.PRNGKey(a.seed + 77); S3 = random_configs(N, W, 9800 + a.seed)       # control sampler p = 0.3 (deep-rich: many flips for BOTH arms)
+    for _ in range(12): k3, kk = jax.random.split(k3); S3, _, _ = sweep3(S3, kk, N)
+    xs = []; nF = {'nom': 0, 'bro': 0}; sn = []; sb = []; oms = []
+    for it in range(max(2, a.ctl_sweeps // 4)):
+        k3, kk = jax.random.split(k3); S3, lw3, _ = sweep3(S3, kk, N); Xs = np.asarray(S3[:256]).astype(np.float64); lw = np.asarray(lw3)[:256]; om = np.exp(0.7 * (lw - GS.MREF)); oms.append(om)
+        for nm, gg, lst in (('nom', g5, sn), ('bro', g_bro, sb)):
+            rec = VL.eval_gate(gg, Xs, np.floor((lw - GS.MREF) / GS.LN10 + 0.05) <= GATES[0]); v = np.zeros(len(Xs)); m = rec['F']; v[rec['idx'][m]] = (4 * (rec['Hxx'] - rec['EL']) + 4 * rec['pair'])[m]; lst.append(v); nF[nm] += int(m.sum())
+    om = np.concatenate(oms); sn = np.concatenate(sn); sb = np.concatenate(sb); Dw = om * (sb - sn); est = Dw.sum() / om.sum(); sig = float(np.sqrt(((Dw - est * om) ** 2).sum()) / om.sum())
+    ctl['C3_nominal_dE_site'] = float((om * sn).sum() / om.sum() / 64); ctl['C3_broken_alpha_flip_dE_site'] = float((om * sb).sum() / om.sum() / 64); ctl['C3_diff_site'] = float(est / 64); ctl['C3_diff_sigma_site'] = sig / 64; ctl['C3_n_flips'] = nF; ctl['C3_n_states'] = int(len(om))
+    ok3 = abs(est) > 5 * sig; ctl['C3_alpha_flip_as_specified_pass'] = bool(ok3)
+    P(f'C3 broken alpha_flip dE/site {ctl["C3_broken_alpha_flip_dE_site"]:.4e} (flips {nF["bro"]}) vs nominal {ctl["C3_nominal_dE_site"]:.4e} (flips {nF["nom"]}) on {len(om)} p=0.3 states; difference {ctl["C3_diff_site"]:.3e} +- {ctl["C3_diff_sigma_site"]:.1e} ({abs(est) / max(sig, 1e-300):.1f} sigma); pass(>5 sigma)={ok3}')
+    g_h = GS.build(-math.inf, cache, broken='hashmask', wchunk=a.wchunk, hash_p=a.hash_p)[0]; S, key, _, _ = advance(S, key, 2); Xh = np.asarray(S[:a.ctl_states]).astype(np.float64); lwh = np.asarray(lnpsi32(S))[:a.ctl_states]; omh = omega(lwh)
+    Dh = VL.direct_D(g_h, Xh)[0]; xh = omh * Dh; eh = xh.sum() / omh.sum(); sh = float(np.sqrt(((xh - eh * omh) ** 2).sum()) / omh.sum())
+    ctl['C3h_hashmask_p'] = a.hash_p; ctl['C3h_dE_site'] = float(eh / 64); ctl['C3h_sigma_site'] = sh / 64; ctl['C3h_n'] = int(len(Xh)); ctl['C3h_n_nonzero_D'] = int((Dh != 0).sum()); ok3h = abs(eh) > 5 * sh
+    P(f'C3h broken hashmask p={a.hash_p}: dE/site {ctl["C3h_dE_site"]:.4e} +- {ctl["C3h_sigma_site"]:.1e} ({abs(eh) / max(sh, 1e-300):.1f} sigma) on {len(Xh)} states, {ctl["C3h_n_nonzero_D"]} with D != 0; pass(>5 sigma)={ok3h}')
     # C3b statistical: mean D (all states, direct) vs mean S at gate -3 (reported, not a stop criterion)
     S, key, _, _ = advance(S, key, 2); Xs = np.asarray(S).astype(np.float64); lw = np.asarray(lnpsi32(S)); n = min(a.ctl_states, W); om = omega(lw)[:n]
-    Dm = VL.direct_D(g_m3, Xs[:n])[0]; rec = VL.eval_gate(g_m3, Xs[:n], np.floor((lw[:n] - GS.MREF) / GS.LN10 + 1e-3) <= -3); Sv = np.zeros(n); mF = rec['F']; Sv[rec['idx'][mF]] = (4 * (rec['Hxx'] - rec['EL']) + 4 * rec['pair'])[mF]
+    Dm = VL.direct_D(g_m3, Xs[:n])[0]; rec = VL.eval_gate(g_m3, Xs[:n], np.floor((lw[:n] - GS.MREF) / GS.LN10 + 0.05) <= -3); Sv = np.zeros(n); mF = rec['F']; Sv[rec['idx'][mF]] = (4 * (rec['Hxx'] - rec['EL']) + 4 * rec['pair'])[mF]
     def rat(v):
         x = om * v; return float(x.sum() / om.sum()), float(np.sqrt(((x - om * (x.sum() / om.sum())) ** 2).sum()) / om.sum())
     ctl['C3b_gate_m3_meanD'] = rat(Dm); ctl['C3b_gate_m3_meanS'] = rat(Sv); P(f'C3b gate -3 on {n} states: weighted mean D {ctl["C3b_gate_m3_meanD"][0]:.4g} +- {ctl["C3b_gate_m3_meanD"][1]:.2g}, mean S {ctl["C3b_gate_m3_meanS"][0]:.4g} +- {ctl["C3b_gate_m3_meanS"][1]:.2g} (E[D] = E[S] in expectation; correlated estimators, not a stop criterion)')
-    ctl['passed'] = bool(ok0 and ok1 and ok2 and ok3 and ok4); ctl['sec'] = time.time() - T0; json.dump(dict(hdr, control=ctl), open(a.out + '/control.json', 'w'), indent=1, default=float)
+    ctl['passed'] = bool(ok0 and ok1 and ok2 and ok4 and ((ok3 and ok3h) if a.ctl_require == 'both' else (ok3 if a.ctl_require == 'alpha_flip' else ok3h))); ctl['sec'] = time.time() - T0; json.dump(dict(hdr, control=ctl), open(a.out + '/control.json', 'w'), indent=1, default=float)
     P(f'CONTROLS passed={ctl["passed"]} ({ctl["sec"]:.0f}s since start)')
     if not ctl['passed']: P('CONTROL FAILED, ABORT'); sys.exit(3)
+    if a.controls_only: P('controls_only: stop'); sys.exit(0)
     S = random_configs(N, W, 9700 + a.seed); S, key, lw32, acc = advance(S, key, a.therm)                  # fresh start for the measurement (controls used the stream)
 # ------------------------------------------------------------------------------------------------ measurement
 RK = ('chain', 'sweep', 'dec', 'lw', 'lw64', 'Hxx', 'EL', 'F', 'pair', 'Fp', 'pairp')

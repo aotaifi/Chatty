@@ -33,7 +33,7 @@ def summarize(ser, nsite=64.0):
 
 
 def analyse(rec, den, p, K, gate, nsite=64.0, decmin=-16):
-    nsw = den.shape[0]; R = dict(rec); R['omega'] = np.exp((1.0 - p) * (R['lw'] - MREF)); R['F'] = R['F'].astype(bool); R['Fp'] = R['Fp'].astype(bool)
+    nsw = den.shape[0]; R = dict(rec); R['omega'] = np.exp((1.0 - p) * (R['lw'] - MREF) + (R['lw64'] - R['lw'])); R['F'] = R['F'].astype(bool); R['Fp'] = R['Fp'].astype(bool)
     single = 4.0 * (R['Hxx'] - R['EL']); S_F = single + 4.0 * R['pair']; S_Fp = single + 4.0 * R['pairp']; win = R['EL'] < R['Hxx']
     q = dict(
         m_gated=(lambda r: np.ones(len(r['dec']), bool), lambda r: np.ones(len(r['dec']))),
@@ -75,6 +75,7 @@ def fmt(o):
          f"  m_F {g('m_F')}  window share {o['window_share_of_mF']:.3f}  m_F' {g('m_Fp')}",
          f"  F : single {g('single_F')}  pair {g('pair_F')}  total dE/site {g('total_F')}",
          f"      window-x boundary {g('total_F_window')} (n {o['n_F_window']})  good-x boundary {g('total_F_good')} (n {o['n_F_good']})",
+         f"  ESS (weights) F {o['ess']['F']:.0f} F_window {o['ess']['F_window']:.0f} F_good {o['ess']['F_good']:.0f} F' {o['ess']['Fp']:.0f}",
          f"  F': single {g('single_Fp')}  pair {g('pair_Fp')}  total dE/site {g('total_Fp')}  (n {o['n_Fp']})"]
     return '\n'.join(L)
 

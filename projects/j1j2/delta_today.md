@@ -1940,3 +1940,10 @@
 2026-11-15 09:22 Sign angle T-TAN registered (PLAN_sign 15f9cfa), CPU, retrospective tangent share of the round-2/3 label changes in the CNN tangent space; C drops >= 2x and C(r3) < 0.1 -> grown sign class, else T-SEP. Lead: calibrate C against the realised stored share per round.
 2026-11-15 09:24 VERDICT job 17996493: COMPLETED, no gate named and quotable.py not run (rates only, no averages). Probe ended STEP0A_DONE; all 4 FN runs finished with status OK, no NaN seen. Absurd-rate branch not triggered. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/step0/ANALYSIS.md]
 2026-11-15 09:55 R1' grade memory check: prod 92.07 GB, prod2 92.05 GB of 95.8; creep slowed to ~0.03-0.1 GB per 10 min; no OOM/Traceback in the logs. No action.
+2026-11-15 10:20 VERDICT job ttan_r3: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round3/ANALYSIS.md]
+2026-11-15 11:00 VERDICT job 17996634: COMPLETED, NOT QUOTABLE: e0: prod/e0_c2/E_mix.npy has only 249 samples, too short for a binning analysis (the gate's minimum is 256). [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/step0/ANALYSIS.md]
+2026-11-15 11:18 VERDICT job 17997381: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke/ANALYSIS.md]
+2026-11-15 11:22 VERDICT job ttan_r2: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round2/ANALYSIS.md]
+2026-11-15 11:23 VERDICT job ttan_r3: STALLED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/ttan/round3/ANALYSIS.md]
+2026-11-15 11:29 VERDICT job 17997465: COMPLETED, all five smoke stages meet their pass conditions in all.log. Last line is SMOKE_DONE, with no FAIL anywhere. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke/ANALYSIS.md]
+2026-11-15 11:32 Lead read the T-BAD10 round-1 launcher (runs/j1j2/sign_bad10/r1); OK conditional on: one code for both FN arms (e0ext uses the step0 code copy) or an A=B bit check; an M=16 vs M=64 population-bias bound on e_0 (< 2e-4); sigma(g_1) sized from step 0; the halves check and the VMC equilibration as hard gates.

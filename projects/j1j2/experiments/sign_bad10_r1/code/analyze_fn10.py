@@ -3,7 +3,7 @@ READ (T-BAD10): round USEFUL iff g_1 > 2 sigma(g_1) and both arms QUOTABLE; sigm
 import sys, os, re, json, argparse, subprocess
 import numpy as np
 sys.path.insert(0, '/project/theorie/a/A.Otaifi/tools'); import quotable as QT
-ap = argparse.ArgumentParser(); ap.add_argument('--e0', nargs=2, required=True); ap.add_argument('--e1', nargs=2, required=True); ap.add_argument('--out', required=True); a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
+ap = argparse.ArgumentParser(); ap.add_argument('--e0', nargs=2, required=True); ap.add_argument('--e1', nargs=2, required=True); ap.add_argument('--out', required=True); ap.add_argument('--bias_json', default=None); a = ap.parse_args(); os.makedirs(a.out, exist_ok=True)
 Q = '/project/theorie/a/A.Otaifi/tools/quotable.py'; res = {}; halves_bad = []; zs = []
 for tag, dirs in (('e0', a.e0), ('e1', a.e1)):
     files = [d + '/E_mix.npy' for d in dirs]
@@ -28,6 +28,10 @@ if halves_bad:
     for k in ('e0_value', 'e1_value'): res.pop(k, None)
 if all(k in res for k in ('e0_value', 'e1_value')):
     g = res['e0_value'] - res['e1_value']; sg = float(np.hypot(res['e0_err'], res['e1_err'])); res['g1'] = g; res['sigma_g1'] = sg
+    if a.bias_json:
+        bj = json.load(open(a.bias_json)); B64 = (abs(bj['diff']) + 2 * bj['sigma_d']) / 3; res['B64'] = B64; res['bias_json'] = a.bias_json
+        br = 'KILL INPUT (g_1 not beyond 2 sigma)' if not g > 2 * sg else ('RESOLVED (g_1 - B64 > 2 sigma)' if g - B64 > 2 * sg else 'INCONCLUSIVE (g_1 beyond 2 sigma, only the bias bound fails)')
+        res['branch'] = br; print(f'BIAS B64 = (|dM| + 2 sigma_d)/3 = {B64:.3g} (dM {bj["diff"]:.3g}, sigma_d {bj["sigma_d"]:.3g} from {a.bias_json}); g_1 - B64 = {g - B64:.4g}; BRANCH: {br}')
     print(f'READ g_1 = e_0 - e_1 = {g:.6g} +- {sg:.2g} per site; both arms quotable; USEFUL (g_1 > 2 sigma): {g > 2 * sg}; sigma <= 1e-4 per arm: {res["e0_err"] <= 1e-4 and res["e1_err"] <= 1e-4}')
 else: print('READ: at least one arm NOT QUOTABLE -> g_1 not quoted (plot only); per-chain means in fn_summary.json')
 json.dump(res, open(a.out + '/fn_summary.json', 'w'), indent=1)

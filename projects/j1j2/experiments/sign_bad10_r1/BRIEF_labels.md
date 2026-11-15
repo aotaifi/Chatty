@@ -7,3 +7,5 @@ Branches: PASS -> fit (afterok). FAIL after chunk 0 -> stage aborted early (R1_L
 UPDATE (lead change 5): SAMPLER GATE before any labelling: sampler_meta.json gate{log_psi2, diag_energy: window means A (first half of [burn/2, end]) vs B (second half), per-chain differences, z over the chains}, passed = |z| < 3 for both.
  Fails -> sampler_meta.json passed=false, 'R1_LABELS_ABORT sampler not equilibrated', exit 4 (fit/fn do not start). Broken check in smoke: Neel start, burn 0 -> exit 4 (S3s). Also runs when samples.npz is reloaded.
  With 1000 chains the test is sensitive; a genuine small residual drift of the shipped |ViT|^2 -> |ViT| relaxation could trip it: on FAIL report the drift sizes (diff vs chain_sd) before any decision.
+
+UPDATE (restart): constants are read from vmc_exact/consts_alpha0_E0.json (+ .sha256) = the EXACT-estimator VMC stage, not r1/vmc.

@@ -1,0 +1,5 @@
+# T-BAD10 round 1 restart, stage B: alpha_0, E_0 with the EXACT two-hop estimator (written at resubmission)
+Why: the subsampled estimator's mu3 had error 22 (vs mu3 ~ 10): gate FAILED in job 17997722 (alpha -0.51(2.69)). Exact estimator = step 0's (8.3 s/sample): 400 samples, 8 independent Metropolis chains (distinct shipped starts, K=100 steps between samples), jackknife over chains.
+Files: vmc_exact/samples.npz, consts_alpha0_E0.json (+ .sha256; written ONCE; labels read it, never recompute), all.log, slurm_<job>.out ends VMCX_DONE.
+Gate (inside vmc_run3.py, vmc_gate.py --exact semantics): alpha_err/|alpha| <= 0.15 else exit 3 with passed=false (afterok stops labels). The paired h2 check is moot and dropped. Read alpha by halves (alpha_firsthalf / alpha_secondhalf), chain_E_chi2_per_dof, chk_vtH2 vs chk_H1sq. Step 0 (122 samples): alpha -0.170(20) (rel 0.117); ~6% expected at 400.
+Branches: PASS -> labels. FAIL -> report at once (more samples or take alpha from the labels stage's exact two-hop data: lead decides).

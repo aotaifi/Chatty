@@ -1899,3 +1899,4 @@
 2026-11-15 02:50 R1' tangent test CONFIRMED (worst-5 34x the decade -9 median). Slice slowed to 237 s/step (vGPU sharing), cannot finish inside fit_sec. 02:50 I released 4255548 by mistake against the lead's hold and re-held it (never started). Proposed release to the lead.
 2026-11-15 02:50 Tangent test CONFIRMED (5 worst rows 26-73x the decade -9 median, f1 block of P_1). pool_fit cannot resume -> lead approved releasing Paderborn 4255548 for a ~05:00 step-300 read; slice cancelled once pdb has a clean rate; both cancelled if the stop fires (<= ~1.5 H100-h).
 2026-11-15 02:51 R1' pdb copy 4255548 released (lead's word 02:52), PENDING Priority.
+2026-11-15 02:51 pdb 4255548 released, PENDING (Priority); angle posts start + H100 step-50 rate, then lead cancels slice 17990426.

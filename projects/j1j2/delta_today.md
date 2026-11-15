@@ -1955,3 +1955,4 @@
 2026-11-15 11:52 VERDICT job 17997651: COMPLETED, NOT QUOTABLE: E_mix: fn1/E_mix.npy and fn2/E_mix.npy have only 3 samples each, too short for a binning analysis [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/smoke3/ANALYSIS.md]
 - 2026-11-15 sign worker: T-BAD10 round-1 chain submitted (afterok): e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers PPID 1
 2026-11-15 11:54 T-BAD10 r1 submitted, verified: e0ext 17997720 RUNNING; m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725 (afterok). m64 gate = |dM|>2e-4 AND |z|>2 (low power); lead: g_1 resolved only if g_1 - 2-sigma |dM| bound > 2 sigma(g_1).
+2026-11-15 11:55 T-BAD10 resolution rule registered (PLAN_sign a7c9a8c); lead asked that a bias-limited result be filed as inconclusive (longer m64), not a kill.

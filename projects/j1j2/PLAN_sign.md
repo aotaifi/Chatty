@@ -585,6 +585,8 @@ Mechanism behind g_1 >= 1e-3: g_1 = gap_0 (1 - c_1). gap_0 = e_0 - e_ref is the 
 Cap (lead, takeover default): each test <= 40 H100-h (A40 converted by the measured ratio); each round sized from the step-0 rates.
 KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
 Step 0 jobs: 17996493 (probe 0a), 17996634 (production 0b)
+Reading rule (lead, before data): g_1 resolved only if g_1 - (|dM| + 2 sigma_d from m64) > 2 sigma(g_1).
+Round 1 jobs: e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers 600143 600152 600156 600161 600166 600170
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
 T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP; CPU ws1/ws2; registered before any number):
  Can the 64x6 sign CNN even represent each round's label change near its current weights? Linearise the logit l(z; theta) at n_r: target t(z) = -2 l(z) on flipped

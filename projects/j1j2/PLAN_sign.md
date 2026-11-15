@@ -621,6 +621,15 @@ T-TAN RESULT 2026-11-15 (CPU ws1/ws2, ~27-42 core-h, over the 20 cap; runs/j1j2/
  weight sits, while -13..-11 stayed 0.4-0.5. The refit became more conservative (keeps 0.974 -> 0.989). Hypothesis (not a claim): the mid-decade flips leave the
  tangent space; a grown head aimed at decades -9..-5 is the variant to test if T-SEP says storage.
  Housekeeping: ~9 GB of intermediate matrices are left in my session scratchpad (ttan_r2, ttan_r3); they go to the next cleanup manifest.
+T-SEP DESIGN (registered 2026-11-15 before any number; lead granted a 2nd cip slice): paired FN on the 8x8 T-BAD amplitude |M1|, reference A = stored n_3.
+ Arms: B1 = ExactStepSign(n_3), i.e. K[n_3] at walker time with nothing stored; B2 = StoredCNNSign(n_4), with n_4 fitted on K[n_3] labels by the round-3 recipe (b): labels + fit ~3 A40-h.
+ G_exact = E[n_3] - E[B1], G_stored = E[n_3] - E[B2], f = G_stored / G_exact.
+ Gate before FN: rho probe (short paired run) for each arm. The flip weight is large (round-3 labels flip 12% of tempered states), so rho may be low. If rho < 0.5,
+ the 8x8 paired run cannot resolve ~1e-5 at reasonable cost -> fall back to an exact 6x6 version (FN energies from ED of H_eff, no noise; mechanism only, not an 8x8 verdict).
+ Prediction (mine): G_exact 1.5e-5 [-0.5e-5, 4e-5]; f 0.4 [0.1, 0.8]; storage-limited verdict 55%.
+ Branches: G_exact > 2 sigma and G_exact - G_stored > 2 sigma (f < 0.5) -> STORAGE limits -> next arm: grown head aimed at decades -9..-5 (T-TAN per-decade collapse).
+ G_exact not beyond 2 sigma -> the LABEL limits (the one-step label carries no gain at round 4) -> label work, e.g. amplitude-aware labels or the joint loop.
+ f >= 0.5 with G_exact > 2 sigma -> storage is adequate and the loop is near its one-step fixed point.
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

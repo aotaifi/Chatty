@@ -1907,3 +1907,4 @@
 2026-11-15 03:52 Headline B: heavy-tail cause tested on blocks.jsonl and DEAD (trimming 5 blocks moves the chain means <= 4e-6; offsets 2.3e-5 stay); slow mode > 40 blocks inside k0; cause not understood.
 2026-11-15 03:54 Headline B: heavy-tail hypothesis DEAD (top-5 blocks removed moves chain means <= 4e-6; k2-k3 offset 2.3e-5 stays). k0 fifths span 4.3e-5 vs expected 9.6e-6 -> slow mode within a chain too; cause not understood; further checks after R1'.
 2026-11-15 04:49 R1' pdb 4255548 started 04:22 (gpu1005), 7.6 s/step, end ~07:35; tracks slice; asked the lead to cancel slice 17990426.
+2026-11-15 04:51 R1' pdb 4255548 RUNNING (gpu1005, 7.5 s/step, ends ~07:35, trajectory = slice). Lead cancelled the superseded slice 17990426. Step-300 stop rule reads from pdb (~05:00).

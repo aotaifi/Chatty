@@ -585,6 +585,8 @@ Mechanism behind g_1 >= 1e-3: g_1 = gap_0 (1 - c_1). gap_0 = e_0 - e_ref is the 
 Cap (lead, takeover default): each test <= 40 H100-h (A40 converted by the measured ratio); each round sized from the step-0 rates.
 KILL of "the loop improves the sign every round at 10x10": g_1 or g_2 not beyond 2 sigma with data adequate -> diagnosis + Astra before any verdict.
 Not decided here: 8x8 round 4 (paired, needs the flip-weight gate) is PARKED behind T-BAD10.
+QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
+ Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 
 ## Running (rewritten 2026-11-13 ~19:30)
 - 2026-11-15 night: nothing running. G(-5) kill (Astra: stands for Lanczos labels); T-VARDEC branch C; F' trial gain 9x below bar -> 8x8 stored-mask routes closed OPERATIONALLY.

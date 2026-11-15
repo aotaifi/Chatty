@@ -21,7 +21,7 @@ ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--gates
 ap.add_argument('--walkers', type=int, default=1024); ap.add_argument('--chains', type=int, default=8); ap.add_argument('--therm', type=int, default=100)
 ap.add_argument('--sweeps', type=int, default=1000); ap.add_argument('--maxsec', type=float, default=1e18); ap.add_argument('--seed', type=int, default=3061)
 ap.add_argument('--ctl_states', type=int, default=300); ap.add_argument('--ctl_sweeps', type=int, default=12); ap.add_argument('--ckpt', type=float, default=600)
-ap.add_argument('--wchunk', type=int, default=128); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--skip_controls', action='store_true'); ap.add_argument('--hash_p', type=float, default=0.05); ap.add_argument('--controls_only', action='store_true'); ap.add_argument('--ctl_require', default='C3h')
+ap.add_argument('--wchunk', type=int, default=128); ap.add_argument('--smoke', action='store_true'); ap.add_argument('--skip_controls', action='store_true'); ap.add_argument('--hash_p', type=float, default=0.2); ap.add_argument('--hash_n', type=int, default=400); ap.add_argument('--controls_only', action='store_true'); ap.add_argument('--ctl_require', default='C3h')
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); T0 = time.time(); prog = a.out + '/progress.txt'
 def P(m):
     line = f'{time.strftime("%Y-%m-%dT%H:%M:%S")} PROGRESS {m}'; print(line, flush=True); open(prog, 'a').write(line + '\n')
@@ -92,7 +92,7 @@ if not a.skip_controls and not resume:
     ctl['C3_nominal_dE_site'] = float((om * sn).sum() / om.sum() / 64); ctl['C3_broken_alpha_flip_dE_site'] = float((om * sb).sum() / om.sum() / 64); ctl['C3_diff_site'] = float(est / 64); ctl['C3_diff_sigma_site'] = sig / 64; ctl['C3_n_flips'] = nF; ctl['C3_n_states'] = int(len(om))
     ok3 = abs(est) > 5 * sig; ctl['C3_alpha_flip_as_specified_pass'] = bool(ok3)
     P(f'C3 broken alpha_flip dE/site {ctl["C3_broken_alpha_flip_dE_site"]:.4e} (flips {nF["bro"]}) vs nominal {ctl["C3_nominal_dE_site"]:.4e} (flips {nF["nom"]}) on {len(om)} p=0.3 states; difference {ctl["C3_diff_site"]:.3e} +- {ctl["C3_diff_sigma_site"]:.1e} ({abs(est) / max(sig, 1e-300):.1f} sigma); pass(>5 sigma)={ok3}')
-    g_h = GS.build(-math.inf, cache, broken='hashmask', wchunk=a.wchunk, hash_p=a.hash_p)[0]; S, key, _, _ = advance(S, key, 2); Xh = np.asarray(S[:a.ctl_states]).astype(np.float64); lwh = np.asarray(lnpsi32(S))[:a.ctl_states]; omh = omega(lwh)
+    g_h = GS.build(-math.inf, cache, broken='hashmask', wchunk=a.wchunk, hash_p=a.hash_p)[0]; S, key, _, _ = advance(S, key, 2); Xh = np.asarray(S[:a.hash_n]).astype(np.float64); lwh = np.asarray(lnpsi32(S))[:a.hash_n]; omh = omega(lwh)
     Dh = VL.direct_D(g_h, Xh)[0]; xh = omh * Dh; eh = xh.sum() / omh.sum(); sh = float(np.sqrt(((xh - eh * omh) ** 2).sum()) / omh.sum())
     ctl['C3h_hashmask_p'] = a.hash_p; ctl['C3h_dE_site'] = float(eh / 64); ctl['C3h_sigma_site'] = sh / 64; ctl['C3h_n'] = int(len(Xh)); ctl['C3h_n_nonzero_D'] = int((Dh != 0).sum()); ok3h = abs(eh) > 5 * sh
     P(f'C3h broken hashmask p={a.hash_p}: dE/site {ctl["C3h_dE_site"]:.4e} +- {ctl["C3h_sigma_site"]:.1e} ({abs(eh) / max(sh, 1e-300):.1f} sigma) on {len(Xh)} states, {ctl["C3h_n_nonzero_D"]} with D != 0; pass(>5 sigma)={ok3h}')

@@ -1905,3 +1905,4 @@
 2026-11-15 03:48 VERDICT read: headline B arm 4222359 NOT QUOTABLE (chains disagree, chi2/dof 5.7; chain-scatter -0.4989749(59)); parked until an A arm exists, then >= 8 chains per arm, paired.
 2026-11-15 03:51 Pfaffian angle reads headline B as heavy-tailed p=1 E_L; lead asked for the record and a cheap top-blocks test (after R1'); stays 'cause not understood'.
 2026-11-15 03:52 Headline B: heavy-tail cause tested on blocks.jsonl and DEAD (trimming 5 blocks moves the chain means <= 4e-6; offsets 2.3e-5 stay); slow mode > 40 blocks inside k0; cause not understood.
+2026-11-15 03:54 Headline B: heavy-tail hypothesis DEAD (top-5 blocks removed moves chain means <= 4e-6; k2-k3 offset 2.3e-5 stays). k0 fifths span 4.3e-5 vs expected 9.6e-6 -> slow mode within a chain too; cause not understood; further checks after R1'.

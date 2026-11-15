@@ -611,7 +611,8 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   persists 40 tau: a mode slower than the run or start-dependent bias, cause NOT understood. Scatter-only reading -0.498975(6) (Varbench -0.498963(2):
   -1.2e-5, 2.1 sigma), labelled not quotable. Paired grades (A and B share walkers) are protected; absolute FN numbers from this engine are not, at 1e-5.
   Next (PI decides; not on the critical path): extend the same 4 chains +400 blocks (~12 H100-h, normal QoS). Slow mode -> chi2/dof falls toward 1;
-  start-dependent trap -> offsets persist. Write-up told not to quote it.
+  start-dependent trap -> offsets persist. Write-up told not to quote it. Heavy-tail E_L hypothesis dead (top-5 blocks removed: <= 4e-6); k0 fifths span
+  4.3e-5 vs 9.6e-6 expected, so a slow mode exists inside a chain too.
 - R1' (open question's size half; PLAN_pfaffian 'R1-R3 ON THE RETRAINED 8x8 BASE'): warm start (ii) = B_0' + lam s307's PP at 0.05 (held-out
   tangent share +0.32 vs (i) -0.40); grade = R1' + warm-start arm (no fit) + base re-run, burn 150, halves check, one job; loop gain = R1' - warm.
   SEALED (608e31d/859fc7d/cccbc3b; corrected BEFORE data 66550e6: warm-arm reference was start (i), not the base): warm vs base -2.8e-6

@@ -1890,3 +1890,5 @@
 2026-11-15 01:22 Lead read and approved T-VARDEC launcher (vardec/scripts/{submit_vardec.sh,vardec_prod.sbatch}, brief, code 3305af0), 125 sweeps, 1.12 A40-h total. Smoke lean dE_var(F,-5) +1.7(0.27)e-5 (not quotable) -> branch C if it holds.
 2026-11-15 01:30 VERDICT job 17994713: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_strong/vardec/out/prod/ANALYSIS.md]
 2026-11-15 01:31 T-VARDEC 17994713 self-stopped on an underpowered hashmask control (2.9 of 5 sigma, 100 states); rerun in out/prod2 with the control fixed before the run (p 0.2, 400 states, 5 sigma, no retune). Total ~1.26 A40-h; overrun accepted by lead.
+2026-11-15 02:14 VERDICT job 17994730: COMPLETED, NO GATE RUN. No brief was found, so it names no gate command and no chains for quotable.py. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_strong/vardec/out/prod2/ANALYSIS.md]
+- 2026-11-15 sign angle: T-VARDEC cip 17994730 (lead-verified design; numbers re-derived by me): dE_var(F,-5) +2.44(25)e-5/site, window share 98.6%, pair -48% of single; F' -5.6e-7; NOT QUOTABLE (length); branch C -> no FN run, next Q(phi_A) design on paper. My prediction failed (sign, window share, pair).

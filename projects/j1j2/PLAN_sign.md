@@ -530,6 +530,19 @@ DECISION TABLE (written 2026-11-15 before launch, lead's request). The Lanczos s
   C. dE_var(F,-5) > +13.4e-6: the trial energy over-predicts the cost -> treat as B.
   Inconclusive (error > |dE|/2 or < 50 flipped samples in a part): report, no decision; no extension without the lead.
 Controls: gate -inf dE = 0 exactly; alpha_flip broken arm large; per-sample identity single + pair == E_L^B - E_L^A to 1e-10. Error target max(3e-6, |dE|/5) per site.
+Job: cip 17994713, watcher pid 2516931
+Job (rerun): cip 17994730, watcher pid 2585653
+T-VARDEC RESULT 2026-11-15 (cip 17994730 COMPLETED, 125 sweeps, 8 chains; runs/j1j2/sign_strong/vardec/out/prod2/{result.json,control.json,gate-5,gate-7}; numbers re-derived by me
+from the per-chain series; ALL NOT QUOTABLE: quotable.py length rule, 125 samples/chain; err = max(scatter, binning)). Controls passed: gate -inf 0 exactly; identity 3.1e-13; hashmask
+p 0.2 n 400 6.7 sigma. ~1.33 A40-h for the whole step.
+  gate -5: m_F 4.70(29)e-5; window share 98.6% (3092 window / 171 good samples); single +4.65e-5, pair -2.21e-5, TOTAL dE_var/site +2.44(25)e-5 (8 chains all positive, +15..+37e-6);
+           window-x boundary +2.56e-5, good-x -1.2e-6.  F' total -5.6(1.4)e-7 (171 samples, ESS 26).
+  gate -7: m_F 2.74e-5; window 97.6%; TOTAL +1.42(10)e-5.
+VERDICT against the table: dE_var(F,-5) = +2.44e-5 > +13.4e-6 -> BRANCH C (treated as B): no FN run on T-VARDEC grounds; next = design Q(phi_A) by forward walking, paper first.
+  The trial-energy cost is 3.8x the FN Delta (+6.4(3.5)e-6); difference 1.8e-5, 4.2 sigma. Same sign, so the window carries the trial-energy cost, but phi != psi reduces it in FN.
+My registered prediction FAILED on sign (predicted -1e-4), window share (20%) and pair term (< 20% of single; measured 48%); m_F inside [3e-5, 3e-4]. The miss: at a^2-weighted
+  flipped states |V - K| is NOT >> 10; flips sit just above E_L = E + 5.68, inside the window.
+F' (no decision under C): its trial-energy gain is -5.6e-7/site, 9x below the 5e-6 bar. An FN gain >= 5e-6 would need phi/a amplification ~10x on its boundary bonds.
 
 LITERATURE on F' (lead's item 2, 2026-11-15; arXiv/Semantic Scholar 5 queries + wiki):
 - Published in the variational form. Westerhout, Katsnelson & Bagrov, Commun. Phys. 6, 275 (2023), arXiv 2207.10675 (read via the wiki page westerhout2023many.md,

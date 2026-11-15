@@ -594,7 +594,9 @@ T-TAN (decided 2026-11-15 on the lead's amplitude-side lesson; runs BEFORE T-SEP
  Prediction (mine): C(r3) < 0.5 C(r2) [55%]; C(r3) < 0.1 [50%].
  Decision: C drops >= 2x AND C(r3) < 0.1 -> the fixed class limits storage -> next arm = grown sign class per round (fresh head beside the frozen n_k, initialised so
  the output equals n_k exactly; ask the Pfaffian angle for the construction), and T-SEP is not needed for that decision. C does not drop -> storage is not the limit by
- this measure -> T-SEP decides (label quality). Controls: a broken target (labels shuffled across states) must give C ~ 0; identity check of J against finite differences.
+ this measure -> T-SEP decides (label quality). CALIBRATION (lead): compare C with the share each round actually stored = held-out flip reproduction (and the
+ keeps-kept rate) of the fitted n_{r+1} against K[n_r], same states and split. If C does not track the realised share at round 2 (within a factor 2), C is not trusted
+ at round 3 and T-SEP decides. Controls: a broken target (labels shuffled across states) must give C ~ 0; identity check of J against finite differences.
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

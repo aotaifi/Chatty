@@ -1908,3 +1908,8 @@
 2026-11-15 03:54 Headline B: heavy-tail hypothesis DEAD (top-5 blocks removed moves chain means <= 4e-6; k2-k3 offset 2.3e-5 stays). k0 fifths span 4.3e-5 vs expected 9.6e-6 -> slow mode within a chain too; cause not understood; further checks after R1'.
 2026-11-15 04:49 R1' pdb 4255548 started 04:22 (gpu1005), 7.6 s/step, end ~07:35; tracks slice; asked the lead to cancel slice 17990426.
 2026-11-15 04:51 R1' pdb 4255548 RUNNING (gpu1005, 7.5 s/step, ends ~07:35, trajectory = slice). Lead cancelled the superseded slice 17990426. Step-300 stop rule reads from pdb (~05:00).
+2026-11-15 04:52 R1' slice 17990426 cancelled by the lead (superseded by pdb 4255548, same trajectory); its watcher's disappearance verdict is expected and ignored.
+2026-11-15 04:53 VERDICT job 17990426: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/slice/ANALYSIS.md]
+2026-11-15 05:10 [diag_ho worker] submitted job 17995598 (array 0-15, small, 12G, 40 min): full held-out pool_comb at step-300 theta from /project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/pdb/round_1, TAG full_comb_step300, run dir /project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/arr_step300
+2026-11-15 05:39 VERDICT job 17995598: COMPLETED, shards complete and finite, run merge + boot [/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit/diag_ho/arr_step300/ANALYSIS.md]
+2026-11-15 05:46 R1' step-300 read (pdb theta): D full -0.0013(62), without the 5 worst rows +0.0082(22); stop rule not fired; the fit runs on; near-node damage shrank (-0.102 -> -0.031 in decade -9).

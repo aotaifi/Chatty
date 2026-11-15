@@ -615,14 +615,21 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   4.3e-5 vs 9.6e-6 expected, so a slow mode exists inside a chain too.
 - R1' (open question's size half; PLAN_pfaffian 'R1-R3 ON THE RETRAINED 8x8 BASE'): warm start (ii) = B_0' + lam s307's PP at 0.05 (held-out
   tangent share +0.32 vs (i) -0.40); grade = R1' + warm-start arm (no fit) + base re-run, burn 150, halves check, one job; loop gain = R1' - warm.
-  SEALED (608e31d/859fc7d/cccbc3b; corrected BEFORE data 66550e6: warm-arm reference was start (i), not the base): warm vs base -2.8e-6
-  (-2.3..-3.4e-6); loop R1' - warm -4.6..-8.1e-5 (extrapolation; tests k's transfer). Labels 17985658 gate PASS (bond ESS min 59171 >= 55398,
-  pool sha 2141b1e3). FIT RUNNING: slice 17990426 (cip a40-24gb, from 11-14 17:58, ~41 h at 98.7 s/step; step-50 projection ~19:30, rule <= 110 s/step)
-  + Paderborn cont 4255548 PENDING; first finished done=true counts. Grade (lead's go) after the fit.
+  SEALED, corrected twice BEFORE data (66550e6; 97c4ba9 full held-out): (1'') warm vs base -1.2(1.4)e-6; (2'') loop R1' - warm -4.6..-8.3e-5
+  (extrapolation). Labels 17985658 gate PASS (bond ESS min 59171, pool sha 2141b1e3). FIT DONE 2026-11-15 07:35: Paderborn 4255548, 1500/1500, theta_tail
+  sha 15cff596 (slice 17990426 cancelled by lead, vGPU time-sliced to 237 s/step). Held-out (424585 rows, paired, bootstrap): step 150 D -0.0154(85),
+  step 300 -0.0013(62) (stop rule not fired), end +0.0011(110) UNDECIDABLE -> grade decides (end rule 8267af0). Trimmed (5 near-node rows fixed at
+  step 150) end +0.0167(23): derived R1' - warm ~ -1.4e-5 (unvalidated), 3.5-6x short of (2''). Near-node sensitivity d ln|P_1| ~ 1/P_1 confirmed
+  (tangent 26-73x), transient not runaway. GRADE RUNNING: Paderborn prod 4271870 + prod2 4271928 (3 arms B0s/WARM/R1P x 8 chains, burn 150 + 600,
+  ~6 H100-h; runs/j1j2/r1prime_grade/{prod,prod2}); gate analyze_r1prime_grade.py prod prod2; decisions on the unpaired chain-scatter error.
+  Verdicts: R1'-warm inside (2'') -> mechanism confirmed, R2' next; ~ -1.4e-5 -> G_s306 term wrong (bound ratio as gain ratio); chi2/dof > 2 in an
+  arm -> finding, no number.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
 - Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
-  G(-5) = gain from the exact one-step sign at decades <= -5, cip 17968152 (~25 h, ends ~21:00 11-14); kill: 2-sigma upper < 5e-6 closes the stored-mask path.
+  G(-5) DONE: KILL FIRED, Delta +6.4(3.5)e-6 (Astra cj-8a965a47de4e: stands for storing Lanczos labels; NOT a ceiling over masks). T-VARDEC (17994730)
+  branch C: trial-energy cost +2.44(25)e-5, 98.6% window flips; F' gain -0.56(14)e-6 (1/9 of the bar). Stored masks at 8x8 closed OPERATIONALLY.
+  PI to choose: T-BAD storage loss vs L (lead recommends) or G_max bound (~4-6 A40-h). No runs meanwhile. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
   CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
 - Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).

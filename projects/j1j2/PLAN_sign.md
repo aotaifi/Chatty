@@ -630,6 +630,7 @@ T-SEP DESIGN (registered 2026-11-15 before any number; lead granted a 2nd cip sl
  Branches: G_exact > 2 sigma and G_exact - G_stored > 2 sigma (f < 0.5) -> STORAGE limits -> next arm: grown head aimed at decades -9..-5 (T-TAN per-decade collapse).
  G_exact not beyond 2 sigma -> the LABEL limits (the one-step label carries no gain at round 4) -> label work, e.g. amplitude-aware labels or the joint loop.
  f >= 0.5 with G_exact > 2 sigma -> storage is adequate and the loop is near its one-step fixed point.
+ r4_phaseA job 17998002, watcher 822895
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

@@ -2052,3 +2052,4 @@
 2026-11-16 09:35 Lead session migrating (compacted once, >1 day). PLAN.md Running + Cockpit updated.
 2026-11-16 09:35 grade4 (8x8 T-BAD round 4) submitted by sign angle: cip 18007736 RUNNING (verified), watcher pid 2464268.
 2026-11-16 09:37 pfaffian angle: session migrating; PLAN_pfaffian.md STATE block current; no jobs running.
+- 2026-11-16 sign angle: migrate. Running: T-BAD10 r1 labels 18007712 -> fit 18007713 -> fn64 18007714; 8x8 round-4 grade 18007736. PLAN_sign Running rewritten.

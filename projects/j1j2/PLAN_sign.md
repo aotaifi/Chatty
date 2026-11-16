@@ -656,13 +656,17 @@ T-SEP stored arm grade4 SUBMITTED 2026-11-16 (lead GO): cip job 18007736, watche
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 
-## Running (rewritten 2026-11-13 ~19:30)
-- 2026-11-15 night: nothing running. G(-5) kill (Astra: stands for Lanczos labels); T-VARDEC branch C; F' trial gain 9x below bar -> 8x8 stored-mask routes closed OPERATIONALLY.
-  DECIDED (takeover): T-BAD10 (bad-start loop at 10x10, section above), step 0 cost probe running; G_max PARKED; 8x8 round 4 PARKED. TAKEOVER in force (PI 2026-11-10, confirmed via lead 11-13); my rules: size from measured rates, register before numbers, Astra on every
-  fired kill, no Paderborn express, no cancels of others' jobs, deletions, paper edits or emails; at most one cip slot, R1' fit has priority.
-- Settled 11-13: symmetry branch closed (A51; S1/S2/S3); paired estimator passes its 8x8 rho gate (RHO PROBE RESULT below).
-- Open: T-STRONG has an estimator but no mask worth grading (stage-0 threshold sweep and S1 capture <= 4% at FP/TP <= 1). Next candidate: Astra's top-ranked base-feature head
-  with bounded u_rel target (ASTRA_class8.md); to be registered before any run. T-BAD round 4 HELD.
+## Running (rewritten 2026-11-16 at migrate)
+- RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):
+  T-BAD10 round 1 (10x10, declared alpha -0.170): labels 18007712 -> fit 18007713 -> fn64 18007714 (afterok); run dir runs/j1j2/sign_bad10/r1 (bulk on /scratch/a/A.Otaifi/runs_bulk/sign_bad10/r1);
+   briefs per stage; fn64 brief holds the three-branch rule with B64. Watchers 2456445/2456449/2456458.
+  8x8 round-4 grade (T-SEP stored arm, n_4 vs n_3 paired): grade4 18007736, run dir runs/j1j2/sign_bad/r4/grade4 (-> /scratch), watcher 2464268; gate grade4_gate.py; prediction g_4 1.0e-5.
+- Next per verdict: g_1 RESOLVED (>= 1e-3 predicted) -> round 2 sized from round-1 rates; KILL INPUT -> diagnosis + Astra; INCONCLUSIVE -> longer m64. g_4 beyond 2 sigma -> 8x8 loop
+  still improving at round 4; not -> storage/label question goes to the exact 6x6 fallback of T-SEP (deferred).
+- Closed operationally (numbers above): G(-5) kill, T-VARDEC branch C, F' 9x below bar, symmetry branch (A51). T-TAN: class not shown limiting (C 0.196 -> 0.142).
+- PARKED: G_max bound (4-6 A40-h); T-SEP exact arm at 8x8 (300-430 s/block, ~125 A40-h) -> 6x6 exact fallback.
+- TAKEOVER in force; PI 2026-11-15: decide, never wait on the PI (memory feedback_takeover_decide_dont_wait). Two cip a40-24gb slices granted by the lead.
+- Housekeeping owed: ~9 GB T-TAN matrices in the old session scratchpad (ttan_r2, ttan_r3) -> next cleanup manifest; /scratch at 953 of 973 GB soft quota.
 
 ## Where the angle stands (2026-11-09)
 - Question now: a BETTER sign every round (PI). One round solved at 8x8 on the loop metric, every round not.

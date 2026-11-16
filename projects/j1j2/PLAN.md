@@ -654,6 +654,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   Gates: R1'' confirms the remedy (held-out bond f >= 0.12, E(R1'') < E(R1') beyond 2 sigma) AND 8x8 sign round 4 gain > 0. Round = Lanczos step from
   sign-net x amplitude-net guide, FN, store sign (CNN) + amplitude (PP refit, trust region, fresh PP); 3 rounds; kill gain_k < 0.5 gain_{k-1}.
   Cost ~10-15 H100-h/round (rough, to be sized from R1' + sign-round rates). 10x10 only after 2 steady 8x8 rounds (needs a 10x10 amplitude base).
+- T-BAD10 CAPPED at round 1 (PI approved 11-16, lead's recommendation): no 10x10 sign round 2 until the 8x8 sign slowdown (x5.4, x6.2, x2.1) is explained; sign angle told.
   Design + prediction to the PI before any run.
 
 ## Budget

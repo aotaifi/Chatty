@@ -7,6 +7,7 @@ another's row (merging duplicates keeps every number and record). A lesson that 
 ## First: predict from the equations
 - Predict every step from its equations, the optimiser and fit included (rule: CLAUDE.md point 1) | weeks of training variants labelled empirical; the one tangent check (Theta v2, 0-4%) found the missing direction and two PPs stored r 0.49 vs 0.05 | PI 2026-11-12; CLAUDE.md point 1
 - A fired kill test is not a verdict: diagnose (budget, tweak), try cheap variants, ask Astra, then decide | T-IW crossed d only after ~15k steps; a 3k kill would have killed it | PLAN_sign "T-IW RESULT"; PI 11-08
+- Before any fit on a new pool, size or loss, run a CPU counterfactual of the known failure terms on the pool rows (above all the log of a vanishing amplitude near the node, d ln B ~ 1/B: clip or freeze the deep rows' moves and recompute f) | R1' re-learned the October lesson on GPU: fit + 8-chain grade (~6 H100-h + fit) stored f ~0.1 vs sealed 0.5-0.9; the CPU counterfactual that found the remedy (bond f 0.020 -> 0.267) took hours, no GPU | PLAN.md R1' 'REMEDY CHOSEN'; runs/j1j2/r1prime_fit/diag_ho/remedy_counterfactual_tr.json; lead self-audit 11-16
 
 ## Objectives, targets and weights
 - Train and grade a loop component on the loop's OWN metric, asked from the lead first, not on a proxy | 8x8 sign: w_T fell 3x, eps^2 0.54 vs sgn(M1) 0.40 (11-05) | PLAN_sign "GATE (a) on ppw_s1"
@@ -35,6 +36,7 @@ another's row (merging duplicates keeps every number and record). A lesson that 
 - cx_r1fit step acceptance passed a negated step as noise; fit-to-fit E_FN walk +-0.2e-6 makes single fits unquotable | candidate cause of the walk | delta_today 11-03
 
 - A gate on false positives alone passes a classifier that never fires; gate on capture AND false rate, in energy-weighted units | T-STRONG stage 0 mask passed (1 false vs 88 true at d >= -5) while capturing 0/79 flips there | PLAN_sign "T-STRONG STAGE 0 RESULT"
+- Every gate's noise goes in the brief before submission: sigma of the gated quantity at the planned sample size against its threshold; a gate that cannot reach its threshold is redesigned on paper, not discovered at run time | T-BAD10 VMC gate stopped twice (subsampled h2 ~33x noisier, alpha -0.51(2.69)), ~5 A40-h; T-VARDEC control 2.9 of 5 sigma, rerun; SEP probe 1 block -> rho nan | delta_today 11-15 15:48, 11-16 09:28, 11-15 01:31, 11-15 16:54
 
 ## Training and parametrisation
 - Warm start must equal the reference EXACTLY (gate 0); check what each factor of the parent contributes (the RBM factor flips signs) | PP-only start 6.7% off sgn(M1) | PLAN_sign "T-SIGN8"
@@ -57,3 +59,4 @@ another's row (merging duplicates keeps every number and record). A lesson that 
 - A watcher on a job that logs only at its end fires false STALLED; set the stall limit from the job's own logging cadence | false STALLED on 17751660 | delta_today 11-05
 - A peer's "being submitted now" is not a submission: arm a wait on the job id or progress file in the same turn | 8x8 R1 fit never submitted, ~2 days lost (11-06 -> 11-08) | delta_today 11-08
 - Check a peer's units: a parenthesised error off by 10x turns a 1.2-sigma pass into a 12-sigma miss | c3 notation | PLAN_pfaffian c3
+- A racing copy on a second cluster only when its expected queue wait exceeds the job's run time, sized from a MEASURED rate before submission, and the slower copy cancelled at the first start | ~35 A40-h lost since 11-09: ctrl_c0 A40 racer ran 24 h into its time limit (70.5 s/step measured after launch, 1500 steps needed 29.4 h), r1p_slice 10.9 A40-h cancelled | sacct 17852869, 17990426; delta_today 11-10, 11-15

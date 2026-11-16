@@ -594,6 +594,7 @@ ROUND 1 RESTART STOPPED 2026-11-15 20:19 at vmc_exact (18000295): exact two-hop 
  DECISION (takeover, 2026-11-16): alpha is a DECLARED label-rule constant, alpha = -0.170, not an estimate. Three values agree: step 0 -0.170, exact-400 -0.163,
  8x8 loop -0.175. E = -49.269(43) from exact-400. Reason: the FN grade judges the label rule whatever alpha is; alpha's optimum cannot be resolved affordably at 10x10
  (heavy tails). The gate is bypassed by declaration, recorded here. Labels -> fit -> fn64 resume with these constants.
+Round 1 RESUME jobs 2026-11-16 (declared alpha -0.170, vmc_exact/consts_declared.json sha 65208b1b; smoke 18007676 PASS; dead 18000296/7/8 cancelled: labels was DependencyNeverSatisfied after the vmc_exact gate FAIL 18000295, fit/fn64 depended on it): labels 18007712, fit 18007713, fn64 18007714; watchers 2456445 2456449 2456458; labels/fit output on /scratch/a/A.Otaifi/runs_bulk/sign_bad10/r1 (symlinks)
 ROUND 1 ATTEMPT 1 STOPPED 2026-11-15 by the VMC gate (17997722): the subsampled h2 estimator is ~33x noisier per sample than exact (alpha -0.51(2.69), rel err 5.3).
  e0ext: chains -0.493589(139) / -0.494001(158), 2.0 sigma apart (NOT QUOTABLE); m64 -0.494113(86) lies below both: hint of an M16 population bias of a few 1e-4 (z -1.54). 3.8 A40-h spent.
  DECISIONS (takeover): exact two-hop VMC with 400 samples in >= 8 chains (step 0 had 12% at 122); grade BOTH arms at M=64 (e_0: m64 chain + a new M64 chain;
@@ -650,6 +651,7 @@ T-SEP PROBES 2026-11-15 (cip 17999272 exact, 17999273 stored4, M 256; /scratch/a
  Prediction for g_4 (mine): 1.0e-5 [0, 3e-5]; beyond 2 sigma 50%.
  rho probe, arm exact job 17999272 (afterany 17999079; watcher 1425936; /scratch/a/A.Otaifi/ansatz_runs/sign_bad/sep/probe_exact)
  rho probe, arm stored4 job 17999273 (afterany 17999272; watcher 1425937; .../sep/probe_stored4)
+T-SEP stored arm (grade4) STAGED 2026-11-16, NOT submitted (lead reads launcher first): runs/j1j2/sign_bad/r4/grade4 -> /scratch/a/A.Otaifi/runs_bulk/sign_bad/r4/grade4; launcher ansatz/code/paired_fn/grade4.sbatch; 4 chains x (150+375), M 256, ~6.4 A40-h
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

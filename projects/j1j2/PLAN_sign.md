@@ -676,6 +676,15 @@ QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP 
   Reading: decoupling onset is chain-dependent (4 to never, median ~200 blocks), not a fixed time; decoupled windows have sd(Delta) 2-3x, variance 4-9x.
   The 150-block burn spends most of the coupled lifetime. Design input (mine, not tested): equilibrate one population under A once, branch many pairs from it
   with a short burn (~20 blocks), and end or restart a pair online when its 25-block mean same_post < 0.9; ~100-150 blocks per pair.
+  LEAD (2026-11-16): branched short pairs yes, adaptive stop NO (outcome-dependent length may censor Delta, which is plausibly made where A and B guide
+  differently) -> FIXED length set before the run from the onset table (e.g. 100 blocks after branching). Accepted.
+  CHECKS on grade4 (CPU, 2026-11-16; Delta/site x1e-5, bin-5 errors; coupled = centred 25-block mean same_post >= 0.9, measured blocks only):
+  (1) coupled vs decoupled: c0 +0.46(1.32) vs -1.71(2.91) [10 blocks] z +0.7; c3 -1.60(1.92) vs +2.61(3.47) z -1.1; c1, c2 all decoupled; pooled -0.08(1.09)
+      vs -0.51(1.56) z +0.2. Does NOT fire. Weak check: excludes only differences above ~4-8e-5, and coupled/decoupled is confounded with chain. Fixed length stays (lead).
+  (2) burn transient (4 chains, from X0_B0 starts): blocks 0-19 -1.8(0.9), 20-49 -3.8(2.4) [bin 40-49 -8.4(2.7) from two chain spikes, -20.6 and -15.1],
+      50-149 -0.9(0.6), measured -0.4(1.9) (errors = chain scatter of 4). No transient resolvable above ~3e-5; a 20-block burn is NOT certified at the 1e-5 level
+      this data cannot reach. Caveat: here both arms start from X0_B0; in the branched design B starts from A's equilibrium, a different transient.
+      Cheapest certifying check (not run): in the first joint-loop grade, compare Delta over blocks 20-50 vs 50-100 after branching across all pairs.
 - T-BAD10 CAPPED at round 1 (lead 2026-11-16, PI approved): report g_1 vs prediction and stop; no 10x10 round 2 on any branch until the 8x8 slowdown
   (x5.4, x6.2, x2.1, then round 4) is explained and the lead re-opens 10x10. g_4 goes to the lead at once: it gates the 8x8 JOINT LOOP (PLAN.md).
   Gate-noise lines added to both briefs (LESSONS row 39).

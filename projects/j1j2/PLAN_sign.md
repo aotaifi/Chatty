@@ -707,6 +707,17 @@ LEAD 2026-11-16: term (d) OBJECTIVE MISMATCH (the fit's row weights vs the energ
  Arm O: per-row loss weight = bw(x) = |B_x|^2 * Sbar_d (S per decade from the roots; S is not stored off the roots, and its within-decade spread is 0.2 decades),
  for flipped AND kept rows (a spurious flip costs the same bond weight). ESS of the weighted rows reported before submission; registered fallback if ESS < 5e3:
  weight bw^(1/2). Pass/kill as for G/W, applied to O. O ~ G/W -> capacity is not the term; O >> G,W -> objective mismatch is the term (joint-loop design: train on bw).
+T-GROW AMENDMENT (takeover, 2026-11-16 ~21:30, after the build and BEFORE any production number; tgrow/controls.json, ess_*.json read by me):
+ (1) n_3 was a COLD start (seed 0, no --init), while G/W/O start from n_2: the baseline is confounded with the warm start. Added arm P = plain n_2 architecture,
+     --init n_2, uniform loss = the true baseline for G/W/O. n_3 is kept as a second reference.
+ (2) O at bw^1 has ESS 271 of 1.17M -> registered fallback bw^(1/2) (ESS 24,372). But then flipped rows carry 0.22% of the loss weight (uniform 12%), so O mostly
+     fits keeps. O runs as registered. Added Ob = class-balanced: flipped and kept rows keep their uniform shares (12% / 88%), each weighted by bw^(1/2) within
+     its class (flipped-row ESS 7,929). Ob tests (d) as measured, i.e. the between-decade allocation among flips.
+ (3) A metric for all arms: E_bw = sum_x bw(x) 1[stored != label] over held-out states, flips AND keeps (the loop's own metric: a broken keep costs bond weight
+     too). M (flips only) stays the registered pass metric; E_bw must not rise by more than its error for a pass.
+ (4) W is 91 channels (extra 189,027 = 1.02x G), with per-group LayerNorm. Its f32 init deviation is 1.1e-5 (n_2's own f32-vs-f64 deviation is 7.1e-6); in f64 it is
+     1.4e-14. Accepted.
+ Branches add: G or W >> P -> capacity; P ~ G ~ W -> capacity is not the term; Ob >> P -> objective allocation is the term. Cost now ~4.7 A40-h (cap 6).
 GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
 
 ## Running (rewritten 2026-11-16 at migrate)

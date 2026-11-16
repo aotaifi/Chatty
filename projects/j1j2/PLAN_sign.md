@@ -699,6 +699,14 @@ Mechanism: T-TAN's linear share fell 0.196 -> 0.142 and the stored share 0.52 ->
 Pass: M_I loss cut >= 30% and keeps >= 0.98 -> paired FN grade of the grown net vs n_3 (8x8, ~6 A40-h, next decision). Kill: cut < 10% in both arms -> capacity is not the
  limit; diagnose (optimiser, label noise) + Astra before any verdict. G >> W -> the freezing matters (design for the joint loop); W ~ G -> plain width.
 Controls: at init G and W logits equal n_2 to 1e-6 on 1000 states, and a broken init (non-zero head) must fail; a shuffled-label head must not improve held-out flips.
+LEAD 2026-11-16: term (d) OBJECTIVE MISMATCH (the fit's row weights vs the energy's |H||B_x||B_y|) added; third arm O = n_2 capacity, refit with the bond-weighted loss.
+ (d) CHECK (me, CPU, table_r3 roots, bond weight bw = |B|^2 S): the fit's row weight is UNIFORM (no row weights), so its rank correlation with bw is nil by construction.
+ Within one decade bw is mildly spread (top 10% of flipped roots carry 0.25-0.38, top 1% 0.04-0.15; sd log10 |B|^2 0.25-0.31, sd log10 S 0.19-0.22, uncorrelated).
+ Pooled over -9..-5 the top 10% carry 0.88, top 1% 0.34: the mismatch is BETWEEN decades. Rows -5/-9 = 1.8 (q 0.145/0.080) vs flipped bond weight -5/-9 = 12
+ (I 3.5e-4/2.9e-5). The fit spends its rows on -9/-8 corrections the energy barely weights. (d) is supported as a candidate; O tests it.
+ Arm O: per-row loss weight = bw(x) = |B_x|^2 * Sbar_d (S per decade from the roots; S is not stored off the roots, and its within-decade spread is 0.2 decades),
+ for flipped AND kept rows (a spurious flip costs the same bond weight). ESS of the weighted rows reported before submission; registered fallback if ESS < 5e3:
+ weight bw^(1/2). Pass/kill as for G/W, applied to O. O ~ G/W -> capacity is not the term; O >> G,W -> objective mismatch is the term (joint-loop design: train on bw).
 GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
 
 ## Running (rewritten 2026-11-16 at migrate)

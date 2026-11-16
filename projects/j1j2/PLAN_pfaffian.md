@@ -2782,3 +2782,29 @@ REGISTRATION R1'-CLIP (written 2026-11-16 17:06, before any held-out or energy d
 (2) Grade: clipped arm + warm arm, 8 chains each, burn 150 + 600. Predicted E(clip) - E(warm) = -3e-5 (-2..-5e-5). CONFIRMED iff E(clip) - E(R1') < 0 beyond 2 sigma.
 (3) Code controls before production: tau = infinity must reproduce the R1' arm's local energies bit-for-bit, and tau = 0 must reproduce the warm arm's. Both can fail.
 My confidence that (2) confirms: ~55%. It tests the premise shared by (A), (C) and the counterfactual, namely whether f 0.23 reaches the energy, at zero fit cost.
+2026-11-16 17:09 LEAD 17:20: (C') R1'-CLIP APPROVED, registrations as written. Sign convention (registered now): the sign of B_theta_end (R1' end), so that tau = infinity reproduces R1' exactly; the sign-flip check reports what B0's sign would change.
+Order:
+1. CPU held-out gate (bond f >= 0.12, else stop and report).
+2. Grade-code change, with unit tests on a few hundred configurations: tau = infinity reproduces R1''s local energies bit-for-bit, tau = 0 reproduces warm's.
+3. Grade launcher to the lead, with the measured clip-arm per-block cost and the H100-h total.
+R2' on hold until (C') is graded; if it confirms, (C) is R2''s trainable form.
+
+2026-11-16 20:14 SIGN-FLIP/CLIP CPU SHARDS: 18/34 complete; 16 killed ~18:52 on m51 (10 cores, load ~50; run_all.out "Killed"/"Terminated"); t_end written despite failures. Missing theta0 s7-14, end s6-12,s14. Worker a1dec1e rerunning them as a Slurm CPU array (/scratch/a/A.Otaifi/sign_flip/rerun.sbatch), then report + B_end reality + clip_ho gate (bond f >= 0.12).
+
+2026-11-16 20:48 SIGN-FLIP RESULT (runs/j1j2/r1prime_fit/diag_ho/sign_flip.json; shards /scratch/a/A.Otaifi/sign_flip, rerun array 18019608):
+- Controls pass: end=theta0 and ctrl_same give 0 flips and m=0; lamflip gives nonzero flips (weak, lam=0.037).
+- B_theta_end is COMPLEX: lam_end = 0.056782 - 0.001144i (verified in r1prime_grade/prod/out/R1P_k1/run_info.json). |sin phase| > 0.1 on 24% of held-out x rows. theta0 is real (6e-11).
+- This is MOOT for the deployed guide. grade_bare.py (r1prime_grade/code, lines 3 and 126) uses BareM1Sign(convention='abs', sign_params=s306 p0), i.e. guide = sgn(s306 base) * |B_theta|, for WARM and R1P alike; the sign never comes from B_theta.
+- Correction to LEAD 17:20 "sign = sign(B_theta_end)": the clip arm must use sgn(s306)*|B~| with |B~| = |B0| exp(clip(ln|B_end|-ln|B0|, +-0.5)). Only then is tau=inf bit-identical to R1P and tau=0 to WARM.
+- B_theta sign/phase changes (provisional convention) are confined to the deep decades: 0.8% of bonds at decade -9, <=0.14% at decades >= -7. They enter FN only through |B| dips, which m already carries.
+- Clip held-out gate: Slurm job 18019788 (clip_ho.py) pending.
+
+2026-11-16 20:53 CLIP HELD-OUT GATE: PASS (runs/j1j2/r1prime_fit/diag_ho/clip_ho.json, job 18019788, 424585 held-out rows, 1000 row-bootstrap resamples).
+- bond f: clip 0.239 ± 0.029 (q16-84 0.212-0.270) vs end -0.089 ± 0.118. Registered bar 0.12, predicted 0.23.
+- total f: clip 0.265 ± 0.022 vs end 0.009 ± 0.090.
+- Fraction of rows clipped: x 1.25%, y 0.98%.
+- Control (i): fresh forwards match gate_selftest_r1prime.json to rel <= 6e-13.
+- I checked myself that Sclip = S0 + clip(Send - S0, ±0.5) exactly (max dev 0.0) from /scratch/a/A.Otaifi/r1p_clip/ho_S.npz.
+- Top-10 bond share at decade -9: clip 0.25, end 0.39, theta0 0.18. Heavy but no longer single-row dominated.
+- Caveat: one pool, row bootstrap, no chains. This is the counterfactual storage, not an energy.
+Next: grade code (clip arm = sgn(s306) * |B~|), tau=inf/tau=0 unit tests, staged launcher -> lead before submission.

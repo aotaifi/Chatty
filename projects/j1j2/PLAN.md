@@ -635,6 +635,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   bond f < 0.12 -> no grade, diagnose. Grade R1'' vs warm, 8 chains: pred -3e-5 (-2..-5e-5); confirmed iff E(R1'') - E(R1') < 0 beyond 2 sigma,
   else to the lead. Then R2' from the better round-1 net, same trust region, G_2 measured first. Launchers to the lead.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
+  R1'' PROBE RUNNING: Paderborn 4299397 (submitted by the lead 16:42, runs/j1j2/r1pp_fit/probe), 60 steps; OK on (a)-(e) -> R1'' fit (LEAD_OK in r1pp_fit/pdb); STALL -> q9999 backtrack + per-row clip, CPU first; BOUND EXCEEDED or held-out rise >= R1''s -> lead.
   STEP-BACK 11-16 15:25 (second failed controller: soft hinge overshoot, then Jd bound refuted, PLAN_pfaffian 'KILL TEST RESULT', P36):
   1. Verdict: continue with backtracking on the actual per-row m (TRPO line search, 1502.05477). 2. Thought: near a node the
   quadratic term of dB/B carries the same 1/|B| as the linear one, so only the true m can be bounded; the stall risk comes from a hard max over
@@ -660,7 +661,10 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Channels: board MESSAGE_BOARD_lead_pfaffian.md (3-min lead wait); sign angle by session message. /scratch 888 GiB.
 
 - JOINT LOOP (PI 11-16, the project's main test): directly at 8x8, then 10x10; 6x6 dropped (storage is size-dependent: fresh PP 0.49 at 6x6 vs ~0.1 at 8x8).
-  Gates: R1'' confirms the remedy (held-out bond f >= 0.12, E(R1'') < E(R1') beyond 2 sigma) AND 8x8 sign round 4 gain > 0. Round = Lanczos step from
+  Gates: R1'' confirms the remedy (held-out bond f >= 0.12, E(R1'') < E(R1') beyond 2 sigma) AND 8x8 sign round 4 not worse than round 3 (gate re-read 11-16 16:45: grade4 g_4 = -0.7(1.9)e-5, quotable 4 chains chi2/dof 1.88,
+  runs/j1j2/sign_bad/r4/grade4/ANALYSIS.md, lead re-ran quotable: same; g_4 > -2 sigma holds; a sign loop at ~0 gain under a fixed amplitude is
+  the joint loop's premise, not a block; resolving 1e-5 would cost ~25 A40-h, not spent). Grading design input: paired walkers decouple after
+  ~170 blocks (rho 0.88/0.54/0.80/0.60), so joint-loop grades use many short chains restarted in the coupled regime. Round = Lanczos step from
   sign-net x amplitude-net guide, FN, store sign (CNN) + amplitude (PP refit, trust region, fresh PP); 3 rounds; kill gain_k < 0.5 gain_{k-1}.
   Cost ~10-15 H100-h/round (rough, to be sized from R1' + sign-round rates). 10x10 only after 2 steady 8x8 rounds (needs a 10x10 amplitude base).
 - T-BAD10 CAPPED at round 1 (PI approved 11-16, lead's recommendation): no 10x10 sign round 2 until the 8x8 sign slowdown (x5.4, x6.2, x2.1) is explained; sign angle told.

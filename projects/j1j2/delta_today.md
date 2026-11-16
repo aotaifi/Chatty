@@ -2104,3 +2104,5 @@
 2026-11-16 21:26 [tgrow worker] T-GROW amendment staged, NOT submitted: arms P and Ob added (launch_P.sbatch, launch_Ob.sbatch in runs/j1j2/sign_bad/tgrow), E_bw in grow_eval.py (n_2 check passes, 7e-21), limits 2x estimate, sum of estimates 4.78 A40-h; smoke job 18021065 (P, Ob end to end).
 2026-11-16 21:26 [sign angle] T-GROW 5 arms staged (P,G,W,O,Ob; 4.78 A40-h est.; launchers read by me); sent to the lead for reading before submission.
 2026-11-16 21:27 T-GROW (sign angle, PLAN_sign 8112d33): launchers read (G full, P/W/O/Ob diffs, submit_arm.sh), 5 arms 4.78 A40-h on cip approved; second seed required if best two arms within ~10 points of M.
+2026-11-16 [sign angle worker] T-GROW submitted: P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090; watchers 1539832, 1539869, 1539920, 1539929, 1539964
+2026-11-16 21:28 [sign angle] T-GROW submitted: P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090 (cip), watchers PPID 1; angle owns the waits.

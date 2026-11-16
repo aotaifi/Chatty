@@ -683,6 +683,24 @@ Decision: (b) holds (q/w < 0.5 where m is high) -> fix = refit with walker-weigh
  Prediction (mine): I share in -9..-5 = 0.3 [0.1, 0.6], 55% below 0.5. Decision: -9..-5 >= 0.5 of M_I -> grown head aimed there (GPU test <= 6 A40-h, launcher
  to the lead); >= 0.5 from d >= -4 -> the fix is to weight the rare high-amplitude flips in the fit loss (cheap refit, ESS check first); neither -> both, report.
 
+## T-WHY-I RESULT 2026-11-16 (CPU; twhy/importance.json; M_I split re-computed by me from table_r3 roots + lat_pl JB: 0.725 / 0.270)
+ Energy-weighted (bond weight |H_xy||B_x||B_y| on flipped roots) copy loss M_I = 1.05(14)e-3 of the bond weight: 72% from -9..-5, 27% from d >= -4, 0.5% below -9.
+ Flipped roots carry 0.14% of the bond weight. Control S -> 1 reproduces w_d exactly; a J1-only S moves shares by 6e-3. My prediction (0.3, 55% below 0.5) FAILED.
+ Rule -> grown head aimed at -9..-5 (T-GROW).
+
+## T-GROW (takeover decision 2026-11-16; REGISTERED before any number; cip A40 <= 3 A40-h; launcher to the lead before submission)
+Question: is the copy loss in -9..-5 a capacity limit of the 64x6 CNN refit from n_2? Labels K[n_2] (r3/labels/table_r3.npz), rows/steps/split as the r3 fit (r1_fit.py,
+ 1,174,880 rows, 245,800 steps). Arms: G = frozen n_2 + fresh 64x6 CNN head h, final layer zero (output = n_2 at start); W = n_2 widened 2x function-preservingly
+ (new channels zero-out), all trainable (same extra parameters, no freezing). Baseline = the realised refit n_3 (T-TAN numbers).
+Metric (T-TAN's, same held-out leak-free states): flip reproduction and keeps-kept per decade; M_I-weighted loss with twhy I_d.
+Predictions (mine): G cuts M_I-weighted loss by >= 30% vs n_3 [50%]; W within 10% of G [40%]; keeps kept >= 0.98 in both [70%].
+Mechanism: T-TAN's linear share fell 0.196 -> 0.142 and the stored share 0.52 -> 0.31; T-WHY excluded training weight and neighbour conflict; with a residual head the
+ round's change is fitted from zero instead of competing with the old sign inside one set of weights.
+Pass: M_I loss cut >= 30% and keeps >= 0.98 -> paired FN grade of the grown net vs n_3 (8x8, ~6 A40-h, next decision). Kill: cut < 10% in both arms -> capacity is not the
+ limit; diagnose (optimiser, label noise) + Astra before any verdict. G >> W -> the freezing matters (design for the joint loop); W ~ G -> plain width.
+Controls: at init G and W logits equal n_2 to 1e-6 on 1000 states, and a broken init (non-zero head) must fail; a shuffled-label head must not improve held-out flips.
+GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
+
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):
   T-BAD10 round 1 (10x10, declared alpha -0.170): labels 18007712 -> fit 18007713 -> fn64 18007714 (afterok); run dir runs/j1j2/sign_bad10/r1 (bulk on /scratch/a/A.Otaifi/runs_bulk/sign_bad10/r1);

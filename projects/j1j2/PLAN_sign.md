@@ -663,6 +663,9 @@ QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP 
   8x8 round-4 grade (T-SEP stored arm, n_4 vs n_3 paired): grade4 18007736, run dir runs/j1j2/sign_bad/r4/grade4 (-> /scratch), watcher 2464268; gate grade4_gate.py; prediction g_4 1.0e-5.
   2026-11-16 fresh session: waits re-armed; e_0(M64) arm verified QUOTABLE -0.494079(64), chains chi2/dof 0.36; B64 = 2.64e-4 (gate.json, c1 dM -3.44e-4, sigma_d 2.23e-4) fixed before g_1,
    so RESOLVED needs g_1 > 2.64e-4 + 2 sigma(g_1). ETAs: labels ~15:00, fit ~17:00, fn64 ~midnight; grade4 ~16:30.
+- grade4 RESULT 2026-11-16 (cip 18007736, 6.9 A40-h; r4/grade4/{result.json,gate/delta_quotable.png,ANALYSIS.md}; gate run by me): g_4 = -0.7(1.9)e-5 (quotable,
+  4 chains chi2/dof 1.88), weighted +0.4(1.9)e-5: zero within 0.4 sigma, prediction 1e-5 neither confirmed nor excluded (0.9 sigma). sigma 3.7x target: pairing
+  decoupled in 3 of 4 chains (rho 0.88/0.54/0.80/0.60, same_post 0.99/0.62/0.73/0.63) after block ~170; the short probe saw only the coupled start. Not extended (lead).
 - T-BAD10 CAPPED at round 1 (lead 2026-11-16, PI approved): report g_1 vs prediction and stop; no 10x10 round 2 on any branch until the 8x8 slowdown
   (x5.4, x6.2, x2.1, then round 4) is explained and the lead re-opens 10x10. g_4 goes to the lead at once: it gates the 8x8 JOINT LOOP (PLAN.md).
   Gate-noise lines added to both briefs (LESSONS row 39).

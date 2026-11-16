@@ -661,6 +661,8 @@ QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP 
   T-BAD10 round 1 (10x10, declared alpha -0.170): labels 18007712 -> fit 18007713 -> fn64 18007714 (afterok); run dir runs/j1j2/sign_bad10/r1 (bulk on /scratch/a/A.Otaifi/runs_bulk/sign_bad10/r1);
    briefs per stage; fn64 brief holds the three-branch rule with B64. Watchers 2456445/2456449/2456458.
   8x8 round-4 grade (T-SEP stored arm, n_4 vs n_3 paired): grade4 18007736, run dir runs/j1j2/sign_bad/r4/grade4 (-> /scratch), watcher 2464268; gate grade4_gate.py; prediction g_4 1.0e-5.
+  2026-11-16 fresh session: waits re-armed; e_0(M64) arm verified QUOTABLE -0.494079(64), chains chi2/dof 0.36; B64 = 2.64e-4 (gate.json, c1 dM -3.44e-4, sigma_d 2.23e-4) fixed before g_1,
+   so RESOLVED needs g_1 > 2.64e-4 + 2 sigma(g_1). ETAs: labels ~15:00, fit ~17:00, fn64 ~midnight; grade4 ~16:30.
 - Next per verdict: g_1 RESOLVED (>= 1e-3 predicted) -> round 2 sized from round-1 rates; KILL INPUT -> diagnosis + Astra; INCONCLUSIVE -> longer m64. g_4 beyond 2 sigma -> 8x8 loop
   still improving at round 4; not -> storage/label question goes to the exact 6x6 fallback of T-SEP (deferred).
 - Closed operationally (numbers above): G(-5) kill, T-VARDEC branch C, F' 9x below bar, symmetry branch (A51). T-TAN: class not shown limiting (C 0.196 -> 0.142).

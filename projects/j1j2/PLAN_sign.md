@@ -666,6 +666,16 @@ QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP 
 - grade4 RESULT 2026-11-16 (cip 18007736, 6.9 A40-h; r4/grade4/{result.json,gate/delta_quotable.png,ANALYSIS.md}; gate run by me): g_4 = -0.7(1.9)e-5 (quotable,
   4 chains chi2/dof 1.88), weighted +0.4(1.9)e-5: zero within 0.4 sigma, prediction 1e-5 neither confirmed nor excluded (0.9 sigma). sigma 3.7x target: pairing
   decoupled in 3 of 4 chains (rho 0.88/0.54/0.80/0.60, same_post 0.99/0.62/0.73/0.63) after block ~170; the short probe saw only the coupled start. Not extended (lead).
+- grade4 COUPLING vs TIME (lead's request, for joint-loop chain length; from chain_stored4_*.npz, blocks counted from the start incl. 150 burn; windows of 75 blocks;
+  entries same_post / corr(E_A,E_B) / sd(Delta)/site x1e-4; Delta in the npz is total, /64 per site):
+  | chain | 0-74 | 75-149 | 150-224 | 225-299 | 300-374 | 375-449 | 450-524 | 25-block same_post < 0.9 first at |
+  | c0 | .96/.92/1.5 | .99/.87/2.0 | .99/.92/1.4 | .99/.92/1.5 | .98/.89/1.6 | .97/.96/1.0 | 1.00/.72/4.5 | never |
+  | c1 | 1.00/.98/0.8 | .97/.90/2.0 | .78/.72/3.5 | .76/.85/2.6 | .68/.73/3.3 | .50/.23/11.6 | .37/.51/4.6 | 129 |
+  | c2 | .82/.79/3.5 | .88/.88/1.9 | .77/.76/2.5 | .82/.86/2.5 | .65/.60/4.1 | .64/.71/3.5 | .78/.76/3.0 | 4 |
+  | c3 | .99/.94/1.3 | 1.00/.96/0.9 | .96/.90/1.9 | .93/.93/1.7 | .56/.63/4.2 | .35/.37/4.4 | .36/.42/4.1 | 268 |
+  Reading: decoupling onset is chain-dependent (4 to never, median ~200 blocks), not a fixed time; decoupled windows have sd(Delta) 2-3x, variance 4-9x.
+  The 150-block burn spends most of the coupled lifetime. Design input (mine, not tested): equilibrate one population under A once, branch many pairs from it
+  with a short burn (~20 blocks), and end or restart a pair online when its 25-block mean same_post < 0.9; ~100-150 blocks per pair.
 - T-BAD10 CAPPED at round 1 (lead 2026-11-16, PI approved): report g_1 vs prediction and stop; no 10x10 round 2 on any branch until the 8x8 slowdown
   (x5.4, x6.2, x2.1, then round 4) is explained and the lead re-opens 10x10. g_4 goes to the lead at once: it gates the 8x8 JOINT LOOP (PLAN.md).
   Gate-noise lines added to both briefs (LESSONS row 39).

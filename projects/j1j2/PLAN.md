@@ -641,6 +641,10 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   nodes move, violators grow with the cumulative step; kill: > 1000 full-pool violators at step 10 or growing); (C) lead: freeze theta0, fresh PP
   inside a bounded ratio B = B0 exp(tau tanh(lambda P_n/B0)): bound by construction, nodes fixed, non-local (escapes AR2). Astra review
   cj-9ad7e6a1e027 pending; decision after it.
+  DECISION 11-16 17:20: (C') clipped deployed guide ln|B~| = ln|B0| + clip(ln|B_R1'| - ln|B0|, +-0.5) on R1''s endpoint, no refit (Astra cj-9ad7e6a1e027
+  reproduced train bond f 0.0197 -> 0.2667; registration PLAN_pfaffian 'REGISTRATION R1'-CLIP'). CPU held-out gate f >= 0.12 (pred 0.23) -> grade
+  (~8 H100-h, pred -3e-5 vs warm, confirmed iff below R1' beyond 2 sigma) -> lead reads the launcher. Below 0.12 -> stop. (A) dropped (Astra: |m| = 3
+  persists, 3.8x cost); (C) = R2''s trainable form if (C') confirms. R2' on hold.
   STEP-BACK 11-16 15:25 (second failed controller: soft hinge overshoot, then Jd bound refuted, PLAN_pfaffian 'KILL TEST RESULT', P36):
   1. Verdict: continue with backtracking on the actual per-row m (TRPO line search, 1502.05477). 2. Thought: near a node the
   quadratic term of dB/B carries the same 1/|B| as the linear one, so only the true m can be bounded; the stall risk comes from a hard max over

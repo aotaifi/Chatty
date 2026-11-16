@@ -635,6 +635,15 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   bond f < 0.12 -> no grade, diagnose. Grade R1'' vs warm, 8 chains: pred -3e-5 (-2..-5e-5); confirmed iff E(R1'') - E(R1') < 0 beyond 2 sigma,
   else to the lead. Then R2' from the better round-1 net, same trust region, G_2 measured first. Launchers to the lead.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
+  STEP-BACK 11-16 15:25 (second failed controller: soft hinge overshoot, then Jd bound refuted, PLAN_pfaffian 'KILL TEST RESULT', P36):
+  1. Verdict: continue with backtracking on the actual per-row m (TRPO line search, 1502.05477). 2. Thought: near a node the
+  quadratic term of dB/B carries the same 1/|B| as the linear one, so only the true m can be bounded; the stall risk comes from a hard max over
+  18466 rows (PPO clips per row instead). 3. Next test: 60-step H100 probe, 0.32 h; it goes to the fit only if (a) off-batch q999 |m| <= 0.6,
+  (b) s/step x1500 fits with 1.2x margin, (c) median halvings <= 2, (d) held-out bond loss stays below R1''s rise 0.53 -> ~2.0 at steps 20-60,
+  (e) dry diff clean. Stall branch: backtrack on q9999 + per-row gradient clip, CPU step first.
+  For the PI next message (lead's view, ~40%, off path until the probe reads): three controllers have now failed on the same ~80 near-node rows of
+  18466; if the probe stalls, the fix is more likely in what the copy loss asks of those rows (their energy weight) than in a fourth controller.
+  Test: their |psi|^2-weighted share of the FN energy change, CPU minutes.
 - Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
   G(-5) DONE: KILL FIRED, Delta +6.4(3.5)e-6 (Astra cj-8a965a47de4e: stands for storing Lanczos labels; NOT a ceiling over masks). T-VARDEC (17994730)

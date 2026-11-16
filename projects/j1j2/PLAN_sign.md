@@ -718,6 +718,8 @@ T-GROW AMENDMENT (takeover, 2026-11-16 ~21:30, after the build and BEFORE any pr
  (4) W is 91 channels (extra 189,027 = 1.02x G), with per-group LayerNorm. Its f32 init deviation is 1.1e-5 (n_2's own f32-vs-f64 deviation is 7.1e-6); in f64 it is
      1.4e-14. Accepted.
  Branches add: G or W >> P -> capacity; P ~ G ~ W -> capacity is not the term; Ob >> P -> objective allocation is the term. Cost now ~4.7 A40-h (cap 6).
+LEAD GO 2026-11-16 (launchers read). Reading rule (lead): single seed per arm; if the best two arms differ in M by < ~10 points, run a second seed of both
+ (~2 A40-h) and judge by seed scatter before naming a winner. Per-arm M table with E_bw to the lead when all five are in.
 GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
 
 ## Running (rewritten 2026-11-16 at migrate)

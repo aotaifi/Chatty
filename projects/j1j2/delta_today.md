@@ -2085,3 +2085,6 @@
 2026-11-16 16:57 pfaffian: R1'' probe 4299397 = STALL (4/60 accepted); step-back fired (3rd enforcement failure); verdict continue, change the constraint set to the whole pool (active set); Astra cj-9ad7e6a1e027.
 2026-11-16 17:15 R1'' probe 4299397 STALL (4/60 accepted; held-out bond rose after 2 steps). Third enforcement failure. Lead: (A) active set doubted (moving nodes, violators grow); proposed (C) frozen theta0 + fresh PP in a bounded ratio; awaiting Astra + prices.
 2026-11-16 17:20 R1'' remedy -> (C') clipped deployed guide on R1' endpoint (Astra + angle recommendation, lead approved): CPU held-out gate first, then ~8 H100-h grade; (A) dropped; R2' on hold.
+2026-11-16 19:19 VERDICT job 18007712: COMPLETED, controls.json verdict "PASS" (C1 20 states, max |dEL| 8.5e-14, 0 sign mismatches, corrupted copy detected; C3 0 label mismatches). Sampler gate passed=true. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad10/r1/labels/ANALYSIS.md]
+2026-11-16 19:20 [sign angle] T-BAD10 r1 labels 18007712 COMPLETED 19:18 (4000 roots, controls PASS); fit 18007713 running; wait re-armed on 18007713/14.
+2026-11-16 17:30 PI: continue; loop go/no-go judged after (C') grade. Lead's stated confidence in the full loop 20%; agreed a failed (C') gets a diagnosis + cheapest variant before any drop recommendation (memory: diagnose before kill).

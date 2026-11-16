@@ -671,6 +671,17 @@ Decision: (b) holds (q/w < 0.5 where m is high) -> fix = refit with walker-weigh
  too MUCH effective weight at -9, opposite sign to (b); no shared fix claimed before the Pfaffian angle's q_d/w_d in the same bins is compared. Additions: k_d vs |B|
  decade ((c) may be the sign face of the node problem); if (b) fires, ESS of the walker-weighted training set before any refit.
  STARTED 2026-11-16 ~20:30, CPU worker, brief runs/j1j2/sign_bad/twhy/ANALYSIS_BRIEF.md (controls C1 within-decade label shuffle, C2 neighbour finder, C3 q two ways).
+ T-WHY RESULT 2026-11-16 (CPU 0.7 core-h; twhy/{result.json,REPORT.md}; w_d re-derived by me from table_r3 roots, ESS 347 of 10240):
+ (b) NOT met: q/w is 2e3..12 in -9..-5, the training OVER-weights them (q -9..-5 = 0.63 of rows); q/w < 1 only at d >= -3 (0.96, 0.25, ~0.09 at -1).
+ (c) NOT met as registered: k(flipped) 0.88-0.95 in -9..-5 but BELOW its within-decade shuffle (0.99-1.00): corrections cluster, less conflict than chance.
+ Controls C1-C3 pass; the registered 'decade-shuffled q' control fails as a discriminator (Spearman m vs q/w -0.60 real and shuffled: driven by 1/w).
+ By the registered rule -> capacity -> grown head. NOT acted on, because a premise broke:
+ CORRECTION of my T-TAN line "C collapsed at -9..-5, where walker weight sits": under |B|^2 the walker weight in -9..-5 is 0.0175 and 0.982 sits at d >= -4,
+ where the labels flip only 0.86% of flipped states (m_d there 0.73/0.55/1.0 on 1323/216/16 flips). Under |B| (root sampling) -9..-5 holds 0.57.
+ Which weight sets the FN energy is open: a flip at x costs on bonds |H_xy||B_x||B_y|. Follow-up T-WHY-I (CPU, same worker, registered before the number):
+ energy-weighted flip importance I_d per decade from the roots' stored neighbour ratios; M_I = sum I_d m_d split -9..-5 vs >= -4.
+ Prediction (mine): I share in -9..-5 = 0.3 [0.1, 0.6], 55% below 0.5. Decision: -9..-5 >= 0.5 of M_I -> grown head aimed there (GPU test <= 6 A40-h, launcher
+ to the lead); >= 0.5 from d >= -4 -> the fix is to weight the rare high-amplitude flips in the fit loss (cheap refit, ESS check first); neither -> both, report.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

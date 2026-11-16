@@ -628,7 +628,12 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   identifiable (held-out C <= 0.011; in-sample = optimism, shuffled control 0.11-0.39); loss-weighted ESS 2463 (theta_0) / 640 (theta_end) rows vs P 18466.
   Loss-ESS vs pool size: -8..-2 near-linear, decade -9 saturates only at theta_end (exponent 0.78 -> -0.7): the FIT creates the heavy near-node rows
   (d ln|P_1| ~ 1/P_1) that then own loss and gradient (hypothesis, tested by this scaling). NEXT (Pfaffian angle, paper, no run): predicted f and the
-  -8..-2 cost for a bounded per-row loss (asinh(B/s), B/(|B|+eps)) and a per-row |d ln B| trust region; to the lead before any refit. R2' waits.
+  -8..-2 cost for a bounded per-row loss (asinh(B/s), B/(|B|+eps)) and a per-row |d ln B| trust region; to the lead before any refit.
+  REMEDY CHOSEN 11-16 10:35 (PLAN_pfaffian 863fc55, diag_ho/remedy_counterfactual_tr.json, verified): counterfactual on 373k train rows, bond f
+  0.020 realised -> 0.267 with per-configuration trust region |dlnB| <= 0.5 (no loss at -8..-2 except -5 0.30 -> 0.25); asinh 0.05-0.06; B/(|B|+eps) ~0.
+  Function-space idealisation, untested as a parametric fit. NEXT: R1'' = R1' pool + warm start + trust region only (G known). Fit kill: held-out
+  bond f < 0.12 -> no grade, diagnose. Grade R1'' vs warm, 8 chains: pred -3e-5 (-2..-5e-5); confirmed iff E(R1'') - E(R1') < 0 beyond 2 sigma,
+  else to the lead. Then R2' from the better round-1 net, same trust region, G_2 measured first. Launchers to the lead.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
 - Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
@@ -697,5 +702,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): One loop round on the strong 8x8 network lowers the fixed-node energy by 1.2e-5 per site (5 sigma), 4-7x below prediction; the cause is found: the fit itself creates a few near-node configurations that dominate its loss.
-- NEXT (in progress, high): Choose a loss that stops those near-node blow-ups (worked out on paper first), then round 2; after that, a joint sign-and-amplitude loop test.
+- NEXT (in progress, high): Redo round 1 with a fit that may not move any one configuration too far (on paper it stores 0.27 instead of 0.02 of the target), check the energy gain triples, then round 2; after that, a joint sign-and-amplitude loop test.
 - NEXT (in progress, medium): Sign side: 10x10 bad-start sign loop round 1 and 8x8 round 4 running.

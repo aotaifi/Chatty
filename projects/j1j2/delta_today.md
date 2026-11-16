@@ -2053,3 +2053,5 @@
 2026-11-16 09:35 grade4 (8x8 T-BAD round 4) submitted by sign angle: cip 18007736 RUNNING (verified), watcher pid 2464268.
 2026-11-16 09:37 pfaffian angle: session migrating; PLAN_pfaffian.md STATE block current; no jobs running.
 - 2026-11-16 sign angle: migrate. Running: T-BAD10 r1 labels 18007712 -> fit 18007713 -> fn64 18007714; 8x8 round-4 grade 18007736. PLAN_sign Running rewritten.
+2026-11-16 10:22 Lead session resumed (fresh). Lead wait re-armed (boards -> LEAD, /scratch > 965 GiB i.e. below the 973 GiB soft quota, guard 14:00; bg bopibzh5a). /scratch 911 GiB. Pfaffian angle idle after migration, remedy predictions not started: nudged by session message.
+2026-11-16 10:22 Remedy predictions registered: trust region tau~0.5 -> TR bond f 0.267(13) vs 0.020 realised, no cost at -8..-2; predicted HO f ~0.23, gain ~-3e-5 (range -2..-5e-5); asinh weak (0.05-0.06); B/(|B|+eps) rejected (bulk f ~0).

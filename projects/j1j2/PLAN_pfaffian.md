@@ -2693,3 +2693,31 @@ STATE (2026-11-16 09:37, before migrating this session). No jobs running; no wor
 - Parked: the headline B arm 4222359 is not quotable; its chain offsets have no understood cause (heavy tail dead); binning beyond bin 40 comes later. The estimand (bond-only vs total) cannot be decided from two grades.
 - Housekeeping: 47 GB of GN shards on /scratch/a/A.Otaifi/gn_shards/p{0,1} are in the lead's PI manifest (docs/cleanup_manifest_2026-11-16.md); delete nothing. Large intermediates go to /scratch, sized, and are deleted after a verified merge (the quota incident of 11-15 was my error).
 - Contact: the lead via MESSAGE_BOARD_lead_pfaffian.md (watch '-> PFAFFIAN' lines every 3 min) or session message.
+
+REMEDY PREDICTIONS (paper + existing files, no run; 2026-11-16 10:22; diag_ho/remedy_counterfactual_tr.json). REGISTERED before any refit.
+Method: a counterfactual on the fit's own train sample (lin/lin_tr.npz, 373k rows, ln B per configuration at theta_0 and theta_end for x and both blocked partners). Each remedy is modelled as an operation on the realised per-configuration move d = ln B_end - ln B_0:
+- trust region: clip(d, -tau, tau);
+- asinh(B/s): freeze the configurations with |B_0| < s (their gradient is suppressed), bulk unchanged;
+- B/(|B|+eps): freeze the configurations with |B_0| > eps (no amplitude gradient above eps).
+Then f is recomputed on the same rows; bond-only is the energy-relevant estimand (sign-flip potential argument), total for the record. Paired row bootstrap, 200 resamples.
+| remedy | f_bond TR | f_total TR | bond f by decade -9/-8/-7/-6/-5/-4/-3/-2 |
+| realised R1' | 0.020(39) | 0.096 | -0.06/0.03/0.20/0.10/0.30/0.12/0.08/-0.03 |
+| trust tau 2 | 0.075 | 0.139 | 0.03/0.07/0.22/0.13/0.28/0.12/0.08/-0.03 |
+| trust tau 1 | 0.186(22) | 0.225 | 0.19/0.15/0.25/0.19/0.25/0.12/0.11/0.02 |
+| trust tau 0.5 | 0.267(13) | 0.289 | 0.28/0.24/0.29/0.27/0.25/0.14/0.12/0.03 |
+| trust tau 0.25 | 0.256 | 0.274 | 0.25/0.25/0.29/0.30/0.25/0.17/0.12/0.05 |
+| asinh, s at decade -9 | 0.046 | 0.117 | 0.00/0.03/0.20/0.12/0.20/0.12/0.08/-0.03 |
+| asinh, s at decade -8 | 0.061 | 0.086 | 0.02/0.05/0.20/0.12/0.20/0.12/0.07/-0.03 |
+| B/(|B|+eps), eps at decade -9 | -0.021 | -0.016 | -0.05/0.01/0.00/-0.01/0.09/0.00/0.00/0.00 |
+| B/(|B|+eps), eps at decade -8 | -0.035 | 0.016 | -0.07/-0.01/0.01/-0.02/0.09/-0.01/0.00/0.00 |
+Paired gain of trust tau 0.5 over realised: +0.247(34).
+Cost at decades -8..-2: the trust region costs nothing there; it RAISES -8..-2 (e.g. -6 0.10 -> 0.27), except -5, which goes 0.30 -> 0.25. Big moves (|d| > 0.5) occur only on deep configurations (4.4% at -9, 1.6% at -8, 0.5% at -7, ~0 at >= -5), but they enter the bonds of shallower rows through their blocked partners. asinh barely helps (it freezes too few configurations: 0.03% below decade -9). B/(|B|+eps) kills the bulk storage (f ~ 0 at every decade): REJECTED on paper.
+(1) Predicted held-out f_bond for a refit with a per-configuration trust region tau ~ 0.5: 0.267 x 0.86 (the HO/TR ratio on regular rows, R1') = ~0.23, against R1''s energy-matched 0.092(24) trimmed.
+(2) Implied gain if R1' had used it: 0.23 x G_bond, with G_bond = 1.20e-5/0.092 = 1.30e-4 -> -3.0e-5 (range -2..-5e-5 including the R1-calibrated route), against the realised -1.2e-5.
+(3) R2' against the kill |gain_2| < 6.0e-6: gain_2 = f x G_2. G_2 (the board-5 proxy of the R2' target) is NOT known. If G_2 ~ G_R1': without a remedy ~ -1.2e-5 (passes by 2x), with the trust region ~ -3e-5. The kill fires without a remedy if G_2 < 0.5 G_R1'.
+CAVEATS:
+- The counterfactual is a function-space idealisation: it clips the finished trajectory's moves per configuration. A parametric fit constrained on the pool rows need not reach that state, nor hold the constraint on unseen configurations.
+- The 0.86 HO/TR ratio is from the total loss on regular rows, not the bond loss.
+- G_bond carries ~27% error (R1') to 40% (R1 route).
+- These are extrapolations, not measurements.
+KILL for a trust-region refit (proposed): held-out bond f on the full set < 0.12 (not above R1''s 0.092 + 1 sigma) -> the idealisation does not transfer to a parametric fit.

@@ -2808,3 +2808,8 @@ R2' on hold until (C') is graded; if it confirms, (C) is R2''s trainable form.
 - Top-10 bond share at decade -9: clip 0.25, end 0.39, theta0 0.18. Heavy but no longer single-row dominated.
 - Caveat: one pool, row bootstrap, no chains. This is the counterfactual storage, not an energy.
 Next: grade code (clip arm = sgn(s306) * |B~|), tau=inf/tau=0 unit tests, staged launcher -> lead before submission.
+
+2026-11-16 22:43 CLIP GRADE STAGED (runs/j1j2/r1p_clip_grade, not submitted).
+- Unit tests pass bit-identically: tau=inf = R1P and tau=0 = WARM, 0 differing entries. The broken tau=0.5 differs in 75/75 predicted entries (cpu_check/clip_check_n64_fixed.json).
+- Cost: 0.56 H100-h per chain; 4.47 H100-h for 8 chains.
+- Sent to the lead for LEAD_OK. Gate: scripts/analyze_clip_grade.py. Next per verdict: CONFIRMED -> (C) tanh fresh PP becomes R2''s trainable form; not confirmed -> f (storage) is not what limits the FN gain; diagnose on the rates, not a new fit.

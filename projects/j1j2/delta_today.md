@@ -2046,3 +2046,4 @@
 2026-11-16 09:32 CLEANUP (PI ran docs/cleanup_run_2026-11-16.sh): deleted 16 merged GN shards on /scratch/a/A.Otaifi/gn_shards/p0
 2026-11-16 09:32 CLEANUP (PI ran docs/cleanup_run_2026-11-16.sh): deleted 16 merged GN shards on /scratch/a/A.Otaifi/gn_shards/p1
 2026-11-16 09:32 Cleanup verified: 0 of 40 listed shard files remain; README_DELETED in c2, p0, p1; /scratch 954 -> 919 GiB.
+2026-11-16 09:33 Loss-ESS scaling: pooled theta_0 exponent 0.38 (pred 0.33); decades -8..-2 ~linear; decade -9 is the bottleneck, near-linear at the start for bond (0.78) but saturating at the end (< 0): the fit creates the heavy rows. Remedy: act on the fit's near-node moves (bounded loss / per-row trust region), not the pool size.

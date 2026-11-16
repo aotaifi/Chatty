@@ -636,6 +636,11 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   else to the lead. Then R2' from the better round-1 net, same trust region, G_2 measured first. Launchers to the lead.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
   R1'' PROBE RUNNING: Paderborn 4299397 (submitted by the lead 16:42, runs/j1j2/r1pp_fit/probe), 60 steps; OK on (a)-(e) -> R1'' fit (LEAD_OK in r1pp_fit/pdb); STALL -> q9999 backtrack + per-row clip, CPU first; BOUND EXCEEDED or held-out rise >= R1''s -> lead.
+  PROBE 4299397 = STALL 11-16 16:57 (TRIED_IDEAS P37): accepted 4/60; off-batch q999 0.36-0.40 OK; held-out bond 0.510 -> 0.680 after 2 accepted steps
+  (R1' mechanism again). Third failure of the batch-enforced trust region. Candidates: (A) active set via full-pool sweeps (angle, ~50%; lead ~35%:
+  nodes move, violators grow with the cumulative step; kill: > 1000 full-pool violators at step 10 or growing); (C) lead: freeze theta0, fresh PP
+  inside a bounded ratio B = B0 exp(tau tanh(lambda P_n/B0)): bound by construction, nodes fixed, non-local (escapes AR2). Astra review
+  cj-9ad7e6a1e027 pending; decision after it.
   STEP-BACK 11-16 15:25 (second failed controller: soft hinge overshoot, then Jd bound refuted, PLAN_pfaffian 'KILL TEST RESULT', P36):
   1. Verdict: continue with backtracking on the actual per-row m (TRPO line search, 1502.05477). 2. Thought: near a node the
   quadratic term of dB/B carries the same 1/|B| as the linear one, so only the true m can be bounded; the stall risk comes from a hard max over

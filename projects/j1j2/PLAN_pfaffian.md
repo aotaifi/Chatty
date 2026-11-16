@@ -2813,3 +2813,7 @@ Next: grade code (clip arm = sgn(s306) * |B~|), tau=inf/tau=0 unit tests, staged
 - Unit tests pass bit-identically: tau=inf = R1P and tau=0 = WARM, 0 differing entries. The broken tau=0.5 differs in 75/75 predicted entries (cpu_check/clip_check_n64_fixed.json).
 - Cost: 0.56 H100-h per chain; 4.47 H100-h for 8 chains.
 - Sent to the lead for LEAD_OK. Gate: scripts/analyze_clip_grade.py. Next per verdict: CONFIRMED -> (C) tanh fresh PP becomes R2''s trainable form; not confirmed -> f (storage) is not what limits the FN gain; diagnose on the rates, not a new fit.
+
+2026-11-16 22:49 LEAD 22:46: clip grade APPROVED (LEAD_OK). CLIP only, 8 chains, 4.47 H100-h. A worker is staging and submitting; it owns the jobs and their VERDICT wait.
+- Paired difference reported as information only. The unpaired test is conservative because CLIP shares R1P's seeds and X0.
+- Branches: CONFIRMED -> R2' design with (C) to the lead. NOT CONFIRMED -> diagnosis (walker clip fraction, decade dwell vs R1P) plus a tau=0.25 variant to the lead before any drop recommendation.

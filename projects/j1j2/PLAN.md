@@ -600,7 +600,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running (2026-11-14 18:05; every job has a watcher writing VERDICT lines to delta_today.md)
+## Running (2026-11-16 09:45; every job has a watcher writing VERDICT lines to delta_today.md)
 - 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
 - s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;
@@ -624,12 +624,21 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   docs/reports/2026-11-15_r1prime_grade_8x8.md): LOOP GAIN E(R1') - E(warm) = -1.20(23)e-5/site, 5.2 sigma, 8/8 chain diffs negative; warm - base
   -0.04(31)e-5 (= sealed 1''). Sealed (2'') MISSED at 0.14-0.26x; the trimmed held-out proxy predicted it (0.5 sigma). Missed term: stored fraction f 0.145
   vs 0.51-0.90 allowed; cause NOT understood -> Pfaffian angle diagnoses f on paper before R2'. R2' early kill |gain_2| < 6.0e-6.
+  f DIAGNOSIS 11-16 (PLAN_pfaffian d157ddc, 1744f4c, 78722a6): full-train f 0.096(29) ~ held-out 0.13 (not generalisation); GN tangent share C_full NOT
+  identifiable (held-out C <= 0.011; in-sample = optimism, shuffled control 0.11-0.39); loss-weighted ESS 2463 (theta_0) / 640 (theta_end) rows vs P 18466.
+  Loss-ESS vs pool size: -8..-2 near-linear, decade -9 saturates only at theta_end (exponent 0.78 -> -0.7): the FIT creates the heavy near-node rows
+  (d ln|P_1| ~ 1/P_1) that then own loss and gradient (hypothesis, tested by this scaling). NEXT (Pfaffian angle, paper, no run): predicted f and the
+  -8..-2 cost for a bounded per-row loss (asinh(B/s), B/(|B|+eps)) and a per-row |d ln B| trust region; to the lead before any refit. R2' waits.
   Kill for R2': loop gain < 0.5 x previous. Fresh PP per round from R2' on (K=3 6x6: r 0.49 vs 0.25); its source is open (s307 now used).
 - Sign angle (PLAN_sign.md): paired FN estimator PASSES at 8x8 (rho 0.978 at pF 1e-5, 0.79 at 1e-4, as sealed). Symmetry branch closed
   (TRIED_IDEAS A51: D4 label obstruction <= 0.1% of the stored-sign error). T-STRONG blocked by the mask (no capture at FP/TP <= 1); ceiling first:
   G(-5) DONE: KILL FIRED, Delta +6.4(3.5)e-6 (Astra cj-8a965a47de4e: stands for storing Lanczos labels; NOT a ceiling over masks). T-VARDEC (17994730)
   branch C: trial-energy cost +2.44(25)e-5, 98.6% window flips; F' gain -0.56(14)e-6 (1/9 of the bar). Stored masks at 8x8 closed OPERATIONALLY.
-  Next: T-BAD10 (10x10 bad-start sign loop; PLAN_sign e15d1af), step-0 cost probe on cip; G_max and 8x8 round 4 parked. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
+  T-BAD10 (10x10 bad-start sign loop, PLAN_sign e15d1af/c72dd75): round 1 labels 18007712 RUNNING, fit 18007713, fn64 18007714 (afterok);
+  alpha DECLARED -0.170 (exact two-hop too heavy-tailed: -0.163(65)); both FN arms at M=64 (M16 population bias ~few 1e-4); resolved iff
+  g_1 - B64 > 2 sigma, bias-limited -> inconclusive (not a kill). T-TAN: fixed CNN class NOT shown limiting (C 0.196 -> 0.142; collapse in -9..-5).
+  T-SEP exact arm unaffordable (~125 A40-h) -> 6x6, deferred; grade4 = 8x8 T-BAD round 4 paired n_4 vs n_3 (~6.4 A40-h, approved 11-16,
+  pred g_4 1.0e-5 [0,3e-5]; runs/j1j2/sign_bad/r4/grade4). G_max parked. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
   CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
 - Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).
@@ -687,6 +696,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
 
 ## Cockpit
-- STATUS (in progress, high): One loop round on the strong 8x8 network lowers the fixed-node energy by 1.2e-5 per site (5 sigma), a real gain but 4-7x below our prediction.
-- NEXT (in progress, high): Find on paper why the network stores only 15% of each round's correction before running round 2; then a joint sign-and-amplitude loop test.
-- NEXT (in progress, medium): Sign side: bad-start sign loop at 10x10, round 1 running (gains large enough to see directly).
+- STATUS (in progress, high): One loop round on the strong 8x8 network lowers the fixed-node energy by 1.2e-5 per site (5 sigma), 4-7x below prediction; the cause is found: the fit itself creates a few near-node configurations that dominate its loss.
+- NEXT (in progress, high): Choose a loss that stops those near-node blow-ups (worked out on paper first), then round 2; after that, a joint sign-and-amplitude loop test.
+- NEXT (in progress, medium): Sign side: 10x10 bad-start sign loop round 1 and 8x8 round 4 running.

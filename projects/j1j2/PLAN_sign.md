@@ -656,6 +656,18 @@ T-SEP stored arm grade4 SUBMITTED 2026-11-16 (lead GO): cip job 18007736, watche
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 
+## T-WHY (copy-loss diagnosis, 2026-11-16, PI: equation before a new idea; REGISTERED before any number; CPU <= 2 core-h; existing round-3 data only)
+Equation: walker-weighted miss of the stored round-(r+1) sign M = sum_d w_d m_d, w_d = walker weight in decade d, m_d = 1 - stored share of flips in d.
+ The fit minimises BCE over training draws with decade weights q_d, not w_d. m_d has three candidate terms: (a) CAPACITY, flips outside the net's reach
+ (T-TAN: C 0.196 -> 0.142, not shown limiting); (b) WEIGHT, q_d/w_d small in -9..-5 (tempered packets push draws to small amplitudes); (c) CONFLICT, one-swap
+ neighbours carry opposite corrections, which a smooth CNN cannot follow.
+Measure on round-3 labels and n_4 fit (runs/j1j2/sign_bad/r3, r4): per decade q_d (training draws), w_d (walker weight), m_d (held-out, as T-TAN);
+ conflict rate k_d = share of flipped states in d with a one-swap neighbour that is kept (in the label set); m_d vs k_d.
+Predictions (mine): q_d/w_d in -9..-5 < 0.5 [55%]; k_d in -9..-5 > 0.3 and m_d rising with k_d [40%].
+Decision: (b) holds (q/w < 0.5 where m is high) -> fix = refit with walker-weighted draws (cheap, 1 fit); (c) holds -> fix = labels (smooth the correction:
+ flip clusters, not single states) or a less smooth net; neither -> capacity again -> grown head (frozen n_k + new part). Control: a decade-shuffled q must
+ remove any q/w-m correlation; k_d on the KEPT states (no correction) gives the baseline.
+
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):
   T-BAD10 round 1 (10x10, declared alpha -0.170): labels 18007712 -> fit 18007713 -> fn64 18007714 (afterok); run dir runs/j1j2/sign_bad10/r1 (bulk on /scratch/a/A.Otaifi/runs_bulk/sign_bad10/r1);

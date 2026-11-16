@@ -30,8 +30,8 @@ ps.series(ax, [1, 2, 3, 4, 5], [6.07, 5.29, 4.64, 4.37, 4.14], None, 0, label=r"
 ps.series(ax, [5, 6], [3.275, 2.81], None, 1, label=r"$\mathrm{two\ PP}$")
 ps.series(ax, [6], [2.546], None, 3, label=r"$\mathrm{three\ PP}$", line=False)
 ps.series(ax, [5, 6], [4.12, 3.70], None, 2, label=r"$\mathrm{two\ PP},\ S$", open_=True)
-for y, t in [(5.574, "RBM+PP + Lanczos + FN"), (2.654, "CNN-MPS 2611.04333"), (2.284, "CNN-MPS 2603.14425")]:
-    ax.axhline(y, color=ps.GRAY, lw=0.7, ls="--", zorder=0); ax.text(1.0, y + 0.07, t, fontsize=6, color=ps.GRAY)
+for y, t in [(5.574, "RBM+PP + Lanczos + FN"), (2.284, "CNN-MPS")]:
+    ax.axhline(y, color=ps.GRAY, lw=0.7, ls="--", zorder=0); ax.text(2.55, y + 0.07, t, fontsize=6, color=ps.GRAY)
 ax.set_xlabel(r"$\mathrm{round}\ k$"); ax.set_ylabel(r"$(E_{\rm FN}-E_0)/N\ \ (10^{-6})$")
 ax.set_xticks(range(1, 7)); ax.set_ylim(2.0, 6.6)
 ps.legend_top(fig, ax)

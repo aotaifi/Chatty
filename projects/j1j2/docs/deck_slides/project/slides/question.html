@@ -1,14 +1,12 @@
-<section id="question" class="slide alt" data-transition="fade">
-<h2 class="t">Where the question stands</h2>
-<table class="tb">
-<tr><th style="width:44%">claim</th><th style="width:16%">status</th><th style="width:40%">evidence</th></tr>
-<tr><td>the network stores the correction</td><td style="color:#21734B">yes, 6 × 6</td><td>half a round per round</td></tr>
-<tr><td>beats the same base with a Lanczos step</td><td style="color:#21734B">yes, 6 × 6</td><td>2.81 vs 5.57 × 10⁻⁶</td></tr>
-<tr><td>beats the best published network</td><td style="color:#B4432A">no</td><td>2.55 vs 2.28–2.65 × 10⁻⁶</td></tr>
-<tr><td>rounds add up at 8 × 8</td><td style="color:#8A6A12">open</td><td>weak base 2.7σ; strong base running</td></tr>
-<tr><td>a stored sign improves a strong network</td><td style="color:#B4432A">no</td><td>12 of 12 trained signs worse</td></tr>
-<tr><td>repairs another group's network</td><td style="color:#B4432A">no at p = 0</td><td>10 × 10 ViT: +5(6) × 10⁻⁶</td></tr>
-<tr><td>beats brute-force networks at 10 × 10+</td><td>untested</td><td>waits for 8 × 8</td></tr>
-</table>
-<aside>Stores: 6x6 two or three PP, r 0.49 per round, only nonlinearly (tangent share 0-0.04), mechanism unknown. Same-base comparison: 6x6 loop 2.81e-6 (exact sign s_G) and 3.56e-6 (stored deployable sign) vs RBM+PP + one Lanczos step + FN 5.574e-6. Best published: our best 6x6 guide 2.546e-6 (three PP) vs CNN-MPS 2.65e-6 (arXiv 2611.04333) or 2.28e-6 (arXiv 2603.14425); which bar holds is with the lead. 8x8: weak base one round -1.55(56)e-5 at 2.7 sigma (kill fired by its 3-sigma rule); strong base sealed -4.2..-7.3e-5, fit running. Sign: twelve trained 8x8 signs all worse than the untrained sgn(M1) on the loop label metric (0.64-0.70 vs 0.40); from Marshall the loop stalls 4.5(10)e-5 above sgn(M1). Repair: published 10x10 ViT, FN without a Lanczos step, -0.497682(4) vs VMC -0.497677(5), gain 5(6)e-6 (PLAN.md 53-55); the ViT's error is in its sign, which p = 0 cannot change; p = 1 untested at 10x10. 10x10 stage is gated on the 8x8 rounds adding up (PLAN.md 513-515).</aside>
+<section id="question" class="slide" data-transition="fade">
+<h2 class="t">Summary</h2>
+<ul class="b">
+<li>6 × 6: the network keeps half a round per round and beats the same base with a Lanczos step, 2.81 against 5.57 × 10<sup>−6</sup></li>
+<li>The best published 6 × 6 network is still 0.27 × 10<sup>−6</sup> lower</li>
+<li>8 × 8: one round gains Δ<i>E</i>/<i>N</i> = −1.20(23) × 10<sup>−5</sup> on the strong network, 4–7 times less than predicted</li>
+<li>Sign: rounds from the Marshall sign beat SR, but no trained sign beats the untrained network sign</li>
+<li>A published 10 × 10 ViT gains 5(6) × 10<sup>−6</sup> from fixed node without a Lanczos step, zero within 1σ</li>
+</ul>
+<div class="foot"><span>J<sub>1</sub>–J<sub>2</sub> fixed-node loop</span><span>13</span></div>
+<aside>Stores: 6x6 two or three PP, r 0.49 per round, only nonlinearly (tangent share 0-0.04), mechanism unknown. Same-base comparison: 6x6 loop 2.81e-6 (exact sign s_G) and 3.56e-6 (stored deployable sign) vs RBM+PP + one Lanczos step + FN 5.574e-6. Best published: our best 6x6 guide 2.546e-6 (three PP) vs CNN-MPS 2.65e-6 (arXiv 2611.04333) or 2.28e-6 (arXiv 2603.14425); the lead settled the bar at 2.28e-6 on 2026-11-14 (delta_today 1845). 8x8: weak base one round -1.55(56)e-5 at 2.7 sigma (kill fired by its 3-sigma rule); strong base graded -1.20(23)e-5 at bare FN (R1' report 2026-11-15). Sign: twelve trained 8x8 signs all worse than the untrained sgn(M1) on the loop label metric (0.64-0.70 vs 0.40); from Marshall the loop stalls 4.5(10)e-5 above sgn(M1). Repair: published 10x10 ViT, FN without a Lanczos step, -0.497682(4) vs VMC -0.497677(5), gain 5(6)e-6 (PLAN.md 53-55); the ViT's error is in its sign, which p = 0 cannot change; p = 1 untested at 10x10. 10x10 stage is gated on the 8x8 rounds adding up (PLAN.md 513-515). Loop and storage (project lead + Pfaffian angle, PLAN.md, PLAN_pfaffian.md): 6x6 two PP r 0.49, loop 2.81 vs competitor 5.57e-6; sampled storage r_V/r 0.92(2); 8x8 weak base one round -1.55(56)e-5 at 2.7 sigma. Running: R1' on s306, fit 41 h on an A40 slice plus a Paderborn copy, sealed loop gain -4.2..-7.3e-5 (PLAN.md 609-614); the s306 + p=1 FN arm (Paderborn 4222359, start about 19 Nov). Open: two mechanisms for two-PP storage refuted; the source of a fresh PP per round at 8x8 (s307 is now used as the warm start); 10x10 budget with the PI. Sign (sign angle, PLAN_sign.md): 6x6 deployable stored sign costs 0.70-0.88e-6 (bar 0.5e-6) yet the stored-sign loop is 3.56 vs 5.57e-6; 8x8 rounds from Marshall beat SR of the same class by 1.058(18)e-3; no trained 8x8 sign beats sgn(M1). Running: S2 (D4-correct refit of the round-3 labels), paired-estimator probes at flip densities 1e-5 and 1e-4. Open: a class that captures near-threshold flips on s306 (Astra's ranking: base-feature head first).</aside>
 </section>

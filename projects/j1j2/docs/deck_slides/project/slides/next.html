@@ -1,11 +1,11 @@
 <section id="next" class="slide" data-transition="fade">
-<h2 class="t">Next results</h2>
-<table class="tb">
-<tr><th style="width:36%">result</th><th style="width:40%">decides</th><th style="width:24%">when</th></tr>
-<tr><td>first round on the strong 8 × 8 network</td><td>do rounds add up on a strong network?</td><td>fit ~2 days</td></tr>
-<tr><td>strong network with a Lanczos step</td><td>the bar every round must beat</td><td>from ~19 Nov</td></tr>
-<tr><td>correlated estimator, weak sign changes</td><td>resolution of every 8 × 8 comparison</td><td>running</td></tr>
-<tr><td>symmetry-correct sign refit</td><td>was the 8 × 8 sign fit blocked by symmetry?</td><td>running</td></tr>
-</table>
-<aside>R1' (round 1 on s306): fit on an A40 slice, 98.7 s/step, about 41 h, plus an unheld Paderborn copy (start est. 18 Nov); grade = R1' minus a warm-start arm in one job. Sealed (commit 608e31d): warm start -1.2e-5 (-1.0..-1.6e-5), loop gain -4.2..-7.3e-5 (extrapolation). Kill for round 2: gain below half the previous (PLAN.md 609-614). B arm s306 + p=1 FN: Paderborn 4222359, start estimate 19 Nov 21:15, about 13.7 H100-h (PLAN.md 607); Paderborn estimates have been days off before. Paired FN estimator probes: flip density 1e-5 running, sealed correlation 0.96 (0.88-0.99); 1e-4 queued, sealed 0.68 (0.50-0.85) (PLAN_sign.md 1392-1393). S2: D4-correct refit of the T-BAD round-3 labels; sealed: contradiction present 70% (held by the audit), held-out disagreement drops by more than 10% relative 40% (PLAN_sign.md 1432-1441).</aside>
+<h2 class="t">Outlook</h2>
+<ul class="b">
+<li>Joint loop directly at 8 × 8: sign and amplitude stored each round, three rounds, then 10 × 10</li>
+<li>Gate: a storage remedy that keeps more than 0.12 of a round at 8 × 8</li>
+<li>Gate: sign round 4 no worse than round 3, met at −0.7(1.9) × 10<sup>−5</sup></li>
+<li>Understand why storage drops from 0.49 at 6 × 6 to 0.15 at 8 × 8</li>
+</ul>
+<div class="foot"><span>J<sub>1</sub>–J<sub>2</sub> fixed-node loop</span><span>14</span></div>
+<aside>Joint loop (PI 2026-11-16, PLAN.md 672-678): directly at 8x8, then 10x10; 6x6 dropped because storage is size-dependent (fresh PP 0.49 at 6x6 vs ~0.1 at 8x8). Gates: R1'' confirms the remedy (held-out bond f >= 0.12 and E(R1'') < E(R1') beyond 2 sigma) and 8x8 sign round 4 not worse than round 3 (g_4 = -0.7(1.9)e-5, holds). Round = Lanczos step from sign-net x amplitude-net guide, FN, store sign (CNN) + amplitude (PP refit, trust region, fresh PP); 3 rounds; kill gain_k < 0.5 gain_{k-1}. Cost ~10-15 H100-h/round (rough). 10x10 only after two steady 8x8 rounds. Remedy status: trust region R1'' probe stalled (Paderborn 4299397, 4/60 accepted); next a clipped deployed guide on the R1' endpoint, CPU held-out gate first then ~8 H100-h grade (delta_today 2084-2087). 10x10 sign-only loop capped at round 1 (PI 2026-11-16).</aside>
 </section>

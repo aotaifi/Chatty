@@ -1,12 +1,13 @@
 <section id="sign8" class="slide alt" data-transition="fade">
 <h2 class="t">Sign rounds at 8 × 8</h2>
-<div class="figrow">
-<div class="figbox"><img src="/_blob/e1d9959882e1e0b337663c2442a62359" alt="Energy per site above the network's own sign, log scale, versus sign round from Marshall: 3.2e-3, 6.0e-4, 9.6e-5, 4.5e-5; dashed line: SR training of the same sign network at equal compute, 1.1e-3." style="width:900px;height:620px;object-fit:contain"></div>
-<div class="stats">
-<div class="stat"><p class="big">1.06 × 10⁻³</p><p class="k">per site: the loop below SR of the same sign network at equal compute</p></div>
-<div class="stat"><p class="big bad">4.5(10) × 10⁻⁵</p><p class="k">stall above the untrained network sign after three rounds</p></div>
-<div class="stat"><p class="big bad">12 of 12</p><p class="k">trained signs worse than the untrained network sign</p></div>
+<div class="two">
+<div class="fig"><img src="/_blob/e1d9959882e1e0b337663c2442a62359" alt="Energy above the network's own sign, log scale, versus sign round from Marshall; dashed: SR of the same sign network at equal compute" style="width:980px;height:666px;object-fit:contain"></div>
+<ul class="b s">
+<li>From the Marshall sign, three rounds end 1.06(2) × 10<sup>−3</sup> per site below SR training of the same sign network at equal compute</li>
+<li>They stall 4.5(10) × 10<sup>−5</sup> above the untrained network sign; round 4 gains −0.7(1.9) × 10<sup>−5</sup></li>
+<li>12 of 12 trained sign networks are worse than the untrained network sign</li>
+</ul>
 </div>
-</div>
-<aside>Fixed amplitude |M1|, stored 64x6 CNN sign deployed alone, FN with c = 0. Round energies: Marshall -0.495522(23), round 1 -0.498158(17), round 2 -0.498658(9), round 3 -0.498709(10); untrained network sign sgn(M1) -0.498754(2.3e-6). Gains 2.636(29)e-3, 5.00(19)e-4, 5.1(13)e-5; contraction x5.4, x6.2, x2.1 (PLAN_sign.md 1186-1220, runs/j1j2/sign_bad). Round 3 chain k3 may drift ~1e-4 in its last third. Control C: same CNN class trained by minSR at matched 7.7 A40-h, -0.497651(15); loop lower by 1.058(18)e-3 (PLAN_sign.md 1236-1247, sign_bad/ctrlC). Twelve trained 8x8 sign networks on the loop label metric eps^2: best 0.642(23), fresh-block grades 0.69-0.70, vs untrained sgn(M1) 0.400(10) (PLAN_sign.md 738-744, 941-950). 64x10 vs 64x6 at fixed labels: 2.2(14)e-5, inconclusive.</aside>
+<div class="foot"><span>J<sub>1</sub>–J<sub>2</sub> fixed-node loop</span><span>9</span></div>
+<aside>Fixed amplitude |M1|, stored 64x6 CNN sign deployed alone, FN with c = 0. Round energies: Marshall -0.495522(23), round 1 -0.498158(17), round 2 -0.498658(9), round 3 -0.498709(10); untrained network sign sgn(M1) -0.498754(2.3e-6). Gains 2.636(29)e-3, 5.00(19)e-4, 5.1(13)e-5; contraction x5.4, x6.2, x2.1 (PLAN_sign.md 1186-1220, runs/j1j2/sign_bad). Round 3 chain k3 may drift ~1e-4 in its last third. Control C: same CNN class trained by minSR at matched 7.7 A40-h, -0.497651(15); loop lower by 1.058(18)e-3 (PLAN_sign.md 1236-1247, sign_bad/ctrlC). Twelve trained 8x8 sign networks on the loop label metric eps^2: best 0.642(23), fresh-block grades 0.69-0.70, vs untrained sgn(M1) 0.400(10) (PLAN_sign.md 738-744, 941-950). 64x10 vs 64x6 at fixed labels: 2.2(14)e-5, inconclusive. Round 4 (grade4, cip 18007736): g_4 = -0.7(1.9)e-5, zero within 0.4 sigma, 4 chains chi2/dof 1.88; lead re-ran quotable (runs/j1j2/sign_bad/r4/grade4/ANALYSIS.md; PLAN.md 673-675). Not resolved further (~25 A40-h).</aside>
 </section>

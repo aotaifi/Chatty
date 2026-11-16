@@ -2765,3 +2765,20 @@ PROBE RESULT (job 4299397, runs/j1j2/r1pp_fit/probe/round_1/pool_fit.json, verif
 - 10.23 s/step, 1500 x = 15349 s.
 Lead's five: (a) q999 pass, slope 2.0e-3/step; (b) pass; (c) FAIL (stall); (d) below R1' only because 56/60 steps were rejected, and L_ho still rose 31% after 2 accepted steps; (e) pass.
 Prediction for the lead's branch (B), PPO q9999: it stalls too, because ~15 start violators exceed the ~2.5 rows a q9999 tolerates. With a don't-worsen rule instead, violators never get swept, so held-out drifts up as here.
+2026-11-16 17:00 LEAD 17:15: STALL accepted. Lead ~35% on (A): node motion makes the violator count grow with the cumulative move. Kill for (A), free at its first sweep: full-pool violators > 1000 at step 10, or growing sweep to sweep.
+(C), the lead's candidate: freeze theta0 and train a FRESH PP inside a bounded ratio, B = B_theta0 exp(tau tanh(lambda P_n / B_theta0)). Then |m| <= tau by construction, theta0's nodes are fixed, and the map saturates near nodes (the per-row clip). Prediction: no rejections, L_ho_bond falls monotonically over 60 steps, fit bond f in 0.10-0.27.
+My checks on (C):
+- P23 (the second PP stores as a smooth bulk factor, rho ~0.67) supports a multiplicative fresh PP.
+- P34 bounded the loss, not the function, so it does not collide.
+- The open assumption is that signs are frozen: lattice FN depends on the guide's relative signs across blocked bonds, so if R1''s gain used sign changes, (C) forbids them. Sign-flip check of R1' end vs warm, by decade and per blocked bond, running as a CPU worker (diag_ho/sign_flip.json).
+Lead decides after Astra (cj-9ad7e6a1e027) and the prices; both probes run in parallel if each is under ~1 H100-h.
+2026-11-16 17:06 ASTRA (cj-9ad7e6a1e027, result /scratch/a/A.Otaifi/codex_jobs/cj-9ad7e6a1e027/result.md):
+- Stall mechanism confirmed (>99%): every batch after step 1 starts infeasible (start max 1.02-6.18), and backtracking raised the candidate max on 56/57 backtracked steps. Also: the single penalised re-solve then gets scaled toward zero, and even its own linear prediction exceeds 0.55 on 55/60 steps.
+- (A) as proposed is insufficient (>99%): don't-worsen lets |m| = 3 persist. At K=10 it costs 3.8x R1''s 7.60 s/step; K=40 costs 1.96x.
+- (B) cannot guarantee the bound (>99%): zeroing a row's gradient does not freeze its output.
+- Recommended (C'): make the clip part of the deployed guide, ln|B~| = ln|B0| + clip(ln|B_theta| - ln|B0|, +-0.5). This is bounded exactly. On R1''s endpoint it needs NO refit; Astra independently reproduced train bond f 0.01966 -> 0.26670. Caveats: the clipped output lies outside the two-PP family, so 0.267 is neither a prediction nor a bound for a constrained two-PP fit; deployment costs ~2x the forward work; held-out and energy are not established.
+REGISTRATION R1'-CLIP (written 2026-11-16 17:06, before any held-out or energy data on the clipped guide). Guide: R1' endpoint theta_end with its log-amplitude clipped to +-0.5 around theta0 (theta_warm_s307), sign of B_theta_end. This is one change against R1' (f only, same G).
+(1) Held-out gate (CPU, running: diag_ho/clip_ho.json): full held-out bond f >= 0.12, else stop. Predicted 0.23 (0.267 x 0.86), bootstrap sigma ~0.03-0.04 (vs R1''s 0.117).
+(2) Grade: clipped arm + warm arm, 8 chains each, burn 150 + 600. Predicted E(clip) - E(warm) = -3e-5 (-2..-5e-5). CONFIRMED iff E(clip) - E(R1') < 0 beyond 2 sigma.
+(3) Code controls before production: tau = infinity must reproduce the R1' arm's local energies bit-for-bit, and tau = 0 must reproduce the warm arm's. Both can fail.
+My confidence that (2) confirms: ~55%. It tests the premise shared by (A), (C) and the counterfactual, namely whether f 0.23 reaches the energy, at zero fit cost.

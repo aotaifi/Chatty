@@ -720,6 +720,8 @@ T-GROW AMENDMENT (takeover, 2026-11-16 ~21:30, after the build and BEFORE any pr
  Branches add: G or W >> P -> capacity; P ~ G ~ W -> capacity is not the term; Ob >> P -> objective allocation is the term. Cost now ~4.7 A40-h (cap 6).
 LEAD GO 2026-11-16 (launchers read). Reading rule (lead): single seed per arm; if the best two arms differ in M by < ~10 points, run a second seed of both
  (~2 A40-h) and judge by seed scatter before naming a winner. Per-arm M table with E_bw to the lead when all five are in.
+T-GROW SUBMITTED 2026-11-16 (worker, submit_arm.sh; verified by me: squeue + watchers PPID 1): P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090;
+ watchers 1539832/1539869/1539920/1539929/1539964; run dirs runs/j1j2/sign_bad/tgrow/<ARM>. After all five: rerun grow_eval with P first (cuts vs P), M table + E_bw to the lead.
 GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
 
 ## Running (rewritten 2026-11-16 at migrate)

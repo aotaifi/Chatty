@@ -2106,3 +2106,5 @@
 2026-11-16 21:27 T-GROW (sign angle, PLAN_sign 8112d33): launchers read (G full, P/W/O/Ob diffs, submit_arm.sh), 5 arms 4.78 A40-h on cip approved; second seed required if best two arms within ~10 points of M.
 2026-11-16 [sign angle worker] T-GROW submitted: P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090; watchers 1539832, 1539869, 1539920, 1539929, 1539964
 2026-11-16 21:28 [sign angle] T-GROW submitted: P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090 (cip), watchers PPID 1; angle owns the waits.
+2026-11-16 22:14 VERDICT job 18021086: COMPLETED, P (plain n_2 arch, uniform loss, init n_2) M = 1.0463e-3 ± 2.9e-5 vs n_3 1.0453e-3 ± 2.9e-5; cut_vs_base = -0.0009 ± 0.0138, keeps_kept 0.9910; control PASS. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/tgrow/P/ANALYSIS.md]
+2026-11-16 22:46 lead: (C') clip-grade launcher approved (runs/j1j2/r1p_clip_grade/LEAD_OK; identity tests 0 diffs; 4.47 H100-h)

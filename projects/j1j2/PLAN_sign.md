@@ -652,6 +652,7 @@ T-SEP PROBES 2026-11-15 (cip 17999272 exact, 17999273 stored4, M 256; /scratch/a
  rho probe, arm exact job 17999272 (afterany 17999079; watcher 1425936; /scratch/a/A.Otaifi/ansatz_runs/sign_bad/sep/probe_exact)
  rho probe, arm stored4 job 17999273 (afterany 17999272; watcher 1425937; .../sep/probe_stored4)
 T-SEP stored arm (grade4) STAGED 2026-11-16, NOT submitted (lead reads launcher first): runs/j1j2/sign_bad/r4/grade4 -> /scratch/a/A.Otaifi/runs_bulk/sign_bad/r4/grade4; launcher ansatz/code/paired_fn/grade4.sbatch; 4 chains x (150+375), M 256, ~6.4 A40-h
+T-SEP stored arm grade4 SUBMITTED 2026-11-16 (lead GO): cip job 18007736, watcher pid 2464268 (marker GRADE4_DONE in slurm-18007736.out); run dir runs/j1j2/sign_bad/r4/grade4 -> /scratch/a/A.Otaifi/runs_bulk/sign_bad/r4/grade4
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.
  Answers the sign half of the PI's joint-loop question: a large gap means storage limits the loop, a small gap means the label does. Register its prediction before launch. (No joint sign+amplitude loop has run yet: lead.)
 

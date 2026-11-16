@@ -2050,3 +2050,4 @@
 2026-11-16 09:34 Lead approved grade4 (8x8 T-BAD round 4, paired n_4 vs n_3, M 256, 4x(150+375), ~6.4 A40-h; brief runs/j1j2/sign_bad/r4/grade4, pred g_4 1.0e-5 [0,3e-5]). T-BAD10 resume verified: labels 18007712 RUNNING, fit 18007713, fn64 18007714 afterok.
 2026-11-16 09:34 Loss-ESS scaling (PLAN_pfaffian 78722a6): Hill index 1.0-1.7 (~1 at -9); pooled exponent 0.38 vs predicted 0.33; -8..-2 near-linear; -9 saturates only at theta_end (0.78 -> -0.7): the fit creates the heavy near-node rows. Remedy candidates (bounded per-row loss / per-row trust region) to be predicted on paper; lead approved; angle to migrate.
 2026-11-16 09:35 Lead session migrating (compacted once, >1 day). PLAN.md Running + Cockpit updated.
+2026-11-16 09:35 grade4 (8x8 T-BAD round 4) submitted by sign angle: cip 18007736 RUNNING (verified), watcher pid 2464268.

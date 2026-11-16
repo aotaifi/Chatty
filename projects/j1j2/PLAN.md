@@ -638,7 +638,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   alpha DECLARED -0.170 (exact two-hop too heavy-tailed: -0.163(65)); both FN arms at M=64 (M16 population bias ~few 1e-4); resolved iff
   g_1 - B64 > 2 sigma, bias-limited -> inconclusive (not a kill). T-TAN: fixed CNN class NOT shown limiting (C 0.196 -> 0.142; collapse in -9..-5).
   T-SEP exact arm unaffordable (~125 A40-h) -> 6x6, deferred; grade4 = 8x8 T-BAD round 4 paired n_4 vs n_3 (~6.4 A40-h, approved 11-16,
-  pred g_4 1.0e-5 [0,3e-5]; runs/j1j2/sign_bad/r4/grade4). G_max parked. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
+  pred g_4 1.0e-5 [0,3e-5]; cip 18007736 RUNNING; runs/j1j2/sign_bad/r4/grade4). G_max parked. PLAN_sign "G(-5) RESULT", "T-VARDEC RESULT".
   CONTROL C DONE: loop beats SR of the same sign class by 1.058(18)e-3/site at matched compute (8x8, from Marshall).
 - Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).

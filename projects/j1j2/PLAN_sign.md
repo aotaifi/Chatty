@@ -667,6 +667,10 @@ Predictions (mine): q_d/w_d in -9..-5 < 0.5 [55%]; k_d in -9..-5 > 0.3 and m_d r
 Decision: (b) holds (q/w < 0.5 where m is high) -> fix = refit with walker-weighted draws (cheap, 1 fit); (c) holds -> fix = labels (smooth the correction:
  flip clusters, not single states) or a less smooth net; neither -> capacity again -> grown head (frozen n_k + new part). Control: a decade-shuffled q must
  remove any q/w-m correlation; k_d on the KEPT states (no correction) gives the baseline.
+ LEAD (2026-11-16): no objection. Amplitude miss traced to a different term (fit-created heavy near-node rows at decade -9, loss-ESS 2463 -> 640 of 18466):
+ too MUCH effective weight at -9, opposite sign to (b); no shared fix claimed before the Pfaffian angle's q_d/w_d in the same bins is compared. Additions: k_d vs |B|
+ decade ((c) may be the sign face of the node problem); if (b) fires, ESS of the walker-weighted training set before any refit.
+ STARTED 2026-11-16 ~20:30, CPU worker, brief runs/j1j2/sign_bad/twhy/ANALYSIS_BRIEF.md (controls C1 within-decade label shuffle, C2 neighbour finder, C3 q two ways).
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

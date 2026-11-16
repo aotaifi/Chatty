@@ -663,7 +663,10 @@ QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP 
   8x8 round-4 grade (T-SEP stored arm, n_4 vs n_3 paired): grade4 18007736, run dir runs/j1j2/sign_bad/r4/grade4 (-> /scratch), watcher 2464268; gate grade4_gate.py; prediction g_4 1.0e-5.
   2026-11-16 fresh session: waits re-armed; e_0(M64) arm verified QUOTABLE -0.494079(64), chains chi2/dof 0.36; B64 = 2.64e-4 (gate.json, c1 dM -3.44e-4, sigma_d 2.23e-4) fixed before g_1,
    so RESOLVED needs g_1 > 2.64e-4 + 2 sigma(g_1). ETAs: labels ~15:00, fit ~17:00, fn64 ~midnight; grade4 ~16:30.
-- Next per verdict: g_1 RESOLVED (>= 1e-3 predicted) -> round 2 sized from round-1 rates; KILL INPUT -> diagnosis + Astra; INCONCLUSIVE -> longer m64. g_4 beyond 2 sigma -> 8x8 loop
+- T-BAD10 CAPPED at round 1 (lead 2026-11-16, PI approved): report g_1 vs prediction and stop; no 10x10 round 2 on any branch until the 8x8 slowdown
+  (x5.4, x6.2, x2.1, then round 4) is explained and the lead re-opens 10x10. g_4 goes to the lead at once: it gates the 8x8 JOINT LOOP (PLAN.md).
+  Gate-noise lines added to both briefs (LESSONS row 39).
+- Next per verdict: g_1 RESOLVED (>= 1e-3 predicted) -> report only (capped); KILL INPUT -> diagnosis + Astra; INCONCLUSIVE -> longer m64. g_4 beyond 2 sigma -> 8x8 loop
   still improving at round 4; not -> storage/label question goes to the exact 6x6 fallback of T-SEP (deferred).
 - Closed operationally (numbers above): G(-5) kill, T-VARDEC branch C, F' 9x below bar, symmetry branch (A51). T-TAN: class not shown limiting (C 0.196 -> 0.142).
 - PARKED: G_max bound (4-6 A40-h); T-SEP exact arm at 8x8 (300-430 s/block, ~125 A40-h) -> 6x6 exact fallback.

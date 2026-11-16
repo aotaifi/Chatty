@@ -650,6 +650,12 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Workflow angle (local_c7d4e44d, PLAN_workflow.md): rule-conflict review, reports to the PI. Records inventory: docs/consolidation_2026-11-12.md (nothing moved; PI reading).
 - Channels: board MESSAGE_BOARD_lead_pfaffian.md (3-min lead wait); sign angle by session message. /scratch 888 GiB.
 
+- JOINT LOOP (PI 11-16, the project's main test): directly at 8x8, then 10x10; 6x6 dropped (storage is size-dependent: fresh PP 0.49 at 6x6 vs ~0.1 at 8x8).
+  Gates: R1'' confirms the remedy (held-out bond f >= 0.12, E(R1'') < E(R1') beyond 2 sigma) AND 8x8 sign round 4 gain > 0. Round = Lanczos step from
+  sign-net x amplitude-net guide, FN, store sign (CNN) + amplitude (PP refit, trust region, fresh PP); 3 rounds; kill gain_k < 0.5 gain_{k-1}.
+  Cost ~10-15 H100-h/round (rough, to be sized from R1' + sign-round rates). 10x10 only after 2 steady 8x8 rounds (needs a 10x10 amplitude base).
+  Design + prediction to the PI before any run.
+
 ## Budget
 PI 2026-10-31: takeover H100 ceiling (4 H100-h) lifted, "use it"; budget open as below.
 PI 2026-10-29: GPU budget OPEN until further notice, "wisely spent, no grind": every run follows a written mechanism with a

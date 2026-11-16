@@ -588,6 +588,12 @@ Step 0 jobs: 17996493 (probe 0a), 17996634 (production 0b)
 Reading rule (lead, before data): RESOLVED if g_1 - (|dM| + 2 sigma_d from m64) > 2 sigma(g_1); INCONCLUSIVE (bias-limited, next: longer m64) if only the bound fails;
  KILL INPUT only if g_1 itself is not beyond 2 sigma(g_1).
 Round 1 jobs: e0ext 17997720, m64 17997721, vmc 17997722, labels 17997723, fit 17997724, fn 17997725; watchers 600143 600152 600156 600161 600166 600170
+Round 1 RESTART jobs (after VMC gate fail; smoke 18000293): e0_m64_c2 18000294, vmc_exact 18000295, labels 18000296, fit 18000297, fn64 18000298; watchers 1546623 1546627 1546631 1546635 1546639; old fit/fn/labels 17997723-5 cancelled by sign angle
+ROUND 1 RESTART STOPPED 2026-11-15 20:19 at vmc_exact (18000295): exact two-hop VMC, 400 samples: alpha -0.163(65), E -49.269(43); gate failed (rel err 0.40).
+ The alpha estimator is heavy-tailed: step 0's -0.170(20) at 122 samples understated its error (the per-sample spread at 400 implies ~0.12 at 122). m64 c2 COMPLETED (18000294).
+ DECISION (takeover, 2026-11-16): alpha is a DECLARED label-rule constant, alpha = -0.170, not an estimate. Three values agree: step 0 -0.170, exact-400 -0.163,
+ 8x8 loop -0.175. E = -49.269(43) from exact-400. Reason: the FN grade judges the label rule whatever alpha is; alpha's optimum cannot be resolved affordably at 10x10
+ (heavy tails). The gate is bypassed by declaration, recorded here. Labels -> fit -> fn64 resume with these constants.
 ROUND 1 ATTEMPT 1 STOPPED 2026-11-15 by the VMC gate (17997722): the subsampled h2 estimator is ~33x noisier per sample than exact (alpha -0.51(2.69), rel err 5.3).
  e0ext: chains -0.493589(139) / -0.494001(158), 2.0 sigma apart (NOT QUOTABLE); m64 -0.494113(86) lies below both: hint of an M16 population bias of a few 1e-4 (z -1.54). 3.8 A40-h spent.
  DECISIONS (takeover): exact two-hop VMC with 400 samples in >= 8 chains (step 0 had 12% at 122); grade BOTH arms at M=64 (e_0: m64 chain + a new M64 chain;
@@ -636,6 +642,12 @@ T-SEP DESIGN (registered 2026-11-15 before any number; lead granted a 2nd cip sl
  f >= 0.5 with G_exact > 2 sigma -> storage is adequate and the loop is near its one-step fixed point.
  r4_phaseA job 17998002, watcher 822895 (labels done, controls pass; fit stage FAILED: r1_fit.py copy lacked --init)
  r4 fit-only job 17999079 (cip a40-24gb, r4/code/r4_fit.sbatch, watcher pid 1325694, run dir runs/j1j2/sign_bad/r4/fit)
+T-SEP PROBES 2026-11-15 (cip 17999272 exact, 17999273 stored4, M 256; /scratch/a/A.Otaifi/ansatz_runs/sign_bad/sep/probe_*/result.json, read by me). n_4 held-out 0.1013 (n_3 0.0986).
+ A=A controls exact 0.0 in both. stored4: rho 0.88 (binned 0.92(3)), separation 0.005/tau, 10.6 s/block; short Delta(n_4 - n_3) -3.0(1.7)e-5 (not a measurement).
+ exact: 308-432 s/block (30-40x stored; the walker-time one-step needs E_L at every neighbour), separation 0.037/tau from 1 block.
+ DECISION: the exact arm at sigma 5e-6 needs ~1500 blocks, ~125+ A40-h: unaffordable at 8x8. Run the STORED arm now (= T-BAD round 4 at 8x8, g_4 = E[n_3] - E[n_4]):
+ sigma 5e-6 needs ~1500 blocks at rho 0.88, ~4.4 A40-h. The exact arm moves to the registered fallback (exact 6x6, mechanism only), deferred until g_4 and T-BAD10 round 1 are read.
+ Prediction for g_4 (mine): 1.0e-5 [0, 3e-5]; beyond 2 sigma 50%.
  rho probe, arm exact job 17999272 (afterany 17999079; watcher 1425936; /scratch/a/A.Otaifi/ansatz_runs/sign_bad/sep/probe_exact)
  rho probe, arm stored4 job 17999273 (afterany 17999272; watcher 1425937; .../sep/probe_stored4)
 QUEUED after T-BAD10 step 0 (lead agreed 2026-11-15): 8x8 separating test T-SEP = exact one-step K[n_3] (walker-time, nothing stored) vs stored n_4, paired FN, ~25 h cip.

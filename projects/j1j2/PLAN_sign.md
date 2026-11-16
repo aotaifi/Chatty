@@ -738,6 +738,9 @@ GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade sha
       50-149 -0.9(0.6), measured -0.4(1.9) (errors = chain scatter of 4). No transient resolvable above ~3e-5; a 20-block burn is NOT certified at the 1e-5 level
       this data cannot reach. Caveat: here both arms start from X0_B0; in the branched design B starts from A's equilibrium, a different transient.
       Cheapest certifying check (not run): in the first joint-loop grade, compare Delta over blocks 20-50 vs 50-100 after branching across all pairs.
+- T-BAD10 r1 labels 18007712 COMPLETED 19:18 (4000 roots, controls PASS); fit 18007713 COMPLETED 20:48 (fit_{2000,3200}.json read by me): held-out disagreement
+  0.1599 -> 0.1428 (-10.7%, just over the 10% data-adequacy line; 8x8 round 1 had 0.103); train 0.103 -> 0.092. So if g_1 is not beyond 2 sigma, the reading is
+  'data-limited, no verdict', not KILL INPUT. fn64 18007714 RUNNING from 20:48 (limit 7.5 h, ETA <= 04:20).
 - T-BAD10 CAPPED at round 1 (lead 2026-11-16, PI approved): report g_1 vs prediction and stop; no 10x10 round 2 on any branch until the 8x8 slowdown
   (x5.4, x6.2, x2.1, then round 4) is explained and the lead re-opens 10x10. g_4 goes to the lead at once: it gates the 8x8 JOINT LOOP (PLAN.md).
   Gate-noise lines added to both briefs (LESSONS row 39).

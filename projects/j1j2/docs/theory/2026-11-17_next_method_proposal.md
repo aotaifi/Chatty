@@ -33,7 +33,11 @@ neighbours: two hops). Evaluated directly, k rounds need 2k hops: cost ~ d^{2k} 
 ## 5. What is assumed, and how each would be killed
  A1. The two-term formula stays accurate in later rounds (stable c). Kill: rounds 2-3 on 6x6 (running, rung 2) give eps^2 > 0.05 or c
      drifting > 30%.
- A2. Consolidation with a fixed-weight loss stores A_{k+1} without the R1' failure. Kill (needs a run, the PI's 'now test it'): on 6x6,
+ A2. Consolidation with a fixed-weight loss stores A_{k+1} without the R1' failure. Open on paper: the MEASURE of the loss. With Born
+     weights T^2 the relative square becomes the plain square and under-weights the near-node rows; with flat weights the fixed 1/T^2
+     factors are heavy-tailed, and the B10 pilot just showed what a heavy tail does to a sampled gradient (frozen-H_FN Rayleigh on the
+     Lanczos guide: population M_req 5.2e9 while the 4096-draw estimate said 1.5e4). The measure must be fixed on paper (candidate: the
+     blocked-pair D-norm of the M-R law, which is what predicts retention) and its tail checked on existing data before any run. Kill (needs a run, the PI's 'now test it'): on 6x6,
      consolidation keeps < 70% of the round's gain, or the near-node rows dominate the fit (weights ~ 1/T^2) so the bulk does not move.
  A3. The fitted-power-iteration loop stays stable under consolidation error: it improves while the consolidation error per round is below
      that round's gain (eps_k <= Delta_k; theorist note 2026-11-17).

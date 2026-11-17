@@ -245,6 +245,14 @@ ROUNDS 2-3 RUNG 2 (written before computing): apply the formula exactly on the t
 sign s2), recompute G_k, p_k, u_k and refit (ii). Rule: eps^2(ii) <= 0.05 and refitted c within +-30% of 1.307 in rounds 2 and 3 -> the
 explicit formula is a stable round map; else not (then the formula is round-1 specific). Also report each round's FN energy of the
 explicit state (exact, no storage error) as the ceiling the consolidated loop can reach. Prediction: pass at 60%.
+B10 6x6 HARNESS (11-17, staging worker; built and CPU-tested, NOT submitted; runs/j1j2/b10_6x6/, code ansatz/code/b10_6x6.py): tests (a)-(d) pass
+(clipped-r* head reproduces rung 2's rho = 1.000005 exactly; zero head bit-identical; exact frozen-H_FN gradient vs finite differences 1.2e-8,
+broken gradient 237; arm X loss 8.6e-16 at ln(p/G) vs 3.1e-5 at ln(p/A_0)). LATE state proposal: pfaffian_r6k3/k3/tab_th/tab_t6/round_1
+(E_var 8.927e-6/site). One CPU pilot step (EARLY, round 1), lead re-read cpu_pilot/log.txt:
+  arm S (sampled frozen-H_FN Rayleigh): population M_req = 5.24e9 vs the kill bar 2e5; the 4096-draw estimate of M_req was 1.45e4 (the heavy
+  tail is invisible in the sample); exact directional derivative +0.01 (wrong sign). arm C (physical-H, same head and draws): M_req 8.8e3.
+  Reading: Astra's unmatched-wall term (W2) is real at 6x6 design B: B10 sampled on the Lanczos guide is not trainable at an affordable
+  sample size, and the sample cannot tell. The RBM head's failure (rung 2b) and this sampling failure are independent; either blocks B10.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

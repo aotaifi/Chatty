@@ -1896,3 +1896,27 @@ REGISTERED (2026-11-13, before any number): (S1) s306 symmetry-correct refit: pa
 - Two-net disagreement gate (I1): 8x8 nets share their errors (13.3% wrong given agreement; T-CERT V1).
 - T-BOND per-bond surrogate loss: rejected before running (eps^2 is a Laplacian form; Gate S false positive; ASTRA_eps2.md).
 - Local shallow CNN sign: 3x3-patch correction moves w_T -0.7% (A44). Hybrid XL node + PP walls: 0.998e-6 (A45). Coverage (beta mix): A46.
+
+## CHECK of the lead's storage-side claims 1-4 (2026-11-17 ~09:30, theorist mode, on paper; one table identity checked)
+Notation (STORAGE_PROBLEM 'Loop notation'): psi = S A, K = sum_kept |H_xz| A(z), Vs = sum_viol |H_xy| A(y), D = H_xx, alpha < 0, E' := E_REF + 1/|alpha|
+(= -26.21 at alpha -0.1754). Bond x-y with H_xy > 0 is violating iff S(y) = S(x).
+- [exact] Lanczos label in K, Vs: psi'(x) = (1 + alpha(D - E_REF)) S A + alpha S (Vs - K) = alpha S [ (D - E') A(x) - (K - Vs) ].
+  So the full label flips x  <=>  (D - E') A(x) > K - Vs  <=>  EL(x) > E'. D - E' >= 12.2 > 0 on 8x8.
+- Claim 1 [exact, CONFIRMED]: sgn Q = S(x) sgn(K - Vs); C-free flips x <=> Vs > K.
+  Claim 1, second half [CORRECTED]: the full label DOES flip the Vs > K rows (both terms carry -S there). It flips them plus the rows with
+  0 < K - Vs < (D - E') A(x): rows whose stored amplitude exceeds the local value (K - Vs)/(D - E'). Hence C-free flips are a strict subset of full flips.
+  Table check (table_r3_cf.npz, y_orig vs y vs nrel): cf flips 38,959, all inside the 181,330 full flips; full-not-cf 142,371. 0 exceptions.
+  Reading: the full rule turns an amplitude error (A too large for its neighbours' net support) into a sign flip, by stepping the amplitude through zero.
+  C-free flips only where no amplitude can satisfy the local equation (K < Vs). Neither rule flips anything at the FN fixed point:
+  there K - Vs = (D - E) A > (D - E') A, because E' > E.
+- Claim 2 [exact at the fixed point, CONFIRMED with Astra's caveat]: from (D + Vs_T/A_T - E) phi = K[phi], with guide = phi: (D - E) phi = K - Vs.
+  D - E >= 17.9 > 0, so K >= Vs everywhere (equality only where phi = 0). Consequence: the FN fixed point is a fixed point of the C-free rule.
+- Claim 3 [exact for phi = 0; reconnection CONDITIONAL]: K = 0 gives (D + V - E) phi = 0, so phi = 0. C-free flips x (Vs > 0 = K).
+  After the flip, x's violating neighbours become kept only if they did not flip in the same round. Two mutually violating isolated rows flip
+  together and stay violating: a period-2 cycle under a simultaneous (Jacobi) update. A sequential or damped update breaks it. How often this occurs: not counted.
+- Claim 4 [algebra CONFIRMED; numbers are Astra's (ASTRA_cancel.md row 2104918: K/Vs 0.711, Vs/(D b) 28.8), not re-derived]: flipping S(x) swaps K and Vs.
+  f_J ~ ln(K/Vs) -> ln(Vs/K), so the swing is 2|ln(K/Vs)| + O(D b/Vs <= 0.036) <= 0.7.
+  Addition [exact, own]: this is the ONE-ROUND target. With neighbours fixed, the guide-updated map is b -> K' b/(D b + Vs') (K' = Vs_old, Vs' = K_old).
+  Its fixed point is b* = (K' - Vs')/D, which sits ln[(Vs/(D b))(1 - K/Vs)] = 0..3 e-folds above the present b at the 5 rows.
+  It contracts at rate Vs'/K' = K/Vs (0.71-0.98) per round. Balanced rows therefore reach their new amplitude slowly: ~1/(1 - K/Vs) = 3-67 rounds per e-fold at c = 1.
+  Before the flip (Vs > K), the same map sends b -> 0 geometrically at rate K/Vs. That is the claim-2 inconsistency seen as a dynamics.

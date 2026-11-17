@@ -762,6 +762,27 @@ T-NEAR RESULT 2026-11-17 (ws, 84 s; runs/j1j2/sign_bad/tnear/{result.json,REPORT
  flips in -9..-5. In margin-weighted units the net holds 57% of the -9..-5 flip mass (ME_hit 7.5e-6 vs ME_miss 5.7e-6) against 34% in M_I units (bw only), so M_I
  overstates the energy-relevant copy loss by ~1.6x (|f|/|alpha| as the energy weight is first-order and UNVALIDATED against an FN energy).
  Next (registered kill branch for the clear-cut part): Astra on the question without my view + a per-row look at the largest-bw clear-cut misses.
+ASTRA (cj-f4b619de888a, /scratch/a/A.Otaifi/astra/sign_copy/ASTRA_copy.md, read) + MY RECOMPUTE from table_r3 (D from keys and lat_pl bonds; 0 label mismatches):
+ The label is y = sgn(C u + Q), u = nrel (old sign), C = 1 + alpha (D - E_REF) (diagonal self term), Q = alpha u (EL2 - D) (neighbour term, independent of u(x)).
+ D ranges -14..+5 on 8x8 J1-J2, so D - E_REF >= 17.9 > 1/|alpha| = 5.70: C <= -2.1 < 0 for EVERY configuration (exact). Hence where |Q| < |C| the label is -u
+ whatever u is: it reverses the old net's own sign (a period-2 map if copied), independent of the physics at x. Where |Q| > |C| the label is sgn Q.
+ Measured: 97.3% of all 181,330 flip labels are in the reversal class; no keep is. sgn Q is the sign that minimises the single-state off-diagonal energy
+ (the FN sign-violation at x given its neighbours); 78.5% of flip labels point AWAY from it (decades -12..-5: 0.78-0.81 ... 0.69). C-free labels sgn Q differ
+ from y on 9.7% of rows, all of them harmful flips; they add no new flips. In -9..-5 (P60): all 1,988 near-threshold flips are harmful; stable misses 74%
+ harmful, stable hits 39%: the net copies the good flips preferentially.
+ Reading: the copy floor is mostly the label rule, not the net. Under a bad amplitude the threshold rule (K1, alpha energy-optimal for the FULL Lanczos vector,
+ amplitude included) flips states whose local energy is above threshold under BOTH signs; with the amplitude held fixed that is a reversal, mostly harmful.
+ Astra's two-coefficient readout z = a l2 + b sgn(l2) cuts the stable-flip miss 68% -> 26% (keeps 0.3% -> 3.8%): the reversal IS expressible, so copying it is
+ a choice we should not want. Not yet shown: that C-free labels improve the FN energy.
+## T-CF (takeover 2026-11-17 ~02:00; REGISTERED before any number; cip A40 ~0.8 A40-h, within tonight's 6 A40-h ceiling (T-GROW used 4.48); launcher = launch_P with
+ the table swapped, read by me before submission; lead unreachable (hook timeouts), recorded)
+Question: with the reversal removed (labels y_cf = sgn Q, u where Q = 0), does the copy floor go away?
+Run: r3 recipe from n_2 (as P) on table_r3_cf (= table_r3 with y -> y_cf); grow_eval on the CF table (n_3 and CF) and on the original table.
+Prediction (70%): on CF labels in -9..-5, held-out flip reproduction of CF >= 0.75 (n_3 on the same rows ~0.52, from Astra's P60 counts 579/1113), keeps >= 0.98,
+ and CF keeps the former harmful flips at >= 0.95 (n_3 ~0.87). Mechanism: y_cf depends on neighbour signs and amplitude ratios only; the reversal labels were
+ -sgn of the old net's own logit. Kill: CF reproduction of CF flips < n_3's + 0.10 -> the reversal was not the copy limit; diagnose.
+Next if pass: paired FN grade CF vs n_3 at 8x8 (~6 A40-h, beyond tonight's ceiling -> lead/PI at check-in) with a registered energy prediction; the label rule of
+ the joint loop changes to C-free (or a positive projector, |alpha| < 1/(D_max - E_REF)) only after that grade.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

@@ -667,7 +667,7 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Write-up angle (local_71c014c5, PLAN_writeup.md): progress deck v1 published; 6x6 bar corrected to 2.28e-6 (2603.14425).
 - Closed 11-12: lead's second-order (Hessian-direction) storage hypothesis DEAD (TRIED_IDEAS P32); pairing-resonance hypothesis leans false (two-PP overlap 0.991).
 - Workflow angle (local_c7d4e44d, PLAN_workflow.md): rule-conflict review, reports to the PI. Records inventory: docs/consolidation_2026-11-12.md (nothing moved; PI reading).
-- Channels: board MESSAGE_BOARD_lead_pfaffian.md (3-min lead wait); sign angle by session message. /scratch 888 GiB.
+- Channels: all angles by direct session message (PI 2026-11-17); the MESSAGE_BOARD_* files are archives. /scratch 888 GiB.
 
 - JOINT LOOP (PI 11-16, the project's main test): directly at 8x8, then 10x10; 6x6 dropped (storage is size-dependent: fresh PP 0.49 at 6x6 vs ~0.1 at 8x8).
   Gates: R1'' confirms the remedy (held-out bond f >= 0.12, E(R1'') < E(R1') beyond 2 sigma) AND 8x8 sign round 4 not worse than round 3 (gate re-read 11-16 16:45: grade4 g_4 = -0.7(1.9)e-5, quotable 4 chains chi2/dof 1.88,
@@ -730,7 +730,7 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Relaxing the FN constraint (released node, FN-SR / gamma-FN): released node costs Delta_B 0.385/site (DESIGN_scalable_loop:504);
   gamma-FN 26% of the gap (above); Sorella's group moved on to VMC + Lanczos. Not novel; closed by the PI 2026-11-03.
 
-- Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
+- Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
 - STATUS (in progress, high): Round 1 gained 1.2e-5 per site, 4-7x short; the fit was moving the nodes. A clipped guide stores 0.24 of the target on CPU (bar 0.12); its energy test is queued.

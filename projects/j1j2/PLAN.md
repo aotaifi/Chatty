@@ -14,10 +14,13 @@ Round k:
 End: one final Lanczos step + fixed node for the reported energy; never more.
 On paper (STORAGE_PROBLEM.md CURRENT, 'LOOP FIXED POINTS'): with a perfect copy the FN energy falls every round and resting points are exact
 eigenstates; with copy error eps_k, descent survives iff eps_k <= Delta_k = E_FN[psi'_k] - E_var[phi_k].
-Open (not repaired): (i) Jacobi labels: f_J = ln R only if the neighbours are right, and c ~ 4 is unstable (period-2; stable needs
-0 < c(1 - Vs/K) < 2), so the descent guarantee does NOT yet cover step 4; (ii) ground state vs excited eigenstate (theorist subagent,
-docs/theory/2026-11-17_loop_convergence.md); (iii) cost per round includes head training and evaluation, not yet counted against the
-competitor; (iv) sign storage error enters the same Delta_k budget.
+Open questions we work on (PI 11-17, in this order):
+ (i) NOW, on paper: Jacobi labels. f_J = ln R only if the neighbours are right, and c ~ 4 is unstable (period-2; stable needs
+     0 < c(1 - Vs/K) < 2), so the descent guarantee does NOT yet cover step 4. Repair: damping and the error of the one-step estimate.
+ (ii) Ground state vs excited eigenstate: theorist subagent, docs/theory/2026-11-17_loop_convergence.md.
+ (iii) Sign copy: the PI with the sign angle (its error enters the same Delta_k budget).
+ (iv) Priority C, later research question: training cost as a function of copy quality, counted against the competitor; not computable
+      before tests.
 
 NAME CORRECTION 2026-11-17 (PI): our 'Pfaffian' / 'PP' is the Gutzwiller-projected SINGLET pair product, psi_PP = eps det f[Up, Dn]
 (Nomura-Imada 2005.14142), the special case of a Pfaffian with only up-down pairing; a spin exchange changes one row AND one column (rank-2,

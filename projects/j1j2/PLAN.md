@@ -1,4 +1,24 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
+## THE DESIGN (PI + lead 2026-11-17; read first, always together with 'Goal' and '## Motivation' below)
+Why: beat (plain trained network + p Lanczos steps + fixed node) at equal total cost, training included. The loop stores what extra Lanczos
+steps would give, so each round costs one level; p >= 2 steps at the end is the competitor, not an add-on.
+Notation: psi_k = S_k A_k; A_k = |B_0| e^{r_0 + ... + r_{k-1}} (B_0 trained once, then frozen; r_j one small 'head' per round).
+Round k:
+ 1. Lanczos on the fly: psi'_k = (1 + alpha_k (H - E_k)) S_k A_k, alpha_k re-optimised for the current state (not fixed). Not stored.
+ 2. Fixed node with guide psi'_k, sign AND amplitude -> phi_k. Cost: one level (two-hop ratios; 5.4x for the PP at 6x6). Not stored.
+ 3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle).
+ 4. Amplitude: fit a new head r_k ~ ln|phi_k / A_k|, log loss on r only, A_k frozen (no moving 1/B). Labels: the Jacobi estimate
+    (Lanczos part ln|1 + alpha(E_L - E)| + one-step FN part f_J[psi']), damped. Walker-density labels (Pilati et al. 1907.00907) = a
+    different direction, NOT started.
+ 5. A_{k+1} = A_k e^{r_k}. Optional, every few rounds: merge into one network by the relative-square loss.
+End: one final Lanczos step + fixed node for the reported energy; never more.
+On paper (STORAGE_PROBLEM.md CURRENT, 'LOOP FIXED POINTS'): with a perfect copy the FN energy falls every round and resting points are exact
+eigenstates; with copy error eps_k, descent survives iff eps_k <= Delta_k = E_FN[psi'_k] - E_var[phi_k].
+Open (not repaired): (i) Jacobi labels: f_J = ln R only if the neighbours are right, and c ~ 4 is unstable (period-2; stable needs
+0 < c(1 - Vs/K) < 2), so the descent guarantee does NOT yet cover step 4; (ii) ground state vs excited eigenstate (theorist subagent,
+docs/theory/2026-11-17_loop_convergence.md); (iii) cost per round includes head training and evaluation, not yet counted against the
+competitor; (iv) sign storage error enters the same Delta_k budget.
+
 NAME CORRECTION 2026-11-17 (PI): our 'Pfaffian' / 'PP' is the Gutzwiller-projected SINGLET pair product, psi_PP = eps det f[Up, Dn]
 (Nomura-Imada 2005.14142), the special case of a Pfaffian with only up-down pairing; a spin exchange changes one row AND one column (rank-2,
 2x2-determinant ratio). The 8x8 base is B = sum_g phi_RBM(z_g)[det f_1 + lam det f_2] over 256 images, f, b, W complex, so B is complex

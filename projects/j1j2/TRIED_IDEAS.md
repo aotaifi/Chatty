@@ -1,4 +1,8 @@
 # TRIED_IDEAS: index of everything tried in the j1j2 project (built 2026-10-27)
+NAME CORRECTION 2026-11-17 (PI): our 'Pfaffian' / 'PP' is the Gutzwiller-projected SINGLET pair product, psi_PP = eps det f[Up, Dn]
+(Nomura-Imada 2005.14142), the special case of a Pfaffian with only up-down pairing; a spin exchange changes one row AND one column (rank-2,
+2x2-determinant ratio). The 8x8 base is B = sum_g phi_RBM(z_g)[det f_1 + lam det f_2] over 256 images, f, b, W complex, so B is complex
+(ansatz/code/simple/pp2_lemma.py l.1-12). Angle, directory and file names keep 'pfaffian'. Definitions: STORAGE_PROBLEM.md 'Notation'.
 
 HOW TO USE (5 lines)
 1. Before proposing anything, `grep -i -E "key|words|synonyms" projects/j1j2/TRIED_IDEAS.md` (try the plain name AND the file names: E_FN, HF force, write-back, refit, re-base, hop-aware, bond field, KKT, LP, pre-image, ...).

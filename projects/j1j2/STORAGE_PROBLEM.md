@@ -10,31 +10,53 @@ Derivation and 4x4 check: ../../handoffs/2026-10-27-fn-error-weights.md. Tried i
 | 3 | gradient denominator | E_FN force F(x) = sum_viol K_xy a(y)/a(x) [O(y) - O(x)] (16): a(x) small near nodes | C15/E1: exact 4x4 force works (1.74x descent with SR); SAMPLED 8x8 FAILED: walkers for force cosine 0.7 grow 8e4 -> 2.5e8 near the fixed point, physical E_FN worse by +0.046 total (3549023/24). Factorised residual a_new = a_k e^{r} gives finite-variance gradients (Tim, seq72-74); B10 exact 4x4 99.7%, B11 8x8 inconclusive (OOM). Clipped Lanczos factor (B27/D7): works as one-step target, retention 0.84 -> 0.09 | open: the noise problem is the measured blocker of E_FN training |
 
 Reading (lead): issue 3 is not new; the factorised residual is the known handle. Issue 1's fix and issue 3's fix
-are compatible: e^{r} J-type correction on a guide whose node (Pf) is kept, trained on E_FN with SR.
+are compatible: e^{r} J-type correction on a guide whose node (PP) is kept, trained on E_FN with SR.
 Next decision for the PI: which of 1-3 to test first, on paper before any run.
 
 ## CURRENT 2026-11-17 (theorist mode; the account for the storage question, newest first)
+Notation (read from code, not from record names): PP = Gutzwiller-projected singlet pair product, psi_PP = eps(sigma) det f[U, D] (Nomura-Imada
+2005.14142; ansatz/code/c2l_rbmpp_lib.py l.3-7); the special case of a Pfaffian with only up-down pairing. 'Pfaffian' in older records means this.
+8x8 base (ansatz/code/simple/pp2_lemma.py l.1-12, rbm 'inner', projection 'simple' = 256 images): B(x) = sum_g phi_RBM(z_g) [a_1(g) + lam a_2(g)],
+a_j(g) = par(z_g) det f_j[Up(z_g), Dn(z_g)], f_j, b, W complex. B is complex; the loop stores only |B| (sign from S), so arg B plays no role.
+Rule: before deriving about an object, copy its definition from the code into this line.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).
 - [exact] Why R1' failed: a loss on ln|B_theta| has d ln|B| = dB/B, so the rows near nodes of B_theta own the gradient (tangent norms 26-73x typical,
   PLAN_pfaffian 2577); the moving base B_0' + lam PP moved its nodes. Stored fraction f 0.145 (6x6: 0.49). Five step-size patches did not change this term.
 - [exact, PI 11-17] Reformulation: with B_k frozen, B_{k+1} = B_k e^{r_theta} and storing is plain regression r_theta(x) ~ c f_J(x): no 1/B in the
-  gradient, target bounded. Kept only for cost (recomputing B_k e^{r} nested k times costs 256^k neighbour sums otherwise). Price: zeros of B_k persist.
+  gradient, target bounded on sampled rows (not near spurious zeros, below). Kept only for cost (recomputing B_k e^{r} nested k times costs 256^k neighbour sums otherwise). Price: zeros of B_k persist.
 - [exact, Astra cj-5ca32ee74fb4, /scratch/a/A.Otaifi/astra/lfix_review/ASTRA_lfix.md] L_fix = sum 2h t_x t_y (cosh delta - 1) is NOT log-free: its gradient
   ~ sinh(delta)(O_x - O_y) scales 1/eps^2 at a spurious node. Astra's ranking: frozen base x bounded head (~70%) > amplitude L2/Hellinger > L_fix.
   Precedents: TRIED_IDEAS B10 (exact 4x4, 99.7%), B11 (8x8, OOM, outcome never recorded).
 - [cond] Auditor (docs/reviews/2026-11-17_drift_audit.md row 15): asinh(B/s) has a bounded gradient at the node, dB/sqrt(s^2 + B^2); it was closed on a
   freezing counterfactual that cannot create sign-crossing moves (biased). Not re-opened yet: to be weighed on paper.
-- NEXT EQUATION: the gradient of the regression loss at a node of B_k (frozen, so none can move) and at a node of B_k e^{r_theta} (none new, since
-  e^r > 0): check the claim "no node moves" holds, then whether a bounded r can carry c f_J where f_J is largest (near the nodes, where |B_k(x)| is small).
+- [exact, own 11-17] No node moves: B_{k+1} = B_k e^{r}, e^{r} in (0, inf) for finite r, so {B_{k+1} = 0} = {B_k = 0} and arg B_{k+1} = arg B_k.
+- [exact, own 11-17] Gradient of L = sum_x w(x) (r_theta(x) - c f_J(x))^2: dL/dtheta = 2 sum_x w (r_theta - c f_J) dr_theta/dtheta. Near a zero of B_k,
+  |B_k(x)| = eps with kept neighbours O(1): f_J = ln(1/eps) + O(1), so one row contributes ~ w c ln(1/eps). R1' log loss: ~ w / eps. The pole becomes a log.
+- [cond: zero of B_k is spurious, i.e. A'(x) = sum_kept |H_xz||B_k(z)| / (H_xx + V - E') stays O(1); own 11-17] The target is unbounded there:
+  c f_J ~ c ln(1/eps), and T = B_k e^{c f_J} = B_k^{1-c} A'^c ~ eps^{1-c}, which DIVERGES for the measured bulk c = 2.4-3.9 (PLAN 282-317). The true
+  correction ln(phi/B_k) ~ 1 x ln(1/eps) (phi finite where B_k has a spurious zero). So near spurious zeros c f_J overshoots by a factor c, and a
+  bounded r cannot carry it at all. At a true node (V large, A'(x) ~ eps too) f_J stays O(1): no problem.
+- [conj, ~50%] Spurious near-zeros of B_k exist at 8x8 and matter: the 6x6 bond split put 75-84% of the copy's tax on "small side far too small"
+  (e_x ~ -6 to -9 log units), i.e. exactly such dips. Killed if B_k at 8x8 has no rows with A'(x)/|B_k(x)| > e^{3}.
+- [exact, own 11-17; corrected the same day after an outsider's remark and reading the code] Per image term: an exchange hop changes one row AND
+  one column of F_g = f[Up(z_g), Dn(z_g)], so a_j(g; y) / a_j(g; x) = +- det(I_2 + K_g), K_g built from F_g^{-1} (rank-2 lemma, pp2_lemma.py l.13-15).
+  For ||K|| < 1, |det(I_2 + K)| >= (1 - ||K||)^2 > 0, so a drop of one image term to near zero across a hop needs ||K_g|| >~ 1, i.e. F_g^{-1} large
+  along the hop (sigma_min(F_g) <~ ||v||). For real F this is the statement 'a sign flip needs near-singular F'. (Superseded first version: a
+  one-particle row update of a general Pfaffian, ratio 1 - e_a^T A^{-1} b, sign fixed by the PI; wrong move for a spin exchange.)
+- [cond, not covered] |B| can also be small by cancellation among the 2 x 256 complex terms with none of them small; the per-term argument does
+  not cover that. Exact zeros of complex B need Re = Im = 0 (codimension 2 in theta at fixed x): a training path passes near them, not through;
+  d ln|B| = Re(dB/B) is still ~ 1/|B| there. Which mechanism makes the 8x8 dips (near-singular F_g or image cancellation): open, on paper.
+- NEXT EQUATION: what r should be near a spurious zero: r* = ln(phi/B_k) vs c f_J; does a c(x) that tends to 1 as f_J grows (c f_J in the bulk, f_J
+  near zeros) follow from the FN equation itself, or is it a patch?
 - Assumed, not shown: that the frozen-base product stays cheap enough over rounds (one extra head per round), and that persisting zeros of B_k cost less
   than the 1/B gradient does.
 
 ## Test T-Lfix (pre-registered 2026-10-27, PI asked; before any run)
 Does the pair loss L_fix (board 15) store the fixed-node state better than the log loss in our code (board 13), same network?
 - Target phi = exact FN state of a fixed guide (4x4: the existing exact loop targets; 6x6: the G-tax target phi_0 or an O2b round).
-- Arms, same network class (RBM+PP, has Pfaffian zeros), same parameters, same optimiser and step budget, 3 seeds:
+- Arms, same network class (RBM+PP, has PP zeros), same parameters, same optimiser and step budget, 3 seeds:
   (A) log loss as per_sample in ansatz/code/c2le_gtax.py l.471-473; (B) L_fix. Optional (C): L_fix on a log-only net
   (positive RBM x Marshall sign) to separate loss from architecture.
 - Readout: tax_k = E_FN(K_k fit) - E_FN(K_k phi), k = 0, 1, 2; plus fit error by |phi|^2 decade and by pair class.

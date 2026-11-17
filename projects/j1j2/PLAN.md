@@ -1,4 +1,8 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
+NAME CORRECTION 2026-11-17 (PI): our 'Pfaffian' / 'PP' is the Gutzwiller-projected SINGLET pair product, psi_PP = eps det f[Up, Dn]
+(Nomura-Imada 2005.14142), the special case of a Pfaffian with only up-down pairing; a spin exchange changes one row AND one column (rank-2,
+2x2-determinant ratio). The 8x8 base is B = sum_g phi_RBM(z_g)[det f_1 + lam det f_2] over 256 images, f, b, W complex, so B is complex
+(ansatz/code/simple/pp2_lemma.py l.1-12). Angle, directory and file names keep 'pfaffian'. Definitions: STORAGE_PROBLEM.md 'Notation'.
 Goal (PI 2026-11-04, restating the loop of 2026-10-30): THE LOOP: guide -> signed Lanczos step -> fixed node -> store the amplitude
 in the network AND store the sign -> repeat, at one-level walker cost per round; beat network + Lanczos steps + FN at equal cost
 at >= 8x8, usable on any trained NQS at 10x10-14x14. (Old 2026-10-26 wording 'add-on without loop' superseded.)

@@ -1,4 +1,8 @@
 # PLAN_pfaffian (angle lead "pfaffian angle", started 2026-10-27 by the ansatz angle; PI asked for it)
+NAME CORRECTION 2026-11-17 (PI): our 'Pfaffian' / 'PP' is the Gutzwiller-projected SINGLET pair product, psi_PP = eps det f[Up, Dn]
+(Nomura-Imada 2005.14142), the special case of a Pfaffian with only up-down pairing; a spin exchange changes one row AND one column (rank-2,
+2x2-determinant ratio). The 8x8 base is B = sum_g phi_RBM(z_g)[det f_1 + lam det f_2] over 256 images, f, b, W complex, so B is complex
+(ansatz/code/simple/pp2_lemma.py l.1-12). Angle, directory and file names keep 'pfaffian'. Definitions: STORAGE_PROBLEM.md 'Notation'.
 
 STEP BACK 2026-10-28 (PI asked; Astra xhigh second opinion running, codex job cj-d28d6046530c):
 1. Verdict: continue, but on the right question: expressibility vs learnability is decided by the lead's full-space
@@ -2817,3 +2821,6 @@ Next: grade code (clip arm = sgn(s306) * |B~|), tau=inf/tau=0 unit tests, staged
 2026-11-16 22:49 LEAD 22:46: clip grade APPROVED (LEAD_OK). CLIP only, 8 chains, 4.47 H100-h. A worker is staging and submitting; it owns the jobs and their VERDICT wait.
 - Paired difference reported as information only. The unpaired test is conservative because CLIP shares R1P's seeds and X0.
 - Branches: CONFIRMED -> R2' design with (C) to the lead. NOT CONFIRMED -> diagnosis (walker clip fraction, decade dwell vs R1P) plus a tau=0.25 variant to the lead before any drop recommendation.
+- 22:53 submitted: Paderborn 4306152 (prod) + 4306153 (prod2); the worker owns the VERDICT wait.
+
+2026-11-17 12:18 CHANNEL: PI request via the lead. Reports go to the FN-loop lead by SendMessage (to: "FN-loop lead"). MESSAGE_BOARD_lead_pfaffian.md is now an archive with no new posts, and its watcher is stopped. The clip-grade VERDICT comes through the worker's watchers (Paderborn 4306152/4306153).

@@ -17,7 +17,18 @@ eigenstates; with copy error eps_k, descent survives iff eps_k <= Delta_k = E_FN
 Open questions we work on (PI 11-17, in this order):
  (i) NOW, on paper: Jacobi labels. f_J = ln R only if the neighbours are right, and c ~ 4 is unstable (period-2; stable needs
      0 < c(1 - Vs/K) < 2), so the descent guarantee does NOT yet cover step 4. Repair: damping and the error of the one-step estimate.
- (ii) Ground state vs excited eigenstate: theorist subagent, docs/theory/2026-11-17_loop_convergence.md.
+     STEP BACK 11-17 (PI): 1. Verdict: continue, reframed: step 4 is 'estimate phi/psi_T for a fitted power iteration', asked before in three
+     fields. 2. Thought: c f_J is Davidson's diagonal correction in log form [std, Davidson 1975], (I - P) r = f_J is the Jacobi-Davidson
+     correction equation [std, Sleijpen-van der Vorst 1996], and walker forward walking / the mixed distribution gives phi/psi_T exactly with
+     noise [std, Liu-Kalos-Chester 1974; Pilati 1907.00907; SHDMC 0808.3417]; fitting each iterate can diverge unless the fit is a
+     non-expansion [std, Gordon 1995 'averagers'; 2303.08902]. 3. Cheapest decisive check (only on 'now test it'): 6x6 exact tables,
+     exact ln(phi/A) vs c f_J vs (I - P)^-1 f_J, CPU minutes.
+ (ii) Ground state vs excited eigenstate (theorist subagent, docs/theory/2026-11-17_loop_convergence.md; lead re-ran check3, check6):
+     design B with optimal alpha and a perfect copy descends strictly off eigenstates (no cycles); low excited eigenstates are fixed points
+     but unstable (linearised FN map R W has exactly n eigenvalues > 1); NOT from every start: a 6-config start with ground-state overlap
+     -0.214 lands exactly on psi_1 in one round (1e-10 noise escapes in 10). Convergence to some eigenstate needs one missing lemma (orbit
+     avoids guides with a zero next to one-signed neighbours, or a disconnected kept graph). Certificate: any round with E_FN < E_1 (sector).
+     Fixed alpha needs 0 < -alpha <= 1/(E_max - E_var), else a 2-cycle exists. Imperfect copy: limsup(E_var - E_0) <= eps/(1 - rho).
  (iii) Sign copy: the PI with the sign angle (its error enters the same Delta_k budget).
  (iv) Priority C, later research question: training cost as a function of copy quality, counted against the competitor; not computable
       before tests.

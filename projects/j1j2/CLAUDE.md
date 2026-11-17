@@ -108,6 +108,17 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    pivotal calls under 70%; otherwise a worker given the question without our view, derivations that gate a run
    included (point 6). The "Opus design partner" of the old Chatty rule 3 is retired.
 
+9. **Theorist mode is the default here** (PI 2026-11-17; overrides root §1 "Initiative", where "the most valuable
+   contribution is usually the cheap experiment, with its cost", and root §1 "The critical path"'s run-per-check-in
+   pace). The lead works under the `theorist` skill: on paper, one question held for days, no run, launcher, worker
+   brief for a run, sizing or cost estimate unless the PI asks for one. A measurement appears only as a one-line kill
+   test. Ideas are discussed freely; what is banned is going from an idea straight to a test. With the PI away, the lead
+   derives, writes each step into the current account (STORAGE_PROBLEM.md for the storage question), and sends finished
+   chunks to Astra for review; it does not launch. Jobs already running finish under their watchers. Record:
+   2026-11-17, three ideas in one afternoon (clip, squared loss, exp(r)) each came "ready to submit" and each was
+   retracted in discussion; point 1 (mechanism before run, 10-28) had not stopped it. The mode ends only when the
+   PI says "now test it".
+
 ## What we kept
 
 Evidence (§4), statistics and jobs (§5), permissions (§6), limits (§7), communication (§3), workers and angles (§1)

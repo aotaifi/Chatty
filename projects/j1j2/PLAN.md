@@ -700,6 +700,9 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - sign-gap angle (session local_6ef8717c, PLAN_signgap.md): CLOSED 2026-10-29, KILL at stage A (see Dead ends); no jobs.
 
 ## Dead ends (number, run)
+- LOG LOSS NEAR NODES (PI 2026-11-17, firm for every new amplitude fit): no new fit with a log loss on ln|B| unless it is shown log-free near nodes. Cause: d ln|B| = dB/B
+  blows up at the network's own nodes (PLAN.md 104-112, Oct); same term killed D5 and G18 (TRIED_IDEAS). R1' at 8x8 still used it (lead approved; drift):
+  5 near-node rows at 26-73x the decade -9 tangent norm (PLAN_pfaffian 2577). Log-free pair loss L_fix tested only at 4x4 (tax 6.5x lower at 0 hops, 0.77x after 2).
 - Nonlinear spin-pattern feature bank (Test N, finite-weight RBM features, M <= 128) for the round correction: eps^2 0.95-0.98,
   only 2-3% beyond 2-body; the correction is not a spin-pattern function at reachable order (pfaffian_n/grade_result.json).
 - Training the guide on its lattice FN energy (sampled mixed HF force + QGT, 8x8, 2026-10-02): physical E_FN worse by +0.046 total

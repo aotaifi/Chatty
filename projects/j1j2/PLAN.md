@@ -1,7 +1,7 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
 ## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
 Fit the e^r add-on on the frozen network to the Jacobi-corrected target e^{c f_J} (with the Lanczos factor), and test whether the October
-refit failed because of the 1/B term. Done = arms H (add-on) and P vs C (relative vs log loss) graded by the next round's FN energy,
+refit failed because of the 1/B term. Done = arm H (add-on, 2 seeds) graded by the next round's FN energy (P vs C dropped 11-18: 1/B is derived, no run needed),
 STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' + 'HOLD REVERSED'. Status 11-17 late: staging.
 
 ## THE DESIGN (PI + lead 2026-11-17; read first, always together with 'Goal' and '## Motivation' below)

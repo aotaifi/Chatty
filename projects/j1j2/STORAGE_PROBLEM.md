@@ -293,6 +293,8 @@ the formula was never run: rung 2b is first-order only; M-R (10-28) trained a sm
 Same grade and verdict rule as the spec, per arm. Extra reading: P > C beyond scatter supports the PI's 1/B hypothesis for October; H vs P
 says add-on vs full refit. Predictions [own]: P - C > scatter at 50%; H >= 0.5 at 35%. Budget raised by the lead to 10 A40-h (5 H100-h) for
 six fits (P, C, H x 2 seeds).
+SCOPE (PI 11-18): the run is ARM H ONLY (2 seeds, <= 4 A40-h). Arms P vs C dropped: the 1/B blow-up of the log loss is derived on paper
+(d ln B/d theta = (dB/d theta)/B, large wherever B is small), a run does not need to confirm it, and H's frozen base has no 1/B by construction.
 ARM H DATA STEP (lead, 11-17 late, existing data, before the run; features/feat.npy cols l, fJG; la_table of A_0; norb weights):
 add-on target r* = l + 1.307 f_J[G]. Under A_0^2 weights: mean 0, sd 0.0103; rows with |r* - mean| > 0.5 are 3.23M of 15.8M orbits (20%) but
 carry 1.9e-5 of the weight and 32% of the variance (> 2: 0.4M orbits, 1.8e-6 weight, 18%). Under p^2: sd 0.0088, > 0.5 holds 6.8%.

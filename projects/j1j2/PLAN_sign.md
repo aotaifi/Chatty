@@ -791,6 +791,11 @@ Next if pass: paired FN grade CF vs n_3 at 8x8 (~6 A40-h, beyond tonight's ceili
   8x8 round-4 grade (T-SEP stored arm, n_4 vs n_3 paired): grade4 18007736, run dir runs/j1j2/sign_bad/r4/grade4 (-> /scratch), watcher 2464268; gate grade4_gate.py; prediction g_4 1.0e-5.
   2026-11-16 fresh session: waits re-armed; e_0(M64) arm verified QUOTABLE -0.494079(64), chains chi2/dof 0.36; B64 = 2.64e-4 (gate.json, c1 dM -3.44e-4, sigma_d 2.23e-4) fixed before g_1,
    so RESOLVED needs g_1 > 2.64e-4 + 2 sigma(g_1). ETAs: labels ~15:00, fit ~17:00, fn64 ~midnight; grade4 ~16:30.
+- T-BAD10 ROUND 1 RESULT 2026-11-17 (fn64 18007714; runs/j1j2/sign_bad10/r1/fn_net64/{ANALYSIS.md,fn_summary.json}; quotable.py re-run by me on both arms, raw e1 curve read):
+  e_0(M64) = -0.494079(64), e_1 = -0.496019(79) per site, both QUOTABLE (chains chi2/dof 0.36 / 1.20; halves |z| <= 1.96, chi2 p 0.37);
+  g_1 = 1.94(10)e-3 per site, declared alpha -0.170. Branch RESOLVED: g_1 - B64 = 1.68e-3 >> 2 sigma. Prediction g_1 >= 1e-3 (70%) MET by ~9 sigma.
+  Raw curve flat; one c1 block at index ~200 (+4 sigma, tau_int 0.8, fifths p 0.87); c2's last ~100 blocks sit ~5e-4 above its first 200 (fifths p 0.057), which would move
+  g_1 by < 2e-4 if it were drift. Contraction gap_1/gap_0 not computed (8x8 comparison open). Capped at round 1 (lead + PI): no round 2.
 - grade4 RESULT 2026-11-16 (cip 18007736, 6.9 A40-h; r4/grade4/{result.json,gate/delta_quotable.png,ANALYSIS.md}; gate run by me): g_4 = -0.7(1.9)e-5 (quotable,
   4 chains chi2/dof 1.88), weighted +0.4(1.9)e-5: zero within 0.4 sigma, prediction 1e-5 neither confirmed nor excluded (0.9 sigma). sigma 3.7x target: pairing
   decoupled in 3 of 4 chains (rho 0.88/0.54/0.80/0.60, same_post 0.99/0.62/0.73/0.63) after block ~170; the short probe saw only the coupled start. Not extended (lead).

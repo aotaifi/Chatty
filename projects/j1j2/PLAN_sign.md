@@ -752,6 +752,16 @@ Prediction (mine, 55%): in -9..-5 the n_3 miss rate on U flips is >= 2x that on 
 Kill: miss rate on U within 1.3x of stable flips -> near-threshold is not the term; the misses are clear-cut rows the net cannot see -> Astra + a per-row look at
  the largest-bw misses. Pass -> the copy loss is mostly near-ties; report M_E, and the copy is not the blocker for the energy unless M_E stays large ->
  joint-loop / amplitude is the critical path (the PI's 11-16 question). Control: shuffle EL1 within a decade; U-share of misses must fall to U's row share.
+T-NEAR RESULT 2026-11-17 (ws, 84 s; runs/j1j2/sign_bad/tnear/{result.json,REPORT.md,tnear.py}; worker; pooled numbers read by me from result.json; grow_eval
+ reproduced exactly: n_3 M 1.0453130e-3, flip_repro -9..-5 0.215698). MY ERROR: the registered margin |EL1 - alpha| mixes units; the label is sgn f, f = 1 + alpha (EL1 - E_REF),
+ so the margin used is |f|/|alpha| (distance to the threshold in EL1 units); the literal one is in result.json (real_litmargin) and is not used.
+ -9..-5 pooled, n_3 (P, G, W, O alike; Ob ratio 0.90): U (label changes between 0.5 and 1.5 alpha) = 39.7% of flips; miss rate U 0.935(6) vs stable 0.685(9), ratio
+ 1.36(2) (ceiling 1.46 since stable flips are already 69% missed: the 2x bar could not be reached, a registration flaw); U share of the M_I miss mass 0.518(17)
+ (shuffle control 0.414(9), ratio 1.00(2): the control works); margin-weighted R_miss/R_hit 0.39(4) (pass bar <= 0.5).
+ Reading: PARTIAL. Near-threshold rows are a real but secondary term (+10 points of miss mass over chance). The main fact is that the net misses 69% of CLEAR-CUT
+ flips in -9..-5. In margin-weighted units the net holds 57% of the -9..-5 flip mass (ME_hit 7.5e-6 vs ME_miss 5.7e-6) against 34% in M_I units (bw only), so M_I
+ overstates the energy-relevant copy loss by ~1.6x (|f|/|alpha| as the energy weight is first-order and UNVALIDATED against an FN energy).
+ Next (registered kill branch for the clear-cut part): Astra on the question without my view + a per-row look at the largest-bw clear-cut misses.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

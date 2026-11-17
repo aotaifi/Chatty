@@ -743,6 +743,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Storing the improved amplitude at 8x8 failed because fitting log B blows up near the nodes; we now work the fix out on paper before any run.
-- NEXT (open, high): Derive whether storing a small bounded correction on a frozen network (B_k times e^r) behaves near the nodes the network itself moves.
-- NEXT (open, high): PI decides whether to cancel the queued clipped-guide energy test (it patches the wrong term).
+- STATUS (in progress, high): The 8x8 storage failure is understood: next to the fixed-node wall the network makes small amplitudes by cancelling its symmetry copies, and a log fit is hypersensitive exactly there.
+- NEXT (open, high): Work out on paper how the wall moves when the sign is updated, since the rows that move are the fragile ones; the frozen-base form is clean only while the sign stays put.
+- NEXT (open, high): PI decides whether to cancel the queued clipped-guide energy test (it patches the step size, which cannot fix this).

@@ -78,6 +78,40 @@ REVIEW 11-17 #2 (Astra cj-76fc73751b2d, /scratch/a/A.Otaifi/astra/ratio_review/A
 - literature: the frozen-base FN ratio e^{J~} = Psi_FN / Phi_T with fixed antisymmetric Phi_T is published: Reboredo-Hood-Kent 0808.3417 Sec. III.2
   Eqs. (25)-(26). Close: Sorella cond-mat/0009149 (r_x psi^f(x)); Pilati-Inack-Pieri 1907.00907 (A+ = sqrt(A phi_0), log contraction 1/2);
   Kochkov-Clark 1811.12423 (supervised loop); 2303.08902 (self-learning power method). No exact match for Lanczos-sign + stacked heads found.
+DESIGN OPEN (i), JACOBI LABELS (11-17, with the PI; on paper):
+- [exact, Astra] R_x = e^{f_J[A](x)} sum_kept w_xy R_y, w_xy = |H_xy| A_y / K_A(x) (sums to 1). Write u = ln R and P u (x) = ln sum_kept w_xy e^{u_y}.
+- [own, linearised in u - mean] f_J(x) ~ u_x - (P u)_x = ((I - P) u)_x: the one-step label sees the correction only through its deviation
+  from the weighted neighbour average. A uniform u gives f_J = 0.
+- [own] For an eigenmode of P with eigenvalue mu: u = f_J / (1 - mu), so the right c for that mode is 1/(1 - mu): smooth modes (mu -> 1) need
+  c -> inf, the checkerboard mode (mu = -1) needs c = 1/2. A single scalar c fits one band only (c ~ 4 <-> mu ~ 0.75: the 6x6 correction is
+  mostly smooth). Iterated, the error per mode is multiplied by 1 - c(1 - mu): stable iff 0 < c(1 - mu) < 2, i.e. c < 1 if rough modes are
+  present (Astra's two-row case is mu = -1). This is damped Jacobi on a linear system [std: Jacobi/SOR theory]: a smoother for rough modes,
+  too slow for smooth ones.
+- [conj, ~55%] Consequence: storing r = c f_J cannot be right for all scales. The repair is to store the solution of (I - P) r = f_J (a linear
+  solve on the configuration graph; the pool loss's pair terms (e_x - e_y)^2 are of this form) rather than a rescaled label. Killed if the
+  6x6 exact correction ln(phi/A) is matched by a scalar c f_J to within its bulk scatter at every scale.
+- Head constraint [exact]: the head must be a function of the configuration x alone; if it read neighbour amplitudes, the guide ratio at
+  each neighbour would need two more hops and the one-level cost is lost.
+STEP-4 REVIEWS 11-17 (Astra cj-3e0bd21cd52c -> /scratch/a/A.Otaifi/astra/step4_review/ASTRA_step4.md; Opus reviewer -> OPUS_step4.md, opus_checks/;
+lead re-ran head_test.py seeds 1-2 and recomputed the 40-seed table from sweep40.txt: matches, a2-unweighted beats no-head 24/40 vs 23 quoted):
+- accepted (both, exact): the (a2) loss as written is zero at u = ln(phi/G), G = |psi'|, not at the stored r = ln(phi/A_k); it drops the Lanczos
+  factor ell = ln(G/A_k) that PLAN step 4 includes. Corrected residual F_x = ln[a_x A_k(x) e^{r_x}] - ln sum_kept |H_xy| A_k(y) e^{r_y},
+  a_x = D_x + Vs_G(x)/G_x - E. Literal loss: next-round E_FN worse than no head in a 6-site toy, 3/3 seeds.
+- accepted (both): 'blind directions match' is WRONG. The residual is -ln[1 - (E_L^FN - E)/(D - E + V)], a fixed-sample variance of the
+  frozen H_FN: on smooth modes loss ~ nu^2, energy ~ nu (toy slope 0.50-0.52); Astra's 4-state case: loss O(eps^2), energy cost O(eps).
+  F1 concerns violating edges and is an upper bound, not the FN energy change.
+- accepted: E must equal E_FN for consistency (minor in the toy: dE 0.02 -> <= 3e-4); no spurious nonzero-loss stationary points in
+  unrestricted log amplitudes (Collatz-Wielandt), but none of this survives a finite head, sparse rows (toy: 15 near-node rows, three starts,
+  equal loss, rms error 10/164/91) or a disconnected kept graph.
+- both recommend (d) = TRIED_IDEAS B10/B11: minimise the Rayleigh quotient of the FROZEN H_FN[psi'_k] over the head, chi = S' A_k e^{r}:
+  exact minimum phi_k, energy-matched conditioning, no prescribed E, no 1/B. Astra 70%; Opus 55% (with the corrected residual, Huber-clipped,
+  on capped near-node rows; forward-walking bulk anchor later). Round acceptance certificate (both): E_var[chi] below the round's E_FN.
+- toy table (6-site disordered ring, linear head, 40 seeds; median next-round E_FN deficit vs perfect copy / beats no head): no head 0.014/-;
+  direct phi^2 0.011/25; a2 unweighted 0.033/24; a2 phi^2-weighted 0.012/24; a2 pi-weighted 0.014/26; B10 Rayleigh 0.017/31; VMC head 0.010/34.
+  Robust only: literal loss worse than no head; unweighted a2 worst median. Rest within seed spread.
+- lead's adjudication: withdraw (a2) as main loss; (d) B10 frozen-H_FN Rayleigh becomes the leading candidate for step 4, pending the PI.
+  Open for (d) at 8x8: sampling noise of its gradient near nodes (C15 failed with a moving guide; frozen guide gives finite variance per Tim
+  seq72-74) and B11's unfinished 8x8 run (OOM).
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

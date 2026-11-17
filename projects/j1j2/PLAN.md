@@ -730,6 +730,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off via `MESSAGE_BOARD_lead_writeup.md`.
 
 ## Cockpit
-- STATUS (in progress, high): One loop round on the strong 8x8 network lowers the fixed-node energy by 1.2e-5 per site (5 sigma), 4-7x below prediction; the cause is found: the fit itself creates a few near-node configurations that dominate its loss.
-- NEXT (in progress, high): Redo round 1 with a fit that may not move any one configuration too far (on paper it stores 0.27 instead of 0.02 of the target), check the energy gain triples, then round 2; after that, a joint sign-and-amplitude loop test.
-- NEXT (in progress, medium): Sign side: 10x10 bad-start sign loop round 1 and 8x8 round 4 running.
+- STATUS (in progress, high): Round 1 gained 1.2e-5 per site, 4-7x short; the fit was moving the nodes. A clipped guide stores 0.24 of the target on CPU (bar 0.12); its energy test is queued.
+- NEXT (in progress, high): Energy test of the clipped guide (start ~19:00 today); if it beats round 1 by 2 sigma, round 2 and then the joint sign-and-amplitude loop design to the PI.
+- NEXT (open, medium): Pick the sign flip rule for the joint loop: the current rule mostly reverses signs; the sign angle recommends a neighbour-based rule (first-order gain ~2-3e-5 per site).

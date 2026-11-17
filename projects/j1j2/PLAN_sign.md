@@ -2013,3 +2013,57 @@ ASTRA REVIEW of step 5 (cj-ecaccd367a13, /scratch/a/A.Otaifi/astra/step5_review/
 - Question held: why the copy of good C-free flips stalls at ~0.4-0.5, and why at fixed balance t it falls with the old net's confidence, also for the cold-started n_3.
 - Ceiling (my default): rung 3 at most one run at a time, 6 A40-h total, run by a worker. Not alone: deletions, cancelling others' jobs, the paper, messages beyond the lead.
 - Each rung: derivation -> Astra review -> rung-2 number written before computing -> account.
+
+## STEP 6 (takeover, rung 1 -> rung 2): what the old net's confidence measures. Written and REGISTERED before any number.
+Notation: sigma(x) = old sign relative to Marshall (= nrel; R.marshall_pm(keys)*nrel = S). All bonds H_xz = +JB/2 > 0. absr_xz = A(z)/A(x).
+J1 exchange: M_x M_z = -1; J2 exchange: M_x M_z = +1. Weights w_xz = HW_b absr_xz times (+1 for J1, -1 for J2).
+- [exact] In the Marshall frame the C-free label is a zero-temperature majority update of sigma on the configuration graph:
+  sigma'(x) = sgn( sum_z w_xz sigma(z) ), ferro on J1 links and antiferro on J2 links, weighted by neighbour amplitude.
+  Proof: bond xz is kept iff S_x S_z = -1 (all H > 0) iff w_xz sigma_x sigma_z > 0. Hence sigma_x sum_z w sigma_z = (K - Vs)/A = -E2,
+  and C-free flips iff E2 > 0.
+- [exact] Split by which neighbours are already anti-Marshall:
+  sum_z w_xz sigma(z) = Wt(x) - 2 Wm(x).
+  - Wt = sum_z w_xz is the Marshall-pure balance: J1 minus J2 neighbour amplitude. It depends on the amplitude only.
+  - Wm = sum over z with sigma(z) = -1 of w_xz is the defect term.
+  - Every row's Wt comes from absr (r1/data chunks). Then Wm = (Wt + sigma(x) E2)/2 for every row, with no network.
+- Two kinds of flip:
+  - (A) nucleation: sgn Wt already equals the new sign, so the pure J1/J2 balance alone demands it.
+  - (B) defect-driven: sgn Wt = old sigma(x), so the flip happens only because neighbours are already anti-Marshall. These are domain walls moving one exchange.
+- M6 [conj, 45%].
+  - The net's logit is smooth over exchange moves, so a domain that grows by one exchange is a shift of the logit's level set. That is a small change, which a cold start also learns.
+  - A nucleation is an island inside a uniform region, set by a near-tie of the J1/J2 sum. A smooth net cannot place it.
+  - |l_2| measures distance from the old net's level set, i.e. from existing anti-Marshall domains. So confident means nucleation-type, which means missed.
+  - This needs no warm start, consistent with n_3.
+  - Alternative [30%]: the reverse. Nucleation is an amplitude-only function and better learned, while walls need the old net's domain positions.
+  - [25%]: no difference.
+- Rung-2 predictions (panel hs, band -9..-5, C-free flips; CF and n_3 cached logits):
+  - P6a: median |l_2| of (A) >= 1.5 x that of (B).
+  - P6b: at matched t (step-5 bins, count-weighted), copy(B) - copy(A) >= +0.15 for both CF and n_3.
+  - P6c: adding the class indicator and d = 2 Wm / Sx to the step-5 logistic model (t, |l_2|, decade, log Sx) shrinks |l_2|'s coefficient by >= 50% (CF from -1.23, n_3 from -0.53).
+  - Kill M6: P6b < +0.05 or reversed, or P6c shrinks |l_2| by < 25%.
+  - Control: the identity Wt - 2 Wm = -sigma E2 must hold to 1e-9 on the roots, with Wm recomputed from table neighbours. A broken Wt (J2 sign not flipped) must fail it.
+STEP 6 RESULT (2026-11-17 ~21:00; CPU, existing files; runs/j1j2/sign_bad/step6/{step6.py,step6.json,step6.log})
+- Controls pass.
+  - The identity Wt - 2 Wm = -sigma E2 holds on the roots to 1.3e-13; the broken version (J2 not sign-flipped) gives 828.
+  - Marshall convention: J1 exchange flips the Marshall sign on 100% of bonds, J2 keeps it on 100%.
+- [measured, new] The Marshall-pure balance Wt/Sx is POSITIVE on every band row.
+  - Flips: q10..q90 0.11..0.34. Keeps: 0.19..0.55.
+  - The amplitude alone favours Marshall everywhere, so no nucleation flip exists.
+  - Every anti-Marshall sign is held up by anti-Marshall neighbours: d = 2Wm/Sx is bimodal for keeps (median 0.03, q75 0.51).
+  - My class split therefore reduced to flip DIRECTION:
+    - A (341 of 342) = restoring flips, -1 -> +1: an anti-Marshall row whose anti-Marshall neighbours are too few.
+    - B (767 of 771) = new violations, +1 -> -1: an anti-Marshall domain grows.
+- [measured] Copy by direction at matched t:
+  - CF: restoring 0.29, growing 0.48, matched difference +0.19.
+  - n_3: 0.30 vs 0.62, +0.32.
+  - In every t bin, growth is copied better.
+- M6: KILLED as the explanation of the confidence effect.
+  - P6a reversed: median |l_2| is restoring 0.17, growing 0.24.
+  - P6c: adding the class and d makes the |l_2| coefficient LARGER, not smaller: CF -1.23 -> -1.38, n_3 -0.53 -> -0.69.
+  - Diagnosis: the registration assumed Wt changes sign in the band (nucleation exists); it does not. I did not check that premise before registering.
+  - The decomposition is exact and stands. The confidence effect is not "distance from an existing domain"; it holds within each direction.
+- What stands:
+  - (i) The C-free step is a zero-temperature majority update with J1-ferro and J2-antiferro links in the Marshall frame.
+  - (ii) In -9..-5 every Marshall violation is sustained by neighbouring violations (domains), never by the amplitude's own J1/J2 balance.
+  - (iii) The net copies domain growth at about 2x the rate it copies domain shrinkage.
+  - (iv) The confidence effect is open.

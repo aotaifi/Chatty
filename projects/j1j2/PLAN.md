@@ -4,8 +4,12 @@ Fit the add-on r on the FROZEN network to the fixed-node correction (target l + 
 then existing data, then a run. Paper: done 11-17 (frozen base -> no 1/B in the gradient; the 1/B blow-up of a log fit of B itself is DERIVED,
 never to be re-tested by a run, PI 11-18). Existing data: done ('ARM H DATA STEP': target ~0 on the bulk, O(1-7) excursions on 20% of orbits
 holding 2e-5 of the Born weight). Run: arm H only, 6x6, frozen A_0 x trained ViT add-on, 2 seeds, <= 4 A40-h, graded by retention_N
-(STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' grade + 'SCOPE'); pass >= 0.5, kill both < 0.25. Status 11-18 00:10: staging stopped at a safe
-point for a session clear, nothing submitted; see runs/j1j2/consol_6x6/STAGING_STATUS.md. The lead reads the launcher against this spec.
+(STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' grade + 'SCOPE'); pass >= 0.5, kill both < 0.25. Status 11-18 00:30: staging stopped at a safe
+point, nothing submitted (runs/j1j2/consol_6x6/STAGING_STATUS.md, code 2e18a73: consol_fit/lib/tests/grade/verify_target.py). Verified: target
+ordering (max dev 3.0e-9, shifted control rms 4.25). Open before submission: (1) zero-init: the ViT head sum log cosh(.) has zero Jacobian at
+zero last layer; worker added a 60-parameter output gate w_out (init 0) -> lead to confirm; (2) GPU dry run + step time; (3) budget: ViT at
+B 8208 ~38 s/step on H100 + 813 s table -> 2 H100-h allows only ~65 steps per fit, likely too few: size steps from the learning need, not
+the old cap (lead decides spend); (4) grader break test running (consol_6x6/grade_break/grade.log; pass = A1 1.000, A0 0.000).
 Side checks (CPU, running detached on th-ws-7010m40/m41/m42, report only if they change arm H): rangelimit_6x6/moving/ (TEACHER CHECK A1),
 rangelimit_6x6/node_geom/ (NODE-GEOMETRY CHECK). Pending PI decision: the outside review's three rule changes (delta 11-18 00:00).
 

@@ -115,3 +115,9 @@ read only, in /scratch/a/A.Otaifi/laqx_review; no LaQX code executed). VERDICT: 
 Capability worth knowing (lead's call, not a recommendation to act now): laqx/networks/cnn_mps.py is the architecture of the 10x10 record
 -0.4976939(2) (arXiv:2603.14425, our bar for open question A); MIT; no trained weights released (repo has none; the paper names none).
 Training it ourselves = 15000 MARCH steps x 4096 samples at 10x10, GPU-h unstated.
+
+## arXiv:2611.20506v1 review (2026-11-17; lead's request for the PI; full text read, /scratch/a/A.Otaifi/tooling_review_2611.20506/paper.txt). VERDICT: no.
+Yamamoto & Morita, finite-temperature Krylov (FTiTL, FTiTK) built from Trotterised exp(-eta H) instead of H; full Hilbert-space state vectors
+with typicality random vectors, transverse-field Ising, N <= 32; no code released (text: none; acknowledgements l.~903). Cost reported only as
+local-operator-application counts (FTiTL ~0.5x FTLM at C/N rms <= 1e-2, N=32), no wall time or GPU. Nothing maps onto our sampled 10x10 stack
+(2^100 configurations, no state vectors), our exact 6x6 tables already have their ground state, and we need no finite temperature.

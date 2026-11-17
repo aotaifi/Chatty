@@ -322,6 +322,11 @@ post-Lanczos correction v = u - l in the D-norm on SIGN-ONLY features: blocked J
 same counts averaged over x's neighbours (one hop of the sign only, no amplitudes). Pass: residual D(v - fit)/D(v) <= 0.5 (a node-bond-input
 network can carry a large part of the correction without amplitude hops -> design it on paper). Kill: >= 0.9. Between otherwise.
 Prediction [own]: residual 0.6-0.85, pass at 25%. Break tests: R = v gives 0, a random feature column ~1.
+NODE-GEOMETRY RESULT (11-18, worker, lead re-read node_geom/node_geom.json; script rangelimit_nodegeom.py 598ad6c): BETWEEN by the written rule
+(0.5 < r < 0.9). Residual D(v - fit)/D(v) on v = u - l: x-counts 0.956, + neighbour means 0.940, all 44 with squares/products 0.849 (CV 0.858);
+f_J alone 0.121; (iii) + f_J 0.088. Breaks: R = v 0, random 0.99995, half-flipped sign worse at every level (0.947 vs 0.849). Reading: the sign
+pattern alone carries ~15% of the post-Lanczos correction; the rest needs the network's own amplitude ratios (f_J). For arm H: a spins-only
+add-on must rebuild those ratios to learn the target. Side check, closed; does not change arm H.
 B10 6x6 HARNESS (11-17, staging worker; built and CPU-tested, NOT submitted; runs/j1j2/b10_6x6/, code ansatz/code/b10_6x6.py): tests (a)-(d) pass
 (clipped-r* head reproduces rung 2's rho = 1.000005 exactly; zero head bit-identical; exact frozen-H_FN gradient vs finite differences 1.2e-8,
 broken gradient 237; arm X loss 8.6e-16 at ln(p/G) vs 3.1e-5 at ln(p/A_0)). LATE state proposal: pfaffian_r6k3/k3/tab_th/tab_t6/round_1

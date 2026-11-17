@@ -9,11 +9,13 @@ Round k:
     is safe but gains ~1/N of the optimal step.)
  2. Fixed node with guide psi'_k, sign AND amplitude -> phi_k. Cost: one level (two-hop ratios; 5.4x for the PP at 6x6). Not stored.
  3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle).
- 4. Amplitude (CONSENSUS 11-17, lead 70 / Astra 75 / Opus 70%, pending the PI's 'now test it'): fit a new head r_k by minimising the
-    Rayleigh quotient of the FROZEN H_FN[psi'_k] over chi = S' A_k e^{r} (TRIED_IDEAS B10); corrected log-residual only as a diagnostic;
-    kill line and control in STORAGE_PROBLEM 'STEP-4 CONSENSUS'. Superseded wording: fit a new head r_k ~ ln|phi_k / A_k|, log loss on r only, A_k frozen (no moving 1/B). Labels: the Jacobi estimate
-    (Lanczos part ln|1 + alpha(E_L - E)| + one-step FN part f_J[psi']), damped. Walker-density labels (Pilati et al. 1907.00907) = a
-    different direction, NOT started.
+ 4. Amplitude (11-17, PI away, goal run): B10 was NOT run: rung 2b failed (an RBM head stores 2-3% of the correction) and the sampled B10
+    gradient is unsampleable at 6x6 (M_req 5.2e9). Rung 2 found the correction is an explicit formula (exact 6x6, fixed sign s2):
+    A_{k+1} = A_k |1 + alpha(E_L - E)| e^{c f_J[G]}, c ~ 1.3, keeps 96-98% of each round's FN gain over 3 rounds. PROPOSAL v2 (Astra-reviewed,
+    for the PI): docs/theory/2026-11-17_next_method_proposal.md: freeze the network, use the formula as teacher (alpha, c by energy search),
+    consolidate a full network with a frozen-relative pair loss, accept only if E_H[chi] < E_FN[g] (budget ~5% of a round's gain). Next:
+    rung-2 check with moving signs and energy-searched c (CPU); a 6x6 consolidation run only on the PI's 'now test it'.
+    Superseded: head r_k by frozen-H_FN Rayleigh (B10 consensus 11-17); head r_k ~ ln|phi_k/A_k| by log loss.
  5. A_{k+1} = A_k e^{r_k}. Optional, every few rounds: merge into one network by the relative-square loss.
 End: one final Lanczos step + fixed node for the reported energy; never more.
 On paper (STORAGE_PROBLEM.md CURRENT, 'LOOP FIXED POINTS'): with a perfect copy the FN energy falls every round and resting points are exact
@@ -781,6 +783,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The 8x8 storage failure is understood: next to the fixed-node wall the network makes small amplitudes by cancelling its symmetry copies, and a log fit is hypersensitive exactly there.
-- NEXT (open, high): On paper: the frozen-base form now looks sound, so derive whether the large fixed bond weights it inherits at near-node configurations can be bounded without biasing the energy.
-- NEXT (open, high): PI decides whether to cancel the queued clipped-guide energy test (it patches the step size, which cannot fix this).
+- STATUS (in progress, high): The fixed-node correction of one round is an explicit formula (a Lanczos factor times about 1.3 Jacobi steps) that keeps 96-98% of each round's gain on 6x6; small learned add-ons cannot hold it.
+- NEXT (open, high): PI reads the reviewed proposal (store the formula by refitting the whole network, accept a round only if it lowers the energy) and decides on a 6x6 consolidation test.
+- NEXT (open, medium): On existing 6x6 data: check the formula with moving signs and with its coefficient chosen by energy, not by the exact answer.

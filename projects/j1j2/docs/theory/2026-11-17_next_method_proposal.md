@@ -1,55 +1,49 @@
-# Next method for the storage step (lead, 2026-11-17; theorist mode; DRAFT until Astra's review is in; rounds 2-3 in)
+# Next method for the storage step (lead, 2026-11-17; theorist mode; v2 after Astra's review, ready for the PI)
 
 Organising question: how to carry one round's fixed-node improvement into the next round at one-level walker cost.
+Review: /scratch/a/A.Otaifi/astra/next_method_review/REVIEW.md (gpt-6-astra, cj-b0203391dc9d); adjudication in STORAGE_PROBLEM.md
+'NEXT-METHOD REVIEW'. v1's retention law (tax/gain = eps^2 in the D-norm) was wrong and is removed.
 
-## 1. What failed, and why (established today)
-- Learned small heads: an RBM factor holds 2-3% of the round's correction in the energy norm at first order (rung 2b, exact
-  full 6x6 table), below a random vector; the records already said so (M-R KILL 10-28: ~6% stored; Test L: two-body features leave 97%).
-- Log-loss refit of the whole network (R1', 8x8): the near-node rows are small because the 256 symmetry copies cancel
-  (kappa ~ 0.005); |grad ln B| ~ 1/kappa (corr -0.93) puts those rows outside the linear region of any bulk-sized step.
+## 1. What failed (established today)
+- Small learned heads (RBM factor): 2-3% of a round's correction stored (rung 2b, exact 6x6); records agree (M-R KILL 10-28, Test L).
+- Log-loss refit of the whole network (R1', 8x8): near-node rows are small because the 256 symmetry images cancel (kappa ~ 0.005);
+  |d ln B / d theta| ~ 1/kappa puts them outside the linear region of any bulk-sized step.
+- Sampled frozen-H_FN Rayleigh on the head (B10 pilot): population M_req 5.2e9 vs 1.5e4 estimated from 4096 draws (missed heavy tail).
 
-## 2. What the data say the correction IS (rung 2, exact 6x6, design B round 1)
-With the Lanczos guide G = A |1 + alpha(E_L - E)| (sign s2, alpha -0.10) and p its fixed-node state, u = ln(p/A):
-    u  ~  l + c f_J[G],   l = ln|1 + alpha(E_L - E)|,   f_J[G] = ln[K_G / ((H_xx - E') G + V_s,G)],   c = 1.31   (a = 1.01 on l)
-leaves eps^2 = 0.0033 (5-fold CV 0.0034) in the blocked-pair D-norm; storing exactly this gives 98.5% of the fixed-node gain
-(E_FN 6.511e-6 vs 6.285e-6 /site for the perfect copy). f_J alone: 0.85. [measured, existing data]
-Reading [own]: keep the Lanczos amplitude factor as it is, and add about 1.3 Jacobi steps of the FN equation on that guide.
-Nothing needs to be learned inside a round.
+## 2. What the data say the round's correction is [measured, exact 6x6, fixed oracle sign s2]
+G = A |1 + alpha(E_L - E)| (Lanczos guide), p = FN state of G, u = ln(p/A), l = ln|1 + alpha(E_L - E)|,
+f_J[G] = ln[K_G / ((H_xx - E') G + V_s,G)] (one Jacobi step of the FN equation, E' = E_FN[G]).
+    explicit teacher:  A_{k+1} = A_k |1 + alpha_k (E_L - E_k)| e^{c f_J[G_k]},  c = 1.307
+Separate FN solves: this teacher keeps 98.07% (round 1) and 96.27% (round 2) of each round's FN gain, E_FN 2.09e-5 -> 6.57e-6 -> 3.32e-6
+/site (ceilings 6.29e-6, 3.19e-6). Refitted c: 1.31, 1.38, 1.58 (rising). The scalar c f_J captures 86-88% of the post-Lanczos correction.
+Certificate (section 4c) for the teacher itself: E_var[A_{k+1}] < E_FN[G_k] by 7.45e-7 and 1.70e-7 /site = 5.1% and 5.0% of the round's gain.
+Not shown: moving Lanczos signs (design B step 3), any network storing it, any size other than 6x6.
 
-## 3. The real problem is cost
-A_{k+1}(x) = A_k(x) |1 + alpha_k(E_L(x) - E)| exp(c f_J[G_k](x)) needs A_k at two hops (E_L at x: one hop; f_J[G_k] needs G_k at
-neighbours: two hops). Evaluated directly, k rounds need 2k hops: cost ~ d^{2k} per amplitude. [exact counting]
+## 3. Cost
+A_{k+1} at x needs A_k on the two-hop neighbourhood of x; k nested rounds need radius 2k (a naive recursion ~ d^{2k} work).
+So the teacher must be consolidated into a network, not nested.
 
-## 4. Proposal: explicit round + consolidation
- (a) Round k: the explicit formula above is evaluated only as the TARGET of the consolidation, on a fixed set of configurations, at
-     two hops of the current base B^(k) (two-swap ratios; PLAN l.512: a constant factor, 5.4x for the PP at 6x6). Walkers never evaluate
-     it: they use B^(k+1) after consolidation, plus design B's one Lanczos step.
- (b) Consolidation after each round (or every second round): fit a FULL network B^(k+1) (same class as B_0) to the explicit state
-     A_{k+1} on fixed configurations, with a loss whose 1/B is a fixed weight: relative square ((|B| - T)/T)^2 or the frozen-H_FN
-     Rayleigh quotient. Derived 11-17: the relative-square residual is linear in |B|, so the 1/kappa of cancelling rows enters as a fixed
-     weight, not as the log's curvature that made R1' overshoot. Then the next round starts from B^(k+1) at one hop.
- Why not learned heads: section 1. Why not nesting: section 3.
+## 4. Proposal (corrected)
+ (a) Frozen teacher. At round k freeze the stored network snapshot B_k (state psi_k = S_k |B_k|), build the Lanczos guide g_k and evaluate
+     tau_k = F_k[B_k] (the formula of section 2) on a fixed configuration set, at two hops of B_k. alpha_k AND c_k are chosen by 1-D energy
+     searches, never by fitting to p (p is not available outside the 6x6 table). This defines a fitted iteration B_{k+1} = Pi_k F_k[B_k];
+     its errors compound (z_{k+1} <= L_k z_k + eta_k), so acceptance is per round (c), not by a contraction claim.
+ (b) Consolidation: fit a full network chi_k (same class as B_0, normalised) to tau_k with the frozen-relative pair loss
+         L = sum_{blocked b = (x,y)} h_xy T_x T_y (t_x / T_x - t_y / T_y)^2,   t = |B_theta|, T = tau_k (frozen)
+     plus a normalisation term (t = 0 is otherwise a minimiser). No moving 1/B in its gradient. Each blocked edge is drawn from its
+     bulk end (proposal ~ h_xy (T_x^2 + T_y^2)); then a matched near-node edge contributes O(delta^2) to the gradient's second moment,
+     not O(delta^2/kappa^2) as with Born row sampling. Prior art for (a)+(b): SWO (1811.12423), Ledinauskas-Anisimovas 2307.15521.
+ (c) Acceptance certificate (Astra eq. 10, exact, sufficient): accept chi_k only if E_H[chi_k] < E_FN[g_k]. Then the next Lanczos + FN step
+     descends. On existing 6x6 data the teacher leaves consolidation ~5% of the round's gain as variational-energy budget.
 
-## 5. What is assumed, and how each would be killed
- A1. The two-term formula stays accurate in later rounds. RUNG 2 PASSED (11-17, rounds23/rounds.json): applying it exactly with c = 1.307,
-     rounds 2 and 3 refit to eps^2 0.0015 and 0.0039 (CV 0.0015, 0.0040), a ~1.0, c 1.38 and 1.58; the explicit states keep 98.1% and
-     96.3% of each round's FN gain (E_FN 2.09e-5 -> 6.57e-6 -> 3.32e-6 /site). Open: c rises. Reading [own, conj 60%]: f_J is one Jacobi
-     step of the FN equation; if the error left after the Lanczos factor decays under Jacobi with factor rho per step, the full correction
-     along a mode is f_J/(1 - rho), so as the bulk converges the remainder sits in slow modes and the best c tends to 1/(1 - rho_slow).
-     Prediction: c saturates (does not diverge) and eps^2 grows slowly; kill: eps^2(ii) > 0.05 or the explicit state stops lowering E_FN
-     within the first 5 rounds. Consequence for (a): c is refitted per round on the consolidation set (one scalar, cheap), not fixed.
- A2. Consolidation with a fixed-weight loss stores A_{k+1} without the R1' failure. Open on paper: the MEASURE of the loss. With Born
-     weights T^2 the relative square becomes the plain square and under-weights the near-node rows; with flat weights the fixed 1/T^2
-     factors are heavy-tailed, and the B10 pilot just showed what a heavy tail does to a sampled gradient (frozen-H_FN Rayleigh on the
-     Lanczos guide: population M_req 5.2e9 while the 4096-draw estimate said 1.5e4). The measure must be fixed on paper (candidate: the
-     blocked-pair D-norm of the M-R law, which is what predicts retention) and its tail checked on existing data before any run. Kill (needs a run, the PI's 'now test it'): on 6x6,
-     consolidation keeps < 70% of the round's gain, or the near-node rows dominate the fit (weights ~ 1/T^2) so the bulk does not move.
- A3. The fitted-power-iteration loop stays stable under consolidation error: it improves while the consolidation error per round is below
-     that round's gain (eps_k <= Delta_k; theorist note 2026-11-17).
- A4. 8x8 transfer: the 8x8 Lanczos factor is tame under |B_0|^2 (rung-2 8x8: 0 of 1e5 rows with f < e^-4.88), so the formula's
-     dangerous rows are rarer there than at 6x6; the near-node cancellation diagnosis (kappa) is 8x8's own.
-
-## 6. Literature anchors (from today's reviews)
- c f_J is a Davidson-type diagonal correction; the explicit round is a projector step; consolidation is fitted power iteration (needs a
- fit that does not amplify errors: Gordon 1995 'averagers'; arXiv 2303.08902); refitting to the FN state: self-healing DMC
- (0808.3417), with a biased-node warning (2609.01301).
+## 5. Assumptions and kills
+ A1. Teacher quality holds with energy-searched c and moving signs. Kill (paper + 6x6 tables, CPU, rung 2): with c from a 1-D E_FN
+     search and S_{k+1} = S_k sgn[1 + alpha(E_L - E)], retention < 90% or the certificate margin < 0 in any of rounds 1-3.
+ A2. A full network realises the teacher within the ~5% budget under loss (b) with an affordable gradient. Open; needs a run (PI's 'now
+     test it'). Kill: on 6x6, E_H[chi_1] >= E_FN[g_0] after the declared budget, or M_25% (Astra eq. 23) of the pair-loss gradient along the
+     SR direction exceeds the sample budget. Number to beat: the M-R heads kept ~6% of a gain; the certificate needs ~95%.
+ A3. c stays bounded. Reading [own, conj 55%]: one Jacobi step undershoots slow modes, so c ~ 1/(1 - rho) on the current residual; conditional
+     (fixed-P single mode), not a measurement. Kill: energy-searched c grows without bound or the frozen-mode factor |1 - c(1 - rho)| >= 1.
+ A4. 8x8 transfer: no argument yet (a rare Born tail does not bound the gradient's second moment). Needs its own estimate before any 8x8 run.
+ Known failure mode from the literature: repeated projection into an imperfect class can stall at an error floor or converge to a wrong node
+ (self-healing DMC, 2609.01301); the per-round certificate is the guard.

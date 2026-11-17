@@ -251,6 +251,23 @@ FN check of (ii): tax/gain 0.026 and 0.029. Explicit states (dE/site): E_FN[s2 A
 98.1% of the round's gain kept), E_FN[s2 A_2] 3.320e-6 (ceiling p_1 3.194e-6: 96.3%), ceiling p_2 2.074e-6. Optimal alpha -0.10, -0.10, -0.075.
 Breaks: R=u 0, R=0 1, random column 1.0000. Caveat [own]: c rises (1.31, 1.38, 1.58); at that pace round 4 leaves the +-30% band, and f_J alone
 needs c 2.0 then 4.4: the Jacobi term's optimal weight grows as the state nears the FN fixed point. Not a kill under the written rule.
+NEXT-METHOD REVIEW (Astra gpt-6-astra xhigh, cj-b0203391dc9d -> /scratch/a/A.Otaifi/astra/next_method_review/REVIEW.md, table_audit.json) and
+ADJUDICATION (lead, 11-17). First invalid implication (99%): 'eps^2 in the D-norm => tax/gain = eps^2'. ACCEPTED, my error: the M-R 'law'
+(mr_residual.py l.226-228) is an empirical calibration of C(error)/C(no copy) on two poor copies (retention 4.6%, 5.9%), not an identity; D is
+the quadratic part of a trial-vector upper bound, and the rebuilt FN energy moves at FIRST order (Astra eq. 4). Measured on our tables:
+tax/gain / eps^2 = 4.7, 18.1, 7.4. The retention numbers stand as separate FN solves (98.5/97.4/97.1% for the fitted (a, c); literal a=1,
+c=1.307: 98.07%, 96.27%). Also accepted: (a) rounds23 is a FIXED-oracle-sign (s2) amplitude surrogate; design B's moving Lanczos signs
+(S_{k+1} = S_k sgn[1 + alpha(E_L - E)]) untested; (b) refitting c needs p labels = circular; c must come from an energy search like alpha;
+(c) the 1/(1-rho_slow) reading is conditional (D uses blocked edges, Jacobi kept edges); scalar c f_J captures 86-88% of the post-Lanczos
+correction, not 99.7%; (d) literal log-D loss brings back the moving 1/B; the frozen-relative pair loss sum_b h T_x T_y (t_x/T_x - t_y/T_y)^2
+does not, needs a normalisation, and its sampled moment is O(delta^2) only if each blocked edge is drawn from its bulk end; (e) A4 (8x8
+transfer) unsupported: a rare tail in Born weight does not bound the gradient's second moment. Prior art: SWO (Kochkov-Clark 1811.12423)
+and Ledinauskas-Anisimovas 2307.15521 (J1-J2: frozen network -> one-hop explicit target -> full-network fit, accept on energy decrease);
+self-healing DMC can converge to a wrong node (2609.01301). New is only the FN-Jacobi teacher.
+CERTIFICATE ON EXISTING DATA (lead, from rounds.json + rangelimit_6x6, fixed sign s2; Astra eq. 10: accept a stored chi_k only if
+E_H[chi_k] < E_FN[g_k]): the literal explicit teacher passes it by a margin E_FN[G_k] - E_var[A_{k+1}] = 8.683e-6 - 7.938e-6 = 7.45e-7 (round 1),
+3.950e-6 - 3.780e-6 = 1.70e-7 (round 2) /site, i.e. 5.1% and 5.0% of the round's FN gain. So consolidation may cost at most ~5% of a round's
+gain in variational energy for the conservative certificate (sufficient, not necessary). Learned heads/R1' kept ~6% of the gain: far outside.
 B10 6x6 HARNESS (11-17, staging worker; built and CPU-tested, NOT submitted; runs/j1j2/b10_6x6/, code ansatz/code/b10_6x6.py): tests (a)-(d) pass
 (clipped-r* head reproduces rung 2's rho = 1.000005 exactly; zero head bit-identical; exact frozen-H_FN gradient vs finite differences 1.2e-8,
 broken gradient 237; arm X loss 8.6e-16 at ln(p/G) vs 3.1e-5 at ln(p/A_0)). LATE state proposal: pfaffian_r6k3/k3/tab_th/tab_t6/round_1

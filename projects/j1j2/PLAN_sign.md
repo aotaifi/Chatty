@@ -2046,7 +2046,7 @@ STEP 6 RESULT (2026-11-17 ~21:00; CPU, existing files; runs/j1j2/sign_bad/step6/
 - Controls pass.
   - The identity Wt - 2 Wm = -sigma E2 holds on the roots to 1.3e-13; the broken version (J2 not sign-flipped) gives 828.
   - Marshall convention: J1 exchange flips the Marshall sign on 100% of bonds, J2 keeps it on 100%.
-- [measured, new] The Marshall-pure balance Wt/Sx is POSITIVE on every band row.
+- [measured, new; CORRECTED 21:40 from Astra's partial cj-cbcdba6ca909 analysis.json: 'every' was my overreach from quantiles; 5 of 1113 panel flips and 51 of 37,105 panel band rows have Wt < 0] The Marshall-pure balance Wt/Sx is positive on 99.5% of flips.
   - Flips: q10..q90 0.11..0.34. Keeps: 0.19..0.55.
   - The amplitude alone favours Marshall everywhere, so no nucleation flip exists.
   - Every anti-Marshall sign is held up by anti-Marshall neighbours: d = 2Wm/Sx is bimodal for keeps (median 0.03, q75 0.51).

@@ -2181,3 +2181,4 @@
 2026-11-17 19:05 lead (takeover): staging worker started for the 6x6 B10 harness + A40 launcher (CPU tests only, no submission until rung 2b passes); rung 2b retry and 8x8 rung-2 workers running.
 2026-11-17 21:05 sign angle STEP 6 (PLAN_sign; runs/j1j2/sign_bad/step6): C-free step = majority update in Marshall frame [exact]; pure J1/J2 balance >0 on every band row, all violations are domains; copy restoring 0.29 vs growing 0.48 (CF), 0.30 vs 0.62 (n_3); M6 killed (|l_2| effect grows, not absorbed). Next: Astra review + fix ideas.
 2026-11-17 21:12 sign angle: Astra cj-cbcdba6ca909 (step-6 review + mechanisms + fixes; astra/step6_review/QUESTION.md) submitted; wait armed; 09:00 check-in timer armed.
+2026-11-17 21:40 sign angle: Astra cj-cbcdba6ca909 crashed (apply_patch), resumed as cj-7c173011c7b5 from its files; its partial data corrects my 'Wt>0 on every band row' to 99.5% of flips (5/1113 negative), recorded in STEP 6 RESULT.

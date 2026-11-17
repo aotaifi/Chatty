@@ -268,7 +268,7 @@ CERTIFICATE ON EXISTING DATA (lead, from rounds.json + rangelimit_6x6, fixed sig
 E_H[chi_k] < E_FN[g_k]): the literal explicit teacher passes it by a margin E_FN[G_k] - E_var[A_{k+1}] = 8.683e-6 - 7.938e-6 = 7.45e-7 (round 1),
 3.950e-6 - 3.780e-6 = 1.70e-7 (round 2) /site, i.e. 5.1% and 5.0% of the round's FN gain. So consolidation may cost at most ~5% of a round's
 gain in variational energy for the conservative certificate (sufficient, not necessary). Learned heads/R1' kept ~6% of the gain: far outside.
-CONSOLIDATION TEST 6x6 SPEC (PI 11-17 late: 'yes test'; written before any run). Question: can the base class (complex RBM x PP, the class of
+CONSOLIDATION TEST 6x6 SPEC (PI 11-17 late: 'yes test'; written before any run). Question: can the base class (complex PP with 3x3 backflow, no RBM: cx_c1fit arm ppbf, theta 3888 = Re+Im of 1296 f + 648 u; corrected 11-17 late; the class of
 A_0 = pfaffian_c/runs/c1_cplx_s1/round_1, code cx_c1fit.py) store the explicit teacher A_1 (rangelimit_6x6/rounds23/lA_1.npy, literal a=1,
 c=1.307, sign s2) well enough that the next round still gains? Arms, warm start = A_0 theta, same steps/budget, 2 seeds each:
  P: frozen-relative loss: cx_c1fit's per-row residual e = ln t - ln T - c replaced by r = e^{e} - 1 in BOTH the value and bond terms
@@ -282,6 +282,17 @@ Verdict: PASS (consolidation works in this class): best arm's two-seed mean rete
 Prediction [own]: P >= 0.5 at 40%, C >= 0.5 at 30%, P beats C beyond scatter at 50%. Precedent: this class's log-loss copy of an earlier round-1
  target reached E_FN 2.09e-5 vs 1.22e-5 with the rows below 1e-9 spliced exact: the copy's loss sits in near-node rows.
 Budget: 6 A40-hours (or 3 H100-hours) for the four fits; launcher read by the lead before submission.
+HOLD REVERSED (PI 11-17 late; lead's correction). PI: 'the October failure probably suffered from the 1/B divergence' and 'the task was
+fitting the e^r add-on to e^{c f}'. Both right against my hold: (1) L-SWO refit the whole network with the LOG loss, so its 37% may be
+loss-limited, not capacity-limited; Theta v2 is a first-order tangent test and October's own records show nonlinear refits bank more than
+the tangent (11-18% vs 0-4%), so 'capacity-limited' was not established and 'VERDICT ON COPYING' above is WITHDRAWN. Arms P vs C of the spec
+test exactly the PI's hypothesis (same network, same target, relative vs log loss). (2) The trained e^r add-on on the frozen base fitted to
+the formula was never run: rung 2b is first-order only; M-R (10-28) trained a small RBM add-on (alpha 4/16) on ln(phi/A): ~6%. Added arm:
+ H: frozen A_0 x e^{r_theta}, r_theta a ViT log-amplitude head (cx_c1fit 'vit' architecture, last layer zero-initialised so r = 0 at step 0),
+    target ln A_1 = ln A_0 + l + 1.307 f_J, cx_c1fit's own loss on ln t = ln|A_0| + r (base frozen -> no 1/B in the gradient).
+Same grade and verdict rule as the spec, per arm. Extra reading: P > C beyond scatter supports the PI's 1/B hypothesis for October; H vs P
+says add-on vs full refit. Predictions [own]: P - C > scatter at 50%; H >= 0.5 at 35%. Budget raised by the lead to 10 A40-h (5 H100-h) for
+six fits (P, C, H x 2 seeds).
 TEACHER CHECK A1 (rung 2, CPU, written before computing): rounds 1-3 from A_0 with MOVING signs S_{k+1} = S_k sgn[1 + alpha_k(E_L - E_k)] and
 c_k from a 1-D E_FN search (grid 0.5..3), alpha_k from the same 1-D search as rounds23. Kill: retention < 90% or certificate margin
 E_FN[g_k] - E_var[next] < 0 in any round. Prediction [own]: pass at 55% (moving signs add isolated rows the teacher does not fill).

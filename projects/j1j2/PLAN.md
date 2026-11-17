@@ -5,6 +5,8 @@ steps would give, so each round costs one level; p >= 2 steps at the end is the 
 Notation: psi_k = S_k A_k; A_k = |B_0| e^{r_0 + ... + r_{k-1}} (B_0 trained once, then frozen; r_j one small 'head' per round).
 Round k:
  1. Lanczos on the fly: psi'_k = (1 + alpha_k (H - E_k)) S_k A_k, alpha_k re-optimised for the current state (not fixed). Not stored.
+    (Theorist 11-17: a fixed alpha needs 0 < -alpha <= 1/(E_max - E_var), else a 2-cycle between non-eigenstates exists; small fixed alpha
+    is safe but gains ~1/N of the optimal step.)
  2. Fixed node with guide psi'_k, sign AND amplitude -> phi_k. Cost: one level (two-hop ratios; 5.4x for the PP at 6x6). Not stored.
  3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle).
  4. Amplitude: fit a new head r_k ~ ln|phi_k / A_k|, log loss on r only, A_k frozen (no moving 1/B). Labels: the Jacobi estimate
@@ -23,7 +25,7 @@ Open questions we work on (PI 11-17, in this order):
      noise [std, Liu-Kalos-Chester 1974; Pilati 1907.00907; SHDMC 0808.3417]; fitting each iterate can diverge unless the fit is a
      non-expansion [std, Gordon 1995 'averagers'; 2303.08902]. 3. Cheapest decisive check (only on 'now test it'): 6x6 exact tables,
      exact ln(phi/A) vs c f_J vs (I - P)^-1 f_J, CPU minutes.
- (ii) Ground state vs excited eigenstate (theorist subagent, docs/theory/2026-11-17_loop_convergence.md; lead re-ran check3, check6):
+ (ii) INVESTIGATED 11-17, revisit later (PI). Ground state vs excited eigenstate (theorist subagent, docs/theory/2026-11-17_loop_convergence.md; lead re-ran check3, check6):
      design B with optimal alpha and a perfect copy descends strictly off eigenstates (no cycles); low excited eigenstates are fixed points
      but unstable (linearised FN map R W has exactly n eigenvalues > 1); NOT from every start: a 6-config start with ground-state overlap
      -0.214 lands exactly on psi_1 in one round (1e-10 noise escapes in 10). Convergence to some eigenstate needs one missing lemma (orbit

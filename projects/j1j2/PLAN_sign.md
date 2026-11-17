@@ -795,6 +795,24 @@ T-CF RESULT 2026-11-17 (cip 18026932, ~0.8 A40-h; tcf/CF/{eval_cf.json,eval_orig
  given n_2 at the neighbours, y = sgn of sum_z H_xz M_x M_z A_z/A_x n_2(z)) are reproduced at ~0.4-0.5 whatever the label set around them.
  What stays: n_3 carries ~20% of the harmful (reversal) flips, CF ~7%. Whether that matters for the FN energy is untested: paired FN grade CF vs n_3 (~6 A40-h),
  beyond tonight's ceiling (used ~5.3 of 6) -> lead/PI. No more GPU tonight.
+LEAD 2026-11-17 ~03:30: grade CF vs n_3 only if a first-order estimate exceeds ~4e-5/site; draft the joint-loop label rule as a positive projector. GPU stays stopped.
+FIRST-ORDER ESTIMATE (CPU; tcf/fo_estimate.py; held-out 60k rows, cached logits n_3 5b8b6dc4 / CF 5dcca951, Born decade weights w_d from twhy, errors = bootstrap over origin chains):
+ single-flip variational dE_x = -4 P(x) (EL2_x - D_x) per flip relative to n_2 (exact for one isolated flip; ignores flips of neighbouring pairs and the FN vs variational difference).
+ dE(CF - n_3) = -3.2(1.0)e-5 per site (uniform weight within a decade); -2.3(0.9)e-5 (|B|^2 weight within a decade). Each vs n_2: n_3 -6.4e-5, CF -9.6e-5.
+ BELOW the 4e-5 bar on both weightings -> no grade (lead's rule). Sign favours CF; size ~ 2.5-3.5 sigma of the estimate, but ~1.5x grade4's sigma at most.
+POSITIVE-PROJECTOR LABEL (draft for the joint loop; CPU on table_r3, Astra self_terms D): step 1 + alpha'(H - E_REF) with C' = 1 + alpha'(D - E_REF) > 0 on every visited state.
+ Sampled D_max = +5.0 -> |alpha'| < 1/(D_max - E_REF) = 0.02709; the global bound D <= 48 gives |alpha'| < 0.01251. Label: flip iff 1 + alpha'(EL2 - E_REF) < 0, i.e. EL2 - E_REF > 1/|alpha'|.
+ Since C' > 0, every flip has Qu < 0: all flips point TO the locally better sign, no reversals (checked: True on all rows).
+ | |alpha'| | flips, all rows | flips -9..-5 | per decade -9..-5 | share of the C-free flips |
+ | 0.02706 (0.999 x sampled edge) | 0.82% (12,067) | 0.64% | .019 .011 .006 .003 .001 | 0.31 |
+ | 0.01354 (half) | 0.11% | 0.03% | .001 .0005 .0001 0 0 | 0.04 |
+ | 0.01251 (global bound) | 0.10% | 0.02% | .001 .0003 .0001 0 0 | 0.04 |
+ Compare threshold rule (alpha -0.1754): 12.3% / 13.1%; C-free (sgn Q): 2.65% / 2.85%.
+ Reading: a positive projector is safe but SLOW: one step changes <= 1% of signs, and only those whose local energy sits > 36.9 above E_REF, so the
+ loop needs ~1/(|alpha'| gap) steps (power method). The C-free rule is the zero-temperature limit of the same local choice (sign = argmin of the off-diagonal
+ local energy given the neighbours, coordinate descent on the violation term), also reversal-free, ~3x the projector's flips per step.
+ MY RECOMMENDATION for the joint loop: C-free rule (y = sgn(alpha u (EL - D))) as the label; the projector at the sampled edge as the conservative fallback.
+ Caveats: the sampled D_max is not a bound on walker states (global bound 48 needs |alpha'| < 0.0125); the first-order estimate favours CF but is not an FN energy.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

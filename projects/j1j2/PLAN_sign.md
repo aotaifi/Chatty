@@ -1979,3 +1979,30 @@ STEP 5 RESULT (2026-11-17 ~17:30; CPU, existing files only, scripts and JSON in 
   assumes the net stores the C-free flips exactly. With an imperfect copy, the link holds to first order (no flipped neighbours) iff the realised share > 0.
   CF's 0.24(8) is 3.0 sigma above 0; n_3's 0.09(9) is consistent with 0. So with a sign net like n_3 the descent chain is not guaranteed, and the realised
   share is the quantity the joint loop's sign link must keep positive. Not covered: cross terms from flipped neighbours (my open item 3, the lead's (2)).
+ASTRA REVIEW of step 5 (cj-ecaccd367a13, /scratch/a/A.Otaifi/astra/step5_review/ASTRA_step5.md, review.py, analysis.json). My adjudication:
+- (1) accepted: t = ln(Vs/K) and Sx are exact (bond recompute 9e-13; C-free flip <=> E2 > 0, 0 mismatches on 1,468,952 rows).
+  STANDS: every flip is a near-tie; copy rises with t.
+- (2) accepted, MY ERROR: the realised-share weights were wrong twice.
+  - Pool rows are roots drawn with q proportional to A plus all their one-swap neighbours, so the density is rho ~ A(1 + sum absr), not uniform in a decade.
+  - I_d weights the OLD-label flipped bond weight.
+  - Corrected first-order shares: CF 0.30, n_3 0.085 (no error bar; the panel has only 4 roots per chain, quotable.py says NOT QUOTABLE).
+  - Cross terms between flips in the same round can be large: a three-state control gives linear term 8.27 against an exact change of 1.87.
+  - The 0.24(8) / 0.09(9) numbers and their "3 sigma above 0" are WITHDRAWN.
+- (3) accepted, WITHDRAWN: "keeps sit on the local FN balance".
+  - Sx[tanh(t/2) - tanh(t_FP/2)] = EL2 - E_REF is an identity. The comparison only restates the local-energy residual, with E_REF taken from VMC/Lanczos constants.
+  - "flip iff dt > |t_FP|" is exactly t > 0, a tautology.
+- (4) accepted: H1 is a calibration, not an explanation.
+  - On odd chains, with sigma fitted on even chains, the tail is predicted at 0.92 and measured at 0.57.
+  - With corrected weights the realised share is predicted at 0.44 and measured at 0.30. Keep error is off by 1.7x (CF) and 3x (n_3).
+  - H1 verdict -> KILLED as the mechanism. It only describes the near-tie part of the copy curve.
+- (5) accepted: n_3 was COLD-started, CF was warm-started from n_2.
+  - The |l_2| association survives adjustment for decade and log Sx: CF -1.23, n_3 -0.53 per SD.
+  - Since it appears in a cold-started net too, warm-start inertia is NOT identified. Representability, or shared label structure, could produce the same association.
+  - H2 -> "association measured, mechanism not identified".
+- (6) accepted: the bias-shift gain is WITHDRAWN. Re-selected with the corrected objective, CF's gain is -0.015.
+- What step 5 now establishes:
+  - C-free flips are near-ties (median t 0.115).
+  - Copy rises with t, and falls with the old net's confidence at fixed t and decade.
+  - The first-order shares are positive (0.30 / 0.085, unquoted).
+  - What limits the copy is NOT yet a mechanism. Next on paper: a mechanism that predicts the copy at fixed t from the old net's margin, for a cold start.
+- The link to the monotone descent above is CORRECTED: CF 0.30 is positive but has no error bar, and cross terms are not small in general. Whether the sign link of the descent holds with this copy is OPEN.

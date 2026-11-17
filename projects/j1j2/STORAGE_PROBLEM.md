@@ -19,6 +19,19 @@ Notation (read from code, not from record names): PP = Gutzwiller-projected sing
 8x8 base (ansatz/code/simple/pp2_lemma.py l.1-12, rbm 'inner', projection 'simple' = 256 images): B(x) = sum_g phi_RBM(z_g) [a_1(g) + lam a_2(g)],
 a_j(g) = par(z_g) det f_j[Up(z_g), Dn(z_g)], f_j, b, W complex. B is complex; the loop stores only |B| (sign from S), so arg B plays no role.
 Rule: before deriving about an object, copy its definition from the code into this line.
+Loop notation (fixed 11-17 with the PI; 'phi' in files = φ in chat): psi_k = S_k A_k (loop state, round k); S_k = its sign (+-1 per configuration,
+stored in the sign network); A_k = stored magnitude = |B_0| e^{r_0 + ... + r_{k-1}}; B_0 = base network, frozen; r_k = 'head' of round k (a small
+network giving one number per configuration); phi = fixed-node state of the round; R = phi/A_k (ratio); f_J = one-step estimate of ln R;
+c = over-relaxation (c ~ 4, clipped |c f_J| <= 4.88); 'dip' = configuration where A_k(x) << phi(x).
+STEP BACK 2026-11-17 (PI: 'our amplitude gets its correction from the fixed node under a given sign'):
+1. What makes it simple: store the RATIO, not the amplitude. Lattice FN with guide psi_T: (H_xx - E + V_T(x)) |phi(x)| = K_phi(x),
+   V_T = Vs_T/|psi_T(x)|. As |psi_T(x)| -> 0, |phi(x)| -> K_phi |psi_T(x)| / Vs_T: phi inherits the guide's wall, and
+   ln(phi/psi_T) = ln K_phi - ln(D|psi_T| + Vs_T) stays bounded [exact asymptotic, own]. The round's new information is this bounded ratio.
+2. Who solved this form: lattice FN, ten Haaf, van Bemmel, van Leeuwen, van Saarloos, Ceperley, cond-mat/9412037 (abstract read; V ~ 1/psi_T);
+   continuum DMC [std]: phi_FN and psi_T share the node, phi/psi_T is smooth there, which is why importance sampling uses f = psi_T phi.
+3. Continue, reframed: the frozen-base form is FN's own coordinate, not a shortcut: B_k carries the wall, e^{r} the bounded FN ratio.
+   Records already said 'store the smooth part, compute the near-node part' (PLAN_ansatz l.83, 10-24; DISCUSSION_sign 11-08 P6) and the per-row
+   relaxation c_eff = c min(1, f0/|f_J|) (PLAN step back 11-03); R1' broke that by refitting the base. Open: can r hold the ratio at 8x8 (B11 OOM).
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).
@@ -146,6 +159,17 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
 - [own 11-17, from (5)] Physical reading: the worst rows are configurations nearly ON the node of S, where the exact amplitude is small because
   kept and violating neighbour sums nearly cancel; the network reproduces that smallness by cancelling its symmetry images. Two cancellations,
   one in the physics (K - Vs) and one in the ansatz (sum_g t_g), at the same rows.
+- [exact, own 11-17, PI asked: why not (T - copy)^2] Three losses near a cancelling row (b = |B_theta(x)| ~ T, kappa small):
+  plain square  (|B| - T)^2        : grad 2 (|B| - T) d|B|, no 1/B, but weight T^2: relative error delta costs T^2 delta^2. The FN energy weighs it
+                                     ~ |H| phi(x) phi(y) delta^2, so the near-node rows are under-weighted by phi(y)/phi(x) = e^3..e^7.5 (20-1800x).
+  relative sq.  ((|B| - T)/T)^2    : grad 2 (|B| - T)/T^2 d|B|: divides by the FIXED T, not the moving B; residual LINEAR in |B|.
+  log           (ln|B| - ln T)^2   : grad 2 res d|B|/|B|: divides by the moving B.
+  Expansion in delta theta: log residual = O . d + [ (d^2 B)(d,d)/(2B) - (O . d)^2 / 2 ], the last term ~ (|grad B| |d| / B)^2 ~ (|d|/kappa)^2,
+  so its linear region is |d| <~ kappa (bulk scale). Relative-square residual = (grad B . d + (d^2 B)(d,d)/2)/T: both orders carry the same 1/T,
+  their ratio ~ |d^2 B| |d| / |grad B| is kappa-free: linear region on the bulk scale. 1/kappa remains only as a FIXED heavy weight.
+  [cond: |B| smooth enough, i.e. B not crossing 0; for complex B, d|B| = Re(e^{-i arg B} grad B) is bounded by |grad B|, direction ill-defined at 0.]
+  Reading: the trouble is the curvature of ln near a cancellation, not the weighting; relative-square keeps the weighting and drops the curvature.
+  Precedent: Astra ranked amplitude L2 / Hellinger second (cj-5ca32ee74fb4); auditor's asinh(B/s) is the same idea with a fixed scale s.
 - NEXT EQUATION: with the clipped bounded target and frozen base, the remaining stiffness is the fixed pair weight rho ~ Vs/b_x (max 16131):
   is it needed (it is the FN bond weight) or can it be bounded without biasing the stored energy? Write E_FN's dependence on the pair term first.
 - (superseded next step) NEXT EQUATION: what r should be near a spurious zero: r* = ln(phi/B_k) vs c f_J; does a c(x) that tends to 1 as f_J grows (c f_J in the bulk, f_J

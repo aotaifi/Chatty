@@ -1933,3 +1933,45 @@ Label = C-free (the rule I recommend). Balance variable t(x) = ln(Vs/K) = ln[(Sx
   between the lower and upper halves of |l_2|.
 - H3 [20%]: neither of these; candidates are D4 identification (the net is D4-invariant, the amplitude only translation-invariant; ASTRA_copy.md) and support gaps.
 Data: table_r3_cf.npz, astra/sign_copy/prepared.npz (hs = the 60k panel), evalcache CF = 5dcca951..., n_3 = 5b8b6dc4...; band -9..-5.
+STEP 5 RESULT (2026-11-17 ~17:30; CPU, existing files only, scripts and JSON in runs/j1j2/sign_bad/step5/; panel = the 60k held-out rows, band -9..-5, 1113 C-free flips)
+- [measured] Every C-free flip is a near-tie: t = ln(Vs/K) has quantiles 0.019 / 0.049 / 0.115 / 0.197 / 0.309 (q10..q90), max < 1, so the registered
+  "t > 1" bin is empty (a registration flaw: I did not know the range). Flip rate by Sx quartile: 0.9%, 0.9%, 2.0%, 8.2%. Median Sx: flips 107, keeps 56.
+- [measured] Copy rises with t (CF net: 0.26 / 0.31 / 0.47 / 0.60 / 0.66 in bins 0-.05 / .05-.1 / .1-.2 / .2-.4 / .4-1; n_3: 0.39 / 0.42 / 0.54 / 0.70 / 0.80).
+- H1 verdict: NOT KILLED for CF, PARTIAL for n_3.
+  - One noise width sigma = 0.21 in t (fitted to the count copy 0.42) gives t* = 0.19.
+  - It predicts the keep error at 0.53% (measured 0.91%, 1.7x) and the curve below t = 0.4 within 0.05. It over-predicts the 0.4-1 bin (0.92 vs 0.66, n = 50).
+  - n_3: sigma 0.18; keep error 0.56% predicted vs 1.68% measured (3x, fails), because n_3 trained on reversal labels.
+- H2 verdict: NOT KILLED (warm-start inheritance is real).
+  - At fixed t, the CF net copies 0.36 / 0.45 / 0.58 / 0.73 when n_2 was unsure (|l_2| below the bin median), against 0.15 / 0.17 / 0.35 / 0.47 when n_2 was sure.
+  - Logistic fit of copy per SD: t +0.38(7), |l_2| -0.99(11). For n_3 the effect is weaker: |l_2| -0.39(8).
+- [exact] First-order energy of a sign change on a set F: dE_1 = -4 sum_{x in F} P(x) Sx(x) tanh(t(x)/2), using (Vs - K)/(Vs + K) = tanh(t/2).
+  A row's gain or cost is linear in t near the tie, so the count copy is the wrong measure.
+  Realised share of the available first-order gain, in-band, I_d-weighted, chain-bootstrap errors over 512 chains:
+
+  | | CF | n_3 |
+  |---|---|---|
+  | realised share, measured | 0.24(8) | 0.09(9) |
+  | H1 prediction (sigma above, not refitted) | 0.25 | 0.38 |
+  | wrongly flipped keeps cost, share of the gain | 0.38 | 0.61 |
+
+  The CF measurement agrees with H1 at 0.1 sigma; n_3 misses it by 3.2 sigma.
+  The costly wrong keeps are themselves near-ties: 95% of the CF cost has t in (-0.5, 0).
+- [exact + measured] Local FN balance. At the fixed point (D - E)A = K - Vs gives tanh(t_FP/2) = -(D - E)/Sx.
+  - Keeps (n = 35,992) sit on it: median t -0.953 vs t_FP -0.987; dt = t - t_FP has IQR [-0.045, 0.074]; corr(t, t_FP) = 0.81.
+  - Flips are outliers: dt median 0.61 (q10 0.19, q90 1.35).
+  - Flip rate rises as |t_FP| shrinks: 0.8% at t_FP in (-1.5, -1), 12.9% in (-0.2, 0).
+  - Reading: the stored state is locally near FN almost everywhere. A row flips where its local inconsistency dt exceeds |t_FP| ~ 2(D - E)/Sx, i.e. at near-node rows (large Sx).
+  - After the flip t -> -t, again a near-tie, so the gain per flip is small by construction.
+- Re-thresholding the cached CF logits, with the bias chosen on even chains and scored on odd chains, raises the realised share by +0.16(8) (1.9 sigma, not established).
+  Under H1 the best threshold gives only 0.26: if real, the gain is extra to H1.
+- Reading [own]: three terms limit the copy.
+  - (a) The net resolves the neighbour balance only to sigma ~ 0.2 in log, while every flip is a near-tie with median 0.12.
+  - (b) The warm start's confidence suppresses flips.
+  - (c) The near-tie errors on keeps cost about as much energy as the near-tie flips gain.
+  The first-order realised share, 0.24(8), is the number to move; the count copy is not.
+- Open, on paper (no runs):
+  - (1) What sets sigma: the sign net must know the neighbours' relative amplitudes to ~20% at near-node rows, which it never sees.
+    [conj, 40%] Compute the sign at near-tie rows from the amplitude instead of storing it (the records' "store the smooth part, compute the near-node part");
+    cost one extra neighbour level per evaluation, not yet derived.
+  - (2) C-free attributes all of a row's inconsistency dt to the sign at x. The same dt could be removed by changing the neighbours' amplitudes; which one the FN equation prefers is not derived.
+  - (3) dE_1 ignores flips of neighbouring rows in the same round (cross terms).

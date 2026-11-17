@@ -32,6 +32,52 @@ STEP BACK 2026-11-17 (PI: 'our amplitude gets its correction from the fixed node
 3. Continue, reframed: the frozen-base form is FN's own coordinate, not a shortcut: B_k carries the wall, e^{r} the bounded FN ratio.
    Records already said 'store the smooth part, compute the near-node part' (PLAN_ansatz l.83, 10-24; DISCUSSION_sign 11-08 P6) and the per-row
    relaxation c_eff = c min(1, f0/|f_J|) (PLAN step back 11-03); R1' broke that by refitting the base. Open: can r hold the ratio at 8x8 (B11 OOM).
+LOOP FIXED POINTS (11-17, PI: 'with the sign updated, the loop can only go to the ground state?'):
+- [std, ten Haaf et al. cond-mat/9412037 construction] H_FN psi_T = H psi_T exactly: removing a violating hop and adding V(x) psi_T(x) =
+  sum_viol H_xy psi_T(y) to the diagonal leaves (H psi_T)(x) unchanged.
+- [exact, own] Perfect copy, A_{k+1} = |phi[A_k]|: a fixed point has H_FN psi = E psi, hence H psi = E psi. Every fixed point of a perfectly
+  copied loop is an exact eigenstate of H (in the sector); there it also satisfies the sign angle's no-flip condition (E < E').
+- [own] Not shown: (a) that a round lowers E_FN (lattice E_FN depends on the guide amplitude via V and on the Lanczos sign of an approximate
+  state; no monotonicity theorem); (b) that the ground state is the attractor rather than an excited eigenstate in the sector; (c) imperfect
+  copy (finite heads, clip, sampling) creates biased fixed points, as Caffarel-Pinar-Scemama arXiv:2609.01301 found for SHDMC with a finite basis.
+- [exact, own 11-17, after the PI's push: 'FN energy is better than the guide, ten Haaf'] MONOTONE DESCENT. (1) [std] H_FN - H = sum over violating
+  bonds of H_xy [[r, -1], [-1, 1/r]], r = psi_T(y)/psi_T(x) > 0: PSD, and zero on psi_T. Hence E_0 <= E_FN[psi_T] <= E_var[psi_T], and
+  E_var[chi] <= <chi|H_FN|chi> for any chi with psi_T's sign; for chi = phi: E_var[phi] <= E_FN[psi_T].
+  (2) Flipping one configuration x of S A changes <H> by -4 A(x)(Vs - K) (norm unchanged): it lowers E_var iff Vs > K, the C-free criterion.
+  For a flipped set F only bonds leaving F count: Delta = -4 sum_{x in F, y not in F} ... ; per-site C-free labels are safe when no two
+  flipped configurations are neighbours.
+  (3) Loop guide g_k = S_{k+1} A_k (sign from the step, amplitude stored). With a perfect copy A_{k+1} = |phi_k| and C-free flips:
+  E_FN[g_{k+1}] <= E_var[S_{k+2} A_{k+1}] <= E_var[S_{k+1} A_{k+1}] = E_var[phi_k] <= E_FN[g_k]. The FN energy falls every round.
+  The full Lanczos rule's extra flips (K > Vs rows) RAISE E_var by 4 A (K - Vs): not covered. Imperfect copy breaks the step E_var[S A_{k+1}] = E_var[phi_k].
+  So pushback 1 ('no round is guaranteed downhill') is withdrawn for C-free labels with a perfect copy; pushback 3 (imperfect copy) stands.
+- [exact, own 11-17, PI's P.S.: use the Lanczos amplitude too] Design B: FN guide = the full Lanczos state psi'_k = (1 + alpha(H - E)) psi_k
+  (sign AND amplitude; the 'p=1 FN' of the headline runs), store psi_{k+1} = phi_k. Chain with a perfect copy and alpha Lanczos-optimal for psi_k:
+  E_FN[psi'_{k+1}] <= E_var[psi'_{k+1}] <= E_var[psi_{k+1}] = E_var[phi_k] <= E_FN[psi'_k]. Monotone with the FULL Lanczos sign: the extra flips
+  are safe because their amplitude comes with them. (Design A, guide S_{k+1} A_k, needs C-free flips.) Cost of B: guide ratios need neighbours
+  of neighbours (PLAN l.512: 5.4x for the PP at 6x6). Note: the f_J storage target so far was built on S_{k+1} A_k (design A), the headline
+  FN on psi' (design B): the two halves of the present loop use different guides.
+- [exact] Storing |psi'| instead of |phi| (PI's P.S. read literally) is never better: E_var[phi_k] <= E_FN[psi'_k] <= E_var[psi'_k].
+- [exact, own] Copy criterion: with copy error raising E_var by eps_k, descent survives iff eps_k <= Delta_k = E_FN[guide_k] - E_var[phi_k] (the
+  round's slack). Delta_k -> 0 as the loop converges, so the loop stalls where the copy error equals the per-round gain: the biased fixed point,
+  quantified.
+- [open] Which eigenstate: resting points are eigenstates; the ground state is guaranteed only if E_FN[start] < E_1 (lowest excited level in
+  the sector); otherwise an instability argument for excited eigenstates is missing.
+REVIEW 11-17 #2 (Astra cj-76fc73751b2d, /scratch/a/A.Otaifi/astra/ratio_review/ASTRA_ratio.md, check_ratio.py -> checks.json). Adjudicated by the lead:
+- accepted: the FN potential is right (cond-mat/9412037 Eqs. 1-4), but 'bounded ratio' is conditional: needs D t_x / Vs_T -> 0 and K_p bounded away
+  from 0; approaches to Vs = 0 or K_p = 0 can make ln(p/t) arbitrarily large (triangle t = (eps, 1, sqrt eps): ratio ~ eps^-1/2). Finite on a
+  finite lattice, but no uniform bound across rounds or sizes.
+- accepted, CORRECTS the lead: f_J is not ln R. Exact: R_x = e^{f_J[A](x)} sum_kept (|H_xy| A_y / K_A(x)) R_y; f_J = ln R only if the neighbours
+  are already right (R_y = 1). 'f_J measures the remaining gap at x' was wrong.
+- accepted, CORRECTS the lead: the clipped c = 4 iteration is UNSTABLE. Two kept rows: d+ = d - 2 clip(c d), multiplier 1 - 2c = -7, exact period-2
+  cycle at the clip; c = 1/4 halves d each round. Balanced row: multiplier 1 - c(1 - Vs/K), stable iff 0 < c(1 - Vs/K) < 2. 'Overshoot self-corrects'
+  was wrong; the clip bounds the excursion, it does not stabilise. c ~ 4 was a one-round energy line search, not a stable iteration (cf. 11-03
+  'nonlinear SOR instability'). Implementation: clip = c f0 only in mode 'fix' (pp2_lemma.py l.788); nonfinite -> -69.
+- consequence, own: the monotone-descent chain (LOOP FIXED POINTS above) assumes the stored amplitude is the exact FN state phi; the c-relaxed
+  Jacobi target is not phi, so the chain does not cover the present target.
+- accepted: finite heads with |r_j| <= L bound log changes by m L; B_0 not a floor in principle, but finite rounds and capacity limit the reach.
+- literature: the frozen-base FN ratio e^{J~} = Psi_FN / Phi_T with fixed antisymmetric Phi_T is published: Reboredo-Hood-Kent 0808.3417 Sec. III.2
+  Eqs. (25)-(26). Close: Sorella cond-mat/0009149 (r_x psi^f(x)); Pilati-Inack-Pieri 1907.00907 (A+ = sqrt(A phi_0), log contraction 1/2);
+  Kochkov-Clark 1811.12423 (supervised loop); 2303.08902 (self-learning power method). No exact match for Lanczos-sign + stacked heads found.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

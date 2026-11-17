@@ -1920,3 +1920,16 @@ Notation (STORAGE_PROBLEM 'Loop notation'): psi = S A, K = sum_kept |H_xz| A(z),
   Its fixed point is b* = (K' - Vs')/D, which sits ln[(Vs/(D b))(1 - K/Vs)] = 0..3 e-folds above the present b at the 5 rows.
   It contracts at rate Vs'/K' = K/Vs (0.71-0.98) per round. Balanced rows therefore reach their new amplitude slowly: ~1/(1 - K/Vs) = 3-67 rounds per e-fold at c = 1.
   Before the flip (Vs > K), the same map sends b -> 0 geometrically at rate K/Vs. That is the claim-2 inconsistency seen as a dynamics.
+
+## STEP 5: why the net copies about half the good flips (PI 11-17: on paper, existing data only, Astra at a checkpoint). REGISTERED before any binning.
+Label = C-free (the rule I recommend). Balance variable t(x) = ln(Vs/K) = ln[(Sx + E2)/(Sx - E2)], where E2 = EL2 - D = (Vs - K)/A and Sx = (Vs + K)/A
+(Astra prepared.npz). The label flips iff t > 0. The single-flip energy gain is g(x) = 4 P(x) (Vs - K)/A, with P(x) = A^2/sum A^2.
+- H1 [conj, 50%]: the net knows the balance only up to a noise of width sigma (it never sees A). The posterior P(flip | t + eps) crosses 1/2 at t* > 0
+  because flips are rare (pi ~ 3-7% in -9..-5).
+  Prediction: copy rises monotonically in t, below 0.3 for 0 < t < 0.1 and at least 0.8 for t > 1. One sigma, fitted to the band's count copy,
+  predicts the band's keep error within a factor 2. Consequence: copy weighted by the gain g is well above the count copy, so the missed flips are low-gain.
+  Killed if copy is flat in t (spread < 0.15 between t < 0.1 and t > 1), or if the fitted sigma misses the keep error by more than 2x.
+- H2 [conj, 30%]: inheritance from the warm start. At fixed t, copy falls with n_2's |logit|. Killed if, inside each t bin, copy differs by < 0.1
+  between the lower and upper halves of |l_2|.
+- H3 [20%]: neither of these; candidates are D4 identification (the net is D4-invariant, the amplitude only translation-invariant; ASTRA_copy.md) and support gaps.
+Data: table_r3_cf.npz, astra/sign_copy/prepared.npz (hs = the 60k panel), evalcache CF = 5dcca951..., n_3 = 5b8b6dc4...; band -9..-5.

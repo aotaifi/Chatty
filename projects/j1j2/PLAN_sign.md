@@ -2124,3 +2124,15 @@ STEP 7 CORRECTION + RUNG 2 (2026-11-17 ~23:05; Astra cj-2a649470cd33 = /scratch/
 - Gate cost re-anchored on a MEASURED timing: G(-5) paid 12.5x for ~14 gated neighbours per row (0.8 E_L each): theta 1 -> ~5.7 gated -> ~5.6x;
   theta 0.25 -> ~1.7 -> ~2.4x but gains only -3.3e-5/-2.4e-5. Gate closure stands.
 - Passed over: synchronous-flip colouring (Astra 14; cross terms 0.2% of linear on the panel: not the limit); per-bond gating (psi_T not single-valued).
+- STEP 7d RESULT (step7/theta_probe.{py,json}; 2-fold CV over origin chains on the 60k panel; scipy L2 logistic, decision offset fitted on the
+  training half by the fo estimator): held-out dE(arm - CF) per site, flat / |B|^2:
+  | arm | flat | B2 |
+  | l_CF refit | +0.4e-5 | +0.4e-5 |
+  | l_CF + l_2 + lB2 + decade | -0.7e-5 | -0.8e-5 |
+  | + 96 image-aggregated RBM features (theta, lncosh theta) | +0.2e-5 | -0.5e-5 |
+  | CONTROL: same with features row-shuffled | -1.0e-5 | -0.4e-5 |
+  | l_2 + lB2 + RBM features, no CF | +3.1e-5 | +1.4e-5 |
+  KILL FIRES (< 1e-5; no better than the shuffled control). Prediction (>= 1.5e-5, 20%) failed. Diagnosis: image-averaged aggregates of a 16-unit
+  RBM carry no linear information about the neighbour field; the field is a sum over bonds of local terms, which averaging over images discards.
+  Untried variant (open, not run): per-bond local inputs (the walker-free RBM swap factors per bond, 128 per state) to a bond-sum readout,
+  i.e. an architecture that mirrors h = sum_b w_b sigma(z_b); cost and design = rung 1 first.

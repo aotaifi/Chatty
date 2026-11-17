@@ -151,6 +151,39 @@ Decision rule (written first): rho_4.88 < 0.5 -> B10 with a head of that range c
 rho_4.88 >= 0.7 and bound << B/2 -> the range limit is not the risk; what remains (learnability of r* by an x-only head) needs a run.
 Lead's prediction: rho_4.88 >= 0.7 at ~55% (161,028 orbits have |1 + alpha(E_L - E)| < 0.05, i.e. new guide walls A_0 lacks).
 Does not settle: whether a finite x-only network can learn the clipped r* (gap 1), nor 8x8.
+RUNG 2b (PI yes 11-17; written before computing): TANGENT SHARE of the clipped target for a candidate head, no training.
+Head (lead's choice for this check): symmetric RBM factor r_theta(x) = mean over the 144 projection images g of sum_k ln cosh(b_k + W_k . g x),
+M in {8, 16, 32}, 3 random inits (scale 0.01). J = d r_theta / d theta on a p^2-weighted sample of 1e5 orbits (stratified by decade).
+Target u = clip(r* - m, -L, L) at L = 4.88 from rung 2. Share in two norms: (i) p^2-weighted L2; (ii) the energy norm of (3) linearised,
+<u, v>_Q = sum_kept h_xy p_x p_y (u_x - u_y)(v_x - v_y). Share = |proj_J u|^2 / |u|^2 (ridge-scanned).
+Decision rule: energy-norm share >= 0.5 at M = 16 -> a first-order head can hold most of the correction, the run is justified;
+< 0.1 -> this head cannot store it, stop and rethink the head before any run; between -> report, the PI decides (PI 11-17 18:4x: overruled, the lead decides 2b).
+Lead's prediction: energy-norm share 0.1-0.5 (40% that it is >= 0.5); Test Theta found 0-4% for the PP itself, but an RBM factor is
+built for smooth positive corrections. Not covered: nonlinear training beyond the tangent space; other head classes.
+8x8 RUNG-2 QUANTITY (goal item 3; written before computing, lead 11-17). Exact p is not available at 8x8, so use the rung-1 bound's
+dominant (over-filled) term with p replaced by its wall asymptotic (p ~ G at a wall up to a bounded factor) and G_y ~ B_0(y) at the big
+neighbours: with f(x) = |1 + alpha(E_L(x) - E)| (Lanczos factor of psi_0 = S|B_0|), over-filled rows = {f < e^{-L}}, and
+   Q(L) = E_{|B_0|^2}[ e^{-2L} (sum_viol |H_xy| B_0(y)/B_0(x)) / f(x) * 1{f(x) < e^{-L}} ] / E_{|B_0|^2}[ f(x)^2 ] / N_sites.
+One-hop only (E_L(x) and violating-neighbour ratios: pp2_lemma one_swap_ratios on CPU), on the beta = 1 rows of the s306 pool
+(pool_comb/pool/pool.npz, sampled ~ |B_0|^2), alpha = the moment-optimal alpha of B_0 (fall back to the declared -0.170 if unavailable),
+E = E_var[B_0] from the same rows. Calibration first: the same proxy on 6x6 (A_0, s2, alpha -0.10; rung-2 files) must reproduce the exact
+6x6 over-filled bound term within a factor 3, else the proxy is invalid and the 8x8 round needs the PI.
+Threshold (written first): Q(4.88) <= 2.5e-7 per site (10x below 6x6's B/2 = 2.5e-6; the 8x8 gain B_8 is unknown) AND the weight
+E_{|B0|^2}[f^2 1{f < e^{-4.88}}]/E[f^2] <= 10x its 6x6 value. Pass both -> 8x8 rung 2 passes. Lead's prediction: pass (60%).
+RUNG 2 RESULT (11-17, worker; lead re-derived from rangelimit_B.json / rangelimit_A.json): PASS. B = N(chi_0) - N(phi) = 8.6826e-6 - 3.6670e-6
+= 5.016e-6 /site. rho_L = 1.0051, 1.0014, 1.0002, 1.000005 at L = 1, 2, 3, 4.88; break test L = 0 gives rho 0 (bit-identical N). Bound at 4.88 =
+6.5e-8 << B/2 = 2.5e-6. Certificate E_var[chi_L] ~ 7.2e-6 < E_FN 8.68e-6 at every L. Reading: at 6x6 the ideal correction ln(p/A_0) lies almost
+entirely within +-1 (weight beyond 1: 1e-6), so the head's RANGE is not a risk; slightly clipped heads even beat the perfect copy (rho > 1).
+FN solves reproduce cstar_lanczos.json to 2e-11; K_p = a p to 2e-8 (weighted). Line search on a 0.1 grid (alpha* = -0.10 for all).
+RUNG 2b RESULT (first attempt): INVALID. The random-vector break test failed: energy-norm share of a random vector (0.022-0.048) equals the
+target's (0.021-0.049). Diagnosis: (i) init scale 0.01 makes the RBM tangent space nearly degenerate (rank 11-13 / 48-69 of 296-1184);
+(ii) the in-sample share has a chance level ~ rank/ESS (ESS 4,920), so in-sample shares measure the sample, not the target.
+RUNG 2b RETRY (rule written before computing): init scales 0.3 and 1.0, M in {16, 32}, 3 seeds; larger sample (target Kish ESS >= 20 P);
+PRIMARY metric = HELD-OUT share: projection fitted on one half of the sample, share evaluated on the other half (chance ~ 0), both norms,
+ridge chosen on the fit half. Break tests: held-out share of a random vector ~ 0; of r_theta at another init ~ 1.
+Decision (lead decides, PI 11-17): held-out energy-norm share of u >= 0.1 at M = 16 (median of seeds, either scale) -> pass;
+< 0.05 at both M -> fail (rethink the head class on paper; next candidate a small translation-invariant CNN, rung 2 again);
+between -> pass only if M = 32 reaches >= 0.1. Lead's prediction: pass at 50%.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

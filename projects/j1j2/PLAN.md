@@ -1,8 +1,13 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
 ## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
-Fit the e^r add-on on the frozen network to the Jacobi-corrected target e^{c f_J} (with the Lanczos factor), and test whether the October
-refit failed because of the 1/B term. Done = arm H (add-on, 2 seeds) graded by the next round's FN energy (P vs C dropped 11-18: 1/B is derived, no run needed),
-STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' + 'HOLD REVERSED'. Status 11-17 late: staging.
+Fit the add-on r on the FROZEN network to the fixed-node correction (target l + c f_J: the Lanczos factor plus c ~ 1.3 Jacobi steps), paper first,
+then existing data, then a run. Paper: done 11-17 (frozen base -> no 1/B in the gradient; the 1/B blow-up of a log fit of B itself is DERIVED,
+never to be re-tested by a run, PI 11-18). Existing data: done ('ARM H DATA STEP': target ~0 on the bulk, O(1-7) excursions on 20% of orbits
+holding 2e-5 of the Born weight). Run: arm H only, 6x6, frozen A_0 x trained ViT add-on, 2 seeds, <= 4 A40-h, graded by retention_N
+(STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' grade + 'SCOPE'); pass >= 0.5, kill both < 0.25. Status 11-18 00:10: staging stopped at a safe
+point for a session clear, nothing submitted; see runs/j1j2/consol_6x6/STAGING_STATUS.md. The lead reads the launcher against this spec.
+Side checks (CPU, running detached on th-ws-7010m40/m41/m42, report only if they change arm H): rangelimit_6x6/moving/ (TEACHER CHECK A1),
+rangelimit_6x6/node_geom/ (NODE-GEOMETRY CHECK). Pending PI decision: the outside review's three rule changes (delta 11-18 00:00).
 
 ## THE DESIGN (PI + lead 2026-11-17; read first, always together with 'Goal' and '## Motivation' below)
 Why: beat (plain trained network + p Lanczos steps + fixed node) at equal total cost, training included. The loop stores what extra Lanczos
@@ -793,6 +798,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The fixed-node correction of a round is an explicit formula that keeps 96-98% of each round's gain on 6x6; whether a network can store it is being tested.
-- NEXT (in progress, high): 6x6 storage test: whole network with the old log loss vs a loss without the 1/B blow-up, and a frozen network with a trained add-on.
-- NEXT (in progress, medium): Recheck the formula with moving signs and its coefficient chosen by energy; check whether the local sign pattern explains the correction.
+- STATUS (in progress, high): The fixed-node correction of a round is an explicit formula that keeps 96-98% of each round's gain on 6x6; the PI's add-on fit on the frozen network is the open test.
+- NEXT (in progress, high): Train the add-on on the frozen 6x6 network to the formula and grade it by the next round's fixed-node energy.
+- NEXT (open, high): PI decides on the outside review's three rule changes (task card first, records carry their conditions, freeze and shrink the rules).

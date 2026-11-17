@@ -112,6 +112,26 @@ lead re-ran head_test.py seeds 1-2 and recomputed the 40-seed table from sweep40
 - lead's adjudication: withdraw (a2) as main loss; (d) B10 frozen-H_FN Rayleigh becomes the leading candidate for step 4, pending the PI.
   Open for (d) at 8x8: sampling noise of its gradient near nodes (C15 failed with a moving guide; frozen guide gives finite variance per Tim
   seq72-74) and B11's unfinished 8x8 run (OOM).
+STEP-4 CONSENSUS 11-17 (PI asked >= 70%; Astra cj-817d8e13fd7d -> step4_review/ASTRA_consensus.md, check_consensus.py; Opus -> OPUS_consensus.md,
+opus_checks/w_checks.py; lead recomputed the 31/40 sign test, p = 6.8e-4): try (d) = frozen-H_FN[psi'_k] Rayleigh over the head as the next 6x6
+check: Astra 75%, Opus 70%, lead 70%. Success at scale: Astra ~45%, Opus ~50%.
+- W1: paired toy evidence favours (d) over no head (31/40; median paired difference -0.0068); medians of separate deficits mislead.
+- W2 [Astra, derived + exact toys]: covariance-gradient estimator (Umrigar-Filippi cond-mat/0412634 Eqs. 5-6), single-draw covariance
+  Sigma_ij = (4/Z) sum_x b_x^2 Obar_i Obar_j - g_i g_j, b = (H_F - E_F) t. Zero at t = phi (toy: 0 vs 0.107 for C15's estimator). Not C15.
+  Caveat: design B freezes H_FN[S'G] but multiplies A_k: where A_k lacks a new guide wall (t_x = O(1), G_x = eps) the row's second moment is
+  O(eps^-2) (toy 2.07e7 at eps 1e-4, 2.07e11 at 1e-6; matched wall 3.5). The Lanczos factor again. Corrections ~ eps at p_x ~ eps still
+  need eps^-2 samples.
+- PROVENANCE CORRECTION (Astra): the 8e4 -> 2.5e8 walker counts in the issue-3 row are Tim's 4x4 study (STATUS.md:785), not 8x8.
+- W3: Rayleigh error (3) = sum_kept h p_x p_y (e^{e_x} - e^{e_y})^2 / sum p^2 e^{2e}: filling a frozen wall costs O(1/eps), so (d) protects
+  walls; it cannot make the Lanczos factor representable. Opus: clipping the guide's Lanczos factor to the head's range helped the toy
+  (34-36/40), descent for the clipped guide unproven.
+- W4: B11's OOM was JIT constants (STATUS.md:943-953), chunked retry passed a CG solve; design B differs from B10 (wall of G, not of A_k),
+  so B10's 4x4 99.7% does not certify it.
+- Required control (Astra): an equal-cost head trained on the physical H (VMC). If it matches or beats (d), prefer it.
+- Agreed kill line (merged; no run before the PI says 'now test it'): 6x6 exact tables used for grading only, realistic sampled rows,
+  x-only head, early and late design-B states, three rounds. Stop if: retained fraction of the perfect copy's next-round FN gain < 0.5
+  (round 1 or 3) or falls > 0.3 over the rounds; or the certificate E_H(chi) < E_FN[g] fails; or the sampled arm is > 0.15 below the
+  exact-gradient arm, or M_req = 16 d^T Sigma d/(d^T g)^2 exceeds the declared budget. Void unless the literal STEP4 loss fails (rho_1 <= 0.2).
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

@@ -9,7 +9,9 @@ Round k:
     is safe but gains ~1/N of the optimal step.)
  2. Fixed node with guide psi'_k, sign AND amplitude -> phi_k. Cost: one level (two-hop ratios; 5.4x for the PP at 6x6). Not stored.
  3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle).
- 4. Amplitude: fit a new head r_k ~ ln|phi_k / A_k|, log loss on r only, A_k frozen (no moving 1/B). Labels: the Jacobi estimate
+ 4. Amplitude (CONSENSUS 11-17, lead 70 / Astra 75 / Opus 70%, pending the PI's 'now test it'): fit a new head r_k by minimising the
+    Rayleigh quotient of the FROZEN H_FN[psi'_k] over chi = S' A_k e^{r} (TRIED_IDEAS B10); corrected log-residual only as a diagnostic;
+    kill line and control in STORAGE_PROBLEM 'STEP-4 CONSENSUS'. Superseded wording: fit a new head r_k ~ ln|phi_k / A_k|, log loss on r only, A_k frozen (no moving 1/B). Labels: the Jacobi estimate
     (Lanczos part ln|1 + alpha(E_L - E)| + one-step FN part f_J[psi']), damped. Walker-density labels (Pilati et al. 1907.00907) = a
     different direction, NOT started.
  5. A_{k+1} = A_k e^{r_k}. Optional, every few rounds: merge into one network by the relative-square loss.

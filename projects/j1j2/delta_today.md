@@ -2180,3 +2180,4 @@
 2026-11-17 19:04 lead: RUNG 2 PASS (rho_4.88 = 1.000005, bound 6.5e-8 << B/2 2.5e-6; re-derived from JSON). RUNG 2b INVALID (random-vector break test failed: degenerate init + in-sample chance level); retry rule written (held-out share, scales 0.3/1.0).
 2026-11-17 19:05 lead (takeover): staging worker started for the 6x6 B10 harness + A40 launcher (CPU tests only, no submission until rung 2b passes); rung 2b retry and 8x8 rung-2 workers running.
 2026-11-17 21:05 sign angle STEP 6 (PLAN_sign; runs/j1j2/sign_bad/step6): C-free step = majority update in Marshall frame [exact]; pure J1/J2 balance >0 on every band row, all violations are domains; copy restoring 0.29 vs growing 0.48 (CF), 0.30 vs 0.62 (n_3); M6 killed (|l_2| effect grows, not absorbed). Next: Astra review + fix ideas.
+2026-11-17 21:12 sign angle: Astra cj-cbcdba6ca909 (step-6 review + mechanisms + fixes; astra/step6_review/QUESTION.md) submitted; wait armed; 09:00 check-in timer armed.

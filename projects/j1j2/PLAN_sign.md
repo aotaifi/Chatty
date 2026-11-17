@@ -2104,3 +2104,23 @@ STEP 7 CORRECTION + RUNG 2 (2026-11-17 ~23:05; Astra cj-2a649470cd33 = /scratch/
 - VERDICT: depth-1 confidence gate CLOSED for the loop (fails the joint cost/gain screen at every theta; evidence above). Per-bond gating by A_z/A_x
   rejected on paper: the sign of z would depend on which walker asks, so psi_T is not single-valued.
 - Stake of the copy problem per round [measured, first order]: CF gets -9.6e-5 vs n_2; perfect copy would add -1.1e-4 (flat) / -8.9e-5 (|B|^2) more.
+
+## STEP-BACK 2026-11-17 ~23:35 (trigger: many failed copy fixes, step-back skill)
+1. VERDICT: continue on the copy; the lever is the network's REPRESENTATION of the neighbour field, not its bias, a walker-time gate, labels or data size.
+2. THOUGHT: my blind guess "FN realises little of the first-order gain, so copy does not matter" is refuted by existing data: g_3 = 5.1(13)e-5 FN
+   (job 17900939) vs first-order 6.4e-5 for the same n_2 -> n_3 step: realised ~0.8. Stake of a perfect copy ~1.1e-4 first order, ~8e-5 FN per round.
+   And the C-free label is robust to INDEPENDENT input noise (step7/label_condition.py, 10,240 complete root stars, 166 flips, labels reproduce 100%):
+   | perturbation | flip labels changed | keeps changed |
+   | ln-ratio noise s = 0.1 / 0.3 / 0.5 | 0.05 / 0.14 / 0.19 | 0.001 / 0.003 / 0.006 |
+   | neighbour old-sign error q = 0.01 / 0.05 / 0.1 | 0.06 / 0.16 / 0.23 | 0.001 / 0.005 / 0.011 |
+   CF misses ~0.5 of flips, far beyond any plausible independent input noise: the net does not compute a noisy field, it predicts from correlates
+   (Astra finding 7, shared old-score coordinate, SUPPORTED; finding 9, field-noise width, DISFAVOURED). Fits the record "train BCE falls, held-out flat".
+3. CHEAPEST NEXT TEST: whether per-state features the amplitude evaluation already supplies (RBM hidden pre-activations theta(z), cheap low-rank update
+   from the walker) let a linear readout recover the field: logistic probe on [l_2, theta-features], train rows vs held-out panel, scored by the
+   fo_gate estimator. ~1 CPU-h, worker. Prediction: beats CF by >= 1.5e-5/site [20%]; kill < 1e-5.
+- STEP 7b offset scan (step7/offset_scan.{py,json}; cross-validated over origin-chain halves): best shifts go the OPPOSITE way to Astra's remedy
+  (more persistence c = +0.2; restore-only c = -0.3); held-out gains 0.5-1.7e-5, the same as a uniform +0.2 shift. Kill fired (< ~1e-5, no
+  direction-specific gain): the offset b is not a usable term; CF's operating point is near energy-optimal for its score; resolution limits.
+- Gate cost re-anchored on a MEASURED timing: G(-5) paid 12.5x for ~14 gated neighbours per row (0.8 E_L each): theta 1 -> ~5.7 gated -> ~5.6x;
+  theta 0.25 -> ~1.7 -> ~2.4x but gains only -3.3e-5/-2.4e-5. Gate closure stands.
+- Passed over: synchronous-flip colouring (Astra 14; cross terms 0.2% of linear on the panel: not the limit); per-bond gating (psi_T not single-valued).

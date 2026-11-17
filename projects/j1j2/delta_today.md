@@ -2211,3 +2211,5 @@
 2026-11-18 00:07 VERDICT job A1_fixed_m41: COMPLETED; last log line: [   1001s] DONE [/scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/moving/check_fixed/log.txt]
 2026-11-18 00:09 [worker node-geom] NODE-GEOMETRY CHECK done (CPU, exact LSQ, m40, exit 0): residual D(v-fit)/D(v), v=u-l round 1, sign-only counts: (i) x-counts lin 0.956 in / 0.963 cv; (ii) +nbr lin 0.940 / 0.963; (iii) all quad 0.849 / 0.858; (iv) (iii)+fJG[G] 0.088 / 0.092; fJG alone 0.121; wrong-sign (iii) 0.947, random 1.000, R=v 0 [/scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/node_geom/node_geom.json, ansatz/code/rangelimit_nodegeom.py]
 2026-11-18 00:10 [lead] NODE-GEOMETRY CHECK verified: BETWEEN (sign-only features leave 0.849 of v, f_J alone 0.121); recorded STORAGE_PROBLEM; does not change arm H.
+2026-11-18 00:12 [lead] PI: recall hook removed (require_recall.py PreToolUse entry deleted from /project/theorie/a/A.Otaifi/.claude/settings.json; backup in session scratchpad; script and tools/recall.sh kept).
+2026-11-18 00:13 [lead] consolidate-project inventory stopped by the PI (too slow), no file written; to be re-run by the fresh session. Lead migrating.

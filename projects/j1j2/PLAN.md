@@ -390,6 +390,8 @@ the storage loop; kill keeps the add-on Goal. Pointers: equation board https://c
 ../../handoffs/2026-10-27-fn-error-weights.md; PLAN_ansatz.md (angle record); local entry folder /project/theorie/a/A.Otaifi/j1j2/
 (CLAUDE.md; PLAN.md and delta_today.md symlink here). Candidate architecture if the loss is not enough: exp(J) x sum_k Pf[M_k]
 (lead + PI, 2026-10-27; not done for spin models per literature check).
+CURRENT 2026-11-17 (theorist mode, project CLAUDE.md point 9): the open question is on paper, in STORAGE_PROBLEM.md 'CURRENT 2026-11-17'.
+PI's reformulation: freeze B_k, store B_{k+1} = B_k e^{r_theta}, plain regression r_theta ~ c f_J (|f_J| <= 0.14 at q.9999); no run until the PI says 'test it'.
 
 ## Step back 2026-10-27 (second, with TRIED_IDEAS.md) - SUPERSEDED by the PI's 'resolve storage first'
 1. Verdict: REFRAME. Stop searching for a sign-repair method; write up what the project measured: three walls that stop learned sign
@@ -645,6 +647,10 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   reproduced train bond f 0.0197 -> 0.2667; registration PLAN_pfaffian 'REGISTRATION R1'-CLIP'). CPU held-out gate f >= 0.12 (pred 0.23) -> grade
   (~8 H100-h, pred -3e-5 vs warm, confirmed iff below R1' beyond 2 sigma) -> lead reads the launcher. Below 0.12 -> stop. (A) dropped (Astra: |m| = 3
   persists, 3.8x cost); (C) = R2''s trainable form if (C') confirms. R2' on hold.
+  CLIP GRADE 11-17: Paderborn 4306152/4306153 PENDING (cont QoS; express is out of GPU-minutes), start est. 19:00, 4.47 H100-h, runs/j1j2/r1p_clip_grade,
+  watchers 1897015/1897330 (setsid, write VERDICT to delta_today.md). Lead 11-17: patches the step, not the loss (d ln|B| = dB/B at nodes the fit moves);
+  recommended cancelling; the PI's OK is needed and was not given (asked 11-17 12:25). Branches (registered 11-16 22:46): CONFIRMED -> R2' design to the PI
+  on paper (theorist mode, no run); NOT CONFIRMED -> diagnosis on paper only.
   STEP-BACK 11-16 15:25 (second failed controller: soft hinge overshoot, then Jd bound refuted, PLAN_pfaffian 'KILL TEST RESULT', P36):
   1. Verdict: continue with backtracking on the actual per-row m (TRPO line search, 1502.05477). 2. Thought: near a node the
   quadratic term of dB/B carries the same 1/|B| as the linear one, so only the true m can be bounded; the stall risk comes from a hard max over
@@ -733,6 +739,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Round 1 gained 1.2e-5 per site, 4-7x short; the fit was moving the nodes. A clipped guide stores 0.24 of the target on CPU (bar 0.12); its energy test is queued.
-- NEXT (in progress, high): Energy test of the clipped guide (start ~19:00 today); if it beats round 1 by 2 sigma, round 2 and then the joint sign-and-amplitude loop design to the PI.
-- NEXT (open, medium): Pick the sign flip rule for the joint loop: the current rule mostly reverses signs; the sign angle recommends a neighbour-based rule (first-order gain ~2-3e-5 per site).
+- STATUS (in progress, high): Storing the improved amplitude at 8x8 failed because fitting log B blows up near the nodes; we now work the fix out on paper before any run.
+- NEXT (open, high): Derive whether storing a small bounded correction on a frozen network (B_k times e^r) behaves near the nodes the network itself moves.
+- NEXT (open, high): PI decides whether to cancel the queued clipped-guide energy test (it patches the wrong term).

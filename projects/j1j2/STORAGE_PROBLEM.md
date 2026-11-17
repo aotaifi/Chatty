@@ -13,6 +13,24 @@ Reading (lead): issue 3 is not new; the factorised residual is the known handle.
 are compatible: e^{r} J-type correction on a guide whose node (Pf) is kept, trained on E_FN with SR.
 Next decision for the PI: which of 1-3 to test first, on paper before any run.
 
+## CURRENT 2026-11-17 (theorist mode; the account for the storage question, newest first)
+Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
+- [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
+- [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).
+- [exact] Why R1' failed: a loss on ln|B_theta| has d ln|B| = dB/B, so the rows near nodes of B_theta own the gradient (tangent norms 26-73x typical,
+  PLAN_pfaffian 2577); the moving base B_0' + lam PP moved its nodes. Stored fraction f 0.145 (6x6: 0.49). Five step-size patches did not change this term.
+- [exact, PI 11-17] Reformulation: with B_k frozen, B_{k+1} = B_k e^{r_theta} and storing is plain regression r_theta(x) ~ c f_J(x): no 1/B in the
+  gradient, target bounded. Kept only for cost (recomputing B_k e^{r} nested k times costs 256^k neighbour sums otherwise). Price: zeros of B_k persist.
+- [exact, Astra cj-5ca32ee74fb4, /scratch/a/A.Otaifi/astra/lfix_review/ASTRA_lfix.md] L_fix = sum 2h t_x t_y (cosh delta - 1) is NOT log-free: its gradient
+  ~ sinh(delta)(O_x - O_y) scales 1/eps^2 at a spurious node. Astra's ranking: frozen base x bounded head (~70%) > amplitude L2/Hellinger > L_fix.
+  Precedents: TRIED_IDEAS B10 (exact 4x4, 99.7%), B11 (8x8, OOM, outcome never recorded).
+- [cond] Auditor (docs/reviews/2026-11-17_drift_audit.md row 15): asinh(B/s) has a bounded gradient at the node, dB/sqrt(s^2 + B^2); it was closed on a
+  freezing counterfactual that cannot create sign-crossing moves (biased). Not re-opened yet: to be weighed on paper.
+- NEXT EQUATION: the gradient of the regression loss at a node of B_k (frozen, so none can move) and at a node of B_k e^{r_theta} (none new, since
+  e^r > 0): check the claim "no node moves" holds, then whether a bounded r can carry c f_J where f_J is largest (near the nodes, where |B_k(x)| is small).
+- Assumed, not shown: that the frozen-base product stays cheap enough over rounds (one extra head per round), and that persisting zeros of B_k cost less
+  than the 1/B gradient does.
+
 ## Test T-Lfix (pre-registered 2026-10-27, PI asked; before any run)
 Does the pair loss L_fix (board 15) store the fixed-node state better than the log loss in our code (board 13), same network?
 - Target phi = exact FN state of a fixed guide (4x4: the existing exact loop targets; 6x6: the G-tax target phi_0 or an O2b round).

@@ -2134,3 +2134,4 @@
 2026-11-17 12:01 lead: 12:00 board guard fired (stale: Pfaffian remedy predictions superseded by the clip grade); clip watchers 1897015/1897330 alive; lead wait re-armed, guard 2026-11-18 09:00.
 2026-11-17 12:18 lead: PI: angles message the lead directly; boards archived, Pfaffian and write-up angles told, board wait stopped. Wake sources: session messages + clip watchers 1897015/1897330.
 2026-11-17 12:23 lead: PI: theorist mode is the j1j2 default; project CLAUDE.md point 9 added (overrides root §1 Initiative / critical-path pace).
+2026-11-17 12:43 lead: migrate: PLAN.md (storage CURRENT pointer, clip-grade line with cancel pending, Cockpit) and STORAGE_PROBLEM.md 'CURRENT 2026-11-17' written; session to be cleared.

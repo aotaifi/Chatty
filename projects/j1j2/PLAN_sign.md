@@ -2006,3 +2006,10 @@ ASTRA REVIEW of step 5 (cj-ecaccd367a13, /scratch/a/A.Otaifi/astra/step5_review/
   - The first-order shares are positive (0.30 / 0.085, unquoted).
   - What limits the copy is NOT yet a mechanism. Next on paper: a mechanism that predicts the copy at fixed t from the old net's margin, for a cold start.
 - The link to the monotone descent above is CORRECTED: CF 0.30 is positive but has no error bar, and cross terms are not small in general. Whether the sign link of the descent holds with this copy is OPEN.
+
+## TAKEOVER 2026-11-17 ~20:00 (PI away): ruling and terms
+- PI's words: "theory mode rung 1 rung 2 (decision by overrule so you can decide) to get the copying to get better; paper first, then data checked locally is rung 2, then submit run only if possible; it really helps to think first not grind."
+  My reading, recorded: the rung-3 'now test it' for the copy question is delegated to me while the PI is away, used only if rungs 1 and 2 both recommend the run and the kill line comes from rung 1.
+- Question held: why the copy of good C-free flips stalls at ~0.4-0.5, and why at fixed balance t it falls with the old net's confidence, also for the cold-started n_3.
+- Ceiling (my default): rung 3 at most one run at a time, 6 A40-h total, run by a worker. Not alone: deletions, cancelling others' jobs, the paper, messages beyond the lead.
+- Each rung: derivation -> Astra review -> rung-2 number written before computing -> account.

@@ -38,7 +38,7 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   c f_J ~ c ln(1/eps), and T = B_k e^{c f_J} = B_k^{1-c} A'^c ~ eps^{1-c}, which DIVERGES for the measured bulk c = 2.4-3.9 (PLAN 282-317). The true
   correction ln(phi/B_k) ~ 1 x ln(1/eps) (phi finite where B_k has a spurious zero). So near spurious zeros c f_J overshoots by a factor c, and a
   bounded r cannot carry it at all. At a true node (V large, A'(x) ~ eps too) f_J stays O(1): no problem.
-- [conj, ~50%; KILLED 11-17, see 'where B is small' below: f_J in [-3.13, 2.2] on all 2.1M pool rows, 0 rows > 3] Spurious near-zeros of B_k exist at 8x8 and matter: the 6x6 bond split put 75-84% of the copy's tax on "small side far too small"
+- [conj, ~50%; KILLED 11-17, see 'where B is small' below: raw f_J in [-0.78, 0.55] on the 2.1M SAMPLED pool rows (decades -9..-2), 0 rows > 3 (Astra; the [-3.13, 2.2] quoted first was c f_J, c = 4); deeper or unsampled dips not excluded] Spurious near-zeros of B_k exist at 8x8 and matter: the 6x6 bond split put 75-84% of the copy's tax on "small side far too small"
   (e_x ~ -6 to -9 log units), i.e. exactly such dips. Killed if B_k at 8x8 has no rows with A'(x)/|B_k(x)| > e^{3}.
 - [exact, own 11-17; corrected the same day after an outsider's remark and reading the code] Per image term: an exchange hop changes one row AND
   one column of F_g = f[Up(z_g), Dn(z_g)], so a_j(g; y) / a_j(g; x) = +- det(I_2 + K_g), K_g built from F_g^{-1} (rank-2 lemma, pp2_lemma.py l.13-15).
@@ -66,7 +66,7 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   are made by interference of the symmetry images, and the log loss pays 1/kappa there.
 - [own + existing data, jac_rows.npz dlnB_actual/linear, steps 0 -> 150] Linear region: ln B(theta + delta) is linear while |grad B . delta| << |B| =
   kappa sum|t_g|; with sum|grad t_g| not cancelling, |delta| <~ kappa x (bulk scale). Worst rows: linear prediction -8.7..+7.7, actual +1.6..+2.7
-  (wrong sign in 3 of 5): the fit left their linear region. Typical r9 rows: 0.15 vs 0.10. So the steps are too large FOR these rows (PI 11-17), but a
+  (wrong sign in 2 of 5; corrected by Astra): the fit left their linear region. Typical r9 rows: 0.15 vs 0.10. So the steps are too large FOR these rows (PI 11-17), but a
   step inside their region is kappa_x / kappa_bulk ~ 1/30 - 1/450 of what the bulk needs: one step size cannot serve both. The five step-size patches
   (clip, backtracking, hinge) met exactly this. The term to change is the coordinate: ln of a sum that cancels. The frozen-base form keeps B_k's
   cancellations fixed and fits only e^r, which has none.
@@ -78,8 +78,7 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   Open: the two losses share a minimum only where Psi = T is reachable; otherwise alternating updates may not have a joint fixed point.
 - [measured 11-17, CPU on existing files: pool_comb/pool/pool.npz (s306 base, 2.1M rows, betas 1, 0.5, 0.25), image_cancel.json, jac_rows.npz]
   WHERE B IS SMALL. The worst rows sit on the small side of a sign-violating (blocked) bond: their blocked partners are 3.1-7.5 e-folds larger.
-  The Jacobi target agrees they are small: ln T - ln B = -0.18, -1.5, -0.12, -1.4, -0.14 (target even smaller). So these are TRUE wall rows, not
-  spurious dips. Over 200 random decade -9 rows: corr(ln kappa, largest blocked-partner excess) = -0.53 (decade -5: -0.43): the network makes the
+  The Jacobi target agrees they are small: ln T - ln B = -0.18, -1.5, -0.12, -1.4, -0.14 (target even smaller). [corrected by Astra: this does not certify them as true; the target is built from the dip itself.] Over 200 random decade -9 rows: corr(ln kappa, largest blocked-partner excess) = -0.53 (decade -5: -0.43): the network makes the
   small side of the FN wall by cancelling its symmetry images.
 - [exact, own 11-17] Why 'the target agrees' is not circular although T is built from B_k: with K = sum_kept |H_xz| |B(z)|, Vs = sum_viol |H_xy| |B(y)|,
   f_J = ln[K / ((H_xx - E')|B(x)| + Vs)]. At a wall row Vs >> (H_xx - E')|B(x)|, so f_J ~ ln(K / Vs), independent of |B(x)|. The local FN fixed point
@@ -89,10 +88,10 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
 - [measured] R1' trigger: the warm start added lam P_2 from another optimum (s307), whose images do not cancel where P_1's do: ln|lam P_2| - ln|P_1|
   = +1.55, -4.66, -1.04, -1.01, -2.02 at the worst rows vs -3.0 typical; at row 1481899 the warm B was 1.75 above the base, 1.93 above the target,
   at the stiffest row (1/kappa = 1600). Large residual x 1/kappa.
-- [own, cond: image gradients do not cancel (supported by the -0.93)] Cancellation is fragile under ANY loss: an update delta chosen for the bulk moves
+- [WITHDRAWN 11-17 by Astra's review: an update moves ln B by O_x . delta, not |O_x||delta|; the norm is an upper bound only, so freezing is sufficient, not shown necessary] Cancellation is fragile under ANY loss: an update delta chosen for the bulk moves
   ln B at a cancelling row by ~ (1/kappa) |delta| x bulk scale, whether or not the loss looks at that row. So a trainable B (option 2, square loss)
   scrambles the wall rows while fitting the bulk, and r is then left a target ln T - ln B_theta with jumps of order ln(1/kappa'). Freezing B_k is
-  therefore needed, not just convenient. Option 1's r-target c f_J is bounded on the pool (f in [-3.13, 2.2]).
+  therefore needed, not just convenient. Option 1's r-target: the implemented target is clipped, |c f| <= 4.88 (pp2_lemma._apply_mode); raw c f_J is unbounded as K -> 0 or D b + Vs -> 0.
 - Not checked: rows the pool under-samples (drawn ~ |B_k|^(2 beta), beta >= 0.25; decades -2..-9 only); the pair weights rho at the wall rows in
   option 1's loss (bounded regression, but possibly dominant weights); whether a smooth r can follow c f_J across the wall.
 - [measured 11-17, pool.npz, CPU] Option 1 at the wall rows. With Psi = B_k e^r the pool_fit loss becomes e = r - f - c, pair term (r_x - r_y - (f_x - f_y))^2:
@@ -103,11 +102,11 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
 - [exact, own 11-17] Nesting cost of option 1 with FITTED heads: B_k = B_0 e^{r_0 + ... + r_{k-1}}; evaluation = one B_0 (256 images) + k small heads,
   linear in k; round k's target c f_J[B_k] needs one level of neighbour sums of B_k. The 256^k cost holds only if r_i := c f_J[B_i] is computed,
   not fitted. Heads can be merged by a bounded regression (r_sum ~ sum r_i) when k grows.
-- [conj, ~60%, own 11-17] The real limit of option 1 is the moving sign. B_0's cancellations sit at the walls of S_0 (corr -0.53 above). A sign round
+- [conj, was ~60%; LARGELY REFUTED at the 5 rows by the K, Vs values below] The real limit of option 1 is the moving sign. B_0's cancellations sit at the walls of S_0 (corr -0.53 above). A sign round
   flips 0.8-2.7% of rows (PLAN_sign l.806-810, other pool), i.e. moves walls. At an old wall row the new state need not be small: r must reach
   + ln(1/kappa) (up to ln 1600 ~ 7.4) in one swap; at a new wall row B_0 is not small and r must dip by several units in one swap (board 7: a smooth
   log net cannot). Killed if f_J[B_k] at bonds that become blocked after a sign round stays inside the present pool range (|f| < 3).
-- [exact, own 11-17] One bond changing class. Let a = |H_xy||B(y)|, K0, V0 the other kept / blocked sums, D = H_xx - E'.
+- [exact, but its premise 'a dominates' FAILS at the 5 rows: K/Vs = 0.71-0.98] One bond changing class. Let a = |H_xy||B(y)|, K0, V0 the other kept / blocked sums, D = H_xx - E'.
   kept:    f = ln[(K0 + a) / (D|B(x)| + V0)]        blocked: f' = ln[K0 / (D|B(x)| + V0 + a)]
   If a dominates (y much larger than x's other terms): f ~ + ln(a / (D|B(x)| + V0)), f' ~ - ln(a / K0). The target at x swings by ~ 2 ln(a / typical):
   with the measured partner excess e^3-e^7.5 that is ~ 6-15 in f, x c. Within a round (S fixed) the pool shows |f| < 3.2, so option 1 is safe; a sign
@@ -117,7 +116,7 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   (violating) y has S(y) = S(x), a kept one S(y) = -S(x), so Q(x) = alpha S(x) (Vs - K) and sgn Q = S(x) sgn(K - Vs). C-free flips x  <=>  Vs > K.
   (With the diagonal term, C = 1 + alpha(H_xx - E) < 0 everywhere (PLAN_sign), C S|B| and Q share the sign -S(x) at such rows, so the full Lanczos
   label does not flip them relative to the bulk: it only raises |psi'(x)| by |alpha| Vs.)
-- [own, cond: the 5 worst rows are V-dominated, Astra checking K, Vs] Our worst rows have f < 0 with partners e^3-7.5 larger: Vs > K, so C-free flips
+- [cond met: Vs > K at all 5 rows, Vs/(D b) = 28-503 (Astra); conclusion 'target RISES e^3-7.5' WRONG, see review block] Our worst rows have f < 0 with partners e^3-7.5 larger: Vs > K, so C-free flips
   them. After the flip the big partners become kept: f'' ~ ln(Vs_old / (D|B| + K_old)) ~ + (3..7.5). The target then wants x to RISE by that much,
   where B_0 made x small by cancelling images. So the rows the sign round moves are exactly the rows where the base is most fragile: option 1 is
   clean inside a round; across rounds the base must change where the wall moved, and changing it with ln|B| meets 1/kappa again.
@@ -125,13 +124,30 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   the current sign and smooth amplitude (e.g. a function of K/Vs). Deciding equation: whether the FN fixed point at a wall row is a function of
   (K, Vs, D) alone (from the local equation above, |B(x)| = (K - Vs)/D when K > Vs). Killed if the exact 6x6 FN state at wall rows departs from that
   local formula by more than its bulk scatter.
-- [exact, own 11-17] Local FN equation (stoquastic frame of S, H_xy > 0): (H_xx + Vs/|phi(x)|)|phi(x)| - K = E|phi(x)|, so
+- [exact ONLY at the loop's fixed point, guide = its own FN amplitude (Astra: FN's V uses the guide's ratios, V_k = Vs[B_k]/b_k, so phi itself need not obey K[phi] > Vs[phi])] Local FN equation (stoquastic frame of S, H_xy > 0): (H_xx + Vs/|phi(x)|)|phi(x)| - K = E|phi(x)|, so
   (H_xx - E)|phi(x)| = K(x) - Vs(x), with K, Vs built from phi's own neighbours. Since H_xx - E > 0 (PLAN_sign: D - E_REF >= 17.9), the exact FN
   state satisfies K(x) > Vs(x) at EVERY configuration. Rows with Vs > K are rows where the amplitude is inconsistent with its sign; no change of
   |B(x)| alone repairs them (K, Vs do not contain B(x)), so the Jacobi target there only drives x toward 0. These are exactly the rows C-free flips.
   Statement: amplitude-sign consistency  <=>  K(x) > Vs(x) for all x; the near-wall storage problem and the sign problem meet at this inequality.
-- NEXT EQUATION: the fraction of B_k's rows with Vs > K and their share of the R1' loss (needs K, which the pool does not store; Astra computing it
-  for the 5 rows), and whether a sign round that flips them restores K > Vs at their neighbours too. Astra reviewing (cj-7018a90b8916).
+- REVIEW 11-17 (Astra cj-7018a90b8916, /scratch/a/A.Otaifi/astra/cancel_review/ASTRA_cancel.md, scripts audit_data.py, audit_direct.py;
+  image log-amplitudes reproduced to 3e-13, f_J to 2e-13, break test passed). Lead's adjudication, by equation:
+  (1) accepted: the per-row gradient is 2 w e Re(grad B / B) plus pair terms; the residual and direction matter, the norm is a bound.
+  (2) accepted: f_J -> ln(1/eps) needs D b + Vs = Theta(b), i.e. no large blocked neighbour; small b alone does not give it.
+  (3) accepted with numbers: 1/kappa law holds statistically, log-log slope -0.99 (r9), -1.23 (r5); for B use kappa over all 512 terms
+      (row 1481899: 0.0034, not P_1's 0.0006, because lam P_2 un-cancels there).
+  (4) accepted: 'freezing necessary' withdrawn; 'true wall' withdrawn; K > Vs holds only at the loop's fixed point (guide = own FN amplitude).
+  (5) measured at the 5 rows: K/Vs = 0.958, 0.711, 0.985, 0.729, 0.978, Vs/(D b) = 503, 29, 67, 28, 81. The rows are BALANCED: kept and blocked
+      neighbour sums nearly equal, both much larger than D b. Local FN formula b ~ (K - Vs)/D: small because two big sums nearly cancel.
+  (6) consequence, own [exact given (5)]: flipping S(x) swaps K and Vs at x, so f goes from ~ ln(K/Vs) to ~ ln(Vs/K): swing 2|ln(K/Vs)| =
+      0.03-0.68, x c = 0.1-2.7. My e^3-7.5 'rise after the flip' assumed one dominant neighbour; it is wrong here. At these rows option 1 survives a
+      sign round. Neighbours' targets move by |H| b_x, negligible.
+  (7) accepted: frozen pair weights still carry 1/b_x (rho = (Vs/b_x) e^{...}); max w_b 250 at the worst row, pool max rho 16131: the frozen
+      regression can be stiffly weighted, though no 1/B moves with theta.
+- [own 11-17, from (5)] Physical reading: the worst rows are configurations nearly ON the node of S, where the exact amplitude is small because
+  kept and violating neighbour sums nearly cancel; the network reproduces that smallness by cancelling its symmetry images. Two cancellations,
+  one in the physics (K - Vs) and one in the ansatz (sum_g t_g), at the same rows.
+- NEXT EQUATION: with the clipped bounded target and frozen base, the remaining stiffness is the fixed pair weight rho ~ Vs/b_x (max 16131):
+  is it needed (it is the FN bond weight) or can it be bounded without biasing the stored energy? Write E_FN's dependence on the pair term first.
 - (superseded next step) NEXT EQUATION: what r should be near a spurious zero: r* = ln(phi/B_k) vs c f_J; does a c(x) that tends to 1 as f_J grows (c f_J in the bulk, f_J
   near zeros) follow from the FN equation itself, or is it a patch?
 - Assumed, not shown: that the frozen-base product stays cheap enough over rounds (one extra head per round), and that persisting zeros of B_k cost less

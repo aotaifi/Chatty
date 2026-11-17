@@ -744,5 +744,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): The 8x8 storage failure is understood: next to the fixed-node wall the network makes small amplitudes by cancelling its symmetry copies, and a log fit is hypersensitive exactly there.
-- NEXT (open, high): Work out on paper how the wall moves when the sign is updated, since the rows that move are the fragile ones; the frozen-base form is clean only while the sign stays put.
+- NEXT (open, high): On paper: the frozen-base form now looks sound, so derive whether the large fixed bond weights it inherits at near-node configurations can be bounded without biasing the energy.
 - NEXT (open, high): PI decides whether to cancel the queued clipped-guide energy test (it patches the step size, which cannot fix this).

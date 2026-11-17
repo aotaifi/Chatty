@@ -127,8 +127,10 @@ Organising question: which storage loss moves B_k toward the Jacobi-corrected ta
   to the sign round: how many flipped bonds sit next to large neighbours (to read on paper from the flip rule, then the sign angle's labels).
 - [exact, own 11-17; alpha < 0, H_xy = J_b/2 > 0, psi = S|B| real] Which rows a C-free sign round flips. Q(x) = alpha sum_y H_xy psi(y); a blocked
   (violating) y has S(y) = S(x), a kept one S(y) = -S(x), so Q(x) = alpha S(x) (Vs - K) and sgn Q = S(x) sgn(K - Vs). C-free flips x  <=>  Vs > K.
-  (With the diagonal term, C = 1 + alpha(H_xx - E) < 0 everywhere (PLAN_sign), C S|B| and Q share the sign -S(x) at such rows, so the full Lanczos
-  label does not flip them relative to the bulk: it only raises |psi'(x)| by |alpha| Vs.)
+  (CORRECTED 11-17 by the sign angle, PLAN_sign 09f3f9b, checked by the lead: psi'(x) = alpha S [(D - E')A - (K - Vs)], E' = E + 1/|alpha|; the full
+  label flips x iff (D - E')A(x) > K - Vs, so it DOES flip every Vs > K row (C-free flips are a strict subset: 38,959 of 181,330 on table_r3, 0
+  exceptions). My first version assumed the C term dominates in the bulk; there the K - Vs term does. Also: two mutually violating isolated rows
+  flip together and stay violating (period-2 cycle under simultaneous update; frequency not counted).)
 - [cond met: Vs > K at all 5 rows, Vs/(D b) = 28-503 (Astra); conclusion 'target RISES e^3-7.5' WRONG, see review block] Our worst rows have f < 0 with partners e^3-7.5 larger: Vs > K, so C-free flips
   them. After the flip the big partners become kept: f'' ~ ln(Vs_old / (D|B| + K_old)) ~ + (3..7.5). The target then wants x to RISE by that much,
   where B_0 made x small by cancelling images. So the rows the sign round moves are exactly the rows where the base is most fragile: option 1 is

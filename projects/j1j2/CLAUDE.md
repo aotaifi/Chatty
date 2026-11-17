@@ -133,6 +133,11 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    - *Counting it.* Every run, probe, grade, sizing or cost the lead proposes unasked gets a `[pull]` line in
      delta_today.md naming the step it skipped on paper. Target 0 per week; the PI reads the count. Signal words, to
      stop at before sending: submit, launcher, probe, grade, H100-h, "quick check", "ready to run".
+   - *Escalation ladder* (PI 2026-11-17). A question climbs only as far as it must: (1) paper: derive, and have the chunk
+     reviewed; (2) existing data: if the derivation leaves a quantity open, compute it from data already on disk (exact tables,
+     stored networks, finished runs' outputs; CPU, no training, no new samples), with the number it must reach written first;
+     (3) a new run: only if the question is still open after (1) and (2), and both recommend the run, with the kill line from
+     (1) and the PI's 'now test it'. Each rung's result goes into the account before the next rung is proposed.
    With the PI away, the lead derives, writes each step into the account and sends finished chunks to Astra for review;
    it does not launch. Jobs already running finish under their watchers. Record: 2026-11-17, three ideas in one
    afternoon (clip, squared loss, exp(r)) each came "ready to submit" and each was retracted in discussion; point 1

@@ -132,6 +132,25 @@ check: Astra 75%, Opus 70%, lead 70%. Success at scale: Astra ~45%, Opus ~50%.
   x-only head, early and late design-B states, three rounds. Stop if: retained fraction of the perfect copy's next-round FN gain < 0.5
   (round 1 or 3) or falls > 0.3 over the rounds; or the certificate E_H(chi) < E_FN[g] fails; or the sampled arm is > 0.15 below the
   exact-gradient arm, or M_req = 16 d^T Sigma d/(d^T g)^2 exceeds the declared budget. Void unless the literal STEP4 loss fails (rho_1 <= 0.2).
+RANGE-LIMIT BOUND FOR (d) (rung 1, own 11-17, to be reviewed). Frozen guide g = S'G, FN ground state p > 0 (sum p^2 = 1), a_x = D_x - E + V_G(x)
+so that K_p(x) = a_x p_x. Ideal head r* = ln(p/A_k). Any head with |r| <= L can reach r = clip(r*, -L, L); the best range-limited head is no
+worse [exact: min <= any feasible value]. Then t = p e^{e}, e = 0 on good rows (|r*| <= L), e < 0 on under-filled rows (r* > L: A_k too small),
+e > 0 on over-filled rows (r* < -L: A_k lacks a wall of G). From (3), using (u - v)^2 <= max(u, v)^2 for u, v >= 0 and summing each bad row
+over all its kept edges (bad-bad edges counted twice):
+   E_F[t] - E_FN  <=  sum_{x bad} a_x max(p_x^2, t_x^2)  /  sum_{x good} p_x^2,      t_x = A_k(x) e^{-L} on over-filled rows.  [exact inequality]
+Reading: under-filled rows cost at most a_x times their own p^2 weight; over-filled rows cost a_x A_k(x)^2 e^{-2L}, with a_x ~ Vs/G_x large at a new
+guide wall: the dominant term. Covers only the range limit, not other capacity limits of the head. Rung 2 quantity: this bound per round on the
+6x6 exact data, to be compared with half the round's gain B/2 (kill line); if bound << B/2 the range limit cannot fail the test.
+RUNG 2 PLAN for the range-limit question (lead 11-17, written before computing; PI: 'judge whether paper + existing data settle it'):
+Data on disk, CPU only, no training, no sampling: 6x6 copy table A_0 (pfaffian_c/runs/c1_cplx_s1/round_1/la_table.npy), oracle sign s2
+(amplitude-only check, exact signs as Astra advised), exact FN solver (delta0.efn_vec, LOBPCG, ~100 s per solve), Lanczos guide
+G = A_0 |1 + alpha*(E_L - E)| with alpha* = -0.10 (P8; cstar_lanczos.py). Compute p = FN state of guide s2 G; r* = ln(p/A_0); the bound above
+for L in {1, 2, 3, 4.88}; and the RETENTION CEILING of a range-limited head, rho_L = (N(chi_0) - N(chi_L)) / (N(chi_0) - N(phi)),
+chi_L = s2 A_0 e^{clip(r* - m, -L, L)} (m = p^2-weighted mean of r*), N(chi) = E_FN of chi's own optimal Lanczos guide.
+Decision rule (written first): rho_4.88 < 0.5 -> B10 with a head of that range cannot pass its kill line: stop before any training run.
+rho_4.88 >= 0.7 and bound << B/2 -> the range limit is not the risk; what remains (learnability of r* by an x-only head) needs a run.
+Lead's prediction: rho_4.88 >= 0.7 at ~55% (161,028 orbits have |1 + alpha(E_L - E)| < 0.05, i.e. new guide walls A_0 lacks).
+Does not settle: whether a finite x-only network can learn the clipped r* (gap 1), nor 8x8.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

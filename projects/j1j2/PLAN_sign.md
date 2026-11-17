@@ -785,6 +785,16 @@ Next if pass: paired FN grade CF vs n_3 at 8x8 (~6 A40-h, beyond tonight's ceili
  the joint loop changes to C-free (or a positive projector, |alpha| < 1/(D_max - E_REF)) only after that grade.
 T-CF SUBMITTED 2026-11-17 by ME (worker staged, did not submit; launcher + grow_eval_cf.py diff read): cip 18026932, watcher 2749137 (PPID 1), run tcf/CF;
  CF table /scratch/a/A.Otaifi/runs_bulk/sign_bad/tcf/table_r3_cf.npz sha aece6d7a. n_3 on CF labels -9..-5 (dry run): flip repro 0.520, former-harmful keeps 0.798 (not 0.87), keeps 0.971.
+T-CF RESULT 2026-11-17 (cip 18026932, ~0.8 A40-h; tcf/CF/{eval_cf.json,eval_orig.json}; gate_cf.py run by me; the auto-analysis found no brief in CF/ (brief sat in tcf/), my slip):
+ | net | CF flips repro -9..-5 | keeps (CF labels) | former-harmful kept | M on CF labels x1e-4 | E_bw on CF labels x1e-6 | dE_bw vs n_3 |
+ | n_3 | 0.520(17) | 0.971 | 0.798 | 5.54(55) | 2.68(123) | 0 |
+ | CF | 0.420(15) | 0.991 | 0.932 | 6.39(48) | 2.35(127) | -0.33(46) |
+ KILL FIRES: CF reproduces the good flips worse than n_3 (0.42 vs 0.52; bar 0.62). My prediction (>= 0.75, 70%) FAILED. The reversal labels were NOT what limited the copy of
+ the good flips. Diagnosis: CF trains on 38,959 flips (2.65% of rows) instead of 181,330 (12.3%) and moves to a conservative point (keeps 0.991, flips 0.42); n_3 flips
+ liberally (good 0.52, but 20% of the harmful rows too). Bond-weighted total error on the C-free target is a tie (-0.33(46)e-6). Good flips (old sign locally worse
+ given n_2 at the neighbours, y = sgn of sum_z H_xz M_x M_z A_z/A_x n_2(z)) are reproduced at ~0.4-0.5 whatever the label set around them.
+ What stays: n_3 carries ~20% of the harmful (reversal) flips, CF ~7%. Whether that matters for the FN energy is untested: paired FN grade CF vs n_3 (~6 A40-h),
+ beyond tonight's ceiling (used ~5.3 of 6) -> lead/PI. No more GPU tonight.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

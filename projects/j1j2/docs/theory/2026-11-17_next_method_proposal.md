@@ -1,4 +1,4 @@
-# Next method for the storage step (lead, 2026-11-17; theorist mode; DRAFT until rounds 2-3 and Astra's review are in)
+# Next method for the storage step (lead, 2026-11-17; theorist mode; DRAFT until Astra's review is in; rounds 2-3 in)
 
 Organising question: how to carry one round's fixed-node improvement into the next round at one-level walker cost.
 
@@ -31,8 +31,13 @@ neighbours: two hops). Evaluated directly, k rounds need 2k hops: cost ~ d^{2k} 
  Why not learned heads: section 1. Why not nesting: section 3.
 
 ## 5. What is assumed, and how each would be killed
- A1. The two-term formula stays accurate in later rounds (stable c). Kill: rounds 2-3 on 6x6 (running, rung 2) give eps^2 > 0.05 or c
-     drifting > 30%.
+ A1. The two-term formula stays accurate in later rounds. RUNG 2 PASSED (11-17, rounds23/rounds.json): applying it exactly with c = 1.307,
+     rounds 2 and 3 refit to eps^2 0.0015 and 0.0039 (CV 0.0015, 0.0040), a ~1.0, c 1.38 and 1.58; the explicit states keep 98.1% and
+     96.3% of each round's FN gain (E_FN 2.09e-5 -> 6.57e-6 -> 3.32e-6 /site). Open: c rises. Reading [own, conj 60%]: f_J is one Jacobi
+     step of the FN equation; if the error left after the Lanczos factor decays under Jacobi with factor rho per step, the full correction
+     along a mode is f_J/(1 - rho), so as the bulk converges the remainder sits in slow modes and the best c tends to 1/(1 - rho_slow).
+     Prediction: c saturates (does not diverge) and eps^2 grows slowly; kill: eps^2(ii) > 0.05 or the explicit state stops lowering E_FN
+     within the first 5 rounds. Consequence for (a): c is refitted per round on the consolidation set (one scalar, cheap), not fixed.
  A2. Consolidation with a fixed-weight loss stores A_{k+1} without the R1' failure. Open on paper: the MEASURE of the loss. With Born
      weights T^2 the relative square becomes the plain square and under-weights the near-node rows; with flat weights the fixed 1/T^2
      factors are heavy-tailed, and the B10 pilot just showed what a heavy tail does to a sampled gradient (frozen-H_FN Rayleigh on the

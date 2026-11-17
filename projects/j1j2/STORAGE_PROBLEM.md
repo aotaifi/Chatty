@@ -245,6 +245,12 @@ ROUNDS 2-3 RUNG 2 (written before computing): apply the formula exactly on the t
 sign s2), recompute G_k, p_k, u_k and refit (ii). Rule: eps^2(ii) <= 0.05 and refitted c within +-30% of 1.307 in rounds 2 and 3 -> the
 explicit formula is a stable round map; else not (then the formula is round-1 specific). Also report each round's FN energy of the
 explicit state (exact, no storage error) as the ceiling the consolidated loop can reach. Prediction: pass at 60%.
+ROUNDS 2-3 RESULT (11-17, worker; re-read by lead from rangelimit_6x6/rounds23/rounds.json; script ansatz/code/rangelimit_rounds.py sha 146b8c3d):
+PASS. Fit (ii) eps^2 in/CV: round 2 0.00145/0.00152 (a 1.007, c 1.381, +5.7%); round 3 0.00389/0.00403 (a 0.998, c 1.575, +20.5%).
+FN check of (ii): tax/gain 0.026 and 0.029. Explicit states (dE/site): E_FN[s2 A_1] 6.568e-6 (ceiling p_0 6.285e-6, from A_0 2.092e-5:
+98.1% of the round's gain kept), E_FN[s2 A_2] 3.320e-6 (ceiling p_1 3.194e-6: 96.3%), ceiling p_2 2.074e-6. Optimal alpha -0.10, -0.10, -0.075.
+Breaks: R=u 0, R=0 1, random column 1.0000. Caveat [own]: c rises (1.31, 1.38, 1.58); at that pace round 4 leaves the +-30% band, and f_J alone
+needs c 2.0 then 4.4: the Jacobi term's optimal weight grows as the state nears the FN fixed point. Not a kill under the written rule.
 B10 6x6 HARNESS (11-17, staging worker; built and CPU-tested, NOT submitted; runs/j1j2/b10_6x6/, code ansatz/code/b10_6x6.py): tests (a)-(d) pass
 (clipped-r* head reproduces rung 2's rho = 1.000005 exactly; zero head bit-identical; exact frozen-H_FN gradient vs finite differences 1.2e-8,
 broken gradient 237; arm X loss 8.6e-16 at ln(p/G) vs 3.1e-5 at ln(p/A_0)). LATE state proposal: pfaffian_r6k3/k3/tab_th/tab_t6/round_1

@@ -2121,3 +2121,5 @@
 2026-11-17 02:17 [sign angle] T-CF 18026932 submitted by me (worker staged only; launcher read), watcher 2749137 PPID 1, wait armed.
 2026-11-17 03:04 VERDICT job 18026932: COMPLETED, NOT RUN. No `ANALYSIS_BRIEF.md` exists in the run directory, so no gate command or chains are named. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/tcf/CF/ANALYSIS.md]
 2026-11-17 03:06 [sign angle] T-CF 18026932: KILL. C-free labels do not raise the copy of good flips (CF 0.42 vs n_3 0.52, -9..-5); CF keeps former-harmful rows 0.93 vs 0.80; bond-weighted error tie. Prediction 0.75 failed. FN grade CF vs n_3 (~6 A40-h) to lead/PI. GPU stop for tonight (~5.3 of 6 A40-h).
+2026-11-17 04:03 lead: clip grade 4306152/3 PENDING on Paderborn (start est. 19:00; express QoS out of GPU minutes, QOSGrpGRESMinutes; reverted to cont; theorie inter H100/H200 est. 11-24). Kept, under the 1-day race rule.
+2026-11-17 04:03 lead -> sign angle: CF vs n_3 FN grade not approved until a first-order energy estimate exceeds ~4e-5/site (grade sigma ~1.9e-5). Asked for a positive-projector label rule (|alpha| < 1/(D_max - E_REF)) for the joint-loop design (C<0 everywhere at alpha -0.170).

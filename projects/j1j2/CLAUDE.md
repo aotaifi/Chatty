@@ -8,6 +8,9 @@ disagrees with, and it does not pretend to agree. A point nobody has argued with
 is using, and should be questioned. Project facts, paths and history: /project/theorie/a/A.Otaifi/j1j2/CLAUDE.md,
 PLAN.md, TRIED_IDEAS.md, STORAGE_PROBLEM.md.
 
+**Read point 9 first: here we derive before we test.** Until the PI says "now test it", points 1-6 describe how a
+test is judged once one is allowed, not an invitation to propose one.
+
 ## What we saw, and why the campaign rules produce it
 
 The campaign rules were written for projects where the method is known and the open question is a number. There,
@@ -108,16 +111,32 @@ that do not say why is the failure. When the PI says "stop and explain", the exp
    pivotal calls under 70%; otherwise a worker given the question without our view, derivations that gate a run
    included (point 6). The "Opus design partner" of the old Chatty rule 3 is retired.
 
-9. **Theorist mode is the default here** (PI 2026-11-17; overrides root §1 "Initiative", where "the most valuable
-   contribution is usually the cheap experiment, with its cost", and root §1 "The critical path"'s run-per-check-in
-   pace). The lead works under the `theorist` skill: on paper, one question held for days, no run, launcher, worker
-   brief for a run, sizing or cost estimate unless the PI asks for one. A measurement appears only as a one-line kill
-   test. Ideas are discussed freely; what is banned is going from an idea straight to a test. With the PI away, the lead
-   derives, writes each step into the current account (STORAGE_PROBLEM.md for the storage question), and sends finished
-   chunks to Astra for review; it does not launch. Jobs already running finish under their watchers. Record:
-   2026-11-17, three ideas in one afternoon (clip, squared loss, exp(r)) each came "ready to submit" and each was
-   retracted in discussion; point 1 (mechanism before run, 10-28) had not stopped it. The mode ends only when the
-   PI says "now test it".
+9. **Derive first: theorist mode is the default here** (PI 2026-11-17; overrides root §1 "Initiative", where "the most
+   valuable contribution is usually the cheap experiment, with its cost", root §1 "The critical path"'s run-per-check-in
+   pace and its Cockpit NEXT wording). The lead works under the `theorist` skill: on paper, one question held for days,
+   no run, launcher, worker brief for a run, sizing or cost estimate unless the PI asks for one. The mode ends only when
+   the PI says "now test it". What the lead noticed drives the pull, and the answer to each:
+   - *A run always returns a number; a derivation can stay open.* So progress here is a smaller logical gap, not a
+     number: each turn's deliverable is one step in the current account (STORAGE_PROBLEM.md 'CURRENT' for the storage
+     question), with its equation and its tag [exact] / [cond: ...] / [conj, p]. A busy turn that adds no step is not
+     progress. Cockpit NEXT lines name an equation to derive, never a run.
+   - *The files reward runs.* So an idea enters the account as [conj, p] with the equation that would decide it on
+     paper, not with a test. Its kill test, if any, is one line, written only after that equation is derived.
+   - *A test is the exit when the argument gets hard.* So no test is named before the account holds, from an earlier
+     turn, a derived prediction of its result; best, two derivations that disagree by a computed amount. If the lead
+     can predict the result with confidence, the run is not needed; if it cannot, the theory is not finished. A
+     prediction written in the same message as its test does not count: that is how point 1 was bypassed (11-16: the
+     clip came with "pred f 0.23" and "pred -3e-5", both written to justify the run). When stuck, make the step smaller,
+     not empirical: a known limit, a one-node or two-site toy, a special case. Checking an identity already in the
+     account numerically (a few lines, under a minute, on a toy the equation covers, no network, no training loop, no
+     project code) is part of a derivation; anything that touches the network or a training loop is a test.
+   - *Counting it.* Every run, probe, grade, sizing or cost the lead proposes unasked gets a `[pull]` line in
+     delta_today.md naming the step it skipped on paper. Target 0 per week; the PI reads the count. Signal words, to
+     stop at before sending: submit, launcher, probe, grade, H100-h, "quick check", "ready to run".
+   With the PI away, the lead derives, writes each step into the account and sends finished chunks to Astra for review;
+   it does not launch. Jobs already running finish under their watchers. Record: 2026-11-17, three ideas in one
+   afternoon (clip, squared loss, exp(r)) each came "ready to submit" and each was retracted in discussion; point 1
+   (mechanism before run, 10-28) had not stopped it.
 
 ## What we kept
 

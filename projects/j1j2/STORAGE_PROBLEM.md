@@ -184,6 +184,67 @@ ridge chosen on the fit half. Break tests: held-out share of a random vector ~ 0
 Decision (lead decides, PI 11-17): held-out energy-norm share of u >= 0.1 at M = 16 (median of seeds, either scale) -> pass;
 < 0.05 at both M -> fail (rethink the head class on paper; next candidate a small translation-invariant CNN, rung 2 again);
 between -> pass only if M = 32 reaches >= 0.1. Lead's prediction: pass at 50%.
+8x8 RUNG-2 RESULT (11-17, worker; lead re-read q8_100000_s1.json and q8_rows_100000_s1.npz, calib6.json):
+- Calibration PASS: proxy / exact 6x6 over-filled term = 1.010 at L = 3 and 4.88 (gate: within 3x); exact term reproduces rangelimit_A.json.
+- 8x8 (s306 B_0, simple projection, sign sgn Re[w B_0] w = -1, 1e5 unfiltered beta = 1 draws ~ |B_0|^2, lnB reproduced exactly;
+  alpha = -0.170 declared, moment alpha needs two hops; E = -0.4988301/site): f_min = 0.0337; 1 row with f < e^-3, 0 rows with f < e^-4.88.
+  Q(3) = 3.6e-7 +- 3.5e-7 (one row); Q(4.88) = 0 (sampled).
+- Criterion 1 (Q(4.88) <= 2.5e-7/site): PASS (point value 0).
+- Criterion 2 (f^2-weighted wall weight <= 10x 6x6's 1.85e-12 -> 1.85e-11): UNRESOLVED. Sampling bounds P(f < e^-4.88) < 3e-5 (95%), six
+  orders above the bar. Lead's reading: the criterion was ill-posed (the f^2 weight suppresses exactly the rows that cost; Q is the right
+  quantity); not redefined after seeing the data. Gate for the 8x8 round therefore stays CLOSED on criterion 2 unless the PI accepts
+  criterion 1 alone; raised only if the 6x6 check passes.
+- Observation: the 8x8 Lanczos factor is tame under |B_0|^2 (30 of 1e5 rows with f < 0.5) vs 6x6's 161,028 orbits with f < 0.05 (unweighted).
+RUNG 2b RETRY RESULT (11-17; lead read the logs in rangelimit_6x6/tangent_retry/, 10 of 12 configurations; M32 s1.0 seeds 1-2 still running):
+| M | scale | held-out L2 share u / random xi | held-out energy-norm (Q) share u / random xi |
+| 16 | 0.3 | 0.119-0.121 / 0.0005-0.0010 | 0.019-0.020 / 0.014-0.018 |
+| 16 | 1.0 | 0.101-0.105 / 0.0016-0.0032 | 0.016 / 0.021-0.022 |
+| 32 | 0.3 | 0.132-0.143 / 0.0010-0.0018 | 0.023-0.026 / 0.026-0.028 |
+| 32 | 1.0 | 0.121 (seed 0) / 0.0031 | 0.019 / 0.035 |
+(r_theta break test ~1 in both norms; tangent rank now full, 592/1184.)
+Verdict: L2 metric VALID (random ~0.001-0.003): the RBM head's first-order span holds 10-14% of the target, ~100x a random vector.
+Energy-norm metric INVALID again: random xi's held-out Q share (0.014-0.035) equals u's. Diagnosis: the Q norm couples each sampled row to its
+neighbours, and fit and held-out halves share neighbours, so the held-out half is not independent (leakage); the chance floor ~0.02-0.03
+equals everything measured. So the rule's primary metric cannot decide; NOT a pass. Repair (same rung, existing data, no sampling):
+EXACT full-table shares, J^T W J and J^T W u accumulated over all 15.8M orbits and their kept edges (both norms), no split; chance level for a
+random vector ~ P / N_eff ~ 0, checked by the xi break test. Decision rule unchanged: Q share >= 0.1 at M = 16 -> pass; < 0.05 at M 16 and 32
+-> fail (rethink the head class on paper); between -> pass only if M = 32 >= 0.1.
+RUNG 2b FINAL (11-17, exact full table, 15.8M orbits, no sampling; worker; lead read tangent_full/combine.txt): FAIL by the written rule.
+Energy-norm share of u: 0.021 (M 16), 0.028 (M 32) < 0.05 at both, and BELOW a random vector's share (0.034, 0.063). L2: 0.132 / 0.163 vs a
+random vector's 0.056 / 0.098 (expected 0.068 / 0.110). Break test r_theta(other init) 0.98-1.00. Ridge scan flat.
+DIAGNOSIS ON PAPER (lead): (1) the records already said so and I did not check them before choosing the head: M-R KILL 10-28 (PLAN l.289):
+an RBM residual stored ~6% of R* = ln(phi/A); Test L: 2-body features leave eps^2 = 0.973 of R*, while the copy's own Jacobi factor f_J alone
+leaves 0.079. (2) The law tax/gain = eps^2 (M-R, verified to 1%) turns a share into a retention: rho ~ 1 - eps^2 ~ energy-norm share, so the
+RBM head predicts rho ~ 0.02-0.03 at round 1, far below the kill line 0.5. The 6x6 B10 check with this head is not recommended by the data;
+not submitted. (3) Mechanism: near init an RBM factor spans symmetrised one- and two-spin functions (Jastrow class); the FN correction is a
+functional of the base's LOCAL AMPLITUDE RATIOS (f_J is built from them), not a low-order spin correlation, so a head that sees only spins
+must rebuild the base's ratios to express it. B10's 4x4 success used a 155k-parameter ViT (results/frozen_hfn_..._2026-10-03.md).
+NEXT-METHOD RUNG 2 (goal item 5; written before computing, lead 11-17). Norm fixed by the records: the M-R law tax/gain = eps^2 holds
+(to 1%) with eps^2 = D(R - R*, R - R*)/D(R*, R*), D(a,b) = sum over BLOCKED pairs w (a_x - a_y)(b_x - b_y), w = n_r 0.5 HW_k phi_r phi_y
+(mr_residual.py). (My kept-edge Q norm in rung 2b was the wrong norm for retention; the RBM verdict stands on M-R's own 6%.)
+Candidate head class: a FEATURE head, r(x) = g(phi(x)) with local features of the stored state at x:
+  l(x) = ln|1 + alpha(E_L(x) - E)| (Lanczos part, one hop), f_J[A](x) (one hop), f_J[G](x) (two hops), ln A(x), K/Vs at x.
+Question for existing data (6x6, design B round 1: u = ln(p/A_0) from rangelimit_6x6): eps^2 of the best least-squares fit of u in the
+D-norm by (i) c * f_J[G] alone, (ii) l + c f_J[G], (iii) a cubic polynomial in all features (in-sample, P << N, and 5-fold by orbit blocks).
+Predicted retention rho = 1 - eps^2. Decision: rho_pred >= 0.7 for (ii) or (iii) -> the feature head is the next method (paper proposal +
+Astra); < 0.5 for all -> features of the stored state cannot carry the round's correction either; the remaining route is consolidation.
+Lead's prediction: (ii) reaches eps^2 <= 0.3 at 65% (Test L: f_J alone left 0.079 in design A).
+Cost note for the proposal (paper): features of A_k at x need A_k at one or two hops, and A_k contains earlier feature heads, so features
+of the current state nest one level per round; bounded only with periodic consolidation (merge into a refitted base).
+NEXT-METHOD RUNG 2 RESULT (11-17, worker; lead re-read features/features.json): PASS, strongly. In the M-R D-norm, design B round 1 at 6x6:
+  (i) c f_J[G] alone: eps^2 0.852 (CV 0.861), c = 3.22;  (ii) a l + c f_J[G]: eps^2 0.0033 (CV 0.0034), a = 1.015, c = 1.307;
+  (iii) cubic in five features: 0.0019 (CV 0.0020). Break tests: R = u -> 0, R = 0 -> 1, random column -> 0.99999.
+  Direct FN check of (ii): E_FN[s2 A_0 e^R] = 6.511e-6/site vs 6.285e-6 for s2 p, gain 1.464e-5 -> retention 0.985 (tax/gain 0.0155;
+  the M-R law eps^2 = tax/gain is off by 4.65x here, so use direct checks). Feature inputs reproduce pfaffian_l f_J exactly.
+READING [own]: the round's FN correction relative to the stored state is, to 99.7% (D-norm) and 98.5% of the energy gain, an EXPLICIT local
+formula: u ~ l + 1.31 f_J[G], i.e. keep the Lanczos amplitude factor (coefficient 1.01) and add 1.31 Jacobi steps of the FN equation on the
+Lanczos guide. Nothing needs to be LEARNED inside a round; the storage problem is a COST problem (the formula needs the stored state at two
+hops, and rounds nest), to be solved by periodic consolidation into a refitted base with a loss whose 1/B is a fixed weight (relative square
+or frozen-H_FN Rayleigh with a full network). Proposal: docs/theory/2026-11-17_next_method_proposal.md.
+ROUNDS 2-3 RUNG 2 (written before computing): apply the formula exactly on the table (A_{k+1} = A_k |1 + alpha_k(E_L - E)| e^{1.307 f_J[G_k]},
+sign s2), recompute G_k, p_k, u_k and refit (ii). Rule: eps^2(ii) <= 0.05 and refitted c within +-30% of 1.307 in rounds 2 and 3 -> the
+explicit formula is a stable round map; else not (then the formula is round-1 specific). Also report each round's FN energy of the
+explicit state (exact, no storage error) as the ceiling the consolidated loop can reach. Prediction: pass at 60%.
 Organising question: which storage loss moves B_k toward the Jacobi-corrected target without a 1/B term at nodes the network itself moves?
 - [exact] Loop: psi_k = S_k|B_k| -> psi' = (1 + alpha(H - E)) psi_k -> FN phi with sgn phi = sgn psi' -> S_{k+1} <- sgn psi', |B_{k+1}| <- |phi|.
 - [exact] Target T(x) = B_k(x) e^{c f_J(x)}, f_J(x) = ln[ sum_z |H_xz| |B_k(z)| / ((H_xx + V - E') |B_k(x)|) ]; |f_J| <= 0.14 at q.9999 (8x8).

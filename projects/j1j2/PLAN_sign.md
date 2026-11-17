@@ -723,6 +723,35 @@ LEAD GO 2026-11-16 (launchers read). Reading rule (lead): single seed per arm; i
 T-GROW SUBMITTED 2026-11-16 (worker, submit_arm.sh; verified by me: squeue + watchers PPID 1): P 18021086, G 18021087, W 18021088, O 18021089, Ob 18021090;
  watchers 1539832/1539869/1539920/1539929/1539964; run dirs runs/j1j2/sign_bad/tgrow/<ARM>. After all five: rerun grow_eval with P first (cuts vs P), M table + E_bw to the lead.
 GATE NOISE (LESSONS 39): held-out flips in -9..-5 ~ 3e4 states -> per-decade share sigma ~0.005; the 30% M_I bar sits >> noise; bootstrap over chains as twhy.
+T-GROW RESULT 2026-11-17 (cip 18021086-90, ~4.5 A40-h; tgrow/<ARM>/{eval.json,fit/fit_8192.json}; numbers read by me from eval.json; controls PASS in all 5):
+ | arm | M_I x1e-3 | cut vs n_3 | keeps kept | flip repro -9..-5 | E_bw x1e-5 | dE_bw vs n_3 (paired) x1e-5 | train err | held-out err |
+ | n_3 | 1.045(29) | 0 | 0.991 | 0.216 | 1.20(55) | 0 | 0.093 | 0.099 |
+ | P | 1.046(29) | -0.1(1.4)% | 0.991 | 0.220 | 1.20(54) | -0.002(19) | 0.094 | 0.098 |
+ | G | 1.036(29) | +0.9(1.8)% | 0.991 | 0.201 | 0.88(32) | -0.32(40) | 0.101 | 0.104 |
+ | W | 1.045(29) | +0.1(1.6)% | 0.991 | 0.222 | 1.17(54) | -0.03(4) | 0.087 | 0.098 |
+ | O | 1.064(30) | -1.8(1.6)% | 0.983 | 0.224 | 0.82(29) | -0.38(39) | 0.106 | 0.103 |
+ | Ob | 0.643(36) | +38.5(2.5)% | 0.738 | 0.666 | 2.74(120) | +1.54(101) | 0.300 | 0.271 |
+ P = n_3 (warm vs cold start does not matter). KILL FIRES for capacity (G, W cut < 10%) and for bw weighting (O). Ob does not pass: it buys flips by breaking keeps
+ (keeps 0.12-0.33 in -17..-6), i.e. it moves along the flips/keeps trade-off, not off it; E_bw rises +1.5 sigma. Seed rule: not applicable (no arm passes; the
+ valid arms P/G/W/O all sit within 2 points of zero).
+ DIAGNOSIS (before any verdict): learning curves (fit hist): train BCE keeps falling (P 0.194 -> 0.172, W 0.194 -> 0.164) while held-out error is flat at 0.098-0.105
+ from the FIRST checkpoint (step 12k of 246k). The extra parameters of W go into fitting training rows that do not generalise. Round-1 roots scan (r1/fit):
+ held-out flip miss 0.185 / 0.171 / 0.156 at 2048 / 4096 / 8192 roots (exponent ~0.12), train and held-out error meet at ~0.10: the fit sits near the
+ floor of what this label set teaches, not at a capacity or weighting limit. My predictions (G >= 30% cut [50%], W ~ G, keeps >= 0.98) FAILED on the first.
+ Term this points to (hypothesis): the label is a step function of the local energy, y = nrel sgn(EL1(x) - alpha) (r3_labels.py, alpha -0.1754); rows with EL1 near
+ alpha are set by a cancellation among neighbour terms, the high-frequency part of the target a smooth net cannot generalise. If so, those rows also cost little
+ energy (first-order FN cost of a wrong copy ~ |B_x|^2 |EL1 - alpha|), and M_I, which weights every flip by bw alone, overstates the copy loss in energy.
+
+## T-NEAR (takeover 2026-11-17; REGISTERED before any number; CPU <= 1 core-h, worker; existing r3 labels + the 5 T-GROW nets)
+Question: are the copy misses concentrated on rows whose label sits near the threshold?
+Data: held-out rows of the T-GROW eval (60,000; 7,582 flips); labels at alpha x {0.5, 1, 1.5} (ya05, y2, ya15 in r3/labels/lab_*.npz); EL1 per row.
+Measure: per decade, label-unstable rows U = {label at 0.5 alpha != label at 1.5 alpha}; miss rate of n_3 on flips in U vs not in U; share of the M_I miss mass on U;
+ margin-weighted loss M_E = sum bw |EL1 - alpha| / S_x 1[miss] over flips, vs M_I.
+Prediction (mine, 55%): in -9..-5 the n_3 miss rate on U flips is >= 2x that on stable flips, and U carries >= 50% of the M_I miss mass; M_E/M_I for missed flips
+ is <= 0.5 x M_E/M_I for hit flips. Mechanism as in the diagnosis above.
+Kill: miss rate on U within 1.3x of stable flips -> near-threshold is not the term; the misses are clear-cut rows the net cannot see -> Astra + a per-row look at
+ the largest-bw misses. Pass -> the copy loss is mostly near-ties; report M_E, and the copy is not the blocker for the energy unless M_E stays large ->
+ joint-loop / amplitude is the critical path (the PI's 11-16 question). Control: shuffle EL1 within a decade; U-share of misses must fall to U's row share.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

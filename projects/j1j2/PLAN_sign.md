@@ -783,6 +783,8 @@ Prediction (70%): on CF labels in -9..-5, held-out flip reproduction of CF >= 0.
  -sgn of the old net's own logit. Kill: CF reproduction of CF flips < n_3's + 0.10 -> the reversal was not the copy limit; diagnose.
 Next if pass: paired FN grade CF vs n_3 at 8x8 (~6 A40-h, beyond tonight's ceiling -> lead/PI at check-in) with a registered energy prediction; the label rule of
  the joint loop changes to C-free (or a positive projector, |alpha| < 1/(D_max - E_REF)) only after that grade.
+T-CF SUBMITTED 2026-11-17 by ME (worker staged, did not submit; launcher + grow_eval_cf.py diff read): cip 18026932, watcher 2749137 (PPID 1), run tcf/CF;
+ CF table /scratch/a/A.Otaifi/runs_bulk/sign_bad/tcf/table_r3_cf.npz sha aece6d7a. n_3 on CF labels -9..-5 (dry run): flip repro 0.520, former-harmful keeps 0.798 (not 0.87), keeps 0.971.
 
 ## Running (rewritten 2026-11-16 at migrate)
 - RUNNING, no VERDICT yet (re-arm waits on '^<ts> VERDICT job <id>:' in delta_today.md):

@@ -2086,3 +2086,21 @@ Rule: S_k(z) = sgn l_k(z) if |l_k(z)| >= theta, else sgn sum_u w_zu sgn l_{k-1}(
 - Decision rule for rung 3 (written before Astra's answer): a run is earned only if the exact boundary-bond energy change of gating at theta = 1 is
   negative and >= 50% of its first-order value on the panel. Then: one FN-GFMC pair (CF alone vs gated, fixed amplitude), <= 6 A40-h, kill = gated
   energy not below CF alone by > 2 sigma.
+
+STEP 7 CORRECTION + RUNG 2 (2026-11-17 ~23:05; Astra cj-2a649470cd33 = /scratch/a/A.Otaifi/astra/step6_review/ASTRA_step6.md, read; runs/j1j2/sign_bad/step7/fo_gate.{py,json})
+- My cost line above was WRONG: it weighted requests by T-ROUND3's importance proxy (MBAR x R_B), but cost counts EVERY neighbour evaluation.
+  Requests are deep whatever the walker: median request decade -6 for roots at decades -12..+1; p(|l_CF|<1) among a root's neighbours 0.031-0.068
+  for every root decade. Reweighted from beta = 0.5 roots to beta = 1: p_req = 0.040 (16-84%: 0.035-0.046; ESS 2084 rows) [measured].
+  With mean fan-out 142 (Astra): C/C0 ~ 6.7-6.9 at theta = 1. Astra's finding 16 stands; mine is withdrawn.
+- First-order per-site gain over CF (fo_estimate.py estimator, decade weights w_d, bootstrap over origin chains; reproduces CF vs n_2 -9.56e-5;
+  broken control = gate with inverted exact sign costs +1.57e-4 / +1.18e-4) [measured, first-order single-flip, VMC]:
+  | arm | flat | |B|^2 | p_req | C/C0 (d = 142) |
+  | gate 0.25 | -3.3(0.9)e-5 | -2.4(0.5)e-5 | 0.012 | 2.7 |
+  | gate 0.5 | -4.9(1.0)e-5 | -3.8(0.7)e-5 | 0.021 | 3.9 |
+  | gate 1.0 | -8.0(1.3)e-5 | -6.1(0.9)e-5 | 0.040 | 6.7 |
+  | exact C-free everywhere (ceiling) | -1.14(17)e-4 | -8.9(1.2)e-5 | 1 | ~143 |
+  No threshold passes both the cost bar (<= 3) and the gain bar (>= 4e-5/site): the cost-gain frontier crosses 3x at ~-3e-5. Astra's finite-panel
+  exact VMC cross terms are 0.2% of the linear term, so first order is adequate for VMC here; FN vs VMC is not bounded (Astra finding 19, counterexample).
+- VERDICT: depth-1 confidence gate CLOSED for the loop (fails the joint cost/gain screen at every theta; evidence above). Per-bond gating by A_z/A_x
+  rejected on paper: the sign of z would depend on which walker asks, so psi_T is not single-valued.
+- Stake of the copy problem per round [measured, first order]: CF gets -9.6e-5 vs n_2; perfect copy would add -1.1e-4 (flat) / -8.9e-5 (|B|^2) more.

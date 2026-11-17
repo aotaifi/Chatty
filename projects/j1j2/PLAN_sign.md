@@ -2007,7 +2007,7 @@ ASTRA REVIEW of step 5 (cj-ecaccd367a13, /scratch/a/A.Otaifi/astra/step5_review/
   - What limits the copy is NOT yet a mechanism. Next on paper: a mechanism that predicts the copy at fixed t from the old net's margin, for a cold start.
 - The link to the monotone descent above is CORRECTED: CF 0.30 is positive but has no error bar, and cross terms are not small in general. Whether the sign link of the descent holds with this copy is OPEN.
 
-## TAKEOVER 2026-11-17 ~20:00 (PI away): ruling and terms
+## TAKEOVER 2026-11-17 ~18:55 (PI away): ruling and terms
 - PI's words: "theory mode rung 1 rung 2 (decision by overrule so you can decide) to get the copying to get better; paper first, then data checked locally is rung 2, then submit run only if possible; it really helps to think first not grind."
   My reading, recorded: the rung-3 'now test it' for the copy question is delegated to me while the PI is away, used only if rungs 1 and 2 both recommend the run and the kill line comes from rung 1.
 - Question held: why the copy of good C-free flips stalls at ~0.4-0.5, and why at fixed balance t it falls with the old net's confidence, also for the cold-started n_3.
@@ -2042,11 +2042,11 @@ J1 exchange: M_x M_z = -1; J2 exchange: M_x M_z = +1. Weights w_xz = HW_b absr_x
   - P6c: adding the class indicator and d = 2 Wm / Sx to the step-5 logistic model (t, |l_2|, decade, log Sx) shrinks |l_2|'s coefficient by >= 50% (CF from -1.23, n_3 from -0.53).
   - Kill M6: P6b < +0.05 or reversed, or P6c shrinks |l_2| by < 25%.
   - Control: the identity Wt - 2 Wm = -sigma E2 must hold to 1e-9 on the roots, with Wm recomputed from table neighbours. A broken Wt (J2 sign not flipped) must fail it.
-STEP 6 RESULT (2026-11-17 ~21:00; CPU, existing files; runs/j1j2/sign_bad/step6/{step6.py,step6.json,step6.log})
+STEP 6 RESULT (2026-11-17 ~19:15; CPU, existing files; runs/j1j2/sign_bad/step6/{step6.py,step6.json,step6.log})
 - Controls pass.
   - The identity Wt - 2 Wm = -sigma E2 holds on the roots to 1.3e-13; the broken version (J2 not sign-flipped) gives 828.
   - Marshall convention: J1 exchange flips the Marshall sign on 100% of bonds, J2 keeps it on 100%.
-- [measured, new; CORRECTED 21:40 from Astra's partial cj-cbcdba6ca909 analysis.json: 'every' was my overreach from quantiles; 5 of 1113 panel flips and 51 of 37,105 panel band rows have Wt < 0] The Marshall-pure balance Wt/Sx is positive on 99.5% of flips.
+- [measured, new; CORRECTED 19:25 from Astra's partial cj-cbcdba6ca909 analysis.json: 'every' was my overreach from quantiles; 5 of 1113 panel flips and 51 of 37,105 panel band rows have Wt < 0] The Marshall-pure balance Wt/Sx is positive on 99.5% of flips.
   - Flips: q10..q90 0.11..0.34. Keeps: 0.19..0.55.
   - The amplitude alone favours Marshall everywhere, so no nucleation flip exists.
   - Every anti-Marshall sign is held up by anti-Marshall neighbours: d = 2Wm/Sx is bimodal for keeps (median 0.03, q75 0.51).

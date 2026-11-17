@@ -268,6 +268,40 @@ CERTIFICATE ON EXISTING DATA (lead, from rounds.json + rangelimit_6x6, fixed sig
 E_H[chi_k] < E_FN[g_k]): the literal explicit teacher passes it by a margin E_FN[G_k] - E_var[A_{k+1}] = 8.683e-6 - 7.938e-6 = 7.45e-7 (round 1),
 3.950e-6 - 3.780e-6 = 1.70e-7 (round 2) /site, i.e. 5.1% and 5.0% of the round's FN gain. So consolidation may cost at most ~5% of a round's
 gain in variational energy for the conservative certificate (sufficient, not necessary). Learned heads/R1' kept ~6% of the gain: far outside.
+CONSOLIDATION TEST 6x6 SPEC (PI 11-17 late: 'yes test'; written before any run). Question: can the base class (complex RBM x PP, the class of
+A_0 = pfaffian_c/runs/c1_cplx_s1/round_1, code cx_c1fit.py) store the explicit teacher A_1 (rangelimit_6x6/rounds23/lA_1.npy, literal a=1,
+c=1.307, sign s2) well enough that the next round still gains? Arms, warm start = A_0 theta, same steps/budget, 2 seeds each:
+ P: frozen-relative loss: cx_c1fit's per-row residual e = ln t - ln T - c replaced by r = e^{e} - 1 in BOTH the value and bond terms
+    (Jacobian rows scaled by (1 + r)); everything else unchanged.
+ C: control: cx_c1fit's own loss (log value + log bond) on the same target.
+Grade (exact 6x6 tables, CPU, rangelimit_rounds.py machinery, sign s2): N(chi) = min_alpha E_FN[s2 chi |1 + alpha(E_L - E)|];
+ retention_N = (N(A_0) - N(chi)) / (N(A_0) - N(A_1)), N(A_0) = 8.683e-6, N(A_1) = 3.950e-6 /site. Also E_FN[s2 chi], E_var[s2 chi] and the
+ certificate E_var[s2 chi] < 8.683e-6. Grader break test first: chi = A_1 table must give 1.000, chi = A_0 must give 0.000.
+Verdict: PASS (consolidation works in this class): best arm's two-seed mean retention_N >= 0.5. KILL: both arms < 0.25 (then on paper:
+ capacity vs optimiser). BETWEEN otherwise. Loss claim (P better than C) only if the arm difference exceeds both arms' seed scatter.
+Prediction [own]: P >= 0.5 at 40%, C >= 0.5 at 30%, P beats C beyond scatter at 50%. Precedent: this class's log-loss copy of an earlier round-1
+ target reached E_FN 2.09e-5 vs 1.22e-5 with the rows below 1e-9 spliced exact: the copy's loss sits in near-node rows.
+Budget: 6 A40-hours (or 3 H100-hours) for the four fits; launcher read by the lead before submission.
+TEACHER CHECK A1 (rung 2, CPU, written before computing): rounds 1-3 from A_0 with MOVING signs S_{k+1} = S_k sgn[1 + alpha_k(E_L - E_k)] and
+c_k from a 1-D E_FN search (grid 0.5..3), alpha_k from the same 1-D search as rounds23. Kill: retention < 90% or certificate margin
+E_FN[g_k] - E_var[next] < 0 in any round. Prediction [own]: pass at 55% (moving signs add isolated rows the teacher does not fill).
+CONSOLIDATION TEST HELD (lead, 11-17 late, before any staging; recall: 'relative loss, consolidation, SWO, moving sign' -> L-SWO 10-30,
+Theta v2 11-01, label-free loop report 2026-10-31, R1' linear-region record above). The 6x6 spec above repeats L-SWO (refit the PP to its own
+Jacobi-corrected state, exact tables): it stored 37% of a round's gain, and the loop saturated after ~3 rounds because the correction is not
+in the PP's tangent space (Theta v2: 0-4% held-out). Prediction for the spec from these records: retention_N 0.3-0.4 = BETWEEN at ~70%; no
+outcome likely enough to change a decision -> not run. The new loss does not fix 8x8 either [exact, from existing data]: at the five worst R1'
+rows the displacement the fit made from step 0 to 150 changed ln|B| by +1.6..+2.7, so by the triangle inequality |dB|/|B| >= e^1.6 - 1 = 4.0
+at every one of them; any loss that is a function of |B| (log or relative) is then outside its step-0 linear region there (relative form: linear prediction 1 + Re(dB/B) =
+-7.7..+8.7 vs actual 5..15). The relative loss removes the moving-node pole, not the coordinate problem (ln or |.| of a cancelling sum).
+Proposal v2 (b) is therefore not a fix for 8x8 storage in this class. TEACHER CHECK A1 deferred (its answer matters only if the explicit
+layer is deployed). VERDICT ON COPYING (lead): storing a round in this class is capacity-limited at 6x6 (11-37%/round) and coordinate-limited
+at 8x8; small log-space heads store 2-3%; the explicit formula keeps 96-98% but costs two hops per round. What remains open: a class whose
+small amplitudes are not made by cancellation, with inputs that carry the node geometry (PLAN l.410 'node-bond inputs untried').
+NODE-GEOMETRY CHECK (rung 2, CPU, no training, written before computing): on round 1 (rangelimit_6x6 features/gram, sign s2), regress the
+post-Lanczos correction v = u - l in the D-norm on SIGN-ONLY features: blocked J1 and J2 bond counts at x, their products and squares, and the
+same counts averaged over x's neighbours (one hop of the sign only, no amplitudes). Pass: residual D(v - fit)/D(v) <= 0.5 (a node-bond-input
+network can carry a large part of the correction without amplitude hops -> design it on paper). Kill: >= 0.9. Between otherwise.
+Prediction [own]: residual 0.6-0.85, pass at 25%. Break tests: R = v gives 0, a random feature column ~1.
 B10 6x6 HARNESS (11-17, staging worker; built and CPU-tested, NOT submitted; runs/j1j2/b10_6x6/, code ansatz/code/b10_6x6.py): tests (a)-(d) pass
 (clipped-r* head reproduces rung 2's rho = 1.000005 exactly; zero head bit-identical; exact frozen-H_FN gradient vs finite differences 1.2e-8,
 broken gradient 237; arm X loss 8.6e-16 at ln(p/G) vs 3.1e-5 at ln(p/A_0)). LATE state proposal: pfaffian_r6k3/k3/tab_th/tab_t6/round_1

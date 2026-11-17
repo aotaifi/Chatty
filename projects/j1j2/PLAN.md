@@ -15,6 +15,9 @@ Round k:
     for the PI): docs/theory/2026-11-17_next_method_proposal.md: freeze the network, use the formula as teacher (alpha, c by energy search),
     consolidate a full network with a frozen-relative pair loss, accept only if E_H[chi] < E_FN[g] (budget ~5% of a round's gain). Next:
     rung-2 check with moving signs and energy-searched c (CPU); a 6x6 consolidation run only on the PI's 'now test it'.
+    LATE 11-17 (PI 'yes test'): the 6x6 consolidation run was NOT staged: it repeats L-SWO (37%/round, class cannot absorb the correction,
+    Theta v2), and the relative loss does not fix 8x8 (|dB|/|B| >= 4 at the worst R1' rows). Verdict on copying: capacity-limited at 6x6,
+    coordinate-limited at 8x8 (STORAGE_PROBLEM 'CONSOLIDATION TEST HELD'). Running: NODE-GEOMETRY CHECK (CPU, sign-only features).
     Superseded: head r_k by frozen-H_FN Rayleigh (B10 consensus 11-17); head r_k ~ ln|phi_k/A_k| by log loss.
  5. A_{k+1} = A_k e^{r_k}. Optional, every few rounds: merge into one network by the relative-square loss.
 End: one final Lanczos step + fixed node for the reported energy; never more.
@@ -783,6 +786,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The fixed-node correction of one round is an explicit formula (a Lanczos factor times about 1.3 Jacobi steps) that keeps 96-98% of each round's gain on 6x6; small learned add-ons cannot hold it.
-- NEXT (open, high): PI reads the reviewed proposal (store the formula by refitting the whole network, accept a round only if it lowers the energy) and decides on a 6x6 consolidation test.
-- NEXT (open, medium): On existing 6x6 data: check the formula with moving signs and with its coefficient chosen by energy, not by the exact answer.
+- STATUS (in progress, high): Copying a round into this network is settled as limited: at 6x6 the class holds 11-37% of a round, at 8x8 the cancelling symmetry copies break any fit on the amplitude; the explicit formula keeps 96-98% but costs two hops per round.
+- NEXT (in progress, high): Check on existing 6x6 data whether the local sign pattern alone explains the correction; if yes, design a network that takes node bonds as inputs.
+- NEXT (open, high): PI: the 6x6 refit test was held because the October run already answered it; overrule if you still want it run.

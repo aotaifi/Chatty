@@ -2064,6 +2064,25 @@ STEP 6 RESULT (2026-11-17 ~19:15; CPU, existing files; runs/j1j2/sign_bad/step6/
   - The decomposition is exact and stands. The confidence effect is not "distance from an existing domain"; it holds within each direction.
 - What stands:
   - (i) The C-free step is a zero-temperature majority update with J1-ferro and J2-antiferro links in the Marshall frame.
-  - (ii) In -9..-5 every Marshall violation is sustained by neighbouring violations (domains), never by the amplitude's own J1/J2 balance.
+  - (ii) In -9..-5 Marshall violations are sustained by neighbouring violations (domains); the amplitude's own J1/J2 balance favours Marshall on 99.5% of flips (5 of 1113 exceptions).
   - (iii) The net copies domain growth at about 2x the rate it copies domain shrinkage.
   - (iv) The confidence effect is open.
+
+## STEP 7 (takeover, rung 1, 2026-11-17 ~22:50): depth-1 confidence-gated C-free sign, cost on paper
+Rule: S_k(z) = sgn l_k(z) if |l_k(z)| >= theta, else sgn sum_u w_zu sgn l_{k-1}(u) (exact C-free step from the STORED previous net, no recursion).
+- Cost [exact given p]: per local energy at x, each gated neighbour z needs A and l_{k-1} at its ~128 neighbours, so C/C0 = 1 + 128 p_req
+  (no cache; the gate itself is free, the logit is already computed). It differs from T-ROUND3's hybrid, whose excess was recursive
+  hard-descendant expansion in decades -8..-6; depth 1 removes that term by construction. Price: errors of net_{k-1} at u stay (one-round lag).
+- p(|l_CF| < 1) per Born decade (held-out 60k rows, evalcache 5dcca951; MREF = T-ROUND3's MED_used) [measured]:
+  <=-9: 0.10-0.18 | -8: 0.072 | -7: 0.042 | -6: 0.021 | -5: 0.010 | -4: 0.0018 | -3: 0.0010 | >=-2: <=0.0004. Band -9..-5: 1571/37105 = 0.042 (= Astra's).
+- Request-weighted with T-ROUND3's proxy masses (deep 0.0017, mid 0.032, bulk 0.967): p_req in [0.0028, 0.0126] (bulk at decade >=-4 vs all at -5)
+  -> C/C0 in [1.36, 2.6] at theta = 1. Passes the <= 3 bar [cond: proxy request stream, CF in place of a round-k net, 128 = max fan-out].
+- Energy [open]: Astra's oracle share 0.83 at theta = 1 (code read: first-order, band rows only, exact sign on gated rows, net elsewhere) is NOT an
+  energy change. Two reasons it may not transfer: cross terms between adjacent flips (three-state control 8.27 linear vs 1.87 exact) and G(-5)
+  (exact one-step sign at deep decades cost +6.4(3.5)e-6/site). C-free differs from G(-5)'s rule: with psi_FN ~ A it flips x iff its violated-bond
+  weight exceeds its satisfied one (t > 0), i.e. it is the single-site FN-optimal sign given its neighbours [cond: psi_FN ~ A]; G(-5) used the variational
+  one-step criterion. The exact set change at fixed A sums over boundary bonds of the flipped set only, so it is computable on existing tables.
+  Delegated to Astra (cj-2a649470cd33, part D); not run here.
+- Decision rule for rung 3 (written before Astra's answer): a run is earned only if the exact boundary-bond energy change of gating at theta = 1 is
+  negative and >= 50% of its first-order value on the panel. Then: one FN-GFMC pair (CF alone vs gated, fixed amplitude), <= 6 A40-h, kill = gated
+  energy not below CF alone by > 2 sigma.

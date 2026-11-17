@@ -1,4 +1,9 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
+## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
+Fit the e^r add-on on the frozen network to the Jacobi-corrected target e^{c f_J} (with the Lanczos factor), and test whether the October
+refit failed because of the 1/B term. Done = arms H (add-on) and P vs C (relative vs log loss) graded by the next round's FN energy,
+STORAGE_PROBLEM 'CONSOLIDATION TEST 6x6 SPEC' + 'HOLD REVERSED'. Status 11-17 late: staging.
+
 ## THE DESIGN (PI + lead 2026-11-17; read first, always together with 'Goal' and '## Motivation' below)
 Why: beat (plain trained network + p Lanczos steps + fixed node) at equal total cost, training included. The loop stores what extra Lanczos
 steps would give, so each round costs one level; p >= 2 steps at the end is the competitor, not an add-on.

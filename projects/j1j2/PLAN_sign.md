@@ -2136,3 +2136,15 @@ STEP 7 CORRECTION + RUNG 2 (2026-11-17 ~23:05; Astra cj-2a649470cd33 = /scratch/
   RBM carry no linear information about the neighbour field; the field is a sum over bonds of local terms, which averaging over images discards.
   Untried variant (open, not run): per-bond local inputs (the walker-free RBM swap factors per bond, 128 per state) to a bond-sum readout,
   i.e. an architecture that mirrors h = sum_b w_b sigma(z_b); cost and design = rung 1 first.
+- STEP 7e RESULT (step7/locality.py; 10,240 root stars split by chain, 91 held-out flips; linear-in-window fits per bond class) [measured]:
+  | window | ln r R^2 (resid sd) | tau acc (base 0.8245) | flips copied: local r + TRUE tau | both local |
+  | 3x3 | 0.25 (1.30) | 0.816 | 0.32 | 0.00 |
+  | 5x5 | 0.39 (1.17) | 0.816 | 0.38 | 0.00-0.01 |
+  | 7x7 | 0.41 (1.15) | 0.817 | 0.40 | 0.00-0.07 |
+  KILL FIRES (registered: >= 70% of flips with both local; got <= 7%). Prediction [40%] failed.
+  Reading [cond: linear-in-window surrogates; a deep net is nonlinear]: the C-free field at z is the amplitude's own off-diagonal local energy at z.
+  Its two inputs are nonlocal: the pair-product swap ratios A(z^b)/A(z) (7x7 linear explains 41%) and the old net's sign at z^b (a threshold of a
+  GLOBAL score: no local linear signal at all). Even with the exact old signs, 7x7-local ratios copy only 0.40 of flips, i.e. CF's level.
+  So the copy limit is set by having to emulate the amplitude network's swap ratios and the previous sign net's global score from spins.
+  Untried variants (open): nonlinear local regressors of ln r (pairwise window products); tau from l_2(z) + a local change (needs n_2 forwards at
+  1.45M neighbours, ~CPU-h). Either can only raise the 0.40 ceiling of the ratio part; neither touches the cost of a second shell.

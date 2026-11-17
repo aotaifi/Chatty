@@ -1975,3 +1975,7 @@ STEP 5 RESULT (2026-11-17 ~17:30; CPU, existing files only, scripts and JSON in 
     cost one extra neighbour level per evaluation, not yet derived.
   - (2) C-free attributes all of a row's inconsistency dt to the sign at x. The same dt could be removed by changing the neighbours' amplitudes; which one the FN equation prefers is not derived.
   - (3) dE_1 ignores flips of neighbouring rows in the same round (cross terms).
+- [own, links step 5 to the lead's MONOTONE DESCENT (STORAGE_PROBLEM 'LOOP FIXED POINTS' (3))] The descent's sign link E_var[S_{k+2}A] <= E_var[S_{k+1}A]
+  assumes the net stores the C-free flips exactly. With an imperfect copy, the link holds to first order (no flipped neighbours) iff the realised share > 0.
+  CF's 0.24(8) is 3.0 sigma above 0; n_3's 0.09(9) is consistent with 0. So with a sign net like n_3 the descent chain is not guaranteed, and the realised
+  share is the quantity the joint loop's sign link must keep positive. Not covered: cross terms from flipped neighbours (my open item 3, the lead's (2)).

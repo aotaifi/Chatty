@@ -293,6 +293,13 @@ the formula was never run: rung 2b is first-order only; M-R (10-28) trained a sm
 Same grade and verdict rule as the spec, per arm. Extra reading: P > C beyond scatter supports the PI's 1/B hypothesis for October; H vs P
 says add-on vs full refit. Predictions [own]: P - C > scatter at 50%; H >= 0.5 at 35%. Budget raised by the lead to 10 A40-h (5 H100-h) for
 six fits (P, C, H x 2 seeds).
+ARM H DATA STEP (lead, 11-17 late, existing data, before the run; features/feat.npy cols l, fJG; la_table of A_0; norb weights):
+add-on target r* = l + 1.307 f_J[G]. Under A_0^2 weights: mean 0, sd 0.0103; rows with |r* - mean| > 0.5 are 3.23M of 15.8M orbits (20%) but
+carry 1.9e-5 of the weight and 32% of the variance (> 2: 0.4M orbits, 1.8e-6 weight, 18%). Under p^2: sd 0.0088, > 0.5 holds 6.8%.
+Unweighted quantiles 1e-4..0.999: -7.39, -5.06, -2.80, -0.02, 1.20, 2.36. corr(r*, ln A_0) under p^2 = 0.056.
+Reading: the add-on is ~0 on the bulk and must learn O(1)-O(7) excursions on a fifth of the configurations that hold ~2e-5 of the Born
+weight. A Born-sampled fit cannot see them; cx_c1fit samples by amplitude decade (L-SWO record: band-uniform over decades -5..-13), so
+they are in H's training set. Prediction for H: its error concentrates in the deep decades; if H fails, compare per-decade error first.
 TEACHER CHECK A1 (rung 2, CPU, written before computing): rounds 1-3 from A_0 with MOVING signs S_{k+1} = S_k sgn[1 + alpha_k(E_L - E_k)] and
 c_k from a 1-D E_FN search (grid 0.5..3), alpha_k from the same 1-D search as rounds23. Kill: retention < 90% or certificate margin
 E_FN[g_k] - E_var[next] < 0 in any round. Prediction [own]: pass at 55% (moving signs add isolated rows the teacher does not fill).

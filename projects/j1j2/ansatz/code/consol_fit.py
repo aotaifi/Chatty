@@ -531,11 +531,24 @@ def _put_rows(T, blk, a0):
 
 
 @partial(jax.jit, donate_argnums=(0,))
-def _chol_solve(T, r, lam_rel):
-    R = r.shape[0]
-    lam = lam_rel * jnp.trace(T) / R
-    T = T.at[jnp.arange(R), jnp.arange(R)].add(lam)
-    return jax.scipy.linalg.cho_solve(jax.scipy.linalg.cho_factor(T, lower=True), r)
+def _add_diag(T, lam):
+    i = jnp.arange(T.shape[0]); return T.at[i, i].add(lam)
+
+
+@jax.jit
+def _trace(T):
+    return jnp.trace(T)
+
+
+@partial(jax.jit, donate_argnums=(0,))
+def _chol_inplace(T):
+    return jax.lax.linalg.cholesky(T, symmetrize_input=False)        # reads the lower triangle of T (solve_dir_log's cho_factor(lower=True) after a symmetrisation: differs at rounding level)
+
+
+@jax.jit
+def _chol_solve(L, r):
+    y = jax.lax.linalg.triangular_solve(L, r[:, None], left_side=True, lower=True)
+    return jax.lax.linalg.triangular_solve(L, y, left_side=True, lower=True, transpose_a=True)[:, 0]
 
 
 @jax.jit
@@ -550,7 +563,9 @@ def _minsr_solve(box, r, cc, i1, c1, i2, c2, lam_rel, blk=1024):
         a1 = min(a0 + blk, R)
         T = _put_rows(T, _T_rows(GG, i1[a0:a1], c1[a0:a1], i2[a0:a1], c2[a0:a1], cc[a0:a1], i1, c1, i2, c2, cc), a0)
     del GG
-    a = _chol_solve(T, r, lam_rel); del T
+    lam = lam_rel * _trace(T) / R
+    T = _add_diag(T, lam); L = _chol_inplace(T); del T
+    a = _chol_solve(L, r); del L
     return a, _w_of(a, i1, c1, i2, c2)
 
 

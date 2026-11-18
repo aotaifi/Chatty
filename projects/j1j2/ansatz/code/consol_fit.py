@@ -88,6 +88,7 @@ LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0));
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
 # T1s-2 (README "Test T1s-2"): tau anneal TAU -> TAU_MIN, halved each time the held-out loss is flat (< FLAT_TOL) over
 # ANNEAL_STEPS steps (and >= ANNEAL_STEPS steps since the last change); convergence additionally needs tau == TAU_MIN.
+CHUNK_ROWS = int(SPEC.get('chunk_rows', 0))             # 0 = all rows (old path: one (R, P) Jacobian buffer on the device); > 0: G kept on the host, minSR products accumulated in row chunks of this size (log loss, minSR branch only)
 TAU_MIN = float(SPEC.get('tau_min', TAU)); ANNEAL_STEPS = int(SPEC.get('anneal_steps', 20))
 WARM_THETA = SPEC.get('warm_theta')                   # T1s-2: start from a previous run's theta.npy
 SPLICE_DEC = int(SPEC.get('splice_dec', -9))          # T1s-2: splice E_FN, fitted ratios for decades >= SPLICE_DEC
@@ -166,6 +167,7 @@ if MODEL in ('vit', 'vitres'):
     params = jax.tree_util.tree_map(lambda q: jnp.asarray(q, jnp.float32), tmpl['params'])
     theta0, unravel = ravel_pytree(params)
     REMAT = int(SPEC.get('remat', 4)); FCH, JCH, TCH = 2048, 128, 4096
+    JCH = int(SPEC.get('jch', JCH))                        # TEST ONLY memory knob (float64 equivalence test on a workstation); default unchanged
     WARM = lab.lP0 if MODEL == 'vit' else jnp.asarray(np.load(SPEC['base_table']), jnp.float64)
     TAB0 = None if MODEL == 'vit' else WARM                # arm H: frozen A_0 log|A_0| at every orbit (la_table.npy of c1_cplx_s1/round_1)
 
@@ -306,6 +308,15 @@ def jac(th, Sx):
         s_, m = _pad(Sx[i:i + JCH], JCH)
         Gb = _put(Gb, jac_j(th, jac_in(s_))[:m].astype(theta0.dtype), i)
     return Gb
+
+
+def jac_host(th, Sx):
+    """chunk_rows path: the same per-configuration gradients as jac(), written into a host (numpy) float32 buffer; the device holds one JCH block."""
+    R_ = Sx.shape[0]; Gh = np.empty((R_, NPAR), np.dtype(theta0.dtype))
+    for i in range(0, R_, JCH):
+        s_, m = _pad(Sx[i:i + JCH], JCH)
+        Gh[i:i + m] = np.asarray(jac_j(th, jac_in(s_))[:m].astype(theta0.dtype))
+    return Gh
 
 
 def table(th, idx=None):
@@ -488,6 +499,73 @@ else:
     solve_dir = solve_dir_log
 
 
+# chunk_rows path (log loss, minSR branch): the same arithmetic as solve_dir_log, with G on the host and every product over the R rows accumulated per chunk.
+@jax.jit
+def _minsr_terms(S, lx, ly, wb, c):
+    M = lx.shape[0]
+    ex = S[:M] - lx - c; ey = S[M:].reshape(M, -1) - ly - c; Kb = ey.shape[1]
+    sv = 1.0 / jnp.sqrt(M); sb = jnp.sqrt(wb / M)
+    r = jnp.concatenate([sv * ex, (sb[:, None] * (ex[:, None] - ey)).reshape(-1)])
+    cc = jnp.concatenate([jnp.full(M, -sv, f64), jnp.zeros(M * Kb, f64)])
+    rows = jnp.arange(M * Kb); xs = rows // Kb
+    i1 = jnp.concatenate([jnp.arange(M), xs]); c1 = jnp.concatenate([jnp.full(M, sv, f64), sb[xs]])
+    i2 = jnp.concatenate([jnp.zeros(M, jnp.int32), M + rows]); c2 = jnp.concatenate([jnp.zeros(M, f64), -sb[xs]])
+    return r, cc, i1, c1, i2, c2
+
+
+@partial(jax.jit, donate_argnums=(0,))
+def _put_gg(GG, blk, i0, j0):
+    return jax.lax.dynamic_update_slice(GG, blk, (i0, j0))
+
+
+@partial(jax.jit, donate_argnums=(0,))
+def _minsr_solve(GG, r, cc, i1, c1, i2, c2, lam_rel):
+    R = r.shape[0]
+    H = c1[:, None] * GG[i1] + c2[:, None] * GG[i2]; del GG
+    T = H[:, i1] * c1[None, :] + H[:, i2] * c2[None, :] + jnp.outer(cc, cc); del H
+    lam = lam_rel * jnp.trace(T) / R
+    T = T.at[jnp.arange(R), jnp.arange(R)].add(lam)
+    a = jax.scipy.linalg.cho_solve(jax.scipy.linalg.cho_factor(T, lower=True), r); del T
+    w = jnp.zeros(R, f64).at[i1].add(c1 * a).at[i2].add(c2 * a)        # A^T a
+    return a, w
+
+
+@jax.jit
+def _acc_dP(acc, Gc, wc):
+    return acc + (Gc.T @ wc.astype(Gc.dtype)).astype(f64)
+
+
+def solve_dir_log_chunked(Gh, S, lx, ly, wb, c, lam_rel, tau, rows=0, drop_chunk=None):
+    """Gh: host (R, P) float32 Jacobian.  GG = G G^T by row-block pairs, dP = -G^T w and Gx dP by row chunks; same formulas as solve_dir_log.
+    drop_chunk (TEST ONLY, broken version): omit that row chunk from the G^T w accumulation."""
+    M = lx.shape[0]; R, P = Gh.shape; dt = Gh.dtype
+    assert R <= P + 1, 'chunk_rows implements the minSR branch only'
+    r, cc, i1, c1, i2, c2 = _minsr_terms(S, lx, ly, wb, c)
+    ch = rows if 0 < rows < R else R; st = list(range(0, R, ch))
+    GG = jnp.zeros((R, R), f64)
+    for ia in st:
+        GI = jnp.asarray(Gh[ia:ia + ch]); na = GI.shape[0]
+        for ja in st:
+            if ja > ia: break
+            GJ = GI if ja == ia else jnp.asarray(Gh[ja:ja + ch])
+            blk = (GI @ GJ.T).astype(f64)
+            GG = _put_gg(GG, blk, ia, ja)
+            if ja != ia: GG = _put_gg(GG, blk.T, ja, ia)
+    a, w = _minsr_solve(GG, r, cc, i1, c1, i2, c2, lam_rel)
+    acc = jnp.zeros(P, f64)
+    for k, ia in enumerate(st):
+        if drop_chunk is not None and k == drop_chunk: continue
+        acc = _acc_dP(acc, jnp.asarray(Gh[ia:ia + ch]), w[ia:ia + ch])
+    dP = -acc; dc = -(cc @ a)
+    pc = []
+    for ia in range(0, M, ch):
+        pc.append(jnp.asarray(Gh[ia:min(ia + ch, M)]).astype(f64) @ dP)
+    pc = jnp.concatenate(pc); pc = pc - jnp.mean(pc)
+    prms = jnp.sqrt(jnp.mean(pc * pc))
+    sc = jnp.minimum(1.0, tau / jnp.maximum(prms, 1e-30))
+    return dP * sc, dc * sc, prms, sc, jnp.sum(r * r)
+
+
 def dense_check(seed=0, M=6, Kb=2, P=40):
     """dry-run self-test: the gather form of T equals the dense A G G^T A^T (sample-space branch)."""
     rng = np.random.default_rng(seed); R = M * (1 + Kb)
@@ -645,14 +723,22 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         _mk = np.asarray(ravel_pytree(_mk)[0]) > 0
         _gr = np.asarray(jax.grad(lambda th_: jnp.mean(per_sample(S_of(th_, bt), bt['lx'], bt['ly'], bt['wb'], c)[0]))(theta))
         _dg = dict(grad_wout=float(np.linalg.norm(_gr[_mk])), grad_body=float(np.linalg.norm(_gr[~_mk])), n_wout=int(_mk.sum()))
-    S = S_of(theta, bt); G = jac(theta, Xall)        # arm H: S_of adds the frozen base ln|A_0| (consol worker fix: the bare fwd() asserted)
-    if ACT is None:
+    S = S_of(theta, bt)        # arm H: S_of adds the frozen base ln|A_0| (consol worker fix: the bare fwd() asserted)
+    if CHUNK_ROWS:
+        assert LOSS == 'log' and ACT is None, 'chunk_rows: log loss, no freeze_outer'
+        G = jac_host(theta, Xall)
+        dP, dc, prms, sc, rr = solve_dir_log_chunked(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau, CHUNK_ROWS, SPEC.get('test_drop_chunk'))
+    else:
+        G = jac(theta, Xall)
+    if CHUNK_ROWS: pass
+    elif ACT is None:
         dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau)
     else:                                              # F1 freeze_outer: the step on the active columns only (= the window-3 step)
         dPa, dc, prms, sc, rr = solve_dir(G[:, ACT], S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau)
         dP = jnp.zeros(NPAR, dPa.dtype).at[ACT].set(dPa)
     del G
     dc = float(dc)
+    if SPEC.get('test_save_dP'): np.save(os.path.join(OUT, f'dP_step{n}.npy'), np.asarray(dP, np.float64))      # TEST ONLY (chunk_rows equivalence)
     if SPEC.get('diag_scan'):                          # TEST ONLY: loss on the FIT batch bt along the step (theta + s dP, c + s dc); rr = solver's sum res^2 at s = 0
         _sc = {}
         for _s in (0.0, 1e-3, 1e-2, 0.1, 0.3, 1.0):

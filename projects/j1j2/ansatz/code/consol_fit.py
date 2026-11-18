@@ -88,6 +88,8 @@ LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0));
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
 # T1s-2 (README "Test T1s-2"): tau anneal TAU -> TAU_MIN, halved each time the held-out loss is flat (< FLAT_TOL) over
 # ANNEAL_STEPS steps (and >= ANNEAL_STEPS steps since the last change); convergence additionally needs tau == TAU_MIN.
+SYM = SPEC.get('sym', 'sum'); assert SYM in ('sum', 'mean64'), SYM; assert SYM == 'sum' or ARM == 'vitres', 'sym mean64 is arm vitres only'
+VIT_DTYPE = SPEC.get('vit_dtype', 'float32'); assert VIT_DTYPE in ('float32', 'float64')      # float64: TEST ONLY (symmetry test to 1e-12); production float32
 CHUNK_ROWS = int(SPEC.get('chunk_rows', 0))             # 0 = all rows (old path: one (R, P) Jacobian buffer on the device); > 0: G kept on the host, minSR products accumulated in row chunks of this size (log loss, minSR branch only)
 TAU_MIN = float(SPEC.get('tau_min', TAU)); ANNEAL_STEPS = int(SPEC.get('anneal_steps', 20))
 WARM_THETA = SPEC.get('warm_theta')                   # T1s-2: start from a previous run's theta.npy
@@ -148,23 +150,23 @@ progress(f'[t1s {ARM}] lab + target ready {time.time() - T00:.0f}s  orbits per d
 if MODEL in ('vit', 'vitres'):
     import flax
     import vit_dt
-    vit_dt.set_dtype('float32')
+    vit_dt.set_dtype(VIT_DTYPE)
     if MODEL == 'vit':
         vit = vit_dt.make_model_6x6()
-        tmpl = vit.init(jax.random.PRNGKey(1234), jnp.zeros((1, N), jnp.float32))
+        tmpl = vit.init(jax.random.PRNGKey(1234), jnp.zeros((1, N), jnp.dtype(VIT_DTYPE)))
         obj = flax.serialization.msgpack_restore(open(VIT_CKPT, 'rb').read())
         if 'variables' in obj: obj = obj['variables']
         tmpl = flax.serialization.from_state_dict(tmpl, obj)
     else:                                                # arm H: fresh random ViT, output gate w_out = 0 (consol_lib.make_vit_w)
         import consol_lib
         vit = consol_lib.make_vit_w(vit_dt)
-        tmpl = vit.init(jax.random.PRNGKey(int(SPEC.get('vit_seed', 7000)) + SEED), jnp.zeros((1, N), jnp.float32))
+        tmpl = vit.init(jax.random.PRNGKey(int(SPEC.get('vit_seed', 7000)) + SEED), jnp.zeros((1, N), jnp.dtype(VIT_DTYPE)))
         if SPEC.get('vit_literal_zero'):                  # TEST ONLY (consol_tests.py e2): zero the norm affine maps, gate = 1
             _p = flax.core.unfreeze(tmpl)['params']
             for _k in ('norm2', 'norm3'):
                 _p['output'][_k]['scale'] = jnp.zeros_like(_p['output'][_k]['scale']); _p['output'][_k]['bias'] = jnp.zeros_like(_p['output'][_k]['bias'])
             _p['output']['w_out'] = jnp.ones_like(_p['output']['w_out']); tmpl = dict(tmpl); tmpl['params'] = _p
-    params = jax.tree_util.tree_map(lambda q: jnp.asarray(q, jnp.float32), tmpl['params'])
+    params = jax.tree_util.tree_map(lambda q: jnp.asarray(q, jnp.dtype(VIT_DTYPE)), tmpl['params'])
     theta0, unravel = ravel_pytree(params)
     REMAT = int(SPEC.get('remat', 4)); FCH, JCH, TCH = 2048, 128, 4096
     JCH = int(SPEC.get('jch', JCH))                        # TEST ONLY memory knob (float64 equivalence test on a workstation); default unchanged
@@ -174,6 +176,16 @@ if MODEL in ('vit', 'vitres'):
     def logA_X(flat, X):                              # X (M, 36) float32 +-1  (cx_reanchor.sym_logA)
         p = {'params': unravel(flat)}; B_ = X.shape[0]
         Xg = jnp.stack([X[:, INV8[k // 2]] * SG2[k % 2] for k in range(16)], 0)
+        if SYM == 'mean64':                           # arm H sym 'mean64': r = (1/64) sum over the 16 images g and the 4 patch offsets o of Re z_{g,o} (z = head output
+            def _moff(Xi):                            # sum_k w_out_k ln cosh(amp_k + i sign_k)); replaces the outer and the inner log-sum-exp; exactly linear in w_out at fixed body
+                x_ = Xi.reshape(Xi.shape[:-1] + (6, 6)); o_ = []
+                for j_ in range(2):
+                    for i_ in range(2):
+                        xi_ = jnp.roll(jnp.roll(x_, j_, axis=-1), i_, axis=-2).reshape(Xi.shape[:-1] + (N,))
+                        o_.append(jnp.real(vit.apply(p, xi_).astype(vit_dt.HCDT)))
+                return jnp.mean(jnp.stack(o_, 0), 0)
+            body = jax.checkpoint(_moff)
+            return jnp.mean(jax.lax.map(body, Xg.reshape(REMAT, (16 // REMAT) * B_, N)).reshape(16, B_), 0)
         body = jax.checkpoint(lambda Xi: vit_dt.logpsi_transl_2d(vit.apply, 2, p, Xi))
         zs = jax.lax.map(body, Xg.reshape(REMAT, (16 // REMAT) * B_, N)).reshape(16, B_)
         m = jnp.max(jnp.real(zs), 0)
@@ -183,6 +195,7 @@ if MODEL in ('vit', 'vitres'):
         _v0 = jax.jit(lambda fl, Sx: jnp.real(logA_X(fl, bits(Sx))).astype(f64))(theta0, lab.sec.reps[:4])
         assert bool(jnp.all(_v0 == _v0[0])) or SPEC.get('vit_literal_zero'), _v0
         LOGC = float(_v0[0])
+        if SYM == 'mean64': assert LOGC == 0.0 and bool(jnp.all(jnp.asarray(_v0) == 0.0)), ('sym mean64: r != 0 at w_out = 0', _v0)
     fwd_j = jax.jit(lambda fl, Sx: jnp.real(logA_X(fl, bits(Sx))).astype(f64) - LOGC)
     jac_j = jax.jit(jax.vmap(jax.grad(lambda fl, X1: jnp.real(logA_X(fl, X1[None]))[0]), in_axes=(None, 0)))
     jac_in = lambda Sx: bits(Sx)
@@ -349,6 +362,25 @@ if SPEC.get('test_e_n'):
         np.savez(os.path.join(OUT, 'test_e_direct.npz'), idx=_ix, lnA=_dir)
         _r = dict(test='e_direct_PP_vs_table', break_version=bool(SPEC.get('test_e_break')), n_orbits=int(_ix.size), max_abs=float(np.max(np.abs(_dir - _tb))), rms=float(np.sqrt(np.mean((_dir - _tb) ** 2))))
     progress('TEST_E ' + json.dumps(_r)); json.dump(_r, open(os.path.join(OUT, 'test_e.json'), 'w')); sys.exit(0)
+
+
+# ---- TEST (i) (2026-11-18): spec test_sym_n = number of random orbit reps; theta = theta0 + 0.1 N(0,1) (w_out) / 0.1 rms(body) N(0,1) (body).  max |r(g x) - r(x)| over the 16 images g.
+if SPEC.get('test_sym_n') and MODEL == 'vitres':
+    _rng = np.random.default_rng(777); _n = int(SPEC['test_sym_n']); _ix = _rng.choice(int(sec.reps.shape[0]), _n, replace=False)
+    _mk = jax.tree_util.tree_map(jnp.zeros_like, params); _mk['output']['w_out'] = jnp.ones_like(_mk['output']['w_out']); _mk = np.asarray(ravel_pytree(_mk)[0]) > 0
+    _t0 = np.asarray(theta0, np.float64); _body_rms = float(np.sqrt(np.mean(_t0[~_mk] ** 2)))
+    _nz = _rng.standard_normal(_t0.size) * 0.1 * np.where(_mk, 1.0, _body_rms)
+    _th = jnp.asarray(_t0 + _nz, theta0.dtype)
+    _rj = jax.jit(lambda fl, X: jnp.real(logA_X(fl, X)).astype(f64))
+    _X = np.asarray(bits(sec.reps[jnp.asarray(_ix)])); _mx = 0.0; _r0 = []; _per = []
+    for _i0 in range(0, _n, 50):
+        _Xb = jnp.asarray(_X[_i0:_i0 + 50]); _rb = np.asarray(_rj(_th, _Xb)); _r0.append(_rb)
+        for _k in range(16):
+            _g = _Xb[:, INV8[_k // 2]] * SG2[_k % 2]
+            _per.append(float(np.max(np.abs(np.asarray(_rj(_th, _g)) - _rb))))
+    _r0 = np.concatenate(_r0); _rz = float(np.max(np.abs(np.asarray(_rj(theta0, jnp.asarray(_X[:50]))))))      # r at w_out = 0 (step 0): must be exactly 0
+    _r = dict(test='i_symmetry', sym=SYM, max_abs_r_at_theta0=_rz, n_configs=_n, max_abs_r_gx_minus_r_x=float(max(_per)), max_over_g=_per[:16], r_std=float(np.std(_r0)), r_absmax=float(np.max(np.abs(_r0))), body_rms=_body_rms, dtype=str(theta0.dtype))
+    progress('TEST_SYM ' + json.dumps(_r)); json.dump(_r, open(os.path.join(OUT, 'test_sym.json'), 'w')); sys.exit(0)
 
 
 # ============================================================================================ sampler and bonds

@@ -321,6 +321,25 @@ def table(th, idx=None):
     return jnp.concatenate(out)
 
 
+# ---- TEST (e) (consol worker, 2026-11-18): spec test_e_n = number of orbits.  ppbf run: direct PP forward of theta_start (A_0's theta) at test_e_n orbits vs the table
+# base_table (la_table.npy of A_0); saves test_e_direct.npz.  vitres run: step-0 arm-H log t = fwd(theta0) + TAB0 at the same orbits vs that direct forward.
+# spec test_e_break (ppbf run): add 1e-3 to theta_start[test_e_break_idx] first (break version, must FAIL).  Exits after reporting.
+if SPEC.get('test_e_n'):
+    _ne = int(SPEC['test_e_n']); _rng = np.random.default_rng(4242)
+    if MODEL == 'vitres':
+        _z = np.load(SPEC['test_e_direct']); _ix = _z['idx']; _dir = _z['lnA']
+        _lt = np.asarray(fwd(theta0, sec.reps[jnp.asarray(_ix)], base=TAB0[jnp.asarray(_ix)]))
+        _r = dict(test='e_vitres_step0', n_orbits=int(_ix.size), max_abs_lnt_minus_direct_PP=float(np.max(np.abs(_lt - _dir))), max_abs_lnt_minus_table=float(np.max(np.abs(_lt - np.asarray(TAB0[jnp.asarray(_ix)])))))
+    else:
+        _th = theta_start
+        if SPEC.get('test_e_break'): _th = _th.at[int(SPEC.get('test_e_break_idx', 1))].add(1e-3)      # idx 1 = f[0,1] (index 0 is a diagonal element, unused by the PP)
+        _ix = np.unique(_rng.choice(int(sec.reps.shape[0]), _ne, replace=False))
+        _dir = np.asarray(fwd(_th, sec.reps[jnp.asarray(_ix)])); _tb = np.load(SPEC['base_table'], mmap_mode='r')[_ix]
+        np.savez(os.path.join(OUT, 'test_e_direct.npz'), idx=_ix, lnA=_dir)
+        _r = dict(test='e_direct_PP_vs_table', break_version=bool(SPEC.get('test_e_break')), n_orbits=int(_ix.size), max_abs=float(np.max(np.abs(_dir - _tb))), rms=float(np.sqrt(np.mean((_dir - _tb) ** 2))))
+    progress('TEST_E ' + json.dumps(_r)); json.dump(_r, open(os.path.join(OUT, 'test_e.json'), 'w')); sys.exit(0)
+
+
 # ============================================================================================ sampler and bonds
 class Sampler:
     """stratified: ceil(M/9) configurations per decade -5..-13 (n_r-weighted inside the decade); else |phi*|^2 (n_r a^2)."""
@@ -582,6 +601,14 @@ progress(f'[fit {ARM}] start held-out loss {L_ho0:.4e}  warm net vs table rms {r
 tau = TAU; tau_changed = 0; tau_hist = [dict(step=0, tau=tau)]
 if DRY and LOSS == 'log': res['dense_check_maxdiff'] = dense_check(); progress(f'[dry] gather-vs-dense T check {res["dense_check_maxdiff"]}')
 hist = []; lam_rel = LAM0; n = 0; t0 = time.time(); conv = dict(converged=False, reason='not checked')
+CKPT_EVERY = int(SPEC.get('ckpt_every', 0)); RESUME = bool(SPEC.get('resume', False)); TABLE_ONLY = bool(SPEC.get('table_only', False))
+if RESUME:                                             # consol worker: reload theta, step counter, offset c, damping, tau, rng key and the history from ckpt_last.*
+    _z = np.load(os.path.join(OUT, 'ckpt_last.npz')); _h = json.load(open(os.path.join(OUT, 'ckpt_last_hist.json')))
+    theta = jnp.asarray(_z['theta'], theta0.dtype); n = int(_z['n']); c = float(_z['c']); lam_rel = float(_z['lam_rel']); tau = float(_z['tau']); tau_changed = int(_z['tau_changed'])
+    key = jnp.asarray(_z['key'], jnp.uint32); hist = _h['hist']; curve = _h['curve']; tau_hist = _h['tau_hist']
+    S_tr = Sampler(~ho_h, 1000 + SEED + 1000003 * n, STRAT)      # fresh training-sample stream (the old stream is not saved); held-out batch and Wbar are unchanged (fixed seeds)
+    res['resumed_from'] = dict(step=n, theta_sha256=hashlib.sha256(np.asarray(theta).tobytes()).hexdigest(), c=c, lam_rel=lam_rel, tau=tau)
+    progress(f'[resume] step {n} theta sha256 {res["resumed_from"]["theta_sha256"][:16]} c {c:.6e} lam_rel {lam_rel:.3e} tau {tau:.4f} held-out(curve[-1]) {curve[-1]["L_ho"]:.4e}')
 sec.offload()
 
 
@@ -611,7 +638,14 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
     key, k1, k2 = jax.random.split(key, 3)
     bt = make_batch(S_tr, B, k1, WBAR)
     Xall = jnp.concatenate([bt['x'], bt['y'].reshape(-1)])
-    S = fwd(theta, Xall); G = jac(theta, Xall)
+    _dg = {}
+    if SPEC.get('diag_grad') and MODEL == 'vitres':       # TEST ONLY: |grad of the batch mean loss| in the w_out columns and in the body columns (CPU, small B)
+        _mk = flax.core.unfreeze(params) if hasattr(flax.core, 'unfreeze') else params
+        _mk = jax.tree_util.tree_map(jnp.zeros_like, _mk); _mk['output']['w_out'] = jnp.ones_like(_mk['output']['w_out'])
+        _mk = np.asarray(ravel_pytree(_mk)[0]) > 0
+        _gr = np.asarray(jax.grad(lambda th_: jnp.mean(per_sample(S_of(th_, bt), bt['lx'], bt['ly'], bt['wb'], c)[0]))(theta))
+        _dg = dict(grad_wout=float(np.linalg.norm(_gr[_mk])), grad_body=float(np.linalg.norm(_gr[~_mk])), n_wout=int(_mk.sum()))
+    S = S_of(theta, bt); G = jac(theta, Xall)        # arm H: S_of adds the frozen base ln|A_0| (consol worker fix: the bare fwd() asserted)
     if ACT is None:
         dP, dc, prms, sc, rr = solve_dir(G, S, bt['lx'], bt['ly'], bt['wb'], c, lam_rel, tau)
     else:                                              # F1 freeze_outer: the step on the active columns only (= the window-3 step)
@@ -619,6 +653,13 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         dP = jnp.zeros(NPAR, dPa.dtype).at[ACT].set(dPa)
     del G
     dc = float(dc)
+    if SPEC.get('diag_scan'):                          # TEST ONLY: loss on the FIT batch bt along the step (theta + s dP, c + s dc); rr = solver's sum res^2 at s = 0
+        _sc = {}
+        for _s in (0.0, 1e-3, 1e-2, 0.1, 0.3, 1.0):
+            _sc[str(_s)] = float(jnp.mean(per_sample(S_of(theta + _s * dP.astype(theta.dtype), bt), bt['lx'], bt['ly'], bt['wb'], c + _s * dc)[0]))
+        _dg['scan_fit_batch'] = _sc; _dg['solver_rr'] = float(rr); _dg['dc'] = dc
+        _dg['dP_wout'] = float(jnp.linalg.norm(dP[_mk])) if SPEC.get('diag_grad') else None; _dg['dP_body'] = float(jnp.linalg.norm(dP[~_mk])) if SPEC.get('diag_grad') else None
+        progress(f'[diag_scan] step {n}: {_sc}  solver sum res^2 {float(rr):.6e}  dc {dc:.4e}')
     ab = make_batch(S_tr, B_ACC, k2, WBAR)              # fresh stratified acceptance batch
     L_old, _, _ = batch_loss(theta, c, ab)
     cand = theta + dP.astype(theta.dtype)
@@ -632,9 +673,10 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
     else:
         ok = True; verdict = 'noise'
     if ok: theta = cand; c = c + dc
+    # (hist entry below gets the diag)
     hist.append(dict(step=n, ok=ok, verdict=verdict, lam_rel=lam_used, lam_next=lam_rel, L_acc_old=float(jnp.mean(L_old)),
                      dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
-                     sec=time.time() - ts))
+                     sec=time.time() - ts, **_dg))
     if n % HO_EVERY == 0:
         Lh, ex, db = batch_loss(theta, c, HOB)
         curve.append(dict(step=n, t=time.time() - t0, L_ho=float(jnp.mean(Lh)), c=c, by_decade=decade_diag(HOB, ex, db)))
@@ -651,6 +693,18 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
             conv = check_converged()
             if conv['converged'] and not NO_CONV_STOP: break
         res['fit'] = dict(hist=hist, curve=curve, tau_hist=tau_hist); dump(F, res); np.save(os.path.join(OUT, 'theta_last.npy'), np.asarray(theta))
+    if n == 5 + (res['resumed_from']['step'] if RESUME else 0):                      # arm H: s/step and peak device memory after step 5 (the brief's GPU dry run is the job itself)
+        _sp = float(np.median([h['sec'] for h in hist[-5:]])); _ms = None
+        try: _ms = jax.devices()[0].memory_stats()
+        except Exception: pass
+        progress(f'[step5] median s/step {_sp:.1f} (last 5 steps)  device {jax.devices()[0].platform}  peak_bytes_in_use {(_ms or {}).get("peak_bytes_in_use")}  bytes_limit {(_ms or {}).get("bytes_limit")}')
+        if _sp > float(SPEC.get('max_sec_per_step', 1e9)):
+            res['stop'] = f's/step {_sp:.1f} > max_sec_per_step'; dump(F, res); progress(f'FAILED {res["stop"]}; exit 4'); sys.exit(4)
+    if CKPT_EVERY and n % CKPT_EVERY == 0:
+        np.savez(os.path.join(OUT, 'ckpt_tmp.npz'), theta=np.asarray(theta), n=n, c=c, lam_rel=lam_rel, tau=tau, tau_changed=tau_changed, key=np.asarray(key))
+        json.dump(dict(hist=hist, curve=curve, tau_hist=tau_hist), open(os.path.join(OUT, 'ckpt_last_hist.json.tmp'), 'w'), default=float)
+        os.replace(os.path.join(OUT, 'ckpt_tmp.npz'), os.path.join(OUT, 'ckpt_last.npz')); os.replace(os.path.join(OUT, 'ckpt_last_hist.json.tmp'), os.path.join(OUT, 'ckpt_last_hist.json'))
+        np.save(os.path.join(OUT, f'theta_ckpt_{n:04d}.npy'), np.asarray(theta)); progress(f'[ckpt] step {n} written')
 if not conv['converged']:
     conv = check_converged() if len(hist) >= max(2 * HO_EVERY, 2) and len(curve) > 1 else dict(converged=False, reason='too few steps')
     if conv.get('stalled'):
@@ -692,6 +746,8 @@ if MODEL == 'ppbf' and not COMPLEX:                    # C1: t = sgn(Re A) * s2 
     np.save(os.path.join(OUT, 't_real.npy'), (_sg * _s2).astype(np.int8))
     if DRY: np.save(os.path.join(OUT, 't_real_idx.npy'), idx_s)
 res['table_sec'] = time.time() - t1
+if TABLE_ONLY:                                         # consol worker: the grader (consol_grade.py) does E_FN; no readout, bonds or E_FN here
+    res['sec'] = time.time() - T00; res['done'] = True; dump(F, res); progress(f'DONE table_only {res["sec"]:.0f}s (table {res["table_sec"]:.0f}s)'); sys.exit(0)
 rd = decade_table(la_fit)
 res['readout'] = dict(rms_by_decade=rd['by_decade'], offset_count=rd['offset_count'], eps_median_tail_T0=rd['eps_median_tail_T0'])
 res['readout']['primary_table'] = {str(d): rd['by_decade'][str(d)]['rms_count'] for d in DECS}

@@ -518,16 +518,40 @@ def _put_gg(GG, blk, i0, j0):
     return jax.lax.dynamic_update_slice(GG, blk, (i0, j0))
 
 
+@jax.jit
+def _T_rows(GG, i1a, c1a, i2a, c2a, cca, i1, c1, i2, c2, cc):
+    """rows a of T = A GG A^T + cc cc^T (the same elementwise operations as the full-matrix form, one row block at a time)."""
+    H = c1a[:, None] * GG[i1a] + c2a[:, None] * GG[i2a]
+    return H[:, i1] * c1[None, :] + H[:, i2] * c2[None, :] + jnp.outer(cca, cc)
+
+
 @partial(jax.jit, donate_argnums=(0,))
-def _minsr_solve(GG, r, cc, i1, c1, i2, c2, lam_rel):
+def _put_rows(T, blk, a0):
+    return jax.lax.dynamic_update_slice(T, blk, (a0, 0))
+
+
+@partial(jax.jit, donate_argnums=(0,))
+def _chol_solve(T, r, lam_rel):
     R = r.shape[0]
-    H = c1[:, None] * GG[i1] + c2[:, None] * GG[i2]; del GG
-    T = H[:, i1] * c1[None, :] + H[:, i2] * c2[None, :] + jnp.outer(cc, cc); del H
     lam = lam_rel * jnp.trace(T) / R
     T = T.at[jnp.arange(R), jnp.arange(R)].add(lam)
-    a = jax.scipy.linalg.cho_solve(jax.scipy.linalg.cho_factor(T, lower=True), r); del T
-    w = jnp.zeros(R, f64).at[i1].add(c1 * a).at[i2].add(c2 * a)        # A^T a
-    return a, w
+    return jax.scipy.linalg.cho_solve(jax.scipy.linalg.cho_factor(T, lower=True), r)
+
+
+@jax.jit
+def _w_of(a, i1, c1, i2, c2):
+    return jnp.zeros(i1.shape[0], f64).at[i1].add(c1 * a).at[i2].add(c2 * a)        # A^T a
+
+
+def _minsr_solve(box, r, cc, i1, c1, i2, c2, lam_rel, blk=1024):
+    """T built in row blocks (peak: GG + T + one block, not 5 R x R buffers), then Cholesky solve; same arithmetic as solve_dir_log."""
+    R = r.shape[0]; T = jnp.zeros((R, R), f64); GG = box.pop()          # box: the caller drops its reference, so GG is freed before the Cholesky
+    for a0 in range(0, R, blk):
+        a1 = min(a0 + blk, R)
+        T = _put_rows(T, _T_rows(GG, i1[a0:a1], c1[a0:a1], i2[a0:a1], c2[a0:a1], cc[a0:a1], i1, c1, i2, c2, cc), a0)
+    del GG
+    a = _chol_solve(T, r, lam_rel); del T
+    return a, _w_of(a, i1, c1, i2, c2)
 
 
 @jax.jit
@@ -551,7 +575,8 @@ def solve_dir_log_chunked(Gh, S, lx, ly, wb, c, lam_rel, tau, rows=0, drop_chunk
             blk = (GI @ GJ.T).astype(f64)
             GG = _put_gg(GG, blk, ia, ja)
             if ja != ia: GG = _put_gg(GG, blk.T, ja, ia)
-    a, w = _minsr_solve(GG, r, cc, i1, c1, i2, c2, lam_rel)
+    box = [GG]; del GG
+    a, w = _minsr_solve(box, r, cc, i1, c1, i2, c2, lam_rel)
     acc = jnp.zeros(P, f64)
     for k, ia in enumerate(st):
         if drop_chunk is not None and k == drop_chunk: continue

@@ -1056,3 +1056,28 @@ CAPACITY CALIBRATION (lead 2026-11-19 11:40, CPU, existing data). Same code, sam
   round after round at flat cost: the PI's 11-19 objection holds in the data. Caveats: 6x6 only; pooled moments, not resolved per-bond tokens (Astra's 'complete one-hop multiset' arm not run);
   weights p_1 = rounds23/p_1.npy (differs from rangelimit_6x6/p.npy by 3% median; not checked which round 1 used). False alarm: VERDICT lines 13:21/13:23 for capacity_ws40_278219 were an OOM kill of
   one of three parallel grades (32.9 GB each); arm A regraded alone (gradeA2.log, exit 0).
+
+REFRESH THE BASE EACH ROUND (FULL REFIT, NO MOVING 1/B), PAPER CHECK (lead 2026-11-19 15:05)
+Why: CAPACITY CALIBRATION shows an add-on on FIXED B-inputs cannot hold round 2 (reach grows ~1 hop per round). Flat cost per amplitude then needs the inputs to refresh without nesting:
+ store chi_k = B_k e^{g_k(Phi_{B_k})}, B_k of the fixed ppbf class, g_k a fixed-size ratio head (ratnet) on B_k's OWN one-hop ratios. Round k+1: teacher T_{k+1} = M[chi_k] by neighbour lookups
+ (training-time cost z^2 B-evals per row, paid once per round; stored amplitude cost = 1 + z B-evals, flat in k). Then fit (B_{k+1}, g_{k+1}) to T_{k+1}. The head's reach is relative to the
+ newest base, so it never grows; the base must absorb what the previous head held. Deciding term: can the ppbf class absorb chi_1 = B e^{g_1} (round 1 only)? That is the 11-17 spec arm P.
+Derivation, loss [exact]: log loss L = sum_x w_x (ln T_theta(x) - ln t(x) - c)^2, grad = 2 sum w e (dT/dtheta)/T: diverges where T_theta -> 0 at a row with t != 0 (the PI's 1/B).
+ Spec P (11-17) residual r = e^{e} - 1 = t/(T e^c) - 1 has dr = -(1+r) dT/T = -(t e^{-c}) dT/T^2: STILL a moving 1/T, now squared. CORRECTION: spec P as written does not remove the 1/B.
+ Correct form (relative to the FROZEN target): rho = T e^{c}/t - 1, L_rel = sum w rho^2, d rho = e^{c} (dT/dtheta)/t: only the fixed 1/t; bounded wherever t > 0 (the teacher table has no zeros
+ in the graded set: min |t| checked in the known case). Bond terms the same way: rho_xy = (T_x/T_y)/(t_x/t_y) - 1 has a moving 1/T_y; use rho_xy = rho_x - rho_y instead (first-order equal).
+Checked: |rho| << 1 -> rho = e + O(e^2), so L_rel = L_log + O(e^3): same minimiser to first order, same Hessian at an exact fit; the losses differ only on rows with large error, which is where the
+ log loss's gradient blows up (T -> 0) and L_rel saturates at w per row. Limit c -> c*, theta frozen: L_rel stationary in c at sum w rho e^{c}T/t = 0 [ok]. Theorem: none needed (algebra). Confidence 90%.
+ What it does NOT change: first-order capacity (Theta v2 tangent test 0-4% is loss-independent at first order). It can only help if October's nonlinear log-loss refits (11-18%, L-SWO 37%)
+ were held back by rows with T_theta near 0. Hypothesis, not shown.
+Prior results: L-SWO 10-30 full PP refit, log loss 37%/round, saturates after ~3 rounds; Theta v2 11-01 tangent 0-4%; nonlinear refits 11-18%; precedent ppbf log-loss copy of a round-1 target
+ E_FN 2.09e-5 vs 1.22e-5 with rows below 1e-9 spliced exact (loss sits in near-node rows: supports the hypothesis); arm P never run (PI scope 11-18). Second PP holds 0.24-0.47 (P23).
+Known case (CPU, to run): 4x4 exact, same small class from the same warm start, three losses: log, spec-P (t/T - 1), L_rel (T/t - 1); identical optimiser and steps. Target: a round-1 teacher on 4x4.
+ Pass: L_rel reaches lower held-out D-norm eps2 than log, and its largest single-row share of the gradient norm stays < 10% at every step. Broken version = spec-P form: must show a row share
+ > 50% at some step (the 1/T^2 blow-up) or a worse eps2. If L_rel and log end equal within 5% -> the 1/B hypothesis has no lever on this class; say so before any GPU run.
+Data check (existing tables, CPU): the precedent log-loss copy table vs its target: share of the D-norm residual in rows with |T/t - 1| > 1 (where the losses differ). < 10% -> the loss cannot matter
+ at 6x6; skip the run. >= 30% -> run.
+Next rung (GPU, only after both checks): ppbf full refit of A_1 with L_rel, warm start A_0, 2 seeds (spec P otherwise unchanged), <= 4 A40-h. Pass retention_N >= 0.5 (then design the joint
+ base + head round 2, pass q_2 >= 0.85); kill both < 0.25 -> the ppbf class cannot absorb even one round: flat-cost multi-round storage needs a different base class (PI question).
+ Between -> base + head jointly on A_1 decides whether the head covers the rest. Prediction: 0.3-0.5 [own, 55%]; >= 0.5 at 30%.
+Status: NOT DONE: known case and data check to run.

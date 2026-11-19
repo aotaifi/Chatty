@@ -1118,3 +1118,6 @@ DECISION (lead 2026-11-19, after reading 2307.15521): adopt the frozen-target lo
   u < 0 holds 12.5% (FN wts) / 10.7% (target wts) of the D residual, 0 <= u < 0.2 7.8% / 0.7%, u >= 0.2 79.7% / 88.5%. Round 1 on B: weight of u < 0 rows p_1 1.3e-6 at alpha* -0.1,
   3.2e-8 at alpha*/3, 2.7e-9 at alpha*/5 (rows 9.2% -> 0.4% -> 0.04%). Reading: a smaller step removes the kinks (cheap knob for the loop if a round stalls at u ~ 0), but ~80% of the
   old full-refit residual is elsewhere, so step size alone would not have rescued that copy.
+ LOOP, CPU CUBIC HEAD, PARTIAL (lead read logs 18:10, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round3_approx/{r2grade,map3,r3fit}.log): round 2 with the STORED previous head (not exact r_1*):
+  N(chi_2) 3.060452e-6, q_2 0.737 (alpha -0.0707). Round-3 teacher from that copy N(T_3) 2.127967e-6. Contraction model (kappa 0.324, N_inf 1.680e-6) predicted 1.680 + 0.324(3.060 - 1.680)
+  = 2.127e-6: hit to 0.05% (second confirmation after T_2 at 0.4%). Round-3 fit CV eps2 0.088 (round 2: 0.127). Grade of chi_3 pending.

@@ -1103,3 +1103,9 @@ INSIGHT: ROUNDS ARE PROJECTIVE IMAGINARY-TIME STEPS; COPY LOSS SLOWS, DOES NOT M
   limited that copy; a loss change alone (L_rel) is not predicted to fix it. The deciding property of a refit class is whether it can place the target's near-zeros.
   4x4 known case: inconclusive (plain PP could not fit the 4x4 base, eps2 ~ 1 for all three losses); spec-P broken line met (row share > 0.5). L_rel's top row = the smallest-t row in every run:
   the fixed 1/t is large exactly at near-nodes under decade weights. Paper check 'REFRESH THE BASE EACH ROUND': NOT DONE (known case not decisive); no GPU refit with L_rel on this evidence.
+ PAPER READ (lead 2026-11-19, arXiv:2307.15521 sections 1-2.6 read in full): target psi_T = (1 - dtau H) psi_fixed from a FROZEN copy (their Eq. 6-7); two steps per target rejected because
+  the cost becomes quadratic (= our nesting z^k). Loss: overlap L = -log |<psi|psi_T>|^2/(<psi|psi><psi_T|psi_T>) (Eq. 8), gradient Eq. 9 with ratios psi_T/psi averaged under |psi|^2: no per-row 1/psi
+  blow-up (rows enter weighted by |psi|^2). dtau from the energy-optimal Euler step (Eq. 11) = our alpha line search. KEY: the target is held only until the trained network's energy falls below
+  <E> - sigma_E of the frozen one (Alg. 1), then rebuilt: each step needs a PARTIAL copy that lowers the energy, never a full copy; whole network refit, cost flat; competitive with DMRG on 2D J1-J2.
+  Mapping to our task: our round = their epoch with the FN grade N in place of <E>; our q per round need not be high, only N(chi_{k+1}) < N(chi_k) beyond noise (consistent with the contraction
+  algebra above). Difference: their psi is complex and learns sign changes; we fix s2 and take |u|, which makes kinks at u = 0.

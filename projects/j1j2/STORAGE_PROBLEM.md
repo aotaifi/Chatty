@@ -1086,3 +1086,13 @@ APPROXIMATE COPY OVER ROUNDS (PI 2026-11-19: 75-80% per round is enough if it do
  Store chi_k = B e^{h_k}, h_k = cubic(L2 moments of B, h_{k-1}(x)) refit each round (inputs fixed in k: z^2 B-evals + the previous head at x; flat cost). Start chi_1 = lin_s1 copy.
  Round 2: fit U_2 on L2 + (ln chi_1 - ln B) -> chi_2, q_2. Round 3: T_3 = M[chi_2] (round_map.py), fit U_3 = ln T_3 - ln B on L2 + (ln chi_2 - ln B) -> chi_3, q_3 = (N(chi_2) - N(chi_3))/(N(chi_2) - N(T_3)).
  Pass: q_2, q_3 >= 0.75 and q_3 >= q_2 - 0.05 (no degradation). Kill: q_3 < 0.6 or q_3 < q_2 - 0.15. Prediction: q_2 0.70-0.75 (L2+ with exact r_1* gave 0.747), q_3 0.65-0.75 [own, 50%]. ~4 h CPU.
+
+INSIGHT: ROUNDS ARE PROJECTIVE IMAGINARY-TIME STEPS; COPY LOSS SLOWS, DOES NOT MOVE, THE END POINT (lead 2026-11-19 ~16:00)
+ (1) [exact] G_k = |(1 + alpha(H - E)) A_k| (sign s2): the round's first factor is a power/imaginary-time step applied to the stored network; e^{c f_J[G]} is a local correction of G.
+  Hence reach grows by one hop per round for the same reason Lanczos-step states cost z^p. The field's standard fix: rebuild the target from the FROZEN previous network
+  each step and refit the WHOLE network to it, so the stored cost never grows: Ledinauskas & Anisimovas arXiv:2307.15521 (2D J1-J2; first-order fit of the NQS to the target
+  from the Schroedinger step, target held until the energy drops; abstract only read), Kochkov & Clark SWO arXiv:1811.12423 (abstract only). Our add-on-on-frozen-B is the outlier.
+ (2) [derived from the contraction model, 55%; model predicted N(T_2) to 0.4%] N(T_{k+1}) - N_inf = kappa (N(chi_k) - N_inf) and N(chi_{k+1}) = N(chi_k) - q (N(chi_k) - N(T_{k+1}))
+  => N(chi_{k+1}) - N_inf = (1 - q(1 - kappa)) (N(chi_k) - N_inf). With constant q the copied rounds converge to the SAME N_inf, factor 0.49/round at q 0.75 vs 0.32 exact.
+  A floor appears only if the copy has an absolute error eps that does not shrink with the round's gain: N_floor - N_inf ~ eps/(1 - kappa). So the deciding number is the class's
+  absolute error on the converged state, not q per round. Consequence for the design: refit the whole network each round (literature route) and measure eps near convergence.

@@ -1121,3 +1121,8 @@ DECISION (lead 2026-11-19, after reading 2307.15521): adopt the frozen-target lo
  LOOP, CPU CUBIC HEAD, PARTIAL (lead read logs 18:10, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round3_approx/{r2grade,map3,r3fit}.log): round 2 with the STORED previous head (not exact r_1*):
   N(chi_2) 3.060452e-6, q_2 0.737 (alpha -0.0707). Round-3 teacher from that copy N(T_3) 2.127967e-6. Contraction model (kappa 0.324, N_inf 1.680e-6) predicted 1.680 + 0.324(3.060 - 1.680)
   = 2.127e-6: hit to 0.05% (second confirmation after T_2 at 0.4%). Round-3 fit CV eps2 0.088 (round 2: 0.127). Grade of chi_3 pending.
+ LOOP, CPU CUBIC HEAD, RESULT (worker c3da637/ab2be2e, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round3_approx/summary.json; lead checked against logs): N(chi_2) 3.0605e-6 (q_2 0.737),
+  N(T_3) 2.1280e-6, N(chi_3) 2.6672e-6 (q_3 0.422). Rule: KILL by the per-round line. DIAGNOSIS (equation): absolute copy error eps_k = N(chi_k) - N(T_k): round 2 0.494e-6, round 3 0.539e-6;
+  ratnet round 1 (lin_s1) 4.444 - 3.950 = 0.494e-6. eps is ~constant per round while the step shrinks by kappa 0.32, so q must fall; it is not degradation. With constant eps the loop's
+  fixed point is N* = N_inf + eps/(1 - kappa) = 1.680 + 0.52/0.676 = 2.45e-6 (exact rounds: A_2 2.416e-6, N_inf 1.680e-6). The per-round q line was the wrong test; the deciding number
+  is eps. To go below ~2.4e-6 eps itself must shrink. PREDICTION for ratnet loop r2_s1 (job 18070490, before its grade): N = N(T_2) + 0.5e-6 = 3.07e-6 +- 0.1e-6 (q_2 ~0.73).

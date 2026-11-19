@@ -1081,3 +1081,8 @@ Next rung (GPU, only after both checks): ppbf full refit of A_1 with L_rel, warm
  base + head round 2, pass q_2 >= 0.85); kill both < 0.25 -> the ppbf class cannot absorb even one round: flat-cost multi-round storage needs a different base class (PI question).
  Between -> base + head jointly on A_1 decides whether the head covers the rest. Prediction: 0.3-0.5 [own, 55%]; >= 0.5 at 30%.
 Status: NOT DONE: known case and data check to run.
+
+APPROXIMATE COPY OVER ROUNDS (PI 2026-11-19: 75-80% per round is enough if it does not degrade badly over rounds). Lead, CPU, existing machinery.
+ Store chi_k = B e^{h_k}, h_k = cubic(L2 moments of B, h_{k-1}(x)) refit each round (inputs fixed in k: z^2 B-evals + the previous head at x; flat cost). Start chi_1 = lin_s1 copy.
+ Round 2: fit U_2 on L2 + (ln chi_1 - ln B) -> chi_2, q_2. Round 3: T_3 = M[chi_2] (round_map.py), fit U_3 = ln T_3 - ln B on L2 + (ln chi_2 - ln B) -> chi_3, q_3 = (N(chi_2) - N(chi_3))/(N(chi_2) - N(T_3)).
+ Pass: q_2, q_3 >= 0.75 and q_3 >= q_2 - 0.05 (no degradation). Kill: q_3 < 0.6 or q_3 < q_2 - 0.15. Prediction: q_2 0.70-0.75 (L2+ with exact r_1* gave 0.747), q_3 0.65-0.75 [own, 50%]. ~4 h CPU.

@@ -1109,3 +1109,7 @@ INSIGHT: ROUNDS ARE PROJECTIVE IMAGINARY-TIME STEPS; COPY LOSS SLOWS, DOES NOT M
   <E> - sigma_E of the frozen one (Alg. 1), then rebuilt: each step needs a PARTIAL copy that lowers the energy, never a full copy; whole network refit, cost flat; competitive with DMRG on 2D J1-J2.
   Mapping to our task: our round = their epoch with the FN grade N in place of <E>; our q per round need not be high, only N(chi_{k+1}) < N(chi_k) beyond noise (consistent with the contraction
   algebra above). Difference: their psi is complex and learns sign changes; we fix s2 and take |u|, which makes kinks at u = 0.
+DECISION (lead 2026-11-19, after reading 2307.15521): adopt the frozen-target loop. Round k: target T_k = M[chi_{k-1}] from the frozen previous copy (round_map.py); the ratnet head refit FROM
+ SCRATCH on T_k (B frozen, head e^g -> no 1/B in any gradient; B-ratio inputs, lse_lin pool as lin_s1); accept a partial copy: round passes if N(chi_k) < N(chi_{k-1}) by > 5% of the step
+ N(chi_{k-1}) - N(T_k). 6x6, rounds 2 and 3, 2 seeds, est. ~8 A40-h. Kill: round 3 gains < 5% of its step in both seeds (loop stalls). Launch gate (data check): the CPU cubic version of
+ the same loop (round3_approx, running) shows N falling at round 3. Doubt [own, 40%]: fixed sign + |u| kinks at u = 0; watched via N per round.

@@ -798,4 +798,4 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 ## Cockpit
 - STATUS (in progress, high): An add-on network fed the frozen network's neighbour ratios now keeps 89% of one round's gain on 6x6 (two seeds), after adding a plain sum of the ratios; the PI's line was 50%.
-- NEXT (in progress, high): An add-on on the frozen first network cannot hold the second round (keeps 59%, needs 85%); testing whether the whole network can be refit each round with a loss free of the 1/B blow-up, first on 4x4 and existing tables, then one 6x6 GPU fit.
+- NEXT (in progress, high): Adopted the published frozen-target loop (refit the add-on each round on a target built from the previous copy, accept a partial copy if the energy drops); 6x6 rounds 2-3 on GPU once the CPU version shows the energy still falling at round 3.

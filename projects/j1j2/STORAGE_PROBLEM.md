@@ -1113,3 +1113,8 @@ DECISION (lead 2026-11-19, after reading 2307.15521): adopt the frozen-target lo
  SCRATCH on T_k (B frozen, head e^g -> no 1/B in any gradient; B-ratio inputs, lse_lin pool as lin_s1); accept a partial copy: round passes if N(chi_k) < N(chi_{k-1}) by > 5% of the step
  N(chi_{k-1}) - N(T_k). 6x6, rounds 2 and 3, ONE seed (PI: a test; round-1 seed scatter 0.003, far below the 5% line), est. ~4 A40-h. Kill: round 3 gains < 5% of its step (loop stalls). Launch gate (data check): the CPU cubic version of
  the same loop (round3_approx, running) shows N falling at round 3. Doubt [own, 40%]: fixed sign + |u| kinks at u = 0; watched via N per round.
+ U-ZEROS CHECK, RESULT (worker, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/u_zeros/{u_zeros.json,run.log}; lead read 2026-11-19). Precedent copy c1_cplx_s1 vs o2b round-1 target (= FN(g_1),
+  g_1 = a_1|1 + alpha_V(E_L - E_b)|, alpha_V -0.1179). Near-zero |u| is a SUFFICIENT cause of copy-too-large (|u| < 0.05: > 99.8% of rows T > 2t; 0.05-0.2: 97%) but not the main one:
+  u < 0 holds 12.5% (FN wts) / 10.7% (target wts) of the D residual, 0 <= u < 0.2 7.8% / 0.7%, u >= 0.2 79.7% / 88.5%. Round 1 on B: weight of u < 0 rows p_1 1.3e-6 at alpha* -0.1,
+  3.2e-8 at alpha*/3, 2.7e-9 at alpha*/5 (rows 9.2% -> 0.4% -> 0.04%). Reading: a smaller step removes the kinks (cheap knob for the loop if a round stalls at u ~ 0), but ~80% of the
+  old full-refit residual is elsewhere, so step size alone would not have rescued that copy.

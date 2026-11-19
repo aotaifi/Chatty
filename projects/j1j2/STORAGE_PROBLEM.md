@@ -1096,3 +1096,10 @@ INSIGHT: ROUNDS ARE PROJECTIVE IMAGINARY-TIME STEPS; COPY LOSS SLOWS, DOES NOT M
   => N(chi_{k+1}) - N_inf = (1 - q(1 - kappa)) (N(chi_k) - N_inf). With constant q the copied rounds converge to the SAME N_inf, factor 0.49/round at q 0.75 vs 0.32 exact.
   A floor appears only if the copy has an absolute error eps that does not shrink with the round's gain: N_floor - N_inf ~ eps/(1 - kappa). So the deciding number is the class's
   absolute error on the converged state, not q per round. Consequence for the design: refit the whole network each round (literature route) and measure eps near convergence.
+ REFRESH-THE-BASE CHECKS, RESULT (worker 2a3ba2d on j1j2-ratnet; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/refit_loss/{partA,partB}; lead read 2026-11-19).
+  Data check (precedent ppbf copy c1_cplx_s1 vs pfaffian_d/o2b_round_1 target, E_FN 2.092e-5, spliced 1.220e-5): D-norm share of the residual in rows where the copy is TOO SMALL (t/T - 1 > 1,
+  where the log loss's 1/B acts) is 1.8% (FN weights, mr_residual.py) / 10.9% (target weights); rows where the copy is TOO LARGE (T > 2t) hold 30.4% / 8.4%.
+  INSIGHT: October's full-refit loss sat where the target is small and the copy failed to follow it down (near the target's nodes), not where the copy -> 0. The 1/B divergence is not what
+  limited that copy; a loss change alone (L_rel) is not predicted to fix it. The deciding property of a refit class is whether it can place the target's near-zeros.
+  4x4 known case: inconclusive (plain PP could not fit the 4x4 base, eps2 ~ 1 for all three losses); spec-P broken line met (row share > 0.5). L_rel's top row = the smallest-t row in every run:
+  the fixed 1/t is large exactly at near-nodes under decade weights. Paper check 'REFRESH THE BASE EACH ROUND': NOT DONE (known case not decisive); no GPU refit with L_rel on this evidence.

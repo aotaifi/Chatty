@@ -969,3 +969,66 @@ Next rung 3 (run): r_2 on frozen chi_1, lin_s1's spec with base_table chi_1 and 
  KILL q_2 < 0.70 (two seeds); between -> diagnose which rows. Broken must give q_2 < 0.1. Report cumulative retention_2 too (predicted 0.94 at q_2 = q_1). Prediction: PASS at 60%.
  Cost ~3 A40-h.
 Status: NOT DONE: known case (rung-2 script) to run.
+
+ADDITIVE TARGET READOUT CHECK, RESULT (lead 2026-11-19, step-back hypothesis 'the log form puts -ln A_0 into the target'; runs/j1j2/consol_6x6/readout_additive/{readout_additive.py,out.txt})
+Same arm-H features (trained ViT body / random body, 60 features, 8000+8000 rows per decade of |A_1|^2). Test corr of the LS readout, decades -8..-11:
+ trained body: LOG r* 0.244 0.246 0.211 0.150 (known case = readout/fit_out.txt, reproduced exactly); ADD (A_1 - lam A_0)/s_d 0.239 0.253 0.210 0.146; ADD with A_0 as extra column 0.333 0.270 0.234 0.185 (per decade); shuffled ~0.
+REFUTED: the additive target is no easier. Reason, from the same data: |r*| > 1 on 0.000 of rows in every decade -5..-12 (0.001 at -13). In the decades that carry the gain r* is small, so
+ Delta*/A_1 ~ r* and the two targets are the same function. The O(1-7) excursions (ARM H DATA STEP) sit below the graded decades. The step-back mechanism was wrong for the rows that matter.
+What the target is on those rows: r* ~ alpha (E_L[A_0] - E) + 1.307 f_J, E_L[A_0](x) = D0 + sum_b h_b sgn_b A_0(y_b)/A_0(x): A_0's change across all ~50 bonds. A network that does not contain A_0 must rebuild A_0's
+ bond-by-bond structure to produce it (readout corr <= 0.33 for a trained ViT body; ratio inputs supply it and reach 0.894).
+
+FLAT-COST ROUND 2: ADD-ON ON THE FROZEN BASE'S OWN RATIOS, PAPER CHECK (lead, 2026-11-19 ~09:40, takeover; PI 09:20: 'copy the new network and its corrections for the second round; freeze or not is your choice')
+Question: can round 2 be stored at a cost per amplitude that does not grow with the round number?
+Derivation:
+ (1) Where the nesting comes from [exact]. Round k's correction is a function of the previous state's ratios. If the add-on reads chi_{k-1}'s ratios, then chi_{k-1}(y_b) needs r_{k-1}(y_b), which
+     needs that neighbour's own ratios: z^(k-1) base evaluations per amplitude (z ~ 50 nonzero bonds at 6x6). The nesting is caused by refreshing the INPUTS, not by the ratio inputs as such.
+ (2) Flat-cost class [exact cost]: ln psi_k = ln B + R_k(x), R_k = g_k(B's one-hop ratios at x, spins), the same inputs every round, g_k a trained network (ratnet). Cost per amplitude for every k:
+     one B evaluation + z one-hop ratios of B (for a pair product, rank-2 updates of B's own inverse: O(z) after the O(N^3) B already pays; with the 6x6 backflow, low-rank updates of the
+     window) + one network. The neighbours of chi_{k-1} are needed only to BUILD round k's training target (one hop, z fixed-cost evaluations), not to evaluate the stored state.
+     This is the 'fixed inputs' design of MANY ROUNDS, now with a learned per-bond network instead of 2-5 hand features.
+ (3) What it can and cannot represent [exact]: round 1's target l[B] + c f_J[G_0] is a function of B's one- and two-hop ratios; a one-hop-input network fitted it to 0.894 (lin_s1), formula (b) on
+     one-hop features 0.946. Round 2's cumulative target U_2 = ln T_2 - ln B also needs chi_1 at neighbours, i.e. B's ratios up to two (and four, through f_J) hops: content outside the
+     inputs grows per round. Deciding number: the share of U_2 a learned function of B's one-hop ratios holds, graded by FN energy.
+ (4) Why it is a copy, not a recomputation (PI 11-18 objection): the stored object is g_k's weights; its inputs cost the same as one local-energy evaluation of B in every round, which any
+     VMC/FN step already pays. What would be 'computing' is an input cost that grows with k; (2) has none.
+Checked: k = 1 is lin_s1 exactly (target T_1 = A_1, base B = A_0): reproduces 0.8956 by construction. Limit 'g_2 = g_1' (no round-2 learning) gives chi_1: cumulative retention_2 =
+ (N(A_0) - N(chi_1))/(N(A_0) - N(T_2)) = 4.239e-6/(8.683e-6 - N(T_2)), the floor any round-2 fit must beat. Cost claim (2): the Sherman-Morrison/determinant-lemma ratio
+ det(I + V^T M^{-1} U) is the standard VMC local-energy route (Ceperley-Chester-Kalos 1977; Sorella's Lanczos-step VMC, PRB 64, 024512 (2001), from knowledge, not re-read).
+ Confidence: (1), (2), (4) 90%; (3) the deciding number is not derivable.
+Prior results: MANY ROUNDS (fixed one-hop inputs, hand features): (b2) retention_2 0.836, R_1 unchanged 0.715, one-hop cubic eps^2 0.199 vs (b2) 0.340 (more one-hop content than 2 features
+ carry; cubic not gradable, extrapolated). ADDITIVE TARGET READOUT CHECK (today): spins-only features hold <= 0.33 of r*. TRIED_IDEAS AR2 (local log-additive add-on, 8x8): 0.02-0.13 -
+ spins-only, does not bind a ratio-input net.
+Known case: the network code is lin_s1's (ratnet_lib 4bd298f), unchanged; only target_la changes. The target T_2 = M[chi_1] is built by round_map.py with its own known case (lA_1 -> lA_2,
+ worker, running) and broken version (E' of the start). Network broken version: shuffled inputs (lin_shuf: 0.0065).
+Not covered: rounds >= 3; 8x8 input cost with backflow (~NB B evaluations unless low-rank updates are written); whether two-hop content of round 2 needs two-hop inputs (then: add pairs of
+ bonds as tokens, still flat in k).
+Next rung (run): ratnet lse_lin, lin_s1 spec, base_table = A_0 (unchanged), target_la = T_2; 2 seeds + shuffled; ~3 A40-h (j1j2 GPU use since 11-18: ~24 A40-h of 40).
+ Quantity: cumulative retention_2 = (N(A_0) - N(chi_2))/(N(A_0) - N(T_2)). PASS >= 0.85 (two-seed mean): round 2 copied at flat cost. KILL <= floor + 0.05 (no better than not learning round 2).
+ Between: the one-hop inputs miss round 2's two-hop content -> pair-of-bond tokens (paper first). Broken < 0.1. Prediction: PASS at 45%, between 45%, kill 10%.
+Status: DONE for the paper; the run waits for the worker's T_2 known case (pass) and N(T_2).
+ REVIEW + TEACHER (lead 2026-11-19 ~10:05). Teacher from the copy: N(T_2) 2.566723e-6 (worker round_map.py, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round2/teacher/round_map.json, alpha -0.077;
+  start N(chi_1) 4.444332e-6 reproduced). Prediction written 08:47 in 'ROUND 2 OF THE COPY': 2.576e-6 (affine contraction) -> measured within 0.4%: the copy does not damage the next teacher.
+  Known case lA_1 -> lA_2: worker report pending. Astra (cj-c2098bb95b57, result.md there): flat cost >99%; sufficiency of one-hop inputs unmeasured; round 2 from a fixed-input copy reaches 3 hops of B;
+  predicts the planned run at cumulative 0.81 (70% range 0.73-0.89). CORRECTION (Astra, accepted): my pass line 'cumulative >= 0.85' keeps only 51% of round 2's own gain (unchanged chi_1
+  already gives 0.693, the hand (b2) table 0.857). Pass line replaced by the per-round share q_2 = (N(chi_1) - N(chi_2))/(N(chi_1) - N(T_2)), denominator 1.878e-6, PASS >= 0.85 (round 1: 0.894),
+  i.e. N(chi_2) <= 2.848e-6. On that line the hand (b2) table gives q_2 ~ 0.53 (N 3.4415e-6, target A_2 not T_2). GPU run withdrawn until the moment check below.
+
+WORD-MOMENT INPUTS: WHAT ROUND k NEEDS, PAPER CHECK (lead 2026-11-19 ~10:10)
+Derivation: split H = D + H_K + H_B (diagonal, kept bonds s_x s_y < 0, blocked bonds s_x s_y > 0 under s2). For a word w over {H_K, H_B, H} define the moment mu_w(x) = (w B)(x)/B(x).
+ Round 1 [exact]: E_L[B] = mu_H. G = B u, u = 1 + alpha(mu_H - E). Then (H_K G)/G = [mu_K + alpha(mu_{K H} - E mu_K)]/u and (H_B G)/G = [mu_B + alpha(mu_{B H} - E mu_B)]/u, so
+  r_1* = ln|u| + c [ ln((H_K G)/G) - ln(Hxx + (H_B G)/G - E') ] is a CLOSED function of the six moments {mu_H, mu_K, mu_B, mu_KH, mu_BH} (+ D, E, E', alpha): words of length <= 2.
+  (fJ_and_VsK in rangelimit_rounds.py computes SK = sum_kept |h| G(y)/G(x), VA = sum_blk h G(y)/G(x): the same objects; signs as in the code.)
+ Round k [exact, same algebra]: closed function of moments of words of length <= 2k (round 2: length <= 4). A network reading moments up to length L has a cost ~ z^L per amplitude, FLAT in k,
+  and is exact for k <= L/2; beyond that it must approximate.
+ Consequence: ratnet's one-hop inputs = length-1 moments (resolved per bond). Round 1 needs length 2: lin_s1's 0.894 already approximates the two-hop part (formula (b), length 1: 0.946 ...
+  (b) is one hop short). Round 2 needs length 4; length-2 inputs cover all of round 1's correction exactly and the leading part of round 2's.
+Checked: alpha -> 0, c -> 0: r* -> 0. c = 0: r_1* = ln|1 + alpha(mu_H - E)| (one hop) [ok]. mu_K + mu_B + D = mu_H [identity, a test]. Confidence in the algebra 90% (signs follow the code, to be
+ checked by the known case below).
+Known case (CPU, to run): from the A_0 table, compute mu_w for the length-<=2 words by sparse matvecs (BS.build K split by s2); rebuild lA_1 from them with the closed form; must match rounds23/lA_1
+ to <= 1e-9. Broken: drop the alpha(mu_{K H} - E mu_K) term -> must miss by O(0.1).
+Next rung (existing data, CPU): D-norm fits (rangelimit fits(): cubic polynomial, CV) of U_2 = ln T_2 - ln B on three feature sets: L1 = {mu_H, mu_K, mu_B, ln B}; L2 = L1 + {mu_KH, mu_BH, mu_KK, mu_BB};
+ L2+ = L2 + the exact round-1 closed form r_1* evaluated at x. Then FN grade of each fitted table -> q_2. Shuffled-target control. Decides the input level: L1 q_2 >= 0.85 -> one-hop ratnet run;
+ only L2 >= 0.85 -> length-2 inputs (cost ~z^2 per amplitude, flat in k); neither -> the polynomial fit is the limit, not the inputs: a network run would then test capacity (state which).
+ Prediction: L1 q_2 0.4-0.6; L2 0.75-0.9 [own, 50%]. Cost ~2 h CPU.
+Status: NOT DONE: known case to run.

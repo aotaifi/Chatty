@@ -1032,3 +1032,19 @@ Next rung (existing data, CPU): D-norm fits (rangelimit fits(): cubic polynomial
  only L2 >= 0.85 -> length-2 inputs (cost ~z^2 per amplitude, flat in k); neither -> the polynomial fit is the limit, not the inputs: a network run would then test capacity (state which).
  Prediction: L1 q_2 0.4-0.6; L2 0.75-0.9 [own, 50%]. Cost ~2 h CPU.
 Status: NOT DONE: known case to run.
+ ROUND MAP KNOWN CASE (worker, round_map.py 217d0ff, /scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/roundmap_known; lead reading 2026-11-19 ~10:30): lA_1 -> lA_2 max|diff| 7.5e-10 (6 of 15.8M rows
+  > 1e-10, all at ln a ~ -35, round-off in ln SK - ln den; mean 2e-16), N(lA_1) 3.950335e-6, N(lA_2) 2.416095e-6 reproduced. Lead: PASS (the 6 rows carry no FN weight; the 1e-10 line was
+  mine and too tight for e^-35 rows). Broken version (E' of the alpha=0 solve) misses by only 1.4e-5: E' moves 1e-4, too weak to discriminate - not a failing test; the WORD-MOMENT known case
+  (closed form vs lA_1, broken = dropped alpha terms) is the independent check of the same formula. Status of 'ROUND 2 OF THE COPY' known case: DONE with that caveat.
+ WORD-MOMENT FIT, RESULT (worker word_moments.py de2d487 on j1j2-ratnet; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round2/moments/{grade,fit}.json; lead read 2026-11-19 11:35).
+  Identity mu_H = Hxx + mu_B - mu_K: 4.3e-11. Known case: the signed closed form FAILS (max 17.2) because lanc builds G = B|u| and u < 0 on 9.2% of rows; with a per-bond gather of |u(y)|
+  it rebuilds lA_1 to 3.3e-9 (1 row of 15.8M above 1e-9). So r_1* is a closed function of length-2 moments only where u > 0 on x and all neighbours (5.7% of rows, 0.77 of the round-1 weight);
+  elsewhere it needs |u| at each neighbour, i.e. E_L at y: a kink a smooth readout of moments cannot make. Broken (alpha terms dropped): misses by 2.5. Algebra block: DONE with this correction.
+  Cubic D-norm fits of U_2 (CV eps2) and FN grades:  L1 0.273 -> N 3.843e-6, q_2 0.320 | L2 0.181 -> 3.334e-6, q_2 0.591 | L2+ (exact r_1*) 0.127 -> 3.042e-6, q_2 0.747 |
+  shuffled L2+ 1.001 -> 1.198e-5, q_2 -4.0. Prediction (L1 0.4-0.6, L2 0.75-0.9) both LOW. Rule branch: neither >= 0.85 -> capacity question.
+  Lead reading: the cubic is a weak learner here (raw moments with tails 1e4 sd; fit clipped on 1.9-11k rows); "inputs insufficient" is NOT shown. Calibration missing: the same cubic on
+  round 1 (U_1 = lA_1 - ln B, exactly a function of these inputs except the |u| kink) against ratnet's 0.894 on the same target.
+CAPACITY CALIBRATION (lead 2026-11-19 11:40, CPU, existing data). Same code, same features: cubic L1, L2 fits of U_1 (weights p_1), round-1 retention_N; plus asinh(x/sd) features for L2 on U_1 and U_2.
+  Rule: cubic-L2 retention on U_1 <= 0.7 (<= 0.8 x ratnet) -> the cubic is the limit; q_2(L2) 0.59 is a floor and the one-hop ratnet on T_2 is the next rung (data check DONE by this block).
+  Cubic-L2 on U_1 >= 0.85 -> the cubic is adequate, so round 2 needs inputs beyond length 2 (Astra's joint ratio tokens / |u(y)| gathers); no one-hop run. Between -> asinh arm decides.
+  asinh-L2 on U_2 >= 0.85 -> length-2 inputs suffice in a smooth basis. Prediction: cubic-L2 on U_1 0.55-0.75 [own, 60%]. Cost ~2.5 h CPU.

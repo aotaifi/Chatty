@@ -933,3 +933,39 @@ Diagnosis confirmed: big-rho rows of decades -12/-13 total loss 9.87 (lse_s1) ->
 Open (hypothesis, not a claim): lin_s1's held-out loss (1.885e-4) is below formula (b)'s (2.32e-4) yet its retention is lower (0.896 vs 0.946): the loss weights
   rows per decade, the grade weights them by their FN-energy effect, so the remaining 0.05 sits where the two weightings differ. Test (CPU, minutes): per-decade loss of lin_s1 vs (b).
 Lead decision: BETWEEN, take lin_s1 as the round-1 add-on and move to round 2 (critical path); the 0.05 gap to (b) is not on it.
+
+ROUND 2 OF THE COPY (RATIO-INPUT ADD-ON ON A FROZEN COPY), PAPER CHECK (lead, 2026-11-19 ~03:30; PI concern: does a 0.89 copy hold over rounds?)
+Derivation:
+ Notation: chi_1 = A_0 e^{r_1}, r_1 = lin_s1 (table /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ratnet/lin_s1/la_table.npy). Round map M (rangelimit_rounds.py): from a start a,
+ G[a] = a |1 + alpha_a (E_L[a] - E[a])| (alpha_a by line search), M[a] = G[a] e^{1.307 f_J[G[a]]} (f_J with E' = E_FN[s2 G[a]]). Exact teacher A_2 = M[A_1]; round-2 teacher
+ from the copy  T_2 = M[chi_1]; round-2 add-on target  r_2* = ln T_2 - ln chi_1 = l[chi_1] + 1.307 f_J[G[chi_1]].
+ (1) Representability [exact]: r_2* is the same functional of chi_1's one-hop and two-hop ratios as r_1* = l[A_0] + 1.307 f_J[G[A_0]] is of A_0's. ratnet reads ln rho_b from
+     base_table by neighbour lookup (ratnet_lib.py l.8), so round 2 = round 1's code with base_table -> chi_1's table, target_la -> ln T_2. No new knob. The
+     inputs refresh with the round, which the fixed-input check showed is needed (MANY ROUNDS: 0.836 with A_0's inputs, eps^2 0.34 vs 0.013).
+ (2) Two error sources in round 2, separated by the grade [exact, definitions]: per-round copy quality q_2 = (N(chi_1) - N(chi_2)) / (N(chi_1) - N(T_2)), and teacher
+     degradation N(T_2) vs what M would give from A_1-quality starts. Cumulative retention_2 = (N(A_0) - N(chi_2)) / (N(A_0) - N(A_2)), N(A_2) 2.416e-6 (rounds23 log).
+ (3) Compounding [conj, 55%]: project M onto the grade N. Exact rounds give N 8.683 -> 3.950 -> 2.416 (e-6/site). An affine contraction N -> N_inf + kappa (N - N_inf) through
+     these three points has kappa 0.324, N_inf 1.680e-6. A copy keeping q of each round's gain is then N -> N_inf + (1 - q(1 - kappa)) (N - N_inf): kappa_eff = 0.396 at q 0.894.
+     Check: round 1 predicts N(chi_1) 4.453e-6, measured 4.444e-6 (by construction of q). So a copy error does not add up round by round: it slows the contraction toward the
+     same fixed point (rounds needed x ln kappa / ln kappa_eff = 1.22), and the stationary excess is bounded by eps / (1 - kappa) (perturbed contraction, below).
+     Predictions: N(T_2) 2.576e-6 (affine) or 2.72e-6 (ratio model N(A_2)/N(A_1) = 0.612); with q_2 = q_1: N(chi_2) 2.78e-6, cumulative retention_2 0.94.
+ Deciding term: the teacher's local energy E_L[chi_1] = D0 + sum_b h_b sgn_b rho_b e^{r_1(y_b) - r_1(x)}. A copy error dr enters as delta E_L = sum_b h_b sgn_b rho_b (dr(y_b) - dr(x)):
+     amplified by rho_b, i.e. on exactly the big-ratio rows where round 1's residual sat (cancellation rows, decades -12/-13). If the error grows there, T_2 gains less than (3) says.
+Checked: (1) limit q = 1 (chi_1 = A_1): T_2 = A_2 exactly, the procedure must reproduce lA_2 and N 2.416095e-6. (3) limit q = 0: chi_1 = A_0, kappa_eff = 1, no progress, correct.
+ Sign: kappa < 1 needed; the three exact points give a convex sequence (gains 4.733, 1.534), consistent. Theorem: inexact fixed-point iteration, x_{k+1} = T(x_k) + e_k with T a
+ kappa-contraction gives |x_k - x*| <= kappa^k |x_0 - x*| + sup|e| / (1 - kappa) (Ostrowski 1967, from knowledge; standard in inexact Picard iteration). Condition NOT checked:
+ M is a contraction in a metric we can compute; the 1D projection onto N is a model, hence [conj]. Confidence: (1), (2) 95%; (3) 55%.
+Prior results: MANY ROUNDS (fixed A_0 inputs): retention_2 0.836, R_1 unchanged 0.715 (rangelimit_6x6/onehop_r2, exact grades) - different inputs (not refreshed). rounds23:
+ exact M twice, per-round formula fit eps^2 0.00145 / 0.00389 (fit (ii) on that round's own features: round 2 is 2.7x harder for the formula, tax/gain 2.6% / 2.9%).
+ L-SWO (October, full PP refit, different class) saturated after ~3 rounds. Literature: searched in session memory only (iterated distillation / self-training error accumulation
+ is the ML analogue; no theorem on our map). recall.sh (round 2, second round): label-free loop 10-31 (docs/reports/2026-10-31_label_free_loop_6x6.md): stored share r fell 0.37 -> 0.11 over rounds under s1, but round 2 unconverged and a full PP refit with spins-only inputs; B20 (distil the k-stack, spins-only students) <= 10%; C13 (4x4 no-hop refit) raises E_FN every round. All three are spins-only stores, the class arm H showed cannot rebuild the ratios (0.057); none binds a ratio-input add-on. Their lesson kept: a declining per-round share is the failure to watch, hence q_2 is the graded quantity.
+Known case: TO DO (data rung, CPU): start = lA_1 table must give back lA_2 to <= 1e-10 and N 2.416095e-6; broken: f_J with E' = E_FN[s2 a] instead of E_FN[s2 G[a]] must miss by O(0.1).
+Not covered: rounds >= 3; 8x8 cost (inputs of round k need chi_{k-1} at the NB neighbours, i.e. r_{k-1} there, which itself needs NB ratios: ~NB^2 A_0 evaluations per amplitude
+ unless r is cached or the ratios are rank-1 updates); seed scatter of round 2 (round 1: 0.003).
+Next rung 2 (existing data, CPU): build T_2 = M[chi_1] from the lin_s1 table, N(T_2) by the same line search. Rule: N(T_2) <= 3.0e-6 (the teacher from the copy keeps >= 0.94 of the
+ exact round-2 gain 1.534e-6) -> rung 3. N(T_2) > 3.5e-6 -> the copy damages the next teacher: stop, locate rows (delta E_L above) before any fit. Between -> rung 3 with the reading noted.
+ Prediction: 2.58-2.72e-6 at 65%. Cost ~1 h CPU.
+Next rung 3 (run): r_2 on frozen chi_1, lin_s1's spec with base_table chi_1 and target ln T_2, 2 seeds + broken (shuffled inputs). PASS q_2 >= 0.85 (the copy holds round over round);
+ KILL q_2 < 0.70 (two seeds); between -> diagnose which rows. Broken must give q_2 < 0.1. Report cumulative retention_2 too (predicted 0.94 at q_2 = q_1). Prediction: PASS at 60%.
+ Cost ~3 A40-h.
+Status: NOT DONE: known case (rung-2 script) to run.

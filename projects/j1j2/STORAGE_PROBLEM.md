@@ -564,3 +564,372 @@ RBM+PP 392 params, target phi = FN(K_1 v_0) (C13 round 0), target sign imposed, 
 - Ceiling arm D INVALID: the E_FN-trained guides reach amplitude ranges of 1e15, the FN eigensolver fails (E_FN below E0). R_ceil
   not available; needs a convergence-checked solver or an amplitude clamp.
 - 6x6 launcher prepared (t_lfix/6x6/t_lfix6.sbatch, ~5 H100-h for A and B x 3 seeds), NOT submitted.
+
+8x8 TRAINING-ROW SAMPLING, PAPER CHECK (lead 2026-11-18 01:10; PI 'Go'; Astra risk (3) of 10-30, never resolved).
+Question: at 8x8 nothing is enumerated; the add-on target r* lives on rows holding ~2e-5 of |B|^2. Can the fit draw its rows from |B|^2?
+Derivation (sign fixed, so the set of violating bonds is fixed; H_FN[psi] = H_kept + diag V_sf[psi], V_sf(x) = sum_{y viol x} |H_xy| psi_y/psi_x):
+ E_FN[psi'] <= <phi|H_FN[psi']|phi> = E_FN[t] + sum_x phi_x^2 dV_sf(x)   (variational; phi = normalised FN state of the target guide t = A_0 e^{r*}),
+ so with Delta = r - r*:  dE_FN <= sum_x phi_x^2 sum_{y viol x} |H_xy| (t_y/t_x) (e^{Delta_y - Delta_x} - 1)   [exact upper bound].
+ With phi ~ t: to second order dE_FN <= sum_{violating bonds} |H_xy| t_x t_y (Delta_y - Delta_x)^2 (first-order term vanishes iff phi_y/phi_x = t_y/t_x).
+Reading: (1) only differences of the copy error ACROSS VIOLATING BONDS cost FN energy, weighted by the geometric mean t_x t_y of the two
+ endpoints; a rare row y bonded to a common row x enters with weight t_x t_y, not t_y^2. (2) Drawn as x ~ t^2, the per-row loss is
+ sum_y |H_xy| (t_y/t_x)(Delta_y - Delta_x)^2 = cx_c1fit's bond term with x drawn from t^2 instead of decade-stratified; its variance is
+ sum_y |H_xy|^2 t_y^2 Delta^4 (no 1/t_x divergence), so the rare rows need not be DRAWN, they enter as bond partners of drawn rows.
+ (3) x ~ t^2 at 8x8 = x ~ A_0^2 (plain MCMC of the frozen guide) with importance weight e^{2 r*(x)}.
+ (4) Labels are fixed (frozen base) -> one dataset computed once; each row needs r* at x and at its violating partners y, i.e. f_J at y =
+ neighbours of neighbours (two levels; measured 137x plain sampling at 8x8 for the two-hop neighbourhood).
+Not covered: the Lanczos factor in the grade N uses E_L over ALL bonds (not only violating), so the bound covers the FN part only; phi ~ t;
+ the 6x6 run uses decade stratification (PI's spec, unchanged), which weights rare x 1/9 per decade, far above t_x t_y.
+EXISTING-DATA CHECK (written before running; 6x6 exact tables, CPU minutes): (a) Kish n_eff/n of the weight e^{2 r*} under A_0^2;
+ (b) share of the bond-energy measure M = sum_viol |H| t_x t_y captured by bonds whose higher endpoint has t^2 above 1e-9, 1e-11, 1e-13
+ (normalised t); (c) relative variance per row of the x ~ t^2 bond-loss estimator at Delta = the 6x6 ViT fit's error once it exists, else
+ at Delta = r* (the zero add-on). PASS (row drawing from |B|^2 is feasible at 8x8): (a) n_eff/n >= 0.5 AND (b) >= 0.99 above 1e-11
+ AND (c) rows needed for 10% error on the loss <= 1e5. KILL: (a) < 0.1 or (b) < 0.9 above 1e-11. Prediction [own]: pass at 65%
+ (r* sd 0.0103 under A_0^2 says (a) is near 1; (b) is the uncertain one).
+ CHECKED (lead 01:45, paper-check skill step 1): exact bound = Rayleigh-Ritz on H_FN[psi'] with the trial vector phi, plus ten Haaf et al.
+ PRB 51, 13039 (1995): the kept off-diagonal part depends only on the fixed sign, so H_FN[psi'] - H_FN[psi] = diag(dV_sf) exactly (conditions
+ met: sign fixed, violating set fixed). Second route: E_0(H + lam V) is concave in lam (minimum of linear functions), so the first-order
+ (Hellmann-Feynman) term is an upper bound - same result. Limits: Delta = const -> 0 (ratios unchanged) and Delta = 0 -> 0, both hold.
+ CORRECTION to my second-order form: the linear term per bond is |H|(phi_x^2 t_y/t_x - phi_y^2 t_x/t_y)(Delta_y - Delta_x); it vanishes only
+ if phi = t. Here phi != t (E_var[A_1] 7.94e-6 vs E_FN[A_1] 6.57e-6 /site), so the error cost is first order in Delta in general and
+ 't_x t_y' is the weight only at phi ~ t. The SAMPLING claim does not need phi ~ t: drawing x ~ phi^2 and enumerating its violating
+ partners covers every directional bond term of the exact bound; per-draw variance sum_y |H|^2 (phi_x/t_x)^2 t_y^2 (e^d - 1)^2 stays bounded
+ when phi/t is bounded. Using A_0^2 draws needs the weight phi^2/A_0^2 (~ e^{2 r*} if phi ~ t): data check (a).
+ Confidence: exact bound 97%; sampling claim 85% (open: phi/t bounded on the rare rows; e^{2r*} weights). Step 1 convinced -> steps 2-4 proceed.
+ DATA CHECK RESULT (lead, verified from sampling8.json sha 31e6788a; /scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/sampling8, script b8177513):
+ (a) Kish n_eff/n 0.9996 (pass); (b) bond-measure share with higher endpoint t^2 > 1e-11: 0.9943 (pass; > 1e-9 0.889, > 1e-13 0.9999;
+ lower endpoint below 1e-9 carries 0.255 -> rare rows do enter as partners); (c) at Delta = -r* (zero add-on) Var/E^2 7.6e5 -> 7.6e7 rows
+ for 10% (FAILS the 1e5 line). Sanity: M two routes agree to 1e-16. Break test (shuffle r* within A_0 decades) bites (c) (8.3e4/8.9e4) but
+ not (b) (3rd decimal): my design fault, (b) depends on t ~ A_0, not on r*; (b) is untested by a break version. VERDICT: BETWEEN, not pass.
+ Diagnosis (equation): Var/E^2 ~ E[L^2]/E[L]^2 with L_x ~ sum_y |H| (t_y/t_x) Delta^2; at the zero add-on Delta = r* up to 15 on rare
+ partners, so L^2 ~ Delta^4 concentrates on few rows. The written rule evaluates (c) at the trained fit's residual once it exists:
+ recompute (c) at arm H's fitted Delta (CPU, after the 6x6 verdict). The 8x8 sampling claim stays open on (c).
+ KNOWN-CASE CHECK (verified from /scratch/a/A.Otaifi/ansatz_runs/bound_toy/results.json sha e380e166, bound_toy.py 9a950b11): exact bound
+ 0 violations in all tests (dense random H n 60/200, 4x4 J1-J2 J2 0.5 with three bases; Delta scales 0.01-3 + rare-row); never saturated
+ (max excess -4.4e-6 |E|). Broken versions fail: sign of the correction flipped (87-200 of 200 per family), sum over all bonds (32-112 of 200
+ at small Delta). 4x4 base s = sign(GS), t = |GS|: E_FN = E_0 to 1e-14 (Marshall is not the GS sign at 0.5: E_FN -8.3415 vs E_0 -8.4579;
+ my brief's premise was wrong). Second-order 't_x t_y' form: actual/predicted ~0.6 (J1-J2, phi = t), sign-indefinite on random H (phi != t),
+ confirming the 01:45 correction: use the exact first-order bound, not the quadratic form.
+ STATUS: paper check DONE for the bound and the sampling claim's math; the 8x8 sampling claim is BETWEEN on data ((c) open, above).
+
+ARM H STEP REJECTION, PAPER CHECK (lead 2026-11-18, on the staging worker's finding: tau 0.05 rejects every step at B 256 CPU).
+Derivation: consol_fit's arm H forms r(x) = ln|(1/16) sum_g exp(z_g(x))|, z_g = complex ViT output (sum_k w_k ln cosh(amp_k + i sign_k)) on the 16
+ symmetry images (logA_X, cx_reanchor.sym_logA, minus LOGC = ln 16). Exact: ln mean_g e^{z_g} = mean z + (1/2) Var_g(z) + O(z^3) (complex variance),
+ so r = mean_g Re z_g + (1/2)[Var_g Re z - Var_g Im z] + O(w^3): NONLINEAR in w_out even at step 1, when only w_out moves (body Jacobian 0).
+ Gauss-Newton uses only the linear part, so its step misses the curvature (1/2)(Var Re - Var Im) of the image sum (phase interference).
+Checked on the worker's own scan (step 1, trust scale 1, only w_out moving; dev/out_f progress): loss 5.0977e-3, 4.9749e-3, 4.7891e-3, 6.2418e-3 at
+ s = 0, 0.1, 0.3, 1. A parabola through s = 0, 0.1, 0.3 predicts 4.765e-3 at s = 1; observed 6.242e-3: the loss is not quadratic in w_out,
+ as the derivation says. Solver residual equals the loss at s = 0 (5.097729e-3 both), so no solver/loss mismatch.
+Reading: the spec asks for an add-on e^r with r real; the image sum of complex amplitudes is the full-amplitude ViT's symmetrisation
+ (cx_c1fit arm 'vit' modelled a whole amplitude), not an add-on's. For a positive add-on the symmetric form is r(x) = mean_g Re z_g(x):
+ exactly invariant, r = 0 at w_out = 0, linear in w_out (GN exact at step 1), same ViT body and head (fixed ansatz unchanged).
+ Lowering tau to 0.005 (worker's fix) only shrinks steps against an artefact; at 400 steps it would test the budget again.
+Prior results: recall (sym_logA, image sum, interference, logsumexp): nothing. Literature: not needed (exact Taylor identity).
+Known case + broken version (CPU, worker): step-1 scan with r = mean_g Re z_g must be a parabola (s = 1 value within 2% of the
+ 3-point prediction) and lower than s = 0; the current image-sum head is the broken version (observed 31% off). Plus: r(gx) = r(x) to
+ 1e-12 for all 16 g; r = 0 and ln t = ln A_0 at step 0; 5 CPU steps at tau 0.05, B 256: >= 3 accepted.
+Next rung: if all pass, restage H with this head, tau 0.05 / tau_min 0.01 unchanged, submit. If the parabola fails: stop, re-derive.
+Confidence: derivation 95%; that the new head removes the step rejections at tau 0.05: 75%.
+RESULT (lead 08:15, worker CPU B 256, commit 0d8fb71 sha 5020444f, sym='mean64' = mean over 16 images x 4 patch offsets of Re z; numbers in
+ runs/j1j2/consol_6x6/STAGING_STATUS.md): parabola s = 0, 0.1, 0.3, 1: 5.0977e-3, 4.9725e-3, 4.7593e-3, 4.4032e-3; 3-point prediction at s = 1
+ 4.4037e-3 (lead, from the rounded values; worker full precision -5.6e-8 rel) PASS, below s = 0; broken version (image-sum head) 31.0% high, FAILS.
+ Symmetry 5.6e-17 (float64); r = 0 exactly at w_out = 0; 5 steps tau 0.05: 4 accepted. Memory fix (chunk_rows, same maths): float64
+ equivalence 1.6e-13 / 5.9e-14, dropped-chunk break 0.99 rel; a40-24gb probe 18041302: peak 12.8 of 23.5 GB, 62.4 s/step. Status: DONE.
+
+ARM H (ADD-ON ON FROZEN A_0), PAPER CHECK (lead 2026-11-18 05:45; collects the pieces written 11-17/18 into one block before the run starts)
+Derivation: copy chi = A_1 e^{Delta}, Delta = r - r*. Exact bound (ten Haaf FN variational, proved and toy-tested above):
+ N-tax <= sum_x phi_x^2 sum_{y viol x} |H_xy| (A1_y/A1_x)(e^{Delta_y - Delta_x} - 1), phi = FN ground state of A_1.
+ Pairing (x,y),(y,x): first-order term = sum_pairs |H_xy| d_yx [phi_x^2 A1_y/A1_x - phi_y^2 A1_x/A1_y]; it vanishes only if phi = A_1 [exact].
+ Here phi != A_1 (E_var[A_1] 7.94e-6 vs E_FN 6.57e-6, grade_break/grade.log), so the tax has a first-order part in the bond differences d,
+ which the cx_c1fit loss (squared d) controls only through Cauchy-Schwarz: |first order| <= sqrt(sum w a^2) sqrt(sum w d^2).
+ Deciding term: d on violating bonds that join a deep row x to a bulk row y (weight phi_x^2 A1_y/A1_x ~ phi_x phi_y, not small).
+Checked: limits Delta = 0 -> tax 0; constant Delta -> tax 0 (d = 0); phi = A_1 -> first order 0 (toy: ratio 0.6 to the quadratic form,
+ sign-indefinite for phi != t, bound_toy results.json e380e166). Theorem: ten Haaf et al. PRB 51, 13039 (1995), FN energy is a variational
+ upper bound for any guide with the stated sign; our case meets it (real Hamiltonian, fixed sign s2). Confidence 85%.
+Prior results: M-R 10-28 RBM add-on alpha 4/16 on ln(phi/A): ~6%; L-SWO 10-30 full refit, log loss: 37%/round; rung 2b first order only;
+ add-on target r*: 20% of orbits carry |r*| > 0.5 with 1.9e-5 of the weight (ARM H DATA STEP). Nothing run for a trained add-on on this target.
+Known case: grader break test A_1 -> 0.9999, A_0 -> 0.0001 (grade_break/grade.log); step 0 reproduces A_0 to 9.9e-14, broken base fails.
+Not covered: the loss weights deep rows by decade stratification, the tax by phi_x phi_y; a mismatch shows as falling loss with flat retention.
+ The sum head is nonlinear in w_out (block above): steps may be rejected and lam_rel inflated; read acceptance in progress.txt.
+Next rung (arm H, 2 seeds): PASS mean retention_N >= 0.5; KILL both < 0.25 with the convergence stop fired; BETWEEN otherwise; NOT CONVERGED
+ = step cap with held-out loss still falling -> resume. Prediction (written 11-17, unchanged): H >= 0.5 at 35%. If it fails: per-decade
+ error first, then loss vs retention (Not covered).
+Status: DONE.
+ DATA CHECK (lead 2026-11-18 ~06:15, exact 6x6 tables, job 18041074, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/first_order/results.json
+ sha 26e39876; E_FN[A_1] reproduced to -4.5e-8 rel). Per site: kappa = sum c1^2/c2 = 3.22e-6, sum c2 = 4.25e-2. Copy error Delta = s (ln A_0 - ln A_1):
+   s     first     second    exact bound   first/second   (c1 flipped)
+   0.03  1.71e-7   4.49e-8   2.16e-7       3.81           -1.26e-7
+   0.1   5.70e-7   4.98e-7   1.07e-6       1.14           -7.08e-8
+   0.3   1.71e-6   4.49e-6   6.23e-6       0.38            2.82e-6
+   1.0   5.70e-6   4.98e-5   6.16e-5       0.11            5.04e-5
+ Sanity: s = 1 bound 6.16e-5 >= actual E_FN[A_0] - E_FN[A_1] = 1.435e-5 (bound 4.3x loose); flipping c1 changes it (check can fail).
+ Two independent evaluations of the exact form agree to 1e-14. kappa and first-order shares: 90% in A_1 decades -13..-8 (peak -10/-11),
+ inside the decade-stratified training rows.
+ Reading: retention 0.5 needs a tax of about half the gap; the s at which the bound reaches that (s ~ 0.15-0.3) is where the second-order
+ term (what the squared loss controls) is >= the first-order one. First order dominates only for copies already better than s ~ 0.1,
+ where the bound is <= 7% of the E_FN gap. DECISION (lead): keep cx_c1fit's squared loss; bound-as-loss NOT needed for the pass line.
+ Not covered: a trained copy's error shape is not s*Dr; worst case |first| <= sqrt(kappa Q) could match Q at the pass line. Signature to
+ watch in arm H: held-out loss falls while retention stays flat -> bound-as-loss is the next step (paper check first).
+ Data check: DONE (loss choice).
+
+ARM H HEAD CAPACITY: CAN A GEOMETRIC-MEAN ADD-ON REACH THE TARGET'S DIPS? PAPER CHECK (lead 2026-11-18 ~08:40, PI question via j1j2-discussion)
+Derivation: mean64 gives e^r = prod_{g,o} (e^{Re z_{g,o}})^{1/64}, a geometric mean of positive factors: no cancellation, r is a smooth bounded
+ function of the weights, so r cannot follow a log singularity ln|1 + alpha(E_L - E)| at a zero of the target factor; r ~ -c needs every image
+ at ~ -c [exact]. A sum head e^r = |sum e^{z}|/64 can reach a near-zero by cancellation of O(1) terms, at the cost of the step-model
+ nonlinearity (31%, block above). Deciding question: how much of the A_1 gain sits in orbits with r* < -c. Best case for a head whose
+ floor is -c: target clipped below, ln t_c = ln A_0 + max(r*, -c), copy otherwise exact.
+Checked: c -> inf gives A_1 (retention 0.9999, grade_break); c = 0 keeps only upward corrections. Clipping is monotone in c. Confidence 90%
+ that the clipped retention upper-bounds a mean64 head limited to depth c; that a ViT reaches |r| ~ 7 on all images is NOT derived.
+Prior results: ARM H DATA STEP (20% of orbits |r*| > 0.5, weight 1.9e-5); nothing on clipped targets.
+Known case: c = inf must give 0.9999 (grader break test); c = 0 must differ from it (else the test cannot fail).
+Next rung (data, CPU): retention_N of ln t_c for c = 0, 0.5, 1, 2, 4, inf. retention(c=1) >= 0.9 -> dips do not matter, mean64 stands.
+ retention(c=2) < 0.5 -> mean64 cannot pass by construction unless it learns depth > 2 everywhere: cancel Hm (PI), paper check the sum
+ head + relative-square loss (l.224-233). Between: report the curve, arm H continues. Cost ~1.5 h CPU. Prediction: retention(c=1) >= 0.9 at 60%.
+Status: DONE (paper); data rung running.
+ Fallback candidate if the fail branch fires (j1j2-discussion 08:50, not paper-checked, ~50%): linear-amplitude mean head A_0 |h|, h = 1 + mean_g w_out.feature_g,
+ relative-square loss ((h - T)/T)^2, T = e^{r*}: linear in w_out (GN exact) and can cross zero. To check on paper: false nodes where T != 0;
+ weight e^{2|r*|} on deep rows vs the tax's phi_x phi_y; a signed h moves the node (outside the fixed-sign FN spec unless the PI widens it).
+ Compare against the sum head + relative-square loss before choosing.
+ RESULT (lead 09:52, job 18041586, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/clip_target/grade.log + clip_stats.json; consol_grade sha 777268a9 =
+ grade_break; exact tables, no MC error). retention_N of ln A_0 + max(r*, -c):
+   c        0       0.5     1       2       4       inf
+   ret_N    0.532   0.997   1.006   1.002   1.000   0.9999
+   A_1^2 weight clipped: 0.446 (c=0), 3.5e-6 (0.5), 3.4e-7 (1), 1.1e-8 (2). Orbits clipped: 57%, 15%, 7.7%, 2.3%.
+ Known case: c = inf reproduces 0.9999 (grade_break); c = 0 differs (0.53), so the test can fail.
+ Verdict (rule above): retention(c=1) = 1.006 >= 0.9 -> the dips below r* = -0.5 carry none of the gain; a head that reaches depth 0.5 suffices.
+ The geometric-mean head's lack of cancellation does not limit arm H; mean64 stands, arm H continues. Downward corrections to depth 0.5
+ carry about half the gain (c = 0 -> 0.53), so the head must make them. Not covered: whether the trained head reaches depth 0.5 where needed.
+
+ARM H STEPS DO NOT TRANSFER: DOES A STRONGER RIDGE FIX IT? PAPER CHECK (lead 2026-11-18 11:20)
+Derivation: minSR step on batch X: dtheta = G^T (G G^T + lam)^-1 e, so on fresh rows dr(X') = K(X',X)(K + lam)^-1 e, K = G G^T [exact, linearised].
+ Fresh loss change = -2<e', dr'> + |dr'|^2. lam -> inf: dtheta -> G^T e / lam = the batch gradient direction (plain gradient descent);
+ then E[change] = -(2/lam)|grad L_pop|^2 + O(1/lam^2) (descent lemma; batch gradient unbiased for the population gradient) [exact to first order].
+ So a large enough lam MUST give steps that are better or noise on fresh rows, unless the population gradient is ~0 against its batch noise.
+ Observed (Hm_s1 ckpt_last_hist.json): lam_rel at its cap 1.0 from step 6; 148/200 worse, 13 better: the cap keeps the step in the
+ interpolating (batch-fitting) regime. Deciding term: lam relative to the spectrum of K.
+Checked: lam -> 0 gives exact batch interpolation (observed worse); lam -> inf gives gradient descent; sign of the 1/lam term fixed (negative).
+ Theorem: descent lemma for L-smooth loss (Nesterov, Intro. Lectures, Thm 2.1.5 / Bottou-Curtis-Nocedal 2018 SIAM Rev. Lemma 4.2, stochastic
+ version: expected decrease needs step < |grad|^2 / (L * (|grad|^2 + var/B))). Our case meets it locally (smooth net, log loss on fixed rows).
+ Confidence 85%.
+Prior results: recall (minSR ridge, lam_cap, worse fresh): nothing for arm H; t1s2_vit_17418858 (full-amplitude ViT, same minSR) learned.
+Known case: lam_rel 1 from the checkpoint must reproduce mostly 'worse' (control; it is the broken version). Large lam must give
+ mean dmean <= 0 if the population gradient is resolvable.
+Next rung (run, a40-24gb, from Hm_s1 ckpt, 5 steps per arm): arms lam_rel 1 (control), 10, 100, 1000, and w_out-only at 1.
+ PASS: an arm with >= 3/5 better or noise and mean dmean < 0 -> resume arm H with that lam cap. KILL: lam 1000 still mostly worse ->
+ population gradient unresolvable at B 8208 with these features -> option 2 (local-energy input / exact Lanczos factor), paper check next.
+ Cost ~25 min of one slice. Prediction: PASS at 40%.
+Status: DONE.
+ RESULT (lead 14:30, worker report verified against the rule; jobs 18042407/08, branch j1j2-lamfix 62f1c0e, consol_fit sha 22ba0a8b;
+ /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ridge_scan/<arm>/cx_t1s.json; 5 steps 301-305 from the Hm_s1 step-300 checkpoint, same batches):
+   arm        better/noise/worse   mean dmean    held-out 300 -> 305
+   lam 1      1/3/1                +6.3e-4       0.011425 -> 0.011427
+   lam 10     1/3/1                +1.0e-5       -> 0.011430
+   lam 100    1/4/0                +5.2e-8       -> 0.011431
+   lam 1000   0/5/0                -6.0e-7       -> 0.011430
+   w_out only 1/3/1                +2.4e-5       -> 0.011431
+ Letter of the rule: PASS (lam 1000). Lead's reading: NOT a fix. The lam 1000 gain is -6e-7 per step on a loss of 1.14e-2 (5e-5 relative,
+ ~1.5 sigma); 400 such steps move the loss <= 2%, and held-out rose in every arm. The rule lacked a size threshold (lead's error).
+ With a large ridge the steps are safe but empty: the spins-only network finds no direction that lowers fresh-row loss by a useful amount.
+ Consistent with ARM H OPTION 2: the target is a function of A_0's one-hop ratios, which this add-on has to rebuild from spins.
+ Control (lam 1) gave 1/5 worse at step 300 vs 148/200 in the run's history (late, tau 0.01): known case only partly reproduced.
+ Decision (lead): no resume of arm H with this add-on; the next step is the ratio-input add-on, gated on the one-hop FN grade.
+
+ARM H OPTION 2: ADD-ON WITH THE FROZEN BASE'S ONE-HOP RATIOS AS INPUTS. PAPER CHECK (lead 2026-11-18 11:40; parallel to the ridge scan)
+Derivation: E_L[A_0](x) = V_x + sum_y H_xy s_x s_y rho_y, rho_y = A_0(y)/A_0(x) over the one-hop neighbours y [exact]. So l(x) = ln|1 + alpha(E_L - E)|
+ is an explicit function of the one-hop ratios [exact], and so is f_J[A_0](x) (w_xy = |H_xy| A_0(y)/K_A(x), block above) [exact].
+ f_J[G] needs G's ratios = rho_y |1 + alpha(E_L(y) - E)| / |1 + alpha(E_L(x) - E)|, i.e. E_L at y: two hops [exact]. A head fed the one-hop
+ ratios of the FROZEN A_0 (plus spins) represents l and f_J[A_0] exactly and f_J[G] only through what one hop carries.
+ Cost: for a pair-product base all one-swap ratios come from one inverse by rank-1 updates (pp2_lemma one_swap_ratios): ~ one A_0 evaluation.
+ No nesting inside a round: inputs come from frozen A_0 only. Records it rests on: (ii) l + 1.307 f_J[G] leaves eps^2 0.0033 (D-norm), retention
+ 0.985 direct; the spins-only head must rebuild the ratios (NODE-GEOMETRY RESULT: sign-only features leave 0.849 of v = u - l).
+Checked: l coefficient 1.015 in (ii) (the Lanczos factor enters as is); limits: alpha = 0 -> l = 0; constant rho -> E_L constant. Confidence 80%
+ that the derivation is right; that a trained head reaches the explicit fit's quality: not derived.
+Prior results: NEXT-METHOD RUNG 2 (two-hop f_J[G]); no number recorded for one-hop-only features.
+Known case (data rung, CPU minutes, features/feat.npy of rangelimit_6x6): u fitted by l alone; by l + c f_J[A_0]; by a cubic in one-hop
+ features (l, f_J[A_0], ln A_0, K/V at x); break: random column, and the two-hop (ii) as the reference (must give 0.0033).
+Not covered: rounds after the first (round 2's l needs A_1 ratios = rho e^{r(y) - r(x)}: r at neighbours, one network evaluation per
+ neighbour, no A_0 nesting but n_bonds network calls); the 8x8 cost.
+Next rung: one-hop eps^2 <= 0.1 -> design the ratio-input head (paper), then a run; >= 0.5 -> one hop is not enough, two-hop inputs or
+ consolidation. Prediction: l + c f_J[A_0] reaches eps^2 <= 0.1 at 55%.
+Status: DONE (paper); data rung next.
+ RESULT (lead 13:40, verified onehop.json; script ansatz/code/rangelimit_onehop.py sha 6dca28cc; /scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/onehop/):
+ D-norm eps^2 of u (design B round 1), in-sample / 5-fold CV: (a) 1.055 l: 0.0263 / 0.0265; (b) 0.941 l + 0.720 f_J[A_0]: 0.0133 / 0.0137;
+ (c) cubic in one-hop (l, f_J[A_0], ln A_0, Vs/K of A_0), 35 par: 0.0105 / 0.0106; (d) two-hop reference reproduced 0.00332, a 1.0145, c 1.3073;
+ random column 0.99999. Rule: one-hop eps^2 <= 0.1 -> PASS. Prediction 55% held.
+ Reading: the round's correction relative to the frozen A_0 is, to 98.7% in the D-norm, an explicit function of A_0's one-hop ratios.
+ eps^2 is not retention (rung 2: off by 4.65x): direct FN grade of the (a), (b) tables next (CPU, ~40 min), before any head design.
+ FN GRADE (lead 15:10, job 18042890, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/onehop_grade/grade.log, consol_grade sha 777268a9; exact, no MC error):
+   table                                    retention_N  N/site     E_var/site  certificate (E_var < N(A_0) = 8.683e-6)
+   (a) ln A_0 + 1.0546 l                    0.845        4.684e-6   1.115e-5    no
+   (b) ln A_0 + 0.9406 l + 0.7200 f_J[A_0]  0.946        4.204e-6   9.372e-6    no (8% above)
+   (d) two-hop reference                    1.005        3.925e-6   7.851e-6    yes (known case)
+ Broken version (standardised coefficients used as raw): eps^2 0.987. Reading (corrected after the PI, 15:40): this is the Jacobi formula itself evaluated one hop short (l exact, f_J[G] replaced
+ by f_J[A_0]), not a copy; 0.946 measures only what dropping the second hop costs. It says nothing about learning the correction.
+ The copy task stays unsolved (spins-only add-on 0.06); the one-hop form only halves the per-round hop cost, which still compounds.
+ Open: (1) the variational certificate fails for (b); (2) rounds >= 2 with inputs fixed at A_0's one hop (block below).
+
+MANY ROUNDS WITH INPUTS FIXED AT A_0's ONE HOP. PAPER CHECK (lead 2026-11-18 15:15; PI: "isn't fix 2 costly for many rounds")
+Derivation: round k's exact correction is a functional of A_{k-1}'s one-hop ratios; A_{k-1} = A_0 e^{R_{k-1}}, so its ratios are
+ rho_y e^{R(y) - R(x)}: R at the neighbours, recursively k hops of A_0 [exact]. Naive cost grows ~ z^(k-1) per amplitude (z ~ 50 one-hop
+ configurations at 6x6). Flat-cost alternative: R_k(x) = g_k(one-hop features of A_0 at x), same inputs every round; then cost per amplitude is
+ one A_0 inverse + rank-1 ratios for all k [exact]; the price is that R_k is a fit, not the formula. Deciding number: the share of the
+ cumulative correction ln A_k - ln A_0 that A_0's one-hop features carry, for k = 2 (and 3 if it exists).
+Checked: k = 1 reduces to ARM H OPTION 2 (eps^2 0.0133, retention 0.946); a fit can only lose with k (two-hop content grows). Confidence 85% in
+ the derivation; the deciding number is not derivable.
+Prior results: rounds23 (rangelimit_6x6/rounds23: lA_1, lA_2, p_1, p_2, gram_round1/2); L-SWO saturation after ~3 rounds (different class: PP refit).
+Known case: k = 1 must reproduce eps^2 0.0133 for (b) and 0.0105 for the cubic; random column ~1; the target itself 0.
+Next rung (data, CPU): D-norm eps^2 of U_2 = ln A_2 - ln A_0 (round-2 D-norm weights) by (b)-type 2-feature fit and by the one-hop cubic;
+ then FN grade of the best fit, retention against N(A_2). PASS: retention_2 >= 0.8 of the two-round gain -> flat-cost rounds are viable,
+ design the ratio-input add-on. KILL: <= 0.5 -> inputs must move with the rounds (periodic consolidation needed). Prediction: PASS at 40%.
+Status: DONE (paper).
+ RESULT (lead 17:05, jobs 18043215/18043363, /scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6/onehop_r2/, script e55adbe7; exact grades):
+ eps^2 of U_2 (p_2 D-norm, in / CV): (b2) 0.388 l + 3.26 f_J[A_0]: 0.340 / 0.341; one-hop cubic: 0.199 / 0.208; R_1 unchanged: 0.518.
+ retention_2 = (N(A_0) - N)/(N(A_0) - N(A_2)), N(A_2) 2.416e-6: (b2) 0.836, R_1 0.715; certificate fails for both. Cubic ungraded (extrapolates
+ to R ~ 2224 on rare rows). Known case round 1 reproduced exactly.
+ Reading: PASS by the letter (0.836) but round 2 already loses 34% of its D-norm with fixed one-hop inputs (round 1: 1.3%); the two-hop content
+ grows per round as derived. Fixed inputs do not carry many rounds cheaply; at best 2. Side result to the copy task (PI 15:40).
+
+ARM H CULPRIT CHECK 1: IS THE LOSS SPENT ON THE DIPS? (lead 2026-11-18 ~16:15, PI 'where could the culprit be'; script ansatz/code/armH_loss_share.py sha 816b5197, exact tables, value term e_x^2 only)
+Step-0 training value loss under the run's stratified weights (1/9 per decade -5..-13 of |A_1|^2, n_r inside), e = r* - c:
+ by |e|: [0,0.1) weight 0.950 loss share 0.179; [0.1,0.5) 0.049 / 0.598; [0.5,2) 0.001 / 0.207; >= 2 0.000 / 0.016.
+ by decade (loss share, rms e): -13 0.738 0.140; -12 0.194 0.072; -11 0.050 0.037; -10 0.013 0.019; -9 0.004 0.010; -8..-5 < 0.002.
+ VERDICT on hypothesis 1 as stated: REFUTED: dips |r*| > 0.5 carry 22% of the loss, not most. But the deepest trained decade carries 74%,
+ the gain decades -8..-11 (first-order shares, DATA CHECK) about 7%.
+Trained Hm_s1 table vs target per decade: rms of the fitted add-on 0.002-0.012 (target 0.001-0.14); corr(r_fit, r*) 0.37, 0.65, 0.28, 0.27,
+ 0.23, 0.20, 0.17, 0.13, 0.10 for decades -5..-13; value loss 2.953e-3 -> 2.915e-3 (-1.3%). The add-on learned the right sign weakly and
+ is 3-10x too small; in the decades that carry the gain its correlation with the target is 0.17-0.27.
+Reading: the spins-only network barely sees the target's structure (culprit 2, inputs) more than it mis-weights it. r* is 97% l
+ (ARM H OPTION 2: l alone leaves eps^2 0.026), and l = ln|1 + alpha(E_L[A_0] - E)|: the add-on must compute the pair product's local energy from spins.
+
+ARM H WITH A SUPERVISED OPTIMISER (ADAM). PAPER CHECK (lead 2026-11-18 ~16:30; PI: 'fit a known function or data points')
+Derivation: arm H is regression on an exact labelled set (r*(x) on 15.8M orbits). Damped GN with P >> B: dtheta = G^T (G G^T + lam)^-1 e interpolates
+ each batch (fresh-row change K(X',X)(K+lam)^-1 e, block 'STEPS DO NOT TRANSFER'); with a trust radius of 1% rms change per step it moves r by
+ <= tau per accepted step [exact]. Observed: trained add-on 3-10x too small, corr 0.1-0.27 in the gain decades (CULPRIT CHECK 1). Minibatch
+ Adam is a stochastic first-order method on the population loss: each step follows an unbiased gradient estimate; with a decaying step
+ it converges to a stationary point of the population loss for smooth nets (Robbins-Monro conditions; Adam: Kingma-Ba 2015, convergence for
+ AMSGrad-type variants, Reddi et al. 2018; in practice the standard tool for supervised fits) [cited, conditions approx. met].
+ Deciding question: does the network reduce the population (held-out) loss when optimised as a regression, i.e. is the failure the
+ optimiser (GN on batches) or capacity/inputs.
+Checked: the ridge scan's lam 1000 arm is GN -> gradient with tiny steps (trust cap): safe, -6e-7/step; it did not test a gradient method
+ with a sensible learning rate. Confidence 80% in the reasoning.
+Prior results: cx_lib Adam path (warmup-cosine, optional clip) used for the 4x4/6x6 ViT fits (B10 4x4 success: 155k-param ViT); t1s2_vit (minSR) learned
+ a FULL amplitude; nothing on this add-on target with Adam.
+Known case + broken version: overfit 8192 fixed stratified rows (train loss < 10% of step 0 = healthy capacity/optimiser); broken: labels
+ shuffled across rows -> train loss may fall, held-out must not fall.
+Next rung (run, a40-24gb, same ViT body, mean64 head, same loss/target/stratified sampler): Adam, minibatch fresh rows each step, ~2 h,
+ held-out every 500 steps, then table + consol_grade. PASS: held-out -30% and retention_N >= 0.5; KILL: overfit check fails (capacity/inputs ->
+ ratio inputs); BETWEEN: held-out falls but retention < 0.5 -> inputs / gain-matched decade weights next. Predictions: overfit pass 80%;
+ held-out -30% at 50%; retention >= 0.5 at 30%.
+Status: DONE.
+
+ARM H: OPTIMISER OR FEATURES? READOUT BOUND. PAPER CHECK (lead 2026-11-18 ~16:50, PI: 'why should B work, what does it fix')
+Measured (Hm_s1 theta_ckpt_*, ckpt_last; CULPRIT CHECK 1): body moved 8% of its norm (step 50 -> 400), w_out norm 1.39, yet the trained r
+ has rms 0.002-0.012 over configurations vs target 0.001-0.14, corr 0.10-0.27 in the gain decades: the output is insensitive to x.
+Hypothesis [conj, ~60%]: r = mean over 64 images of a patch sum behaves like a sum of local terms (Jastrow-like); the target is ~97% l =
+ ln|1 + alpha(E_L[A_0] - E)|, the log of a global sum, nonlinear where alpha(E_L - E) = O(1); a sum of local terms cannot follow it.
+ If true no optimiser fixes it; B (E_L / one-hop ratios as input) makes l a 1-D function ln|1 + alpha u| of an input, which a small head
+ represents exactly, and leaves f_J (1.3% of the target, ARM H OPTION 2).
+Test (CPU, data, no training): freeze the trained body (theta_last) and a random body; compute the 60 mean64 channel features on the
+ stratified training rows; least-squares w_out (with offset) against r* per the run's weights; report corr and value-loss reduction per decade.
+ Bound: no w_out on these features does better. Known case: the bound on the trained body must be >= the trained run's own corr (0.10-0.27);
+ broken version: shuffled r* -> corr ~ 0.
+ Decision: bound corr <= 0.3 in decades -8..-11 -> features are the culprit -> B (ratio/E_L inputs), Adam not run. Bound >= 0.8 -> optimiser
+ culprit -> run the Adam jobs. Between: run Adam and B both. Prediction: bound <= 0.3 at 55%.
+Status: DONE.
+ RESULT (lead 17:30, worker; /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/readout/fit_out.txt, scripts 20c4e2e8 / 9d5dfa28; test = held-out orbits,
+ 8000 rows/decade, one draw): best linear w_out, test corr in decades -8..-11: trained body 0.24, 0.25, 0.21, 0.15 (value-loss -1.6% overall);
+ random body 0.11, 0.12, 0.12, 0.08 (-0.7%). Known case: trained w_out reproduces r_fit to 3.4e-7; trained readout (1.4%) is at the bound.
+ Broken (shuffled r*): corr ~0. Feature spread across configurations (median std over channels): trained 0.019, random 0.12-0.18.
+ Rule: bound <= 0.3 -> features. Lead's reading: the bound is for FIXED features; it shows neither the random nor the GN-trained body has the
+ target, not that no body can learn it. Attention makes each token's term depend on all spins, so the 'sum of local terms' argument is
+ NOT a proof (lead's error at 16:50). New clue: GN training shrank the feature spread 6x below the random body (feature collapse), an
+ optimiser symptom. Capacity vs optimiser is separated only by the overfit check (Adam, 8k fixed rows), now released.
+
+RATIO-INPUT ADD-ON NETWORK (6x6). PAPER CHECK (lead 2026-11-18 ~17:50; PI: 'fit a network to the function, solve it')
+Derivation: E_L[A_0](x) = V_x + sum_b h_b(x) rho_b(x), rho_b = A_0(y_b)/A_0(x), h_b = J_b/2 on anti-aligned bonds (signs: s2 convention as in
+ bonds_of) [exact]; l = ln|1 + alpha(E_L - E)| [exact]; f_J[A_0](x) = function of the kept one-hop ratios [exact]. Network: per-bond embedding
+ psi(rho_b, bond type, local spins) -> sum over bonds (DeepSets, lattice-symmetric because the bond set maps to itself) -> MLP -> r.
+ E_L is in the span of one linear per-bond layer + sum; l is a 1-D nonlinearity of it (2-layer MLP) [exact representability];
+ f_J[G] - f_J[A_0] (two hops) only approximable: data ceiling one-hop cubic eps^2 0.0105, 2-coef formula retention 0.946, two-hop 1.005.
+Checked: rho = 1 everywhere -> E_L = V + sum h (Ising-like) -> l depends on spins only; alpha = 0 -> l = 0. Representability by
+ universal approximation of a 1-D function (Cybenko) on bounded input [conditions met: |rho| tabled, finite on all valid bonds except nodes;
+ clip ln rho]. Confidence 85% that the network reaches >= 0.9.
+Prior results: ARM H OPTION 2 (formula 0.946); readout bound (spins features 0.25 corr); B10 4x4 (spins ViT, 155k params, succeeded at 4x4).
+Known case + broken: (1) the 2-coef formula table graded 0.946 (ref); (2) broken: rho shuffled across configurations within decade ->
+ retention must fall to <= 0.1 (spins-only level). Network initialised generic (no formula skip): what it learns is learned.
+Cost note: at 6x6 rho is a table lookup. For a plain PP, all rho from one inverse (pp2_lemma.one_swap_ratios, ~1 A_0 eval); A_0 here is
+ 'ppbf' (backflow): no lemma, ~NB A_0 evaluations per amplitude at 8x8. Not covered: rounds >= 2 (MANY ROUNDS block), 8x8 cost.
+Next rung (run, a40-24gb, Adam, same loss/target/stratified sampler, ~1-2 h): PASS retention_N >= 0.9; BETWEEN 0.5-0.9; KILL < 0.5 (then the
+ inputs argument is wrong). Prediction >= 0.9 at 80%.
+Status: DONE.
+
+ARM H WITH A SUPERVISED OPTIMISER (ADAM), RESULT ov2 (lead 2026-11-18 ~17:00; job 18044227, runs/j1j2/consol_6x6/adam/ov2, branch j1j2-adam 4ceed70)
+8199 fixed rows, 3000 Adam steps, 1.06 s/step. Train loss on the fixed rows 1.029e-2 -> 1.842e-3 (17.9% of step 0; pass line 10%; curve still falling at the cosine end).
+Held-out 1.143e-2 -> 1.465e-2 (+28%), rising from step 300 while train had moved only -2%.
+Reading: the ViT can fit these labels (capacity/optimiser not the block; the 10% miss is run length). What it learns is row-specific: the part of r* shared between
+rows is too small for the spins-only features to pick up first (matches READOUT BOUND: best linear readout correlation <= 0.25). The 'skip full' branch is overridden on this
+diagnosis: adam/full (fresh rows, n_steps 3600) is the direct transfer test, prediction FAIL at 75%.
+
+RATIO-INPUT ADD-ON NETWORK (6x6), BUILD + LEAD DECISION (lead 2026-11-18 ~17:20; branch j1j2-ratnet 08e37a9, runs/j1j2/consol_6x6/ratnet/STATUS.md)
+CPU tests passed: (i) r = 0 at init exactly; (ii) symmetry 2.0e-13 over 16 ops with spin_mode sym (raw spins break it, 7.8); (iii) E_L from the inputs gives l to 7.3e-12 (ln rho shuffled 7.3, sign dropped 10.1);
+(iv) 400 Adam steps mb 256: train -16.9%, held-out -11.1%, corr(r,r*) decades -8..-11 = 0.03/0.11/0.18/0.27; shuffle_rho: held-out -0.26%, corr ~0.
+Decision: rho_lin ON with cap 20, scale 1 (was off; the divisor 1000 made a linear rho channel invisible), so E_L is linear in an input as the paper check argues. Runs ratnet + ratnet_shuf submit after a CPU check of the linear channel (iii-lin).
+Prediction: ratnet retention_N >= 0.9 at 70%; ratnet_shuf < 0.25 at 90%.
+ARM H ADAM full RESULT (lead 2026-11-18 ~18:40; job 18045200, runs/j1j2/consol_6x6/adam/full): fresh rows, 3600 Adam steps. Held-out 1.1428e-2 -> 1.1363e-2 (-0.6%); GRADE H retention_N 0.0571, certificate False.
+Same as GN (Hm_s1 0.056). Predicted FAIL (75%), confirmed. Spins-only ViT add-on: the optimiser is not the block (both optimisers give 0.06); the features do not carry the ratios (READOUT BOUND, ov2 memorises).
+
+RATIO-INPUT ADD-ON NETWORK (6x6), RESULT (lead 2026-11-18 19:45; jobs 18045653 ratnet, 18045654 ratnet_shuf; runs/j1j2/consol_6x6/ratnet/{ratnet,ratnet_shuf}; branch j1j2-ratnet 74c3417)
+ratnet (seed 1, true ratio inputs): GRADE H N=5.234873e-06 retention_N=0.7285, E_FN 1.2456e-05, E_var 1.7868e-05, certificate False. Held-out 1.1428e-2 -> 5.766e-3 (-50%), flat over the last 5000 steps.
+ratnet_shuf (broken: inputs from a same-decade partner row): retention_N 0.0080, held-out -2.4%. Control differs by 0.72 in retention.
+Against the spins-only ViT on the same loss and grader: 0.056 (GN) / 0.057 (Adam). Pre-registered ratnet line: pass >= 0.9, kill < 0.5 -> BETWEEN. Against the PI's task line (two-seed mean >= 0.5): seed 1 alone above it; seed 2 needed.
+Open: the gap 0.73 vs the explicit one-hop formula's 0.946 (fit quality vs inputs) -> ceiling check, held-out loss of r = l + 1.307 f_J[A_0] on the same held-out rows.
+
+RATNET SEED 2 + CEILING, RESULT (lead 2026-11-18 ~20:50; job 18049191 runs/j1j2/consol_6x6/ratnet/ratnet_s2; ceiling: ratnet/ceiling/, script ratnet_ceiling.py 36642bb)
+Seed 2 retention_N 0.7054 (N 5.3446e-6). Two-seed mean 0.717 -> PI task line (>= 0.5) PASSED at 6x6, one round. Lead line (>= 0.9) not met.
+Ceiling, held-out loss on seed-1 rows (r=0 reproduces 1.1428e-2; ratnet table reproduces 5.766e-3): r=0 1.14e-2, ratnet 5.77e-3, one-hop formula (b) 2.32e-4 (25x lower).
+Decade -13: 7.15e-2 / 3.76e-2 / 1.58e-3; decade -12: 2.30e-2 / 1.03e-2 / 3.65e-4.
+
+LOG-DOMAIN POOLING FOR THE RATIO NETWORK, PAPER CHECK (lead 2026-11-18 ~20:50)
+Derivation: (b) = a l + b f_J[A_0] is a function of ratnet's inputs (exact): with rho_b = A_0(y_b)/A_0(x) and sign classes,
+  E_L - E = (D0 - E) + S_blk - S_kept,  S_c = sum_{b in c} |h_b| rho_b;  f_J[A_0] = ln S_kept - ln((H_xx - E') + S_viol)  (block 'f_J = ln[K/((H_xx-E')|B|+Vs)]' divided by |B(x)|).
+  So every term is ln of a sign-class sum of |h_b| rho_b, rho_b spanning e^{+-30}. ratnet = MLP(mean_b phi_b) with phi a GELU MLP of (ln rho/10, min(rho,20), ...):
+  a sum of bounded per-bond outputs cannot carry S_c over many decades, so ln S_c is lost exactly where one bond has rho >> 20 (48% of random orbits; most of the deep decades that carry 74% of the loss).
+  Deciding term: the pooling. Fix C: pool in log space per channel k, P_k = logsumexp_b (ln rho_b + g_k(feat_b)) with g_k learned (masked bonds -> -inf), then MLP(P_k, D0, ...).
+  With g_k = ln|h_b| + ln 1[b in class c] (a large negative bias off-class), P_k = ln S_c exactly; (b) is then a smooth function of (P_kept, P_blk, P_viol, D0). Exact representability.
+Checked: limits: all rho equal -> P = ln rho + ln sum e^{g}; one dominant bond -> P = ln rho_max + g (max pooling); constant shift of ln rho shifts P by the same (correct for a ratio sum).
+  logsumexp pooling = softmax-attention normaliser (standard; e.g. log-sum-exp pooling in set networks) - representability is by construction, not a cited theorem. Confidence the derivation is right 85%;
+  that Adam finds it: not derivable.
+Prior results: none in this project; spins-only and sum-pooled nets above (0.06 / 0.72).
+Known case: TO DO (CPU): hand-set C weights reproduce the (b) table (onehop_grade/tables/t_b.npy) to 1e-8 on 4000 rows; broken: sign split removed (one channel) misses by O(1).
+Data check: TO DO: ratnet seed-1 residual loss per row, rows with max rho >= 20 vs < 20, within each decade. Diagnosis holds if >= 3x higher in the large-rho rows in decades -11..-13.
+Next rung: C, two seeds + broken (shuffled inputs), same spec as ratnet. Pass retention_N >= 0.9 (two-seed mean); kill < 0.75 (no better than sum pooling); between -> fit-quality study. Cost ~2 A40-h. Prediction >= 0.9 at 55%.
+Known case RESULT (worker, ratnet_pool_check.py b80c140, ratnet/poolcheck/): two sign classes in the (b) code (kept s2s2<0; blocked = violating s2s2>0). Hand-set pooling reproduces t_b to 2.9e-12 (4000 random orbits), 1.7e-14 (held-out); broken (one merged channel) misses by max 7.42, median 0.62. PASS.
+Data check RESULT (same files): rows with max rho >= 20 = 8% of held-out rows, 75% of ratnet's loss (51% for (b)). Ratio big/small per row, ratnet vs (b): -11 8.18 vs 2.00; -12 2.50 vs 2.08; -13 17.2 vs 2.62. Pre-written rule (>= 3 in each of -11..-13) MISSED at -12. Lead reading: the diagnosis explains the largest share (75%) but not all: small-rho rows are still 12x above (b) (1.54e-3 vs 1.24e-4), worst at -12. Estimate if big rows reached (b)'s ratio: total ~1.5e-3, 4x below ratnet. Proceed with C (cheap, 2 A40-h); prediction lowered: >= 0.9 at 40%, > 0.75 at 70%.
+Status: DONE (known case pass; data check done, rule missed at -12 as stated).
+
+LOG-DOMAIN POOLING, RESULT (lead 2026-11-19 ~00:10; jobs 18050224 lse_s1, 18050225 lse_s2, 18050226 lse_shuf; runs/j1j2/consol_6x6/ratnet/lse_*; branch j1j2-ratnet 86bb141)
+retention_N: lse_s1 0.8590, lse_s2 0.8288 (two-seed mean 0.844); lse_shuf (broken) 0.0072. Sum pooling was 0.717. Pre-registered: pass >= 0.9, kill < 0.75 -> BETWEEN (prediction > 0.75 at 70% held).
+Held-out (seed-1 rows): r=0 1.14e-2, sum pooling 5.77e-3, lse 3.18e-3, formula (b) 2.32e-4.
+Where the rest sits (poolcheck_lse_s1/part1_table.md; header there says 'ratnet_s1' but the table is lse_s1: L 3.28e-3 vs ratnet 5.77e-3; c handling differs 3% from L_ho_final):
+  decade -13 rows with max rho >= 20 (154 of 4104 rows): 6.16e-2 per row (sum pooling 9.98e-2, formula 2.74e-3) = ~70% of the remaining loss. Small-rho rows improved most (-11: 1.11e-3 -> 2.33e-4).
+Lead reading: exact representability did not make those rows learnable. Hypothesis (unchecked): for big rows l ~ ln|alpha| + P_max + ln|1 - e^{-|P_blk - P_kept|}| has a log singularity on the cancellation line P_blk = P_kept,
+which an MLP on (P/10) inputs fits badly. Cheap check: the lse_s1 residual of those rows against |P_blk - P_kept|.
+
+CANCELLATION CHECK, RESULT (worker, ratnet_cancel_check.py 8039635, runs/j1j2/consol_6x6/ratnet/cancel_lse_s1/)
+Big-rho rows of -12/-13 (n 256): rows with |P_blk - P_kept| < 0.3 are 23% of them and carry 90.3% of lse_s1's loss there (6 rows with |Delta| < 0.1 carry 75.5%, mean loss 1.24 vs (b) 1.7e-2). Pre-written rule (>= 50% on <= 25%) HOLDS.
+|u| = |1 + alpha(E_L - E)| >= 0.1 on all 912 rows of -12/-13: the target is smooth there (mean |l| 0.22). My stated mechanism (log singularity of l) is WRONG; the failure is in the inputs-to-target map.
+Corrected diagnosis (equation): E_L - E = (D0 - E) + e^{P_blk} - e^{P_kept}. With P ~ ln 20 .. ln 10^3 and Delta -> 0 the MLP must form e^P (e^Delta - 1): output gain ~ |alpha| e^P along Delta, so an O(0.01) error in its
+internal Delta becomes O(1) in l. The linear rho channel that would do the sum before any nonlinearity is capped at 20 - exactly on these rows (they are defined by max rho >= 20).
+Fix D (paper): add signed linear pooling, uncapped: z_k = asinh( (b_k + sum_b c_k(feat_b) rho_b) / s ), c_k learned per bond (can take h_b sgn_b), s = 10. The cancellation then happens in the sum, exactly;
+with c = h sgn, b = D0 - E + 1/alpha: z = asinh((E_L - E + 1/alpha)/s), and l = ln|alpha s sinh z| is smooth in z for |u| >= 0.1. Known case + broken version: CPU test (hand-set weights give l to 1e-8; cap 20 restored -> misses on the 59 rows).
+Next rung: D = lse + 4 signed-linear channels, 2 seeds + broken. Pass two-seed mean >= 0.9; kill <= 0.844 (no better than lse); prediction >= 0.9 at 55%. Cost ~1.5 A40-h.
+
+FIX D (SIGNED-LINEAR POOLING), RESULT (lead, 2026-11-19 ~02:30; verified from out/progress.txt GRADE lines and delta_today VERDICT lines)
+Ran: lse + 4 uncapped signed-linear channels (ratnet_lib 4bd298f), 55000 steps, cip a40-24gb, ~1 A40-h each.
+  lin_s1 18055557 retention_N 0.8956 (held-out 1.143e-2 -> 1.885e-4); lin_s2 18055558 0.8929; broken lin_shuf 18055559 0.0065.
+  Two-seed mean 0.8943 -> BETWEEN (pass 0.9, kill 0.844). Broken < 0.1 as required. Seed spread 0.003.
+Diagnosis confirmed: big-rho rows of decades -12/-13 total loss 9.87 (lse_s1) -> 0.353 (lin_s1); |Delta| < 0.1 rows 1.24 -> 1.21e-2 mean loss (formula (b) 1.72e-2);
+  |Delta| < 0.3 share 90.3% -> 49.8%. Path: runs/j1j2/consol_6x6/ratnet/cancel_lin_s1 (column labelled lse_s1 is lin_s1).
+Open (hypothesis, not a claim): lin_s1's held-out loss (1.885e-4) is below formula (b)'s (2.32e-4) yet its retention is lower (0.896 vs 0.946): the loss weights
+  rows per decade, the grade weights them by their FN-energy effect, so the remaining 0.05 sits where the two weightings differ. Test (CPU, minutes): per-decade loss of lin_s1 vs (b).
+Lead decision: BETWEEN, take lin_s1 as the round-1 add-on and move to round 2 (critical path); the 0.05 gap to (b) is not on it.

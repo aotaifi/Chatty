@@ -2349,3 +2349,4 @@
 2026-11-19 02:14 VERDICT job 18055558: COMPLETED, GRADE H N=4.456895e-06 (alpha -0.1) retention_N=0.8929 E_FN=7.639016e-06 E_var=1.028729e-05 certificate=False (RUN_VERDICT rc=0, COMPLETED, 55000 steps) [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/ratnet/lin_s2/ANALYSIS.md]
 2026-11-19 02:18 VERDICT job 18055559: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/ratnet/lin_shuf/ANALYSIS.md]
 2026-11-19 02:28 lead: fix D verified: lin_s1 0.8956 / lin_s2 0.8929 (mean 0.8943, BETWEEN 0.844-0.9), broken lin_shuf 0.0065; cancellation-row loss 9.87 -> 0.353. Decision: lin_s1 is the round-1 add-on; next round 2 paper check. STORAGE_PROBLEM 'FIX D ... RESULT'.
+2026-11-19 02:28 lead (takeover): scancel 17941240 cp_R5_red (runs/j1j2/r1prime_prediction/Cprime): pending since 11-12 with DependencyNeverSatisfied, could never start; no data touched.

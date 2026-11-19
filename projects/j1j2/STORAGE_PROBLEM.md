@@ -1048,3 +1048,11 @@ CAPACITY CALIBRATION (lead 2026-11-19 11:40, CPU, existing data). Same code, sam
   Rule: cubic-L2 retention on U_1 <= 0.7 (<= 0.8 x ratnet) -> the cubic is the limit; q_2(L2) 0.59 is a floor and the one-hop ratnet on T_2 is the next rung (data check DONE by this block).
   Cubic-L2 on U_1 >= 0.85 -> the cubic is adequate, so round 2 needs inputs beyond length 2 (Astra's joint ratio tokens / |u(y)| gathers); no one-hop run. Between -> asinh arm decides.
   asinh-L2 on U_2 >= 0.85 -> length-2 inputs suffice in a smooth basis. Prediction: cubic-L2 on U_1 0.55-0.75 [own, 60%]. Cost ~2.5 h CPU.
+ CAPACITY CALIBRATION, RESULT (worker capacity_fit.py 703361e on j1j2-ratnet; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/round2/capacity/<arm>/{fit,grade}.json; lead re-read grade.json 13:55).
+  Sanity: old L1-on-U_2 CV eps2 0.2726 reproduced. Same cubic, same raw features, on ROUND 1 (U_1, p_1): L1 N 4.512e-6 -> retention_N 0.881; L2 N 4.190e-6 -> 0.949 (above ratnet's 0.894);
+  shuffled L2 1.058e-5 -> -0.40. alpha -0.1 is a grid point for all three (parabola not refined: N is an upper bound, retention a lower bound). asinh features: U_1 L2 0.849, U_2 L2 q_2 0.569 (no help).
+  RULE BRANCH: cubic-L2 on U_1 >= 0.85 -> the cubic is adequate; round 2 needs inputs beyond length 2. The same learner on the same B-inputs keeps 0.95 of round 1 and 0.59 (0.75 with exact r_1*) of round 2.
+  Reading [measured + the WORD-MOMENT algebra]: each round extends the reach by ~one hop of B (round k ~ words of length 2k; the |u| kink adds per-neighbour E_L). An add-on on FIXED B-inputs cannot hold
+  round after round at flat cost: the PI's 11-19 objection holds in the data. Caveats: 6x6 only; pooled moments, not resolved per-bond tokens (Astra's 'complete one-hop multiset' arm not run);
+  weights p_1 = rounds23/p_1.npy (differs from rangelimit_6x6/p.npy by 3% median; not checked which round 1 used). False alarm: VERDICT lines 13:21/13:23 for capacity_ws40_278219 were an OOM kill of
+  one of three parallel grades (32.9 GB each); arm A regraded alone (gradeA2.log, exit 0).

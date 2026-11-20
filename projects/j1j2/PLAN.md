@@ -661,7 +661,8 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
 ## Running (2026-11-16 09:45; every job has a watcher writing VERDICT lines to delta_today.md)
-- 2026-11-20 (2nd): worker arm R (refreshed one-hop reference) + round 4 for B and R, same dir (STORAGE "REFRESHED ONE-HOP REFERENCE"); KILL eps_3(R) >= 0.37e-6 -> stay with B; else round 4 decides the trend.
+- 2026-11-20 (3rd): worker exact A_3..A_5 (ref2hop/exact) + arm R round 5; then compare copy vs exact per round.
+- 2026-11-20 (2nd, done: R PASS eps 0.170/0.253, N(chi_4^R) 1.9482e-6): worker arm R (refreshed one-hop reference) + round 4 for B and R, same dir (STORAGE "REFRESHED ONE-HOP REFERENCE"); KILL eps_3(R) >= 0.37e-6 -> stay with B; else round 4 decides the trend.
 - 2026-11-20 (done, B eps 0.209/0.393 BETWEEN): worker CPU arms A/B/K/S in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop (STORAGE "FIXED-REFERENCE TWO-HOP INPUT"); PASS eps_3 <= 0.30e-6 -> GPU ratnet with fixed two-hop inputs, warm-started; KILL eps_3 >= 0.45e-6 -> step back (lever is not neighbour spread); K misses N(T_2) by >1% -> fix features first. Ratnet r2_s1 done (N 3.3865e-6, refit from scratch, off-path).
 - 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
@@ -799,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Giving each round's copy a fixed two-hop input cut the copy error 2.4x; the 6x6 copy now reaches 2.43e-6 at round 3 (one-hop copy 2.71e-6, exact rounds 1.92e-6) and keeps 92% of the exact gain, at a cost that does not grow with rounds.
-- NEXT (in progress, high): Refresh that input each round from the latest copy (cost still flat) and run round 4, to see whether the copy keeps falling toward the exact rounds.
+- STATUS (in progress, high): Rebuilding the copy's two-hop input from the latest copy each round keeps the copy error flat (0.17-0.25e-6 per round); the 6x6 copy reaches 1.95e-6 at round 4, below the exact round 2 (2.42e-6), at a cost that does not grow with rounds.
+- NEXT (in progress, high): Exact rounds 3-5 and copy round 5 on CPU, to compare the copy with the exact rounds it stands in for.

@@ -1170,3 +1170,9 @@ Status: DONE (known case part of the run).
   neighbours); accepted at weighted rms < 1e-5 provided the rows off by > 1e-6 lie within one hop of the 805 moved rows (worker checks before arm R). Round-k projection uses round-k weights.
   Localisation check: 55899 of 57329 off rows within one hop of the moved rows; 1430 farther, weight 8.0e-12, max 1.0e-3. Lead: consistent with the global mean E shifting with the 805
   moved rows (d = E_L - E everywhere; ln|1 + a d| is sensitive only where u ~ 0, i.e. near-node rows of negligible weight). Accepted; arm R relaunched. No further known-case refinement.
+ REFRESHED ONE-HOP REFERENCE, RESULT (worker, 24517de; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/{R,Rs,B4}; lead re-read grade.json and round_map.json 2026-11-20, inputs prev = lin_s1 fixed):
+  arm R (L2 + h_1 + l_1 + l'_{k-1}, l' rebuilt each round from the one-hop projection of the latest copy): N(chi_3) 2.2090 (T_3^B 2.0394, eps 0.170), N(chi_4) 2.2090 -> 1.9482 (T_4^R 1.6955, eps 0.253).
+  arm B round 4: N(chi_4) 2.2379 (T_4^B 1.8111, eps 0.427). Broken Rs (l'_2 shuffled) 2.4318 = B (0.392): l' carries the gain. PASS (eps_3 0.170 <= 0.30; prediction 0.30 at 50%: better).
+  Copy error per round, R: 0.209 / 0.170 / 0.253 (B: 0.209 / 0.393 / 0.427). Per-round q_R: 0.77 (r3), 0.51 (r4). Copy at round 4 (1.948e-6) is below EXACT round 2 (2.416e-6).
+  Contraction model broke at round 4: predicted N(T_4^R) = 1.680 + 0.324(2.209 - 1.680) = 1.851, measured 1.6955 (also B: 1.924 vs 1.811); rounds <= 3 matched to 0.5%. So N_inf 1.680 and
+  derived A_3 1.918 / A_4 1.757 are not trusted: exact A_3, A_4, A_5 by round_map on rounds23/lA_2.npy are running (CPU) before any comparison with exact rounds is quoted.

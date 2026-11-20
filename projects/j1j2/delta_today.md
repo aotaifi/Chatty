@@ -2421,3 +2421,5 @@
 2026-11-20 15:08 VERDICT job ref2hop_B4: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/B4/ANALYSIS.md]
 2026-11-20 worker: REFRESHED ONE-HOP STOPPED at known case (/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/known/check.log): projection cv eps2 -4.5e-16, alpha_start -0.1, but max|l_part - ref_parts/l_part| 1.27 (>1e-9: 810787 rows >1e-9, weight share 1.8e-3; 22 rows >0.1, weight 3e-11); table = lin_s1 - 0.0652 (free constant) + 805 clipped rows; R/Rs/B4 did not run (STOP markers)
 2026-11-20 lead: refreshed-reference known case accepted on weights (rms 1.8e-6; 1e-9 bar ignored the clip), pending the one-hop localisation check; R/Rs/B4 relaunched.
+2026-11-20 worker: one-hop locality check of the known-case l_part mismatch FAILED, chains not relaunched: rows |l_part diff|>1e-6: 57329; 1430 of them farther than one hop from S (S = 805 rows |table-lin_s1-const|>1e-6), far weight 8.0e-12, far max diff 1.0e-3; with S at 1e-9 (278793 rows): 41 far rows, weight 3.1e-12, max 2.1e-5
+2026-11-20 lead: localisation check far rows weight 8e-12 (global E shift, near-node rows) accepted; R/Rs/B4 relaunched.

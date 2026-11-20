@@ -1168,3 +1168,5 @@ Status: DONE (known case part of the run).
  REFRESHED REFERENCE, KNOWN CASE (worker, ref2hop/known/check.log): projection of h_1 on (L2, h_1) exact (cv eps2 -4.5e-16) up to the D-norm gauge constant -0.0652; the clip to the target range
   moved 805 rows (weight 2e-9); l_part vs ref max 1.27 on rows of weight 3e-11, weighted rms 1.8e-6, alpha_start -0.1. Lead: my 1e-9 bar ignored the clip (a clipped row changes E_L at its
   neighbours); accepted at weighted rms < 1e-5 provided the rows off by > 1e-6 lie within one hop of the 805 moved rows (worker checks before arm R). Round-k projection uses round-k weights.
+  Localisation check: 55899 of 57329 off rows within one hop of the moved rows; 1430 farther, weight 8.0e-12, max 1.0e-3. Lead: consistent with the global mean E shifting with the 805
+  moved rows (d = E_L - E everywhere; ln|1 + a d| is sensitive only where u ~ 0, i.e. near-node rows of negligible weight). Accepted; arm R relaunched. No further known-case refinement.

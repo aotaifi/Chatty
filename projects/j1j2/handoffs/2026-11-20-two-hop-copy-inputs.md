@@ -24,5 +24,6 @@ Refitting B itself: October refits absorbed 0-37% per round.
 **Three things to understand.**
 1. Per-round copy fraction q falls by construction when the absolute error eps is constant; judge by eps and by the cumulative share.
 2. The loop is an optimiser of the stored class: it converges to that class's best energy, so lower energy needs more input reach, not a better copy.
-3. l_1 comes from round 1 and goes stale (eps 0.21 -> 0.39); running now: refresh it each round from a one-hop projection of the latest copy
-   (STORAGE 'REFRESHED ONE-HOP REFERENCE'), cost still flat.
+3. l_1 comes from round 1 and goes stale (eps 0.21 -> 0.39). Rebuilding it each round from the one-hop projection of the latest copy
+   (arm R, STORAGE 'REFRESHED ONE-HOP REFERENCE') keeps eps at 0.17-0.25 and reaches N 2.209 (round 3), 1.948 (round 4), cost still flat.
+   Exact A_3..A_5 still to compute (the contraction model failed at round 4).

@@ -21,6 +21,7 @@ import bond_split as BS
 import delta0 as D0M
 ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--mode', default='moving', choices=['moving', 'fixed', 'broken'])
 ap.add_argument('--nrounds', type=int, default=None); ap.add_argument('--workers', type=int, default=6); ap.add_argument('--cfixed', type=float, default=1.307)
+ap.add_argument('--skfloor', action='store_true', help='rows with S_k=0 (no sign-changing neighbour: f_J=-inf) get log S_k=-60 and are counted, not fatal')
 ap.add_argument('--RL', default='/scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6')
 args = ap.parse_args(); OUT = args.out; MODE = args.mode; os.makedirs(OUT, exist_ok=True); T0 = time.time()
 NR = args.nrounds or {'moving': 3, 'fixed': 2, 'broken': 1}[MODE]; SUF = '' if MODE == 'moving' else '_' + MODE
@@ -45,13 +46,15 @@ def lanc(la, d, al):
     m = np.abs(1.0 + al * d); nfl = int((m < np.exp(-60.0)).sum()); return la + np.log(np.maximum(m, np.exp(-60.0))), nfl
 def guide_floor(la):
     a = np.exp(la - la.max()); a = a / np.sqrt((n * a * a).sum()); return int((a < 1e-15).sum())
+SKZ = [0]
 def fJ(lg, Ep, S):
-    fj = np.empty(D); nbad = 0
+    fj = np.empty(D); nbad = 0; SKZ[0] = 0
     for i0 in range(0, D, RS):
         i1 = min(D, i0 + RS); t = np.concatenate([t1[i0:i1], t2[i0:i1]], 1); va = t >= 0; tt = np.where(va, t, 0)
         ss = S[i0:i1, None] * S[tt]; blk = va & (ss > 0); kpt = va & (ss < 0); Hxx = 27.0 - 0.5 * (va * JW[None, :]).sum(1)
         ratio = np.exp(np.clip(lg[tt] - lg[i0:i1, None], -700, 700)); VA = (blk * HW * ratio).sum(1); SK = (kpt * HW * ratio).sum(1)
-        den = Hxx + VA - Ep; nbad += int((den <= 0).sum() + (SK <= 0).sum())
+        den = Hxx + VA - Ep; nbad += int((den <= 0).sum()) + (0 if args.skfloor else int((SK <= 0).sum())); SKZ[0] += int((SK <= 0).sum()) if args.skfloor else 0
+        if args.skfloor: SK = np.where(SK <= 0, np.exp(-60.0), SK)
         with np.errstate(divide='ignore', invalid='ignore'): fj[i0:i1] = np.log(SK) - np.log(den)
     return fj, nbad
 # ---- worker side: G is set by the parent before the fork
@@ -107,7 +110,7 @@ for k in range(NR):
     lp = np.log(np.maximum(p, 1e-300)); np.save(f'{OUT}/p_{k}{SUF}.npy', p); del vecs, v
     t = time.time(); rp, _ = D0M.efn_vec(K, Vm, D0, n, lp); rec['E_FN_p_site'] = rp['dE_site']; log(f"round {k}: E_FN[p_k] {rp['dE_site']:.6e} ({time.time() - t:.0f}s)")
     rec['gain_site'] = rec['E_FN_SkAk_site'] - rec['E_FN_p_site']
-    fjG, nbad = fJ(lG, EG, S); rec['fJ_bad'] = nbad; rec['fJ_nonfinite'] = int((~np.isfinite(fjG)).sum()); rec['fJ_range'] = [float(np.nanmin(fjG)), float(np.nanmax(fjG))]; dump()
+    fjG, nbad = fJ(lG, EG, S); rec['fJ_bad'] = nbad; rec['fJ_SK_zero_floored'] = SKZ[0]; rec['fJ_nonfinite'] = int((~np.isfinite(fjG)).sum()); rec['fJ_range'] = [float(np.nanmin(fjG)), float(np.nanmax(fjG))]; dump()
     log(f"round {k}: f_J[g_k] bad {nbad} nonfinite {rec['fJ_nonfinite']} range {rec['fJ_range']}")
     if rec['fJ_nonfinite'] or nbad: rec['status'] = 'NONFINITE'; dump(); log('STOP: nonfinite f_J'); sys.exit(3)
     f1 = 1.0 + ak * d; zero = int((f1 == 0).sum()); sg = np.where(f1 < 0, -1.0, 1.0)

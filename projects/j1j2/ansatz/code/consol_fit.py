@@ -88,6 +88,7 @@ LAM0 = float(SPEC.get('lam0', 1e-2)); LAM_CAP = float(SPEC.get('lam_cap', 1.0));
 TAU = float(SPEC.get('tau', 0.05)); Z_ACC = float(SPEC.get('z_acc', 2.0))
 # T1s-2 (README "Test T1s-2"): tau anneal TAU -> TAU_MIN, halved each time the held-out loss is flat (< FLAT_TOL) over
 # ANNEAL_STEPS steps (and >= ANNEAL_STEPS steps since the last change); convergence additionally needs tau == TAU_MIN.
+TAU_ADAPT = bool(SPEC.get('tau_adapt', False)); TAU_CAP = float(SPEC.get('tau_cap', 0.05)); TAU_FLOOR = float(SPEC.get('tau_floor', 0.001))   # trust-region radius update on the acceptance verdicts (Nocedal-Wright Alg. 4.1 style)
 SYM = SPEC.get('sym', 'sum'); assert SYM in ('sum', 'mean64'), SYM; assert SYM == 'sum' or ARM == 'vitres', 'sym mean64 is arm vitres only'
 VIT_DTYPE = SPEC.get('vit_dtype', 'float32'); assert VIT_DTYPE in ('float32', 'float64')      # float64: TEST ONLY (symmetry test to 1e-12); production float32
 CHUNK_ROWS = int(SPEC.get('chunk_rows', 0))             # 0 = all rows (old path: one (R, P) Jacobian buffer on the device); > 0: G kept on the host, minSR products accumulated in row chunks of this size (log loss, minSR branch only)
@@ -832,8 +833,13 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         ok = True; verdict = 'noise'
     if ok: theta = cand; c = c + dc
     # (hist entry below gets the diag)
+    tau_used = tau
+    if TAU_ADAPT:                                      # 'worse' -> tau/4 (>= floor), 'better' -> 2 tau (<= cap), 'noise' unchanged
+        if verdict == 'worse': tau = max(tau / 4, TAU_FLOOR)
+        elif verdict == 'better': tau = min(2 * tau, TAU_CAP)
+        if tau != tau_used: tau_hist.append(dict(step=n, tau=tau, adapt=verdict))
     hist.append(dict(step=n, ok=ok, verdict=verdict, lam_rel=lam_used, lam_next=lam_rel, L_acc_old=float(jnp.mean(L_old)),
-                     dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau, loss_batch=float(rr), c=c,
+                     dmean=dmean, dse=dse, pred_rms=float(prms), trust_scale=float(sc), tau=tau_used, loss_batch=float(rr), c=c,
                      sec=time.time() - ts, **_dg))
     if n % HO_EVERY == 0:
         Lh, ex, db = batch_loss(theta, c, HOB)
@@ -841,7 +847,7 @@ while time.time() - t0 < FIT_SEC and n < MAX_STEPS:
         acc10 = np.mean([h['ok'] for h in hist[-HO_EVERY:]])
         d11 = curve[-1]['by_decade'].get('-11', {}).get('rms_e')
         progress(f'  {ARM} step {n}: held-out {curve[-1]["L_ho"]:.4e}  rms_e(-11) {d11}  acc {acc10:.2f}  lam_rel {lam_rel:.1e}  '
-                 f'tau {tau:.4f} trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
+                 f'tau {tau_used:.4f} verdict {verdict} trust {float(sc):.2f}  {hist[-1]["sec"]:.1f}s/step')
         if tau > TAU_MIN and n - tau_changed >= ANNEAL_STEPS:          # T1s-2 anneal
             cb = [q for q in curve if q['step'] <= n - ANNEAL_STEPS]
             if cb and abs(cb[-1]['L_ho'] - curve[-1]['L_ho']) / curve[-1]['L_ho'] < FLAT_TOL:

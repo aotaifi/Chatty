@@ -1,7 +1,7 @@
 #!/bin/bash
 # R1 launcher (PLAN_pfaffian.md "R1"; built on launch_c1.sh) on one Paderborn H100.  Default: STAGE ONLY.  --submit: stage, sbatch (gpu_h100,
 # hpc-prf-ppdmrg, --no-requeue, wall 01:30:00), record the job id, arm the durable watcher (setsid, r1_pdb_watch.sh -> job_finish.sh --wake none).
-# Fit B_1 = e^R x complex PP (rbmpp, alpha 4, no backflow) to phi'' = FN(A_s1, s1); sign s1 everywhere (sign_path); fit_sec 4200, max_steps 1100;
+# Fit B_1 = e^R x complex PP (rbmpp, alpha 4, no backflow) to phi'' = FN(A_s1, s1); sign s1 everywhere (sign_path); fit_sec 3600 (lead 2026-10-29), max_steps 1100;
 # no E_FN / hops on the GPU (skip_fn_readouts, skip_efn).  Needs the VPN.  Local /scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1/run,
 # remote /scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6/runs/r1.
 set -euo pipefail
@@ -11,7 +11,7 @@ R1L=/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1
 P=/scratch/hpc-prf-ppdmrg/hpcalot/chatty_compress6; D=$P/data/r1; DO=$P/data/o2b_r1
 SSHO="ssh -o BatchMode=yes -o HostName=login4"
 rem() { $SSHO paderborn "export PATH=/opt/software/slurm/25.11.8-1/bin:\$PATH; $1"; }
-NAME=r1; TM=01:30:00; FS=4200; MX=1100
+NAME=r1; TM=01:30:00; FS=3600; MX=1100
 LOC=$R1L/run; RUN=$P/runs/$NAME
 CODE="cx_r1.py cx_r1fit.py cx_lib.py rbmpp_lib.py"
 [ -e "$LOC/job_id.txt" ] && { echo "$LOC/job_id.txt exists: already submitted"; exit 1; }

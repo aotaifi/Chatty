@@ -30,7 +30,6 @@ import json; d=json.load(open('$Q/prep_result.json')); assert d.get('done') and 
 python3 -c "
 import json; d=json.load(open('$Q/cpu/selftest_pp2/self_test_pp2.json')); assert all(d[k] for k in ('a_pass','b_pass','c_pass')), 'pp2 CPU checks (a,b,c) not passed'
 assert d['d_pass'] or '${D_ACK:-}' == '1' or '$MODE' != '--submit', 'check (d) failed: d/d lam lies in span(P_1 columns, const) (scale/phase gauge, self_test_pp2.json d.gauge_identity_max_abs_dev); the lead must acknowledge with D_ACK=1'"
-if [ "$MODE" = --submit ]; then for A in $ARMS; do [ -e "$Q/$A/fit/job_id.txt" ] && { echo "$Q/$A/fit/job_id.txt exists: already submitted"; exit 1; }; done; fi
 chk() { # LOCALFILE REMOTEFILE
   l=$(sha256sum "$1" | cut -d' ' -f1); r=$(rem "sha256sum $2 2>/dev/null" | cut -d' ' -f1 || true)
   if [ "$l" != "$r" ]; then rsync -a -e "$SSHO" "$1" paderborn:$2; r=$(rem "sha256sum $2" | cut -d' ' -f1); fi
@@ -103,6 +102,8 @@ if [ "$MODE" = --test ]; then
 fi
 [ "$MODE" = --submit ] || exit 0
 for A in $ARMS; do
+  [ -e "$Q/$A/fit/job_id.txt" ] && { echo "$A: $Q/$A/fit/job_id.txt exists (already submitted), skipped"; continue; }
+  [ -e "$Q/$A/pdb_skip" ] && { echo "$A: theorie race copy already won ($(cat $Q/$A/pdb_skip)), Paderborn not submitted"; continue; }
   RUNF=$P/runs/r5_${A}_fit; RUNT=$P/runs/r5_${A}_tab
   OUTL=$(rem "sbatch $(fitf $A) $P/r5_pdb.sbatch $RUNF" 2>/dev/null); JOB=${OUTL%%;*}
   [[ "$JOB" =~ ^[0-9]+$ ]] || { echo "sbatch failed (fit $A): $OUTL"; exit 1; }
@@ -116,6 +117,7 @@ for A in $ARMS; do
   echo "$!" > "$Q/$A/tab/watcher_pid.txt"
   echo "$A: fit=$JOB (watcher $(cat $Q/$A/fit/watcher_pid.txt) ppid=$(ps -o ppid= -p $(cat $Q/$A/fit/watcher_pid.txt))) tab=$JT (watcher $(cat $Q/$A/tab/watcher_pid.txt) ppid=$(ps -o ppid= -p $(cat $Q/$A/tab/watcher_pid.txt)))"
 done
-setsid nohup "$HERE/r5_chain.sh" > "$Q/readout/chain.log" 2>&1 < /dev/null &
-echo "$!" > "$Q/readout/chain_pid.txt"; echo "chain pid $(cat $Q/readout/chain_pid.txt) ppid=$(ps -o ppid= -p $(cat $Q/readout/chain_pid.txt))"
+if [ -s "$Q/readout/chain_pid.txt" ] && kill -0 "$(cat $Q/readout/chain_pid.txt)" 2>/dev/null; then echo "r5_chain.sh already running (pid $(cat $Q/readout/chain_pid.txt)), not restarted"
+else setsid nohup "$HERE/r5_chain.sh" > "$Q/readout/chain.log" 2>&1 < /dev/null &
+  echo "$!" > "$Q/readout/chain_pid.txt"; echo "chain pid $(cat $Q/readout/chain_pid.txt) ppid=$(ps -o ppid= -p $(cat $Q/readout/chain_pid.txt))"; fi
 rem "sacct -u \$USER -S now-1hour -X -n -o JobID,JobName%20,State,Reason%30" 2>/dev/null; rem "squeue --start -u \$USER" 2>/dev/null || true

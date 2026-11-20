@@ -9,8 +9,8 @@ RUND/out_T.npz, T = 1..NT; seed half A = tasks T <= K, half B = tasks T > K.  Ch
  (4) every word has 32 bits set (Sz = 0, N = 64).
  (5) lnB of 200 random draws recomputed with pp2_lemma.logB (fresh PP2 from the guide file) agrees to 1e-10.
  plus bookkeeping: per-rung draw counts >= targets, seeds distinct, params sha 0520c5be, chain ids per rung.
---break KIND corrupts the loaded data in memory to show the gate fails: counts (beta .5 draws relabelled .25), halves (half B beta .5 lnB += 0.8), median (beta-1 lnB += 0.5),
- sz (one bit flipped in 50 words), recompute (lnB of 5 draws += 1e-8)."""
+--break KIND corrupts the loaded data in memory to show the gate fails: counts (beta .5 and .25 labels swapped), halves (half B beta .5 lnB += 1.5), median (beta-1 lnB += 0.5),
+ sz (one bit flipped in 50 words), recompute (lnB of 5 of the checked draws += 1e-8)."""
 import sys, os, glob, json, math, argparse, hashlib
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -26,11 +26,12 @@ W = np.concatenate([z['words'] for z in Z]); L = np.concatenate([z['lnB'] for z 
 TK = np.concatenate([np.full(len(z['words']), int(z['task'])) for z in Z]); seeds = [int(z['seed']) for z in Z]; psha = set(str(z['params_sha']) for z in Z)
 half = TK <= a.split                                                         # True = A
 rng = np.random.default_rng(12345)
-if a.brk == 'counts': m = B == 0.5; B[m] = 0.25
-if a.brk == 'halves': m = (~half) & (B == 0.5); L[m] += 0.8
+RIDX = np.sort(np.random.default_rng(777).choice(len(W), a.nrec, replace=False))                # draws recomputed in check (5), fixed before any corruption
+if a.brk == 'counts': m5 = B == 0.5; m25 = B == 0.25; B[m5] = 0.25; B[m25] = 0.5                  # beta .5 and .25 labels swapped
+if a.brk == 'halves': m = (~half) & (B == 0.5); L[m] += 1.5
 if a.brk == 'median': L[B == 1.0] += 0.5
 if a.brk == 'sz': idx = rng.choice(len(W), 50, replace=False); W[idx] ^= np.uint64(1)
-if a.brk == 'recompute': idx = rng.choice(len(W), 5, replace=False); L[idx] += 1e-8
+if a.brk == 'recompute': L[RIDX[:5]] += 1e-8                                                       # 5 of the 200 checked draws
 res = dict(rund=a.rund, files=len(fs), halfA_tasks=int(len(set(TK[half].tolist()))), halfB_tasks=int(len(set(TK[~half].tolist()))), broken=a.brk)
 # ---- bookkeeping
 n_rung = [int((B == b).sum()) for b in BETAS]; book = dict(n_per_rung=n_rung, targets=TARG, ge_targets=all(n >= t for n, t in zip(n_rung, TARG)), seeds_distinct=len(set(seeds)) == len(seeds),
@@ -64,7 +65,7 @@ for b in BETAS:
         if kind != 'strict': fb_used += 1
         ok1 &= bool(ok); cells.append(dict(beta=b, dec=d, n_ref=nref, expected=E, observed=k, ratio=(k / E if E > 0 else None), kind=kind, literal20=bool(lit), ok=bool(ok)))
 res['counts'] = dict(cells=cells, n_cells=len(cells), n_fallback_cells=fb_used, literal20_failures=int(lit_fail), ok=bool(ok1),
-                     strict_max_dev=max(abs(c['ratio'] - 1) for c in cells if c['kind'] == 'strict'))
+                     strict_max_dev=max([abs(c['ratio'] - 1) if c['ratio'] is not None else 9.99 for c in cells if c['kind'] == 'strict']))
 # ---- (2) halves
 h = []; ok2 = True; mz = {}
 for b in BETAS:
@@ -80,7 +81,7 @@ for b in BETAS:
 mzall = max(mz.values()); res['halves'] = dict(cells=h, max_abs_z_per_rung={str(k): v for k, v in mz.items()}, max_abs_z=mzall, ok=bool(mzall <= 3.0))
 # ---- (5) recompute
 import pp2_lemma as PL
-p = PL.PP2.from_rbmpp_npz(PROD8); idx = np.sort(np.random.default_rng(777).choice(len(W), a.nrec, replace=False))
+p = PL.PP2.from_rbmpp_npz(PROD8); idx = RIDX
 sig = (((W[idx][:, None] >> np.arange(64, dtype=np.uint64)[None]) & np.uint64(1)).astype(np.float64) * 2 - 1)
 lb = np.real(np.asarray(PL.logB(p, sig, dtype='f64'))); dd = np.abs(lb - L[idx]); res['recompute'] = dict(n=int(a.nrec), max_abs_diff=float(dd.max()), ok=bool(dd.max() <= 1e-10), rungs_covered=sorted(set(B[idx].tolist())))
 oks = dict(counts=res['counts']['ok'], halves=res['halves']['ok'], median=res['median']['ok'], Sz=res['Sz']['ok'], recompute=res['recompute']['ok'], bookkeeping=book['ok'])

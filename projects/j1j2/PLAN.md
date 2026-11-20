@@ -660,8 +660,8 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
   E_FN per trial T, possibly from one walker run by correlated sampling (amplitude independent of T; unchecked). (PI + lead 2026-10-28)
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
-## Running
-- 2026-11-20: worker CPU arms A/B/K/S in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop (STORAGE "FIXED-REFERENCE TWO-HOP INPUT"); PASS eps_3 <= 0.30e-6 -> GPU ratnet with fixed two-hop inputs, warm-started; KILL eps_3 >= 0.45e-6 -> step back (lever is not neighbour spread); K misses N(T_2) by >1% -> fix features first. Ratnet r2_s1 done (N 3.3865e-6, refit from scratch, off-path). (2026-11-16 09:45; every job has a watcher writing VERDICT lines to delta_today.md)
+## Running (2026-11-16 09:45; every job has a watcher writing VERDICT lines to delta_today.md)
+- 2026-11-20: worker CPU arms A/B/K/S in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop (STORAGE "FIXED-REFERENCE TWO-HOP INPUT"); PASS eps_3 <= 0.30e-6 -> GPU ratnet with fixed two-hop inputs, warm-started; KILL eps_3 >= 0.45e-6 -> step back (lever is not neighbour spread); K misses N(T_2) by >1% -> fix features first. Ratnet r2_s1 done (N 3.3865e-6, refit from scratch, off-path).
 - 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
 - s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;

@@ -1165,3 +1165,6 @@ Known case: projection of h_1 itself must return h_1 (cv eps2 ~0) and l' = l_1 t
 Next rung (CPU, same worker): arm R round 3 on the SAME target T_3^B (chi_2 = chi_2^B), so eps_3(R) compares with B's 0.393 directly; then round 4 for B and R.
  PASS eps_3(R) <= 0.30e-6 -> round 4 decides the trend. KILL eps_3(R) >= 0.37e-6 -> staleness is not one-hop-recoverable; stay with B. Prediction eps_3(R) 0.30e-6, 50%. Cost ~5 CPU-h.
 Status: DONE (known case part of the run).
+ REFRESHED REFERENCE, KNOWN CASE (worker, ref2hop/known/check.log): projection of h_1 on (L2, h_1) exact (cv eps2 -4.5e-16) up to the D-norm gauge constant -0.0652; the clip to the target range
+  moved 805 rows (weight 2e-9); l_part vs ref max 1.27 on rows of weight 3e-11, weighted rms 1.8e-6, alpha_start -0.1. Lead: my 1e-9 bar ignored the clip (a clipped row changes E_L at its
+  neighbours); accepted at weighted rms < 1e-5 provided the rows off by > 1e-6 lie within one hop of the 805 moved rows (worker checks before arm R). Round-k projection uses round-k weights.

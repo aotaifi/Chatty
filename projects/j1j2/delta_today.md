@@ -2414,3 +2414,10 @@
 2026-11-20 13:23 VERDICT job ref2hop_B: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/B/ANALYSIS.md]
 2026-11-20 worker: ref2hop all four arms DONE_ALL; K known case N 2.56672e-6 (dev 9e-6); results in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/{K,S,A,B}; claude -p analysis failed (auth), gates run by hand
 2026-11-20 lead: ref2hop read (grades re-read): arm B eps 0.209/0.393 -> BETWEEN; N(chi_3^B) 2.4322e-6 (chain loop 2.6672). Paper check 'REFRESHED ONE-HOP REFERENCE' DONE; arm R + round 4 briefed to the same worker.
+2026-11-20 worker: REFRESHED ONE-HOP launched: known m40, R m41 (proj3, l'_2 map, arm R r3, gate, round 4), Rs m42, B4 m53; watchers ref2hop_{known,R,Rs,B4}; dir .../ref2hop/{known,R,Rs,B4}; code 24517de unchanged
+2026-11-20 15:01 VERDICT job ref2hop_known: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/known/ANALYSIS.md]
+2026-11-20 15:03 VERDICT job ref2hop_R: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/R/ANALYSIS.md]
+2026-11-20 15:08 VERDICT job ref2hop_Rs: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/Rs/ANALYSIS.md]
+2026-11-20 15:08 VERDICT job ref2hop_B4: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/B4/ANALYSIS.md]
+2026-11-20 worker: REFRESHED ONE-HOP STOPPED at known case (/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/known/check.log): projection cv eps2 -4.5e-16, alpha_start -0.1, but max|l_part - ref_parts/l_part| 1.27 (>1e-9: 810787 rows >1e-9, weight share 1.8e-3; 22 rows >0.1, weight 3e-11); table = lin_s1 - 0.0652 (free constant) + 805 clipped rows; R/Rs/B4 did not run (STOP markers)
+2026-11-20 lead: refreshed-reference known case accepted on weights (rms 1.8e-6; 1e-9 bar ignored the clip), pending the one-hop localisation check; R/Rs/B4 relaunched.

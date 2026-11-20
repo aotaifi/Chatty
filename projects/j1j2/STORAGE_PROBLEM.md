@@ -1149,3 +1149,19 @@ Next rung (CPU, worker, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/): ar
  eps_3 = N(chi_3^B) - N(T_3^B). PASS eps_3 <= 0.30e-6 (fixed point <= 2.12e-6) -> GPU ratnet with these inputs, warm-started. KILL eps_3 >= 0.45e-6 -> neighbour spread is not the lever.
  Between: report. Cost ~6-8 CPU-h on workstations. Prediction: eps_2(B) 0.25e-6 (0.1-0.4), eps_3(B) 0.30e-6, 50%.
 Status: DONE (known case is part of the run, read before arm B's numbers).
+ FIXED-REFERENCE TWO-HOP INPUT, RESULT (worker 24517de on j1j2-ratnet; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/<arm>/{r2fit,map3,r3fit}; lead re-read every grade.json 2026-11-20):
+  known case K (L2+h_1+l_1+f_1) N 2.566723e-6 = N(T_2); feature identity 3.6e-15. Broken S (l_1 shuffled) 3.0669e-6 = L2h level: l_1 carries the gain.
+  arm A (L2+h_1, no chain): N(chi_2) 3.0605, N(T_3) 2.1280, N(chi_3) 2.7113 -> eps 0.494 / 0.583. arm B (L2+h_1+l_1): N(chi_2) 2.7760, N(T_3^B) 2.0394, N(chi_3) 2.4322 -> eps 0.209 / 0.393 (e-6).
+  VERDICT BETWEEN (eps_3 0.393; pass <= 0.30, kill >= 0.45). Prediction eps_2 0.25 / eps_3 0.30: eps_2 right, eps_3 high. Cumulative kept share (A_3 derived 1.918): B 0.943 / 0.924.
+  Reading [equation]: in round 2, l_1 IS the round's own factor ln|u_2| (reference = current head), so eps_2 0.209 is the f_J part alone. In round 3 the needed factor uses E_L[chi_2^B]; the
+  reference h_1 is one round stale. eps_3 - eps_2 = 0.18e-6 = cost of the stale reference after one round; it grows as h_k drifts from h_1. Lever confirmed (2.4x / 1.4x); staleness is the new term.
+
+REFRESHED ONE-HOP REFERENCE, PAPER CHECK (lead 2026-11-20)
+Derivation: round k needs ln|1 + a(E_L[chi_{k-1}] - E)|, i.e. h_{k-1} at neighbours. h_{k-1} itself uses l (two-hop), so its exact neighbour values are three-hop (nesting). Replace it by its
+ one-hop projection h'_{k-1} = cubic fit of (ln chi_{k-1} - ln B) on (L2, h_1) [fixed one-hop inputs]; then l'_{k-1} = ln|1 + a'(E_L[B e^{h'_{k-1}}] - E')| needs only two-hop ratios: cost z^2 per
+ amplitude, flat in k. Round-k inputs: L2 + h_1 + l_1 + l'_{k-1} (fixed count; l' replaced each round, never accumulated). Miss left: the neighbour spread of h_{k-1} - h'_{k-1} (its two-hop part),
+ instead of h_{k-1} - h_1. Checked: round 2 limit: h'_1 = h_1 exactly -> l'_1 = l_1, reduces to arm B. Confidence 80% in the algebra, 50% that the gain is >= half the staleness.
+Known case: projection of h_1 itself must return h_1 (cv eps2 ~0) and l' = l_1 to 1e-9. Broken: l' column shuffled -> no better than arm B.
+Next rung (CPU, same worker): arm R round 3 on the SAME target T_3^B (chi_2 = chi_2^B), so eps_3(R) compares with B's 0.393 directly; then round 4 for B and R.
+ PASS eps_3(R) <= 0.30e-6 -> round 4 decides the trend. KILL eps_3(R) >= 0.37e-6 -> staleness is not one-hop-recoverable; stay with B. Prediction eps_3(R) 0.30e-6, 50%. Cost ~5 CPU-h.
+Status: DONE (known case part of the run).

@@ -661,7 +661,8 @@ STEP BACK 2026-11-10 (8x8 base retrain; second failed version: shift scan then l
 - Lanczos alpha needs mu_3 (H applied twice): costly at scale; later, not now (PI 2026-10-28).
 
 ## Running (2026-11-16 09:45; every job has a watcher writing VERDICT lines to delta_today.md)
-- 2026-11-20: worker CPU arms A/B/K/S in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop (STORAGE "FIXED-REFERENCE TWO-HOP INPUT"); PASS eps_3 <= 0.30e-6 -> GPU ratnet with fixed two-hop inputs, warm-started; KILL eps_3 >= 0.45e-6 -> step back (lever is not neighbour spread); K misses N(T_2) by >1% -> fix features first. Ratnet r2_s1 done (N 3.3865e-6, refit from scratch, off-path).
+- 2026-11-20 (2nd): worker arm R (refreshed one-hop reference) + round 4 for B and R, same dir (STORAGE "REFRESHED ONE-HOP REFERENCE"); KILL eps_3(R) >= 0.37e-6 -> stay with B; else round 4 decides the trend.
+- 2026-11-20 (done, B eps 0.209/0.393 BETWEEN): worker CPU arms A/B/K/S in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop (STORAGE "FIXED-REFERENCE TWO-HOP INPUT"); PASS eps_3 <= 0.30e-6 -> GPU ratnet with fixed two-hop inputs, warm-started; KILL eps_3 >= 0.45e-6 -> step back (lever is not neighbour spread); K misses N(T_2) by >1% -> fix features first. Ratnet r2_s1 done (N 3.3865e-6, refit from scratch, off-path).
 - 8x8 base s306 (sha 45fa54e6) / s307 (b86a0f36): full projection -0.4989092(14) / -0.4989096(14); base FN p=0 -0.4988780(27) (4222088; may be
   ~1e-5 high, not reused in round comparisons). Bars: Nomura-Imada -0.498886(1), Varbench -0.498963(2).
 - s306 p=1 constants DONE (theorie a40-24gb 17931202, check.txt PASS): alpha -0.17605(337e-5), E -31.926142, w -1; B0 control z +0.3/+1.2;
@@ -798,5 +799,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The copy loop keeps 89-90% of the exact rounds' energy gain through round 3 on 6x6, but stalls near 2.45e-6 (exact rounds reach 1.68e-6) because each copy misses the network's own value at neighbouring configurations.
-- NEXT (in progress, high): CPU test of giving every round's copy fixed two-hop inputs from the round-1 network (STORAGE 'FIXED-REFERENCE TWO-HOP INPUT'); pass if the per-round copy error falls from 0.54e-6 to 0.30e-6 or less, then the GPU network with those inputs.
+- STATUS (in progress, high): Giving each round's copy a fixed two-hop input cut the copy error 2.4x; the 6x6 copy now reaches 2.43e-6 at round 3 (one-hop copy 2.71e-6, exact rounds 1.92e-6) and keeps 92% of the exact gain, at a cost that does not grow with rounds.
+- NEXT (in progress, high): Refresh that input each round from the latest copy (cost still flat) and run round 4, to see whether the copy keeps falling toward the exact rounds.

@@ -1126,3 +1126,26 @@ DECISION (lead 2026-11-19, after reading 2307.15521): adopt the frozen-target lo
   ratnet round 1 (lin_s1) 4.444 - 3.950 = 0.494e-6. eps is ~constant per round while the step shrinks by kappa 0.32, so q must fall; it is not degradation. With constant eps the loop's
   fixed point is N* = N_inf + eps/(1 - kappa) = 1.680 + 0.52/0.676 = 2.45e-6 (exact rounds: A_2 2.416e-6, N_inf 1.680e-6). The per-round q line was the wrong test; the deciding number
   is eps. To go below ~2.4e-6 eps itself must shrink. PREDICTION for ratnet loop r2_s1 (job 18070490, before its grade): N = N(T_2) + 0.5e-6 = 3.07e-6 +- 0.1e-6 (q_2 ~0.73).
+ LOOP, RATNET r2_s1, RESULT (job 18070490, /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/loop/r2_s1/out/grade.log, lead read 2026-11-20 08:15): N(chi_2) 3.3865e-6 (alpha -0.0847),
+  q_2 0.563, eps_2 0.82e-6. PREDICTION 3.07 +- 0.1 MISSED by 3 sd. Why (lead, from existing fits): the ratnet was refit from scratch (fresh net_seed) on one-hop inputs only and lands where the
+  cubic without the previous head lands (L2 q_2 0.591, N 3.33e-6); the cubic loop's L2h had h_1 = ln chi_1 - ln B as a 9th input (0.737). Carrying the previous head forward is worth 0.15 of
+  round 2: a refit must keep it (warm start or input), as 2307.15521 keeps one network training. My 3.07 assumed the ratnet >= L2h; it had less input. r3 teacher 18070867 (on ratnet r2) not needed.
+ CUMULATIVE (lead, derived): share of the exact rounds' energy gain kept, (N(A_0) - N(chi_k))/(N(A_0) - N(A_k)): k=1 0.896, k=2 0.897 (cubic chain), k=3 0.889 (A_3 = 1.918e-6 from the
+  contraction model, not measured). Constant eps gives the limit (7.00 - 0.77)/7.00 = 0.89 for all k: the copy does not decay in this measure; the energy stalls at ~2.45e-6.
+
+FIXED-REFERENCE TWO-HOP INPUT, PAPER CHECK (lead 2026-11-20 08:30)
+Derivation [exact]: chi = B e^{h(x)}; E_L[chi](x) = D_x + sum_b H_b s_x s_yb rho_b(x) exp[h(y_b) - h(x)], rho_b = B(y_b)/B(x). Round map: U_{k+1} = ln T_{k+1} - ln B = h_k + ln|1 + a(E_L[chi_k] - E)|
+ + 1.307 f_J[G_{k+1}]. A head on x's one-hop inputs sees h_k(x) but not h_k(y_b) (two hops of B, since h_k is a function of y_b's one-hop ratios). The missed term each round is the
+ neighbour spread of h_k beyond what x's inputs predict; as h_k converges it converges -> eps constant [conjectured link, consistent with eps 0.49/0.49/0.54]. Deciding term: h_k(y_b) in E_L.
+ Fix without nesting: give every round's head the SAME frozen two-hop features of the reference chi_1 = B e^{h_1} (lin_s1): l_1(x) = ln|1 + a_1(E_L[chi_1](x) - E_1)| (a_1 = -0.1, round2/teacher
+ alpha_start), plus h_1(x). Inputs are fixed functions of B: cost per amplitude z^2 ratio evaluations (one-time factor z over now), flat in k; no chain h_k(h_{k-1}) as in L2h.
+ Then round 3's miss is only the neighbour spread of the increment h_2 - h_1 (not of h_2): should be smaller [hypothesis].
+Checked: round 2 with inputs (L2, h_1, l_1, f_1 = f_J[G_2]) contains U_2 = h_1 + l_1 + 1.307 f_1 exactly (linear terms) -> must grade at N(T_2) = 2.5667e-6 (known case below). Limit a -> 0: l_1 -> 0,
+ class reduces to L2 + h_1 (no chain), measured as arm A. Confidence in the derivation 85%; in the size of the gain 50%.
+Prior results: CAPACITY CALIBRATION (cubic on fixed one-hop inputs: 0.95 of round 1, 0.59 of round 2; L2+ with exact r_1* 0.747; L2h 0.737); spin-input ViT add-on (arm H) failed to rebuild B's
+ ratios from spins (STORAGE 'ARM H STEPS DO NOT TRANSFER'); 2307.15521 sec 2 (one network kept training). Nothing measured with neighbour-gathered features.
+Known case: round 2, arm K = L2 + h_1 + l_1 + f_1 must grade N within 1% of 2.5667e-6. Broken: arm S = arm B with l_1 rows shuffled must grade no better than L2h (3.06e-6).
+Next rung (CPU, worker, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/): arm B = L2 + h_1 + l_1 on T_2 -> chi_2^B; T_3^B = M[chi_2^B]; arm B on T_3^B -> chi_3^B. Also arm A = L2 + h_1 (no chain), rounds 2-3.
+ eps_3 = N(chi_3^B) - N(T_3^B). PASS eps_3 <= 0.30e-6 (fixed point <= 2.12e-6) -> GPU ratnet with these inputs, warm-started. KILL eps_3 >= 0.45e-6 -> neighbour spread is not the lever.
+ Between: report. Cost ~6-8 CPU-h on workstations. Prediction: eps_2(B) 0.25e-6 (0.1-0.4), eps_3(B) 0.30e-6, 50%.
+Status: DONE (known case is part of the run, read before arm B's numbers).

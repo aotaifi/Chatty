@@ -1192,3 +1192,26 @@ Status: DONE (known case part of the run).
   ORh = u set to U on top-clipped rows, ORs = u set to U where u - U > 3 (oracles, test only: how much of eps the spikes carry).
   KILL spike hypothesis: ORs eps_5 >= 0.33 (spikes carry < 0.04 of 0.373). PASS hypothesis: ORs eps_5 <= 0.25. PASS fix: FB0 or FBlo eps_5 <= 0.26 and eps_4 <= 0.20 -> rerun rounds 4-6
   with the fallback (and a spike penalty in the loss) to see whether eps stays flat. Between: report. Prediction: ORs eps_5 0.22 (60%); FBlo beats FB0; fix passes 45%. Cost ~2 CPU-h.
+ SPIKE TEST, RESULT (worker; ref2hop/spike/r{4,5}/grade.json, lead re-read 2026-11-21): eps (e-6) vs fixed T_k^R, unmodified r4 0.253 / r5 0.373:
+  FB0 0.202 / 0.294; FBlo 0.202 / 0.294; ORh 0.202 / 0.294 (all three equal to 1e-10: any value on the top-clipped rows below the spike gives the same N); ORs 0.179 / 0.250.
+  E_var/site: unmodified 3.2e-5 / 4.2e-5, FB0 8.5e-6 / 9.3e-6, ORs 2.8e-6 / 2.8e-6. VERDICT: hypothesis PASS at the line (ORs eps_5 0.2497 <= 0.25): spikes carry 0.07 / 0.12 of eps
+  (a third at r5); fix BETWEEN (FB0 0.294 > 0.26, eps_4 0.202 > 0.20): the range flag catches the top-clipped spikes only; in-range spikes (u - U > 3, 118k rows at r5) carry 0.045 more.
+
+COPY-MEASURE WEIGHTS FOR THE COPY FIT, PAPER CHECK (lead 2026-11-21)
+Derivation: (1) [exact] for H stoquastic with ground state T > 0 and psi = T f: <psi|H - E0|psi> = 1/2 sum_{x!=y} |H_xy| T_x T_y (f_x - f_y)^2 (ground-state transform; Dirichlet form of the
+ generator). (2) [exact] copy chi = T e^d, f = e^d: (f_x - f_y)^2 = e^{d_x + d_y} 4 sinh^2((d_x - d_y)/2). So the cost of a copy error is sum |H| chi_x chi_y 4 sinh^2(Dd/2): weighted by the
+ COPY's measure. (3) [approx, 2nd order in d] the D-norm in capacity_fit uses n HW p_x p_y (d_x - d_y)^2 with p from the TARGET: it drops e^{d_x+d_y} and the sinh. For a spike d = 10 next to d ~ 0
+ the true cost is e^{20} T T, the D-norm charges 100 T T: under-weighted by ~5e6. This is the deciding term; it explains why spikes sit exactly where p_T ~ 1e-14 and grow unchecked.
+ (4) Remedy [approx]: weights p_mix = sqrt((p_T^2 + p_chi^2)/2) (sum n p_mix^2 = 1), p_chi = copy amplitude from a first pass; restores e^{d_x+d_y} on spike bonds (sinh factor still missing,
+ under by ~220x at d = 10, shrinking as d falls); one more fit pass, flat inference cost.
+Checked: d = 0 limit: p_mix = p_T, D-norm unchanged. Constant shift d: both forms give zero (gauge). Small d: e^{d_x+d_y} 4 sinh^2 -> (Dd)^2, recovers the D-norm. Sign of the error: positive spikes
+ (copy too large) are the under-weighted ones, negative ones are over-weighted relative to their cost: matches the data (top-clipped, not bottom-clipped, rows carry the excess mass 3.5e-5 vs 1.5e-25).
+ Applicability: our grade is FN energy of a one-step map, T_k is not the ground state of H_FN: (1) holds only as the near-target expansion. Confidence 75% that reweighting removes most spike cost.
+Prior results: recall.sh j1j2 "copy measure|reweight|own distribution|spike|Dirichlet": PLAN 691-693 (B refit per-row trust region |dlnB| <= 0.5, a different fit: pfaffian base, not the copy head);
+ delta 11-05 T-EDGE "reweighting worsens the tax" (QMC sampling reweighting for the sign, not fit weights). Neither binds here. Literature: supervised wave-function fits sample from both psi and
+ target (Kochkov & Clark arXiv:1811.12423, from memory, not re-read); fitted value iteration with extrapolating regressors diverges (Gordon 1995, from memory).
+Known case + broken: W5f (refit on fixed T_5^R with p_mix) must cut top-clip mass and eps_5 to <= ORs 0.25; broken W5s (p_chi permuted, rng 777) must NOT (eps_5 >= 0.33).
+Next rung (CPU, arm W = arm R inputs + p_mix two-pass fit + FB0 guard): W4 on T_4^R, then the chain W5, W6 from chi_4^W (map, proj, mapP, fit x2, guard, grade), plus exact map6 for N(A_6).
+ PASS eps_5^W <= 0.22 and eps_6^W <= 0.22 -> spikes were the degradation; next the network copy with this loss. KILL eps_5^W >= 0.30 -> the rise is not spikes (capacity/input reach).
+ Between: report. Prediction eps_4^W 0.17, eps_5^W 0.20, eps_6^W 0.21 (50%). Cost ~20 CPU-h over ~15 h wall.
+Status: DONE (known case runs first, read before the chain's numbers).

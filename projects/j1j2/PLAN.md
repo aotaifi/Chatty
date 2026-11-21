@@ -800,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Against exact rounds 1-5 the copy keeps 90-94% of the total gain but stalls at round 5 (1.93e-6 vs exact 1.20e-6); a third of its error is amplitude spikes that the fit's loss charges about a million times too little.
-- NEXT (in progress, high): Refit the copy with weights from its own distribution, which charges spikes their real energy cost, over rounds 4-6 (CPU, about 15 h); pass if the copy error stays at or below 0.22e-6 per round.
+- STATUS (in progress, high): Against exact rounds 1-5 the copy keeps 90-94% of the total gain but stalls at round 5 (1.93e-6 vs exact 1.20e-6); a third of its error is amplitude spikes where the fit extrapolates to inputs far outside its training range.
+- NEXT (in progress, high): Refit the copy with inputs compressed so the fit cannot extrapolate (asinh), at rounds 4 and 5; pass if the round-5 copy error falls to 0.25e-6 or less.

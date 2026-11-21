@@ -2439,3 +2439,5 @@
 2026-11-21 03:14 VERDICT job spike_r5: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/spike/r5/ANALYSIS.md]
 2026-11-21 worker: spike test graded (spike/r4,r5/grade.json): eps_4 FB0/FBlo/ORh/ORs 0.202/0.202/0.202/0.179e-6; eps_5 0.294/0.294/0.294/0.250e-6 (ref 0.2527/0.3732); no pass/kill applied
 2026-11-21 lead: spike test: oracle removal eps 0.253->0.179 (r4), 0.373->0.250 (r5), E_var 15x down; range-flag fallback 0.202/0.294. Paper check COPY-MEASURE WEIGHTS done (D-norm drops e^{dx+dy}: spikes under-weighted ~5e6); arm W briefed
+2026-11-21 worker arm W: STOPPED before any fit at the p_out check: p_out.npy != p_chi(lA_next.npy) (max rel diff 0.80 map4 / 1.50 map5 on rows p>1e-6; median 2.5e-3); no job launched; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/W/wtools.py
+2026-11-21 lead: arm W first check stopped correctly (p_out = FN phi, not exp(lA_next)); copy measure redefined p_c = p_T exp(t - lA_next); worker resumed

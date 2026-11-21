@@ -1215,3 +1215,5 @@ Next rung (CPU, arm W = arm R inputs + p_mix two-pass fit + FB0 guard): W4 on T_
  PASS eps_5^W <= 0.22 and eps_6^W <= 0.22 -> spikes were the degradation; next the network copy with this loss. KILL eps_5^W >= 0.30 -> the rise is not spikes (capacity/input reach).
  Between: report. Prediction eps_4^W 0.17, eps_5^W 0.20, eps_6^W 0.21 (50%). Cost ~20 CPU-h over ~15 h wall.
 Status: DONE (known case runs first, read before the chain's numbers).
+ AMENDMENT (lead 2026-11-21, after the worker's stop): p_out of round_map is the FN ground state phi at the best alpha, not exp(lA_next) (rel. diff median 2e-3, max 1.5; W/wtools.py check).
+  In (1) T is phi, so the copy measure is phi e^{d} with d = u - U: p_c = p_T exp(t - lA_next), normalised (sum n p_c^2 = 1). p_mix = sqrt((p_T^2 + p_c^2)/2). Identity check: t = lA_next gives p_c = p_T.

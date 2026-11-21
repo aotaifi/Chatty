@@ -1176,3 +1176,19 @@ Status: DONE (known case part of the run).
   Copy error per round, R: 0.209 / 0.170 / 0.253 (B: 0.209 / 0.393 / 0.427). Per-round q_R: 0.77 (r3), 0.51 (r4). Copy at round 4 (1.948e-6) is below EXACT round 2 (2.416e-6).
   Contraction model broke at round 4: predicted N(T_4^R) = 1.680 + 0.324(2.209 - 1.680) = 1.851, measured 1.6955 (also B: 1.924 vs 1.811); rounds <= 3 matched to 0.5%. So N_inf 1.680 and
   derived A_3 1.918 / A_4 1.757 are not trusted: exact A_3, A_4, A_5 by round_map on rounds23/lA_2.npy are running (CPU) before any comparison with exact rounds is quoted.
+ EXACT ROUNDS 3-5 AND ARM R ROUND 5, RESULT (worker 24517de; ref2hop/exact/map3-5, ref2hop/R5; lead re-read round_map.json, grade.log, fit.json 2026-11-21):
+  exact: N(A_2) check 2.4160953 (= rangelimit 2.416095); N(A_3) 1.793102, N(A_4) 1.423426, N(A_5) 1.200171 (e-6). arm R round 5: N(T_5^R) 1.558138, N(chi_5^R) 1.931361, eps_5 0.373.
+  Copy vs exact, rounds 1-5: cumulative share (N_A0 - N_chi)/(N_A0 - N_A) 0.896 / 0.943 / 0.940 / 0.928 / 0.902; ratio N_chi/N_A 1.13 / 1.15 / 1.23 / 1.37 / 1.61.
+  Per-round q: 0.90 / 0.89 / 0.77 / 0.51 / 0.04. The copy STALLS at round 5 (1.948 -> 1.931) while its target gained 0.39. eps by round 0.209 / 0.170 / 0.253 / 0.373: degrades.
+ DIAGNOSIS (lead 2026-11-21, R5/r5fit/tables/t_R.npy vs R5/map5/lA_next.npy):
+  [measured] the cubic head u extrapolates on rows the D-norm weight (n p^2) ignores: raw fit range [-3995, 491] vs target U range [-15.4, 7.6]; 5638 rows clipped at the top carry 3.5e-5 of
+  chi_5's norm vs 4.2e-10 under T_5; top rows by KL(chi||T): u - U = +9 to +11 (amplitude x e^10) at p_T ~ 1e-14. |u-U| quantiles 0.5/0.99/0.999: 0.015 / 2.7 / 5.8.
+  Clipped rows by round 1201 / 2824 / 6237 (R3-R5); E_var/site 3.9e-6 (chi_3) -> 3.2e-5 (chi_4) -> 4.2e-5 (chi_5), while the D-norm residual eps2*D_UU stays 4.7e-5 / 4.9e-5 / 8.7e-5:
+  the error that grows is where the loss does not look.
+  [equation, conjectured as the compounding term] a spike chi(x0) -> e^D chi(x0) enters every neighbour y as E_L[chi](y) += H_{y x0} (e^D - 1) chi(x0)/chi(y); the round map multiplies T_{k+1}(y)
+  by |1 + a(E_L(y) - E)| and FN adds H_{y x0} chi(x0)/chi(y) to H_FN(y,y) on sign-violating bonds. So spikes in round k inflate round k+1's target and the grade near them: error compounds.
+ SPIKE TEST, PASS/KILL (lead 2026-11-21, written before the run): regrade fixed tables for chi_4^R (T_4^R, eps 0.253) and chi_5^R (T_5^R, eps 0.373), targets unchanged.
+  Tags: FB0 = u set to 0 (fall back to B) where u hit the top clip; FBlo = u set to lo there (both production-legal: the flag is raw head output > trained max);
+  ORh = u set to U on top-clipped rows, ORs = u set to U where u - U > 3 (oracles, test only: how much of eps the spikes carry).
+  KILL spike hypothesis: ORs eps_5 >= 0.33 (spikes carry < 0.04 of 0.373). PASS hypothesis: ORs eps_5 <= 0.25. PASS fix: FB0 or FBlo eps_5 <= 0.26 and eps_4 <= 0.20 -> rerun rounds 4-6
+  with the fallback (and a spike penalty in the loss) to see whether eps stays flat. Between: report. Prediction: ORs eps_5 0.22 (60%); FBlo beats FB0; fix passes 45%. Cost ~2 CPU-h.

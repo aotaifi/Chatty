@@ -800,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Rebuilding the copy's two-hop input from the latest copy each round keeps the copy error flat (0.17-0.25e-6 per round); the 6x6 copy reaches 1.95e-6 at round 4, below the exact round 2 (2.42e-6), at a cost that does not grow with rounds.
-- NEXT (in progress, high): Exact rounds 3-5 and copy round 5 on CPU, to compare the copy with the exact rounds it stands in for.
+- STATUS (in progress, high): Against exact rounds 1-5 the copy keeps 90-94% of the total gain, but it stalls at round 5 (1.93e-6 vs exact 1.20e-6): the fit puts large amplitude spikes on rare configurations, and they compound over rounds.
+- NEXT (in progress, high): Remove the spikes (fall back to the base network where the fit leaves its trained range) and check the copy error at rounds 4-5 stays flat.

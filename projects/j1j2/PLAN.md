@@ -800,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The cubic copy reaches a floor near 1.93e-6 whatever its target (exact rounds converge near 1.1e-6), keeping 89% of the exact rounds' total gain; fixes to its loss did not move the floor.
-- NEXT (in progress, high): Same inputs, bounded neural network instead of the cubic, on rounds 4-5 (CPU, ~3 h): below 0.25e-6 copy error means the floor was the cubic's capacity.
+- STATUS (in progress, high): A small neural network on the same inputs breaks the cubic's floor: round-5 copy N 1.73e-6 (cubic 1.93e-6, exact 1.20e-6), keeping 92% of the exact rounds' total gain.
+- NEXT (in progress, high): Copy network to network for rounds 5-6 (CPU, ~8 h): the copy error must stay below 0.25e-6 and not grow from round to round.

@@ -1246,3 +1246,21 @@ Known case + broken: NN on fixed T_4^R must reach eps_4 <= the cubic's 0.253 (R4
 Next rung: NN5 on fixed T_5^R. PASS eps_5 <= 0.25 -> capacity was the floor: NN chain rounds 5-6 (and the GPU network copy). KILL eps_5 >= 0.35 -> information floor: the inputs must grow
  (joint two-exchange tokens, l' at several alpha). Between: report. Prediction eps_5 0.27 (50%), E_var < 1e-5. Cost ~3 CPU-h on workstations.
 Status: DONE.
+
+BOUNDED NETWORK ON THE COPY INPUTS, RESULT (lead 2026-11-21; runs /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NN/{NN4r,NN4sr,NN5r}/fit/grade.json, nn.json; random 10% holdout rng 2, seed 0)
+  fit   target N   copy N     eps     E_var_site  train/val loss     rows outside U range
+  NN4   1.695513   1.910675   0.215   3.80e-6     3.63e-6/3.52e-6    0
+  NN4s  1.695513   2.154809   0.459   4.94e-6     7.28e-6/7.47e-6    0     (l' permuted rng 777)
+  NN5   1.558138   1.731453   0.173   3.93e-6     4.71e-6/4.91e-6    0     (cubic on the same target: 1.931361, eps 0.373)
+  (e-6; deterministic full-space grades, no chains; guard flagged 0 rows, network output in [-1.2, 1.4] inside U's [-15.4, 7.6])
+  Known case PASS (0.215 <= 0.253); broken PASS (l' permuted loses 0.244 >= 0.1); NN5 PASS (0.173 <= 0.25; predicted 0.27 at 50%: better).
+  Reading: the cubic floor N 1.93 was the cubic's capacity (spikes + bulk), not missing information in (L2, h_1, l_1, l'). Cumulative share at NN5: (8.683-1.731)/(8.683-1.117) = 0.919 (cubic 0.89).
+  Caveat: NN5's input chi_4 is the cubic arm-R copy; a network-only chain is not yet measured.
+
+NETWORK-ONLY CHAIN ROUNDS 5-6, PASS/KILL (lead 2026-11-21)
+Model [approx, fitted to arm R]: N(M[chi]) - N* = c (N(chi) - N*), c = 0.56, N* = 1.05 (R: 1.948->1.558 and 2.209->1.696 give c 0.566, 0.557). With a constant copy error eps per round
+ the chain converges to x* = N* + eps/(1-c): eps 0.17 -> x* 1.44 (share 0.958 of the exact gain). Compounding would show as eps_k growing with k.
+Chain: chi_4^N = NN4 (1.9107) -> map5 -> proj5 -> mapP4 -> NN fit -> chi_5^N -> map6 -> proj6 -> mapP5 -> NN fit -> chi_6^N (same pipeline as W/chain_w4.sh, NN fit in place of armfit).
+PASS: eps_5^N, eps_6^N <= 0.25 and N(chi_6^N) < N(chi_5^N) -> no degradation: GPU network copy next. KILL: eps_6^N > eps_5^N + 0.1, or N(chi_6^N) >= N(chi_5^N) -> copy errors compound:
+ diagnose which inputs went stale (l' from a projection h' of a network copy) before anything else. Between: report.
+Prediction: T_5^N 1.53, chi_5^N 1.70, T_6^N 1.41, chi_6^N 1.58 (+-0.06 at 50%). Cost ~3.8 h per round on one workstation (map 26 min, proj 68, mapP 26, fit 96, grade 12).

@@ -1217,3 +1217,11 @@ Next rung (CPU, arm W = arm R inputs + p_mix two-pass fit + FB0 guard): W4 on T_
 Status: DONE (known case runs first, read before the chain's numbers).
  AMENDMENT (lead 2026-11-21, after the worker's stop): p_out of round_map is the FN ground state phi at the best alpha, not exp(lA_next) (rel. diff median 2e-3, max 1.5; W/wtools.py check).
   In (1) T is phi, so the copy measure is phi e^{d} with d = u - U: p_c = p_T exp(t - lA_next), normalised (sum n p_c^2 = 1). p_mix = sqrt((p_T^2 + p_c^2)/2). Identity check: t = lA_next gives p_c = p_T.
+ ARM W KNOWN CASE, RESULT (worker; ref2hop/W/{w4fit,w5f,w5s} grade logs + fit.log, lead read 2026-11-21 09:30): eps vs fixed T_k^R (e-6), raw / guarded:
+  W4 (p_mix, r4): 0.214 / 0.209, E_var 4.3e-6, clipped 3906, raw range [-1191, 2628]. W5f (p_mix, r5): 16.8 / 4.02 (!), E_var 8.6e-3, clipped 113453, D-norm eps2 0.156 (R5: 0.022).
+  W5s (permuted ratio, broken): 0.376 / 0.295 = no change from R5. KNOWN CASE FAILED: W5f must reach <= 0.25; it is 16x worse. Copy-measure reweighting, as a second LSQ pass, is dropped.
+  Diagnosis [equation]: the head is a global cubic in standardised inputs Z; a spike row has |Z| far outside the bulk (raw output ~1e3 = Z^3 terms). Re-weighting those rows makes them high-leverage
+  points: the cubic bends to them, the bulk fit degrades (eps2 0.022 -> 0.156) and extrapolation moves to 113k other rows. The loss weights were never the lever; the extrapolation of a polynomial
+  in unbounded inputs is. Remedy class: bounded input growth (asinh transform, existing option TRANSFORM=asinh) or winsorised Z; at r1-r2 asinh gave no retention gain (line ~1053) when spikes were few.
+ ASINH HEAD TEST, PASS/KILL (lead 2026-11-21, before the run): arm R inputs, p = p_T, TRANSFORM asinh, FB0 guard, fixed targets T_4^R, T_5^R (tags A4, A5).
+  PASS eps_4 <= 0.19 and eps_5 <= 0.25 (oracle-spike-free level without the oracle) -> asinh chain rounds 5-6. KILL eps_5 >= 0.33. Between: report. Prediction eps_5 0.26 (50%), clipped rows < 1000.

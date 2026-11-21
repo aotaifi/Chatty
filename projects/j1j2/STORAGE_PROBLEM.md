@@ -1225,3 +1225,24 @@ Status: DONE (known case runs first, read before the chain's numbers).
   in unbounded inputs is. Remedy class: bounded input growth (asinh transform, existing option TRANSFORM=asinh) or winsorised Z; at r1-r2 asinh gave no retention gain (line ~1053) when spikes were few.
  ASINH HEAD TEST, PASS/KILL (lead 2026-11-21, before the run): arm R inputs, p = p_T, TRANSFORM asinh, FB0 guard, fixed targets T_4^R, T_5^R (tags A4, A5).
   PASS eps_4 <= 0.19 and eps_5 <= 0.25 (oracle-spike-free level without the oracle) -> asinh chain rounds 5-6. KILL eps_5 >= 0.33. Between: report. Prediction eps_5 0.26 (50%), clipped rows < 1000.
+ ARM W CHAIN + ASINH, RESULT (worker; ref2hop/W, collect.py; lead re-read grade logs and round_map.json 2026-11-21): eps (e-6), raw / guarded:
+  A4 asinh 0.313 / 0.194, A5 asinh 0.588 / 0.318 (clipped 41k / 45k): BETWEEN (pass eps_4 <= 0.19, eps_5 <= 0.25; kill >= 0.33). Not the fix.
+  Chain from the cleaner chi_4^W (N 1.9047, E_var 4.3e-6): T_5^W 1.5164 (better than T_5^R 1.5581), pass-1 copy N 1.9503, eps 0.434 (R5 from the spiky chi_4: 0.373). Pass-2 reweighted fits broke
+  (2.757 guarded). Exact N(A_6) 1.117349 (exact/map6; round-6 gain 0.083: the exact rounds converge near 1.1).
+  READING: the copy lands at N 1.93-1.95 whatever its target (T_5 1.558 or 1.516), and the oracle spike-free tables at 1.81-1.87: a FLOOR of the cubic family on these inputs, not compounding
+  (a cleaner previous copy did not lower the next copy error). Copy keeps (8.683 - 1.93)/(8.683 - 1.117) = 0.89 of the exact rounds' total gain at their convergence; its N is 1.7x theirs.
+ STEP BACK (lead 2026-11-21; second failed fix of the cubic copy: range guard partial, reweighting broke, asinh between):
+  1. Tool: a bounded learner on the SAME inputs (tanh MLP or trees) separates capacity from information in ~1 CPU-h; more cubic engineering does not.
+  2. Same form: approximate power iteration with a supervised step (Giuliani, Vicentini, Rossi, Carleo arXiv:2303.08902, abstract read: works if the learning step is efficient; uses kernel
+     ridge regression, a bounded smoother) and approximate value iteration (floor ~ step error/(1 - contraction); averagers are stable, extrapolating regressors are not: Gordon 1995, from memory).
+  3. Switch: from the cubic proxy to a bounded network on the same inputs, which is also the PI's task (copy into a network).
+BOUNDED NETWORK ON THE COPY INPUTS, PAPER CHECK (lead 2026-11-21)
+Derivation: [exact] f(z) = w2 . tanh(W1 z + b1) + b2 obeys |f| <= |b2| + sum|w2| for all z: no growth outside the trained range (a cubic grows as |z|^3, the spikes' source). [exact] universal
+ approximation on compacts (Cybenko 1989): capacity grows with width, so at width 64-128 the network can only lose to the cubic through optimisation, not expressivity on the bulk.
+ [approx] loss: pointwise weighted MSE of u - U with weights n p_T^2 (the D-norm is its bond-difference form; constants are a gauge in both). Deciding quantity: N of the copy on a fixed target.
+Checked: width 0 limit -> constant (worse than cubic, as it must be); tanh linear regime reproduces a linear fit. Confidence 85% the network shows no spikes; 50% it beats the cubic floor.
+Prior results: recall j1j2 "MLP|tanh|bounded|trees": the ratnet (a network) r2 from scratch 3.3865 lacked the previous head and l inputs (LOOP RATNET r2 block): different inputs, does not bind.
+Known case + broken: NN on fixed T_4^R must reach eps_4 <= the cubic's 0.253 (R4); broken: l'_3 column permuted (rng 777) must lose >= 0.1 (l' carried 0.22 at round 3, Rs block).
+Next rung: NN5 on fixed T_5^R. PASS eps_5 <= 0.25 -> capacity was the floor: NN chain rounds 5-6 (and the GPU network copy). KILL eps_5 >= 0.35 -> information floor: the inputs must grow
+ (joint two-exchange tokens, l' at several alpha). Between: report. Prediction eps_5 0.27 (50%), E_var < 1e-5. Cost ~3 CPU-h on workstations.
+Status: DONE.

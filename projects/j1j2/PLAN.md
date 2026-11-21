@@ -800,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Against exact rounds 1-5 the copy keeps 90-94% of the total gain but stalls at round 5 (1.93e-6 vs exact 1.20e-6); a third of its error is amplitude spikes where the fit extrapolates to inputs far outside its training range.
-- NEXT (in progress, high): Refit the copy with inputs compressed so the fit cannot extrapolate (asinh), at rounds 4 and 5; pass if the round-5 copy error falls to 0.25e-6 or less.
+- STATUS (in progress, high): The cubic copy reaches a floor near 1.93e-6 whatever its target (exact rounds converge near 1.1e-6), keeping 89% of the exact rounds' total gain; fixes to its loss did not move the floor.
+- NEXT (in progress, high): Same inputs, bounded neural network instead of the cubic, on rounds 4-5 (CPU, ~3 h): below 0.25e-6 copy error means the floor was the cubic's capacity.

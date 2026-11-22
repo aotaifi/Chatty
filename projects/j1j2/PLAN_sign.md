@@ -2148,3 +2148,55 @@ STEP 7 CORRECTION + RUNG 2 (2026-11-17 ~23:05; Astra cj-2a649470cd33 = /scratch/
   So the copy limit is set by having to emulate the amplitude network's swap ratios and the previous sign net's global score from spins.
   Untried variants (open): nonlinear local regressors of ln r (pairwise window products); tau from l_2(z) + a local change (needs n_2 forwards at
   1.45M neighbours, ~CPU-h). Either can only raise the 0.40 ceiling of the ratio part; neither touches the cost of a second shell.
+
+## STEP 8: CHAINED SIGN COPY, PAPER CHECK (lead's relay of the PI, 2026-11-22: "let sign-lead work on his copying mechanism too")
+Metric: q_k = (N_start - N(copy_k)) / (N_start - N(exact round k)), bar 0.75-0.80 per round, no fall over >= 3 rounds.
+[exact, first order; cross terms 0.2% on the panel] q_k = 1 - R/G, where:
+- G = sum over the exact flip set of 4 P(x) offd(x);
+- R = sum over x with copy != exact of 4 P(x) |offd(x)|, the signed-margin regret.
+So the loss that matches what the energy sees is a 0-1 loss with weight P|offd|. The bond-product form is not needed (cross terms 0.2%).
+Measured: q_3(CF) = 9.56e-5 / 2.10e-4 = 0.46 (flat, fo_gate.json), one round only. Degradation over rounds has never been measured for the sign.
+Transfer of the lead's lessons:
+- (1) Polynomial floor: does not apply.
+- (2) Energy-weighted loss: the weight P|offd|. Expected gain is small, because CF's gain-weighted share (0.46) is already above its count share (0.42).
+- (3) The input. This is the lever. [exact] The C-free label is y_{k+1}(x) = sgn sum_b w_b(x) S_k(z_b). It does not depend on S_k(x).
+  The target at x is therefore a threshold of the old sign on the first shell. A spin-only net must re-emulate S_k at about 142 points,
+  which is the STEP 7e ceiling (0.40 even with exact old signs and local ratios).
+  The sign analogue of the lead's l' input is the shadow field h'(x) = sum_b w_b(x) S'_k(z_b), with exact one-hop ratios w_b.
+  For the walker this needs S' at the second shell: d^2 evaluations. So S' must be updatable in O(1) per two-swap (RBM/PP/Jastrow class), flat in k.
+  Measured on independent errors (label_condition.py): a shadow with error rate 0.01/0.05/0.10 keeps 0.94/0.84/0.77 of the flip labels. The bar needs <= ~5-10%.
+  The real risk: a shadow's errors sit on the last round's changes, which neighbour the next flips (domain growth). Independent noise is the optimistic case.
+Rung 2 (existing 8x8 table, 10,240 complete root stars, CPU, < 1 min), REGISTERED before any number.
+The question: first-order share q of y' = sgn h' when the shadow errors are correlated with the last round's changes.
+Arms:
+- LAG: S' = n_1 (one round stale), i.e. nrel1 at the neighbours.
+- MARSHALL: S' = +1 (memory-free).
+- CONTROLS: exact, which must give 1.00; inverted, which must give a negative share.
+Rule:
+- LAG q >= 0.75: correlated shadow errors are harmless. The design is copy input = sgn h' with a cheap RBM-class shadow; paper check of the shadow class next.
+- LAG q <= 0.5: the shadow must track every round's changes; the shadow's own copy error is the term to beat, as on the lead's side.
+Prediction: LAG 0.55 [40%], MARSHALL 0.2 [50%].
+STEP 8 RUNG-2 RESULT (runs/j1j2/sign_bad/step8/{shadow_lag,shadow_noise}.{py,json}; 10,240 complete root stars, 166 flips; first order, decade weights, chain bootstrap):
+Checks: labels reproduce 100%; offd = -u h0 exactly.
+| shadow at the neighbours | error at active neighbours | flips kept | false-flip rate (keeps) | q (flat) |
+| exact (control) | 0 | 1.000 | 0 | 1.000 |
+| independent 0.5% / 1% / 2% / 5% | as stated | 0.97 / 0.96 / 0.91 / 0.84 | 0.06% / 0.14% / 0.22% / 0.56% | 0.97 / 0.90 / 0.71(21) / -0.9(25) |
+| LAG: n_1 for n_2 (one round stale) | 11.7%; 37.6% at the neighbours of flip roots | 0.753 | 6.7% | -10.6(55) |
+| MARSHALL (memory-free) | 27.0% | 0.289 | 21.4% | -249(94) |
+| inverted (broken control) | - | 0 | 100% | -1.1e4 |
+LAG cost split in units of the round's gain G: missed flips 0.34, false flips 11.2.
+Verdict: KILL branch (LAG q <= 0.5). Prediction LAG 0.55 failed: I priced the missed flips and not the keeps.
+Mechanism [exact bookkeeping, measured sizes]:
+- Flips are 1.6% of rows and keeps 98.4%. A false flip costs about 2x a missed flip per row (0.0167 vs 0.0083 G), and keeps are 60x more numerous.
+- So q is set by the false-flip rate on keeps: q >= 0.75 needs it below ~0.2%, which needs a shadow error of <= ~1-2% at the first shell.
+- A stale shadow puts 38% error exactly where the next flips are.
+Consequence for THE DESIGN (PLAN.md step 3):
+- The walker's guide is the exact one-level sgn psi'_k. The stored copy C_{k+1} never acts as a guide; it acts as the next round's first-shell shadow.
+- So the copy's cost is not its own flip share (CF 0.46). It is the next round's q under a shadow with the copy's error pattern.
+- The independent-error table says this needs C_{k+1} to disagree with S_{k+1} on <= 1-2% of first-shell rows.
+STEP 8b (rung 2, REGISTERED before any number): q_4 of the design with the CF copy as the shadow.
+- Round-4 field at the roots uses CF's sign at the neighbours, against the exact S_3 = y (valid at all keys: 2.66% flip rate, as table-wide).
+- Same estimator, offd_4 = -y h_4. Only roots NOT in CF's training set count (fit_8192 used 8192 roots).
+- Prediction: CF disagrees with S_3 on ~2-3% of first-shell rows, concentrated at recent changes; q_4 < 0 [65%].
+- Rule: q_4 >= 0.75 means CF-class copies suffice in the design. q_4 < 0.5 means the copy must be trained and judged on its first-shell disagreement weighted by the next round's |offd_4|.
+  That is a two-round label; paper check first.

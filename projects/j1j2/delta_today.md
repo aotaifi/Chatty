@@ -2479,3 +2479,9 @@
 2026-11-22 worker: NNe launched: (d) D-norm NN projection th-ws-7010m41 pid 308594, (e) D-norm copy m40 pid 3837309, watchers nne_d/nne_e, run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNe; smoke (500 steps: D/Duu 107 -> 0.46, gradcheck 1.3e-7) and default-path regression passed; NNc/n6fit D-norm eps2 0.0773
 2026-11-22 lead: PI: per-round kept share is the metric; network chain q 0.58/0.49/0.25/0.16 (below 75-80%), cumulative 94.5% hid it
 2026-11-22 lead: per-round share falls: equation (missing l_k - l'_{k-1} shadow error; dropped l'_{k-2}); oracle fits O1-O3 on T_6^N (STORAGE 'WHY THE PER-ROUND SHARE FALLS')
+2026-11-22 worker: NNo oracle fits launched: mapX+O1 th-ws-7010m42 pid 3056868 (watcher nno_a), h5+O2+O3 m53 pid 3487392 (nno_b); run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNo; nn_fit.py got NN_EXTRA2 (default unchanged)
+2026-11-22 lead: PI 'Let sign-lead work on his copying mechanism too' -> relayed to sign angle (local_3026e44f, msg 1c5f76aa) with the per-round metric and transferable lessons
+2026-11-22 lead: sent the sign angle a lessons summary (msg 84367dbc); role per PI: it leads the sign copy, consults me when stuck
+2026-11-22 11:37 sign angle STEP 8 (PI via lead: chained sign copy): rung 2 on root stars: a one-round-stale shadow gives next-round q -10.6(55) (false flips on keeps 11.2 G); independent shadow error must be <= 1-2% for q >= 0.75 (runs/j1j2/sign_bad/step8). 8b (CF copy as round-4 shadow) registered; worker evaluating CF on the table.
+2026-11-22 12:14 sign angle STEP 8b: CF copy as round-4 shadow: q_4 0.94(4) on its training stars, -0.3(13) held-out (12 flips, unresolved); keeps fine (false flips 0.15%), misses at the next flips (CF wrong 8.5% around them). step8/q4_cf_shadow.json
+2026-11-22 lead: sign angle STEP 8/8b: stored sign = next round's neighbour shadow, needs <= 1-2% first-shell error; CF 8.5% near flips, held-out q_4 -0.3(13); PLAN.md step 3 updated

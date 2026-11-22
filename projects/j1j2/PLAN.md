@@ -17,7 +17,10 @@ Round k:
     (Theorist 11-17: a fixed alpha needs 0 < -alpha <= 1/(E_max - E_var), else a 2-cycle between non-eigenstates exists; small fixed alpha
     is safe but gains ~1/N of the optimal step.)
  2. Fixed node with guide psi'_k, sign AND amplitude -> phi_k. Cost: one level (two-hop ratios; 5.4x for the PP at 6x6). Not stored.
- 3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle).
+ 3. Sign: S_{k+1} = sgn psi'_k, stored in the sign network (sign angle). The guide uses the exact one-level sign, so the stored copy serves only as the
+    next round's neighbour shadow; judge it by its error at first-shell neighbours: <= 1-2% needed (false flips on keeps dominate: 1% random -> q 0.90,
+    5% -> -0.9, one-round-stale -> -10.6(55)). CF copy: 8.5% wrong near the next flips (1.9% average), held-out q_4 -0.3(13), 12 flips, unresolved.
+    Limit: generalisation near the last round's changes (PLAN_sign.md STEP 8, 8b).
  4. Amplitude (11-17, PI away, goal run): B10 was NOT run: rung 2b failed (an RBM head stores 2-3% of the correction) and the sampled B10
     gradient is unsampleable at 6x6 (M_req 5.2e9). Rung 2 found the correction is an explicit formula (exact 6x6, fixed sign s2):
     A_{k+1} = A_k |1 + alpha(E_L - E)| e^{c f_J[G]}, c ~ 1.3, keeps 96-98% of each round's FN gain over 3 rounds. PROPOSAL v2 (Astra-reviewed,

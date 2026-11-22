@@ -1380,3 +1380,7 @@ STEP BACK (lead 2026-11-22; second failed diagnosis in a row: dips, then nodes)
 3. Cheapest test: the NNc round-6 copy (same inputs, MSE) with cosine lr decay 1e-3 -> 1e-6: f1 20k steps (~1.5 h), f2 80k steps (~6 h), CPU, in parallel.
    PASS: f1 or f2 eps_6 <= 0.15 (q_6 >= 0.62) -> the optimiser was the limit: rerun the chain with the converged fit. KILL: final loss falls >= 2x but eps_6 >= 0.25 -> loss is not
    the measure that sets N. Prediction: f1 loss 2.0e-6, eps 0.16; f2 loss 1.2e-6, eps 0.10 (50%).
+  f1 RESULT (lead 2026-11-22; ref2hop/NNf/f1/f1fit/{grade.json,nn.json}): cosine 20k, final val 5.21e-6 (train 5.18e-6), N 1.618356e-6, eps_6 0.325, q_6 0.18, N_a0 3.246e-6,
+   alpha -0.0674; val at 5k/10k/15k/20k 17.3/8.04/5.79/5.21 e-6. Neither pass nor kill (loss rose vs NNc 4.16e-6, it did not fall). My f1 loss prediction (2.0e-6) was 2.6x
+   too low: at 20k steps the fit is step-limited (curve still falling as the lr vanishes), not only jitter-limited. eps/loss = 0.062 (NNc 0.071): one more point on the eps-loss line.
+   f2 decides: at eps ~ 0.065 x loss, PASS (eps <= 0.15) needs final val <= 2.3e-6. f2 val 3.72e-6 at 23.5k of 80k (already below NNc's final).

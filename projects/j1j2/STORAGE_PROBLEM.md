@@ -1365,3 +1365,18 @@ NODE PATCH TEST, PASS/KILL (existing tables, ~1 h CPU): l7 = ln|1 + a(E_L[T_6] -
  closure C = Nn plus all its J1/J2 neighbours. Patch the NNc copy with the exact target on: W1 C(0.3), W2 C(0.1), W3 Nn(0.3) only (no neighbours), W4 everything except C(0.3).
  PASS: W1 eps_6 <= 0.10 with weight(C) << 1 and W4 >= 0.2 -> the error sits at the next step's nodes: the copy's loss must weight local-energy error by node proximity
  (train on what the stepped grade sees), paper check next. KILL: W1 >= 0.2 -> not node-localised. Prediction: W1 0.08, W3 0.2, W4 0.22 (50%).
+
+NODE PATCH TEST, RESULT (lead 2026-11-22; ref2hop/NNp/W*/grade.json, map7T: alpha_start -0.040789, N_out 1.098598e-6)
+  W1 C(0.3) exact (7.9M rows, weight 0.025): eps_6 0.255; W2 C(0.1) (weight 0.0058): 0.283; W3 Nn(0.3) only: 0.293; W4 all but C(0.3) exact (weight 0.975): 0.079.
+  KILL for the node hypothesis (W1 >= 0.2). The error is spread over the high-weight bulk (14x denser per unit weight near nodes, but 3/4 of it in the bulk).
+
+STEP BACK (lead 2026-11-22; second failed diagnosis in a row: dips, then nodes)
+1. Verdict: switch from diagnosing the inputs/loss/locations to converging the fit itself.
+2. Thought: every NN fit is constant-lr Adam (1e-3, 20k steps) ending on a noisy iterate: val loss jumps between checkpoints (NNc 5.5e-6 at 18k, 4.2e-6 at 20k;
+   O2 3.7e-6 at 19k, 6.7e-6 at 20k) and still falls at the end (NNc 7.3e-6 at 10k). Across arms eps_6 tracks the final loss: eps ~ 0.07 x loss(e-6)
+   (NNc 4.2 -> 0.296, (d) 3.8 -> 0.256, O3 1.9 -> 0.181). The patch tests fit this too: the error sits where the MSE residual sits, in the weight-dominated bulk.
+   Differences of 0.02-0.05 between my arms (width, O2, d) are inside this optimiser noise; they were compared as if they were signal. Constant-step SGD/Adam converges only
+   to a neighbourhood of size ~ step size (Bottou, Curtis, Nocedal arXiv:1606.04838, Thm 4.6, fixed-stepsize SGD, from memory; conditions: smooth objective, bounded variance).
+3. Cheapest test: the NNc round-6 copy (same inputs, MSE) with cosine lr decay 1e-3 -> 1e-6: f1 20k steps (~1.5 h), f2 80k steps (~6 h), CPU, in parallel.
+   PASS: f1 or f2 eps_6 <= 0.15 (q_6 >= 0.62) -> the optimiser was the limit: rerun the chain with the converged fit. KILL: final loss falls >= 2x but eps_6 >= 0.25 -> loss is not
+   the measure that sets N. Prediction: f1 loss 2.0e-6, eps 0.16; f2 loss 1.2e-6, eps 0.10 (50%).

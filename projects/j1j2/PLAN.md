@@ -803,5 +803,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The copy's loss is not in the near-zero dips but in the bulk: its small errors move where the next Lanczos step flips the sign, the same limit the sign angle found; per-round share kept at round 6 is 25%.
-- NEXT (in progress, high): Confirm the error sits at the next step's sign flips by patching only those rows and their neighbours (~1 h CPU); if so, train the copy on its local energy near those flips.
+- STATUS (in progress, high): The network copies were never trained to convergence (fixed step size leaves the final weights noisy), and the copy error tracks that training loss; per-round share kept at round 6 is 25%.
+- NEXT (in progress, high): Refit round 6 with a decaying step size, 20k and 80k steps (CPU, 1.5 h and 6 h): pass if the share kept rises above 60%.

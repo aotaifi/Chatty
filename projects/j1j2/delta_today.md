@@ -2500,3 +2500,6 @@
 2026-11-22 18:54 VERDICT job patch_test: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp/ANALYSIS.md]
 2026-11-22 18:55:37 worker: PATCH TEST COMPLETED, all 7 grades done, V0/V0b checks OK; results in ref2hop/NNp/V*/{patch,grade}.json
 2026-11-22 lead: patch test: dips KILL (V1 0.286), bulk exact V4 0.040; diagnosis: copy errors move the next Lanczos step's sign flips; node patch test next (STORAGE 'NODE PATCH TEST')
+2026-11-22 18:59:19 worker: NODE PATCH TEST start: round_map of V0 on 740m06 -> map7T, then W1-W4 grades on 7010m08/09/12/13 (run dir ref2hop/NNp, watcher job id node_patch)
+2026-11-22 19:40 VERDICT job node_patch: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp/ANALYSIS.md]
+2026-11-22 lead: node patch KILL (W1 0.255, W4 0.079); STEP BACK: NN fits not converged (constant-lr Adam, noisy end iterate), eps ~0.07 x final loss; next cosine-decay fits f1/f2

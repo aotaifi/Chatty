@@ -2494,3 +2494,9 @@
 2026-11-22 18:20 VERDICT job nne_d: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNe/d/ANALYSIS.md]
 2026-11-22 worker: NNe (d,e) and NNo (O1,O2,O3) all COMPLETED incl. grades; numbers in ref2hop/NNe/{d,e}, NNo/O*fit; eps_6: d 0.256, e 0.271, O1 0.411, O2 0.311, O3 0.181 (e-6); no pass/kill applied
 2026-11-22 lead: oracle/D-norm fits: (d) 0.256, (e) 0.271, O1 0.411, O2 0.311, O3 0.181 (q 0.54); hypothesis: bounded output misses target dips; patch test next (STORAGE 'ORACLE AND D-NORM FITS')
+2026-11-22 18:26:33 worker: PATCH TEST start; run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp (V0,V0b known cases then V1-V5, 7 grades on idle th-ws via ssh+setsid); patch.py/drv.sh/watch.sh in /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp
+2026-11-22 18:27:28 worker: PATCH TEST grades launched V0@740m06 V0b@7010m08 V1@7010m09 V2@7010m12 V3@7010m13 V4@740m12 V5@740m15 (run dir ref2hop/NNp; watcher pid 4013180 job id patch_test; V1-V5 grade only after V0, V0b checks)
+2026-11-22 18:29:28 worker: V4 table re-made with gauge c over M per lead correction (patch.json c_over; old in V4/patch_old_cnotM.json), regrading on 740m12
+2026-11-22 18:54 VERDICT job patch_test: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp/ANALYSIS.md]
+2026-11-22 18:55:37 worker: PATCH TEST COMPLETED, all 7 grades done, V0/V0b checks OK; results in ref2hop/NNp/V*/{patch,grade}.json
+2026-11-22 lead: patch test: dips KILL (V1 0.286), bulk exact V4 0.040; diagnosis: copy errors move the next Lanczos step's sign flips; node patch test next (STORAGE 'NODE PATCH TEST')

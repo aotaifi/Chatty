@@ -1345,3 +1345,23 @@ ORACLE AND D-NORM FITS, RESULT (lead 2026-11-22; ref2hop/NNe/{d,e}, NNo/{O1fit,O
 PATCH TEST, PASS/KILL (existing tables, ~1 h CPU): replace the NNc copy by the exact target (+ the copy's bulk gauge constant) on rows with U - mean < -1 / -2 / -3; the converse (bulk exact, dips kept);
  and O3 patched at < -1. PASS: patch < -1 gives eps_6 <= 0.15 -> dips dominate: next = copy whose output carries the shadow's Lanczos factor unbounded (u = NN + ln|1 + a'(E_L[shadow] - E')|),
  paper check first. KILL: patch < -1 gives eps_6 >= 0.25 -> dips are not it; the error is spread over the bulk. Prediction: patch < -1 eps 0.12 (55%).
+
+PATCH TEST, RESULT (lead 2026-11-22; ref2hop/NNp/V*/grade.json; known cases V0 = exact target 1.293669 (rel 4e-8), V0b = NNc copy 1.589341 (rel 7e-8); bulk gauge c 8.4e-5)
+  variant                         rows       weight     N        eps_6   N at alpha=0
+  NNc copy                        -          -          1.5893   0.296   2.849
+  V1 dips (d<-1) exact            1316328    4.8e-7     1.5800   0.286   2.352
+  V2 d<-2 exact / V3 d<-3 exact   446k/156k  1.5e-8/3e-9 1.5848/1.5874  0.291/0.294
+  V4 bulk exact, dips = copy      14488628   0.9999995  1.3335   0.040   2.043
+  V5 O3 with dips exact           1316328    4.8e-7     1.4501   0.156   1.879
+  exact target                    -          -          1.2937   0       1.514
+  KILL for the dip hypothesis (patch < -1 gives 0.286 >= 0.25). The error after the alpha step is in the bulk.
+  Reading of the alpha=0 column: at alpha = 0 (fixed-sign FN, magnitude only) the copy loses 1.34 (2.849 vs 1.514), the dips 0.50 of it; the D-norm copy (e) wins 0.62 there
+   (N_a0 2.232) as the lattice-FN second-order theory says, but after the step it keeps only 0.024 of that. The grade's Lanczos step repairs magnitude errors and dips;
+   what it cannot repair it creates: the step's factor 1 + a(E_L[chi] - E) changes sign where E_L[chi] crosses E - 1/a, and E_L[chi](x) depends on chi's bond differences at x.
+DIAGNOSIS [derived, sizes not yet measured]: guide after the step = s chi (1 + a(E_L[chi] - E)); a copy error d moves E_L by sum_b H_xb rho_b e^{h_b - h_x}(e^{d_b - d_x} - 1), which flips
+ the step's sign wherever |1 + a(E_L - E)| is small. A misplaced sign costs first order, magnitude second order. So the copy must be accurate in its local energy near the next
+ step's nodes, a small set of rows and their neighbours. Same limit as the sign angle's STEP 8 (false flips near the round's changes; <= 1-2% neighbour error needed).
+NODE PATCH TEST, PASS/KILL (existing tables, ~1 h CPU): l7 = ln|1 + a(E_L[T_6] - E)| from rmap of the exact target (V0 table) --save-parts. Near-node set Nn(tau) = {l7 < ln tau},
+ closure C = Nn plus all its J1/J2 neighbours. Patch the NNc copy with the exact target on: W1 C(0.3), W2 C(0.1), W3 Nn(0.3) only (no neighbours), W4 everything except C(0.3).
+ PASS: W1 eps_6 <= 0.10 with weight(C) << 1 and W4 >= 0.2 -> the error sits at the next step's nodes: the copy's loss must weight local-energy error by node proximity
+ (train on what the stepped grade sees), paper check next. KILL: W1 >= 0.2 -> not node-localised. Prediction: W1 0.08, W3 0.2, W4 0.22 (50%).

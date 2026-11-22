@@ -800,5 +800,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): A small neural network on the same inputs breaks the cubic's floor: round-5 copy N 1.73e-6 (cubic 1.93e-6, exact 1.20e-6), keeping 92% of the exact rounds' total gain.
-- NEXT (in progress, high): Copy network to network for rounds 5-6 (CPU, ~8 h): the copy error must stay below 0.25e-6 and not grow from round to round.
+- STATUS (in progress, high): Copying network to network keeps improving over rounds 4-6 (N 1.91, 1.69, 1.59e-6; exact chain 1.12), 94% of the exact gain, but the copy error per round grows (0.23, 0.30e-6).
+- NEXT (in progress, high): Find which term makes the copy error grow: a bounded network for the projection that feeds the two-hop input, or a wider copy network; plus round 7 to see where the chain levels off (CPU, ~4 h).

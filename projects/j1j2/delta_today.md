@@ -2466,3 +2466,7 @@
 2026-11-21 22:56 VERDICT job nn4r: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NN/NN4r/ANALYSIS.md]
 2026-11-21 worker: clean NN reruns NN4r, NN4sr, NN5r COMPLETED incl. grades R,W (ref2hop/NN/*r/fit/{grade.json,nn.json}); eps 0.215 / 0.459 (shuffled) / 0.173e-6; no pass/kill applied
 2026-11-21 lead: bounded NN PASS (NN4 eps 0.215, NN4s 0.459, NN5 0.173 vs cubic 0.373; STORAGE 'BOUNDED NETWORK ... RESULT'); next network-only chain rounds 5-6 (STORAGE 'NETWORK-ONLY CHAIN')
+2026-11-21 worker: network-only chain rounds 5-6 launched on th-ws-7010m42 (driver pid 1881542, watcher nnc), run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNc; from NN/NN4r/fit
+2026-11-22 06:18 VERDICT job nnc: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNc/ANALYSIS.md]
+2026-11-22 worker: network-only chain NNc finished (see ref2hop/NNc/map{5,6}/round_map.json, n{5,6}fit/grade.json); no pass/kill applied
+2026-11-22 lead: NN chain rounds 5-6 BETWEEN (chi 1.911->1.689->1.589, eps 0.232, 0.296; share 0.938); diagnosis tests (a) NN projection (b) width 128 (c) round 7 (STORAGE 'COPY ERROR GROWTH')

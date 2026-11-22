@@ -1264,3 +1264,23 @@ Chain: chi_4^N = NN4 (1.9107) -> map5 -> proj5 -> mapP4 -> NN fit -> chi_5^N -> 
 PASS: eps_5^N, eps_6^N <= 0.25 and N(chi_6^N) < N(chi_5^N) -> no degradation: GPU network copy next. KILL: eps_6^N > eps_5^N + 0.1, or N(chi_6^N) >= N(chi_5^N) -> copy errors compound:
  diagnose which inputs went stale (l' from a projection h' of a network copy) before anything else. Between: report.
 Prediction: T_5^N 1.53, chi_5^N 1.70, T_6^N 1.41, chi_6^N 1.58 (+-0.06 at 50%). Cost ~3.8 h per round on one workstation (map 26 min, proj 68, mapP 26, fit 96, grade 12).
+
+NETWORK-ONLY CHAIN ROUNDS 5-6, RESULT (lead 2026-11-22; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNc, map<k>/round_map.json, n<k>fit/grade.json R; nmatch rel 0 both rounds)
+  k  N_start   target N_out  copy N(chi_k)  eps     train/val loss    proj eps2 (cubic h', clipped rows)
+  5  1.910675  1.456268      1.688596       0.232   3.52e-6/3.46e-6   0.0618 (118465)
+  6  1.688596  1.293669      1.589341       0.296   4.25e-6/4.16e-6   0.0735 (202289)
+  (e-6; output inside U's range, 0 guard rows.) Verdict: BETWEEN (eps_6 0.296 > 0.25; not kill: N falls 0.099, eps grew 0.063 < 0.1).
+  Prediction chi_5 1.70, chi_6 1.58 met (1.689, 1.589); targets fell faster than the c-model (1.456 vs 1.53). Cumulative share round 6: (8.683-1.589)/(8.683-1.117) = 0.938.
+  Per-round copy fraction (N_start-N(chi))/(N_start-N_out): 0.49, 0.25. Exact rounds from our copy still gain ~0.4 per round; the copy keeps a falling part of it.
+
+COPY ERROR GROWTH IN THE NETWORK CHAIN, DIAGNOSIS + PASS/KILL (lead 2026-11-22)
+Equation: l'_{k-1}(x) = ln|1 + a'(E_L[B e^{h'}](x) - E')| with E_L[B e^{h'}](x) = D_x + sum_b H_xb rho_b(x) e^{h'(y_b)-h'(x)}, while the round map uses h = h_{k-1} (the network head).
+ [exact] error in the sum = sum_b H_xb rho_b e^{h'(y_b)-h'(x)} (e^{d(y_b)-d(x)} - 1), d = h_{k-1} - h'_{k-1}: the neighbour spread of the projection miss d.
+ Two candidate terms for eps growth: (a) d grows: the cubic projection's eps2 0.062 -> 0.073 and its clipped (spiking) rows 118k -> 202k, the same cubic failure the copy had;
+ (b) capacity: the 64-64 net underfits a target with more structure (train = val, loss 3.52 -> 4.25e-6).
+Tests on the fixed target T_6^N (NNc/map6), one seed each, CPU workstations in parallel, ~4 h:
+ (a) NN projection: h' = tanh net on (L2, h_1) [9 inputs, same weights], then mapP5 from it, then the 64-64 copy. PASS eps_6 <= 0.25 -> use it in the chain; >= 0.28 -> not the term.
+ (b) width 128-128 copy, same inputs. PASS eps_6 <= 0.25 -> use it; >= 0.28 -> not the term.
+ Both >= 0.28 -> information beyond the 11 inputs: grow them (joint two-exchange tokens), paper check first.
+ (c) chain round 7 unchanged (from n6fit): eps_7 <= eps_6 + 0.03 and N(chi_7) < N(chi_6) -> levels off without degrading; eps_7 > eps_6 + 0.1 or N(chi_7) >= N(chi_6) -> degrades.
+Prediction: (a) eps_6 0.24 (50%), (b) 0.28 (50%); I bet on (a) at 55%. (c) N(chi_7) 1.54, eps_7 0.32.

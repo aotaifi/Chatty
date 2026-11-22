@@ -1284,3 +1284,29 @@ Tests on the fixed target T_6^N (NNc/map6), one seed each, CPU workstations in p
  Both >= 0.28 -> information beyond the 11 inputs: grow them (joint two-exchange tokens), paper check first.
  (c) chain round 7 unchanged (from n6fit): eps_7 <= eps_6 + 0.03 and N(chi_7) < N(chi_6) -> levels off without degrading; eps_7 > eps_6 + 0.1 or N(chi_7) >= N(chi_6) -> degrades.
 Prediction: (a) eps_6 0.24 (50%), (b) 0.28 (50%); I bet on (a) at 55%. (c) N(chi_7) 1.54, eps_7 0.32.
+
+COPY ERROR GROWTH, RESULT (lead 2026-11-22; /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNd/{a,b,c}; target T_6^N 1.293669, e-6)
+  arm                                   proj eps2 (clipped rows)  copy N     eps_6   train/val loss
+  NNc (cubic proj, 64-64, MSE)          0.0735 (202289)           1.589341   0.296   4.25/4.16e-6
+  (a) NN proj (MSE loss), 64-64 copy    0.1112 (0)                1.667782   0.374   4.15/4.17e-6
+  (b) cubic proj, 128-128 copy          0.0735                    1.614318   0.321   4.33/4.29e-6
+  (c) round 7: N_start 1.589341, N_out 1.209508, copy 1.530199, eps_7 0.321; proj7 eps2 0.0802 (211795 clipped).
+  Kill lines: (a) and (b) both >= 0.28 (not the term as written); (c) PASS: levels off without degrading (eps_7 - eps_6 = 0.025 <= 0.03, N falls 0.059).
+  Chain so far: 1.911, 1.689, 1.589, 1.530 (steps 0.222, 0.099, 0.059); eps 0.232, 0.296, 0.321; share round 7 (8.683-1.530)/7.566 = 0.945.
+  Diagnosis of why (a), (b) fired (the 'grow the inputs' branch does NOT follow):
+   (a) changed two things: no spikes, but a pointwise-MSE loss, and its D-norm eps2 got worse (0.111 vs 0.0735). The 202k cubic spikes did not hurt; the bulk D-norm accuracy did:
+       eps_6 rose 0.078 for +0.038 in eps2 (slope ~2). That supports the equation's term (neighbour spread of d) and says the projection must be fit in the D-norm.
+   (b) the wider net reached a HIGHER train loss in the same 20k steps: optimisation-limited, not a capacity verdict.
+
+BOND-DIFFERENCE (D-NORM) LOSS FOR THE NETWORK FITS, PAPER CHECK (lead 2026-11-22)
+Derivation: [exact] for psi = T f, <psi|H - E_T|psi> = 1/2 sum_xy |H_xy| T_x T_y (f_x - f_y)^2 (ground-state transform on the sign-fixed operator; Dirichlet form).
+ [approx, 2nd order in d] with f = e^d, d = u - U: excess energy ~ 1/2 sum |H_xy| T_x T_y (d_x - d_y)^2 = the D-norm of d. A pointwise MSE sum w d_x^2 penalises smooth d (free in energy) and
+ sees bond roughness only through the bound (d_x - d_y)^2 <= 2(d_x^2 + d_y^2): it spends capacity on the wrong components. The same holds for the projection h' (its error enters l' through
+ the neighbour spread of d, COPY ERROR GROWTH block). Deciding term: D-norm eps2 of each fit.
+Checked: constant shift of d -> both energy and D-norm zero (gauge), MSE not; exact eigenstate T -> zero. Cubic fits (capacity_fit) already minimise the D-norm; the NN fits did not. Confidence 75%.
+Prior results: TRIED_IDEAS row 1 (edge/pair losses B13 4x4 66% vs 46%, B30 6x6 'does not generalise', B36 weak): sampled from-scratch training with generalisation; here the full table, val = train: does not bind.
+Known case + broken: (d) NN projection with D-norm loss on the chi_5 head must reach eps2 <= the cubic's 0.0735; broken = the same net with MSE loss, already measured 0.111 (arm a).
+Next rung (target T_6^N, CPU, ~5 h each, parallel): (d) D-norm NN projection -> mapP5 -> 64-64 MSE copy; (e) 64-64 copy with D-norm loss on the NNc inputs (cubic proj).
+ PASS eps_6 <= 0.25 in either -> adopt it in the chain (both if both). KILL both >= 0.30 -> the loss is not the lever; then inputs (joint two-exchange tokens). Between: report.
+ Prediction: (d) eps2 0.05, eps_6 0.26; (e) eps_6 0.24 (50% each); 60% that (e) beats 0.296.
+Status: DONE.

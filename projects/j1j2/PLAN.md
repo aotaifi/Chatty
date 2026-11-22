@@ -803,5 +803,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The network copy keeps a falling share of each round's exact gain (58%, 49%, 25%, 16% at rounds 4-7), below the PI's 75-80% bar; the cumulative 94.5% hid this.
-- NEXT (in progress, high): Train the networks on neighbour differences (what the energy measures) instead of point by point (CPU, ~5 h): the per-round kept share must rise toward 75%.
+- STATUS (in progress, high): Per-round share kept at round 6: 25% now, 35% with a better two-hop input; even feeding the exact previous copy and exact neighbour term only reaches 54%, below the 75-80% bar.
+- NEXT (in progress, high): Check whether the loss sits in the target's deep near-zero dips that the bounded network cannot reach (patching existing tables, ~1 h CPU).

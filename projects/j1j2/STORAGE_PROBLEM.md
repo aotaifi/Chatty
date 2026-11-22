@@ -1325,3 +1325,23 @@ Oracle fits on T_6^N (cost-cheating, diagnostic only; 64-64 MSE copy, same setti
  O1 eps_6 <= 0.15 -> (i) dominates: richer fixed shadow next (projection on (L2, h_1, l_1), z^3 cost, flat in k), paper check first.
  O2 <= 0.15 -> (ii) dominates: carry a fixed window of past l' (flat in k). O3 >= 0.25 -> information is not the limit: loss/capacity (NNe decides).
  Prediction: O1 0.17, O2 0.22, O3 0.12 (50% each); 55% that (i) is the larger piece.
+
+ORACLE AND D-NORM FITS, RESULT (lead 2026-11-22; ref2hop/NNe/{d,e}, NNo/{O1fit,O2fit,O3fit}; target T_6^N, gain from chi_5^N 0.394927; e-6; one seed, deterministic grades)
+  fit                                     copy N     eps_6   q_6     copy D-norm eps2
+  NNc (cubic shadow, MSE)                 1.589341   0.296   0.25    0.0773
+  (d) D-norm NN shadow (eps2 0.054), MSE  1.549793   0.256   0.35    0.0724
+  (e) cubic shadow, D-norm copy           1.564740   0.271   0.31    0.0312
+  O1 exact l_6 replaces l'_5              1.704830   0.411  -0.04    0.0727
+  O2 + h_5 (l'_5 kept)                    1.604308   0.311   0.21    0.0822
+  O3 exact l_6 + h_5                      1.475111   0.181   0.54    0.0713
+  Kill lines: (d) 0.256, (e) 0.271: between (not <= 0.25, not >= 0.30). O1, O2 not <= 0.15; O3 0.181 not >= 0.25: between.
+  Readings: (1) the shadow lever is real but small: eps falls ~2x the shadow's eps2 drop (0.0735 -> 0.054 gives -0.040, same slope as arm a).
+   (2) the copy's bond-difference error fell 2.5x in (e) with almost no gain in N: the bulk bond error does not set N.
+   (3) h_5 and l_6 help only together (O3); each alone does not: l'_5 was doing double duty (carrying h_5 and l_6 partly).
+   (4) even with both exact, q_6 = 0.54 < 0.75: the limit is not (only) information in the inputs.
+  Hypothesis for (2)+(4) [55%]: the target has deep dips (U down to -15.6, from near-zeros of |1 + a(E_L - E)|) that a bounded output (range [-1.2, 1.4]) cannot place;
+   rows with U - mean < -1: 1.3M rows, weight 4.8e-7, copy too high by 0.46 on average; < -3: 156k rows, too high by 3.4. A guide too large at a near-node row costs energy
+   through e^{d} (the D-norm drops it). Same place as the sign angle's limit (errors near the round's changes).
+PATCH TEST, PASS/KILL (existing tables, ~1 h CPU): replace the NNc copy by the exact target (+ the copy's bulk gauge constant) on rows with U - mean < -1 / -2 / -3; the converse (bulk exact, dips kept);
+ and O3 patched at < -1. PASS: patch < -1 gives eps_6 <= 0.15 -> dips dominate: next = copy whose output carries the shadow's Lanczos factor unbounded (u = NN + ln|1 + a'(E_L[shadow] - E')|),
+ paper check first. KILL: patch < -1 gives eps_6 >= 0.25 -> dips are not it; the error is spread over the bulk. Prediction: patch < -1 eps 0.12 (55%).

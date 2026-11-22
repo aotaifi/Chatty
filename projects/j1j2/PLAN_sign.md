@@ -2200,3 +2200,16 @@ STEP 8b (rung 2, REGISTERED before any number): q_4 of the design with the CF co
 - Prediction: CF disagrees with S_3 on ~2-3% of first-shell rows, concentrated at recent changes; q_4 < 0 [65%].
 - Rule: q_4 >= 0.75 means CF-class copies suffice in the design. q_4 < 0.5 means the copy must be trained and judged on its first-shell disagreement weighted by the next round's |offd_4|.
   That is a two-round label; paper check first.
+STEP 8b RESULT (step8/q4_cf_shadow.{py,json}; CF logits step8/cf_logits_all.npy, worker, panel check 1.5e-5 vs evalcache; held-out roots = rchain%5==0, r1_fit.py:18-19, mask verified)
+| roots | n roots | round-4 flips | CF wrong at neighbours | flips kept | false-flip rate | q_4 flat | q_4 B2 |
+| held-out | 2048 | 12 | 2.53% | 0.17 | 0.15% | -0.34(129) | -0.29(124) |
+| CF training stars | 8192 | 74 | (memorised) | 0.76 | 0.16% | 0.94(4) | 0.94(5) |
+Also: CF disagrees with S_3 on 1.93% of all keys, and on 8.45% at the neighbours of round-4 flip roots.
+Reading:
+- The held-out q_4 is NOT resolved (12 flips, sd 1.3). The point estimate is below the bar, as predicted (q_4 < 0, 65%). That prediction is not confirmed.
+- The false-flip rate is the same on and off the training stars (0.15-0.16%) and within the <= 0.2% need.
+- Train and held-out differ in the flips: 0.76 vs 0.17. CF is wrong exactly around the next round's flips (8.45% vs 1.93% on average).
+- In the design the copy's limit is therefore its generalisation near changes, not its keeps, its loss weight or a shadow input.
+- On its training stars the copy already meets the shadow requirement (q_4 0.94).
+Next on paper: why a copy misses the next round's flip neighbourhood off its training stars. The open candidate is the same correlate-learning as STEP 5/7.
+Resolving q_4 needs more held-out roots with full stars: new samples, which is rung 3 territory. Not proposed.

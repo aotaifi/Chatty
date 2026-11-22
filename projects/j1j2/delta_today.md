@@ -2478,3 +2478,4 @@
 2026-11-22 lead: NNd result: (a) NN proj MSE eps2 0.111 -> eps_6 0.374, (b) width 128 0.321 (undertrained), (c) round 7 1.530, eps 0.321 levels off; next D-norm-loss fits (d),(e) (STORAGE 'BOND-DIFFERENCE (D-NORM) LOSS')
 2026-11-22 worker: NNe launched: (d) D-norm NN projection th-ws-7010m41 pid 308594, (e) D-norm copy m40 pid 3837309, watchers nne_d/nne_e, run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNe; smoke (500 steps: D/Duu 107 -> 0.46, gradcheck 1.3e-7) and default-path regression passed; NNc/n6fit D-norm eps2 0.0773
 2026-11-22 lead: PI: per-round kept share is the metric; network chain q 0.58/0.49/0.25/0.16 (below 75-80%), cumulative 94.5% hid it
+2026-11-22 lead: per-round share falls: equation (missing l_k - l'_{k-1} shadow error; dropped l'_{k-2}); oracle fits O1-O3 on T_6^N (STORAGE 'WHY THE PER-ROUND SHARE FALLS')

@@ -1313,3 +1313,15 @@ Status: DONE.
 
 METRIC (PI 2026-11-22): judge the copy by the per-round kept share q_k = (N_start - N(chi_k))/(N_start - N(T_k)), the PI's 75-80% bar applies to it, not to the cumulative share.
   Network chain: q_4 0.58 (cubic chi_3 input), q_5 0.49, q_6 0.25, q_7 0.16. Gains per exact round stay 0.38-0.45e-6; eps grows 0.23 -> 0.32. Below the bar at every round.
+
+WHY THE PER-ROUND SHARE FALLS, EQUATION + ORACLE TEST (lead 2026-11-22)
+Equation: target U_k = ln T_k - lB = h_{k-1} + l_k + c f_J (+ const), with h_{k-1} = NN_{k-1}(L2, h_1, l_1, l'_{k-2}) and l_k(x) = ln|1 + a(E_L[chi_{k-1}](x) - E)|.
+ Copy inputs at round k: (L2, h_1, l_1, l'_{k-1}). Two missing pieces [exact bookkeeping]:
+ (i) l_k - l'_{k-1}: l' is built from the one-hop shadow h'_{k-1} of the copy; its error is the neighbour spread of d = h_{k-1} - h'_{k-1}; shadow eps2 grows 0.062, 0.073, 0.080 (rounds 5-7).
+ (ii) the part of h_{k-1} carried by l'_{k-2}, which the round-k inputs no longer contain (l' is replaced, not accumulated).
+ (iii) not information: the fit's loss/capacity (the D-norm runs NNe test the loss).
+Oracle fits on T_6^N (cost-cheating, diagnostic only; 64-64 MSE copy, same settings):
+ O1 exact l_6 (rmap NNc/n5fit --save-parts) in place of l'_5; O2 h_5 = ln chi_5 - lB added as 12th input (l'_5 kept); O3 both.
+ O1 eps_6 <= 0.15 -> (i) dominates: richer fixed shadow next (projection on (L2, h_1, l_1), z^3 cost, flat in k), paper check first.
+ O2 <= 0.15 -> (ii) dominates: carry a fixed window of past l' (flat in k). O3 >= 0.25 -> information is not the limit: loss/capacity (NNe decides).
+ Prediction: O1 0.17, O2 0.22, O3 0.12 (50% each); 55% that (i) is the larger piece.

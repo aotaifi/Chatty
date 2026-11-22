@@ -1310,3 +1310,6 @@ Next rung (target T_6^N, CPU, ~5 h each, parallel): (d) D-norm NN projection -> 
  PASS eps_6 <= 0.25 in either -> adopt it in the chain (both if both). KILL both >= 0.30 -> the loss is not the lever; then inputs (joint two-exchange tokens). Between: report.
  Prediction: (d) eps2 0.05, eps_6 0.26; (e) eps_6 0.24 (50% each); 60% that (e) beats 0.296.
 Status: DONE.
+
+METRIC (PI 2026-11-22): judge the copy by the per-round kept share q_k = (N_start - N(chi_k))/(N_start - N(T_k)), the PI's 75-80% bar applies to it, not to the cumulative share.
+  Network chain: q_4 0.58 (cubic chi_3 input), q_5 0.49, q_6 0.25, q_7 0.16. Gains per exact round stay 0.38-0.45e-6; eps grows 0.23 -> 0.32. Below the bar at every round.

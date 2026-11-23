@@ -2213,3 +2213,16 @@ Reading:
 - On its training stars the copy already meets the shadow requirement (q_4 0.94).
 Next on paper: why a copy misses the next round's flip neighbourhood off its training stars. The open candidate is the same correlate-learning as STEP 5/7.
 Resolving q_4 needs more held-out roots with full stars: new samples, which is rung 3 territory. Not proposed.
+STEP 8c RESULT (step8/q4_split.py; same roots and estimator): the whole shadow loss sits on the previous round's FLIP rows.
+- [measured, 86 of 86] Every round-4 flip disappears if its neighbours keep S_2, i.e. if round 3's flips are undone. Each round's flips are seeded by the last round's flips (domain growth).
+- Round-3 flip rows are 2.7% of rows, and 11-14% of the neighbours of round-4 flip roots.
+  CF is wrong on 65% of them (held-out) and 33% (train). On round-3 keep rows it is wrong on 0.6-5%.
+- Oracle (cheats on cost): round-3 flip rows exact, CF everywhere else.
+  Held-out: q_4 0.88, flips kept 0.75 (12 flips, no error bar). Train: q_4 0.98, flips kept 0.95 (74 flips).
+  So repairing the flip rows alone lifts q_4 from -0.3 to ~0.9. Keep-row errors at 5% around the flips cost little.
+TERM [exact bookkeeping, measured sizes]: q_{k+1} is set by the copy's recall on round k's flip set F_k = {S_{k+1} != S_k}, at the rows that neighbour round k+1's near-ties.
+ Every copy fix so far aimed at keeps, offsets, inputs or a walker gate. The term is recall on F_k, about 2.7% of rows.
+ Records with the same ~0.5 recall on rare flips: A10 (stacked factor nets miss 43-44%), CF (0.52 table-wide), n_3.
+NEXT ON PAPER (now): the copy's training weight that the next round's energy sees.
+ omega(z) = sum_{x ~ z} P(x)|offd_{k+1}(x)| 1[flipping S(z) changes sgn h(x)]: two-round decisiveness, computable from the table.
+ Rung 2 before any training: does CF's held-out error concentrate on high-omega rows? If yes, a copy trained with omega (rung 3, PI's call) is the test.

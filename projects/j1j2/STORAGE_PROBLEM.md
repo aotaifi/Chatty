@@ -1554,3 +1554,25 @@ SOFT SHADOW, RUNG 2 RESULT (2026-11-23; runs/j1j2/sign_bad/step9/{soft_q4.py,sof
  Predictions: dq +0.05..0.12 MISSED low on train; q4 >= 0.75 [20%] did not happen. Reading: the bias term the soft shadow removes is small for
  CF because CF's misses are confident (|m| ~ 1 on missed flips), not uncertain: the copy's error is in m itself, not in rounding m.
  Verdict: soft shadow is a free, harmless add-on; it is not the mechanism that reaches 75-80%. Goal rule: step back before any variant.
+
+NORMALIZED-FIELD COPY (store v = h/Lambda, deploy sgn v-hat), PAPER CHECK (sign angle lead, 2026-11-23; idea: Astra cj-acff665c36ee route 2)
+Derivation: Lambda(x) = sum_b |w_b(x)| > 0, v = h/Lambda in [-1,1], label y = sgn v [exact]. Regret R = (4/N) E_P[Lambda |v| 1{sgn v-hat != y}],
+ q = 1 - R/G [exact, Astra eq 1, re-derived]. A sign error needs |v| <= |v-hat - v| [exact], so a uniform error eps gives R <= B(eps) =
+ (4/N) E_P[Lambda|v| 1{|v| <= eps}] [exact, tight: attained by the adversarial error]. Deciding term: the error of v-hat at rows with |v| below
+ ~0.05 (flips: median |v| 0.057). Why a field target could beat BCE on hard labels [conj]: it supervises distance from the wall on every row,
+ is bounded (no log of a vanishing amplitude), and needs no new inference-time information. Walker cost: one net, as CF.
+Checked: second route: worst case = flipping every row with |v| <= eps, gives q = 1 - B(eps)/G, matches (step10 'q_adversarial' = 'cert' at
+ every eps). Limits: eps -> 0 gives q -> 1; eps >= max|v| gives no certificate. Signs: v and y agree on all 60k panel rows.
+ Confidence the derivation is right: 95%; that a net reaches the needed error: 30% (below).
+Prior results: TRIED_IDEAS C16/E9 (bond-field compression failed, other setting: amplitude/FN, not a sign label); P14/P16 tangent-kernel
+ learnability (held-out estimates need exact calibration); STEP 7e linear surrogate 0.40; CF's best monotone map onto v (step10, binned
+ E[v|l_CF], held half of the panel): rms 0.090, median |err| 0.051; on round-3 flip rows rms 0.146, median 0.111 vs their median |v| 0.057.
+Known case: runs/j1j2/sign_bad/step10/cert_check.py (sha 8dd2f266), Astra's leak-free 60k panel, exact arithmetic, no network.
+ Certificate vs adversarial error: equal at eps 0.01-0.05 (0.970/0.896/0.804/0.765/0.516). BROKEN (true error 2 eps, certificate claimed at eps):
+ q 0.672 < 0.896 (eps 0.02), 0.217 < 0.804 (0.03): the check fails as it must. Unstructured Gaussian error, rms -> q: 0.02 0.95, 0.03 0.90,
+ 0.05 0.71, 0.07 0.41, 0.09 -0.15. CF's actual q 0.457 at monotone-map rms 0.09 -> CF's errors are better than random at its rms.
+Not covered: whether a spin-input net reaches held-out rms <= 0.045 on v; later rounds; FN beyond first order (Astra eq 13).
+Next rung: a training run (worker; same CF class and data, regression on v instead of BCE on y). Measured: held-out panel rms(v-hat - v) and q.
+ Pass: held-out q >= 0.75 on the leak-free panel. Kill: q <= 0.457 (no better than CF) at converged training. Between: field target helps but
+ short of the bar -> learning-curve diagnosis before any variant. Prediction: rms 0.05-0.07, q 0.45-0.72 [65%]; q >= 0.75 [25%].
+Status: DONE (rung-1). The run needs the PI's go under point 9; the goal (PI 2026-11-23) allows a test after rung 1.

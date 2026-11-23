@@ -2512,3 +2512,4 @@
 2026-11-23 07:19 VERDICT job nnl_line: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNl/ANALYSIS.md]
 2026-11-23 07:21 lead: LINE TEST PASS: f(1,0.5,0.25,-0.5) = 0.212,0.104,0.050,-0.060 e-6 (NNl); exact round is not a minimum, reverse direction beats it. STORAGE 'LINE TEST, RESULT'.
 2026-11-23 10:19 lead: STORAGE 'WHERE THE GRADE SEES THE COPY': N depends on the copy only via the violating-bond field V; Rayleigh-Ritz bound as a copy loss; check on existing tables (worker).
+2026-11-23 10:20 lead: STORAGE 'GRADIENT OF THE GRADE...': exact gradient of N at T + shifted target U-eta g/w; worker builds it in NNg in parallel with NNv.

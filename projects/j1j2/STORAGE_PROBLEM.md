@@ -1427,3 +1427,14 @@ CHECK ON EXISTING DATA (rung 2, CPU ~1 h): v_T from efn_vec at alpha_T -0.040789
  PASS: B >= f (= N - N_T at the table's own best alpha) for every table (theorem: a failure is a code error), and dB/dt at t=0 within 15% of the line's slope (cubic fit to
  f(-0.5, 0, 0.25, 0.5, 1)). Then: paper check of the bound as a copy loss. KILL: slope off by > 30% -> the cost is not in V (re-read the grade). Prediction: B(f2) 0.25,
  B(Lm5) -0.05, slope match within 10% (70%).
+
+GRADIENT OF THE GRADE AT THE EXACT ROUND, AND A SHIFTED COPY TARGET (lead 2026-11-23, in parallel with the bound check)
+Derivation [exact, chain rule through the grade's code; alpha fixed at alpha_T, envelope theorem]: b = e^u (table magnitude), M = Hmag (b -> D0 b + Vm b - K(sqrt(n) b)/sqrt(n)),
+ E_L = Mb/b, delta = E_L - E, l = u + ln|1 + alpha delta|, a = guide(l), V = (Vm a)/a, v = unit FN ground state at alpha_T.
+ gamma = d lambda/d l = a (Vm^T (v^2/a)) - v^2 V;   c = alpha gamma/(1 + alpha delta);
+ d lambda/d u = gamma + b (M^T (c/b)) - c E_L - (sum c) dE/du,  dE/du_z = 2 n_z b_z ((Mb)_z - E b_z)/sum(n b^2);   g = (d lambda/d u)/NS.
+ Checks: sum_z g_z = 0 (N is blind to a constant shift of u) [exact]; <g, d_f2> = slope of the LINE TEST at t = 0 (~0.2e-6) [first order].
+Shifted target: the MSE copy loss plus the linear term, sum w (u - U)^2 + kappa <g, u - U>, is minimised by u = U - kappa g/(2w): the copy should be fitted to
+ U*(eta) = U - eta g/w (w = n p^2 the fit weights), clipped at |shift| <= c. Line search: N(U*(eta)) at fixed alpha_T for a grid of eta, c in {0.5, 2}; full grade on the best two.
+ PASS (worth a fit): best N(U*) <= 1.23e-6 (below Lm5, the reverse-error line), then the f2-type fit (cosine 80k) on U*. KILL: no eta gives N below 1.27e-6 -> the gradient
+ step is too local; use the reverse line (Lm5 target) instead. Prediction: best N(U*) 1.18e-6 (55%).

@@ -1438,3 +1438,9 @@ Shifted target: the MSE copy loss plus the linear term, sum w (u - U)^2 + kappa 
  U*(eta) = U - eta g/w (w = n p^2 the fit weights), clipped at |shift| <= c. Line search: N(U*(eta)) at fixed alpha_T for a grid of eta, c in {0.5, 2}; full grade on the best two.
  PASS (worth a fit): best N(U*) <= 1.23e-6 (below Lm5, the reverse-error line), then the f2-type fit (cosine 80k) on U*. KILL: no eta gives N below 1.27e-6 -> the gradient
  step is too local; use the reverse line (Lm5 target) instead. Prediction: best N(U*) 1.18e-6 (55%).
+BOUND CHECK, RESULT (lead 2026-11-23; ref2hop/NNv/bound.json; known case rel 4.4e-8; B = Rayleigh R to 1.4e-7)
+  B >= f on all 13 tables (theorem holds), but B is 8-60x loose: L1(f2) B 12.45 vs f 0.21; Lp5 1.89 vs 0.104; Lp25 0.44 vs 0.050; Lm5 +0.41 vs -0.060; copies B 5.5-9.9 vs f 0.18-0.41.
+  B(t) is strongly convex (odd part from t=+-0.5: 1.48/unit t; even part 1.15 at t=0.5) - the expansion is not linear even at t=0.25. Reading: V contains e^{d_y - d_x} on violating
+  bonds, and the copy error d reaches several units on low-weight rows (target range -15.6..7.6, net output -2.2..2.7); with v frozen those rows blow V up, while the true
+  ground state moves its weight off them (lambda adapts, the bound cannot). Pass line (slope within 15%) not decidable from these points; the finite-difference test at
+  eps 0.02 in NNg decides first-order agreement. Consequence: the frozen-v bound is NOT a usable copy loss (it would chase rows the true grade ignores).

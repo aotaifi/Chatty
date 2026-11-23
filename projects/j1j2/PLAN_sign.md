@@ -2244,3 +2244,16 @@ Physics handle [measured, 86/86]: a flip at z is seeded by the previous round's 
  Cheapest information at constant cost: the previous copy's own logit l_k(z), one extra forward at the same configuration. STEP 7d found no gain under the GUIDE metric.
  Untested under the shadow/ROC metric. Rung 2: a worker evaluates n_2's logits on all keys (~35 CPU-min), then the ROC of a [l_CF, l_2] readout on held-out rows.
  PASS: recall 0.6 at keep error <= 0.5%. KILL: the ROC is no better than CF's within 0.1 recall at 1% keep error.
+STEP 8g PAPER (while n_2's logits compute; side-chat review 11-23 read: l_2 test rated ~25%, walls named as the next paper step)
+- [measured, round 4 only] F_k is contained in N(F_{k-1}). Round k's flips sit on the walls of S_k: configurations whose neighbours include last round's flips.
+  So the copy must locate the walls of S_k.
+- [exact, cond: the copy C_k is Lipschitz per exchange, |l_k(z) - l_k(z_b)| <= L] At a wall, l_k changes sign along some exchange b, so |l_k(z)| <= L there.
+  A small |l_k| is therefore NECESSARY for a wall (high recall possible), not sufficient (the false-positive rate is open).
+  That is why l_k at the same configuration is the natural constant-cost input, even though it gained nothing under the guide metric (7d).
+  The shadow metric asks a different question: recall at low keep error.
+- The decisive measurements when the logits land:
+  - |l_2| at S_2-wall roots vs bulk roots (root stars);
+  - the ROC of the [l_CF, l_2] readout (roc_l2.py).
+  Prediction [conj]: walls sit at |l_2| below the bulk median with recall >= 0.9, but the false-positive rate stays >= 1% at recall 0.6. PASS [25%, agreeing with the review].
+- Queue [conj, 30%, review 11-23]: an annealed round map, soft vote tanh(beta h) with beta raised over rounds and the walker sign kept hard.
+  Textbook escape from frozen zero-temperature walls. Decide on paper on a small Ising toy first, after STEP 8g.

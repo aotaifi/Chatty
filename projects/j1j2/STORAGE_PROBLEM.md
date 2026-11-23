@@ -1389,3 +1389,17 @@ STEP BACK (lead 2026-11-22; second failed diagnosis in a row: dips, then nodes)
    BETWEEN (eps 0.212: not <= 0.15, not >= 0.25). Converging the fit nearly doubles the kept share (0.25 -> 0.46) but misses the 0.62 bar; my prediction (eps 0.10) was 2x optimistic.
    The eps-loss proportionality broke: loss fell 2.3x (4.16 -> 1.79), eps only 1.4x (0.296 -> 0.212). The three cosine/constant points on the same inputs lie on
    eps ~ 0.149 + 0.035 x loss(e-6) (f1 predicted 0.333, measured 0.325); it must bend to 0 at zero loss, so below ~2e-6 the MSE loss stops being the measure that sets N.
+
+FIRST-ORDER COPY COST, DERIVATION + LINE TEST (lead 2026-11-23)
+Data (round-6 copies, existing nn.json/grade.json): eps_6 / sqrt(val MSE, e-6): f1 0.142, NNc 0.145, f2 0.158, d 0.132, O3 0.131, O1 0.179, O2 0.120; eps_6 / MSE spreads
+ 0.062-0.119. So eps scales like |d|, not |d|^2, over a 3x range of loss. A variational (second-order) cost would scale like |d|^2 (the D-norm at alpha=0 is that cost, and the
+ D-norm arm e, eps2 0.031 lowest, has eps 0.271, so the D-norm does not set eps either).
+Derivation [exact algebra]: with fixed exact sign, the stepped guide is linear in the copy: g = P chi, P = 1 + alpha(H - E). With chi = T + dchi and sign(g) = sign(g_T),
+ N[g] = <g|H_FN|g>/<g|g> is a ratio of quadratics, so N[P(T+dchi)] - N[PT] = 2<P dchi | r> + O(dchi^2), r = (H_FN - N_T) PT / |PT|^2  (alpha re-minimised: same order).
+ r = 0 only if PT is an eigenvector of H_FN; it is not (PT is one round, not the FN ground state), so the linear term is generic [exact]. The fit errors make it positive in
+ every arm [measured, 7 arms; why the MSE error aligns with r is not derived: conj, smoothing of structure the step created raises the energy].
+Consequence [derived from the above]: the MSE copy loses at first order, so halving the error only halves eps; and the reverse direction should LOWER N below the exact round.
+ The copy loss should be MSE + 2<P dchi|r> (fit to T shifted against the gradient of N at T), with r computed once per round (z^3 per row, not per stored amplitude: flat cost kept).
+LINE TEST (existing tables, ~40 min CPU, rung 2): tables lT + t (l_f2 - lT), t in {0.5, -0.5, 0.25}; grade R. f(t) = N(t) - 1.293669e-6, f(1) = 0.212.
+ PASS (first order): f(0.5) in [0.08, 0.14] and f(-0.5) < 0 -> design the gradient-shifted copy loss (paper check next). KILL (second order): f(0.5) <= 0.065 and f(-0.5) >= 0.03
+ -> the sqrt scaling is an across-fit coincidence; the cost is quadratic in a norm I have not identified. Prediction: f(0.5) 0.11, f(0.25) 0.055, f(-0.5) -0.06 (60%).

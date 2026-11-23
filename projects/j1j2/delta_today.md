@@ -2508,3 +2508,4 @@
 2026-11-22 21:30 lead: f1 (cosine 20k) graded by hand: N 1.618356e-6, eps_6 0.325, val 5.21e-6 > NNc 4.16e-6; step-limited, not a test of convergence; f2 (80k, val 3.72e-6 at 23.5k) decides. STORAGE 'STEP BACK' f1 RESULT.
 2026-11-23 01:57 VERDICT job nnf_f2: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNf/f2/ANALYSIS.md]
 2026-11-23 01:58 lead: f2 (cosine 80k) by hand: val 1.79e-6, N 1.506093e-6, eps_6 0.212, q_6 0.46 (NNc 0.25); BETWEEN; loss no longer proportional to eps. STORAGE 'STEP BACK' f2 RESULT.
+2026-11-23 06:48 lead: STORAGE 'FIRST-ORDER COPY COST': eps ~ 0.14 sqrt(MSE) over 7 copies -> linear cost <P dchi|r>; line test t=0.5,-0.5,0.25 on f2 (worker).

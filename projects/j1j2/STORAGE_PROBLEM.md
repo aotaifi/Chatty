@@ -1489,3 +1489,15 @@ FINE REGRADE, RESULT (lead 2026-11-23; ref2hop/NNq/<name>/grade_fine.json, golde
   All 12 tables drop 0.010-0.027e-6 (exact round L0 1.293669 -> 1.273672 at alpha -0.0298; chi_5 1.688596 -> 1.665985). The bias is nearly common, so the per-round
   shares barely move: q_6 n6fit 0.254, f1 0.185, f2 0.458, d 0.347, e 0.288, O3 0.542; line Lp25 0.887, Lp5 0.753, Lm5 1.127; G1 1.026. All conclusions above stand.
   From now on, grades use grade_fine.py (NNq); old grade.json N are 0.01-0.03e-6 high.
+PRE-CORRECTED REFIT (B), RESULT (lead 2026-11-23; ref2hop/NNr/r1/r1fit, one seed, gradcheck 3.5e-7; numbers re-read from grade.json/nn.json)
+  N 1.4972e-6 (old grade) -> q_6 0.485 vs f2 0.462 on the same scale: BETWEEN by the lines, but the mechanism is settled. The refit repeats its error: cos(d_r1, d_f2) 0.871,
+  projection coefficient 0.88; MSE_T 1.797e-6 vs f2 1.757e-6. Diagnosis [exact for a linear fit]: if the fit is a projection P onto what the inputs/class can reach and
+  d = PT - T, then P(2T - PT) = PT, so d' = d. 88% of the f2 error is outside the class's reach; only ~12% was optimiser noise. I predicted q 0.78 (50%) without writing
+  this one line; it would have predicted the miss. Closes target-shifting of any kind (pre-correction, g/w shift): the copy error is a reach limit, not a target or loss limit.
+WHERE THE UNREACHABLE PART LIVES (lead 2026-11-23; rung 2, existing data, CPU ~1-2 h; ref2hop/NNw)
+  Derivation [exact]: chi_5 = B e^{u5(z)} is a function of z, so the copy residual d_f2 is the part of U6 = c1 + c2 not resolved by z, with c1 = ln|1+alpha(E_L[chi_5]-E)|
+  (the round's step; E_L needs u5 at the neighbours: up to three hops of B) and c2 = 1.307 f_J[G]. Measure, by w-weighted kNN (rank-transformed, k 16/64, as NNk2/knn2.py),
+  how much of d_f2 becomes predictable when ONE column is added to z11: R2_w(d | z11 + c), and the first-order cost left, <g, d - dhat>/<g, d> over S.
+  Columns: c1, c2 (both non-storable; reference only: they say WHICH term carries the residual). Known case: c = d_f2 itself -> R2 >= 0.9; broken: c shuffled -> R2 as z11 alone.
+  Reading: c1 R2 >= 0.5 -> the residual is the round's own local energy; next on paper a flat-cost estimate of E_L[chi_k]. c2 >= 0.5 -> derive f_J's structure.
+  Both <= 0.2 -> the residual is spread over many hops; next a network with c1 as input as an upper reference. Prediction: c1 0.55, c2 0.15 (45%).

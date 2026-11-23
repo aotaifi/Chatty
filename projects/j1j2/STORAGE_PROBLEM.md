@@ -1403,3 +1403,11 @@ Consequence [derived from the above]: the MSE copy loses at first order, so halv
 LINE TEST (existing tables, ~40 min CPU, rung 2): tables lT + t (l_f2 - lT), t in {0.5, -0.5, 0.25}; grade R. f(t) = N(t) - 1.293669e-6, f(1) = 0.212.
  PASS (first order): f(0.5) in [0.08, 0.14] and f(-0.5) < 0 -> design the gradient-shifted copy loss (paper check next). KILL (second order): f(0.5) <= 0.065 and f(-0.5) >= 0.03
  -> the sqrt scaling is an across-fit coincidence; the cost is quadratic in a norm I have not identified. Prediction: f(0.5) 0.11, f(0.25) 0.055, f(-0.5) -0.06 (60%).
+LINE TEST, RESULT (lead 2026-11-23; ref2hop/NNl/{L0,L1,Lp25,Lp5,Lm5}/grade.json; known cases L0 rel 4.4e-8, L1 rel 1.4e-7)
+  t:      1.0     0.5     0.25    0      -0.5
+  f(e-6): 0.2124  0.1043  0.0504  0      -0.0598     (f/t 0.212, 0.209, 0.202, -, 0.120)
+  PASS (f(0.5) 0.104 in [0.08,0.14], f(-0.5) < 0); predictions 0.11/0.055/-0.06 met. The copy's energy cost is first order in its error, and the exact round is NOT a local
+  minimum of the grade: Lm5 (T - 0.5 x copy error) reaches N 1.2339e-6, 0.060 below the exact round (115% of round 6's exact gain from chi_5 at 1.6886). Curvature shows on
+  the negative side (f/t 0.120), so the descent along this line saturates near t ~ -1.
+  Meaning: the MSE copy errs systematically along the grade's gradient (why: not derived). Next (paper first): write the gradient of N at T (one pass, z^3 per row, once per round),
+  the cosine of the f2 error with it, and the copy loss MSE + 2<P dchi|r>; then the fit. Not covered: one copy (f2), one round, no other direction tested.

@@ -803,5 +803,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Training the round-6 copy to convergence nearly doubles the share of the round's gain it keeps (25% to 46%), but stays below the 60% bar; lower training loss no longer buys proportionally lower energy.
-- NEXT (open, high): Derive which error measure the stepped energy actually responds to, now that the plain squared error stops tracking it below 2e-6.
+- STATUS (in progress, high): The copy loses energy in proportion to its error (not its square), because the exact round is not a minimum: moving away from the copy past the exact round beats it by 0.06e-6 (115% of the round's gain).
+- NEXT (open, high): Derive the energy's gradient at the exact round and a copy loss that includes it, so the copy errs away from the gradient instead of along it.

@@ -2551,3 +2551,4 @@
 2026-11-23 21:29 VERDICT job NNy-3386167: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
 2026-11-23 21:40 VERDICT job NNy2-3416301: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
 2026-11-23 sign 8h: pool-restricted exact field ~12x per E_L (G(-5) class), not one-level; closed on paper. Next: annealed map toy.
+2026-11-23 sign STEP 9: soft shadow paper check DONE (identity exact, toy +0.1); rung 2 dq train -0.005(46): not the fix; stepping back.

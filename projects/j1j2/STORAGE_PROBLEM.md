@@ -1547,3 +1547,10 @@ Next rung (existing data, CPU minutes): Platt-calibrate CF logits per old sign o
  roots, chain bootstrap. Pass dq >= +0.10 AND q4(soft, held-out) >= 0.75; kill dq < +0.03; between: real but small add-on. Prediction: dq +0.05
  to +0.12 [60%], q4(soft) reaches 0.75 on held-out [20%]: the toy says soft adds ~0.07-0.12, not the 0.25+ the bar needs from today's ~0.5.
 Status: DONE. Verdict on paper: the soft shadow is right and free but is an add-on worth ~+0.1 in q; alone it does not reach 75-80%.
+SOFT SHADOW, RUNG 2 RESULT (2026-11-23; runs/j1j2/sign_bad/step9/{soft_q4.py,soft_q4.json}; CF logits sha 5dcca951, Platt per chain-half)
+ CF is near-calibrated already (Platt slope 1.02 held-out / 1.38 train, offset +0.15..+0.39 toward keep), so m ~ the hard copy almost everywhere.
+ Paired dq = q4(soft) - q4(hard), chain bootstrap: train (74 flips) -0.005(46); held-out (12 flips) 2-fold Platt +0.76(51) [q4 0.43, one heavy
+ flip], train-fit Platt -0.02(8). Pass line (dq >= 0.10 AND held-out q4 >= 0.75) NOT met; train sits in the kill zone, held-out unresolved.
+ Predictions: dq +0.05..0.12 MISSED low on train; q4 >= 0.75 [20%] did not happen. Reading: the bias term the soft shadow removes is small for
+ CF because CF's misses are confident (|m| ~ 1 on missed flips), not uncertain: the copy's error is in m itself, not in rounding m.
+ Verdict: soft shadow is a free, harmless add-on; it is not the mechanism that reaches 75-80%. Goal rule: step back before any variant.

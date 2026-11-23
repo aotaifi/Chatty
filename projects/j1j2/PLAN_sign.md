@@ -2277,3 +2277,7 @@ G(-5) TIMING above). It is also not one-level: the exact field at a pool row nee
 (p d)^k unless C_k is exact there. Same dead end as STEP 7 'exact sign where unsure' (cost needs <= 0.25 gated share of cost budget). Not constant walker cost: closed.
 Next on paper: the annealed round map (review item 4) on a 1D/2D Ising toy: does a soft vote tanh(beta_k h) with beta_k rising over rounds
 keep per-round recall of wall flips that a hard copy loses? Derive the toy's per-round q first.
+
+## STEP 9 (2026-11-23): annealed/soft shadow. Paper check DONE (STORAGE_PROBLEM.md 'SOFT (ANNEALED) SHADOW'), rung 2 done: NOT the fix
+Identity [exact]: hard shadow = soft + coherent bias (sgn m - m), same variance. Toy: soft adds +0.07..0.12 in q. Real CF: dq train -0.005(46),
+held-out unresolved (12 flips); CF's misses are confident, so there is little bias to remove. Kept as a free add-on. Next: step back (goal rule).

@@ -1485,3 +1485,7 @@ VISIBLE GRADIENT, RESULT (lead 2026-11-23; ref2hop/NNk2/knn2.json; known case r(
   r(z11) 0.434 (k16) / 0.397 (k64); r(z13) 0.477 / 0.420. BETWEEN (not <= 0.3, not >= 0.6); prediction 0.4/0.5 met. About 40% of the grade's gradient (in the fit
   metric) is a function of the 11 inputs; the extras (log V of B, violating count) add 6-10%, not 2x. So the inputs are a partial limit, and not via B's violation field.
   Open, for after NNr/NNq: which storable quantity carries the other 60% of g/w (candidates: the copy's own step factor at the neighbours; per-bond rather than pooled V).
+FINE REGRADE, RESULT (lead 2026-11-23; ref2hop/NNq/<name>/grade_fine.json, golden section to 3.25e-4 in alpha; known cases f2 <= 1.486821, G1 <= 1.263554)
+  All 12 tables drop 0.010-0.027e-6 (exact round L0 1.293669 -> 1.273672 at alpha -0.0298; chi_5 1.688596 -> 1.665985). The bias is nearly common, so the per-round
+  shares barely move: q_6 n6fit 0.254, f1 0.185, f2 0.458, d 0.347, e 0.288, O3 0.542; line Lp25 0.887, Lp5 0.753, Lm5 1.127; G1 1.026. All conclusions above stand.
+  From now on, grades use grade_fine.py (NNq); old grade.json N are 0.01-0.03e-6 high.

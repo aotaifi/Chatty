@@ -2523,3 +2523,6 @@
 2026-11-23 17:16 worker: NNk (input-floor kNN, ref2hop/NNk) launched, driver pid 2306451, job NNk-2306451, watcher pid 2306454
 2026-11-23 17:17 worker: NNk correction: real driver pid 2306453, job id NNk-2306453 (watcher restarted with it; ignore NNk-2306451)
 2026-11-23 17:25 lead: correction: g sits on high-weight rows (1.6e-3 of rows = 50% of |g|, 66% of w); g/w moved the step to rare rows. Launch NNg3 weight-floored step.
+2026-11-23 17:26:08 worker: NNg3 (weight-floored step F5/F6, ref2hop/NNg3) launched, driver pid 2330337, job NNg3-2330337, watcher pid 2330353
+2026-11-23 17:26:18 worker: NNg3 correction: real driver pid 2330339, job id NNg3-2330339 (watcher restarted; ignore NNg3-2330337)
+2026-11-23 17:27 lead: inner-voice Stop hook installed (~/.claude/settings.json Stop -> hooks/inner_voice.py; spec INNER_VOICE.md; sessions 00dd5079, ee18ef64). PLAN: current task + PI 11-22 run permission recorded. [wait] copy question: NNr, NNk, NNg3 running; next step chosen by their verdicts.

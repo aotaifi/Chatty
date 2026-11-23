@@ -1,5 +1,6 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
 ## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
+CURRENT (PI 11-21/22, supersedes arm H below): copy each round's corrected state A_{k+1} = G e^{1.307 f_J[G]}, G = A_k|1+alpha(E_L-E)|, into a network for round 2+, cost per amplitude flat in the round; 'how you get the new network with or without freezing is your choice'; bar: per-round kept share q_k 75-80% without bad degradation. Runs: PI 11-22 'we need this test definitively ... the mechanism to fix it can't be settled on paper, this is why we need to run the numbers?' = the lead's record of 'now test it' for CPU copy fits and rung-2 checks on this question (prediction written in STORAGE_PROBLEM.md first). Inner-voice Stop hook: INNER_VOICE.md.
 Fit the add-on r on the FROZEN network to the fixed-node correction (target l + c f_J: the Lanczos factor plus c ~ 1.3 Jacobi steps), paper first,
 then existing data, then a run. Paper: done 11-17 (frozen base -> no 1/B in the gradient; the 1/B blow-up of a log fit of B itself is DERIVED,
 never to be re-tested by a run, PI 11-18). Existing data: done ('ARM H DATA STEP': target ~0 on the bulk, O(1-7) excursions on 20% of orbits

@@ -2533,3 +2533,5 @@
 2026-11-23 17:51 worker: NNk2 (visible gradient, ref2hop/NNk2) launched, driver pid 2443151, job NNk2-2443151
 2026-11-23 18:13 VERDICT job nna_scan: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNa/ANALYSIS.md]
 2026-11-23 18:14 lead: NNa: grade alpha search misses min by ~0.02e-6 (f2 1.4868 vs 1.5061); launch regrade with fixed search (NNq). [wait] copy decision needs NNr, NNg3, NNk2, NNq.
+2026-11-23 18:36 VERDICT job NNk2-2443151: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNk2/ANALYSIS.md]
+2026-11-23 18:38 lead: NNk2 visible-gradient r 0.40-0.43 (extras +6-10%): BETWEEN. [wait] next input design needs NNr (is the copy error reproducible) and NNq (true q after the alpha fix).

@@ -1481,3 +1481,7 @@ ALPHA SCAN, RESULT (lead 2026-11-23; ref2hop/NNa/scan.json; known cases rel 1e-8
   (-0.0193); G1 min 1.263554 at -0.040 vs graded 1.280277 (-0.0167). Cause [read from word_moments.py grade]: the 3-point parabola loop stops once the vertex is within 0.01
   of a cached alpha, and N moves 0.02e-6 over 0.009 in alpha. Every graded N in this file may be high by up to ~0.02e-6, so every eps/q is uncertain at that level (f2: q_6
   0.46 -> 0.51 if the exact round is graded right). FIX: refine to |d alpha| <= 5e-4 (golden section on the bracket), regrade the exact round and the copies.
+VISIBLE GRADIENT, RESULT (lead 2026-11-23; ref2hop/NNk2/knn2.json; known case r(g' smooth) 1.0000; shuffled ~0.02-0.04)
+  r(z11) 0.434 (k16) / 0.397 (k64); r(z13) 0.477 / 0.420. BETWEEN (not <= 0.3, not >= 0.6); prediction 0.4/0.5 met. About 40% of the grade's gradient (in the fit
+  metric) is a function of the 11 inputs; the extras (log V of B, violating count) add 6-10%, not 2x. So the inputs are a partial limit, and not via B's violation field.
+  Open, for after NNr/NNq: which storable quantity carries the other 60% of g/w (candidates: the copy's own step factor at the neighbours; per-bond rather than pooled V).

@@ -2293,3 +2293,10 @@ held-out unresolved (12 flips); CF's misses are confident, so there is little bi
 3. Cheapest next step: Astra, blind (CLAUDE.md point 8, my confidence < 70%): is the bar reachable at constant cost, and by what route.
    Then on paper: does a non-degrading q ~0.5 per round still make further Lanczos rounds pay (the goal's real test; the 75-80% bar's basis).
 Passed over: more training data (line 579: 7% per 4x), pool-restricted exact field (8h: 12x cost), annealing schedule (9: no role).
+MY GUESS ON Q4 (written before Astra cj-acff665c36ee returns, to keep the two apart) [conj, 55%]:
+ A missed flip is not lost at once: its field barely changes, so round k+2's label offers it again. The cumulative kept share after n rounds is
+ Q_n = 1 - prod_k (1 - q_k^row) per row. If misses were random per round, q = 0.5 would give Q_3 = 0.875: slower, not lossy, and the bar per round
+ would be too strict. But CF's misses are confident (STEP 9), i.e. systematic: the same rows are missed every round, so Q_n -> q and the loss is
+ permanent. Deciding quantity: the overlap of the miss sets of consecutive copies, rho_miss = P(miss at k+1 | missed at k). rho_miss ~ 1: bar
+ right; rho_miss ~ q: bar 0.5 suffices. Measurable only with a second trained copy (a test, needs the PI's 'now test it'); 8x8 records
+ (T-CERT: two nets' errors shared, agree on 94%) point to rho_miss near 1.

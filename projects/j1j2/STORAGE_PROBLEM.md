@@ -1470,3 +1470,10 @@ CORRECTION + WEIGHT-FLOORED STEP (lead 2026-11-23; quick look at NNg/g.npy, f2 e
   (A) full grade G1 (c 2, eta 0.1): N 1.2803e-6 at alpha -0.0478, ABOVE its fixed-alpha_T value 1.2637 (NNg G1 the same: 1.2861 vs 1.2814). So the grade's alpha search
   (coarse grid 0,-0.1,... plus a 3-point parabola) can miss the minimum by up to 0.017e-6. CHECK (rung 2, ~30 min): fine alpha scan -0.030..-0.070 step 0.005 at fixed table for
   f2 and NNg2/G1; if the true minimum of f2 lies >= 0.01 below its graded N, every copy's eps is overstated and all grades need the fine scan. Prediction: f2 overstated by < 0.005 (60%).
+INPUT FLOOR, RESULT (lead 2026-11-23; ref2hop/NNk/knn.json; known case <g,d_f2> exact; shuffled-g control ~0, 15-25x below)
+  'Floor' sum_S g (Ubar_kNN - U): k 4/16/64 = 0.291/0.305/0.335 (z11), 0.285/0.301/0.334 (z13); extras cut it 1.5%. NOT A FLOOR: f2, itself a function of z, pays only 0.137.
+  My spec was wrong: E[U|z] minimises the MSE, not the first-order cost <g, F(z) - U>; what a function of z cannot follow is the part of g invisible in z, i.e. the cost
+  responds to G(z) = E_w[g|z] only. Also the standardised z spans -1.1e5..4.4e4, so Euclidean kNN is set by a few heavy-tailed columns. Inconclusive; inputs question open.
+VISIBLE GRADIENT (rung 2, ~40 min): rank-transform each column of z (and z13 with log(1+V)), kNN k = 16/64 over all rows, Gbar(x) = w-weighted mean of g/w over neighbours;
+  visible fraction r = <g, Gbar>/<g, g/w> over S. PASS (inputs are the limit): r(z11) <= 0.3 and r(z13) >= 2 r(z11). KILL (inputs see the gradient): r(z11) >= 0.6.
+  Prediction: r(z11) 0.4, r(z13) 0.5 (40%; I now lean to 'inputs are not the main limit').

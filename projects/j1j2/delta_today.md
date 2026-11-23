@@ -2528,3 +2528,5 @@
 2026-11-23 17:27 lead: inner-voice Stop hook installed (~/.claude/settings.json Stop -> hooks/inner_voice.py; spec INNER_VOICE.md; sessions 00dd5079, ee18ef64). PLAN: current task + PI 11-22 run permission recorded. [wait] copy question: NNr, NNk, NNg3 running; next step chosen by their verdicts.
 2026-11-23 17:39 VERDICT job nng2_line: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg2/ANALYSIS.md]
 2026-11-23 17:40 lead: NNg2 G1 full grade 1.2803 (> fixed-alpha 1.2637): grade alpha search may miss the min; [parallel] fine alpha scan NNa on f2 + NNg2/G1. [wait] copy decision needs NNr, NNk, NNg3.
+2026-11-23 17:48 VERDICT job NNk-2306453: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNk/ANALYSIS.md]
+2026-11-23 17:50 lead: NNk inconclusive (spec measured the MSE copy's linear cost, not a floor); launch visible-gradient test NNk2. [wait] copy decision needs NNr, NNg3, NNa, NNk2.

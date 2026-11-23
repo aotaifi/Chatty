@@ -1477,3 +1477,7 @@ INPUT FLOOR, RESULT (lead 2026-11-23; ref2hop/NNk/knn.json; known case <g,d_f2> 
 VISIBLE GRADIENT (rung 2, ~40 min): rank-transform each column of z (and z13 with log(1+V)), kNN k = 16/64 over all rows, Gbar(x) = w-weighted mean of g/w over neighbours;
   visible fraction r = <g, Gbar>/<g, g/w> over S. PASS (inputs are the limit): r(z11) <= 0.3 and r(z13) >= 2 r(z11). KILL (inputs see the gradient): r(z11) >= 0.6.
   Prediction: r(z11) 0.4, r(z13) 0.5 (40%; I now lean to 'inputs are not the main limit').
+ALPHA SCAN, RESULT (lead 2026-11-23; ref2hop/NNa/scan.json; known cases rel 1e-8): the grade's alpha search overstates N: f2 min 1.486821 at alpha -0.050 vs graded 1.506093
+  (-0.0193); G1 min 1.263554 at -0.040 vs graded 1.280277 (-0.0167). Cause [read from word_moments.py grade]: the 3-point parabola loop stops once the vertex is within 0.01
+  of a cached alpha, and N moves 0.02e-6 over 0.009 in alpha. Every graded N in this file may be high by up to ~0.02e-6, so every eps/q is uncertain at that level (f2: q_6
+  0.46 -> 0.51 if the exact round is graded right). FIX: refine to |d alpha| <= 5e-4 (golden section on the bracket), regrade the exact round and the copies.

@@ -2316,3 +2316,9 @@ NEW (Astra): (1) [90%] judge descent along the deployed copy's own trajectory: c
   v = h/Lambda, Lambda = sum_b |w_b|, into one spin-input net, deploy sgn v-hat. Certificate [exact, re-derived by me: a sign error needs
   |v| <= |v-hat - v|]: uniform error eps gives q >= 1 - B(eps)/G; panel: eps 0.02 -> 0.896, 0.03 -> 0.804, 0.035 -> 0.75, 0.05 -> 0.52.
   (3) [25%] margin-filtered map; (4) [15%] a true annealed recurrence; (5) [<10%] offsets/readouts/soft CF.
+
+## STEP 10 (2026-11-23): normalized-field copy, rung 1 DONE (STORAGE_PROBLEM.md 'NORMALIZED-FIELD COPY'), rung 2 DONE (CF monotone-map rms 0.090)
+Run being staged by a worker (runs/j1j2/sign_bad/tfield/; same CF class/data/init/steps, MSE on v = h/Lambda; ~0.75 A40-slice h). Lead reads the
+launcher before submission. Branches: q >= 0.75 on the leak-free panel -> chaining on paper; q <= 0.457 -> record, back to Astra's route 1;
+between -> learning-curve diagnosis. Prediction: rms 0.05-0.07, q 0.45-0.72 [65%]; q >= 0.75 [25%].
+Open for the PI: Astra route 1 (judge cumulative gain on the copy's own trajectory; a non-degrading q ~0.5 may suffice) would change the goal's bar.

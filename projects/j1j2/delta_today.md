@@ -2554,3 +2554,4 @@
 2026-11-23 sign STEP 9: soft shadow paper check DONE (identity exact, toy +0.1); rung 2 dq train -0.005(46): not the fix; stepping back.
 2026-11-23 sign STEP-BACK 5: switch to learnability of wall flips; Astra blind next; then does q~0.5 non-degrading still pay.
 2026-11-23 sign: Astra cj-acff665c36ee: 'confident misses' and 'information limit' withdrawn (verified); routes: deployed-trajectory criterion [90%], distill v=h/Lambda [35%].
+2026-11-23 sign STEP 10: field-copy paper check DONE; worker staging tfield run (not submitted; lead reads launcher first).

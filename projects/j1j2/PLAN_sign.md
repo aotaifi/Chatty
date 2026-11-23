@@ -2281,3 +2281,15 @@ keep per-round recall of wall flips that a hard copy loses? Derive the toy's per
 ## STEP 9 (2026-11-23): annealed/soft shadow. Paper check DONE (STORAGE_PROBLEM.md 'SOFT (ANNEALED) SHADOW'), rung 2 done: NOT the fix
 Identity [exact]: hard shadow = soft + coherent bias (sgn m - m), same variance. Toy: soft adds +0.07..0.12 in q. Real CF: dq train -0.005(46),
 held-out unresolved (12 flips); CF's misses are confident, so there is little bias to remove. Kept as a free add-on. Next: step back (goal rule).
+
+## STEP-BACK 5 (2026-11-23; trigger: goal rule after STEP 9; second copy-rule family to miss: hard offsets/readouts 8b-8g, soft shadow 9)
+1. Verdict: SWITCH the question from "which copy rule" to "is the flip decision at wall rows learnable from spin inputs at all".
+   Every rule tried (offset, l_2 readout, gating, soft shadow) acts on the rounding of the copy's output; none changes its information.
+2. Thought: flips sit where h = sum_b w_b S_k(z_b) nearly cancels (|l_2| < keep 10% quantile for 90% of flips, 8g): the high-frequency part of
+   the target, which smooth nets learn last (spectral bias, Rahaman et al. arXiv:1806.08734, from memory). Records agree: local ratios + exact old
+   signs copy 0.40 of flips (7e); 2k -> 8k roots moved held-out error 7% (line 579); CF's misses are confident (9). Westerhout et al.
+   arXiv:1907.08186 (abstract only): sign generalisation fails in frustrated phases. My guess: the attainable recall from local features is
+   ~0.4-0.5, below the 0.6 the bar needs [conj, 65%].
+3. Cheapest next step: Astra, blind (CLAUDE.md point 8, my confidence < 70%): is the bar reachable at constant cost, and by what route.
+   Then on paper: does a non-degrading q ~0.5 per round still make further Lanczos rounds pay (the goal's real test; the 75-80% bar's basis).
+Passed over: more training data (line 579: 7% per 4x), pool-restricted exact field (8h: 12x cost), annealing schedule (9: no role).

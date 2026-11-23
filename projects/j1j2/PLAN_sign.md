@@ -2226,3 +2226,21 @@ TERM [exact bookkeeping, measured sizes]: q_{k+1} is set by the copy's recall on
 NEXT ON PAPER (now): the copy's training weight that the next round's energy sees.
  omega(z) = sum_{x ~ z} P(x)|offd_{k+1}(x)| 1[flipping S(z) changes sgn h(x)]: two-round decisiveness, computable from the table.
  Rung 2 before any training: does CF's held-out error concentrate on high-omega rows? If yes, a copy trained with omega (rung 3, PI's call) is the test.
+STEP 8d-8f RESULTS (step8/{omega,recall_curve,offset_shadow}.py; q_4 from random masks on all 10,240 roots, 86 round-4 flips)
+- 8d: single-neighbour decisiveness is the wrong cut (0.33 decisive neighbours per root). Fixing only those leaves held-out q_4 at -0.33.
+  Round-4 flips are collective: several round-3 flips around one root.
+- 8e: next-round share vs the copy's recall on round-3 flips, with keeps exact:
+  | recall | 0.3 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 |
+  | q_4 | 0.49 | 0.72 | 0.79 | 0.94 | 0.94 | 0.98 |
+- 8f: CF's threshold under the shadow metric. Held-out rows give the recall and keep error; q_4 comes from the masks (6 reps; heavy tails from keep errors):
+  | offset c | -1 | 0 | +0.5 | +1 | +1.5 | +2 |
+  | recall on round-3 flips | 0.14 | 0.40 | 0.56 | 0.71 | 0.82 | 0.89 |
+  | keep error | 0.16% | 0.91% | 1.7% | 2.9% | 4.4% | 6.2% |
+  | q_4 | 0.26 | 0.37(23) | -1.2(16) | -1.0(10) | -3.7(27) | -12(15) |
+  No threshold reaches the bar. Each +0.15 of recall costs about +1% keep error, and keep errors above ~0.5-1% are lethal.
+TARGET [measured]: the copy's score must reach recall >= 0.6 on the round's flips at keep error <= ~0.5% off its training data.
+ CF is at (0.40, 0.9%) and (0.56, 1.7%), about 3x short in false-positive rate at fixed recall. The lever is discrimination, not threshold or loss weight.
+Physics handle [measured, 86/86]: a flip at z is seeded by the previous round's flips among z's neighbours. A spin-only copy cannot see where those were.
+ Cheapest information at constant cost: the previous copy's own logit l_k(z), one extra forward at the same configuration. STEP 7d found no gain under the GUIDE metric.
+ Untested under the shadow/ROC metric. Rung 2: a worker evaluates n_2's logits on all keys (~35 CPU-min), then the ROC of a [l_CF, l_2] readout on held-out rows.
+ PASS: recall 0.6 at keep error <= 0.5%. KILL: the ROC is no better than CF's within 0.1 recall at 1% keep error.

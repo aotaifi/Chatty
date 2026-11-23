@@ -2526,3 +2526,5 @@
 2026-11-23 17:26:08 worker: NNg3 (weight-floored step F5/F6, ref2hop/NNg3) launched, driver pid 2330337, job NNg3-2330337, watcher pid 2330353
 2026-11-23 17:26:18 worker: NNg3 correction: real driver pid 2330339, job id NNg3-2330339 (watcher restarted; ignore NNg3-2330337)
 2026-11-23 17:27 lead: inner-voice Stop hook installed (~/.claude/settings.json Stop -> hooks/inner_voice.py; spec INNER_VOICE.md; sessions 00dd5079, ee18ef64). PLAN: current task + PI 11-22 run permission recorded. [wait] copy question: NNr, NNk, NNg3 running; next step chosen by their verdicts.
+2026-11-23 17:39 VERDICT job nng2_line: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg2/ANALYSIS.md]
+2026-11-23 17:40 lead: NNg2 G1 full grade 1.2803 (> fixed-alpha 1.2637): grade alpha search may miss the min; [parallel] fine alpha scan NNa on f2 + NNg2/G1. [wait] copy decision needs NNr, NNk, NNg3.

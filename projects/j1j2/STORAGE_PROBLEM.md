@@ -1467,3 +1467,6 @@ CORRECTION + WEIGHT-FLOORED STEP (lead 2026-11-23; quick look at NNg/g.npy, f2 e
   g itself is in the bulk. The MSE fit already weights these rows most, yet errs along g there: the grade is far more sensitive per row than w says.
   Test (existing tables, ~1 h): shift = -eta g / max(w, w_f), w_f = the w of the 1e5-th and 1e6-th heaviest row, clip |shift| <= 2; eta grid until N rises twice; full grade on the best.
   PASS N <= 1.23e-6 (beats Lm5) -> fit f2-type copy on that target; KILL best >= 1.27. Prediction: best 1.21e-6 (50%).
+  (A) full grade G1 (c 2, eta 0.1): N 1.2803e-6 at alpha -0.0478, ABOVE its fixed-alpha_T value 1.2637 (NNg G1 the same: 1.2861 vs 1.2814). So the grade's alpha search
+  (coarse grid 0,-0.1,... plus a 3-point parabola) can miss the minimum by up to 0.017e-6. CHECK (rung 2, ~30 min): fine alpha scan -0.030..-0.070 step 0.005 at fixed table for
+  f2 and NNg2/G1; if the true minimum of f2 lies >= 0.01 below its graded N, every copy's eps is overstated and all grades need the fine scan. Prediction: f2 overstated by < 0.005 (60%).

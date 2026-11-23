@@ -2300,3 +2300,19 @@ MY GUESS ON Q4 (written before Astra cj-acff665c36ee returns, to keep the two ap
  permanent. Deciding quantity: the overlap of the miss sets of consecutive copies, rho_miss = P(miss at k+1 | missed at k). rho_miss ~ 1: bar
  right; rho_miss ~ q: bar 0.5 suffices. Measurable only with a second trained copy (a test, needs the PI's 'now test it'); 8x8 records
  (T-CERT: two nets' errors shared, agree on 94%) point to rho_miss near 1.
+
+## ASTRA on STEP-BACK 5 (cj-acff665c36ee, /scratch/a/A.Otaifi/astra/sign_copy_learnability/ASTRA_learnability.md, read in full; 2026-11-23)
+CORRECTIONS to me (verified by me where marked):
+- STEP 9's 'CF misses are confident' is WRONG [verified: 18,573 missed round-3 flips, median |tanh(l/2)| 0.399, 4.4% above 0.9]. 70% of panel
+  regret sits at |l_CF| < 1. The soft shadow's null result has no diagnosis yet.
+- STEP-BACK 5's information claim is wrong: h_k is a deterministic function of all spins, and CF's receptive field (6 x 3x3 wrap convs) spans the
+  torus. What failed is the tested class/readouts, not the information. 7e's 0.40 is a linear surrogate's number. Withdrawn; 8g's 'not in any
+  same-configuration score' withdrawn too.
+- My q4 guess (rho_miss ~ 1 -> bar right) is invalid: q is an energy share, not a per-row probability. On held-out, 16 of 18 missed root flips
+  are offered again by T(CF), carrying 89% of the missed regret (audit_existing.json:roots.heldout).
+- Panel numbers (step7 fo_gate measure, leak-free 60k): q_3(CF) 0.457; missed-flip and false-flip regret each ~0.27 G; both must fall.
+NEW (Astra): (1) [90%] judge descent along the deployed copy's own trajectory: cumulative gain sum_k q_k G_k; a non-degrading q ~0.5 still pays,
+  slower (eq 11-12). This changes the goal's bar: the PI's call. (2) [35%] for q >= 0.75: distill the bounded normalized field
+  v = h/Lambda, Lambda = sum_b |w_b|, into one spin-input net, deploy sgn v-hat. Certificate [exact, re-derived by me: a sign error needs
+  |v| <= |v-hat - v|]: uniform error eps gives q >= 1 - B(eps)/G; panel: eps 0.02 -> 0.896, 0.03 -> 0.804, 0.035 -> 0.75, 0.05 -> 0.52.
+  (3) [25%] margin-filtered map; (4) [15%] a true annealed recurrence; (5) [<10%] offsets/readouts/soft CF.

@@ -2553,3 +2553,4 @@
 2026-11-23 sign 8h: pool-restricted exact field ~12x per E_L (G(-5) class), not one-level; closed on paper. Next: annealed map toy.
 2026-11-23 sign STEP 9: soft shadow paper check DONE (identity exact, toy +0.1); rung 2 dq train -0.005(46): not the fix; stepping back.
 2026-11-23 sign STEP-BACK 5: switch to learnability of wall flips; Astra blind next; then does q~0.5 non-degrading still pay.
+2026-11-23 sign: Astra cj-acff665c36ee: 'confident misses' and 'information limit' withdrawn (verified); routes: deployed-trajectory criterion [90%], distill v=h/Lambda [35%].

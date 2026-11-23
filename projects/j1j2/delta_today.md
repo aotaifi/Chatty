@@ -2516,3 +2516,6 @@
 2026-11-23 10:25:12 worker: NNg gradient job (drv pid 771315, watcher 771465) started; STORAGE 'GRADIENT OF THE GRADE'
 2026-11-23 10:54 VERDICT job nnv_bound: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNv/ANALYSIS.md]
 2026-11-23 10:56 lead: NNv bound check: B>=f on 13/13 but 8-60x loose (frozen v, e^{d} blow-ups on violating bonds); not a usable loss. NNg FD check decides first order.
+2026-11-23 13:38 VERDICT job nng_grad: STALLED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg/ANALYSIS.md]
+2026-11-23 14:22:42 worker: NNg done (DONE_ALL); watcher fired a false STALLED at 13:38 (grade logs sit in G1/G2, not top level); results in ref2hop/NNg/{grad.json,line.json,G1,G2}
+2026-11-23 14:23 lead: NNg gradient exact (FD ratio 1.0001); shifted target clipped to 2% of its gain, G1 1.2861; launch (A) extended line NNg2 and (B) pre-corrected refit NNr.

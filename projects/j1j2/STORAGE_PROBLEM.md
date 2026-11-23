@@ -1444,3 +1444,12 @@ BOUND CHECK, RESULT (lead 2026-11-23; ref2hop/NNv/bound.json; known case rel 4.4
   bonds, and the copy error d reaches several units on low-weight rows (target range -15.6..7.6, net output -2.2..2.7); with v frozen those rows blow V up, while the true
   ground state moves its weight off them (lambda adapts, the bound cannot). Pass line (slope within 15%) not decidable from these points; the finite-difference test at
   eps 0.02 in NNg decides first-order agreement. Consequence: the frozen-v bound is NOT a usable copy loss (it would chase rows the true grade ignores).
+GRADIENT, RESULT (lead 2026-11-23; ref2hop/NNg/{grad.json,line.json,G1,G2})
+  g exact: sum g / sum|g| 2e-15; FD along the f2 error 1.36932e-7 vs <g,d> 1.36944e-7 (ratio 1.0001); broken (no E_L chain) 1.85, (no M^T) 0.245. Along the f2 error the
+  first-order slope is 0.137e-6 per unit t (65% of f2's 0.212 cost). Shifted target U - eta g/w: g^2/w sits on 0.2-0.4% of rows with weight <= 2e-11, the clip removes 98% of it,
+  best N 1.2814 (fixed alpha), full grade G1 1.2861. Grid too short (gain still linear in eta at the largest eta), so neither pass nor kill. Insight: the grade's steepest
+  direction in the fit's own metric lives on rows the MSE fit gives no weight; at equal MSE size it offers ~40x the first-order gain of the f2 error direction (3.96e-3 x |step|_w).
+NEXT, TWO IN PARALLEL (lead 2026-11-23):
+ (A) extended line, existing tables: eta up to 1 at c = 2 and c = 5, fixed alpha_T, full grade on the best. PASS N <= 1.23e-6. Prediction: best 1.22e-6 near eta 0.3 (50%).
+ (B) pre-corrected refit: f2-type fit (cosine 80k, same inputs NNc/mapP5 l_part) on the target 2 lT - l_f2 (the exact round minus the f2 error). If the network repeats its
+     error (d' = d), the copy lands on T (q 1). PASS q_6 >= 0.75 (N <= 1.392e-6); KILL q_6 <= 0.46 (no better than f2: the error is not reproducible). Prediction q_6 0.78 (50%).

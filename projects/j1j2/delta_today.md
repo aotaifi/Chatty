@@ -2520,3 +2520,6 @@
 2026-11-23 14:22:42 worker: NNg done (DONE_ALL); watcher fired a false STALLED at 13:38 (grade logs sit in G1/G2, not top level); results in ref2hop/NNg/{grad.json,line.json,G1,G2}
 2026-11-23 14:23 lead: NNg gradient exact (FD ratio 1.0001); shifted target clipped to 2% of its gain, G1 1.2861; launch (A) extended line NNg2 and (B) pre-corrected refit NNr.
 2026-11-23 17:15 lead: NNg2 extended line KILL (best 1.2637); launch input-floor test NNk (kNN floor of <g, U - E[U|z]>).
+2026-11-23 17:16 worker: NNk (input-floor kNN, ref2hop/NNk) launched, driver pid 2306451, job NNk-2306451, watcher pid 2306454
+2026-11-23 17:17 worker: NNk correction: real driver pid 2306453, job id NNk-2306453 (watcher restarted with it; ignore NNk-2306451)
+2026-11-23 17:25 lead: correction: g sits on high-weight rows (1.6e-3 of rows = 50% of |g|, 66% of w); g/w moved the step to rare rows. Launch NNg3 weight-floored step.

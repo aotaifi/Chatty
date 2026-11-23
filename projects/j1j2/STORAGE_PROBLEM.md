@@ -1461,3 +1461,9 @@ Mechanism [conj, 60%]: any copy u = F(z) of the 11 inputs z is constant on rows 
  Floor = <g, U - Ubar_kNN> over the rows carrying 95% of sum|g|; also the same with z + 2 candidate inputs (V_x of B, and the count of violating bonds at x) to see if they close it.
  PASS (inputs are the limit): floor >= 0.08e-6 (>= 60% of f2's 0.137 first-order cost) and the extra inputs cut it by >= 2x -> build the copy on them. KILL: floor <= 0.03 ->
  the inputs resolve the rows; the limit is the fit's weighting, not the inputs. Prediction: floor 0.10, with extras 0.04 (55%).
+CORRECTION + WEIGHT-FLOORED STEP (lead 2026-11-23; quick look at NNg/g.npy, f2 error d)
+  g lives on HIGH-weight rows: 2.5e4 rows (1.6e-3) carry 50% of sum|g| and 66% of the fit weight w; 8.9e5 rows carry 95% of |g| and 97% of w. The f2 first-order cost <g,d> 0.137
+  (+0.227, -0.090) sits on 1.1e4 rows (50%) / 6.2e4 rows (90%). So my 'gradient lives on rare rows' (GRADIENT RESULT, EXTENDED LINE) was wrong: g/w put the STEP on rare rows,
+  g itself is in the bulk. The MSE fit already weights these rows most, yet errs along g there: the grade is far more sensitive per row than w says.
+  Test (existing tables, ~1 h): shift = -eta g / max(w, w_f), w_f = the w of the 1e5-th and 1e6-th heaviest row, clip |shift| <= 2; eta grid until N rises twice; full grade on the best.
+  PASS N <= 1.23e-6 (beats Lm5) -> fit f2-type copy on that target; KILL best >= 1.27. Prediction: best 1.21e-6 (50%).

@@ -1517,3 +1517,33 @@ ROUND >= 7 AT FLAT COST, PAPER (lead 2026-11-23)
   across a bond. Check on existing tables (rung 2): treat the exact T6 as chi_6 (not z-only) and f2 as its shadow. Compute U7 = log M[T6] - lB, c1_true = step from T6,
   c1_sh = step from f2; residual of U7 after kNN on z11; R2 gain from z11 + c1_true vs z11 + c1_sh. PASS shadow keeps >= 80% of the true step's R2 gain; KILL <= 50%.
   Prediction: 70% kept (40%).
+
+SOFT (ANNEALED) SHADOW FOR THE CHAINED SIGN COPY, PAPER CHECK (sign angle lead, 2026-11-23)
+Derivation: round map y_{k+1}(x) = sgn h(x), h = sum_b w_b(x) S_k(z_b) [exact, STEP 8]. The copy supplies c(z) for S_k(z) from features phi(z);
+ dh = sum_b w_b (c_b - S_b). Let m(phi) = E[S_k | phi] (calibrated mean).
+ HARD c = sgn m: E[c - S | phi] = sgn m - m (bias, |.| = 1 - |m|, sign = the copy's guess, i.e. toward S_{k-1} on missed flips); SOFT c = m: bias 0.
+ Var(c - S | phi) = Var(S | phi) = 1 - m^2 for both, since c is fixed given phi [exact]. So E[dh^2] (hard) = E[dh^2] (soft) + (sum_b w_b (sgn m_b - m_b))^2.
+ Deciding term: the bias field B(x) = sum_b w_b (sgn m_b - m_b). On a wall it is coherent (every missed flip pushes x toward the old sign), so it
+ freezes walls; the soft shadow removes it and leaves zero-mean noise. Walker cost unchanged: same network, tanh(logit/2) instead of sgn.
+ The annealing schedule beta_k of the review's form has no role: the bias-free shadow is E[S|phi], not tanh(beta h) (the network cannot see h);
+ hard targets + a proper loss (BCE) already estimate m. The idea reduces to: calibrated soft shadow; walker sign stays sgn h-hat.
+Checked: second route: c_hard - S = (sgn m - m) + (m - S), cross term E[(sgn m - m)(m - S)|phi] = 0, same decomposition. Limits: m = +-1 -> equal;
+ m = 0 -> hard error 1 per neighbour coherent vs soft 0 mean. Theorems: conditional mean minimises mean square error (textbook L2 projection);
+ BCE is strictly proper, its minimiser is the true conditional probability (Gneiting-Raftery, JASA 102, 359 (2007), from memory, not re-read);
+ networks are often miscalibrated (Guo et al. arXiv:1706.04599, from memory) -> Platt/temperature scaling needed. Cross-field: soft- vs
+ hard-decision decoding in iterative decoders (soft messages beat hard ones), same structure. [cond] unbiasedness holds per neighbour given ITS
+ feature; given all neighbours' features the sum can keep a bias if their errors are shared (T-CERT: 8x8 nets' errors shared). Label error
+ depends on the full distribution, not only on E[dh^2]. Confidence the derivation is right: 90%; that it moves q by a lot: low (below).
+Prior results: recall.sh/grep 'soft|calibrat|tanh|mean field': T-SOFT1 (PLAN_sign 11-08) used |u| to mark costly bonds, not soft shadows;
+ T-CERT V2 used calibrated p_wrong(|m|) for margins (worked, 0.2-0.8% errors) and found 8x8 net errors SHARED (g05/g10 agree on 94%, wrong
+ together). Nothing found on soft shadows in the round field. Literature search not run (arxiv/paper-search MCP down this session).
+Known case: runs/j1j2/sign_bad/step9/toy_soft_shadow.py (sha 04bba136) 2D 256^2 zero-T synchronous majority, J1 ferro, J2 0/0.1 antiferro, lognormal
+ bond factors, domain start (flips 5-7%/round, walls only); copy features (S_{k-1}, h_{k-1} + noise), m calibrated on half A, graded on B, 2 seeds.
+ Identity: conditional bias soft 0.01-0.03 (= binning noise) vs hard 0.06-0.14; conditional variance identical to 3 digits. noise 0: q 0.98-0.99 both.
+ q_{k+1} hard -> soft: noise 0.5: 0.60->0.68, 0.63->0.71, 0.70->0.78, 0.72->0.79; noise 1: 0.07-0.17 -> 0.22-0.29; noise >= 2: 0 -> 0.01-0.06.
+ BROKEN (overconfident soft, tanh(3 atanh m)): bias returns (0.04-0.13) and q falls back toward hard (e.g. 0.643 vs 0.677/0.601). Check can fail: it did.
+Not covered: real features (CF sees spins), shared errors across neighbours, chaining > 1 round, FN beyond first order.
+Next rung (existing data, CPU minutes): Platt-calibrate CF logits per old sign on train-root neighbours; paired dq = q4(soft) - q4(hard) on the same
+ roots, chain bootstrap. Pass dq >= +0.10 AND q4(soft, held-out) >= 0.75; kill dq < +0.03; between: real but small add-on. Prediction: dq +0.05
+ to +0.12 [60%], q4(soft) reaches 0.75 on held-out [20%]: the toy says soft adds ~0.07-0.12, not the 0.25+ the bar needs from today's ~0.5.
+Status: DONE. Verdict on paper: the soft shadow is right and free but is an add-on worth ~+0.1 in q; alone it does not reach 75-80%.

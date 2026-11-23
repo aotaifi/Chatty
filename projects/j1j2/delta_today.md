@@ -2548,3 +2548,6 @@
 2026-11-23 21:13 VERDICT job NNw3-3602710: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNw/ANALYSIS.md]
 2026-11-23 21:15 lead: NNw: the copy's unreachable residual is the round's own step c1 = ln|1+alpha(E_L[chi5]-E)| (R2 0.60, cost left 0.45); f_J minor (0.15-0.19). [parallel] NNx: f2-type fit with c1 as 12th input.
 2026-11-23 21:16 lead: round>=7 flat-cost shadow design on paper (STORAGE 'ROUND >= 7 AT FLAT COST'). [parallel] NNy: shadow step vs true step on M[T6], kNN.
+2026-11-23 21:29 VERDICT job NNy-3386167: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
+2026-11-23 21:40 VERDICT job NNy2-3416301: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
+2026-11-23 sign 8h: pool-restricted exact field ~12x per E_L (G(-5) class), not one-level; closed on paper. Next: annealed map toy.

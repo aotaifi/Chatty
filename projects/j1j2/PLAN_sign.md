@@ -2269,3 +2269,11 @@ Wall prediction CONFIRMED (table-wide):
 - So |l_k| finds the wall POOL: 90% recall at 10% of keeps. Inside the pool, only the field's sign separates flips (~20% of the pool) from keeps, and CF already holds what l_2 knows (warm start).
 Reading: the missing information is the field's sign inside the wall pool, i.e. the amplitude ratios and S_k at the neighbours. It is not in any same-configuration score.
 Next on paper: the annealed map (review, queued), or an exact field restricted to the pool. A pool-restricted exact field costs 0.1 d evaluations per second-shell row: price it on paper first.
+
+## STEP 8h (2026-11-23, paper only): pool-restricted exact field priced -> CLOSED by an existing record
+Cost per local energy = d (1 + p d) neighbour evaluations, with p the pool share of first-shell rows. p ~0.10 (|l_2| keep 10% quantile, 8g)
+gives ~14 gated neighbours per E_L, each needing its own E_L: the same class as G(-5) (10.5% of neighbours gated, measured 12.5x per block,
+G(-5) TIMING above). It is also not one-level: the exact field at a pool row needs S_k on the second shell, so chaining over rounds compounds
+(p d)^k unless C_k is exact there. Same dead end as STEP 7 'exact sign where unsure' (cost needs <= 0.25 gated share of cost budget). Not constant walker cost: closed.
+Next on paper: the annealed round map (review item 4) on a 1D/2D Ising toy: does a soft vote tanh(beta_k h) with beta_k rising over rounds
+keep per-round recall of wall flips that a hard copy loses? Derive the toy's per-round q first.

@@ -2257,3 +2257,15 @@ STEP 8g PAPER (while n_2's logits compute; side-chat review 11-23 read: l_2 test
   Prediction [conj]: walls sit at |l_2| below the bulk median with recall >= 0.9, but the false-positive rate stays >= 1% at recall 0.6. PASS [25%, agreeing with the review].
 - Queue [conj, 30%, review 11-23]: an annealed round map, soft vote tanh(beta h) with beta raised over rounds and the walker sign kept hard.
   Textbook escape from frozen zero-temperature walls. Decide on paper on a small Ising toy first, after STEP 8g.
+STEP 8g RESULT (step8/roc_l2.{py,json}; n_2 logits step8/n2_logits_all.npy, sign agreement with nrel 1.0 on all 1,468,952 keys; held-out stars 292,024 rows, 8,056 round-3 flips, 2-fold CV by chain)
+| score | recall at keep error 0.25% / 0.5% / 1% / 2% |
+| CF alone | 0.196 / 0.296 / 0.426 / 0.600 |
+| l_2 alone | 0.076 / 0.145 / 0.268 / 0.441 |
+| CF + l_2 readout | 0.196 / 0.295 / 0.423 / 0.603 |
+KILL: l_2 adds nothing. The review's ~25% and my 25% were right.
+Wall prediction CONFIRMED (table-wide):
+- Every round-3 flip has |l_2| below the keep median (6.68; flips' median 0.18).
+- 0.90 of flips sit below the keep 10% quantile (|l_2| < 0.66).
+- So |l_k| finds the wall POOL: 90% recall at 10% of keeps. Inside the pool, only the field's sign separates flips (~20% of the pool) from keeps, and CF already holds what l_2 knows (warm start).
+Reading: the missing information is the field's sign inside the wall pool, i.e. the amplitude ratios and S_k at the neighbours. It is not in any same-configuration score.
+Next on paper: the annealed map (review, queued), or an exact field restricted to the pool. A pool-restricted exact field costs 0.1 d evaluations per second-shell row: price it on paper first.

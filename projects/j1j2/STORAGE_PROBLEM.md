@@ -1581,3 +1581,11 @@ ROUND >= 7 AT FLAT COST, RESULT (lead 2026-11-23; ref2hop/NNy/nnw7.json md5 4203
   +c1_true 0.371, +c1_sh 0.495 -> cost reduction kept 0.68 (k16: 0.77). The grade responds to the cost, so the honest reading is BETWEEN: the shadow step keeps
   about 70% of what the true step buys (my prediction 70%). c1_sh and c1_true correlate only 0.50-0.60 yet carry nearly the same kNN information about d7.
   k16 shuffle control off by 0.10 in the harmless direction (negative baseline); k64 read used. Viable as the round >= 7 input; decided after NNx (round 6 with c1).
+WEIGHT-FLOORED STEP, RESULT (lead 2026-11-23; ref2hop/NNg3, G1/G2 grade.json re-read; known case w_f 0 reproduces NNg2 G1 to rel 0)
+  shift = -eta g/max(w, w_f) from the exact round T6, clip 2, alpha_T fixed, then full (old) grade:
+  F6 (w_f 9.5e-9) eta 13.2: N 0.8164e-6 (alpha -0.0581), eta 7.34: 0.9476. F5 (w_f 7.0e-7) best 1.0895 at eta 14. Exact round T6: 1.2937 (same grade).
+  PASS (<= 1.23) by far; prediction 1.21 missed by 0.39: the line was still descending at eta 13 and the clip touched only 1e-7 of rows.
+  Meaning: one exact-gradient step from T6 lowers the FN error 37% below the exact round and below the exact chain's fitted fixed point N* 1.05 [approx, arm R].
+  So the round map is a slow optimiser of the grade; q > 1 per step is possible, and the copy's target need not be T. The step lives where w is small (w_f 9.5e-9 beats 7e-7).
+NEXT [parallel]: second step from G1 (g at G1 with its alpha, FD check, same line). Reading: gain >= 0.1e-6 -> descent not saturated, iterate to the fixed-sign floor;
+  gain <= 0.03e-6 -> G1 is near that floor. Prediction: N 0.70 (40%). Also fine-grade G1.

@@ -1453,3 +1453,11 @@ NEXT, TWO IN PARALLEL (lead 2026-11-23):
  (A) extended line, existing tables: eta up to 1 at c = 2 and c = 5, fixed alpha_T, full grade on the best. PASS N <= 1.23e-6. Prediction: best 1.22e-6 near eta 0.3 (50%).
  (B) pre-corrected refit: f2-type fit (cosine 80k, same inputs NNc/mapP5 l_part) on the target 2 lT - l_f2 (the exact round minus the f2 error). If the network repeats its
      error (d' = d), the copy lands on T (q 1). PASS q_6 >= 0.75 (N <= 1.392e-6); KILL q_6 <= 0.46 (no better than f2: the error is not reproducible). Prediction q_6 0.78 (50%).
+EXTENDED LINE (A), RESULT (lead 2026-11-23; ref2hop/NNg2): best N 1.2637e-6 at c 2, eta 0.1 (gain 0.030); c 5 diverges (2.00 at eta 0.18). KILL for (A): the steepest direction lives on
+  rows where a large shift leaves the linear regime at once.
+INPUT FLOOR AT THE ENERGY-SENSITIVE ROWS (lead 2026-11-23; existing data, CPU ~1 h)
+Mechanism [conj, 60%]: any copy u = F(z) of the 11 inputs z is constant on rows with equal z. If the rows that carry g are not resolved by z, the best F still pays
+ the first-order cost <g, U - E[U|z]>, whatever the loss or optimiser. Estimate E[U|z] by k-nearest neighbours in standardised z (k = 16, reference = all rows, weights w).
+ Floor = <g, U - Ubar_kNN> over the rows carrying 95% of sum|g|; also the same with z + 2 candidate inputs (V_x of B, and the count of violating bonds at x) to see if they close it.
+ PASS (inputs are the limit): floor >= 0.08e-6 (>= 60% of f2's 0.137 first-order cost) and the extra inputs cut it by >= 2x -> build the copy on them. KILL: floor <= 0.03 ->
+ the inputs resolve the rows; the limit is the fit's weighting, not the inputs. Prediction: floor 0.10, with extras 0.04 (55%).

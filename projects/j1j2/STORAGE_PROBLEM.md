@@ -1411,3 +1411,19 @@ LINE TEST, RESULT (lead 2026-11-23; ref2hop/NNl/{L0,L1,Lp25,Lp5,Lm5}/grade.json;
   the negative side (f/t 0.120), so the descent along this line saturates near t ~ -1.
   Meaning: the MSE copy errs systematically along the grade's gradient (why: not derived). Next (paper first): write the gradient of N at T (one pass, z^3 per row, once per round),
   the cosine of the f2 error with it, and the copy loss MSE + 2<P dchi|r>; then the fit. Not covered: one copy (f2), one round, no other direction tested.
+
+WHERE THE GRADE SEES THE COPY, DERIVATION (lead 2026-11-23; code: word_moments.py grade -> delta0.efn_vec, bond_split.build)
+Read from the code [exact]: N = min_alpha (lambda_min(A[a]) - E0)/NS, A[a] = diag(D0 + V[a]) - K, V_x[a] = sum_y Vm_xy a_y / a_x, a = guide magnitude of the stepped table
+ (la + ln|1 + alpha(E_L[la] - E)|, sign s fixed). K (kept bonds of s) and D0 do not depend on the copy. So N depends on the copy ONLY through the violation field V_x:
+ the ratios a_y/a_x across the sign-violating bonds of s (and through E_L inside a, one hop further). Errors anywhere else cost nothing, at any order.
+Bound [exact, Rayleigh-Ritz with the trial vector fixed]: for v_T the normalised FN ground state of A[a_T] at alpha_T,
+   N(copy) <= N(T) + sum_x v_T,x^2 (V_x[a_copy] - V_x[a_T]) / NS   (alpha fixed at alpha_T; re-minimising alpha only lowers N).
+ First order (Hellmann-Feynman) equals the same sum, so the bound is tight to first order, and the measured linear cost (LINE TEST) is this sum.
+Consequence: the copy loss should be L[a] = sum_x v_x^2 V_x[a] (a variational upper bound, v from the exact round, once per round), not MSE on log chi.
+ Per pair of violating rows the minimum of v_x^2 a_y/a_x + v_y^2 a_x/a_y is at a_y/a_x = v_y/v_x: the guide should take the FN ground state's ratios across violating bonds.
+ Why the MSE copy errs uphill [conj, 60%]: smoothing flattens the steep ratios across violating bonds (they sit next to sign changes), raising V where v^2 is large.
+CHECK ON EXISTING DATA (rung 2, CPU ~1 h): v_T from efn_vec at alpha_T -0.040789 on the exact table; B(table) = sum v_T^2 (V[a_table] - V[a_T]) / NS for the 5 line tables and the
+ 7 round-6 copies (NNc, f1, f2, d, e, O1-O3).
+ PASS: B >= f (= N - N_T at the table's own best alpha) for every table (theorem: a failure is a code error), and dB/dt at t=0 within 15% of the line's slope (cubic fit to
+ f(-0.5, 0, 0.25, 0.5, 1)). Then: paper check of the bound as a copy loss. KILL: slope off by > 30% -> the cost is not in V (re-read the grade). Prediction: B(f2) 0.25,
+ B(Lm5) -0.05, slope match within 10% (70%).

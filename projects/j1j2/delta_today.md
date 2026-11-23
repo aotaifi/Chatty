@@ -2555,3 +2555,5 @@
 2026-11-23 sign STEP-BACK 5: switch to learnability of wall flips; Astra blind next; then does q~0.5 non-degrading still pay.
 2026-11-23 sign: Astra cj-acff665c36ee: 'confident misses' and 'information limit' withdrawn (verified); routes: deployed-trajectory criterion [90%], distill v=h/Lambda [35%].
 2026-11-23 sign STEP 10: field-copy paper check DONE; worker staging tfield run (not submitted; lead reads launcher first).
+2026-11-23 22:38 VERDICT job NNy3-m53-235129: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
+2026-11-23 22:41 lead: NNy: shadow step (from a z-only copy) keeps 0.92 of the true step's R2 gain and 0.68-0.77 of its first-order cost cut on M[T6]; viable for rounds >= 7. [wait] NNx fit (~5 h).

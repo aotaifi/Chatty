@@ -1576,3 +1576,8 @@ Next rung: a training run (worker; same CF class and data, regression on v inste
  Pass: held-out q >= 0.75 on the leak-free panel. Kill: q <= 0.457 (no better than CF) at converged training. Between: field target helps but
  short of the bar -> learning-curve diagnosis before any variant. Prediction: rms 0.05-0.07, q 0.45-0.72 [65%]; q >= 0.75 [25%].
 Status: DONE (rung-1). The run needs the PI's go under point 9; the goal (PI 2026-11-23) allows a test after rung 1.
+ROUND >= 7 AT FLAT COST, RESULT (lead 2026-11-23; ref2hop/NNy/nnw7.json md5 420336eb, re-read; known cases: chi5 -> NNw c1 and lT exact; +d7 R2 0.95-0.96)
+  On M[T6] (alpha -0.040789), k64, S: R2 z11 0.150, +c1_true 0.516, +c1_sh 0.488 -> R2 gain kept 0.92 (PASS by the written line). First-order cost left: z11 0.756,
+  +c1_true 0.371, +c1_sh 0.495 -> cost reduction kept 0.68 (k16: 0.77). The grade responds to the cost, so the honest reading is BETWEEN: the shadow step keeps
+  about 70% of what the true step buys (my prediction 70%). c1_sh and c1_true correlate only 0.50-0.60 yet carry nearly the same kNN information about d7.
+  k16 shuffle control off by 0.10 in the harmless direction (negative baseline); k64 read used. Viable as the round >= 7 input; decided after NNx (round 6 with c1).

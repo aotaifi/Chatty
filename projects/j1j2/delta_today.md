@@ -2543,3 +2543,8 @@
 2026-11-23 20:09:00 worker: NNg3 first run (job NNg3-2330339) killed externally ('Terminated') at 20:06 in F6 after F5 (9 pts) done; relaunched F6 only, F5+known from line_part1.json; driver pid 3075360, job NNg3-3075360, watcher pid 3075696
 2026-11-23 20:43 VERDICT job r1: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNr/r1/ANALYSIS.md]
 2026-11-23 20:46 lead: NNr r1 (pre-corrected refit) q_6 0.485 old scale (f2 0.462): refit repeats 88% of its error (cos 0.871); error is a reach limit, target shifting closed. STORAGE 'PRE-CORRECTED REFIT (B), RESULT'. [parallel] NNw: which round term carries the unreachable residual (kNN, c1 step vs c2 f_J).
+2026-11-23 20:51 VERDICT job NNw-3601373: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNw/ANALYSIS.md]
+2026-11-23 20:56 VERDICT job NNw2-3601772: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNw/ANALYSIS.md]
+2026-11-23 21:13 VERDICT job NNw3-3602710: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNw/ANALYSIS.md]
+2026-11-23 21:15 lead: NNw: the copy's unreachable residual is the round's own step c1 = ln|1+alpha(E_L[chi5]-E)| (R2 0.60, cost left 0.45); f_J minor (0.15-0.19). [parallel] NNx: f2-type fit with c1 as 12th input.
+2026-11-23 21:16 lead: round>=7 flat-cost shadow design on paper (STORAGE 'ROUND >= 7 AT FLAT COST'). [parallel] NNy: shadow step vs true step on M[T6], kNN.

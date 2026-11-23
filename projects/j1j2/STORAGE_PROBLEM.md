@@ -1501,3 +1501,19 @@ WHERE THE UNREACHABLE PART LIVES (lead 2026-11-23; rung 2, existing data, CPU ~1
   Columns: c1, c2 (both non-storable; reference only: they say WHICH term carries the residual). Known case: c = d_f2 itself -> R2 >= 0.9; broken: c shuffled -> R2 as z11 alone.
   Reading: c1 R2 >= 0.5 -> the residual is the round's own local energy; next on paper a flat-cost estimate of E_L[chi_k]. c2 >= 0.5 -> derive f_J's structure.
   Both <= 0.2 -> the residual is spread over many hops; next a network with c1 as input as an upper reference. Prediction: c1 0.55, c2 0.15 (45%).
+WHERE THE UNREACHABLE PART LIVES, RESULT (lead 2026-11-23; ref2hop/NNw/nnw.json md5 3d59ddb4; numbers re-read; known cases: c2 = 1.307 f_J to 3.6e-15, c = d gives R2 0.95)
+  R2_w(d | z11 + col) on S, k16/k64: z11 alone -0.03/0.03; +c1 0.600/0.597; +c2 0.151/0.188; +c1 shuffled -0.06/0.00. First-order cost left: +c1 0.44/0.46, +c2 0.79/0.82.
+  The shuffled control misses my 0.03 tolerance by 0.004 at k16 S, in the harmless direction (a noise column blurs kNN, lowers R2); accepted. Prediction (c1 0.55, c2 0.15) met.
+  So the copy's unreachable part is the round's own step, i.e. E_L[chi_5] at x, which needs u5 at the neighbours; f_J is minor. The 11 inputs see B's ratios pooled with
+  Delta u = 0 and miss the e^{u5(y)-u5(x)} weighting. In round 6, c1 is storable at flat cost (chi_5 is a z-only network: E_L[chi_5] costs z x (z-cost), fixed).
+  Open on paper: rounds >= 7, where chi_6 would itself carry c1, so E_L[chi_6] at neighbours nests one level deeper unless the input is E_L of a z-only shadow of chi_k.
+NEXT (rung 3, PI 11-22 run permission): f2-type fit (cosine 80k, same z11) plus c1 as a 12th input (NN_EXTRA2 = NNw/c1.npy), target T6; grade_fine.
+  PASS q_6 >= 0.75 -> derive and test the round-7 shadow design. KILL q_6 <= 0.55 -> the fit cannot use c1; diagnose. Prediction from cost_left 0.45: eps 0.21 -> ~0.10, q_6 0.74 (40%).
+ROUND >= 7 AT FLAT COST, PAPER (lead 2026-11-23)
+  Exact rounds spread one hop per round: E_L[chi_k](x) = D_x + sum_b h_b rho^B_b(x) e^{u_k(y_b)-u_k(x)} needs u_k at the neighbours, so a copy that takes the round's step as
+  an input reaches one hop further each round unless the input is computed from something of fixed reach. Shadow design [conj, 50%]: keep sigma_k = a z-only fit of chi_k
+  (fixed reach R) and feed s_k = ln|1+alpha(E_L[sigma_k]-E)| (reach R+1, cost z x cost(z), flat). Its error vs the true step: E_L[chi_k]-E_L[sigma_k] =
+  sum_b h rho e^{Delta g_k}(e^{Delta v_k}-1) with v_k = u_k - g_k the non-z part of chi_k: FIRST order in v_k, so the shadow step is good only if v_k varies slowly
+  across a bond. Check on existing tables (rung 2): treat the exact T6 as chi_6 (not z-only) and f2 as its shadow. Compute U7 = log M[T6] - lB, c1_true = step from T6,
+  c1_sh = step from f2; residual of U7 after kNN on z11; R2 gain from z11 + c1_true vs z11 + c1_sh. PASS shadow keeps >= 80% of the true step's R2 gain; KILL <= 50%.
+  Prediction: 70% kept (40%).

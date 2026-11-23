@@ -803,5 +803,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The network copies were never trained to convergence (fixed step size leaves the final weights noisy), and the copy error tracks that training loss; per-round share kept at round 6 is 25%.
-- NEXT (in progress, high): Refit round 6 with a decaying step size, 20k and 80k steps (CPU, 1.5 h and 6 h): pass if the share kept rises above 60%.
+- STATUS (in progress, high): Training the round-6 copy to convergence nearly doubles the share of the round's gain it keeps (25% to 46%), but stays below the 60% bar; lower training loss no longer buys proportionally lower energy.
+- NEXT (open, high): Derive which error measure the stepped energy actually responds to, now that the plain squared error stops tracking it below 2e-6.

@@ -1384,3 +1384,8 @@ STEP BACK (lead 2026-11-22; second failed diagnosis in a row: dips, then nodes)
    alpha -0.0674; val at 5k/10k/15k/20k 17.3/8.04/5.79/5.21 e-6. Neither pass nor kill (loss rose vs NNc 4.16e-6, it did not fall). My f1 loss prediction (2.0e-6) was 2.6x
    too low: at 20k steps the fit is step-limited (curve still falling as the lr vanishes), not only jitter-limited. eps/loss = 0.062 (NNc 0.071): one more point on the eps-loss line.
    f2 decides: at eps ~ 0.065 x loss, PASS (eps <= 0.15) needs final val <= 2.3e-6. f2 val 3.72e-6 at 23.5k of 80k (already below NNc's final).
+  f2 RESULT (lead 2026-11-23; ref2hop/NNf/f2/f2fit/{grade.json,nn.json}): cosine 80k, final val 1.79e-6 (train 1.75e-6; val 3.60/2.60/1.97/1.79 e-6 at 20/40/60/80k),
+   N 1.506093e-6, eps_6 0.212, q_6 0.46 (NNc 0.25), N_a0 2.164e-6, alpha -0.0586, D-norm eps2 0.0375, grad check 4.4e-7, no out-of-range rows.
+   BETWEEN (eps 0.212: not <= 0.15, not >= 0.25). Converging the fit nearly doubles the kept share (0.25 -> 0.46) but misses the 0.62 bar; my prediction (eps 0.10) was 2x optimistic.
+   The eps-loss proportionality broke: loss fell 2.3x (4.16 -> 1.79), eps only 1.4x (0.296 -> 0.212). The three cosine/constant points on the same inputs lie on
+   eps ~ 0.149 + 0.035 x loss(e-6) (f1 predicted 0.333, measured 0.325); it must bend to 0 at zero loss, so below ~2e-6 the MSE loss stops being the measure that sets N.

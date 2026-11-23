@@ -2557,3 +2557,4 @@
 2026-11-23 sign STEP 10: field-copy paper check DONE; worker staging tfield run (not submitted; lead reads launcher first).
 2026-11-23 22:38 VERDICT job NNy3-m53-235129: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNy/ANALYSIS.md]
 2026-11-23 22:41 lead: NNy: shadow step (from a z-only copy) keeps 0.92 of the true step's R2 gain and 0.68-0.77 of its first-order cost cut on M[T6]; viable for rounds >= 7. [wait] NNx fit (~5 h).
+2026-11-23 sign STEP 10: lead read tfield/launch_tfield.sbatch + train_v diff (only target/loss changed); approved with head rescale kappa at init (n_2 output scale >> v); worker submits and waits.

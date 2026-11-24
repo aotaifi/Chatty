@@ -2389,3 +2389,6 @@ Rung 2 (existing data): G_4 on roots done (above); q_4 needs CF_4, which does no
 Rung 3 plan: (i) labels: r4_labels.py with CF as the sign net on the round-1 table, C-free rule y = sgn Q (as make_table_cf.py) -> CF_4 fit from CF (r3 recipe)
  -> panel q_4 on held-out states (labels from CF, grade code of eval_panel_v.py); (ii) branched short-pair grade CF_4 vs CF, and CF vs n_2 (round 3 baseline g_3^CF).
  Kill/branch: q_4 < 0.40 -> degrading, record, step back; q_4 >= 0.40 -> FN grade; FN g_4 < 2 sigma with sigma <= 8e-6 -> ceiling at round 3 (rule b).
+RUNNING (2026-11-24): r4cf labels 18154335 (RUNNING 10:12, cip a40-16gb) -> fit 18154336 (afterok); run dir runs/j1j2/sign_bad/r4cf; worker owns watchers.
+ Launchers read by me (r4_labels.py unmodified, NET2 = CF 5dcca951, NET1 = n_2; C-free table from EL2). Next: pre-fit panel G_4 vs 7.5e-5; then q_4 per STEP 12 branches.
+ Parallel worker: branched short-pair FN grader build (runs/j1j2/sign_bad/branched/), needed for the FN grade of round 4.

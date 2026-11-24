@@ -2603,3 +2603,4 @@
 2026-11-24 18:45 sign angle: STEP 13 soft init q 0.107/0.120 (no effect; head scale relearned by step 12k). STEP-BACK 7 -> rule (b), fixed point of the fit. STEP 14: FN grade CF vs n_2 for the ceiling report (pred -7.7e-5/site).
 2026-11-24 sign angle: s015 q 0.0998; soft-init route closed (10.1 A40-h). Waiting STEP 14 CF vs n_2 FN grade.
 2026-11-24 STEP 14 CF vs n_2 branched FN grade submitted: job 18168074 (a40-24gb, K 8, M 256, 7:30; code 68436d3, sbatch d9bb10b), watcher armed. Pred Delta -7.7e-5/site.
+2026-11-24 20:19 lead: [parallel] NNp1 planted copy (copy pipeline on a target the cheap network holds exactly); STORAGE 'PLANTED COPY'.

@@ -1633,3 +1633,10 @@ Diagnosis: the shadow step s = ln|1+alpha(E_L[sigma_6]-E)| differs from the true
 and sigma_6 is a worse copy (1.479 vs 1.350), so the input carries less of the step: 0.81 (true step, round 6) -> 0.67 (shadow, round 7).
 Cheapest variant: a better shadow (sigma_6 val still falling at 80k). Deferred: the descent route (round 6 stored 1.098 at z-only cost, below X7's
 round-7 1.180 at ~d x cost) is ahead; NNd7 (its round 7) decides which route gets the next spend.
+
+PLANTED COPY (lead 2026-11-24; idea from BootLoops 'planted-truth' protocol, github BootLoops-ai/skills, CC BY 4.0): does the copy pipeline recover a
+target the cheap network holds exactly? Plant = NNf/f2/f2fit/tables/t_R.npy (a z-only network's own output; fine N 1.486447e-6, alpha -0.0487).
+Fit a fresh z-only network (NNh setup, NN_SEED=1, weights from NNc/map6/p_out.npy as f2) to the plant; fine-grade.
+Clean fitting: |N - 1.4864| <= 0.03e-6 and weighted MSE to plant <= 1e-6. Fitting problem: N - 1.4864 >= 0.08e-6 (>= 30% of the 0.21-0.28 copy loss
+would then be the optimiser, not the reach). Between: part. Prediction: MSE 1-2e-6, |dN| <= 0.03 (60%).
+Broken version: plant with +0.5 added to log-amplitude on the 10% heaviest rows (by n p^2), graded directly; must move N by >> 0.03, or the grade cannot see the test's scale.

@@ -2427,3 +2427,12 @@ STEP 13 (2026-11-24 13:58): variant = soften the warm-start margin. Init CF_s = 
  with false flips, so q_4(s) peaks near 0.2-0.35. P(q_4 >= 0.40 at s 0.35 or 0.26) = 20%. If both are below 0.40: the CF copy degrades at round 4 for a
  structural reason (its false-flip regret floor, ~3e-5 absolute, does not shrink while G_k does) -> step back; rule (b) reading: ceiling at round 3.
  Run: two fits s = 0.35 and 0.26 on a40-16gb (~50 min each, parallel) + panel grade. ~2 A40-h. Astra asked in parallel (no conclusion given).
+ASTRA on STEP 12/13 (2026-11-24, cj-d59bdf8d0fe9; /scratch/a/A.Otaifi/astra/sign_copy_r4/ASTRA_r4.md, audit_r4.json): reproduces q_3 0.456747, q_4 0.103800.
+ q = rho - phi (weighted recall minus false cost). R stayed ~flat (1.137e-4 -> 1.164e-4) while G fell 38%: missed regret +45%, false -41%.
+ 84% of G_4 sits on CF's round-3 errors (66% missed flips, 18% false flips). Not vanishing BCE gradient (sigma(m) median 0.55 -> 0.67).
+ Oracle constant logit offset: q_4 0.148 only. Head-only regret-weighted refit: q_4 0.104 (rejected).
+ Independent candidate = mine (head temperature reset); forecasts holding false cost 0.254: s 0.35 -> 0.30, 0.26 -> 0.34, 0.15 -> 0.44 (conjectural).
+ No structural floor proved: CF itself is in the class with R = G, so inf R <= G_k; a fixed positive floor cannot coexist with G_k -> 0.
+ Caveat (new to me): panel gain is carried by ~55 effective rows (r3 56.7, r4 54.5), so a panel q has finite-sample scatter not yet quoted.
+ Decision: add arm s 0.15 (third fit, ~1 A40-h) to the running s 0.35 / 0.26. My forecast stays lower than Astra's (false flips rise with s; my
+ round-3 false curve). Branch unchanged: best arm q_4 >= 0.40 -> FN grade CF_4(s) vs CF; all < 0.40 -> step back.

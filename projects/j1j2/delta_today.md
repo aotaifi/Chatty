@@ -2604,3 +2604,5 @@
 2026-11-24 sign angle: s015 q 0.0998; soft-init route closed (10.1 A40-h). Waiting STEP 14 CF vs n_2 FN grade.
 2026-11-24 STEP 14 CF vs n_2 branched FN grade submitted: job 18168074 (a40-24gb, K 8, M 256, 7:30; code 68436d3, sbatch d9bb10b), watcher armed. Pred Delta -7.7e-5/site.
 2026-11-24 20:19 lead: [parallel] NNp1 planted copy (copy pipeline on a target the cheap network holds exactly); STORAGE 'PLANTED COPY'.
+2026-11-24 22:53 VERDICT job NNd7: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNd7/ANALYSIS.md]
+2026-11-24 22:55 lead: NNd7 descent round 7: G7 0.641 but cheap copy c7 1.071, q7 0.06 KILL; cheap net floors ~1.07 (MSE fixed 8.6e-6). [wait] NNp1 decides fit vs reach.

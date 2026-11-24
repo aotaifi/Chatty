@@ -804,5 +804,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): Round 6: the copy that is given the round's own step keeps 77-81% of the gain (bar 75%); at round 7, where that input comes from a cheaper approximation, it keeps 67%. Correcting with one extra improvement step and then using the cheap copy stores the lowest energy so far (1.10e-6, round 6) at about 100x lower cost.
-- NEXT (open, high): Round 7 of the cheap route (extra improvement step + cheap copy): does the stored energy keep falling?
+- STATUS (in progress, high): The corrections work (one round plus one improvement step takes the energy from 1.10 to 0.64e-6), but the cheap network cannot store below about 1.07e-6 whatever it is given; the network that also gets the round's step as input kept 67-81% per round.
+- NEXT (open, high): A check with a target the cheap network can hold exactly decides whether its floor is the fitting or what it can represent.

@@ -1640,3 +1640,14 @@ Fit a fresh z-only network (NNh setup, NN_SEED=1, weights from NNc/map6/p_out.np
 Clean fitting: |N - 1.4864| <= 0.03e-6 and weighted MSE to plant <= 1e-6. Fitting problem: N - 1.4864 >= 0.08e-6 (>= 30% of the 0.21-0.28 copy loss
 would then be the optimiser, not the reach). Between: part. Prediction: MSE 1-2e-6, |dN| <= 0.03 (60%).
 Broken version: plant with +0.5 added to log-amplitude on the 10% heaviest rows (by n p^2), graded directly; must move N by >> 0.03, or the grade cannot see the test's scale.
+
+DESCENT ROUTE ROUND 7, RESULT (lead 2026-11-24; ref2hop/NNd7, four grade_fine.json re-read; known cases K1-K3 exact; GRADCHECK <= 3.1e-7)
+From h1 (1.0980): exact round T7h 0.7705; + one step G7 0.6408; cheap copy c7 1.0707 -> q7 0.060 (round 6: 0.667). KILL (N(c7) >= 1.05).
+h1 seed 2: 1.1043 (seed 1 1.0980; two fits, spread 0.006).
+Prediction c7 0.96 +- 0.08: missed by 0.11. The corrections beat prediction (T7h 0.77 vs 1.00, G7 0.64 vs 0.72); the copy missed.
+Diagnosis: stored N = N(target) + L. L = 0.21 (T6), 0.28 (G1), 0.43 (G7), while the weighted MSE of the cheap fit stays 8.5-8.9e-6 for every target:
+the cheap network's residual in the n p^2 norm is fixed by what it can hold, so its stored N floors near 1.07 whatever the target.
+The step-input network fits its target 16x closer (X7 val 0.54e-6 vs c7 0.89e-5); the inputs, not the correction, set the floor.
+Verdict: the cheap route is closed as a chain (it stores one good round, 1.098, then floors). Corrections are not the bottleneck: from h1 they reach 0.64.
+NEXT: [wait] NNp1 (planted copy) says whether the cheap floor is the optimiser or the reach. If clean fit: the reach -> the copy needs the
+step inputs (X route; the only network that kept >= 0.67 at round 7); next spend there. If the fit is the problem: fix the optimiser first.

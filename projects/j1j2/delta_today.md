@@ -2566,3 +2566,7 @@
 2026-11-24 sign angle: Astra cj-373b1cade8ed: no constant-cost route to q>=0.75 (two-copy oracle 0.567, verified); goal blocked on PI bar decision. PLAN_sign.md
 2026-11-24 01:45 lead: sign angle reports no route to q>=0.75 (CF 0.457, field 0.273, oracle pick 0.567) and asks the PI: keep bar or judge cumulative. Sent it the magnitude finding (round's own step as input via a fixed-reach shadow, NNw/NNy) as an untried route; recommended to the PI not to close yet.
 2026-11-24 01:46 lead: sign angle: field-as-input costs ~100x per amplitude (second shell); conceded, same for the magnitude shadow (STORAGE cost correction). Suggested it a round k+2 test (exact sign as stored state, CF refit as shadow).
+2026-11-24 01:46 lead: sign angle: k+2 shadow check exists (step8/q4_cf_shadow.json): train roots q 0.94 (leaked), held-out q -0.34 sd 1.29 (12 flips, uninformative); it puts the ~100x route to the PI as a third option.
+2026-11-24 02:33 VERDICT job NNg4b-394177: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg4/ANALYSIS.md]
+2026-11-24 04:02 VERDICT job NNx-x1: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNx/ANALYSIS.md]
+2026-11-24 04:04 lead: NNx: round-6 copy with the step as input q_6 0.806 (fine; f2 0.458), PASS one seed. [parallel] NNz: round 7 with shadow step; NNx seed 2.

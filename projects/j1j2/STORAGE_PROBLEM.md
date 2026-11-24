@@ -1591,3 +1591,10 @@ NEXT [parallel]: second step from G1 (g at G1 with its alpha, FD check, same lin
   gain <= 0.03e-6 -> G1 is near that floor. Prediction: N 0.70 (40%). Also fine-grade G1.
   COST CORRECTION (lead 2026-11-24, after the sign angle's G(-5) timing, PLAN_sign.md STEP 8h): the shadow step needs z(y) at all d ~ 142 neighbours, so a copy with it costs
   ~d x (about 100x) per amplitude more than the z-only copy, and E_L of that copy another factor d. Flat in the round (the PI's criterion), not cheap; the prefactor is a PI call.
+ROUND 6 WITH THE STEP AS INPUT, RESULT (lead 2026-11-24; ref2hop/NNx/x1, fine grade x1fine/grade_fine.json md5 38abe606, re-read; known cases: EXTRA2 unset reproduces f2 step 1)
+  N 1.349949e-6 (alpha -0.0382) -> q_6 = (1.665985-1.349949)/(1.665985-1.273672) = 0.806. PASS (>= 0.75); prediction 0.74 (40%) slightly low. One seed, not yet quotable.
+  val 6.1e-7 vs f2 1.79e-6; MSE_T 6.12e-7 vs 1.76e-6; cos(d_x, d_f2) 0.49: the f2 error is largely removed, not repeated (r1: 0.87).
+  Round 6 used the exact step c1 (chi_5 z-only). Cost ~d x per amplitude (COST CORRECTION above).
+NEXT [parallel] (a) round 7 with the SHADOW step (the constant-in-round design): chi_6 = NNx/x1 table; exact map M[chi_6]; sigma_6 = z-only fit of chi_6; c1_sh from sigma_6
+  (alpha, E of the round-7 map); fit z11 + c1_sh -> T7; q_7 = (N(chi_6) - N(copy))/(N(chi_6) - N(T7)), all fine-graded. PASS q_7 >= 0.75; KILL <= 0.55; between -> improve the shadow.
+  Prediction: q_7 0.70 (40%; NNy kept ~70% of the cost cut). (b) second seed of NNx for a quotable q_6.

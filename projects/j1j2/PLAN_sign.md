@@ -2366,3 +2366,6 @@ ROUTE 1 ESTIMATE FOR THE PI'S DECISION (2026-11-24, existing data only; astra_wa
 LEAD'S PROPOSAL 2026-11-24 (field from a fixed-reach shadow as an input channel, from the magnitude copy's NNy): not constant cost here. h(z_b) needs
  w_c(z_b) (amplitude ratios) at the second shell, ~d^2 ~ 2e4 per E_L vs d = 142 (8h: 12.5x measured at 10.5% gated). With s_sh = C_k the input IS the
  label (q = 1 by construction), so a rung-2 check says nothing. Asked the lead whether NNy avoids second-shell amplitudes.
+LEAD 2026-11-24, reply: agrees the shadow-step route costs ~d (~100x) per walker step for both copies ("flat" = independent of the round, not cheap).
+ Its round k+2 analogue already exists here (step8/q4_cf_shadow.json): exact round 4 vs step from CF's copy of exact round 3. Train roots q 0.94 (sd 0.04,
+ 74 flips; leaked); held-out roots q -0.34 (sd 1.29, 12 flips; uninformative). Third option for the PI: accept ~100x walker cost for a shadow-step copy.

@@ -2574,3 +2574,6 @@
 2026-11-24 07:29 lead: PI asked which route serves the goal; [parallel] NNh: cheap z-only copy of the descended table NNg3/G1.
 2026-11-24 sign angle: new goal (total gain). STEP 12 rung 1: round-4 CF-loop prediction G_4 ~7.5e-5, FN g_4 ~2.4-3.0e-5. Workers: r4cf labels+fit staging; branched short-pair grader build. PLAN_sign.md STEP 12
 2026-11-24 10:29 lead: /cleanup: j1j2 room has no High rows; manifest docs/cleanup_manifest_2026-11-24.md (PI-decides list, r1prime_prediction 69 G on /project is the sign angle's); foreign scratch rows 11-12 added to CLEANUP_ACTIONS.md.
+2026-11-24 10:30 lead: verified sign angle's r1prime_prediction manifest: 112 part files, 69 G, all reduced (nparts 48+8 in each cprime json); ~36 core-h to regenerate. Awaiting PI's rm.
+2026-11-24 10:39 VERDICT job x2: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNx/x2/ANALYSIS.md]
+2026-11-24 10:41 lead: NNx seed 2 q_6 0.767 (seed 1 0.806): both pass the bar. [wait] NNz round 7 (shadow).

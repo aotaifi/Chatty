@@ -2577,3 +2577,6 @@
 2026-11-24 10:30 lead: verified sign angle's r1prime_prediction manifest: 112 part files, 69 G, all reduced (nparts 48+8 in each cprime json); ~36 core-h to regenerate. Awaiting PI's rm.
 2026-11-24 10:39 VERDICT job x2: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNx/x2/ANALYSIS.md]
 2026-11-24 10:41 lead: NNx seed 2 q_6 0.767 (seed 1 0.806): both pass the bar. [wait] NNz round 7 (shadow).
+2026-11-24 10:46 VERDICT job 18154391: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/probe1/ANALYSIS.md]
+2026-11-24 11:46 VERDICT job NNg4c-644803: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg4/ANALYSIS.md]
+2026-11-24 11:49 lead: NNg4 second weight-floored step: fine N 0.8144 -> 0.7476e-6 (gain 0.067e-6, BETWEEN; step 1 0.48). Off main line, recorded STORAGE. [wait] NNz round 7, NNh.

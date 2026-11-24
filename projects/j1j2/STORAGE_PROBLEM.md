@@ -1602,3 +1602,10 @@ WHICH ROUTE (lead 2026-11-24, PI unsure): round copy with step input passes (q_6
   the exact round 37%. Deciding question: can the CHEAP z-only network hold the descended table? NNh: f2 setup fitted to NNg3/G1. N <= 1.30e-6 -> descent route wins on cost;
   N >= 1.45 -> it does not (the gain sits on low-w rows the MSE ignores). Prediction: 1.38 (35%); I lean 55/45 to descent as the better route if it can be stored.
   SEED 2 (NNx/x2, NN_SEED=1, grade_fine e6410fb1, re-read): N 1.364918e-6 -> q_6 0.767. Two seeds: 0.806, 0.767 (mean 0.786, spread 0.038). Both >= 0.75. Two fits, not an error bar.
+
+SECOND WEIGHT-FLOORED STEP, RESULT (lead 2026-11-24; ref2hop/NNg4, fine_G1ref/fine_G1/fine_G2 grade_fine.json re-read; off the main line)
+From NNg3/G1 (fine N 0.8144e-6, alpha -0.0546), the same step with p recomputed at the new base (known case: reproduces NNg/g.npy exactly, p_out to 1e-7).
+Line at fixed alpha: best eta 0.214 (N 0.7773e-6 at alpha_G1); N rose for eta >= 0.385 (0.778, 0.820).
+Fine: G2 (eta 0.385) N 0.7476e-6 at alpha -0.0462; G1 (eta 0.214) N 0.7672e-6 at alpha -0.0501. Gain 0.067e-6, between the written lines
+(>= 0.1 not saturated, <= 0.03 near floor); step 1 gave 0.48e-6 (old grade). Steps shrink about sixfold: the descent is slowing, not floored.
+Tables md5 G1 024dc321, G2 ca5a7be5. Not checked: a third step; eta between 0.21 and 0.39. No further steps queued (off the main line, PI 11-24).

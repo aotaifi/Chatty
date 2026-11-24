@@ -2359,3 +2359,7 @@ ASTRA on STEP 11 (cj-373b1cade8ed, runs/j1j2/sign_bad/astra_wall/ASTRA_wall.md, 
   minimum reaches R <= G/4.
 VERDICT (lead): the 75%-per-round bar at constant cost has no supported route (my confidence 80%; not an impossibility theorem). Goal blocked on the
 PI: keep the bar (then the angle closes negative) or switch to route 1, cumulative gain along the deployed copy (needs non-degradation, unmeasured).
+ROUTE 1 ESTIMATE FOR THE PI'S DECISION (2026-11-24, existing data only; astra_wall/replayed_audit.json roots.all, training-included roots, rough):
+ exact first-order gain still available after deploying CF: 4.4e-5 (round 3 on the same roots: 1.22e-4; ratio 0.36).
+ Round 4 at a non-degrading q ~0.46: ~2.0e-5 first order, ~1.6e-5 FN at the measured FN/first-order ~0.8. Unpaired FN sigma(g) ~1.3e-5 -> ~1.2 sigma;
+ the paired estimator is needed to see it. Gap to sgn(M1) after round 3: 4.5(1.0)e-5. Not checked: q_4 on the copy's own trajectory (non-degradation).

@@ -2444,3 +2444,27 @@ BRANCHED GRADER PROBE 2 RESULT (2026-11-24; job 18154806 COMPLETED, a40-24gb, 3.
  Resolution: sigma 8e-6 -> ~6 pairs = 3.4 A40-h; 5e-6 -> ~15 pairs = 8.6 A40-h. ~11x cheaper than grade4 at equal sigma (for this net pair).
  Not checked: broken control on the 8x8 pair, other pair lengths, n_3/n_4-like decoupling at M 256.
  Use: the FN grade of any round-4 arm with q_4 >= 0.40 runs as K = 6-8 pairs at M 256 (~3.5-4.5 A40-h); 2 sigma ~1.6e-5.
+STEP 13 RESULT (2026-11-24 18:40; jobs 18159332 s035, 18159333 s026 COMPLETED 245800 steps, after 1:10 TIMEOUTs 18158393/4 on slow shared slices;
+ graded by me, scratchpad grade_s035/s026.json, grade_r4cf.py): softened init changes nothing.
+   s 1.00: q 0.104, flips kept 0.204 (w 0.357), false rate 0.0038 | s 0.35: q 0.107, 0.203 (w 0.360), 0.0039 | s 0.26: q 0.120, 0.201 (w 0.359), 0.0038
+ Predictions missed (mine 0.2-0.35, Astra 0.30/0.34). Why: by step 12290 (5% of training) BCE is 0.079 in all arms (s 1: 0.078); the head scale is
+ relearned in the first few thousand steps, so the init margin is not a lasting term. The round-3 curve (kept vs |logit_init|) was confidence
+ confounded with row difficulty, as Astra warned. s 0.15 (18161665) still running; prediction q 0.10-0.13 (85%).
+STEP-BACK 7 (2026-11-24; trigger: STEP 12 branch q_4 < 0.40 and the one named-term variant failed):
+ 1. Verdict: rule (b). The C-free copy loop sits at the fit's fixed point after round 3; round 4 is predicted below FN resolution. Report the ceiling.
+ 2. The thought: the fit is a known map. y4 = y3 on 98.6% of rows, and the fit from CF on nearly the same table returns nearly the same function, so the
+    rows it missed in round 3 stay missed. Hence G_{k+1} ~ R_k (measured: G_4 1.30e-4 vs R_3 1.14e-4; 84% of G_4 on CF's round-3 errors, Astra) and
+    q_{k+1} ~ (share of genuinely new flips) x (their kept rate) = 0.34 x 0.20 ~ 0.07 + small. The loop's total gain is G_3 - R_3 plus a vanishing tail.
+    Same form as self-training's confirmation bias (pseudo-labels converge to the model's own errors; Arazo et al. arXiv:1908.02983, from memory, not re-read;
+    arxiv MCP down today). Escaping it needs a fit with lower error on the same table, which the closed 75%-bar goal already measured as unreachable at
+    constant cost (field copy 0.273, rms ~ steps^-0.064).
+ 3. Cheapest next test: FN grade of CF vs n_2 (branched, K 6-8, M 256, ~4-4.5 A40-h) for the cumulative gain the (b) report needs.
+ Round 4 predicted FN gain at the measured q_4: 0.8 x 1.35e-5 = 1.1e-5 < 2 sigma = 1.6e-5 (sigma 8e-6, 3.4 A40-h) -> rule (b) fires
+ (at sigma 5e-6, 8.6 A40-h, 2 sigma = 1.0e-5: borderline, not worth it for a gain inside the gap noise).
+ Own view (off the critical path, 70%): the sign copy is no longer the bottleneck. n_2 sat 9.6e-5 above sgn(M1), CF's first-order stake is -9.6e-5, so
+ CF alone should land within ~2e-5 of sgn(M1); further rounds chase a residual smaller than the FN-vs-exact difference the loop cares about.
+STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as probe 2 (K 8, M 256).
+ Prediction (written before the run): Delta(CF - n_2) = -7.7e-5/site (0.8 x first-order -9.6e-5; range -5 to -9e-5), 70% it is resolved below -3e-5.
+ Then: gap left to sgn(M1) ~ 9.6e-5 - 7.7e-5 = 1.9e-5 (n_2 gap 9.6e-5 from line 1599 sequence). Report: cumulative Marshall -> n_1 -> n_2 -> CF and the gap.
+ Branches: Delta resolved < 0 -> ceiling report with it; Delta not resolved -> the C-free round 3 itself does not resolve, report ceiling at n_2
+ (gap 9.6e-5) and say the copy gain is below FN resolution.

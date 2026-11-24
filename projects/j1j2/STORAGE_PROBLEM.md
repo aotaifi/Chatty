@@ -1625,3 +1625,11 @@ NEXT (descent route, round 7; [parallel] with NNz): from h1, exact round T7h = M
   q7 = (1.0980 - N(c7))/(1.0980 - N(G7)). PASS: N(c7) <= 0.95e-6 and q7 >= 0.60 (round 6: 0.667). KILL: N(c7) >= 1.05 (gain washed out).
   Prediction: N(T7h) 1.00, N(G7) 0.72, N(c7) 0.96 +- 0.08 (50%); q7 0.36-0.5, i.e. I expect degradation of the share; the run tells whether N still falls.
   Plus seed 2 of h1 (NN_SEED=1) for the round-6 number.
+
+ROUND >= 7 AT FLAT COST, RESULT (lead 2026-11-24; ref2hop/NNz, post7.json + four grade_fine.json re-read; GRADCHECK <= 3.7e-7; known case exact, broken alpha+1e-3 fails by 10.7)
+Start chi_6 = NNx/x1 (1.349949e-6). T7 exact round 1.0961; shadow sigma_6 1.4791; R7 plain cheap copy 1.3477 (q 0.009: washed out);
+X7 copy with the shadow step as input 1.1795 -> q_7 0.672. BETWEEN (pass 0.75, kill 0.55); prediction 0.70. One seed.
+Diagnosis: the shadow step s = ln|1+alpha(E_L[sigma_6]-E)| differs from the true step c1 by alpha(E_L[sigma_6]-E_L[chi_6])/(1+...),
+and sigma_6 is a worse copy (1.479 vs 1.350), so the input carries less of the step: 0.81 (true step, round 6) -> 0.67 (shadow, round 7).
+Cheapest variant: a better shadow (sigma_6 val still falling at 80k). Deferred: the descent route (round 6 stored 1.098 at z-only cost, below X7's
+round-7 1.180 at ~d x cost) is ahead; NNd7 (its round 7) decides which route gets the next spend.

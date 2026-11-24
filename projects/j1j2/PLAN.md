@@ -804,5 +804,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The copy loses energy in proportion to its error (not its square), because the exact round is not a minimum: moving away from the copy past the exact round beats it by 0.06e-6 (115% of the round's gain).
-- NEXT (open, high): Derive the energy's gradient at the exact round and a copy loss that includes it, so the copy errs away from the gradient instead of along it.
+- STATUS (in progress, high): Round 6: the copy that is given the round's own step keeps 77-81% of the gain (bar 75%); at round 7, where that input comes from a cheaper approximation, it keeps 67%. Correcting with one extra improvement step and then using the cheap copy stores the lowest energy so far (1.10e-6, round 6) at about 100x lower cost.
+- NEXT (open, high): Round 7 of the cheap route (extra improvement step + cheap copy): does the stored energy keep falling?

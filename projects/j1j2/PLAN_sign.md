@@ -2392,3 +2392,8 @@ Rung 3 plan: (i) labels: r4_labels.py with CF as the sign net on the round-1 tab
 RUNNING (2026-11-24): r4cf labels 18154335 (RUNNING 10:12, cip a40-16gb) -> fit 18154336 (afterok); run dir runs/j1j2/sign_bad/r4cf; worker owns watchers.
  Launchers read by me (r4_labels.py unmodified, NET2 = CF 5dcca951, NET1 = n_2; C-free table from EL2). Next: pre-fit panel G_4 vs 7.5e-5; then q_4 per STEP 12 branches.
  Parallel worker: branched short-pair FN grader build (runs/j1j2/sign_bad/branched/), needed for the FN grade of round 4.
+BRANCHED GRADER (2026-11-24; code ansatz/code/paired_fn/branched_{fn,prod}.py, commits b71a6b3, 7b29857; runs/j1j2/sign_bad/branched/RESULT.md):
+ CPU toy controls pass (A=A Delta exactly 0; broken Neel flip +0.04805(16) vs exact +0.04852, 1% low). 8x8 probe 18154391 (M 64, n_3 vs n_4): one pair only,
+ Delta -2.37e-5/site (within-pair sigma ~2e-5; verified from pair_0.npz), same_post 0.98; crash at final write (fixed). Projected sigma 5e-6: 5.1 A40-h at M 64,
+ ~1.8 A40-h at M 256 IF variance ~1/M (untested).
+ Probe 2 approved (<= 3 A40-h): positive control on 8x8, A = n_2, B = n_3, M 256, K = 6. Expected Delta = -5.1(13)e-5 (unpaired round-3 FN); pass within 2 sigma.

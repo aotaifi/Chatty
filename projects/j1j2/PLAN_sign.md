@@ -2397,3 +2397,11 @@ BRANCHED GRADER (2026-11-24; code ansatz/code/paired_fn/branched_{fn,prod}.py, c
  Delta -2.37e-5/site (within-pair sigma ~2e-5; verified from pair_0.npz), same_post 0.98; crash at final write (fixed). Projected sigma 5e-6: 5.1 A40-h at M 64,
  ~1.8 A40-h at M 256 IF variance ~1/M (untested).
  Probe 2 approved (<= 3 A40-h): positive control on 8x8, A = n_2, B = n_3, M 256, K = 6. Expected Delta = -5.1(13)e-5 (unpaired round-3 FN); pass within 2 sigma.
+STEP 12 rung 3 (i) PRE-FIT RESULT (2026-11-24; job 18154335 COMPLETED 2h42; r4cf/stage1/prefit_G4.json, table /scratch/.../r4cf/table_r4_cf.npz sha 0cc4a3ca):
+ G_4 (panel, target y4 vs base CF) = 1.299e-4 vs predicted 7.5e-5 -> MISS x1.73. Panel flips 1436/60000 (2.39%); table flips 2.04%.
+ Verified by me: table keys == table_r3_cf keys; table nrel == sgn(CF logits) on 100% of states (base is CF); y4 == y3 on 98.7%.
+ Controls (worker, R4_CONTROLS): n_2 in place of CF reproduces table_r3 y exactly (0/1.47M); broken flipz agrees 12%; direct 20-state EL recompute 1.3e-11.
+ Named term: the [cond] failed: G_4/G_3 = 0.36 on roots, 0.62 on the leak-free panel (1.299e-4/2.09e-4). The roots and the panel weight different
+ states, so the ratio does not transfer. Consequence: more gain is left than predicted. Updated (written before the fit ends): q_4 0.40-0.50 ->
+ first-order g_4 5.2-6.5e-5 -> FN g_4 ~4.2-5.2e-5 at FN/first 0.8. Confidence FN g_4 > 2.5e-5: 65%.
+ Fit 18154336 RUNNING (started 12:55). Probe 2 (18154806) at pair 2/6, ~13 min/pair; pair 0 Delta -1.5(3.8)e-5/site, rho 0.74, same_post 0.92.

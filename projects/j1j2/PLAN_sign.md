@@ -2415,3 +2415,15 @@ STEP 12 rung 3 (i) FIT RESULT (2026-11-24; fit 18154336 COMPLETED 245800/245800 
    Round-3 kept rate vs |logit_init| bin falls 0.61 -> 0.0 (bins 0-0.05 ... 2.5-5). Applied to round-4's |logit_init| distribution it predicts held kept
    0.219; measured 0.210. Each warm-started round sharpens the logits, so the next round's flips start further from zero and are not moved.
  Reading: implementation of the recipe (warm start + fixed steps), not the class. Variant must change the init margin (logit scale), not the steps.
+STEP 13 (2026-11-24 13:58): variant = soften the warm-start margin. Init CF_s = CF with its output logit scaled by s (last layer weights and bias x s);
+ everything else as r4cf (same table, 245800 steps, arm P). Changes exactly the named term of STEP 12.
+ Paper: a sign flip on a row needs the logit to cross zero; the round-3 kept rate falls 0.61 -> 0 as |logit_init| goes 0 -> 2.5, and the same curve
+ predicts round 4 (0.219 vs 0.210 measured), so kept(s) follows from the round-3 curve at s|l_CF|. The cost: keeps lose margin too, and the round-3
+ false-flip curve rises 0.0007 -> 0.31 as |logit_init| goes 1 -> 0.
+ Existing data (round-3 curves applied to s|l_CF| on round-4 held-out LF states):
+   s 1.00: kept 0.219, false 0.0016 (measured 0.210 / 0.0043: the false-flip transfer reads 2.7x low)
+   s 0.50: 0.323 / 0.0034;  s 0.35: 0.373 / 0.0052;  s 0.26: 0.415 / 0.0073;  s 0.20: 0.448 / 0.0099
+ Prediction: false regret/G per unit false rate is ~59 in round 4 (0.254/0.0043; round 3 ~30, since G_4 is 0.62 G_3). Flips are freed only together
+ with false flips, so q_4(s) peaks near 0.2-0.35. P(q_4 >= 0.40 at s 0.35 or 0.26) = 20%. If both are below 0.40: the CF copy degrades at round 4 for a
+ structural reason (its false-flip regret floor, ~3e-5 absolute, does not shrink while G_k does) -> step back; rule (b) reading: ceiling at round 3.
+ Run: two fits s = 0.35 and 0.26 on a40-16gb (~50 min each, parallel) + panel grade. ~2 A40-h. Astra asked in parallel (no conclusion given).

@@ -18,9 +18,10 @@ R = '/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/'; N3SHA = '5b8b6dc437de0178
 import jax
 if 'cuda' not in str(jax.devices()[0]).lower() and not os.environ.get('G8_ALLOW_CPU'): sys.exit(f'branched_prod: no CUDA device ({jax.devices()[0]})')
 import cnn_sign as CS, providers as PV, engine as E, analysis as AN, branched_fn as BF
-amp = CS.AmpCache(chunk=a.chunk, cap=300000); SHA = dict(r2='c7b16b7b', r3=N3SHA[:8], r4=N4SHA[:8])
-n3 = CS.NetSign(R + a.netA + '/fit/net_8192.pkl', 'nA'); assert n3.sha.startswith(SHA[a.netA]), 'netA sha'
-p4 = a.net4 or R + a.netB + '/fit/net_8192.pkl'; n4 = CS.NetSign(p4, 'nB'); assert n4.sha.startswith(SHA[a.netB]), 'netB sha'
+amp = CS.AmpCache(chunk=a.chunk, cap=300000); SHA = dict(r2='c7b16b7b', r3=N3SHA[:8], r4=N4SHA[:8], cf='5dcca951')
+NETP = dict(cf=R + 'tcf/CF/fit/net_8192.pkl')   # T-CF refit (s8_net SignNet pickle), sha pinned in SHA
+n3 = CS.NetSign(NETP.get(a.netA, R + a.netA + '/fit/net_8192.pkl'), 'nA'); assert n3.sha.startswith(SHA[a.netA]), 'netA sha'
+p4 = a.net4 or NETP.get(a.netB, R + a.netB + '/fit/net_8192.pkl'); n4 = CS.NetSign(p4, 'nB'); assert n4.sha.startswith(SHA[a.netB]), 'netB sha'
 def mk(nets):
     g, _ = CS.build('stored', amp, nets, wchunk=a.chunk); return PV.ConfigGuide(g, guide_id=f'stored:{nets.name}'), g
 gA, _ = mk(n3); gA2, _ = mk(n3); gB, gBraw = mk(n4)

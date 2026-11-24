@@ -2572,3 +2572,4 @@
 2026-11-24 04:04 lead: NNx: round-6 copy with the step as input q_6 0.806 (fine; f2 0.458), PASS one seed. [parallel] NNz: round 7 with shadow step; NNx seed 2.
 2026-11-24 04:12 lead: NNz round-7 shadow chain launched (3 ws: m54/m56/m58, watcher NNz-round7-shadow, ~15 h). [wait] NNz verdict; NNg4 and NNx seed 2 running.
 2026-11-24 07:29 lead: PI asked which route serves the goal; [parallel] NNh: cheap z-only copy of the descended table NNg3/G1.
+2026-11-24 sign angle: new goal (total gain). STEP 12 rung 1: round-4 CF-loop prediction G_4 ~7.5e-5, FN g_4 ~2.4-3.0e-5. Workers: r4cf labels+fit staging; branched short-pair grader build. PLAN_sign.md STEP 12

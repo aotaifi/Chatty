@@ -2436,3 +2436,11 @@ ASTRA on STEP 12/13 (2026-11-24, cj-d59bdf8d0fe9; /scratch/a/A.Otaifi/astra/sign
  Caveat (new to me): panel gain is carried by ~55 effective rows (r3 56.7, r4 54.5), so a panel q has finite-sample scatter not yet quoted.
  Decision: add arm s 0.15 (third fit, ~1 A40-h) to the running s 0.35 / 0.26. My forecast stays lower than Astra's (false flips rise with s; my
  round-3 false curve). Branch unchanged: best arm q_4 >= 0.40 -> FN grade CF_4(s) vs CF; all < 0.40 -> step back.
+BRANCHED GRADER PROBE 2 RESULT (2026-11-24; job 18154806 COMPLETED, a40-24gb, 3.75 A40-h vs 3 approved: per-block cost 15.2 s at M 256, sized at 11;
+ branched/RESULT2.md, probe2/result.json; code commit 4723323): positive control PASSES.
+ A = n_2, B = n_3, M 256, K 6: pair Deltas/site (e-5) -1.51 -3.54 -5.91 -4.98 -4.14 -1.00 (verified by me from result.json); mean -3.51(79)e-5,
+ sd_pair 1.93e-5; z +1.04 vs the unpaired -5.1(13)e-5. A=A control Delta 0 on all 6 snapshots. Lag-1 corr of pair Deltas 0.15.
+ Pairs decouple within 100 blocks (same_post 0.5-0.9 in the last quarter); M 256 vs 64 shows no 1/M gain (decoupling sets the variance).
+ Resolution: sigma 8e-6 -> ~6 pairs = 3.4 A40-h; 5e-6 -> ~15 pairs = 8.6 A40-h. ~11x cheaper than grade4 at equal sigma (for this net pair).
+ Not checked: broken control on the 8x8 pair, other pair lengths, n_3/n_4-like decoupling at M 256.
+ Use: the FN grade of any round-4 arm with q_4 >= 0.40 runs as K = 6-8 pairs at M 256 (~3.5-4.5 A40-h); 2 sigma ~1.6e-5.

@@ -2588,3 +2588,5 @@
 2026-11-24 13:50 sign angle: r4cf q_4 0.104 (miss vs 0.40-0.50). Cause found on existing data: warm-start logit margin on flips 0.18 -> 0.70; r3 curve predicts kept 0.219, measured 0.210. PLAN_sign.md STEP 12.
 2026-11-24 13:58 sign angle: STEP 13 written (softened warm-start margin s 0.35/0.26; P(q_4>=0.40) 20%); worker + Astra next.
 2026-11-24 sign angle: Astra r4 review in (same candidate, s 0.15 forecast q 0.44 conj.); third arm s 0.15 added. PLAN_sign.md.
+2026-11-24 14:34 VERDICT job 18154806: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/probe2/ANALYSIS.md]
+2026-11-24 sign angle: branched grader probe 2 PASS (n_2->n_3 Delta -3.51(79)e-5/site vs -5.1(13)e-5, z 1.04; 3.75 A40-h). PLAN_sign.md.

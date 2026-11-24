@@ -2602,3 +2602,4 @@
 2026-11-24 18:39 VERDICT job 18161665: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s015/ANALYSIS.md]
 2026-11-24 18:45 sign angle: STEP 13 soft init q 0.107/0.120 (no effect; head scale relearned by step 12k). STEP-BACK 7 -> rule (b), fixed point of the fit. STEP 14: FN grade CF vs n_2 for the ceiling report (pred -7.7e-5/site).
 2026-11-24 sign angle: s015 q 0.0998; soft-init route closed (10.1 A40-h). Waiting STEP 14 CF vs n_2 FN grade.
+2026-11-24 STEP 14 CF vs n_2 branched FN grade submitted: job 18168074 (a40-24gb, K 8, M 256, 7:30; code 68436d3, sbatch d9bb10b), watcher armed. Pred Delta -7.7e-5/site.

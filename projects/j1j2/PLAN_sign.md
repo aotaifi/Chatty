@@ -2463,7 +2463,7 @@ STEP-BACK 7 (2026-11-24; trigger: STEP 12 branch q_4 < 0.40 and the one named-te
  (at sigma 5e-6, 8.6 A40-h, 2 sigma = 1.0e-5: borderline, not worth it for a gain inside the gap noise).
  Own view (off the critical path, 70%): the sign copy is no longer the bottleneck. n_2 sat 9.6e-5 above sgn(M1), CF's first-order stake is -9.6e-5, so
  CF alone should land within ~2e-5 of sgn(M1); further rounds chase a residual smaller than the FN-vs-exact difference the loop cares about.
-STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as probe 2 (K 8, M 256).
+STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as probe 2 (K 8, M 256). RUNNING job 18168074 (branched/cf_vs_n2).
  Prediction (written before the run): Delta(CF - n_2) = -7.7e-5/site (0.8 x first-order -9.6e-5; range -5 to -9e-5), 70% it is resolved below -3e-5.
  Then: gap left to sgn(M1) ~ 9.6e-5 - 7.7e-5 = 1.9e-5 (n_2 gap 9.6e-5 from line 1599 sequence). Report: cumulative Marshall -> n_1 -> n_2 -> CF and the gap.
  Branches: Delta resolved < 0 -> ceiling report with it; Delta not resolved -> the C-free round 3 itself does not resolve, report ceiling at n_2

@@ -1598,3 +1598,6 @@ ROUND 6 WITH THE STEP AS INPUT, RESULT (lead 2026-11-24; ref2hop/NNx/x1, fine gr
 NEXT [parallel] (a) round 7 with the SHADOW step (the constant-in-round design): chi_6 = NNx/x1 table; exact map M[chi_6]; sigma_6 = z-only fit of chi_6; c1_sh from sigma_6
   (alpha, E of the round-7 map); fit z11 + c1_sh -> T7; q_7 = (N(chi_6) - N(copy))/(N(chi_6) - N(T7)), all fine-graded. PASS q_7 >= 0.75; KILL <= 0.55; between -> improve the shadow.
   Prediction: q_7 0.70 (40%; NNy kept ~70% of the cost cut). (b) second seed of NNx for a quotable q_6.
+WHICH ROUTE (lead 2026-11-24, PI unsure): round copy with step input passes (q_6 0.806) at ~d x per amplitude (and E_L ~d^2); one exact-gradient step on the table beats
+  the exact round 37%. Deciding question: can the CHEAP z-only network hold the descended table? NNh: f2 setup fitted to NNg3/G1. N <= 1.30e-6 -> descent route wins on cost;
+  N >= 1.45 -> it does not (the gain sits on low-w rows the MSE ignores). Prediction: 1.38 (35%); I lean 55/45 to descent as the better route if it can be stored.

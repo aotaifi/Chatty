@@ -2570,3 +2570,5 @@
 2026-11-24 02:33 VERDICT job NNg4b-394177: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg4/ANALYSIS.md]
 2026-11-24 04:02 VERDICT job NNx-x1: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNx/ANALYSIS.md]
 2026-11-24 04:04 lead: NNx: round-6 copy with the step as input q_6 0.806 (fine; f2 0.458), PASS one seed. [parallel] NNz: round 7 with shadow step; NNx seed 2.
+2026-11-24 04:12 lead: NNz round-7 shadow chain launched (3 ws: m54/m56/m58, watcher NNz-round7-shadow, ~15 h). [wait] NNz verdict; NNg4 and NNx seed 2 running.
+2026-11-24 07:29 lead: PI asked which route serves the goal; [parallel] NNh: cheap z-only copy of the descended table NNg3/G1.

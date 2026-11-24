@@ -2582,3 +2582,6 @@
 2026-11-24 11:49 lead: NNg4 second weight-floored step: fine N 0.8144 -> 0.7476e-6 (gain 0.067e-6, BETWEEN; step 1 0.48). Off main line, recorded STORAGE. [wait] NNz round 7, NNh.
 2026-11-24 12:54 VERDICT job 18154335: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf/stage1/ANALYSIS.md]
 2026-11-24 13:00 sign angle: r4cf pre-fit panel G_4 = 1.299e-4 (pred 7.5e-5, miss x1.73: roots ratio 0.36 does not transfer, panel 0.62); base verified = CF; fit 18154336 running. PLAN_sign.md STEP 12.
+2026-11-24 13:41 VERDICT job 18154336: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf/ANALYSIS.md]
+2026-11-24 13:47 VERDICT job NNh-h1: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNh/ANALYSIS.md]
+2026-11-24 13:49 lead: NNh cheap copy of descended table N 1.098e-6 (PASS <=1.30; pred 1.38; one seed). Lowest stored N so far at z-only cost. [parallel] NNd7: descent route round 7 + h1 seed 2. [wait] NNz.

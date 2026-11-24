@@ -1609,3 +1609,19 @@ Line at fixed alpha: best eta 0.214 (N 0.7773e-6 at alpha_G1); N rose for eta >=
 Fine: G2 (eta 0.385) N 0.7476e-6 at alpha -0.0462; G1 (eta 0.214) N 0.7672e-6 at alpha -0.0501. Gain 0.067e-6, between the written lines
 (>= 0.1 not saturated, <= 0.03 near floor); step 1 gave 0.48e-6 (old grade). Steps shrink about sixfold: the descent is slowing, not floored.
 Tables md5 G1 024dc321, G2 ca5a7be5. Not checked: a third step; eta between 0.21 and 0.39. No further steps queued (off the main line, PI 11-24).
+
+WHICH ROUTE, RESULT (lead 2026-11-24; ref2hop/NNh, hfine+Gfine grade_fine.json re-read, h1fit.log GRADCHECK 4.4e-7)
+Cheap z-only copy (f2 setup, rng 0, 80k steps, val still falling 8.76e-6) of the descended table NNg3/G1: N 1.0980e-6 (alpha -0.0529); G1 itself 0.8144e-6.
+PASS of the written line (N <= 1.30). Prediction 1.38: missed by 0.28 in the good direction. One seed, not quotable.
+Same start chi5 (1.666), same pool, round 6:
+  route                          stored N     cost per amplitude   kept share of its own correction
+  exact round, cheap copy (f2)    1.486          z-only              0.458
+  exact round, step input (NNx)   1.350/1.365    ~d x z-only         0.806/0.767
+  round + one step, cheap copy    1.098          z-only              0.667  (= (1.666-1.098)/(1.666-0.814))
+Diagnosis of the miss: the copy loses about the same absolute amount from either target (T6 1.274 -> f2 1.486: 0.21; G1 0.814 -> h1 1.098: 0.28).
+I had assumed the step's gain sits on low-weight rows the copy ignores; the floor shift = -eta g/max(w,w_f) caps the shift where w < w_f, so the
+step moves mostly the rows the copy's weight n p^2 already sees. The descent route keeps a smaller share (0.67 < 0.75 bar) of a gain 1.8x larger, cheaply.
+NEXT (descent route, round 7; [parallel] with NNz): from h1, exact round T7h = M[h1], one weight-floored step G7 (eta line as NNg4), cheap copy c7 (NNh setup).
+  q7 = (1.0980 - N(c7))/(1.0980 - N(G7)). PASS: N(c7) <= 0.95e-6 and q7 >= 0.60 (round 6: 0.667). KILL: N(c7) >= 1.05 (gain washed out).
+  Prediction: N(T7h) 1.00, N(G7) 0.72, N(c7) 0.96 +- 0.08 (50%); q7 0.36-0.5, i.e. I expect degradation of the share; the run tells whether N still falls.
+  Plus seed 2 of h1 (NN_SEED=1) for the round-6 number.

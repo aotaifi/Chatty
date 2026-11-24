@@ -1589,3 +1589,5 @@ WEIGHT-FLOORED STEP, RESULT (lead 2026-11-23; ref2hop/NNg3, G1/G2 grade.json re-
   So the round map is a slow optimiser of the grade; q > 1 per step is possible, and the copy's target need not be T. The step lives where w is small (w_f 9.5e-9 beats 7e-7).
 NEXT [parallel]: second step from G1 (g at G1 with its alpha, FD check, same line). Reading: gain >= 0.1e-6 -> descent not saturated, iterate to the fixed-sign floor;
   gain <= 0.03e-6 -> G1 is near that floor. Prediction: N 0.70 (40%). Also fine-grade G1.
+  COST CORRECTION (lead 2026-11-24, after the sign angle's G(-5) timing, PLAN_sign.md STEP 8h): the shadow step needs z(y) at all d ~ 142 neighbours, so a copy with it costs
+  ~d x (about 100x) per amplitude more than the z-only copy, and E_L of that copy another factor d. Flat in the round (the PI's criterion), not cheap; the prefactor is a PI call.

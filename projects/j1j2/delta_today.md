@@ -2564,3 +2564,5 @@
 2026-11-24 sign angle: STEP 10 field copy KILL (panel q 0.273 < 0.457; flip errors pulled to old sign +0.081 vs |v| 0.071; 2900x steps for rms 0.045); STEP-BACK 6 -> recommend route 1 (PI's call). PLAN_sign.md STEP 10 RESULT; tfield/diag/diag_err.json
 2026-11-24 01:38 VERDICT job NNg4-4088473: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg4/ANALYSIS.md]
 2026-11-24 sign angle: Astra cj-373b1cade8ed: no constant-cost route to q>=0.75 (two-copy oracle 0.567, verified); goal blocked on PI bar decision. PLAN_sign.md
+2026-11-24 01:45 lead: sign angle reports no route to q>=0.75 (CF 0.457, field 0.273, oracle pick 0.567) and asks the PI: keep bar or judge cumulative. Sent it the magnitude finding (round's own step as input via a fixed-reach shadow, NNw/NNy) as an untried route; recommended to the PI not to close yet.
+2026-11-24 01:46 lead: sign angle: field-as-input costs ~100x per amplitude (second shell); conceded, same for the magnitude shadow (STORAGE cost correction). Suggested it a round k+2 test (exact sign as stored state, CF refit as shadow).

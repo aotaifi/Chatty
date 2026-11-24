@@ -2351,3 +2351,11 @@ STEP 11 (2026-11-24): what is left toward the stated 75% bar.
 - No live idea above 25% -> Astra consulted blind on the diagnosed term (old-sign pull at the wall) and on constant-cost routes that change it:
   job cj-373b1cade8ed, output runs/j1j2/sign_bad/astra_wall/ASTRA_wall.md. Branches: a route >= 30% with an existing-data refutation check ->
   rung-1 paper check of it; none -> the bar is unreachable at constant cost by any supported route, and the goal waits on the PI's bar decision.
+ASTRA on STEP 11 (cj-373b1cade8ed, runs/j1j2/sign_bad/astra_wall/ASTRA_wall.md, read in full; key numbers re-computed by me from saved outputs):
+- No constant-cost route >= 30%. Oracle choosing per row between CF and the field copy: q 0.567 [verified]; their shared errors alone exceed the
+  regret budget. Perfect repair of all CF missed flips with false flips untouched: 0.732 [verified]; of all false flips: 0.725. Both regrets must fall.
+- Old-sign pull = the flip correction lost in the fit (v = b - 2bF, b = old-sign baseline); a residual fit against an old-sign baseline is
+  the same projection (no change in q, exact for linear least squares). A margin-weighted loss is correct but has no witness that its affordable
+  minimum reaches R <= G/4.
+VERDICT (lead): the 75%-per-round bar at constant cost has no supported route (my confidence 80%; not an impossibility theorem). Goal blocked on the
+PI: keep the bar (then the angle closes negative) or switch to route 1, cumulative gain along the deployed copy (needs non-degradation, unmeasured).

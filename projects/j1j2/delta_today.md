@@ -2562,3 +2562,5 @@
 2026-11-23 23:52 lead: NNg3: weight-floored exact-gradient step from T6 gives N 0.816e-6 (old grade) vs exact round 1.294 and chain N* ~1.05. [parallel] NNg4: second step from G1.
 2026-11-24 01:29 VERDICT job 18149700: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/tfield/run/ANALYSIS.md]
 2026-11-24 sign angle: STEP 10 field copy KILL (panel q 0.273 < 0.457; flip errors pulled to old sign +0.081 vs |v| 0.071; 2900x steps for rms 0.045); STEP-BACK 6 -> recommend route 1 (PI's call). PLAN_sign.md STEP 10 RESULT; tfield/diag/diag_err.json
+2026-11-24 01:38 VERDICT job NNg4-4088473: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNg4/ANALYSIS.md]
+2026-11-24 sign angle: Astra cj-373b1cade8ed: no constant-cost route to q>=0.75 (two-copy oracle 0.567, verified); goal blocked on PI bar decision. PLAN_sign.md

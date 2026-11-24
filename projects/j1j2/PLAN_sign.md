@@ -2344,3 +2344,10 @@ from keep rows with |v| ~0.46) on the old sign's side. This is the second failur
    bar asks for a resolution (rms 0.045) that the learning curve puts 3 orders of magnitude of steps away; depth bought 7% (T-CAP8).
 3. Cheapest next step: on paper, route 1 with measured numbers (q_3 0.457 non-degrading? g_3 5.1(13)e-5 vs first order 6.4e-5): does round 4 pay?
    Cost: theory only. Needs the PI's yes on the bar first.
+STEP 11 (2026-11-24): what is left toward the stated 75% bar.
+- Astra route 3 (margin filter) fails rung 1 against the bar by its own oracle number: a perfect copy of flips with |v| > 0.06 keeps 0.726 G
+  (audit_existing.json normalized_margin_certificate). Not tested.
+- Routes 4-5 (< 15%) rest on the annealed/soft family closed in STEP 9.
+- No live idea above 25% -> Astra consulted blind on the diagnosed term (old-sign pull at the wall) and on constant-cost routes that change it:
+  job cj-373b1cade8ed, output runs/j1j2/sign_bad/astra_wall/ASTRA_wall.md. Branches: a route >= 30% with an existing-data refutation check ->
+  rung-1 paper check of it; none -> the bar is unreachable at constant cost by any supported route, and the goal waits on the PI's bar decision.

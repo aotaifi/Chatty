@@ -2590,3 +2590,6 @@
 2026-11-24 sign angle: Astra r4 review in (same candidate, s 0.15 forecast q 0.44 conj.); third arm s 0.15 added. PLAN_sign.md.
 2026-11-24 14:34 VERDICT job 18154806: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/probe2/ANALYSIS.md]
 2026-11-24 sign angle: branched grader probe 2 PASS (n_2->n_3 Delta -3.51(79)e-5/site vs -5.1(13)e-5, z 1.04; 3.75 A40-h). PLAN_sign.md.
+2026-11-24 15:11 VERDICT job 18158393: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s035/ANALYSIS.md]
+2026-11-24 15:11 VERDICT job 18158394: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s026/ANALYSIS.md]
+2026-11-24 15:15 sign angle: r4cf_soft s035 (18158393) and s026 (18158394) TIMEOUT at 135190/245800 steps (0.031 s/step on shared a40-16gb vs 0.011 in r4cf); 2.34 A40-h lost. Resubmitting both with 3:30; s015 (18158538) left running, resubmit on timeout.

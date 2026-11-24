@@ -39,6 +39,6 @@ except BF.ControlFailure as e:
 m = out['meta']; tau2 = BF.tau_int_A(out['A_series'], a.burn_A)
 sm = BF.summarize(out['pairs'], NS=64, spacing=a.spacing, tau2_A=tau2)
 cA = m['A_chain_sec'] / m['A_chain_blocks']; cP = m['pair_sec'] / m['pair_blocks']
-res = dict(**hdr, meta=m, summary=sm, pairs=out['pairs'], sec_per_A_block=cA, sec_per_pair_block=cP, done=True, sec=time.time() - T0, cache=dict(hit=amp.hit, miss=amp.miss), stats=dict(gB.st))
+res = dict(**hdr, meta=m, summary=sm, pairs=out['pairs'], sec_per_A_block=cA, sec_per_pair_block=cP, done=True, sec=time.time() - T0, cache=dict(hit=amp.hit, miss=amp.miss), stats=dict(gBraw.st))
 json.dump(res, open(f'{a.out}/result.json', 'w'), indent=1, default=float); np.save(f'{a.out}/A_series.npy', out['A_series'])
 P(f'BRANCHED_DONE K_done {sm["K"]} delta/site {sm["delta_site"]:+.3e} sd_pair {sm["sd_pair"]} err {sm["err_scatter"]} cA {cA:.2f} cP {cP:.2f} wall {time.time() - T0:.0f}s')

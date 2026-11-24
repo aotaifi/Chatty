@@ -2468,3 +2468,5 @@ STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as pr
  Then: gap left to sgn(M1) ~ 9.6e-5 - 7.7e-5 = 1.9e-5 (n_2 gap 9.6e-5 from line 1599 sequence). Report: cumulative Marshall -> n_1 -> n_2 -> CF and the gap.
  Branches: Delta resolved < 0 -> ceiling report with it; Delta not resolved -> the C-free round 3 itself does not resolve, report ceiling at n_2
  (gap 9.6e-5) and say the copy gain is below FN resolution.
+ s 0.15 (18161665, 245800 steps): q 0.0998 (r4cf_soft/s015/grade.json, read by me), inside the 0.10-0.13 prediction. All three arms: flips kept 0.20 (w 0.36),
+ missed regret/G 0.64, held-out on_flips 0.044 identical to s 1. Soft-init route closed. Cost 10.1 A40-h incl. 3.5 lost to 1:10 timeouts on slow slices.

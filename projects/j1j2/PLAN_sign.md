@@ -2369,3 +2369,23 @@ LEAD'S PROPOSAL 2026-11-24 (field from a fixed-reach shadow as an input channel,
 LEAD 2026-11-24, reply: agrees the shadow-step route costs ~d (~100x) per walker step for both copies ("flat" = independent of the round, not cheap).
  Its round k+2 analogue already exists here (step8/q4_cf_shadow.json): exact round 4 vs step from CF's copy of exact round 3. Train roots q 0.94 (sd 0.04,
  74 flips; leaked); held-out roots q -0.34 (sd 1.29, 12 flips; uninformative). Third option for the PI: accept ~100x walker cost for a shadow-step copy.
+
+## GOAL (PI 2026-11-24, replaces the 75% bar): total-gain route. Best total FN gain along the CF-class copy's own rounds, constant cost, non-degrading.
+Done: (a) >= 3 rounds after round 3, each FN gain > 2 sigma (paired), panel q_k >= 0.40 and never down by > 0.05 per round; or (b) a round's predicted
+gain below FN resolution -> report cumulative gain and gap to sgn(M1) as the ceiling.
+
+## STEP 12 (2026-11-24): round 4 on the CF trajectory, RUNG 1 (paper)
+State: two trajectories exist from n_2. Threshold-label loop: n_3 (q_3 ~0.31 = 6.4/20.9 first order; FN g_3 5.1(13)e-5), n_4 graded g_4 -0.7(1.9)e-5
+ (grade4, pairs decoupled, sigma 3.7x target). C-free loop: CF (q_3 0.457, first order -9.6e-5 vs n_2, FN never graded). The goal's class is CF -> round 4 = CF_4.
+Prediction (written before any round-4 CF number):
+ G_4 (exact first-order gain left after deploying CF), panel scale: roots give G_4/G_3 = 4.39e-5/1.224e-4 = 0.36 (astra_wall/replayed_audit.json
+ roots.all) -> G_4 ~ 0.36 x 2.09e-4 = 7.5e-5 [cond: roots ratio transfers to the panel].
+ q_4 = 0.40-0.50 (same class, recipe, label rule; non-degrading is the hypothesis) -> first-order g_4 = 3.0-3.8e-5 -> FN g_4 ~2.4-3.0e-5 at FN/first ~0.8
+ (one calibration point: n_3 round 3). Confidence g_4 > 1.5e-5: 60%.
+Resolution: grade4's estimator gave sigma 1.9e-5 at 6.9 A40-h (pairs decouple after ~200 blocks, chain-dependent). Coupled windows: sd(Delta) ~1.5e-4/block
+ -> ~900 coupled blocks for sigma 5e-6. Needs the branched short-pair design (accepted 11-16, NOT implemented in paired_fn/). Estimated ~3-4 A40-h per grade.
+Rule (b) check: predicted g_4 ~2.7e-5 vs achievable 2 sigma ~1-1.6e-5 -> NOT below resolution -> run round 4.
+Rung 2 (existing data): G_4 on roots done (above); q_4 needs CF_4, which does not exist -> rung 3.
+Rung 3 plan: (i) labels: r4_labels.py with CF as the sign net on the round-1 table, C-free rule y = sgn Q (as make_table_cf.py) -> CF_4 fit from CF (r3 recipe)
+ -> panel q_4 on held-out states (labels from CF, grade code of eval_panel_v.py); (ii) branched short-pair grade CF_4 vs CF, and CF vs n_2 (round 3 baseline g_3^CF).
+ Kill/branch: q_4 < 0.40 -> degrading, record, step back; q_4 >= 0.40 -> FN grade; FN g_4 < 2 sigma with sigma <= 8e-6 -> ceiling at round 3 (rule b).

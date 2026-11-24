@@ -2593,3 +2593,5 @@
 2026-11-24 15:11 VERDICT job 18158393: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s035/ANALYSIS.md]
 2026-11-24 15:11 VERDICT job 18158394: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s026/ANALYSIS.md]
 2026-11-24 15:15 sign angle: r4cf_soft s035 (18158393) and s026 (18158394) TIMEOUT at 135190/245800 steps (0.031 s/step on shared a40-16gb vs 0.011 in r4cf); 2.34 A40-h lost. Resubmitting both with 3:30; s015 (18158538) left running, resubmit on timeout.
+2026-11-24 16:21 VERDICT job 18158538: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf_soft/s015/ANALYSIS.md]
+2026-11-24 16:23 sign angle: s015 18158538 TIMEOUT (135190 steps), resubmitted 18161665 (3:30). s035 18159332 at 122900/245800 at 69 min; s026 18159333 started 16:21.

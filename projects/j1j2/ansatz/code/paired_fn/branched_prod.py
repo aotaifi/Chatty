@@ -10,7 +10,7 @@ import numpy as np
 ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('--x0dir', default='/scratch/a/A.Otaifi/ansatz_runs/sign_node/inputs'); ap.add_argument('--x0', default='X0_B0_0.npy')
 ap.add_argument('--net4', default=None); ap.add_argument('--chunk', type=int, default=128); ap.add_argument('--M', type=int, default=256); ap.add_argument('--K', type=int, default=4)
 ap.add_argument('--burn_A', type=int, default=150); ap.add_argument('--spacing', type=int, default=25); ap.add_argument('--burn_pair', type=int, default=20); ap.add_argument('--measure_pair', type=int, default=100)
-ap.add_argument('--control_blocks', type=int, default=5); ap.add_argument('--maxsec', type=float, default=None); ap.add_argument('--seed', type=int, default=7001)
+ap.add_argument('--control_blocks', type=int, default=5); ap.add_argument('--maxsec', type=float, default=None); ap.add_argument('--seed', type=int, default=7001); ap.add_argument('--netA', default='r3'); ap.add_argument('--netB', default='r4')
 a = ap.parse_args(); os.makedirs(a.out, exist_ok=True); T0 = time.time(); prog = open(f'{a.out}/progress.txt', 'a')
 def P(m):
     line = f'{time.strftime("%Y-%m-%dT%H:%M:%S")} PROGRESS {m}'; print(line, flush=True); prog.write(line + '\n'); prog.flush()
@@ -18,13 +18,14 @@ R = '/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/'; N3SHA = '5b8b6dc437de0178
 import jax
 if 'cuda' not in str(jax.devices()[0]).lower() and not os.environ.get('G8_ALLOW_CPU'): sys.exit(f'branched_prod: no CUDA device ({jax.devices()[0]})')
 import cnn_sign as CS, providers as PV, engine as E, analysis as AN, branched_fn as BF
-amp = CS.AmpCache(chunk=a.chunk, cap=300000); n3 = CS.NetSign(R + 'r3/fit/net_8192.pkl', 'n3'); assert n3.sha == N3SHA, 'n3 sha'
-p4 = a.net4 or R + 'r4/fit/net_8192.pkl'; n4 = CS.NetSign(p4, 'n4'); assert n4.sha == N4SHA, 'n4 sha'
+amp = CS.AmpCache(chunk=a.chunk, cap=300000); SHA = dict(r2='c7b16b7b', r3=N3SHA[:8], r4=N4SHA[:8])
+n3 = CS.NetSign(R + a.netA + '/fit/net_8192.pkl', 'nA'); assert n3.sha.startswith(SHA[a.netA]), 'netA sha'
+p4 = a.net4 or R + a.netB + '/fit/net_8192.pkl'; n4 = CS.NetSign(p4, 'nB'); assert n4.sha.startswith(SHA[a.netB]), 'netB sha'
 def mk(nets):
     g, _ = CS.build('stored', amp, nets, wchunk=a.chunk); return PV.ConfigGuide(g, guide_id=f'stored:{nets.name}'), g
 gA, _ = mk(n3); gA2, _ = mk(n3); gB, gBraw = mk(n4)
 f = os.path.join(a.x0dir, a.x0); X0 = np.load(f).astype(np.int8)[:a.M]; assert X0.shape == (a.M, 64)
-hdr = dict(args=vars(a), job=os.environ.get('SLURM_JOB_ID'), device=str(jax.devices()[0]), x0_sha256=hashlib.sha256(open(f, 'rb').read()).hexdigest(),
+hdr = dict(args=vars(a), netA_sha=n3.sha, netB_sha=n4.sha, job=os.environ.get('SLURM_JOB_ID'), device=str(jax.devices()[0]), x0_sha256=hashlib.sha256(open(f, 'rb').read()).hexdigest(),
            code_sha256={fn: hashlib.sha256(open(os.path.join(HERE, fn), 'rb').read()).hexdigest() for fn in ('engine.py', 'providers.py', 'analysis.py', 'cnn_sign.py', 'branched_fn.py', 'branched_prod.py')})
 P(f'branched_prod start M {a.M} K {a.K} burn_A {a.burn_A} spacing {a.spacing} pair {a.burn_pair}+{a.measure_pair} control {a.control_blocks} maxsec {a.maxsec} device {jax.devices()[0]}')
 saved = []

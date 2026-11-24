@@ -2585,3 +2585,4 @@
 2026-11-24 13:41 VERDICT job 18154336: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/r4cf/ANALYSIS.md]
 2026-11-24 13:47 VERDICT job NNh-h1: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNh/ANALYSIS.md]
 2026-11-24 13:49 lead: NNh cheap copy of descended table N 1.098e-6 (PASS <=1.30; pred 1.38; one seed). Lowest stored N so far at z-only cost. [parallel] NNd7: descent route round 7 + h1 seed 2. [wait] NNz.
+2026-11-24 14:20 sign angle: r4cf q_4 0.104 (miss vs 0.40-0.50). Cause found on existing data: warm-start logit margin on flips 0.18 -> 0.70; r3 curve predicts kept 0.219, measured 0.210. PLAN_sign.md STEP 12.

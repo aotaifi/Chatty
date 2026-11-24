@@ -2405,3 +2405,13 @@ STEP 12 rung 3 (i) PRE-FIT RESULT (2026-11-24; job 18154335 COMPLETED 2h42; r4cf
  states, so the ratio does not transfer. Consequence: more gain is left than predicted. Updated (written before the fit ends): q_4 0.40-0.50 ->
  first-order g_4 5.2-6.5e-5 -> FN g_4 ~4.2-5.2e-5 at FN/first 0.8. Confidence FN g_4 > 2.5e-5: 65%.
  Fit 18154336 RUNNING (started 12:55). Probe 2 (18154806) at pair 2/6, ~13 min/pair; pair 0 Delta -1.5(3.8)e-5/site, rho 0.74, same_post 0.92.
+STEP 12 rung 3 (i) FIT RESULT (2026-11-24; fit 18154336 COMPLETED 245800/245800 steps; r4cf/grade_cf4.json, net CF_4 sha fcf2dc2b; q re-derived by me 0.1038):
+ q_4 = 0.104 (pred 0.40-0.50) -> MISS; branch "q_4 < 0.40 -> degrading". G 1.299e-4, R 1.164e-4, gain 1.35e-5; regret/G missed 0.643, false 0.254.
+ Diagnosis before verdict (all CPU, existing files; scripts scratchpad r4split.py, trainkept.py):
+ - Refuted: flip fraction shrinking (panel 2.77% r3 -> 2.39% r4, too small); hard re-offered rows (CF's round-3 misses carry 66% of G_4, kept 0.44 weighted,
+   better than new flips at 0.20).
+ - Not generalisation: train-set flips kept 0.557 (r3) -> 0.342 (r4); held-out 0.405 -> 0.210. The fit no longer moves flips on its own training set.
+ - CONFIRMED term: the warm-start net's margin on the flip rows. Median |logit_init| on flips 0.18 (n_2, r3) -> 0.70 (CF, r4); on keeps 6.7 -> 15.5.
+   Round-3 kept rate vs |logit_init| bin falls 0.61 -> 0.0 (bins 0-0.05 ... 2.5-5). Applied to round-4's |logit_init| distribution it predicts held kept
+   0.219; measured 0.210. Each warm-started round sharpens the logits, so the next round's flips start further from zero and are not moved.
+ Reading: implementation of the recipe (warm start + fixed steps), not the class. Variant must change the init margin (logit scale), not the steps.

@@ -2363,3 +2363,6 @@ ROUTE 1 ESTIMATE FOR THE PI'S DECISION (2026-11-24, existing data only; astra_wa
  exact first-order gain still available after deploying CF: 4.4e-5 (round 3 on the same roots: 1.22e-4; ratio 0.36).
  Round 4 at a non-degrading q ~0.46: ~2.0e-5 first order, ~1.6e-5 FN at the measured FN/first-order ~0.8. Unpaired FN sigma(g) ~1.3e-5 -> ~1.2 sigma;
  the paired estimator is needed to see it. Gap to sgn(M1) after round 3: 4.5(1.0)e-5. Not checked: q_4 on the copy's own trajectory (non-degradation).
+LEAD'S PROPOSAL 2026-11-24 (field from a fixed-reach shadow as an input channel, from the magnitude copy's NNy): not constant cost here. h(z_b) needs
+ w_c(z_b) (amplitude ratios) at the second shell, ~d^2 ~ 2e4 per E_L vs d = 142 (8h: 12.5x measured at 10.5% gated). With s_sh = C_k the input IS the
+ label (q = 1 by construction), so a rung-2 check says nothing. Asked the lead whether NNy avoids second-shell amplitudes.

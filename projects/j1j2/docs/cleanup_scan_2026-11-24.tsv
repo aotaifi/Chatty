@@ -1,0 +1,8 @@
+GB	newest_age_d	live_job	real_cites	foreign_cites	old_ckpt_files	old_ckpt_GB	path	first_cites
+84.59	0.00	0	10	14	0	0.00	/scratch/a/A.Otaifi/ansatz_runs	PLAN.md;PLAN_ansatz.md
+79.16	0.00	1	36	52	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2	CLAUDE.md;PLAN.md
+51.17	21.10	0	74	498	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs	CLAUDE.md;PLAN.md
+45.90	0.00	0	1	99	114	0.55	/scratch/a/A.Otaifi/tmp	experiments/compress_6x6/README.md;CLAUDE.md
+9.75	20.80	0	2	3	0	0.00	/scratch/a/A.Otaifi/venvs	PLAN.md;PLAN_tooling.md
+5.04	32.00	0	0	14	0	0.00	/project/theorie/a/A.Otaifi/Chatty/sign_prob	Chatty/sign_prob/CLAUDE.md;Chatty/sign_prob/README.md
+1.43	51.00	0	0	14	0	0.00	/scratch/a/A.Otaifi/sign_prob	Chatty/sign_prob/CLAUDE.md;Chatty/sign_prob/README.md

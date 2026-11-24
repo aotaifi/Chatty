@@ -1,0 +1,52 @@
+GB	newest_age_d	live_job	real_cites	foreign_cites	old_ckpt_files	old_ckpt_GB	path	first_cites
+69.37	5.30	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_prediction	PLAN_pfaffian.md
+38.67	0.00	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/consol_6x6	PLAN.md
+18.29	0.00	0	0	0	70	0.42	/scratch/a/A.Otaifi/tmp/claude-29196	
+15.10	46.00	0	0	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/a40slice	
+8.65	21.10	0	4	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/compress6	PLAN_pfaffian.md;experiments/compress_6x6/README.md
+7.86	30.60	0	4	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/stall6	PLAN_ansatz.md;experiments/rbmpp_6x6/README.md
+7.60	46.00	0	10	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/archive	PLAN.md;PLAN_howwework.md
+6.84	31.70	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/c2_t0b_6x6	PLAN_ansatz.md
+5.65	0.60	0	137	0	0	0.00	/scratch/a/A.Otaifi/tmp/w	CLAUDE.md;PLAN.md
+5.06	25.00	0	0	0	0	0.00	/scratch/a/A.Otaifi/tmp/old13	
+4.56	5.00	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/rangelimit_6x6	PLAN.md
+4.07	0.50	0	0	0	0	0.00	/scratch/a/A.Otaifi/tmp/lowlevel	
+3.87	30.60	0	0	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/_packed	
+3.16	6.90	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2/r1prime_fit	PLAN_pfaffian.md
+2.99	0.00	1	3	0	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad	PLAN.md;PLAN_sign.md
+2.83	9.40	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2/sign_strong	PLAN_sign.md
+2.80	15.40	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8build	PLAN_pfaffian.md
+2.58	47.50	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/fncal6	results/fn_calibration_6x6/README.md
+2.23	18.80	0	0	0	0	0.00	/scratch/a/A.Otaifi/tmp/nugate	
+2.11	24.80	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_n	PLAN.md;PLAN_pfaffian.md
+1.93	12.60	0	0	0	0	0.00	/scratch/a/A.Otaifi/tmp/kleincost	
+1.83	9.60	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/paired_fn	PLAN_sign.md;ansatz/code/paired_fn/README.md
+1.76	26.40	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_l	PLAN.md;PLAN_pfaffian.md
+1.69	30.60	0	0	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/fn6x6	
+1.65	24.00	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3c	PLAN.md;PLAN_pfaffian.md
+1.62	11.90	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_8x8_r1	PLAN_pfaffian.md;PLAN_sign.md
+1.54	42.10	0	4	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/signs8	PLAN_sign.md;experiments/signs_8x8/README.md
+1.50	18.60	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/sign_scale	PLAN_pfaffian.md;PLAN_sign.md
+1.21	27.10	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_c	PLAN.md;PLAN_pfaffian.md
+1.19	20.40	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r5	PLAN.md;PLAN_pfaffian.md
+1.18	22.80	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r4	PLAN.md;PLAN_pfaffian.md
+1.09	17.00	0	42	0	0	0.00	/scratch/a/A.Otaifi/tmp/inv	CLAUDE.md;PLAN.md
+1.00	22.80	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/sign_r0	PLAN_sign.md
+0.94	25.10	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r1	PLAN.md;PLAN_pfaffian.md
+0.91	42.00	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/Chatty/runs/rbmpp6	PLAN_sign.md
+0.89	14.90	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/arch_hloc	PLAN_architecture.md
+0.84	20.40	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r6	PLAN.md;PLAN_pfaffian.md
+0.83	18.40	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_m5p2	PLAN_pfaffian.md
+0.82	24.40	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_lswo2	PLAN_pfaffian.md;docs/reports/2026-10-31_label_free_loop_6x6.md
+0.75	24.80	0	2	0	0	0.00	/scratch/a/A.Otaifi/tmp/fastratio	PLAN_tooling.md;experiments/gfmc_fn_lattice/fastratio/README.md
+0.71	18.70	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/sign_b2p1	PLAN.md;PLAN_pfaffian.md
+0.71	6.50	0	0	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/b10_6x6	
+0.70	25.90	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_screen	PLAN.md;PLAN_pfaffian.md
+0.64	25.00	0	0	0	0	0.00	/scratch/a/A.Otaifi/tmp/stagetest_d3p6	
+0.63	9.70	0	1	0	0	0.00	/project/theorie/a/A.Otaifi/runs/j1j2/pfaffian_8x8_s306	PLAN_pfaffian.md
+0.60	14.70	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/arch_sym6	PLAN_architecture.md
+0.59	24.10	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_r3	PLAN.md;PLAN_pfaffian.md
+0.59	16.60	0	0	0	30	0.12	/scratch/a/A.Otaifi/tmp/ip_gate	
+0.59	25.60	0	1	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_k	PLAN_pfaffian.md
+0.58	19.70	0	3	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/pfaffian_v	PLAN.md;PLAN_pfaffian.md
+0.52	22.60	0	2	0	0	0.00	/scratch/a/A.Otaifi/ansatz_runs/sign_s2	PLAN.md;PLAN_sign.md

@@ -2322,3 +2322,25 @@ Run being staged by a worker (runs/j1j2/sign_bad/tfield/; same CF class/data/ini
 launcher before submission. Branches: q >= 0.75 on the leak-free panel -> chaining on paper; q <= 0.457 -> record, back to Astra's route 1;
 between -> learning-curve diagnosis. Prediction: rms 0.05-0.07, q 0.45-0.72 [65%]; q >= 0.75 [25%].
 Open for the PI: Astra route 1 (judge cumulative gain on the copy's own trajectory; a non-degrading q ~0.5 may suffice) would change the goal's bar.
+
+## STEP 10 RESULT (2026-11-24; A40 job 18149700, runs/j1j2/sign_bad/tfield/run/result.json, numbers re-read by me; single seed, no error bar)
+KILL FIRES: field copy panel q = 0.273 (< CF 0.457). Controls pass (CF 0.456747, exact v 1.0, inverted -6438, copy=n_2 0). kappa 0.0226, head mse 272 -> 0.066.
+rms(v-hat - v) 0.075 all / 0.118 flips / 0.074 keeps (pred 0.05-0.07: missed high). Sign error 54% on flips, 1.3% on keeps.
+DIAGNOSIS (rung 2, tfield/diag/diag_err.py -> diag_err.json, CPU):
+- The rms -> q map holds: Gaussian error on exact v gives q 0.91 / 0.78 / 0.36 at rms 0.03 / 0.045 / 0.075 (certificate said 0.75 at 0.035 uniform).
+  The miss is the size of the error, plus its structure (net 0.27 vs Gaussian 0.36 at the same rms).
+- The structured part: on flips the error points back to the old sign, mean e * n_2 = +0.081 against mean |v| = 0.071 (keeps: -0.016).
+  The regression learned "keep the old sign" on flip rows, the same failure as the CF classifier (STEP 6-9). Warm vs cold start was already shown not to
+  matter (line 734, 2000), so the n_2 init is not the cause.
+- Regret split: missed flips 0.29 G, false flips on keeps 0.44 G.
+- Not a short run: train rms 0.080 = held 0.075 (no overfit), held rms ~ steps^-0.064 over the second half, 0.045 needs ~2900x the steps.
+VERDICT: the normalized-field copy is closed at constant cost. Mechanism shared with CF: a smooth spin-input net puts flip rows (|v| ~0.07, one exchange
+from keep rows with |v| ~0.46) on the old sign's side. This is the second failure on one mechanism (CLAUDE.md point 3) -> step-back below.
+
+## STEP-BACK 6 (2026-11-24; trigger: second failure on one mechanism, classifier CF and field regression)
+1. Verdict: the 75-80%-per-round bar at constant cost has no route left above ~25% (Astra: route 2 35% -> failed; route 3 margin filter 25%; 4-5 < 15%).
+   Recommend switching the bar to Astra's route 1 (cumulative gain along the copy's own trajectory), which is the PI's call.
+2. Thought: every spin-input net tried fails the same way at the wall, where the target jumps by ~0.5 over one exchange and the net interpolates. The
+   bar asks for a resolution (rms 0.045) that the learning curve puts 3 orders of magnitude of steps away; depth bought 7% (T-CAP8).
+3. Cheapest next step: on paper, route 1 with measured numbers (q_3 0.457 non-degrading? g_3 5.1(13)e-5 vs first order 6.4e-5): does round 4 pay?
+   Cost: theory only. Needs the PI's yes on the bar first.

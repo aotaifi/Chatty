@@ -2521,3 +2521,6 @@ STEP-BACK 8 (PI 2026-11-25 "step back, nevertheless"; STEP 15 staging, go withhe
     Cost: CPU if walker amplitudes can be logged from an existing FN code path; else one short FN run logging walker lB2 under n_2 (~1 A40-h).
  Own view (75%, on path): two weeks of this angle optimised an uncalibrated proxy. (a) at 8x8 also needs the loop to go below sgn(M1) (6.7e-5 left vs
  3 x 1.6e-5); 10x10, where gaps are larger, is where chained resolved rounds are possible at all (off path, PI's call).
+STEP 15 STAGED (worker, 2026-11-25; r4cf_w/gate.json, gate2.json): grader identity exact (R for CF_4 1.1637272e-4 = grade_cf4.json), shuffled c misses x200-370.
+ Flipped-row ESS of c 820 -> c^(1/2) (ESS 6679). Under c^(1/2) flips carry 0.14% of the weight (1.95% of rows): the weighting favours large-|h| keeps,
+ against the premise. GPU smoke of the write path not run. NOT submitted; go withheld pending the PI (STEP-BACK 8).

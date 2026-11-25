@@ -2538,8 +2538,8 @@ DATA CHECK for STEP 16 (me, CPU, scratchpad fo_dec.py = tcf/fo_estimate.py split
  flips). So the first-order number is a few-row estimate, and the CF/n_3 ranking comes from the deep decades.
 STEP 16 PAPER CHECK (me): E_FN(s) is the ground energy of H_FN(s) (sign-violating off-diagonals moved to the diagonal). Hellmann-Feynman (exact, non-
  degenerate ground state phi): dE_FN = <phi|dH_FN|phi>, bond weight phi(x)phi(y)|H_xy|. The panel first order uses B(x)B(y) (guiding amplitude) instead.
- Approximation (conjectured, decade level): phi/B ~ c_d within a decade, c_d^2 ~ (mixed walker density / Born density) in decade d, since walkers sample
- B*phi. Near nodes phi is suppressed relative to B, so deep decades (where CF's lead sits) should be down-weighted: predicts CF realizes less than n_3.
+ Approximation (conjectured, decade level): phi/B ~ c_d within a decade, c_d ~ (mixed walker density / Born density) in decade d (walkers sample
+  B*phi), bond weight w_d c_d^2. Near nodes phi is suppressed relative to B, so deep decades (where CF's lead sits) should be down-weighted: predicts CF realizes less than n_3.
  Confidence in the derivation 60% (decade-level c_d and neighbour decade mismatch are the weak steps). Prior: twhy w_d = Born from tempered roots
  (ESS 347); no walker decade histogram exists in the records (searched PLAN_sign 'walker weight').
  Known cases: must reproduce CF - n_2 -2.91(1.19)e-5 and n_3 - n_2 -3.51(79)e-5 (paired FN) within 2 sigma; broken version = Born weights (misses by 4 sigma).

@@ -2546,3 +2546,7 @@ STEP 16 PAPER CHECK (me): E_FN(s) is the ground energy of H_FN(s) (sign-violatin
  Next rung: pass = both reproduced within 2 sigma and CF/n_3 ratio < 1.15 -> the walker-weighted metric replaces q for any further round. Kill = ratio >= 1.3
  or a miss > 2 sigma -> decade-level is not the term; next is configuration-level phi/B (forward walking). Prediction: walker density in -7..-5 below Born
  by >= 2x (60%); ratio 0.7-1.0 (55%). Cost ~0.5 A40-h (n_2 A population, dump walker log|B|^2 per block) + CPU.
+TAKEOVER 2026-11-25 19:40 -> check-in 2026-11-26 08:00. Defaults (PI may override): ceiling 10 A40-h; no deletions, no cancelling others' jobs, no
+ messages beyond the FN-loop lead, no GitHub push. Plan: STEP 16 (walker histogram, worker) -> CPU walker-weighted first order vs the two paired FN gains.
+ Pass -> score STEP 15 and other round-4 candidates with it on CPU; fit + FN-grade the best only if its predicted gain >= 2 sigma (1.6e-5), <= 8 A40-h.
+ Kill -> paper design of configuration-level phi/B (forward walking), no GPU.

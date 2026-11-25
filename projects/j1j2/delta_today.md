@@ -2612,3 +2612,4 @@
 2026-11-25 04:09 lead: NNp1 planted copy CLEAN (dN 0.009e-6, MSE 3e-7 vs 8.6e-6 on real targets): cheap floor = reach, not optimiser. Not pushed: sign angle commit bec009c awaits PI OK.
 2026-11-25 04:10 lead: STORAGE 'WHICH INPUT AT ROUND >= 7, PAPER' step 1: reach theorem (no fixed input set closed under the round), shadow error = reach-1 floor differenced; conj nested shadow q_7 ~0.78.
 2026-11-25 sign angle STEP-BACK 8: switch the metric (Born-panel q is miscalibrated vs FN, realization 0.30/0.55); next test walker-weighted first-order gain vs the two measured FN gains; STEP 15 go withheld pending PI.
+2026-11-25 19:40 sign angle: takeover until 2026-11-26 08:00; STEP 16 walker histogram dispatched (worker); ceiling 10 A40-h.

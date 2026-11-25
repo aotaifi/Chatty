@@ -2610,3 +2610,4 @@
 2026-11-25 sign angle: STEP 14 Delta(CF - n_2) -2.91(1.19)e-5/site (job 18168074, 8 pairs); prediction -7.7e-5 failed. Rule (b) ceiling: loop stops at round 3, gap left to sgn(M1) 6.7(1.5)e-5/site (PLAN_sign.md CEILING REPORT).
 2026-11-25 04:07 VERDICT job NNp1: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp1/ANALYSIS.md]
 2026-11-25 04:09 lead: NNp1 planted copy CLEAN (dN 0.009e-6, MSE 3e-7 vs 8.6e-6 on real targets): cheap floor = reach, not optimiser. Not pushed: sign angle commit bec009c awaits PI OK.
+2026-11-25 04:10 lead: STORAGE 'WHICH INPUT AT ROUND >= 7, PAPER' step 1: reach theorem (no fixed input set closed under the round), shadow error = reach-1 floor differenced; conj nested shadow q_7 ~0.78.

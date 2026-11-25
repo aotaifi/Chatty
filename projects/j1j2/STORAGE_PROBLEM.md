@@ -1660,3 +1660,18 @@ Reading: on real targets the same fit leaves MSE 8.5-8.9e-6 (h1, c7), 29x the in
 can represent, not the optimiser. Consequence for the shadow: sigma_k is a cheap copy, so it carries the same floor (sigma_6 1.479 vs chi_6 1.350);
 a longer shadow fit is predicted not to fix q_7 0.67. Past the floor needs inputs the cheap network lacks, and their own copies must not be cheap ones.
 NEXT (paper): which input carries the round's step at round >= 7 without a cheap shadow, and at what cost per amplitude.
+
+WHICH INPUT AT ROUND >= 7, PAPER, step 1 (lead 2026-11-25)
+Notation: frozen B; rho_b(x) = B(y_b)/B(x); joint rho_bc(x) = B(x^{bc})/B(x); Phi(x) = {rho_b(x)} (one hop). A reach-R network depends on x only via ratios up to R exchanges.
+(1) [exact] Phi(y_b) = {rho_bc(x)/rho_b(x)}_c: the neighbours' one-hop summaries are functions of the two-hop ratios at x.
+    Hence for a reach-1 network u = f(Phi), the round's step c1[u](x) = ln|1+alpha(D_x + sum_b h_b rho_b e^{f(Phi(y_b)) - f(Phi(x))} - E)| is an exact function of reach-2 data.
+(2) [exact] By (1) the step of a reach-R network has reach R+1, so no fixed input set is closed under the round: a reach-R copy is exact for one round only, from a reach-(R-1) start.
+    This is the one-hop-per-round reach limit (NNr) restated as a property of the input set, not of the fit; NNp1 (clean in-class fit) confirms the fit is not the limit.
+(3) [exact, cost] The shadow scheme is the fixed-depth version of (2): stored X_k at reach 2 takes s_k = c1[sigma_k], sigma_k a reach-1 fit of X_k. Cost per amplitude ~ z x cheap,
+    flat in the round. Its error enters only through ds = alpha sum_b h_b rho_b e^{u(y_b)-u(x)} (delta(y_b) - delta(x)) / (1 + alpha(E_L - E)), delta = ln sigma_k - ln X_k:
+    the shadow's error differenced across neighbours. delta is bounded below by the reach-1 floor (NNd7/NNp1: weighted MSE ~8.6e-6), so q_7 0.67 < q_6 0.81 (true step) is that floor.
+(4) [conj, p 0.55] Nesting one level deeper (reach-2 shadow = an X-type fit, its own step from a reach-1 shadow) keeps cost flat in the round at ~z^2 x cheap
+    and cuts delta by the reach-2/reach-1 residual ratio (X7 val 0.54e-6 vs c7 0.89e-5: ~16x in MSE, ~4x in delta) -> q_7 ~0.78.
+Deciding term: how fast the floor falls with reach R (16x from R=1 to 2 at round 7, one point). Open, on paper next: the upper bound for any shadow at round 7
+(X7 with the true step c1[chi_6]) and whether its cost (chi_6 at two-hop configurations, ~z^2 B evaluations per row) is affordable on the pool; queued joint
+two-exchange tokens (lines 1049, 1247, 1284, 1310, never run) are the same reach-2 information as (1).

@@ -2487,3 +2487,8 @@ CEILING REPORT, goal rule (b) (2026-11-25): the constant-cost copy loop stops af
  Cause: fixed point of the fit (STEP-BACK 7): G_{k+1} ~ R_k, the rows missed in round 3 stay missed.
  My earlier view (CF within ~2e-5 of sgn(M1)) was wrong: 6.7e-5 is left, the same as n_3's paired gap 6.1e-5. The remaining gap needs a copy with lower
  error on the same table, which no constant-cost route reached (field copy, soft init, 75%-bar handoff 2026-11-24). Closing the angle is the PI's call.
+ADVISOR (Fable, blind-ish review, 2026-11-25): close the chained loop (80%), but the ceiling is the label rule + CNN class, not the sign structure; honest
+ statement "n_2 + ~3e-5" (round 3 is -2.45 sigma, one A population; CF = n_3). Points: (1) G_4 ~ R_3 is an identity once y4 = y3, so what converged is the
+ label rule (policy iteration), not "the fit"; (2) panel q/G overrates FN gain (G_3 2.09e-4 > 2x n_2's whole gap), realization 0.30/0.55; hypothesis: weight
+ flips by FN walker distribution, not |M1|^2 panel. Ranked tests: G with base sgn(M1) on the panel (CPU; my objection: assumes sgn(M1) is FN-optimal,
+ unshown); FN-walker-weighted G and kept share from the cf_vs_n2 A population; share of G_3 on flips with a flipped neighbour (Jacobi overshoot).

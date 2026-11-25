@@ -2492,3 +2492,8 @@ ADVISOR (Fable, blind-ish review, 2026-11-25): close the chained loop (80%), but
  label rule (policy iteration), not "the fit"; (2) panel q/G overrates FN gain (G_3 2.09e-4 > 2x n_2's whole gap), realization 0.30/0.55; hypothesis: weight
  flips by FN walker distribution, not |M1|^2 panel. Ranked tests: G with base sgn(M1) on the panel (CPU; my objection: assumes sgn(M1) is FN-optimal,
  unshown); FN-walker-weighted G and kept share from the cf_vs_n2 A population; share of G_3 on flips with a flipped neighbour (Jacobi overshoot).
+PI 2026-11-25: "yes go ahead" on a full-net energy-weighted round-4 refit (~4 A40-h). HELD before staging: my pitch ("untried") was wrong. T-GROW arm O
+ (2026-11-17, round 3, full net from n_2, bond-weighted BCE bw^(1/2)) gave M_I cut -1.8(1.6)%, and Ob bought flips by breaking keeps; train/held-out
+ error meet at ~0.10 from step 12k (label-set floor). Same lever, near-identical conditions (labels K[n_2] vs y4, weight bw vs p|h|): I give q_4 >= 0.40 ~10%.
+ Also: (a) needs 3 resolved rounds >= 1.6e-5 each (>= 4.8e-5) with 6.7e-5 left to sgn(M1): reachable only if the loop can go below sgn(M1).
+ Recommended to the PI: do not run; (b) stands. Launch only on the PI's re-confirmation.

@@ -2524,3 +2524,25 @@ STEP-BACK 8 (PI 2026-11-25 "step back, nevertheless"; STEP 15 staging, go withhe
 STEP 15 STAGED (worker, 2026-11-25; r4cf_w/gate.json, gate2.json): grader identity exact (R for CF_4 1.1637272e-4 = grade_cf4.json), shuffled c misses x200-370.
  Flipped-row ESS of c 820 -> c^(1/2) (ESS 6679). Under c^(1/2) flips carry 0.14% of the weight (1.95% of rows): the weighting favours large-|h| keeps,
  against the premise. GPU smoke of the write path not run. NOT submitted; go withheld pending the PI (STEP-BACK 8).
+LEAD DECISION 2026-11-25 (PI: "you are lead and decide"): STEP 15 NOT RUN (staged in r4cf_w, kept); run STEP 16 (metric calibration) instead.
+DATA CHECK for STEP 16 (me, CPU, scratchpad fo_dec.py = tcf/fo_estimate.py split by decade; reproduces n_3 -6.408e-5, CF -9.558e-5 vs n_2):
+ | dec | w_d | n_3 dE | CF dE | flips n_3 / CF (panel) |
+ | -9..-11 | ~0 | +1.7e-6 | +0.2e-6 | 1073 / 451 |
+ | -8 | 0.0002 | +0.9e-6 | -0.6e-6 | 333 / 232 |
+ | -7 | 0.0010 | -0.1e-6 | -3.2e-6 | 254 / 169 |
+ | -6 | 0.0038 | -2.8e-6 | -8.7e-6 | 159 / 117 |
+ | -5 | 0.0125 | -1.30e-5 | -1.99e-5 | 85 / 67 |
+ | -4 | 0.0358 | -1.42e-5 | -2.32e-5 | 17 / 17 |
+ | -3 | 0.0817 | -3.68e-5 | -4.03e-5 | 5 / 6 |
+ Reading: ~half of each first-order total sits on 5-6 panel flips in decade -3; CF's 3.2e-5 lead over n_3 sits in -7..-4 (and n_3's harmful deep
+ flips). So the first-order number is a few-row estimate, and the CF/n_3 ranking comes from the deep decades.
+STEP 16 PAPER CHECK (me): E_FN(s) is the ground energy of H_FN(s) (sign-violating off-diagonals moved to the diagonal). Hellmann-Feynman (exact, non-
+ degenerate ground state phi): dE_FN = <phi|dH_FN|phi>, bond weight phi(x)phi(y)|H_xy|. The panel first order uses B(x)B(y) (guiding amplitude) instead.
+ Approximation (conjectured, decade level): phi/B ~ c_d within a decade, c_d^2 ~ (mixed walker density / Born density) in decade d, since walkers sample
+ B*phi. Near nodes phi is suppressed relative to B, so deep decades (where CF's lead sits) should be down-weighted: predicts CF realizes less than n_3.
+ Confidence in the derivation 60% (decade-level c_d and neighbour decade mismatch are the weak steps). Prior: twhy w_d = Born from tempered roots
+ (ESS 347); no walker decade histogram exists in the records (searched PLAN_sign 'walker weight').
+ Known cases: must reproduce CF - n_2 -2.91(1.19)e-5 and n_3 - n_2 -3.51(79)e-5 (paired FN) within 2 sigma; broken version = Born weights (misses by 4 sigma).
+ Next rung: pass = both reproduced within 2 sigma and CF/n_3 ratio < 1.15 -> the walker-weighted metric replaces q for any further round. Kill = ratio >= 1.3
+ or a miss > 2 sigma -> decade-level is not the term; next is configuration-level phi/B (forward walking). Prediction: walker density in -7..-5 below Born
+ by >= 2x (60%); ratio 0.7-1.0 (55%). Cost ~0.5 A40-h (n_2 A population, dump walker log|B|^2 per block) + CPU.

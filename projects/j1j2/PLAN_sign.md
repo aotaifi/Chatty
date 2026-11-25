@@ -2497,3 +2497,15 @@ PI 2026-11-25: "yes go ahead" on a full-net energy-weighted round-4 refit (~4 A4
  error meet at ~0.10 from step 12k (label-set floor). Same lever, near-identical conditions (labels K[n_2] vs y4, weight bw vs p|h|): I give q_4 >= 0.40 ~10%.
  Also: (a) needs 3 resolved rounds >= 1.6e-5 each (>= 4.8e-5) with 6.7e-5 left to sgn(M1): reachable only if the loop can go below sgn(M1).
  Recommended to the PI: do not run; (b) stands. Launch only on the PI's re-confirmation.
+STEP 15 (PI 2026-11-25 "run", after my hold and recommendation not to): round-4 full-network refit with regret-weighted BCE. Run dir runs/j1j2/sign_bad/r4cf_w.
+ PAPER CHECK (me, 2026-11-25): R_4 = sum_x c_x 1[C(x) != y4(x)], c_x = 4 p_x |h4_x| / 64 (grader, flat-within-decade p). Per row BCE >= log 2 * 1[wrong]
+  (exact, logistic loss), so sum_x c_x BCE_x >= log 2 * R_4: weighted BCE with weights c_x is a convex upper bound on R_4; uniform BCE bounds the
+  unweighted error instead (the q-blind objective of every round so far). Deciding term: whether the net can move the c-heavy rows (~55 effective rows
+  on the panel) without breaking keeps. Prior results: T-GROW arm O (round 3, bw^(1/2), full net) M_I cut -1.8(1.6)%; Ob class-balanced broke keeps;
+  Astra head-only regret-weighted q_4 0.104 vs uniform 0.112 (ASTRA_r4.md l.101); train/held-out error meet ~0.10 from step 12k. Conditions differ
+  (weight c vs bw; full net vs head) but the lever is the same. Known case: the weight module must reproduce the grader's R and G on the panel rows to
+  1e-12 for a given prediction; broken version (weights shuffled across rows) must miss. ESS rule: if flipped-row ESS of c < 5e3 use c^(1/2) (registered).
+  Status: DONE.
+ DATA CHECK: existing data (Astra head-only, arm O) predict failure; run on the PI's explicit instruction. DONE.
+ Next rung: pass q_4 >= 0.40 on the leak-free panel with keeps-kept >= 0.98 -> branched FN grade vs CF (K 8, ~3.7 A40-h). Kill q_4 < 0.25 -> close the
+  loop at round 3 (rule b stands). Between: report, no FN grade. Prediction q_4 0.10-0.20 (80%); >= 0.40 (10%). Cost ~3.5 A40-h (fit 3:30 wall on a slice).

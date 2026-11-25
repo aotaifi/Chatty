@@ -2463,10 +2463,27 @@ STEP-BACK 7 (2026-11-24; trigger: STEP 12 branch q_4 < 0.40 and the one named-te
  (at sigma 5e-6, 8.6 A40-h, 2 sigma = 1.0e-5: borderline, not worth it for a gain inside the gap noise).
  Own view (off the critical path, 70%): the sign copy is no longer the bottleneck. n_2 sat 9.6e-5 above sgn(M1), CF's first-order stake is -9.6e-5, so
  CF alone should land within ~2e-5 of sgn(M1); further rounds chase a residual smaller than the FN-vs-exact difference the loop cares about.
-STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as probe 2 (K 8, M 256). RUNNING job 18168074 (branched/cf_vs_n2).
+STEP 14 (ceiling report): FN grade A = n_2, B = CF on 8x8, branched grader as probe 2 (K 8, M 256). DONE job 18168074 (branched/cf_vs_n2), result below.
  Prediction (written before the run): Delta(CF - n_2) = -7.7e-5/site (0.8 x first-order -9.6e-5; range -5 to -9e-5), 70% it is resolved below -3e-5.
  Then: gap left to sgn(M1) ~ 9.6e-5 - 7.7e-5 = 1.9e-5 (n_2 gap 9.6e-5 from line 1599 sequence). Report: cumulative Marshall -> n_1 -> n_2 -> CF and the gap.
  Branches: Delta resolved < 0 -> ceiling report with it; Delta not resolved -> the C-free round 3 itself does not resolve, report ceiling at n_2
  (gap 9.6e-5) and say the copy gain is below FN resolution.
  s 0.15 (18161665, 245800 steps): q 0.0998 (r4cf_soft/s015/grade.json, read by me), inside the 0.10-0.13 prediction. All three arms: flips kept 0.20 (w 0.36),
  missed regret/G 0.64, held-out on_flips 0.044 identical to s 1. Soft-init route closed. Cost 10.1 A40-h incl. 3.5 lost to 1:10 timeouts on slow slices.
+STEP 14 RESULT (2026-11-25; job 18168074 COMPLETED K 8/8, 3.69 A40-h; runs/j1j2/sign_bad/branched/cf_vs_n2/result.json, verified by me):
+ Delta(CF - n_2)/site = -2.91(1.19)e-5 (scatter of 8 pairs; -2.45 sigma; single A population, pairs 24 tau2 apart, lag-1 corr 0.10).
+ Pair Deltas (e-5): -6.76 -6.20 -2.25 -0.62 -1.53 -0.80 +1.95 -7.11; rms within-pair sigma 3.44e-5 = sd_pair 3.36e-5 (consistent). A=A control 0 on all 8.
+ My prediction FAILED: -7.7e-5 predicted, measured 4.0 sigma smaller. CF realizes 0.30(12) of its first-order stake (-9.6e-5); n_3 realized 0.55
+ (paired -3.51(79)e-5 vs -6.4e-5). CF - n_3 (both paired vs n_2) = +0.6(1.4)e-5: CF and n_3 are equal in energy, against the first-order -3.2(1.0)e-5
+ (2.4 sigma tension). Hypothesis, untested: the first-order estimate overweights CF's few concentrated flips (~55 effective rows on the panel).
+CEILING REPORT, goal rule (b) (2026-11-25): the constant-cost copy loop stops after round 3.
+ | round | net | gain/site | gap to sgn(M1) -0.498754 |
+ | 0 | Marshall | - | 3.232e-3 |
+ | 1 | n_1 | 2.636(29)e-3 | 5.96e-4 |
+ | 2 | n_2 | 5.0(1)e-4 | 9.6(9)e-5 |
+ | 3 | CF | 2.9(1.2)e-5 (paired) | 6.7(1.5)e-5 |
+ Cumulative gain Marshall -> CF 3.165e-3/site = 97.9% of the Marshall gap. Gap left 6.7(1.5)e-5/site.
+ Round 4 (CF copy of itself): q_4 0.104 on the leak-free panel (fails 0.40; soft inits 0.10-0.12); predicted FN gain 0.30-0.8 x 1.35e-5 = 0.4-1.1e-5 < 2 sigma 1.6e-5.
+ Cause: fixed point of the fit (STEP-BACK 7): G_{k+1} ~ R_k, the rows missed in round 3 stay missed.
+ My earlier view (CF within ~2e-5 of sgn(M1)) was wrong: 6.7e-5 is left, the same as n_3's paired gap 6.1e-5. The remaining gap needs a copy with lower
+ error on the same table, which no constant-cost route reached (field copy, soft init, 75%-bar handoff 2026-11-24). Closing the angle is the PI's call.

@@ -2608,3 +2608,5 @@
 2026-11-24 22:55 lead: NNd7 descent round 7: G7 0.641 but cheap copy c7 1.071, q7 0.06 KILL; cheap net floors ~1.07 (MSE fixed 8.6e-6). [wait] NNp1 decides fit vs reach.
 2026-11-25 04:03 VERDICT job 18168074: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cf_vs_n2/ANALYSIS.md]
 2026-11-25 sign angle: STEP 14 Delta(CF - n_2) -2.91(1.19)e-5/site (job 18168074, 8 pairs); prediction -7.7e-5 failed. Rule (b) ceiling: loop stops at round 3, gap left to sgn(M1) 6.7(1.5)e-5/site (PLAN_sign.md CEILING REPORT).
+2026-11-25 04:07 VERDICT job NNp1: FAILED [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/ref2hop/NNp1/ANALYSIS.md]
+2026-11-25 04:09 lead: NNp1 planted copy CLEAN (dN 0.009e-6, MSE 3e-7 vs 8.6e-6 on real targets): cheap floor = reach, not optimiser. Not pushed: sign angle commit bec009c awaits PI OK.

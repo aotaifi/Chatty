@@ -804,5 +804,5 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The corrections work (one round plus one improvement step takes the energy from 1.10 to 0.64e-6), but the cheap network cannot store below about 1.07e-6 whatever it is given; the network that also gets the round's step as input kept 67-81% per round.
-- NEXT (open, high): A check with a target the cheap network can hold exactly decides whether its floor is the fitting or what it can represent.
+- STATUS (in progress, high): The corrections work (1.10 to 0.64e-6 in one round), and the fitting works (a target the cheap network can hold is copied almost exactly); what stops the loop is that the cheap network cannot represent the corrected state below about 1.07e-6.
+- NEXT (open, high): Derive on paper which extra input lets the copy hold the round's correction from round 7 on, and its cost per amplitude.

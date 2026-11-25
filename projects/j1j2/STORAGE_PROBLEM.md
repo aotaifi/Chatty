@@ -1651,3 +1651,12 @@ The step-input network fits its target 16x closer (X7 val 0.54e-6 vs c7 0.89e-5)
 Verdict: the cheap route is closed as a chain (it stores one good round, 1.098, then floors). Corrections are not the bottleneck: from h1 they reach 0.64.
 NEXT: [wait] NNp1 (planted copy) says whether the cheap floor is the optimiser or the reach. If clean fit: the reach -> the copy needs the
 step inputs (X route; the only network that kept >= 0.67 at round 7); next spend there. If the fit is the problem: fix the optimiser first.
+
+PLANTED COPY, RESULT (lead 2026-11-25; ref2hop/NNp1, pfine/bfine grade_fine.json + post.json re-read; GRADCHECK 1.8e-7)
+Fit to the plant (f2 table, N 1.486447): N 1.495086, dN +0.009e-6 (<= 0.03); weighted MSE 3.0e-7 (<= 1e-6; val still falling). CLEAN FIT, one seed.
+Broken plant (+0.5 on rows with 99.77% of the weight): N 7.755e-6, dN 6.27e-6 = 200x the test scale: the grade sees it.
+Prediction (MSE 1-2e-6, |dN| <= 0.03): N held, MSE 3-7x better than predicted.
+Reading: on real targets the same fit leaves MSE 8.5-8.9e-6 (h1, c7), 29x the in-class residual. The cheap network's floor (~1.07e-6) is what it
+can represent, not the optimiser. Consequence for the shadow: sigma_k is a cheap copy, so it carries the same floor (sigma_6 1.479 vs chi_6 1.350);
+a longer shadow fit is predicted not to fix q_7 0.67. Past the floor needs inputs the cheap network lacks, and their own copies must not be cheap ones.
+NEXT (paper): which input carries the round's step at round >= 7 without a cheap shadow, and at what cost per amplitude.

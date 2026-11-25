@@ -2509,3 +2509,15 @@ STEP 15 (PI 2026-11-25 "run", after my hold and recommendation not to): round-4 
  DATA CHECK: existing data (Astra head-only, arm O) predict failure; run on the PI's explicit instruction. DONE.
  Next rung: pass q_4 >= 0.40 on the leak-free panel with keeps-kept >= 0.98 -> branched FN grade vs CF (K 8, ~3.7 A40-h). Kill q_4 < 0.25 -> close the
   loop at round 3 (rule b stands). Between: report, no FN grade. Prediction q_4 0.10-0.20 (80%); >= 0.40 (10%). Cost ~3.5 A40-h (fit 3:30 wall on a slice).
+STEP-BACK 8 (PI 2026-11-25 "step back, nevertheless"; STEP 15 staging, go withheld until the PI answers):
+ 1. Verdict: SWITCH THE METRIC before more fits. q and G are first-order gains weighted by Born |B|^2 of the guiding amplitude (w_d from tempered roots,
+    ESS 347/10240; twhy/result.json w_source), but FN energy responds where the FN walkers are. Realization 0.30 (CF) vs 0.55 (n_3) and the CF = n_3 tie
+    against a 3.2e-5 first-order lead say the proxy is miscalibrated; every bar this angle used (75%, 0.40) is a bar on that proxy.
+ 2. The thought: the loop is fitted approximate policy iteration. Its error bound is projection error x a concentrability factor between the fit/grade
+    distribution and the distribution the policy is evaluated under (Munos 2003; DAgger, Ross et al. arXiv:1011.0686; both from memory, arxiv MCP down,
+    not re-read). Fable's point (b) is the same. Arm O and STEP 15 reweight within the Born panel, so they do not change this evidence.
+ 3. Cheapest test: walker-weighted first-order gain (decade weights from FN walkers under n_2, not Born). Known cases it must reproduce: CF - n_2
+    -2.91(1.19)e-5 and n_3 - n_2 -3.51(79)e-5 (Born gives -9.6 / -6.4). Kill: ratio CF/n_3 still >= 1.3. Prediction: ratio 0.7-1.0 (55%).
+    Cost: CPU if walker amplitudes can be logged from an existing FN code path; else one short FN run logging walker lB2 under n_2 (~1 A40-h).
+ Own view (75%, on path): two weeks of this angle optimised an uncalibrated proxy. (a) at 8x8 also needs the loop to go below sgn(M1) (6.7e-5 left vs
+ 3 x 1.6e-5); 10x10, where gaps are larger, is where chained resolved rounds are possible at all (off path, PI's call).

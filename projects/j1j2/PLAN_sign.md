@@ -2693,3 +2693,5 @@ Report per n: held flip miss (count and p-weighted), held false-flip rate (count
 Branches (FN-lead): (a) held miss falls with n and w_gen < 1.23e-6 at some n -> 8x8 remedy = targeted flip-row sampler sized from the crossing n. (b) flat at chance to all rows ->
  configuration-only sign copy of a step closed with this curve; gate/ratio-input is the only route (18b/18c + two-swap timing decide).
 Prediction (mine, before data): held count flip miss falls below 0.35 by n = 100k, 55%; q_held > 0.3 at all-but-held, 35%. FN-lead: (b) 60%.
+Job 18232344 (array 0-5%3, cip a40-16gb, 40k steps, gate PASS: oracle w = w(T), F_hat=0 w = w(s2), inverted q_held -22); run /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve, code runs/j1j2/consol_6x6/flipcurve.
+ Held flip p-mass eff n 1.7 orbits: q_held, w_gen noisy; read count miss and AUC.

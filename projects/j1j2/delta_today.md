@@ -2689,3 +2689,5 @@
 2026-11-26 21:49 sign lead: STEP 20 per-bond targets KILL (job 18231549): BCE alone memorises train flips (0.24->0); held flip miss ~0.5 all arms (+-0.08); failure is generalisation, not gradient. PLAN_sign STEP 20 RESULT.
 2026-11-27 00:00 FN-lead: sign lead STEP 20 killed per-bond remedy (cf72d68); asked for 6x6 flip-root learning curve inside STEP 21 with branches.
 2026-11-26 21:50 sign lead: STEP 22 registered (6x6 flip learning curve, FN-lead request); worker briefed.
+2026-11-26 22:04 sign worker: STEP 22 flipcurve array job 18232344 submitted (12 arms, 40k steps, a40-16gb); watcher flipcurve/watch.sh armed; run dir /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve
+2026-11-26 22:04 sign lead: STEP 22 submitted, job 18232344, watcher live.

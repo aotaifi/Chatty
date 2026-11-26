@@ -2560,7 +2560,7 @@ STEP 16 RESULT (2026-11-26; job 18208066, 0.44 A40-h; runs/j1j2/sign_bad/whist/h
  total on 5-6 flips in decade -3), with a 2.2 sigma low CF realization left unexplained.
  Round 4 on the same footing (grade_r4_boot.py, scratchpad): first-order kept gain of CF_4 = 1.35(1.52)e-5, 90% interval [-1.0, 3.9]e-5. So rule (b)'s
  "predicted below resolution" rests on a proxy with error larger than the resolution. Proxy is not the task: measure round 4 directly.
-STEP 17 (takeover, registered 2026-11-26): branched paired FN, A = CF, B = CF_4 (r4cf/fit/net_8192.pkl sha fcf2dc2b), K 12, M 256, as cf_vs_n2 otherwise.
+STEP 17 (takeover, registered 2026-11-26; job 18211780 submitted, est. start 07:22, end ~12:50; run dir branched/cf4_vs_cf, code ebf0802 on branch j1j2-cf4grade): branched paired FN, A = CF, B = CF_4 (r4cf/fit/net_8192.pkl sha fcf2dc2b), K 12, M 256, as cf_vs_n2 otherwise.
  sigma ~ 3.36e-5/sqrt 12 = 0.97e-5. Prediction: Delta(CF_4 - CF) = -0.4 to -1.1e-5 (0.3-0.8 x 1.35e-5), 80% |Delta| < 2 sigma. Cost ~5.4 A40-h.
  Pass (gain resolved, Delta < -1.9e-5): round 4 gains, (b) reading wrong -> STEP 15-class refits graded on FN directly. Kill (|Delta| < 2 sigma): rule (b)
  confirmed by measurement, ceiling report stands with the bound Delta > -X (95%). Delta > +1.9e-5: round 4 degrades.

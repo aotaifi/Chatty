@@ -2663,6 +2663,12 @@ STEP 19 RESULT (2026-11-26; runs/j1j2/sign_bad/sigma_audit/step19/result.json, r
  Prediction (~0.3 overall, sign factor lowest) held. Reading by the registered lines: overall 'between' (0.3); on the rows that cost energy the parts are ABSENT (R^2 <= 0.17, sign factor
  negative). Supports the mechanism where it matters -> STEP 20, per-bond-loss fit.
 ## STEP 20 (2026-11-26): per-bond intermediate targets (remedy 1 of the literature note). Paper check: STORAGE_PROBLEM 'PER-BOND TARGETS FOR THE SIGN COPY'.
+STEP 20 RESULT (job 18231549, a40-16gb, 1.85 A40-h; runs/j1j2/sign_bad/sigma_audit/step20/result.json read by me; 20k steps, seed 7, one seed): KILL FIRED (P within 0.05 of B),
+ but not as designed: B (plain BCE) also reaches train flip miss 0.000 (CF/init 0.238 on 130 train flip roots). Held-out (36 flip roots, +-0.08): flip miss B 0.47, P 0.50, P10 0.50, X 0.53,
+ CF 0.50; keeps 0.99 all. Held parts R^2 J1/J2 all rows P 0.66/0.35, P10 0.75/0.59; flip rows P 0.01/0.30, P10 0.09/0.38.
+ DIAGNOSIS: the train-root underfit is not an optimisation barrier (arXiv:1703.07950 premise refuted here: BCE alone memorises the composite). The failure is generalisation on flip
+ rows: even with the parts as targets, held flip-row parts are not predicted (R^2 <= 0.1 on J1) and held flip miss stays at chance. Per-bond losses closed; remaining levers are the
+ input (ratio-input, cost gated on two-swap timing 18230995) or many more flip rows (130 train flip roots here). Not run: second seed (held set too small to resolve < 0.16 anyway).
 
 ## STEP 21 (2026-11-26, FN-lead's 6x6 target): store T[s2,chi_6] with psi0^2 wrong weight w < 1.23e-6 (s2's); cycle law N_3 ~ 0.31e-6 + 0.52 w (resting_energy.md (10)).
 Data check (scratchpad w66.py; psi0 table stall6, s2 compress6/refresh_17409419, T signdepth; global gauge fixed per sign) [measured]:

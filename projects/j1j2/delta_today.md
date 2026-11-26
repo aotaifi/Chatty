@@ -2623,3 +2623,7 @@
 2026-11-26 09:30 sign angle STEP 18 probe (job 18213822): cfgate correct (0 mismatches) but C/C0 2.38 > 2, cost kill fired; p_req 0.0105 live vs 0.0025 derived; counting probe over (theta,D) next.
 2026-11-26 10:05 VERDICT job 18214912: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate_vs_cf/count/ANALYSIS.md]
 2026-11-26 sign angle STEP 18 count (job 18214912): warm n_g(2,-5)=1.435, derived cost 4x low; frontier ~8e-5 first-order per unit extra cost; STEP 18b FN realization grade of (2,-5) decided.
+- 2026-11-26 tooling angle: arXiv:2611.32236 (implicit SR / iAITE, Kliczkowski et al.) reviewed for the lead: park as optional VMC optimiser (= Rayleigh-Gauss-Newton; iAITE needs H^2, out); no change for copy fits or the loop. PLAN_tooling.md.
+2026-11-26 10:11 sign angle STEP 18b job 18215513 submitted (worker), cfgate(2,-5) vs CF FN realization grade; watcher pid 3402763.
+2026-11-26 10:17 lead: wiki ingest arXiv:2611.32236 -> sources/kliczkowski2026augmented.md (second_brain 9921eff); done-tests pass (implicit SR -> SR at O(dtau), 20 Fig.4 energies vs page image). Sent to tooling angle.
+2026-11-26 10:18 lead: STORAGE 'WHICH INPUT' step 2: cost z^{depth+1} B evals (depth-2 nest unaffordable; corrects step 1's z^2); depth-1 q set by reach-1 residual; reach vs capacity open; width test pred x4 MSE 0.85x. [wait] one turn (point 9).

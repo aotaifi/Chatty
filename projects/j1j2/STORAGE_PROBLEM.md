@@ -1675,3 +1675,16 @@ Notation: frozen B; rho_b(x) = B(y_b)/B(x); joint rho_bc(x) = B(x^{bc})/B(x); Ph
 Deciding term: how fast the floor falls with reach R (16x from R=1 to 2 at round 7, one point). Open, on paper next: the upper bound for any shadow at round 7
 (X7 with the true step c1[chi_6]) and whether its cost (chi_6 at two-hop configurations, ~z^2 B evaluations per row) is affordable on the pool; queued joint
 two-exchange tokens (lines 1049, 1247, 1284, 1310, never run) are the same reach-2 information as (1).
+
+WHICH INPUT AT ROUND >= 7, PAPER, step 2 (lead 2026-11-26)
+(5) [exact, cost; corrects (4)] Count B evaluations per amplitude. Reach-1 copy: Phi(x) needs z. Shadow (depth 1): s = c1[sigma](x) needs sigma(y_b), each Phi(y_b): z^2.
+    Depth-2 nest: sigma2(y_b) needs s1(y_b) = c1[sigma1](y_b), i.e. Phi at x^{bc}: z^3. In general z^{depth+1}; each level x z (~72 at 6x6).
+    (4)'s "~z^2 x cheap" was wrong: depth 2 is z^3 ~ 4e5 B evaluations per amplitude, ~72x the shadow route. Flat in the round, not affordable for sampling.
+    Same count for the upper bound "X7 with the true step c1[chi_6]": chi_6 at y_b needs c1[chi_5](y_b), i.e. Phi at x^{bc}: z^3 on 15.8M rows, infeasible. The round-6 value
+    (0.81/0.77, true step affordable there because chi_5 is reach 1) stands as the bound, assuming the per-round content is stationary.
+(6) [exact] So at affordable flat cost the scheme is depth 1, and q_7 is set by delta = ln sigma - ln X, sigma a reach-1 fit. NNp1 shows the optimiser is not the limit,
+    but an in-class plant does not separate the two remaining causes of the reach-1 residual (MSE ~8.6e-6 on real targets): information beyond Phi (reach, (2))
+    or capacity of the network on Phi (width/depth). Only the second is cheap to fix (cost stays z per amplitude).
+Deciding quantity (rung 2/3): weighted MSE of reach-1 fits of the same real target (G7, NNd7) at width x1 (8.65e-6, measured), x4. Capacity-limited if x4 MSE <= 0.5 x;
+reach-limited if >= 0.8 x. Prediction: x4 MSE 0.85 x (reach-limited, 60%), since R7 (reach-1 copy of a reach-2 state) kept q 0.009, as (2) predicts for missing information.
+[wait] width test: prediction must stand one turn before a run (j1j2 CLAUDE.md point 9).

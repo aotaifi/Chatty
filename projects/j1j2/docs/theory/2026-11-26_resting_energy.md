@@ -106,3 +106,7 @@ NEXT, registered before the run: same cycle with stored pieces, start chi_6, thr
  S-amp: exact T, stored amplitude rounds. Prediction: N_3 <= 0.60e-6 (60%).
  S-sign: stored copy of T[s2,chi_6], exact amplitude rounds. By (10) it beats B only if its w < 1.23e-6, i.e. it keeps >= ~90% of the flip weight between s2 and T. Prediction: current CF copy does NOT (55%).
  S-both: pass = N_3 < 0.958e-6 (below the fixed-sign control). Kill for "stored complete loop at 6x6": S-both >= 0.958e-6 with the best available sign copy; diagnosis then goes through w and (8).
+
+## Sign copy: per-bond remedy killed (sign lead STEP 20, commit cf72d68; 2026-11-27 00:00)
+Train flip miss 0.24 -> 0.000 with plain BCE; held-out flip miss at chance (0.47-0.53 +-0.08, 36 roots) for all arms; held-out parts R^2 <= 0.1. The failure is generalisation on flip rows, not gradient. Literature remedy 1 withdrawn.
+Open, registered before the data: learning curve at 6x6 (held-out flip miss and w vs number of train flip roots, exact enumeration). FN-lead guess: flat at chance (60%) -> only gate / ratio-input routes remain; falling -> targeted flip-row sampler at 8x8.

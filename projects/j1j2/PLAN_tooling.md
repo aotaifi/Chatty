@@ -121,3 +121,19 @@ Yamamoto & Morita, finite-temperature Krylov (FTiTL, FTiTK) built from Trotteris
 with typicality random vectors, transverse-field Ising, N <= 32; no code released (text: none; acknowledgements l.~903). Cost reported only as
 local-operator-application counts (FTiTL ~0.5x FTLM at C/N rms <= 1e-2, N=32), no wall time or GPU. Nothing maps onto our sampled 10x10 stack
 (2^100 configurations, no state vectors), our exact 6x6 tables already have their ground state, and we need no finite temperature.
+
+## arXiv:2611.32236v1 review (2026-11-26; lead's request for the PI; main text, End Matter and SM S5-S8 read via alphaxiv). VERDICT: park, as an
+optional VMC optimiser next to SR/minSR; no use for the copy fits; nothing for the loop.
+- Method: implicit-Euler SR, (S + lambda I + dtau K) d = -F with K_jk = <T_j|G|T_k> (eq. 11, C4); K = X^dag V needs per-sample d(E_loc)/d theta
+  (SM eq. S9: Y_ik = [d_theta x + O x](s_i)), i.e. one reverse pass through all neighbour ratios per sample: <2x SR cost for iITE (their claim, 4x4).
+  Non-Hermitian at finite samples -> LU / Arnoldi; sample-space form given (S12) but not used. Equals Rayleigh-Gauss-Newton (Webber-Lindsey
+  arXiv:2106.10558) with penalty 1/dtau and projected inverse iteration (arXiv:2606.07825), as the authors say.
+- iAITE needs (H^2)_loc, i.e. neighbours of neighbours (d^2 ~ 4e4 per sample at 10x10): the same cost class as an explicit Lanczos step per sample
+  that the PI closed on cost (PLAN.md, 137x plain at 8x8). Out for us.
+- Evidence: 4x4 only (exact and RBM full summation at J2 = 0.5; ViT MCMC at J2 = 0.2); gains counted in steps, not wall time; ~2 orders fewer
+  steps in exact evolution. Code "upon publication" (p. 6), NetKet-based; not yet released.
+- Our exact-table copy fits (cx_r1fit.solve_dir) minimise a fixed least-squares target with damped Gauss-Newton + trust radius: an implicit Euler
+  step on a fixed quadratic loss is that same Levenberg-Marquardt step, so nothing new there.
+- Loop: the copy stalls on storage (round correction 0-4% inside the PP tangent space, Test Theta v2, PLAN.md 'What we understand'); K lives in the
+  same tangent space, so a better integrator cannot store a direction outside it. Agrees with the lead's reading; no reply sent.
+- Use only if we train a guide by VMC again (10x10 PP or two-PP): try iITE (dtau ~ 1, LU solve) against our SR at equal wall time, first at 8x8.

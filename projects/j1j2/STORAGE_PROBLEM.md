@@ -1758,6 +1758,34 @@ Wall (mean ln(A_k/|psi0|) on S-wrong rows minus the rest, |psi0|^2-weighted): s2
   information is in the ratios, not the depth of the dip. Median |E_L error| on the flip union grows to 283 at s2 k=6 (vs 8-25 for k<=5): the round-6 ratios on those rows are badly off
   while the flip decision stays right.
 
+FIRST COMPLETE CYCLE, RESULT (amplitude lead 2026-11-27; FN-lead's arms A-D; jobs 18231287-90; runs/j1j2/consol_6x6/cycle1/result.json md5 4af5e600, arm files re-read)
+Known cases: B round 1 = NNz/map7 table to 9.4e-11 rel, N_out 1.0976940e-6 both; start grades chi_6 1.7609602 (alpha 0) / 1.3499 (fine), A_6 1.1173492; T files recompute
+  with 0 mismatches; C (same flip count per |psi0|^2 decade as T, 3 isolated rows redrawn) worse than B every round by 0.68-0.79e-6.
+E_FN alpha 0 / N best alpha, 1e-6 per site, rounds 0-3 of the round map at the arm's sign:
+  | arm (start, sign, wrong weight)          | r0          | r1          | r2          | r3          |
+  | A chi_6, T[s2,chi_6], 1.16e-7            | 1.421/0.951 | 0.807/0.603 | 0.529/0.452 | 0.405/0.373 |
+  | B chi_6, s2, 1.23e-6 (control)           | 1.761/1.375 | 1.262/1.098 | 1.021/1.021 | 0.958/0.958 |
+  | C chi_6, s2 + random flips, 2.57e-6      | 3.176/2.161 | 1.860/1.860 | 1.729/1.729 | 1.640/1.640 |
+  | D A_6, T[s2,A_6], 6.6e-8                 | 1.105/0.690 | 0.603/0.452 | 0.409/0.372 | 0.333/0.311 |
+Verdict: FN-lead's line PASSES (N <= 0.8e-6 within two rounds: 0.603 at round 1); kill (>= 1.0 after 3) far off. One sign step opens a chamber whose rest lies below
+  the fixed-s2 rest: A at round 3 (0.373) is 2.6x below B (0.958) and below the s2 chain's Aitken floor 0.80; A is still falling (Aitken on A's N: ~0.29).
+Sub-predictions: 'A round 1 worse than B at alpha 0' MISSED (0.807 vs 1.262; A is below B already at round 0). Amplitude lead's [parallel] prediction
+  E_FN[T chi_6] alpha 0 = 1.26 +- 0.2: measured 1.421, inside the band at its edge.
+Copy vs exact: A lags D by one round almost exactly (A r2 0.452 = D r1 0.452; A r3 0.373 = D r2 0.372): starting from the round-6 copy instead of A_6 costs one round.
+Under s2 (B, C) the best alpha goes to 0 from round 2 on; under T it stays -0.04 to -0.12: the Lanczos factor keeps working after a sign step.
+Not covered: T is an exact full-space sign step; the stored sign (sign lead) and stored amplitudes inside the loop are the next cycle; no baseline comparison yet.
+
+GAMMA SCAN OF THE SIGN-STEP INPUT, RESULT (amplitude lead 2026-11-27; FN-lead's request; job 18231823; runs/j1j2/consol_6x6/gammascan/result.json md5 762926d4, re-read)
+Known cases: K1 A_k rebuilt at gamma 1.307 to 3.6e-10 (k=2) / 2.7e-9 (k=6), broken E' fails at 1.3e-5 / 5.9e-7; K2 R(1.307) = 0.3703 / 0.0865 = saved, T bit-identical;
+  K3 gamma -2 worse than 0 at both k. A_gamma = G_k e^{gamma f_J[G_k]}, R = E_FN[T[s2,A_gamma] |psi0|] - E0 per site, 1e-6:
+  | k | gamma 0 | 1.307 | 2     | 3     | 4     | -2    |  E_FN[T A_gamma] at 0 / 1.307 / 2 / 3 / 4      |
+  | 2 | 0.418   | 0.370 | 0.342 | 0.298 | 0.262 | 0.469 |  3.340 / 2.805 / 2.582 / 2.333 / 2.172          |
+  | 6 | 0.091   | 0.0865| 0.0860| 0.0863| 0.0892| 0.128 |  1.188 / 1.105 / 1.064 / 1.010 / 0.960          |
+Verdict: kill does NOT fire (k=2: gamma 3 and 4 beat 1.307 by 20% and 29%). Prediction 'min of R at gamma 2-3' MISSED at k=2 (still falling at 4, edge of grid),
+  met at k=6 (min at 2, only 0.6% below 1.307: flat). 'R(A_2) <= 0.25e-6' MISSED (0.262 at gamma 4). At k=2 larger gamma raises flip precision
+  (count 0.647 -> 0.781, weight 0.919 -> 0.980) at some recall cost (count 0.856 -> 0.759); at k=6 the sign step does not care about gamma.
+Add-on (r = 0.03 sign step at |psi0|): from s2 E_FN 4.6e-10 (414060 flips); from Marshall 2.76e-4 (8728839 flips); r = 1 reproduces saved T at both.
+Not covered: gamma > 4 at k=2; deterministic single run (no chain statistics apply).
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

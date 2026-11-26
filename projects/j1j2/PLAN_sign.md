@@ -2620,4 +2620,7 @@ STEP 18 COUNT RESULT (2026-11-26; job 18214912, branched/cfgate_vs_cf/count/coun
 LEAD DECISION STEP 18b: the open question is now whether gating realizes in FN at all, because the PI's cost choice (<= 1.5x vs ~2.3x) is worth nothing if it does not.
   Grade the largest-signal arm (2, -5) for realization r = Delta_FN / 8.22e-5, not as a deliverable. Pass Delta <= -1.5e-5 (r >= 0.18); kill Delta > -1.2e-5.
   Prediction -2.5 to -4.5e-5 (r 0.30-0.55), P(pass) 55%. Pass -> the PI chooses the cost and the <= 1.5x arm (0.5, -6) is predicted as r * 3.9e-5. Kill -> the gate route closes
+  STEP 18b job 18215513 submitted 2026-11-26T10:11:45+01:00 (launcher wt_cfgate branched_cfgate_vs_cf_a40s24.sbatch, exclude h01g07n2, 24 h, maxsec 82000; run dir runs/j1j2/sign_bad/branched/cfgate_vs_cf)
   and the angle closes at 6.1(1.6)e-5/site.
+
+REPORTING LINE (PI decision 2026-11-26, relayed by the amplitude lead): the sign lead reports to "FN-lead: j1j2 lead physicist" (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62), who owns PLAN.md. The former FN-loop lead (local_15c8f868) is now the amplitude lead.

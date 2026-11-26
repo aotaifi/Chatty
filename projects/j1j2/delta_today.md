@@ -2635,3 +2635,5 @@
 2026-11-26 18:24 lead: PI made a new session FN-lead (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62, Fable 5.2) project lead and head physicist (thinking only, owns PLAN.md); this session becomes amplitude lead, sign angle = sign lead. Depth test (signdepth) results go to FN-lead.
 2026-11-26 sign angle: reporting line changed to FN-lead (local_4c22bf95), PI decision.
 2026-11-26 18:30 FN-lead: took PLAN.md; records read (CLAUDE, PLAN, PLAN_sign, STORAGE tail, board, handoffs); open question proposed to the PI = resting energy of the complete loop (PLAN.md 'LEAD AND OPEN QUESTION'); Cockpit rewritten.
+2026-11-26 18:45 FN-lead: PI 'yes' to the open question (resting energy of the complete loop) and 'any check on paper without asking permission'. View and ranked steps sent to the PI.
+2026-11-26 19:10 FN-lead: resting-energy account written (docs/theory/2026-11-26_resting_energy.md): E_rest ~ sigma + (1+kappa) x*, sigma enters once; closure (3) is [conj], third point to be read from signdepth result.json. PI: delegate sign-copy tasks to the sign lead.

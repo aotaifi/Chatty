@@ -4,7 +4,7 @@ Owner of this file: FN-lead (session local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62;
 (round map, copy, FN refresh; STORAGE_PROBLEM.md) and the sign lead (PLAN_sign.md); both report to FN-lead.
 PI's objective (11-26): beat the baseline (results/lanczos_baseline_6x6, results/literature/J1J2_BENCHMARKS_COST.md) with the COMPLETE algorithm, not 80% retention
 forever in the amplitude-only loop.
-OPEN QUESTION (proposed by FN-lead, awaits the PI's pick; paper, CLAUDE.md point 9): the resting energy of the complete loop. One round is one map on the signed
+OPEN QUESTION (PI yes 11-26 18:40; paper checks need no further permission; CLAUDE.md point 9): the resting energy of the complete loop. One round is one map on the signed
 state psi = S A: sign T[S,A] = sgn(1 + alpha(E_L - E)) and amplitude A' = G e^{c f_J[G]}, both functions of A's local ratios, each then stored with its own copy
 error. To derive: E_rest as a function of (sign target error, sign copy error, amplitude copy error, contraction per round), starting from the recorded bound
 limsup(E_var - E_0) <= eps/(1 - rho) ('THE DESIGN' (ii)), and from it the copy accuracy each half needs to pass the baseline at 8x8.
@@ -12,6 +12,9 @@ Why this one [FN-lead's view, ~70%]: the halves were each tested against an idea
 1.23e-6; sign copies graded against sgn(M1)). At 8x8 the stored sign rests 6.1(1.6)e-5/site above the trained network's own sign (PLAN_sign STEP 17), more than one
 amplitude round gains there (4.65e-5 bare, headline_p1/prodA), so the sign copy, not round-7 compression, is the larger term. Not yet checked by me: the 6x6
 picture is guide-dependent (s_G floor <= 0.83e-6 and stored S_a1 tax 0.88e-6, against F(S_1) 3.13e-5 from the learned guide B2).
+ACCOUNT (11-26): docs/theory/2026-11-26_resting_energy.md. E_rest - E_0 ~ sigma + (1 + kappa) f_A/(q(1 - rho_A)) [cond]; the sign copy tax sigma enters once,
+unamplified, so the terminal sigma in FN energy is the sign bar and the round-3 stall is the rest point c* = sigma. PI 11-26: sign-copy tasks delegated to the sign lead;
+proceed until the block is solved; FN-lead to push back where it disagrees.
 Running (amplitude lead's worker): SIGN-STEP DEPTH TEST, job 18227574, runs/j1j2/consol_6x6/signdepth; rule and branches in STORAGE_PROBLEM.md 'SIGN-STEP DEPTH TEST'.
 ## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
 CURRENT (PI 11-21/22, supersedes arm H below): copy each round's corrected state A_{k+1} = G e^{1.307 f_J[G]}, G = A_k|1+alpha(E_L-E)|, into a network for round 2+, cost per amplitude flat in the round; 'how you get the new network with or without freezing is your choice'; bar: per-round kept share q_k 75-80% without bad degradation. Runs: PI 11-22 'we need this test definitively ... the mechanism to fix it can't be settled on paper, this is why we need to run the numbers?' = the lead's record of 'now test it' for CPU copy fits and rung-2 checks on this question (prediction written in STORAGE_PROBLEM.md first). Inner-voice Stop hook: INNER_VOICE.md.

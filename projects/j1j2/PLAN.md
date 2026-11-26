@@ -824,6 +824,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The amplitude copy keeps about three quarters of each round's gain through round 6, but only next to a nearly exact sign; at 8x8 the stored sign rests further from its target than one amplitude round gains, so the sign copy looks like the larger obstacle to beating the baseline.
-- NEXT (in progress, high): Compare sign updates computed from 2 and from 6 amplitude rounds at the same amplitudes; if they match, park round-7 compression.
-- NEXT (open, high): Derive the resting energy of the complete loop (sign update and amplitude round, each stored with its own error) as one equation, and from it the copy accuracy each half needs to pass the baseline at 8x8.
+- STATUS (in progress, high): At 6x6 with exact pieces, the complete loop (sign step plus amplitude rounds) reaches 0.37e-6 per site above the ground state after three rounds, against 0.96e-6 for the loop with a fixed sign.
+- NEXT (in progress, high): Repeat that cycle with the stored networks in the loop; it passes if the stored loop stays below the fixed-sign 0.96e-6.
+- NEXT (in progress, medium): Sign copy must keep about 90% of the flip weight of one sign step; test of a stronger wall suppression for the sign step's input is running.

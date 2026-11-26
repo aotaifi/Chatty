@@ -92,3 +92,17 @@ Files: `/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/signdepth_paper/` (`tab
 Consequence [conj 45%]: the amplitude handed to the sign step should be MORE wall-suppressed than the one that is best for the energy. Oracle-free knob: over-relax only the sign step's input, A_gamma = G exp(gamma f_J[G]), gamma > 1.307.
 PREDICTION (registered before the run): at 6x6 exact, s2 start, residual E_FN[T[s2,A_gamma]|psi0|] has its minimum at gamma in [2,3]; from A_2 it falls from 0.370e-6 to <= 0.25e-6.
 KILL: no gamma in {2,3,4} beats gamma=1.307 by more than 10% from either A_2 or A_6. If killed: the FN dip is not aligned with W (it suppresses correct rows near walls too, raising C-type breaks); the term to change is then the one-sided weighting, not the depth.
+
+## First complete cycle: PASS at exact level (2026-11-26 23:40)
+File: `/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle1/result.json` (md5 4af5e600), re-read by FN-lead. N at best alpha, 1e-6/site, rounds 0-3:
+A (chi_6, T[s2,chi_6], wrong weight w=1.16e-7): 0.951, 0.603, 0.452, 0.373
+B (chi_6, s2, w=1.23e-6):                        1.375, 1.098, 1.021, 0.958
+C (s2 + random flips, w=2.57e-6):                2.161, 1.860, 1.729, 1.640
+D (A_6, T[s2,A_6], w=6.6e-8):                    0.690, 0.452, 0.372, 0.311
+Registered line (A <= 0.8e-6 within two rounds): met at round 1. Sub-prediction "A worse than B at alpha=0 in round 1" MISSED (0.807 vs 1.262): the step's sign needs no re-adaptation of the amplitude before it pays.
+(10) Three arms from the same start: N_3 ~ 0.31e-6 + 0.52 w  (A 0.37/0.373, B 0.95/0.958, C 1.65/1.640). [3 points; B and C share s2, so only A is independent.] The resting energy after three rounds is linear in the sign's wrong weight w; w is the number the stored sign must deliver.
+
+NEXT, registered before the run: same cycle with stored pieces, start chi_6, three rounds.
+ S-amp: exact T, stored amplitude rounds. Prediction: N_3 <= 0.60e-6 (60%).
+ S-sign: stored copy of T[s2,chi_6], exact amplitude rounds. By (10) it beats B only if its w < 1.23e-6, i.e. it keeps >= ~90% of the flip weight between s2 and T. Prediction: current CF copy does NOT (55%).
+ S-both: pass = N_3 < 0.958e-6 (below the fixed-sign control). Kill for "stored complete loop at 6x6": S-both >= 0.958e-6 with the best available sign copy; diagnosis then goes through w and (8).

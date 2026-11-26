@@ -110,3 +110,10 @@ NEXT, registered before the run: same cycle with stored pieces, start chi_6, thr
 ## Sign copy: per-bond remedy killed (sign lead STEP 20, commit cf72d68; 2026-11-27 00:00)
 Train flip miss 0.24 -> 0.000 with plain BCE; held-out flip miss at chance (0.47-0.53 +-0.08, 36 roots) for all arms; held-out parts R^2 <= 0.1. The failure is generalisation on flip rows, not gradient. Literature remedy 1 withdrawn.
 Open, registered before the data: learning curve at 6x6 (held-out flip miss and w vs number of train flip roots, exact enumeration). FN-lead guess: flat at chance (60%) -> only gate / ratio-input routes remain; falling -> targeted flip-row sampler at 8x8.
+
+## Gamma scan RESULT (2026-11-27 00:30; `runs/j1j2/consol_6x6/gammascan/result.json`, md5 762926d4, known cases checked by FN-lead)
+R = E_FN[T[s2,A_gamma]|psi0|]-E0, 1e-6/site, gamma = 0 / 1.307 / 2 / 3 / 4 / -2:
+k=2: 0.418 / 0.370 / 0.342 / 0.298 / 0.262 / 0.469     k=6: 0.091 / 0.0865 / 0.0860 / 0.0863 / 0.0892 / 0.128
+Kill not fired (k=2: -29% at gamma=4, still falling). Prediction "minimum in [2,3]" WRONG at k=2 (monotone to 4), "R(A_2) <= 0.25" missed (0.262). At k=6 flat: a converged fixed-node amplitude is already wall-adapted, so over-relaxation only speeds early rounds; it does not lower the floor.
+r-scan under the FN grade: T(r=0.03) from Marshall 2.76e-4 (A_2 arm 5.74e-4), from s2 4.6e-10: eq (9) holds under FN, conjecture confirmed.
+Status: side result, off the critical path (the block is the stored sign). Not pursued further now; cheapest follow-up if wanted: gamma 6, 8 at k=2 and gamma=4 used in round 1 of the cycle.

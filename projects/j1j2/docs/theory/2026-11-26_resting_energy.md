@@ -32,3 +32,20 @@ Not covered: the jump of x when the sign changes (the old amplitude is not adapt
 kappa's constancy beyond two points; rho_A, q, f_A at 8x8 (measured at 6x6 only).
 Limit on (3) (sign lead, 11-26, PLAN_sign 'FN-LEAD QUESTIONS'): two exact deep sign steps raised E_FN by ~2 sigma at 8x8 (G(-5) +6.4(3.5)e-6, T-NODE +8.0(4.1)e-6);
 rho_S ~ 0 is claimed only at good amplitude and not for deep rows. Nothing in the sign records grew over rounds (gaps 5.96e-4, 9.6e-5, 6.7e-5, round 4 -0.6(0.6)e-5).
+
+## Depth test read against the account (FN-lead 11-26 20:00; runs/j1j2/consol_6x6/signdepth/result.json, job 18227574, numbers re-read by me)
+PI's rule: NOT met (Marshall: T_2 vs T_6 gain 4.177e-3 vs 4.160e-3 at |psi0|, energy-weighted agreement 0.983; s2: 1.123e-6 vs 1.407e-6, agreement 0.823).
+(5) [measured, corrects the picture behind (3)] a sign step is best graded, and best used, with the amplitude it was computed from:
+    s2, graded at A_2^S (E_FN[s2 A_2] 3.320e-6): step from A_2 gains 0.515e-6, from A_6 0.493e-6, from chi_6 0.514e-6, from the exact |psi0| only 0.145e-6.
+    Marshall, graded at |psi0|: step from A_2 gains 4.18e-3, from A_6 4.16e-3, from the exact |psi0| only 1.88e-3 (precision against the oracle flips 0.50, gain 2.2x).
+    So the oracle amplitude is not the best input for the sign step. Mechanism [conj, 70%]: rounds at a fixed sign suppress the amplitude on wrong-sign rows
+    (|psi0|^2-weighted dip -0.37 -> -1.10 -> -4.22 at s2 for rounds 0, 2, 6; -0.05 -> -3.17 -> -5.53 from Marshall), E_L ~ 1/A grows there, and the step flips exactly
+    those rows. The amplitude round is the detector of wrong signs and the sign step the actuator. The chamber wall is what the loop uses, not what stops it.
+(6) Closure (3) near s2: kappa 0.138 (A_0), 0.20 (A_2) stand as read from result.json. Third point (E_FN[s2 A_6] predicted 1.9-2.1e-6) NOT in the file: asked of the
+    amplitude lead, with E_FN[s2 chi_6] and E_FN[s2 h1]. Closure (3) fails far from the exact sign, as flagged: from Marshall the exact amplitude is the worst input.
+(7) Regimes of E_rest = sigma + (1 + kappa) x*: at 6x6 near s2 the amplitude excess is the larger term (E_FN[s2 A_2] 3.32e-6 against 1.49e-6 at the exact amplitude,
+    sign copies 0.42-0.88e-6); at 8x8 sigma 6.1e-5 is. Both leads' terms are live; which dominates depends on the size.
+PREDICTION registered now, for the first complete exact cycle with a stored amplitude (rung 2, to be asked for no earlier than next turn): start chi_6 at s2,
+    sign step T = T[s2, chi_6], then exact amplitude rounds at T from chi_6. E_FN[T |psi0|] = 1.52e-7 bounds the new chamber floor, so the rounds should pass
+    below the s2 chain's rest (N* ~1.05e-6, floor of the cheap copies 1.07e-6) within two rounds: N after round 2 at T <= 0.8e-6 (60%). Kill of the coupling idea
+    at 6x6: N stays >= 1.0e-6 after three rounds at T (then the s2 rest was not the sign's doing).

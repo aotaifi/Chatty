@@ -2564,3 +2564,11 @@ STEP 17 (takeover, registered 2026-11-26; job 18211780 RUNNING since 02:56, end 
  sigma ~ 3.36e-5/sqrt 12 = 0.97e-5. Prediction: Delta(CF_4 - CF) = -0.4 to -1.1e-5 (0.3-0.8 x 1.35e-5), 80% |Delta| < 2 sigma. Cost ~5.4 A40-h.
  Pass (gain resolved, Delta < -1.9e-5): round 4 gains, (b) reading wrong -> STEP 15-class refits graded on FN directly. Kill (|Delta| < 2 sigma): rule (b)
  confirmed by measurement, ceiling report stands with the bound Delta > -X (95%). Delta > +1.9e-5: round 4 degrades.
+
+## STEP 17 RESULT (2026-11-26 08:00; job 18211780 COMPLETED, runs/j1j2/sign_bad/branched/cf4_vs_cf/result.json, re-read and recomputed by me): KILL branch, rule (b) confirmed by measurement
+- Delta(CF_4 - CF) = -6.4(6.2)e-6 per site, -1.0 sigma (K 12 pairs, error = pair scatter/sqrt 12; sd_pair 2.14e-5, below the 3.36e-5 assumed; lag-1 corr of pairs -0.006). Median -4.8e-6; dropping the lowest pair (k 3, -5.9e-5, within-sigma 3.1e-5, 1.9 sigma of its own) gives -1.6(4.2)e-6.
+- Controls: no CONTROL FAILED; BRANCHED_DONE; A=A control on every snapshot. Pairs are branches of one A population, not independent chains (as STEP 14), so no quotable.py verdict.
+- Prediction (-0.4 to -1.1e-5, 80% |Delta| < 2 sigma) held. 95% one-sided bound (t, 11 dof): Delta > -1.75e-5.
+- CEILING (goal clause b, now measured, not only predicted): along the CF-class copy's own rounds the loop reaches gap 6.7(1.5)e-5/site to sgn(M1) at round 3 (97.9% of the Marshall gap 3.232e-3 closed); round 4 adds -0.6(0.6)e-5, so the gap after round 4 is 6.1(1.6)e-5, and round 4 cannot close more than 1.75e-5 (95%).
+- Correction carried into the handoff: the panel first-order gain is noisy (sd ~2.9e-5 per net), not shown to be biased; my STEP 14 "4 sigma" and STEP-BACK 8 "miscalibrated" were wrong. STEP 15 (r4cf_w) stays unrun: its target is the same fixed point.
+- Goal status: DONE by clause (b). Closing the angle is the PI's call; I recommend close at 6.1(1.6)e-5/site unless a copy with lower error on the same table is funded (none found at constant cost).

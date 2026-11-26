@@ -13,9 +13,9 @@
 ## Rejected and why
 - More rounds: the fit has a fixed point. Labels change on 1.4% of rows, the refit returns nearly the same function, and the rows missed in round 3 stay missed (G_4 1.30e-4 against R_3 1.14e-4).
 - Softened head init: the head scale is relearned within 5% of training, so q does not change.
-- A finer FN grade of round 4 (8.6 A40-h for 2 sigma = 1e-5): the predicted gain is inside the noise.
+- Round 4 measured on FN (2026-11-26, job 18211780, branched/cf4_vs_cf): -6.4(6.2)e-6/site, 1.0 sigma; at most 1.75e-5 (95%). Gap after round 4: 6.1(1.6)e-5.
 
 ## Three things to understand
 1. q_k = 1 - R_k/G_k is the share of the exact round gain the copy keeps. The loop dies once the next round's exact gain G is made of the last round's errors R.
-2. The first-order energy from the panel overrates a copy whose flips are few and concentrated. Grade on FN energy before trusting it.
+2. The first-order energy from the panel is noisy (bootstrap sd ~2.9e-5 per net; half of it on 5-6 flips), not shown to be biased. Grade on FN energy before trusting it.
 3. Open, and the PI's call: close the angle at 6.7e-5/site, or pay for a copy that has lower error on the same table. No constant-cost route found one.

@@ -2615,3 +2615,5 @@
 2026-11-25 19:40 sign angle: takeover until 2026-11-26 08:00; STEP 16 walker histogram dispatched (worker); ceiling 10 A40-h.
 2026-11-26 02:45 VERDICT job 18208066: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/whist/ANALYSIS.md]
 2026-11-26 sign angle: STEP 16 kill (walker/Born ~1 per decade); first-order panel totals have sd ~2.9e-5 (my earlier 4-sigma claim wrong); STEP 17 FN grade CF_4 vs CF registered.
+2026-11-26 07:57 VERDICT job 18211780: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cf4_vs_cf/ANALYSIS.md]
+2026-11-26 08:00 sign angle STEP 17 (job 18211780): Delta(CF_4-CF) = -6.4(6.2)e-6/site, 1.0 sigma -> rule (b) ceiling confirmed by FN: gap to sgn(M1) 6.1(1.6)e-5 after round 4; goal done by clause (b); ANALYSIS.md by hand (auth failure).

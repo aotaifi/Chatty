@@ -2634,3 +2634,4 @@
 2026-11-26 14:49 worker(signdepth): submitted SIGN-STEP DEPTH TEST job 18227574 (cluster, 4 cpu, 64G, 10h; est ~4.5 h / ~18 core-h), run dir /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/signdepth (signdepth.py sha256 d967dd8b), smoke 18227079 SMOKE LOGIC OK; watcher setsid pid 1120360.
 2026-11-26 18:24 lead: PI made a new session FN-lead (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62, Fable 5.2) project lead and head physicist (thinking only, owns PLAN.md); this session becomes amplitude lead, sign angle = sign lead. Depth test (signdepth) results go to FN-lead.
 2026-11-26 sign angle: reporting line changed to FN-lead (local_4c22bf95), PI decision.
+2026-11-26 18:30 FN-lead: took PLAN.md; records read (CLAUDE, PLAN, PLAN_sign, STORAGE tail, board, handoffs); open question proposed to the PI = resting energy of the complete loop (PLAN.md 'LEAD AND OPEN QUESTION'); Cockpit rewritten.

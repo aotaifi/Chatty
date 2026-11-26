@@ -1,4 +1,18 @@
 # PLAN (J1-J2 FN/Krylov loop) - current state only; history in delta_today.md, experiments/compress_6x6/README.md, RESEARCH_MAP.md
+## LEAD AND OPEN QUESTION (2026-11-26 18:30)
+Owner of this file: FN-lead (session local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62; thinks and derives, runs nothing). Runs go through the amplitude lead
+(round map, copy, FN refresh; STORAGE_PROBLEM.md) and the sign lead (PLAN_sign.md); both report to FN-lead.
+PI's objective (11-26): beat the baseline (results/lanczos_baseline_6x6, results/literature/J1J2_BENCHMARKS_COST.md) with the COMPLETE algorithm, not 80% retention
+forever in the amplitude-only loop.
+OPEN QUESTION (proposed by FN-lead, awaits the PI's pick; paper, CLAUDE.md point 9): the resting energy of the complete loop. One round is one map on the signed
+state psi = S A: sign T[S,A] = sgn(1 + alpha(E_L - E)) and amplitude A' = G e^{c f_J[G]}, both functions of A's local ratios, each then stored with its own copy
+error. To derive: E_rest as a function of (sign target error, sign copy error, amplitude copy error, contraction per round), starting from the recorded bound
+limsup(E_var - E_0) <= eps/(1 - rho) ('THE DESIGN' (ii)), and from it the copy accuracy each half needs to pass the baseline at 8x8.
+Why this one [FN-lead's view, ~70%]: the halves were each tested against an idealised partner (amplitude copies at the near-exact fixed sign s2, wrong weight
+1.23e-6; sign copies graded against sgn(M1)). At 8x8 the stored sign rests 6.1(1.6)e-5/site above the trained network's own sign (PLAN_sign STEP 17), more than one
+amplitude round gains there (4.65e-5 bare, headline_p1/prodA), so the sign copy, not round-7 compression, is the larger term. Not yet checked by me: the 6x6
+picture is guide-dependent (s_G floor <= 0.83e-6 and stored S_a1 tax 0.88e-6, against F(S_1) 3.13e-5 from the learned guide B2).
+Running (amplitude lead's worker): SIGN-STEP DEPTH TEST, job 18227574, runs/j1j2/consol_6x6/signdepth; rule and branches in STORAGE_PROBLEM.md 'SIGN-STEP DEPTH TEST'.
 ## PI'S CURRENT TASK (verbatim spec; the lead reports "Spec / Ran" against it; a proxy never closes it)
 CURRENT (PI 11-21/22, supersedes arm H below): copy each round's corrected state A_{k+1} = G e^{1.307 f_J[G]}, G = A_k|1+alpha(E_L-E)|, into a network for round 2+, cost per amplitude flat in the round; 'how you get the new network with or without freezing is your choice'; bar: per-round kept share q_k 75-80% without bad degradation. Runs: PI 11-22 'we need this test definitively ... the mechanism to fix it can't be settled on paper, this is why we need to run the numbers?' = the lead's record of 'now test it' for CPU copy fits and rung-2 checks on this question (prediction written in STORAGE_PROBLEM.md first). Inner-voice Stop hook: INNER_VOICE.md.
 Fit the add-on r on the FROZEN network to the fixed-node correction (target l + c f_J: the Lanczos factor plus c ~ 1.3 Jacobi steps), paper first,
@@ -804,5 +818,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): The corrections work (1.10 to 0.64e-6 in one round), and the fitting works (a target the cheap network can hold is copied almost exactly); what stops the loop is that the cheap network cannot represent the corrected state below about 1.07e-6.
-- NEXT (open, high): Derive on paper which extra input lets the copy hold the round's correction from round 7 on, and its cost per amplitude.
+- STATUS (in progress, high): The amplitude copy keeps about three quarters of each round's gain through round 6, but only next to a nearly exact sign; at 8x8 the stored sign rests further from its target than one amplitude round gains, so the sign copy looks like the larger obstacle to beating the baseline.
+- NEXT (in progress, high): Compare sign updates computed from 2 and from 6 amplitude rounds at the same amplitudes; if they match, park round-7 compression.
+- NEXT (open, high): Derive the resting energy of the complete loop (sign update and amplitude round, each stored with its own error) as one equation, and from it the copy accuracy each half needs to pass the baseline at 8x8.

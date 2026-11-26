@@ -2663,3 +2663,16 @@ STEP 19 RESULT (2026-11-26; runs/j1j2/sign_bad/sigma_audit/step19/result.json, r
  Prediction (~0.3 overall, sign factor lowest) held. Reading by the registered lines: overall 'between' (0.3); on the rows that cost energy the parts are ABSENT (R^2 <= 0.17, sign factor
  negative). Supports the mechanism where it matters -> STEP 20, per-bond-loss fit.
 ## STEP 20 (2026-11-26): per-bond intermediate targets (remedy 1 of the literature note). Paper check: STORAGE_PROBLEM 'PER-BOND TARGETS FOR THE SIGN COPY'.
+
+## STEP 21 (2026-11-26, FN-lead's 6x6 target): store T[s2,chi_6] with psi0^2 wrong weight w < 1.23e-6 (s2's); cycle law N_3 ~ 0.31e-6 + 0.52 w (resting_energy.md (10)).
+Data check (scratchpad w66.py; psi0 table stall6, s2 compress6/refresh_17409419, T signdepth; global gauge fixed per sign) [measured]:
+ w(s2) 1.227e-6, w(T) 1.159e-7; flips s2 -> T: 500,173 orbits, G+ (T fixes s2) 1.129e-6 on 365,313 orbits, G- (T breaks) 1.8e-8 on 134,860.
+ G+ effective n 42 orbits (top 100 carry 50%, top 1000 81%), all in |psi0|^2 decades -14..-10 (per orbit-state); s2 is a computed table, not a network.
+ So a stored network copy must reproduce the whole sign to error weight < 1.11e-6 vs T (FN-lead's '~90%').
+Prior results at 6x6 (same orbit tables): XL CNN trained on s_G (near-exact, w 8.4e-7): teacher error w_T 1.07e-6 / 1.12e-6 (two seeds, S2a, all errors in the tail);
+ 1-PP phase 1.72-2.57e-6; two-PP mix 1.41e-6 (errors are seed-specific: seeds share 0.61e-6 of their wrong weight, PLAN_sign l.1008); local-CNN correction -0.7%.
+ The XL CNN sits AT the bar. Lever with evidence: seed mixing (errors seed-specific). Prediction: XL fine-tuned on T, one seed: w 1.0-1.3e-6 (50% below 1.23e-6);
+ two-seed logit average: w 0.8-1.1e-6 (60% below).
+Plan: XL CNN (S2a recipe, sign_s2 code) warm-started from each S2a seed, fine-tuned on T with the S2a sampling (teacher guide samples), plus the 2-seed logit average.
+ Grade exactly on all 15.8M orbits: w vs psi0, w_T vs T, missed flips / false flips split (psi0^2 weight and counts). Deliver the best table to the amp lead, w to FN-lead.
+ Per-bond-loss arm added only if STEP 20 supports it. Cost <= 4 A40-h (Paderborn express exhausted, normal QoS starts 11-30).

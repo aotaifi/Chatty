@@ -30,3 +30,5 @@ Readings:
     exact sign-step target against sgn(M1)) and x*.
 Not covered: the jump of x when the sign changes (the old amplitude is not adapted to the new chamber; TEST X), which affects the path, not the rest point;
 kappa's constancy beyond two points; rho_A, q, f_A at 8x8 (measured at 6x6 only).
+Limit on (3) (sign lead, 11-26, PLAN_sign 'FN-LEAD QUESTIONS'): two exact deep sign steps raised E_FN by ~2 sigma at 8x8 (G(-5) +6.4(3.5)e-6, T-NODE +8.0(4.1)e-6);
+rho_S ~ 0 is claimed only at good amplitude and not for deep rows. Nothing in the sign records grew over rounds (gaps 5.96e-4, 9.6e-5, 6.7e-5, round 4 -0.6(0.6)e-5).

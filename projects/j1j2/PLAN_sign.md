@@ -2621,6 +2621,7 @@ LEAD DECISION STEP 18b: the open question is now whether gating realizes in FN a
   Grade the largest-signal arm (2, -5) for realization r = Delta_FN / 8.22e-5, not as a deliverable. Pass Delta <= -1.5e-5 (r >= 0.18); kill Delta > -1.2e-5.
   Prediction -2.5 to -4.5e-5 (r 0.30-0.55), P(pass) 55%. Pass -> the PI chooses the cost and the <= 1.5x arm (0.5, -6) is predicted as r * 3.9e-5. Kill -> the gate route closes
   STEP 18b job 18215513 submitted 2026-11-26T10:11:45+01:00 (launcher wt_cfgate branched_cfgate_vs_cf_a40s24.sbatch, exclude h01g07n2, 24 h, maxsec 82000; run dir runs/j1j2/sign_bad/branched/cfgate_vs_cf)
+  STEP 18c (2,-6) job 18231023 submitted 2026-11-26T18:42:47+01:00 (launcher branched_cfgate6_vs_cf_a40s24.sbatch, seed 7103, D -6, exclude h01g07n2, 24 h, maxsec 82000; run dir runs/j1j2/sign_bad/branched/cfgate6_vs_cf)
   and the angle closes at 6.1(1.6)e-5/site.
 
 REPORTING LINE (PI decision 2026-11-26, relayed by the amplitude lead): the sign lead reports to "FN-lead: j1j2 lead physicist" (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62), who owns PLAN.md. The former FN-loop lead (local_15c8f868) is now the amplitude lead.
@@ -2644,3 +2645,12 @@ FN-LEAD TAKEOVER TERMS 2026-11-26: budget free (Paderborn + cluster); I decide s
  Not alone: deleting data, cancelling others' jobs, the paper. kappa term refuted by FN-lead; 'sigma enters once' stands.
 PI IDEA (via FN-lead): fit on rows drawn from FN walkers, exact labels. My answer: no change expected in R on costly rows. Walker/Born ~1 per decade (STEP 16) leaves the decade mix as is, and CF
  already misses 45% of the flips on rows it was trained on (sigma_audit), so redrawing rows does not reach the missing-input term. Energy-weighted rows: T-GROW O -1.8(1.6)%; ADVISOR 2 route 2 20%.
+
+## STEP 19 (2026-11-26): is the underfit "gradient uninformative" (FN-lead finding, arXiv:1703.07950 via docs/theory/2026-11-26_literature_sign_copy.md, scout-read)? Rung-2 discriminator.
+Label: y = sgn sum_b t_b, t_b = c_b rho_b s_old(z_b) (exact per row). Records checked: B23 (per-bond BondNet INPUTS, 6x6, fails), T-BOND (per-bond surrogate of eps^2, rejected on paper),
+ STEP 10 (total field regression, q 0.27). No record fits the per-bond PARTS t_b as targets. Line 2137 (untried): walker-free RBM swap factors per bond as inputs (the RBM part of rho is cheap at z).
+Test: linear (ridge) readout of CF's last per-site features at the bond's two sites -> t_b / Lambda (Lambda = sum_b |W_b|) on ACTIVE (antiparallel) bonds, per bond type, fit on train roots,
+ R^2 on held-out roots; also each factor separately: |rho_b| part and the sign factor s_old(z_b) u(x). Controls: the same readout from raw local spins (baseline); shuffled targets (R^2 ~ 0).
+Prediction (written before any number): held-out R^2 of t_b/Lambda ~0.3 (50% in 0.15-0.45); sign factor lowest (~0.1); CF features beat raw spins by < 0.1.
+Reading: R^2 < 0.2 -> parts absent, supports the mechanism -> per-bond-loss fit (STEP 20). R^2 > 0.6 -> parts present, failure is in the summation near threshold -> margin/summation fix,
+ not per-bond losses. Between -> per-bond-loss fit still, smaller expected effect.

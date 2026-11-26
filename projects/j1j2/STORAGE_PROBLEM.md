@@ -1791,3 +1791,24 @@ RATIO-INPUT SIGN COPY, COST DERIVATION (sign lead, 2026-11-26, after FN-lead's c
   cost, and no sign copy is needed for round 1. That decision sits with the amplitude side's input set (RATIO-INPUT add-on, LOG-DOMAIN POOLING); the two-swap timing is the shared cost number.
  Plan change: the near-term route to sigma/3 is the gate family; STEP 18b (exact gate, FN realization) decides it. The ratio-input sign is held until (a) the two-swap timing and (b) the
   amplitude side's choice of input; it is built only as a gated head or as part of a joint signed ratio-input network.
+
+PER-BOND TARGETS FOR THE SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's finding, arXiv:1703.07950 Sec. 2-3 read by the FN-lead's scout, not by me)
+Derivation:
+ (1) [exact] y(x) = sgn sum_b t_b(x), t_b = c_b |rho_b| s_old(z_b) (audit_existing.py lines 38-49), every t_b known per row where |rho_b| and s_old(z_b) are stored (roots: rabsr, nrel).
+ (2) [exact] Class: the CF trunk (per-site 64-channel features, 16-image average) with a bond head tau_b = g(f_i + f_j, |f_i - f_j|) on active bonds, logit l = sum_b tau_b. Forward cost:
+     one head per bond (128) instead of per site (64), same trunk, so ~1x CF [derived].
+ (3) [conjectured, the deciding term] Loss L = BCE(y, l) + lambda sum_b (tau_b - K t_b/Lambda)^2. Each tau_b gets its own gradient. The cited claim: for sgn of a composite, the end-to-end gradient
+     carries vanishing information about the parts; part-wise losses restore it. Our signature fits it: training flips missed 45% (sigma_audit), width/depth/weights null (T-GROW, T-CAP8),
+     and CF's features lack the parts exactly on flip rows (STEP 19: R^2 <= 0.17, sign factor negative).
+ (4) [risk] |rho_b| is an amplitude ratio; spins-only nets stored ratios badly on the amplitude side (retention 0.056). Here CF features already carry |W_b|/Lambda at R^2 0.37 linearly, and only the
+     sign of the sum must be right.
+Checked: (1) exact (audit assert on all roots); (2) cost by construction; (3) is the paper's claim for products of sign parts (k >= 3 fail end-to-end), our parts are real-valued and summed, so it is an
+ analogy, not a theorem for our case. Confidence the derivation is right: 70%; that it cuts train flip miss below 0.25: 40%.
+Prior results: B23 (bond features as INPUTS, 6x6, fails); T-BOND (per-bond surrogate of eps^2, rejected on paper, different target); STEP 10 tfield (total field, q 0.27); none fits the parts as targets.
+Known case: the parts sum to the label: sgn sum_b t_b == y on all 10,240 roots (audit_existing assert). Broken version for the run: per-bond targets taken from a same-decade partner root; it must
+ not beat the BCE-only arm.
+Not covered: neighbour rows lack stored |rho_b| and s_old(z_b) (rabsr is roots only); the full refit needs them built (one_swap at each row + n_2 at its neighbours, ~6 A40-h for all 1.47M rows).
+Next rung (existing data, roots only): fine-tune from CF on the 8192 training roots, arm P (per-bond loss + BCE) vs arm B (BCE only, same rows, steps, seed) vs arm X (P with partner-root targets).
+ Measure the TRAIN-root flip miss (the underfit), held-out-root parts R^2 on flip rows, and held-out root keeps. Pass: P's train flip miss <= 0.25 with B >= 0.40 and keeps >= 0.98; kill: P within
+ 0.05 of B. Between: report. Prediction: 40% pass. Cost <= 1 A40-h.
+Status: DONE.

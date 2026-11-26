@@ -2622,6 +2622,9 @@ LEAD DECISION STEP 18b: the open question is now whether gating realizes in FN a
   Prediction -2.5 to -4.5e-5 (r 0.30-0.55), P(pass) 55%. Pass -> the PI chooses the cost and the <= 1.5x arm (0.5, -6) is predicted as r * 3.9e-5. Kill -> the gate route closes
   STEP 18b job 18215513 submitted 2026-11-26T10:11:45+01:00 (launcher wt_cfgate branched_cfgate_vs_cf_a40s24.sbatch, exclude h01g07n2, 24 h, maxsec 82000; run dir runs/j1j2/sign_bad/branched/cfgate_vs_cf)
   STEP 18c (2,-6) job 18231023 submitted 2026-11-26T18:42:47+01:00 (launcher branched_cfgate6_vs_cf_a40s24.sbatch, seed 7103, D -6, exclude h01g07n2, 24 h, maxsec 82000; run dir runs/j1j2/sign_bad/branched/cfgate6_vs_cf)
+  STEP 18 H100 check 2026-11-26: Paderborn job 4451345 (express, gpu1008 H100, code da97001 = 268e05f + CFG_* path overrides, input shas match cip): gate_cfgate.py GATE PASS (gate 1 0 mismatches/60000 rows, 222 gated, 60 flips; broken h-inverted 222, floor-removed 1194 mismatches; theta 0 == CF; same numbers as the A40 gate, runs/.../cfgate_vs_cf_h100/gate_timing/gate.json).
+  H100 rate: cf A-chain 72.8 s/block at block 10 (M 256, env as gated_prod_h100.sbatch, XLA autotune_level=0) = 12x SLOWER than the cip A40 slice (6.1); job TIMEOUT at 25 min in the cf probe, cfgate and mini-branched not measured. No H100 production (express left ~0.3 H100-h; normal QoS Nov 30). Cause of the slowness not diagnosed.
+  inter test-only (2026-11-26 ~19:15): h100nvl (usm-cl-nv01) Dec 4 03:21, h200nvl (kng-cl-nv03) Dec 4 01:04 vs cip 18215513 Nov 27 03:11 / 18231023 05:00: no _nvl replica submitted.
   and the angle closes at 6.1(1.6)e-5/site.
 
 REPORTING LINE (PI decision 2026-11-26, relayed by the amplitude lead): the sign lead reports to "FN-lead: j1j2 lead physicist" (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62), who owns PLAN.md. The former FN-loop lead (local_15c8f868) is now the amplitude lead.
@@ -2654,3 +2657,9 @@ Test: linear (ridge) readout of CF's last per-site features at the bond's two si
 Prediction (written before any number): held-out R^2 of t_b/Lambda ~0.3 (50% in 0.15-0.45); sign factor lowest (~0.1); CF features beat raw spins by < 0.1.
 Reading: R^2 < 0.2 -> parts absent, supports the mechanism -> per-bond-loss fit (STEP 20). R^2 > 0.6 -> parts present, failure is in the summation near threshold -> margin/summation fix,
  not per-bond losses. Between -> per-bond-loss fit still, smaller expected effect.
+STEP 19 RESULT (2026-11-26; runs/j1j2/sign_bad/sigma_audit/step19/result.json, read by me; CPU; logit check exact; shuffled controls 0.000):
+ held-out-root R^2, J1 / J2:  t_b/Lambda: CF features 0.30 / 0.29, local spins 0.02 / 0.00, FLIP rows -0.08 / 0.17;  |W_b|/Lambda: 0.37 / 0.38 (flip 0.13 / 0.32);
+ sign factor nrel(z_b) nrel(x): 0.17 / 0.12 (flip -0.26 / -0.11). 166 flip roots, flip-row R^2 noisy, one split, no error bars.
+ Prediction (~0.3 overall, sign factor lowest) held. Reading by the registered lines: overall 'between' (0.3); on the rows that cost energy the parts are ABSENT (R^2 <= 0.17, sign factor
+ negative). Supports the mechanism where it matters -> STEP 20, per-bond-loss fit.
+## STEP 20 (2026-11-26): per-bond intermediate targets (remedy 1 of the literature note). Paper check: STORAGE_PROBLEM 'PER-BOND TARGETS FOR THE SIGN COPY'.

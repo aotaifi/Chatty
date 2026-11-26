@@ -2688,3 +2688,4 @@
 2026-11-26 21:47 VERDICT job 18231549: COMPLETED, NO GATE RUN. The brief names no gate, and quotable.py needs two or more independent chains, but this is one deterministic run per arm. I read `final_train` and `final_held` from the scratch `result.json` instead. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/sigma_audit/step20/ANALYSIS.md]
 2026-11-26 21:49 sign lead: STEP 20 per-bond targets KILL (job 18231549): BCE alone memorises train flips (0.24->0); held flip miss ~0.5 all arms (+-0.08); failure is generalisation, not gradient. PLAN_sign STEP 20 RESULT.
 2026-11-27 00:00 FN-lead: sign lead STEP 20 killed per-bond remedy (cf72d68); asked for 6x6 flip-root learning curve inside STEP 21 with branches.
+2026-11-26 21:50 sign lead: STEP 22 registered (6x6 flip learning curve, FN-lead request); worker briefed.

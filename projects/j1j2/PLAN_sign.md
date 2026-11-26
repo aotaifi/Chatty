@@ -2682,3 +2682,14 @@ Prior results at 6x6 (same orbit tables): XL CNN trained on s_G (near-exact, w 8
 Plan: XL CNN (S2a recipe, sign_s2 code) warm-started from each S2a seed, fine-tuned on T with the S2a sampling (teacher guide samples), plus the 2-seed logit average.
  Grade exactly on all 15.8M orbits: w vs psi0, w_T vs T, missed flips / false flips split (psi0^2 weight and counts). Deliver the best table to the amp lead, w to FN-lead.
  Per-bond-loss arm added only if STEP 20 supports it. Cost <= 4 A40-h (Paderborn express exhausted, normal QoS starts 11-30).
+
+## STEP 22 (2026-11-26, FN-lead request inside STEP 21): 6x6 learning curve of a configuration-only step copy. Is the flip learnable given enough flip rows?
+Why: STEP 20's 130 train flip roots cannot separate "not learnable" from "too few rows"; at 6x6 all 500,173 flips of T vs s2 are exact, so the curve is free.
+Task: XL CNN (STEP 21 recipe, sl_train.py) predicts F(x) = [T(x) != s2(x)] from spins only; deployed copy = s2 * (1 - 2 F_hat).
+ Held-out (fixed, never trained): 4% of flip orbits stratified by p-decade (~20k) + decade-matched keeps x20. Train: n flip orbits (n = 100, 300, 1000, 10k, 100k, all-but-held)
+ + decade-matched keeps x20 from the rest. Same steps per arm. Broken control at every n: F shuffled among the training rows (must stay at chance on held).
+Report per n: held flip miss (count and p-weighted), held false-flip rate (count, p-weighted), q_held = 1 - R/G on held (p-weighted, 8x8 definition), w and w_T of the deployed copy on all
+ 15.8M orbits (grade.py; includes memorised train rows), and w_gen = w(s2) - q_held (w(s2) - w(T)) (generalisation-only estimate).
+Branches (FN-lead): (a) held miss falls with n and w_gen < 1.23e-6 at some n -> 8x8 remedy = targeted flip-row sampler sized from the crossing n. (b) flat at chance to all rows ->
+ configuration-only sign copy of a step closed with this curve; gate/ratio-input is the only route (18b/18c + two-swap timing decide).
+Prediction (mine, before data): held count flip miss falls below 0.35 by n = 100k, 55%; q_held > 0.3 at all-but-held, 35%. FN-lead: (b) 60%.

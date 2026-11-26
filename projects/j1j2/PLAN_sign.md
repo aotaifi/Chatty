@@ -2600,3 +2600,13 @@ Kill test: branched paired FN, A = CF, B = gate(2, -5), K 12, M 256, as cf4_vs_c
   Pass: Delta <= -1.5e-5 AND timed C/C0 <= 1.5. Kill: Delta > -1.2e-5 OR timed C/C0 > 2. Between: report; no resubmit without the lead.
   Prediction: Delta = -2.5 to -4.5e-5 (realization 0.30-0.55 of 8.2e-5); P(pass) 50%.
   Pass -> try (2, -6) (10.6e-5 first order, 1.97x) and report the cost-gain frontier to the PI. Kill -> close the angle at 6.1(1.6)e-5/site.
+
+STEP 18 PROBE RESULT (2026-11-26 09:25; job 18213822, runs/j1j2/sign_bad/branched/cfgate_vs_cf/probe/{gate.json,probe_cf.json,probe_cfgate.json}, read by me; code 32b7ee1 on j1j2-cfgate):
+- Correctness: gate 1 is 0 mismatches on 60k panel rows (222 gated, 60 of them flips); broken versions fail (inverted 222, no floor 1194); theta 0 equals CF bit for bit.
+- COST KILL FIRED as registered: C/C0 = 33.94(49)/14.26(14) = 2.38 > 2 (M 256, 25 timed blocks after 15 warm, cold caches).
+- Diagnosis, C/C0 = 1 + c n_g with n_g = gated neighbours per E_L: c = 0.91 measured (0.82 derived, fine); n_g = 25926/17128 = 1.51 measured vs 142*0.0025 = 0.36 derived.
+  The term that missed is the request-stream share p_req: 0.0105 on the live FN stream vs 0.0025 from table roots reweighted beta 0.5 -> 1. Gated neighbours flip 28% (7276/25926).
+  Untested causes: (i) the table-root reweighting misrepresents the walker's neighbour stream; (ii) a cold chain (40 blocks from X0_B0_0; emix -0.49884, already at the equilibrium value).
+- Next (cheap, changes the cost term): a counting probe on the warm cf stream (100 burn blocks), n_g for the whole (theta, D) grid at once from logits cf already computes. ~0.2 A40-h.
+  An arm is worth an FN grade if measured C/C0 <= 1.5 and first-order gain >= 4e-5 (ADVISOR 2 table). If none qualifies, the gate route closes at constant-factor cost <= 1.5,
+  and the remaining option is the PI accepting ~2.4x for (2, -5).

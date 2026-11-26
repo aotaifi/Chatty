@@ -2619,3 +2619,5 @@
 2026-11-26 08:00 sign angle STEP 17 (job 18211780): Delta(CF_4-CF) = -6.4(6.2)e-6/site, 1.0 sigma -> rule (b) ceiling confirmed by FN: gap to sgn(M1) 6.1(1.6)e-5 after round 4; goal done by clause (b); ANALYSIS.md by hand (auth failure).
 2026-11-26 08:00 lead: sign angle round-4 FN grade: Delta(CF_4-CF) -6.4(6.2)e-6/site (job 18211780), ceiling confirmed; CF stays the deployed sign. Close awaits PI.
 2026-11-26 sign angle: ADVISOR 2 (Fable): decade-floored depth-1 gate escapes STEP 7's cost (first order 8.2(2.0)e-5 over CF at 1.29x, re-run by me); STEP 18 FN grade registered.
+2026-11-26 09:22 VERDICT job 18213822: COMPLETED, analysis failed (claude -p exit 1: Failed to authenticate: this login reached its time limit and cannot be renewed. Run `claude auth login` to sign in agai); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate_vs_cf/probe/ANALYSIS.md]
+2026-11-26 09:30 sign angle STEP 18 probe (job 18213822): cfgate correct (0 mismatches) but C/C0 2.38 > 2, cost kill fired; p_req 0.0105 live vs 0.0025 derived; counting probe over (theta,D) next.

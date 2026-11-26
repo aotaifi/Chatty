@@ -1688,3 +1688,66 @@ WHICH INPUT AT ROUND >= 7, PAPER, step 2 (lead 2026-11-26)
 Deciding quantity (rung 2/3): weighted MSE of reach-1 fits of the same real target (G7, NNd7) at width x1 (8.65e-6, measured), x4. Capacity-limited if x4 MSE <= 0.5 x;
 reach-limited if >= 0.8 x. Prediction: x4 MSE 0.85 x (reach-limited, 60%), since R7 (reach-1 copy of a reach-2 state) kept q 0.009, as (2) predicts for missing information.
 [wait] width test: prediction must stand one turn before a run (j1j2 CLAUDE.md point 9).
+
+WALL OR REPRESENTATION? IS ROUND >= 7 NEEDED AT ALL (PI 2026-11-26, after Kairon-Clark arXiv:2609.16308; lead account, rung 1 + records)
+Measured now (CPU, existing tables): the loop's fixed sign s2 (compress6/runs/refresh_17409419/s2.npy) vs sign(psi0) (stall6/data/psi0_6x6_table.npz):
+  wrong on 2.68% of orbits, |psi0|^2 weight 1.23e-6, sign overlap 0.9999975 (global sign is gauge). So the amplitude loop does run in a wrong chamber, next to the right one.
+Kairon-Clark (abstract only, lead 10-26): guide <- FN state converges to the GS only inside the GS chamber; elsewhere it collapses onto chamber boundaries.
+Derivation [exact, fixed sign]: V_sf(x) = sum_{y viol x} |H_xy| psi_y/psi_x; on a row whose sign is wrong against its heavy neighbours all bonds violate, so V_sf ~ 1/psi_x and the
+  FN step pushes psi_x down further (support collapse). Our map is not pure FN: G = A|1+alpha(E_L-E)| with alpha<0 and E_L(x) ~ +1/A_x on such a row RAISES |G|
+  there (the Lanczos step wants to flip the sign; |.| keeps the magnitude, drops the flip). Net direction on wrong rows = f_J term vs Lanczos term: not derived. [open]
+Energy value of a wrong row [exact, first order]: flipping row x changes E by -4 a_x sum_y H_xy s_y a_y / |a|^2, linear in a_x; a collapsing row costs ever less energy,
+  so the PI's trade-off (easier exact flip, rarer for a sampler) mostly cancels in energy: rows that collapse matter little.
+Against the wall as the round-7 limiter (records): the exact map still gains 19-30% per round at round 7 (chi_6 1.350 -> T7 1.096; h1 1.098 -> T7h 0.771; + one step 0.641),
+  so the chain is not at a chamber floor; the q fall is arithmetic: copy error eps roughly constant (cubic 0.49-0.54e-6; cheap net floor 1.07e-6) while the round gain shrinks.
+For the PI's division of labour (records): the sign the sign angle delivers from Marshall leaves 6.1(1.6)e-5/site (PLAN_sign STEP 17), ~60x the cheap copy floor and ~10x
+  N(A_0) 8.68e-6. With that sign, amplitude rounds past 1-2 sit below the sign error, and the copy keeps q >= 0.74 through round 6. Round >= 7 accuracy binds only once the
+  sign error is below ~1e-6/site. Coupling not yet derived: the Lanczos flip at x uses amplitude ratios (E_L), so amplitude error can mis-flip; the amplitude accuracy the sign
+  step needs is the real requirement. [open, derivable]
+RUNG-2 CHECKS (existing tables, CPU, no network; predictions written 11-26, run next turn per point 9):
+ (a) chamber floor: E_FN[s2 |psi0|] (and E_var) with the fine grade. Prediction 0.1e-6/site (range 0.03-0.3; 60% below 0.3). Below 0.3: the s2 chamber has room under round 7's
+     0.64, the wall does not limit rounds <= 7. Above 0.64: we are near the chamber floor and the PI's reading holds.
+ (b) collapse: mean of ln(A_k/|psi0|) on the wrong rows minus on the rest, for every stored round table k = 0..7. Wall: falls >= 0.3 per round. Prediction: changes < 0.1 per round after
+     round 2 (55%), since the Lanczos factor feeds amplitude into those rows.
+ (c) where round 7's lost gain sits: grade c7 with G7 pasted on (wrong rows + one-hop neighbours) only; share of the lost gain recovered. Wall: >= 50%. Prediction 20-40% (50%).
+ (d) the question that decides the full algorithm: one Lanczos sign step from the sign angle's sign, with amplitudes |psi0|, chi_2 and chi_6; post-flip E_FN. If chi_2 and chi_6 agree
+     within << 6e-5/site, round >= 3 amplitude accuracy does not matter for the sign step. Prediction: differences <= 1e-6/site (70%).
+
+CORRECTION (lead 2026-11-26): the 6.1(1.6)e-5/site I compared with the 6x6 copy floor is the 8x8 sign angle's gap to sgn(M1), not a 6x6 number. 6x6 equivalent:
+  one signed-Lanczos step from the learned guide B2, then an exact FN refresh, leaves F(S_1) 3.13e-5/site (PLAN_sign STEP 0' RESULT). The conclusion (sign error >> copy floor
+  1.07e-6) holds at 6x6 with this number. Also prior: C1 (exact K1 + FN refresh loop from Marshall converges at 6x6, 1e-6 rel at iteration 100); A4 (second K step without a
+  refresh fails); STEP 0'/T-SPLIT (from learned guides the second sign step gains < 0.5e-6/site at 6x6).
+SIGN-STEP DEPTH TEST (PI go 2026-11-26: 'run the round-2 versus round-6 comparison'; rung 2, existing tables, CPU, no network)
+Question: does a sign step computed from 6 amplitude rounds beat one computed from 2, once both signs are graded at the SAME amplitude?
+Step [exact def, q0r.py lanczos_step]: T[S,A] = sgn(G + alpha (H - E) G), G = S A, alpha = closed-form E_var-optimal. Depends on A only through local ratios (E_L).
+Arms: start S in {s2, Marshall M}; A in {A_0 (pfaffian_c c1_cplx_s1 la_table), A_2, A_6 (EXACT rounds of the round map under S from A_0), |psi0| (oracle step T*)};
+  s2 extra: copies chi_6 = NNx/x1, h1 = NNh. Grade: E_FN[T A_c] - E0 per site at common A_c in {|psi0|, A_2^S}, and E_FN[S A_c] as the zero.
+Per-flip: flip sets F_A = {T != S}; vs F*: precision/recall (count, |psi0|^2 weight, first-order energy weight e_x = -4 S_x a_x sum_{y!=x} H_xy S_y a_y / |a|^2, a = |psi0|);
+  F_2 vs F_6 Jaccard in the same three measures; per-flip correctness vs sgn(psi0). Ratio accuracy: on F_2 u F_6 u F* rows, E_L[S A_k] - E_L[S |psi0|] and the step margin
+  1 + alpha(E_L - E); share of mis-flips (vs F*) whose ratio error exceeds their margin. Walls: mean ln(A_k/|psi0|) on S-wrong rows minus the rest, k = 0..6; E_FN[S |psi0|].
+Predictions (lead, before any number; (d) of the block above, 70%, is the registered one):
+  s2: |dE(T_2) - dE(T_6)| at |psi0| <= 0.05e-6/site; energy-weighted Jaccard(F_2, F_6) >= 0.8 (60%).
+  M: step gain at |psi0| close to the Marshall FN gap; T_2 vs T_6 within 5% of the step gain (60%); if they differ, T_6 is WORSE (55%): rounds under M push A toward M's walls.
+  Mis-flips: >= 70% of their energy weight has ratio error > margin (60%).
+Decision (PI's rule): T_2 within 10% of T_6 in step gain AND energy-weighted flip agreement >= 0.9 at both starts -> park round-7 compression; next = the coupled loop
+  (shallow amplitude rounds + sign step), judged by cumulative gain per cost against the baseline. Otherwise amplitude depth matters for the sign; compression stays.
+
+RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
+Derivation:
+ (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).
+ (2) [exact] A spins-only net must rebuild rho_b; with ln rho_b as inputs, y is a sign of a bond sum of known weights times s_old(z_b).
+ (3) [approx, deciding term for learnability] s_old(z_b) = sgn(l_old(x) + dl_b(x)); dl_b is a local change within the CNN's receptive field, l_old(x) one scalar. A per-bond MLP on
+     (ln rho_b, c_b, local spins, l_old(x)) with log-domain pooling contains y up to the error in dl_b.
+ (4) [exact, deciding term for cost] FN needs s(z_a) at every neighbour z_a of the walker x, so the inputs are rho_b(z_a) = B(z_ab)/B(z_a) = [B(z_ab)/B(x)] / [B(z_a)/B(x)]:
+     all two-swap ratios from x, pp2_lemma.two_swap_ratios, instead of one_swap_ratios. The cost is C/C0 = 1 + (t2 - t1)/t_total, unmeasured; z^2 = 128^2 lemma terms per image vs 128.
+Checked: (1) reproduces labels exactly (audit_existing assert); (4) the ratio identity is exact for any nonzero B. The same input gap was measured on the amplitude side: spins-only ViT retention
+ 0.056 vs ratio-input ratnet 0.73-0.89 (ARM H, FIX D). Theorem: none needed for (1), (2), (4); (3) is a modelling claim. Confidence the derivation is right: 85%; that the class can reach q >= 0.82: 40%.
+Prior results: T-GROW (width, head, weights: < 2% cut, train err = held-out err ~0.10), T-CAP8 (depth: 2.2(14)e-5), A48 (12 trained classes killed), tfield (regression q 0.27), STEP 7/18
+ (exact neighbour signs via gating: 2.3x for 63% of the stake). None gave the net M1's ratios. sigma_audit/train_vs_held.json: CF misses 45% of its own training flips.
+Known case: y == sgn sum_b rho_b c_b s_old(z_b) on all 10,240 roots (audit_existing assert). Broken version: rho from a same-decade partner row (ratnet control, retention 0.008 on 6x6).
+ The sign-side broken run is part of the data check.
+Not covered: the cost (4) is not timed; whether dl_b is local enough at 8x8; FN realization of a lower panel R.
+Next rung (cheapest first, it decides the route): time two_swap_ratios against one_swap_ratios per walker state at 8x8 on an a40-24gb slice (~0.1 A40-h).
+ Pass: projected C/C0 <= 2 -> data check (rho inputs for the panel + a training subsample, fit, panel R). Kill: C/C0 > 4 -> ratio inputs are not a constant-factor route at 8x8; the copy
+ then needs a cheaper input (ln|B(z)| itself is free) or the gate. Prediction: C/C0 3-10 (60%), because the lemma's per-pair work scales with z^2.
+Status: DONE (derivation, check, prior results, known case written; the broken case is run with the data check).

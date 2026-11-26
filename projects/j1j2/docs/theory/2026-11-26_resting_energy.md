@@ -70,3 +70,5 @@ flip rows, not E_FN. [open, to derive: residual after the step as a function of 
 What stands: (1), (2), (4) with the kappa term replaced by an unknown g(amplitude) >= 0 that is small at 6x6 (<= 1.5e-7 for every round-6 input), and readings A, B:
 the sign copy tax enters once. What the miss adds: the fixed-s2 chain rests near 0.80e-6 whatever the copy does, so below that only a sign step helps.
 The registered cycle prediction (N <= 0.8e-6 within two rounds at T) therefore tests exactly whether the step opens a lower chamber. Asked of the amp lead 11-26 20:45.
+Walker rows, sign side (sign lead 11-26): not expected to change R. Walker/Born ~1 per decade (STEP 16), CF misses 45% of flips on its own training rows (input is
+missing, not rows), energy-weighted rows gave -1.8(1.6)% (T-GROW O). My 55% -> 15% for the sign copy. Amplitude side still open (target weight 2e-5 under |B|^2).

@@ -2572,3 +2572,31 @@ STEP 17 (takeover, registered 2026-11-26; job 18211780 RUNNING since 02:56, end 
 - CEILING (goal clause b, now measured, not only predicted): along the CF-class copy's own rounds the loop reaches gap 6.7(1.5)e-5/site to sgn(M1) at round 3 (97.9% of the Marshall gap 3.232e-3 closed); round 4 adds -0.6(0.6)e-5, so the gap after round 4 is 6.1(1.6)e-5, and round 4 cannot close more than 1.75e-5 (95%).
 - Correction carried into the handoff: the panel first-order gain is noisy (sd ~2.9e-5 per net), not shown to be biased; my STEP 14 "4 sigma" and STEP-BACK 8 "miscalibrated" were wrong. STEP 15 (r4cf_w) stays unrun: its target is the same fixed point.
 - Goal status: DONE by clause (b). Closing the angle is the PI's call; I recommend close at 6.1(1.6)e-5/site unless a copy with lower error on the same table is funded (none found at constant cost).
+
+## ADVISOR 2 (Fable, 2026-11-26; runs/j1j2/sign_bad/advisor_ceiling/ADVICE.md, read; PI: "you are being lazy, ask a fable advisor")
+- Ceiling real for chained 1.0x refits (85%): the fit cannot lower R on fixed labels (R_3 1.137e-4, R_4 1.164e-4), so G_{k+1} ~ R_k is an identity.
+- NOT a ceiling at constant-factor cost: STEP 7 closed the depth-1 gate because requests are deep (median request decade -6). It never used the
+  decade as a gate variable. Regret sits on the bulk side (decades -6..-3 carry 82% of R); uncertain neighbours, which set the cost, sit deep.
+- Numbers re-run by me (adv_gate4.py gain, adv_preq.py cost; adv_gate.py p_req column is broken, 1 root found, ignore it) [measured, first order, panel, bootstrap over origin chains]:
+  | theta, floor D | gain over CF | share of G_4 | panel flips (Neff) | p_req | C/C0 = 1+0.82*142*p_req |
+  | 1, none (STEP 7) | 8.83(1.57)e-5 | 0.68 | 910 (51) | 0.0396 | 5.5 |
+  | 1, -5 | 5.51(1.52)e-5 | 0.42 | 42 (21) | 0.0012 | 1.14 |
+  | 2, -5 | 8.22(1.99)e-5 | 0.63 | 60 (23) | 0.0025 | 1.29 |
+  | 2, -6 | 10.63(2.07)e-5 | 0.82 | 167 (37) | 0.0085 | 1.97 |
+  STEP 7 row reproduces (p_req 0.040 there). The cost is derived from the G(-5) timing, not timed.
+
+## STEP 18 (2026-11-26): decade-floored depth-1 gate on CF, theta 2, D -5. Lead decision (reversible, ~7 A40-h): run its FN grade.
+Rule: S(z) = Marshall * sgn( sum_u W_zu CF(u) ) if |l_CF(z)| < 2 and decade(z) >= -5, else CF(z). It depends on z only, so psi_T stays single-valued.
+  This is the C-free label of table_r4_cf (y) on gated rows; depth 1, no recursion.
+PAPER CHECK (lead, 2026-11-26): derivation = STEP 7 rule plus a decade floor. The first-order energy change is the sum of -4 p |h| / 64 over gated flips (exact
+  for single flips; STEP 7 cross terms 0.2% of linear). Cost C/C0 = 1 + c * 142 * p_req, with c = 0.82 E_L per gated neighbour from the G(-5) timing [derived].
+  Known case: the no-floor row reproduces STEP 7 (8.8 vs 8.0e-5 flat on the r3 vs r4 table; p_req 0.0396 vs 0.040). Broken version: the STEP 7 inverted-sign
+  gate costs +1.57e-4. Escapes the dead ends: STEP 7 failed on cost, and the floor removes the deep requests; G(-5) (+6.4(3.5)e-6) gated the deep end, this
+  gates the bulk side; it is not a fit, so the generalization floor (ADVISOR 2) does not apply. Not covered: FN realization of first-order gains
+  (0.30(12) CF, ~0.55 n_3, unexplained); gain rests on 23 effective panel rows. DONE.
+DATA CHECK: table above, re-run by me. DONE.
+Goal fit: total = CF + one terminal gate (not chained); its cost is 1.29x derived, not 1.0x. Flagged to the PI as outside the literal goal.
+Kill test: branched paired FN, A = CF, B = gate(2, -5), K 12, M 256, as cf4_vs_cf; timing probe first.
+  Pass: Delta <= -1.5e-5 AND timed C/C0 <= 1.5. Kill: Delta > -1.2e-5 OR timed C/C0 > 2. Between: report; no resubmit without the lead.
+  Prediction: Delta = -2.5 to -4.5e-5 (realization 0.30-0.55 of 8.2e-5); P(pass) 50%.
+  Pass -> try (2, -6) (10.6e-5 first order, 1.97x) and report the cost-gain frontier to the PI. Kill -> close the angle at 6.1(1.6)e-5/site.

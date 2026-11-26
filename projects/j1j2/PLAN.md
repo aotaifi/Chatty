@@ -12,6 +12,9 @@ Why this one [FN-lead's view, ~70%]: the halves were each tested against an idea
 1.23e-6; sign copies graded against sgn(M1)). At 8x8 the stored sign rests 6.1(1.6)e-5/site above the trained network's own sign (PLAN_sign STEP 17), more than one
 amplitude round gains there (4.65e-5 bare, headline_p1/prodA), so the sign copy, not round-7 compression, is the larger term. Not yet checked by me: the 6x6
 picture is guide-dependent (s_G floor <= 0.83e-6 and stored S_a1 tax 0.88e-6, against F(S_1) 3.13e-5 from the learned guide B2).
+TAKEOVER (PI 11-26 ~21:00): FN-lead leads until the PI returns; budget free on Paderborn and the cluster for the amplitude and sign leads; FN-lead thinks
+and decides, the two leads do all runs and mechanics. Not allowed alone: deleting data, cancelling others' jobs, the paper, email to anyone but the PI.
+Waiting on: complete-cycle test at 6x6 (amp lead; prediction in the account) and STEP 18b + t2/t1 timing (sign lead). Closure (3) of the account is refuted; A, B stand.
 ACCOUNT (11-26): docs/theory/2026-11-26_resting_energy.md. E_rest - E_0 ~ sigma + (1 + kappa) f_A/(q(1 - rho_A)) [cond]; the sign copy tax sigma enters once,
 unamplified, so the terminal sigma in FN energy is the sign bar and the round-3 stall is the rest point c* = sigma. PI 11-26: sign-copy tasks delegated to the sign lead;
 proceed until the block is solved; FN-lead to push back where it disagrees.

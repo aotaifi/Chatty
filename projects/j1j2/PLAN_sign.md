@@ -2624,3 +2624,19 @@ LEAD DECISION STEP 18b: the open question is now whether gating realizes in FN a
   and the angle closes at 6.1(1.6)e-5/site.
 
 REPORTING LINE (PI decision 2026-11-26, relayed by the amplitude lead): the sign lead reports to "FN-lead: j1j2 lead physicist" (local_4c22bf95-3fd4-4a6c-9ec5-12bb52e46d62), who owns PLAN.md. The former FN-loop lead (local_15c8f868) is now the amplitude lead.
+
+## FN-LEAD QUESTIONS 2026-11-26 (resting-energy account docs/theory/2026-11-26_resting_energy.md; bar is now sigma, the terminal sign copy tax, target ~sigma/3)
+(a) CF on its OWN training rows (runs/j1j2/sign_bad/sigma_audit/train_vs_held.{py,json}; table_r3_cf labels, CF logits; estimator as audit_existing grade) [measured]:
+  train 1.17M rows: G 1.755e-4, R 6.31e-5, q 0.640, row error 0.018; leak-free 294k rows: q 0.568; panel: q 0.457.
+  Train flip miss per decade -12..-6: 0.44 0.43 0.45 0.46 0.47 0.45 0.44 (held-out 0.50-0.67). CF misses ~45% of the flips it was TRAINED on: it underfits, it is not only a generalisation gap.
+  Earlier capacity/loss changes at fixed labels (T-GROW, r3 labels): wider W +0.1(1.6)%, grown head G +0.9(1.8)%, bw weight O -1.8(1.6)%, class-balanced Ob breaks keeps;
+  train err 0.087-0.106 = held-out 0.098-0.104, train BCE falls while held-out flat. T-CAP8 64x10 vs 64x6: FN 2.2(14)e-5, 1.6 sigma. 12 trained sign classes killed (A48). None gave the net M1's ratios.
+(b) The exact one-step sign was never FN-graded everywhere (~143x cost). Nearest: first-order exact C-free over CF -1.14(17)e-4 (flat) / -8.9(1.2)e-5 (|B|^2); G(-5) (s306, deep, variational rule)
+  +6.4(3.5)e-6; T-NODE exact sign at d <= -7 on |M1| +8.0(4.1)e-6. STEP 18b (gate on 63% of the first-order stake) is the closest measurement, queued.
+(c) Nothing in the records shows a sign error growing over rounds at good amplitude: gaps 5.96e-4, 9.6e-5, 6.7e-5, then round 4 -0.6(0.6)e-5; q falling 0.457 -> 0.104 is G_4 ~ R_3, the rest point.
+  Caveat for (1): two exact deep sign steps (G(-5), T-NODE) RAISED the FN energy by ~2 sigma; an exact step is not guaranteed to lower E_FN.
+DIAGNOSIS (equation): y(x) = sgn sum_b rho_b(x) Jt_b s(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP one-hop ratios). A spins-only CNN must rebuild rho_b; the amplitude side measured that
+  exact failure (spins-only ViT retention 0.056 vs ratio-input ratnet 0.73-0.89; STORAGE_PROBLEM ARM H / ratnet). Missing input, not capacity: explains flat train error under width, depth, weights.
+PLAN (paper check first, STORAGE_PROBLEM 'RATIO-INPUT SIGN COPY'): s(x) = sgn g(spins, ln rho_b(x), bond type), ratnet-style per-bond MLP + log-domain pooling, trained on the C-free labels.
+  Bar for sigma/3: panel R <= 3.8e-5 (q >= 0.82; CF R 1.137e-4 <-> sigma 6.1e-5). Unknowns: (1) cost of rho_b at a requested state (Sherman-Morrison PP + RBM theta updates after the M1(z)
+  call FN already pays; expected <= 2x, unmeasured); (2) s(z_b) still emulated from spins, so the ceiling sits below the exact label.

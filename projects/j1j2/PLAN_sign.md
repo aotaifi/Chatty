@@ -2550,3 +2550,17 @@ TAKEOVER 2026-11-25 19:40 -> check-in 2026-11-26 08:00. Defaults (PI may overrid
  messages beyond the FN-loop lead, no GitHub push. Plan: STEP 16 (walker histogram, worker) -> CPU walker-weighted first order vs the two paired FN gains.
  Pass -> score STEP 15 and other round-4 candidates with it on CPU; fit + FN-grade the best only if its predicted gain >= 2 sigma (1.6e-5), <= 8 A40-h.
  Kill -> paper design of configuration-level phi/B (forward walking), no GPU.
+STEP 16 RESULT (2026-11-26; job 18208066, 0.44 A40-h; runs/j1j2/sign_bad/whist/hist.json, gates i-iv pass, A chain identical to cf_vs_n2 on 250 blocks):
+ walker/Born per decade c_d: -7 0.72(17), -6 1.02(17), -5 0.96(7), -4 0.98(7), -3 0.99(7), -2 0.92(6), -1 1.02(7), 0 0.83(7). Walker-weighted first order
+ (scratchpad fo_walk.py): n_3 -6.36e-5, CF -9.37e-5, ratio 1.47 (c_d^2: 1.47; Born 1.49). KILL FIRES: decade-level phi/B is not the term; my prediction
+ (walkers >= 2x below Born in -7..-5) FAILED.
+ DIAGNOSIS: the first-order panel totals have bootstrap sd over 512 origin chains of 2.95e-5 (n_3) and 2.80e-5 (CF), never quoted before.
+ Against paired FN: n_3 -6.4(3.0) vs -3.51(79) = 0.9 sigma; CF -9.6(2.8) vs -2.91(1.19) = 2.2 sigma. MY ERROR: STEP 14 called the prediction "4 sigma
+ off" and STEP-BACK 8 "miscalibrated" without the estimator's own error. Corrected: the panel metric is mainly NOISY (~55 effective rows, half the
+ total on 5-6 flips in decade -3), with a 2.2 sigma low CF realization left unexplained.
+ Round 4 on the same footing (grade_r4_boot.py, scratchpad): first-order kept gain of CF_4 = 1.35(1.52)e-5, 90% interval [-1.0, 3.9]e-5. So rule (b)'s
+ "predicted below resolution" rests on a proxy with error larger than the resolution. Proxy is not the task: measure round 4 directly.
+STEP 17 (takeover, registered 2026-11-26): branched paired FN, A = CF, B = CF_4 (r4cf/fit/net_8192.pkl sha fcf2dc2b), K 12, M 256, as cf_vs_n2 otherwise.
+ sigma ~ 3.36e-5/sqrt 12 = 0.97e-5. Prediction: Delta(CF_4 - CF) = -0.4 to -1.1e-5 (0.3-0.8 x 1.35e-5), 80% |Delta| < 2 sigma. Cost ~5.4 A40-h.
+ Pass (gain resolved, Delta < -1.9e-5): round 4 gains, (b) reading wrong -> STEP 15-class refits graded on FN directly. Kill (|Delta| < 2 sigma): rule (b)
+ confirmed by measurement, ceiling report stands with the bound Delta > -X (95%). Delta > +1.9e-5: round 4 degrades.

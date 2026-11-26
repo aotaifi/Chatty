@@ -2640,3 +2640,7 @@ DIAGNOSIS (equation): y(x) = sgn sum_b rho_b(x) Jt_b s(z_b), rho_b = |M1(z_b)/M1
 PLAN (paper check first, STORAGE_PROBLEM 'RATIO-INPUT SIGN COPY'): s(x) = sgn g(spins, ln rho_b(x), bond type), ratnet-style per-bond MLP + log-domain pooling, trained on the C-free labels.
   Bar for sigma/3: panel R <= 3.8e-5 (q >= 0.82; CF R 1.137e-4 <-> sigma 6.1e-5). Unknowns: (1) cost of rho_b at a requested state (Sherman-Morrison PP + RBM theta updates after the M1(z)
   call FN already pays; expected <= 2x, unmeasured); (2) s(z_b) still emulated from spins, so the ceiling sits below the exact label.
+FN-LEAD TAKEOVER TERMS 2026-11-26: budget free (Paderborn + cluster); I decide sizing/placement/resubmission; report only when sigma moves in FN, a kill fires (with diagnosis) or the account breaks.
+ Not alone: deleting data, cancelling others' jobs, the paper. kappa term refuted by FN-lead; 'sigma enters once' stands.
+PI IDEA (via FN-lead): fit on rows drawn from FN walkers, exact labels. My answer: no change expected in R on costly rows. Walker/Born ~1 per decade (STEP 16) leaves the decade mix as is, and CF
+ already misses 45% of the flips on rows it was trained on (sigma_audit), so redrawing rows does not reach the missing-input term. Energy-weighted rows: T-GROW O -1.8(1.6)%; ADVISOR 2 route 2 20%.

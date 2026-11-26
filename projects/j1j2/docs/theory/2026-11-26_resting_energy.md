@@ -49,3 +49,11 @@ PREDICTION registered now, for the first complete exact cycle with a stored ampl
     sign step T = T[s2, chi_6], then exact amplitude rounds at T from chi_6. E_FN[T |psi0|] = 1.52e-7 bounds the new chamber floor, so the rounds should pass
     below the s2 chain's rest (N* ~1.05e-6, floor of the cheap copies 1.07e-6) within two rounds: N after round 2 at T <= 0.8e-6 (60%). Kill of the coupling idea
     at 6x6: N stays >= 1.0e-6 after three rounds at T (then the s2 rest was not the sign's doing).
+
+## PI idea 11-26: copy from the walkers instead of from the ratios (recorded, not yet derived)
+Two separate things. (i) Walkers as LABELS (phi/psi_T by walker weights or forward walking): Test W, 6x6, pointwise labels 20-70x noisier than one round's correction
+(PLAN.md 'TEST W RESULT', pfaffian_w/w_result.json); closed for pointwise labels only. (ii) Walkers as the TRAINING ROWS, labels still exact from the ratio formula:
+not tried for either copy. [conj, 55%] It changes the term my pushback named: the fit weight would be the walker residence weight, where E_FN responds, instead
+of Born weight (sign proxy realised 0.30 of its first-order gain, PLAN_sign STEP-BACK 8; amplitude target weight 2e-5 'never drawn from |B|^2', PLAN.md task card).
+To derive before any test: E_FN's first-order response to a copy error as a sum over the FN mixed distribution (Hellmann-Feynman, board 10: weights chi*^2, not phi^2),
+and the ratio of that weight to the Born weight per decade, from the walker histogram already on disk (sign_bad/whist/hist.json, STEP 16: ratio ~1 per decade there).

@@ -2610,3 +2610,14 @@ STEP 18 PROBE RESULT (2026-11-26 09:25; job 18213822, runs/j1j2/sign_bad/branche
 - Next (cheap, changes the cost term): a counting probe on the warm cf stream (100 burn blocks), n_g for the whole (theta, D) grid at once from logits cf already computes. ~0.2 A40-h.
   An arm is worth an FN grade if measured C/C0 <= 1.5 and first-order gain >= 4e-5 (ADVISOR 2 table). If none qualifies, the gate route closes at constant-factor cost <= 1.5,
   and the remaining option is the PI accepting ~2.4x for (2, -5).
+
+STEP 18 COUNT RESULT (2026-11-26; job 18214912, branched/cfgate_vs_cf/count/counts.json; code 3b0da93): the cold chain is not the cause. On the warm cf chain (100 burn + 50 counted blocks)
+  n_g(2,-5) = 1.435, flat over 10-block groups (1.33-1.56). The derived p_req was 4x low. Frontier, combining measured cost C/C0 = 1 + 0.91 n_g with the ADVISOR 2 first-order gains:
+  | theta, D | first-order gain | C/C0 measured |
+  | 0.5, -6 | 3.92(0.87)e-5 | 1.47 |  | 0.5, -5 | 2.63(0.83)e-5 | 1.32 |  | 1, -4 | 2.52(1.23)e-5 | 1.34 |
+  | 1, -5 | 5.51(1.52)e-5 | 1.64 |  | 2, -4 | 4.53(1.67)e-5 | 1.71 |  | 2, -5 | 8.22(1.99)e-5 | 2.31 |  | 2, -6 | 10.6(2.1)e-5 | 2.87 |
+  Slope ~8e-5 first-order gain per unit of extra cost. No cell meets both <= 1.5 and >= 4e-5; the best <= 1.5 cell is (0.5, -6) at 3.9e-5.
+LEAD DECISION STEP 18b: the open question is now whether gating realizes in FN at all, because the PI's cost choice (<= 1.5x vs ~2.3x) is worth nothing if it does not.
+  Grade the largest-signal arm (2, -5) for realization r = Delta_FN / 8.22e-5, not as a deliverable. Pass Delta <= -1.5e-5 (r >= 0.18); kill Delta > -1.2e-5.
+  Prediction -2.5 to -4.5e-5 (r 0.30-0.55), P(pass) 55%. Pass -> the PI chooses the cost and the <= 1.5x arm (0.5, -6) is predicted as r * 3.9e-5. Kill -> the gate route closes
+  and the angle closes at 6.1(1.6)e-5/site.

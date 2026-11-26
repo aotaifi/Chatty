@@ -57,3 +57,16 @@ not tried for either copy. [conj, 55%] It changes the term my pushback named: th
 of Born weight (sign proxy realised 0.30 of its first-order gain, PLAN_sign STEP-BACK 8; amplitude target weight 2e-5 'never drawn from |B|^2', PLAN.md task card).
 To derive before any test: E_FN's first-order response to a copy error as a sum over the FN mixed distribution (Hellmann-Feynman, board 10: weights chi*^2, not phi^2),
 and the ratio of that weight to the Born weight per decade, from the walker histogram already on disk (sign_bad/whist/hist.json, STEP 16: ratio ~1 per decade there).
+
+## Third point: closure (3) REFUTED as written (FN-lead 11-26 20:45; amp lead's values from existing grade files, paths in delta_today)
+E_FN[s2 A_k], alpha 0, 1e-6/site: A_2 3.320, A_3 2.156, A_4 1.636, A_5 1.315, A_6 1.117; chi_6 1.761; h1 2.327. Predicted E_FN[s2 A_6] 1.9-2.1: MISSED by 0.8.
+Failing term: I measured the amplitude excess x from E_FN[s2 |psi0|] = 1.494e-6 as if it were the chamber floor c(s2). It is not: A_6 is already below it.
+The floor is reached by wall-adapted amplitudes, not by |psi0|. Aitken on the chain (differences 1.164, 0.520, 0.321, 0.198; ratio 0.617 twice) gives
+c(s2) ~ 0.80e-6 [extrapolated, unvalidated; record: s_G-type floor <= 0.83e-6, compress_6x6 0.9e-6].
+With c(s2) 0.80: kappa = c'/x = 0.134 (A_0), 0.147 (A_2), 0.27 (A_6), 0.158 (chi_6), 0.077 (h1): not a constant, and h1 (higher E_FN than chi_6) gives the better sign.
+So 'mis-flips proportional to the FN excess' is wrong; reading C's '15-20% surcharge' is WITHDRAWN. The step is the sign of the Lanczos factor, and the copies
+order correctly by the Lanczos-graded N (h1 1.098 < chi_6 1.350; residuals 1.18e-7 < 1.52e-7): the right variable for the sign step is the quality of E_L on the
+flip rows, not E_FN. [open, to derive: residual after the step as a function of the E_L error on rows with |1 + alpha(E_L - E)| small.]
+What stands: (1), (2), (4) with the kappa term replaced by an unknown g(amplitude) >= 0 that is small at 6x6 (<= 1.5e-7 for every round-6 input), and readings A, B:
+the sign copy tax enters once. What the miss adds: the fixed-s2 chain rests near 0.80e-6 whatever the copy does, so below that only a sign step helps.
+The registered cycle prediction (N <= 0.8e-6 within two rounds at T) therefore tests exactly whether the step opens a lower chamber. Asked of the amp lead 11-26 20:45.

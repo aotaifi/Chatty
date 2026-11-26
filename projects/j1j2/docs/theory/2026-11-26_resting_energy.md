@@ -72,3 +72,23 @@ the sign copy tax enters once. What the miss adds: the fixed-s2 chain rests near
 The registered cycle prediction (N <= 0.8e-6 within two rounds at T) therefore tests exactly whether the step opens a lower chamber. Asked of the amp lead 11-26 20:45.
 Walker rows, sign side (sign lead 11-26): not expected to change R. Walker/Born ~1 per decade (STEP 16), CF misses 45% of flips on its own training rows (input is
 missing, not rows), energy-weighted rows gave -1.8(1.6)% (T-GROW O). My 55% -> 15% for the sign copy. Amplitude side still open (target weight 2e-5 under |B|^2).
+
+## Sign-step residual law (paper + exact 6x6, 2026-11-26 23:00)
+Files: `/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/signdepth_paper/` (`table.py`, `pass2_M.json`, `pass2_s2.json`); numbers re-read by FN-lead.
+
+(8) R_k = E_FN[T[s2,A_k]|psi0|] - E0 ~ R* + kappa D1_k,  D1_k = (1/N) sum_{x in F_k xor F*} e*_x,
+    e*_x = -4 T*_x a_x sum_{y!=x} H_xy T*_y a_y / |a|^2  (a=|psi0|, T* = oracle step, F = flip set).
+    Measured R vs D1 (1e-6/site): A_0 2.685/3.169, A_2 0.370/0.405, A_6 0.0865/0.0895, chi_6 0.152/0.162, h1 0.118/0.124; kappa 0.85-0.93 [measured, not derived]; Spearman +1.00 (6 inputs). Fails: input FN energy (+0.89), mu2 (+0.37), wall dip (+0.03).
+    Meaning: the residual is the energy mass of rows where the E_L error crosses the flip threshold in the damaging direction; error size alone does not count.
+
+(9) Guide S|psi0|rho, rho=r on wrong rows W, 1 elsewhere [exact, uses only H psi0 = E0 psi0]:
+    wrong row:   E_L - E0 = (1+1/r) B_x,  B_x = -sum_{y notin W} H_xy psi0_y/psi0_x  -> fixed if B_x > theta r/(1+r)
+    correct row: E_L - E0 = (1+r) C_x,    C_x = -sum_{y in W} H_xy psi0_y/psi0_x    -> broken if C_x > theta/(1+r)
+    theta = 1/|alpha| + E - E0. Suppressing wrong rows lowers the bar to fix and raises the bar to break.
+    Exact r-scan, E_var[T|psi0|]-E0: Marshall (1e-3/site) r=1 5.66, 0.3 0.845, 0.1 0.484, 0.03 0.397, 0.003 0.361; s2 (1e-9/site) 3.79, 0.79, 0.51, 0.48, 0.43.
+    Floor of one step: wrong rows with B_x <= 0 (interior of wrong domains).
+    Not checked: FN grade of the r-scan (only E_var), non-uniform r.
+
+Consequence [conj 45%]: the amplitude handed to the sign step should be MORE wall-suppressed than the one that is best for the energy. Oracle-free knob: over-relax only the sign step's input, A_gamma = G exp(gamma f_J[G]), gamma > 1.307.
+PREDICTION (registered before the run): at 6x6 exact, s2 start, residual E_FN[T[s2,A_gamma]|psi0|] has its minimum at gamma in [2,3]; from A_2 it falls from 0.370e-6 to <= 0.25e-6.
+KILL: no gamma in {2,3,4} beats gamma=1.307 by more than 10% from either A_2 or A_6. If killed: the FN dip is not aligned with W (it suppresses correct rows near walls too, raising C-type breaks); the term to change is then the one-sided weighting, not the depth.

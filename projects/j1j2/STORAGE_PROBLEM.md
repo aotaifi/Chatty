@@ -1732,6 +1732,32 @@ Predictions (lead, before any number; (d) of the block above, 70%, is the regist
 Decision (PI's rule): T_2 within 10% of T_6 in step gain AND energy-weighted flip agreement >= 0.9 at both starts -> park round-7 compression; next = the coupled loop
   (shallow amplitude rounds + sign step), judged by cumulative gain per cost against the baseline. Otherwise amplitude depth matters for the sign; compression stays.
 
+SIGN-STEP DEPTH TEST, RESULT (amplitude lead 2026-11-26; job 18227574, runs/j1j2/consol_6x6/signdepth/result.json md5 c5cda3af; grades re-read from the file)
+Known cases: K1 round map reproduces rounds23/lA_1 to 2e-16; K2 E_FN[s2 A_0] 2.092e-5, chi_6/h1 re-grade to 1e-9 rel; K3 wrong weight M 1.956e-2, s2 1.227e-6;
+  K4 1% random flips of s2 -> 8.11e-3 (fails as it must); e_x = exact single-flip change to 1e-15, without self-loop term off 9%. All 26 grades gate_ok.
+Step gain E_FN[S A_c] - E_FN[T A_c] per site (residual E_FN[T A_c] in brackets):
+  | start | arm    | at |psi0|            | at A_2^S             | J_E(F_k,F_6) |
+  | s2    | A_2    | 1.123e-6 (3.70e-7)   | 5.15e-7 (2.805e-6)   | 0.823 |
+  | s2    | A_6    | 1.407e-6 (8.65e-8)   | 4.93e-7 (2.827e-6)   | 1     |
+  | s2    | chi_6  | 1.342e-6 (1.52e-7)   | 5.14e-7 (2.806e-6)   | 0.953 |
+  | s2    | h1     | 1.376e-6 (1.18e-7)   | 4.24e-7 (2.896e-6)   | 0.955 |
+  | s2    | |psi0| | 1.490e-6 (3.6e-9)    | 1.45e-7 (3.175e-6)   | 0.953 |
+  | M     | A_2    | 4.177e-3 (5.74e-4)   | 2.302e-4 (1.312e-3)  | 0.983 |
+  | M     | A_6    | 4.160e-3 (5.91e-4)   | 2.421e-4 (1.300e-3)  | 1     |
+Decision rule: M passes (A_2 = A_6 to 0.4% / 5%, J_E 0.983); s2 FAILS (A_2 gains 20% less than A_6 at |psi0|, residual 4.3x larger; J_E 0.823 < 0.9).
+  So amplitude depth matters for the sign step near the exact signs, not from Marshall. Compression is not parked by the rule.
+Predictions: s2 |dE_2 - dE_6| <= 0.05e-6 MISSED (0.284e-6); J_E >= 0.8 hit (0.823); M within 5% hit (0.4%; T_6 marginally worse, as predicted);
+  mis-flips with ratio error > margin >= 70% hit at own alpha (0.96-1.00 energy share; h1 0.67).
+What it says about round >= 7: the round-6 COPIES already give 95-98% of T_6's gain (chi_6 1.342, h1 1.376 vs 1.407e-6) and J_E 0.95. The most a perfect amplitude can
+  add over A_6 is 0.083e-6/site (|psi0| arm). So depth from 2 to 6 rounds matters and the stored round-6 copy captures it; compression past round 6 buys <= 0.08e-6/site
+  of sign quality at s2. Its value would have to come from the amplitude itself.
+At the loop's own amplitudes (A_2^S) every sign arm gives the same 0.42-0.52e-6 and the residual 2.8e-6 is amplitude error: at s2 the amplitude, not the sign, limits E_FN.
+Wall (mean ln(A_k/|psi0|) on S-wrong rows minus the rest, |psi0|^2-weighted): s2 -0.37 (k0), -1.10 (k2), -1.55 (k4), -4.22 (k6); M -0.05, -3.17, -4.31, -5.53.
+  The exact rounds DO suppress wrong-sign rows, monotonically (the Kairon-Clark picture holds in our chain). This suppression is what the step reads: s2 flip precision
+  (energy) 0.91 (A_2) -> 0.99 (A_6). The copies keep only part of it (chi_6 -1.10, h1 -0.79, about the A_2 level) yet reach precision 0.98-1.00: the copy's sign
+  information is in the ratios, not the depth of the dip. Median |E_L error| on the flip union grows to 283 at s2 k=6 (vs 8-25 for k<=5): the round-6 ratios on those rows are badly off
+  while the flip decision stays right.
+
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).
@@ -1751,3 +1777,17 @@ Next rung (cheapest first, it decides the route): time two_swap_ratios against o
  Pass: projected C/C0 <= 2 -> data check (rho inputs for the panel + a training subsample, fit, panel R). Kill: C/C0 > 4 -> ratio inputs are not a constant-factor route at 8x8; the copy
  then needs a cheaper input (ln|B(z)| itself is free) or the gate. Prediction: C/C0 3-10 (60%), because the lemma's per-pair work scales with z^2.
 Status: DONE (derivation, check, prior results, known case written; the broken case is run with the data check).
+RATIO-INPUT SIGN COPY, COST DERIVATION (sign lead, 2026-11-26, after FN-lead's challenge: "what does a ratio-input copy buy over the exact step at the same inputs?")
+ Measured anchors (STEP 18 probe job 18213822 and count job 18214912, same node class): cf baseline t0 = 14.26 s/block over ~703 walker states/block, i.e. 20 ms per state;
+ split amp 3.2 s, CF net 5.7 s, rest 5.4 s per block. Exact gate, per gated neighbour z: 0.91 t0-units = amp call at z ~0.20 + CF at z's 128 neighbours ~0.38 + overhead ~0.33
+ (amp 4.2 s, net 8.0 s extra per block at n_g 1.51). One amp call at z costs about one walker-state amp call (t1 ~4 ms).
+ Ungated ratio-input sign: rho_c(z_a) at all ~144 neighbours. Through one_swap at each z_a: C/C0 ~ 1 + 144 x 0.20 ~ 30. Through two_swap from x: C/C0 ~ 1 + 0.22 (t2/t1 - 1);
+  <= 2 needs t2/t1 <= 5.5 (timing job running; z^2 lemma terms predict far more). [derived]
+ Gated ratio-input sign (share n_g): C/C0 ~ 1 + (0.20 + head + part of overhead) n_g ~ 1 + 0.3-0.5 n_g, against the exact gate's 1 + 0.91 n_g. At (2,-5): 1.4-1.7x lossy vs 2.31x exact;
+  at (2,-6): 1.6-2.0x vs 2.87x. [derived from the split; head cost unmeasured]
+ ANSWER to FN-lead (1): for one step from a known sign the net is a lossy copy of an exact formula at the same ratio cost. It buys only the CF calls at two-hop states, ~40-55% of the
+  gate's extra cost, so it is worth building only gated, and only if its gated q stays >= ~0.8 (otherwise the exact gate at a little more cost wins). Rounds >= 2 are the other case.
+ (3) The case for it: if the stored amplitude becomes a ratio-input head, rho is paid at every requested state, the guide's own signed ratios give the round-1 exact sign at zero marginal
+  cost, and no sign copy is needed for round 1. That decision sits with the amplitude side's input set (RATIO-INPUT add-on, LOG-DOMAIN POOLING); the two-swap timing is the shared cost number.
+ Plan change: the near-term route to sigma/3 is the gate family; STEP 18b (exact gate, FN realization) decides it. The ratio-input sign is held until (a) the two-swap timing and (b) the
+  amplitude side's choice of input; it is built only as a gated head or as part of a joint signed ratio-input network.

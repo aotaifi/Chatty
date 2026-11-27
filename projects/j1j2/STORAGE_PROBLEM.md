@@ -2196,3 +2196,11 @@ Status: DONE.
    - Pass (conj holds): net(k=1) <= 30% of net(chi_6), rising with k. Then the 8x8 route is k adapted amplitude rounds at fixed sgn(M1) before the relabel, which is the amp lead's loop, and the question goes to FN_lead as a direction decision.
    - Kill: net(k=1) >= 70%. Then 8x8 sgn(M1) itself differs from s2, and the one-step route at 8x8 is closed.
    - Cost < 1 CPU-h. Prediction: pass, 60%.
+ ADDENDUM RESULT (2026-11-27, job 18249705, runs/j1j2/consol_6x6/rounds_split/result.json md5 413d7139, re-read): conj (rounds needed) mostly DEAD.
+  The one-step sign from A_k keeps this share of chi_6's net e* gain (all rows / decades <= -5):
+  | k | 0 | 1 | 2 | 3 | 6 |
+  |---|---|---|---|---|---|
+  | share | 0.24 / 0.05 | 0.74 / 0.67 | 0.89 / 0.86 | 0.96 / 0.95 | 1.03 / 1.04 |
+  - The same picture at alpha 0. The shuffled broken version gives +5.6e-4. Known cases pass (K1 rebuilds, S_R1 reproduced exactly).
+  - One exact adapted round already gives 2/3-3/4 of the gain. The 8x8 null (one FN refit R1, gain 0) is therefore not the round count.
+  - What is left: the 8x8 refit amplitude R1 does not carry the collapse an exact round carries, or sgn(M1)'s errors are not one-step-correctable at 8x8.

@@ -2838,3 +2838,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
   - [conj, 70%] Generalization from neighbours across the flip wall: a held flip's nearest training rows are keeps one exchange away, and a held keep's are flips.
   - This is the same term as the tfield handoff (2026-11-24, point 2: the copy keeps b and loses -2bF on flips one exchange away). The training law (Born keeps) does not touch that term.
 - Closed with it: configuration-only sign copies under any row law (CF, tfield, STEP 22, STEP 24). TRIED_IDEAS row to add.
+### STEP-BACK (2026-11-27, after STEP 23/24 kills, decade_split, rounds_split)
+1. Verdict: switch. The one-step sign is a function of the amplitude. At 6x6 it reaches the exact sign from the stored loop's chi_6 (N_3 0.368), and one exact adapted round already keeps 74% of that gain.
+   At 8x8 the gain is 0 with the R1 refit. So the 8x8 sign gap sits in what the 8x8 amplitude carries, not in a sign rule or a sign copy.
+2. The thought that changed it: rounds_split. k=1 keeps 0.74 of the gain and k=0 keeps 0.24, so the sign information is in the adapted amplitude's ratios.
+   Separately, every configuration-only copy is dead (CF, tfield, STEP 22, 24: AUC < 0.5 across the flip wall).
+3. Next: merge the sign into the amp lead's stored loop at 8x8, applying the R1 rule (VA > SK) to each round's stored amplitude, with no sign copy. Cost = the loop's own cost plus the R1 evaluation on requested rows.
+   This is a direction decision, so I put one question to FN_lead.

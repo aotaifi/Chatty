@@ -1931,12 +1931,19 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, RESULT (amplitude lead 2026-11-2
   tables, as in every cycle3 arm the margin was set on. Not yet covered: amplitudes copied into the network each round; 8x8.
   Source: /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/armR1/result_arm.json (md5 55732b2f). R1r (per-round regate) pending.
 
+R1r (RE-FLIP EACH ROUND), RESULT (amplitude lead 2026-11-27; job 18244987; cycle5_r1/armR1r/result_arm.json md5 37915cb4, re-read; result.json md5 df8e0ab4)
+  N per round (1e-6/site): 0.946 / 0.594 / 0.441 / 0.359 (R1 fixed: 0.946 / 0.594 / 0.448 / 0.368). Margin met; predicted <= R1's (60%): HIT.
+  The sign each round used: wrong weight 9.98e-8 / 9.98e-8 / 6.01e-8 / 2.95e-8; P/R 0.991/0.927 -> 0.994/0.957 -> 0.997/0.979; rows changed 44,844 then 83,155.
+  Delta E_var of the flip against s2 on the same amplitude: -0.331, -0.660, -0.870 (1e-6/site): the flip gains more as the amplitude improves.
+  Reading: re-flipping from the improved amplitude keeps finding wrong rows (wrong weight falls 3.4x in two rounds), and the energy gain is small (0.009 at round 3)
+  because the energy is by then set by the amplitude, not the sign. Supports regating in the stored loop (arm Cr), with exact amplitudes; under copy noise not shown.
+
 THE LOOP WITH NOTHING EXACT INSIDE, REGISTERED AND PAPER CHECK (amplitude lead 2026-11-27, before any run; objective from FN-lead 11-27)
   Objective (FN-lead): 6x6, R1 sign from the stored amplitude, each round's amplitude copied into the network before the next round; N_3 <= 0.665e-6
   (graded exactly); kill >= 0.90e-6; log per round the R1-flag count and A_k^2 weight. FN-lead's prediction 0.50-0.70 (45% inside).
   Arm C (now): fixed S_R1 (cycle5_r1 build, md5 ecb4b8b5), start chi_6 = NNx/x1 t_R. Round k: exact round_map under S_R1 on the STORED chi_k -> target T_{k+1};
   copy = the step-input network of NNx (nn_fit.py, width 64, 80k steps, cosine; inputs z + c1[chi_k] with c1 = ln|1+alpha(E_L-E)| recomputed on chi_k
-  UNDER S_R1); chi_{k+1} = the network table; N_k graded exactly under S_R1 (cycle5 grader). Arm Cr (regate S_k from chi_k each round) waits on R1r.
+  UNDER S_R1); chi_{k+1} = the network table; N_k graded exactly under S_R1 (cycle5 grader). Arm Cr (registered after R1r, 2026-11-27): branches from arm C after fit0 (S_0 = S_R1 bit for bit, so round 0 is shared); for k = 1, 2: S_k = s2 flipped by R1 on the STORED chi_k under s2 (cycle5r.py rule), then the round and the copy as in C. Prediction: N_3(Cr) = N_3(C) - 0.01 +- 0.02 (Cr <= C, 60%); risk: copy error misflips (A27).
   Derivation [approx, model fitted to the records]: stored N_{k+1} = M(N_k) + L_k, with M the exact round and L_k the copy loss (STORAGE_PROBLEM 'DESCENT ROUTE
   ROUND 7': stored N = N(target) + L). M from arm R1's exact chain 0.946/0.594/0.448/0.368: N_{k+1} - N* = c (N_k - N*), c = 0.548, N* = 0.271
   (rounds 1-3; round 0->1 contracts faster, c 0.41, used for round 1: M(0.946) = 0.594 and M(N) = 0.594 + 0.41 (N - 0.946) near it).

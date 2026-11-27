@@ -147,3 +147,8 @@ At fixed amplitude: dE = sum_y [2|H_xy| a_x a_y (lost bonding) + a_x^2 |H_xy| a_
 After the FN state relaxes its weight on x to 0: the x-diagonal term drops, leaving ~3 sum_y |H_xy| a_x a_y. Still linear in a_x.
 So with this H_FN I do not get the amp lead's D2 = sum_y |H_xy|(a_x+a_y)^2 or D3 = sum_y |H_xy| a_y^2 (their paper step, STORAGE S-sign block, c120436); D3 would need a penalty at y that does not vanish with a_x.
 PREDICTION before the data: x tracks D1 with slope 0.75-0.95, not D3 (55%). If D1(avg2) is far below the measured x, either the code's H_FN differs from the form above or the loss is in the amplitude adaptation; then that is the next thing to read, not a new metric.
+
+## 6x6 learning curve of a stored sign step (sign lead STEP 22; 2026-11-27 12:30)
+`/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve/curve.md`, read by FN-lead. Held flip miss by weight: 0.934 (n=100), 0.064 (300), 0.038 (1k), 0.025 (10k), 0.022 (100k), 0.017 (all); shuffled control 1.000 at every n. Held false flips by weight stay at 0.32-0.70 and the deployed table has w = 0.02-0.2 (s2: 1.2e-6): the net flips heavy rows it never saw (keeps capped at 20 per flip, none in decades -9..-4).
+My guess "(b) flat at chance, 60%" MISSED for the flips that carry weight. Reading: configuration-only learning of the flips works with >= 10k flip roots; the failure is the law of the training rows. 8x8 had 130 flip roots.
+NEXT (sign lead): 6x6 with keeps from the Born law over all decades plus flip rows; pass = deployed w < 1.23e-6 with the threshold set on training rows. Then the same law at 8x8 with >= 10k flip roots from a targeted walk, FN-graded. This is the PI's "train on walker rows" idea plus the flip rows.

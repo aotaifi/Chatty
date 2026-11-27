@@ -1892,6 +1892,23 @@ GATE SIGN IN THE CYCLE, RESULT (amplitude lead 2026-11-27; runs/j1j2/consol_6x6/
   noise that killed Gchi does not enter it.
   N_3 against w over all fixed-sign arms from chi_6: T 0.116 -> 0.373, G6 0.263 -> 0.534, S 0.574 -> 0.901, s2 1.227 -> 0.958, Gchi 2.198 -> 1.736.
 
+RIGHT CHAMBER OR STUCK?, RESULT, AND THE SANDWICH CHECK (amplitude lead 2026-11-27; job 18244623; runs/j1j2/consol_6x6/chamber_check/result.json md5 aa840e7e, round 0 re-read)
+  Prediction FAILED (50%): over rounds 0 -> 3 variance and flag weight fall in every arm, so neither separates the near-right signs (A, G6) from the fixed wrong ones.
+  var3/var0, flag3/flag0: A 2.71, 0.128 | G6 0.225, 0.052 | B 0.339, 0.015 | S 0.235, 0.013 | Gchi 0.193, 0.006. (Predicted A, G6 var <= 0.5; B, S, Gchi var >= 0.7.)
+  Round 3 (var 1e-4, flag 1e-9, dE_var 1e-6/site): A 5.61, 1.5, 0.843 | G6 1.11, 24.8, 0.682 | B 1.16, 3.1, 1.013 | S 1.18, 5.1, 0.959 | Gchi 5.14, 18.7, 1.819.
+  B and S rounds 4-6: var flat at 1.16-1.17e-4 (B) and 1.16-1.13e-4 (S), flag flat 3.5-4.9e-9, while dE_var still falls (B 0.95 -> 0.85).
+  Diagnosis [cond]: the first rounds are dominated by AMPLITUDE error, which falls in every arm whatever the sign; the sign error shows only once the amplitude
+  has converged, as the plateau B and S reach by round 3-6. Arm A's rising variance with falling E_FN (E_var flat 0.843 from round 2 to 3) says the
+  amplitude moves toward the FN state of its sign, whose variance under full H is not small; so var(H) of the guide is not a chamber indicator in 3 rounds.
+  Usable form [conj, 55%]: a plateau of var and flag over >= 3 rounds at fixed sign marks the floor of that sign; a sign change that lowers the plateau
+  is progress. No right-sign arm has been run to round 6 to show its plateau is lower (that is the missing control).
+  Known cases: exact |psi0| with exact sign var 4e-28, flag 0; |psi0| with s2 var 8.1e-4, flag 1.2e-6 (> 0 as required; the worker's own 1e-3 threshold missed).
+  SANDWICH (registered 70%, 'WHY R1 SHOULD LOWER THE ENERGY'), reference B: g_B = E_var - E_FN = 1.995 - 1.761 = 0.234 (1e-6/site, round 0).
+    -dE_var vs B: A +0.330, R1 +0.331 (> g: provably below B) | S -0.210, G6 -0.228, Gchi -4.02 (not provable).
+    Round-0 E_FN: A 1.421, R1 1.419 below B 1.761 as provable; S 1.895, G6 1.847, Gchi 4.310 above B. Round 3: A 0.373, R1 0.368 below B 0.958. PASS.
+    But S (0.901) and G6 (0.534) also end below B at round 3 although above it at round 0: the bound is sufficient, not necessary, and round-0 order
+    does not fix round-3 order.
+
 R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; objective from FN-lead 11-27)
   Sign S_R1 = s2 (1 - 2 [VA/SK > 1]), VA, SK from round_map's fJ_and_VsK on lG(chi_6, alpha -0.0517, E' of cycle1 armB round 1) under s2: the
   same chain as Gchi (build_grade.py chain('Gchi')), stored pieces only (chi_6 + s2), SK = 0 repair as in build_grade.py.

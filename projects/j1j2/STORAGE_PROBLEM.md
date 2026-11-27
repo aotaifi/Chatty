@@ -1786,6 +1786,19 @@ Verdict: kill does NOT fire (k=2: gamma 3 and 4 beat 1.307 by 20% and 29%). Pred
   (count 0.647 -> 0.781, weight 0.919 -> 0.980) at some recall cost (count 0.856 -> 0.759); at k=6 the sign step does not care about gamma.
 Add-on (r = 0.03 sign step at |psi0|): from s2 E_FN 4.6e-10 (414060 flips); from Marshall 2.76e-4 (8728839 flips); r = 1 reproduces saved T at both.
 Not covered: gamma > 4 at k=2; deterministic single run (no chain statistics apply).
+STORED SIGN IN THE CYCLE (S-sign), RESULT (amplitude lead 2026-11-27; jobs 18237505 (S), 18237506 (K); runs/j1j2/consol_6x6/cycle2_ssign/result.json md5 e11fb334, re-read)
+Sign: sign lead's STEP 21 avg2 (two-seed XL-CNN copy of T[s2,chi_6]), gauge-fixed S_avg2.npy md5 dbe7160e; w 5.742e-7 (lead re-grade; T 1.159e-7, s2 1.2265e-6).
+Known case: arm K (chi_6 at T) reproduces cycle1 arm A rounds 0-1 exactly (rel 0, round-1 table md5 equal); broken (vs arm B) differs 19-45%.
+  | round | E_FN alpha0 / N (S) | N (A, exact T) | N (B, s2) | wall unw / psi0^2 (S) |
+  | 0     | 1.895 / 1.366       | 0.951          | 1.375     | +0.24 / -0.36         |
+  | 1     | 1.221 / 1.056       | 0.603          | 1.098     | -0.75 / -1.31         |
+  | 2     | 0.971 / 0.971       | 0.452          | 1.021     | -1.88 / -2.31         |
+  | 3     | 0.901 / 0.901       | 0.373          | 0.958     | -2.15 / -2.44         |
+Verdict: passes the bar (0.901 < 0.958) by 6% only; FN-lead's eq (10) prediction 0.61 (band 0.55-0.70) MISSED by +0.29e-6. S tracks B (N_S/N_B 0.99, 0.96, 0.95, 0.94), not A;
+  best alpha goes to 0 from round 2 as under s2. The copy removes half of s2's wrong weight but almost none of the cycle gain: w is not the variable that sets N_3.
+Registered before the next check (amplitude lead): if the sign's FN energy at the exact amplitude, x = E_FN[S|psi0|] - E0, sets N_3, the A-B line
+  N_3 = 0.373 + 0.436 (x - 0.152) (x: T 0.1521, s2 1.4935, e-6) predicts x(avg2) = 1.36e-6 (band 1.2-1.5) and x(C) = 3.06e-6.
+Not covered: seed0/seed1 single copies in the cycle; deterministic single runs.
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

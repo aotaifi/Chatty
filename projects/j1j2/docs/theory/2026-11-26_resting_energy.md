@@ -198,3 +198,24 @@ g = E_var[Sa] - E_FN[S,a] >= 0: E_FN[S',a] <= E_FN[S,a] + g + Delta E_var. A fli
 -Delta E_var > g; at g = 0, single-row R1 (B > 0) is the provable rule. Direction only, not size: on a collapsed
 row Delta E_var ~ a_x^2 B -> 0. Our three-round arms have g > 0 and sit outside the guarantee.
 Prediction for the check on existing tables: arms with -Delta E_var > g end below B; Gchi has Delta E_var > 0.
+
+## Where the loop can stop (2026-11-27 15:20, paper step, exact loop only, not checked numerically)
+
+1. Ten Haaf: H_FN and H have the same local energy on the guide. So at an amplitude fixed point (guide psi = S a
+   is the ground state of its own H_FN, energy E): (H psi)_x = E psi_x on every row with psi_x != 0.
+2. Hence a fixed point with full support is an exact eigenstate of H. Every other fixed point has collapsed rows
+   Z (psi = 0 there): psi is an eigenvector of H restricted to the surviving rows. This is where fixed node alone
+   stops, for any imperfect sign (matches Kairon-Clark's support collapse).
+3. Reseed a collapsed row x with small amplitude eps and sign sigma: E_var changes by 2 eps sigma (H psi)_x / <psi|psi>
+   + O(eps^2). sigma = -sgn (H psi)_x lowers it whenever (H psi)_x != 0; this is R1 in the collapsed limit
+   (R1 = give the row the sign its neighbours' sum asks for). By the sandwich E_FN then drops strictly.
+4. So the loop "amplitude to fixed point, then R1 on collapsed rows" is stationary only where H psi = E psi on all
+   rows: eigenstates of H. Energy is monotone, so from a start below the first excited level of the sector the
+   only stopping point is the ground state.
+Gaps: (i) exact loop, one certified move at a time; (ii) no rate: the gain per reseed is first order in eps, and the
+approach to collapse is only asymptotic, so "stuck" is replaced by "slow"; (iii) with stored networks the copy
+error sets a floor the argument does not see; (iv) a monotone sequence converging to a non-stationary point is not
+excluded without a continuity argument.
+Timing: the certified gain of flipping a wrong row is 4 a_x^2 B(x) and a_x decays every round, so waiting loses
+gain; flip as soon as the flag is reliable, every round. Prediction: the arm regated every round ends at or below
+the fixed-R1 arm (65%).

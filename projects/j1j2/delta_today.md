@@ -2800,3 +2800,8 @@
 2026-11-27 16:31 [amp] PI asked: raised R1-guarantee gap to FN-lead (R1 lowers E_var bound, not ten-Haaf E_FN; asked for a provable single-flip criterion).
 2026-11-27 14:50 FN-lead: paper step for amp lead's R1 question: flip certified iff -Delta E_var > g = E_var - E_FN (zero at the amplitude fixed point); account updated; check on existing tables asked with the R1 outcome.
 2026-11-27 16:33 [amp] FN-lead's sandwich (E_FN[S',a] <= E_FN[S,a] + g + dE_var) checked and written; round-0 check folded into the chamber-check worker; R1 worker asked to log E_var per round.
+2026-11-27 16:34 VERDICT job 18244553: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke/ANALYSIS.md]
+2026-11-27 16:34 amplitude-lead worker (cycle5_r1): lead addendum E_var added to cycle5.py/cycle5r.py (per round: <H> of S A and s2 A, R1r flip delta, known E_var(sgn psi0 |psi0|)=E0); smoke2 cancelled (own job, old code); smoke3 job 18244666 submitted (/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke3.sbatch); watcher armed.
+2026-11-27 16:54 VERDICT job 18244666: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke/ANALYSIS.md]
+2026-11-27 16:55 amplitude-lead worker (cycle5_r1): smoke3 18244666: R1 arm smoke DONE (incl. E_var known case), R1r NameError time in RM (fixed in make5.py/cycle5r.py); smoke4 job 18244888 (R1r only) submitted; watcher armed.
+2026-11-27 15:20 FN-lead: paper step 'where the loop can stop': amplitude fixed points are eigenvectors of H on the surviving rows; with R1 reseeding the only stationary points are eigenstates of H; no rate. Prediction: per-round regated R1 arm <= fixed R1 arm (65%). Account updated.

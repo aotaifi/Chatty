@@ -2204,3 +2204,28 @@ Status: DONE.
   - The same picture at alpha 0. The shuffled broken version gives +5.6e-4. Known cases pass (K1 rebuilds, S_R1 reproduced exactly).
   - One exact adapted round already gives 2/3-3/4 of the gain. The 8x8 null (one FN refit R1, gain 0) is therefore not the round count.
   - What is left: the 8x8 refit amplitude R1 does not carry the collapse an exact round carries, or sgn(M1)'s errors are not one-step-correctable at 8x8.
+
+WHY THE 8x8 ONE-STEP SIGN GAINED NOTHING: COPY (a), SELF-CONSISTENCY (b) OR LEVER (c), PAPER CHECK (sign lead, 2026-11-27; FN-lead's three hypotheses, decision: sign folded into the stored loop)
+Derivation:
+ (a) [exact, f_J definition] f_J[A,S](z) = ln SK(z) - ln(D(z) + VA(z)) is the one-step estimate of ln(phi/A) at z.
+     At 6x6 an exact round obeys ln(A_1/A_0) ~ l + 1.31 f_J[G] (eps^2 0.0033, 'u ~ l + 1.31 f_J[G]').
+     So a refit that carries the round satisfies, on the gated rows, u_R1(z) := ln|A_R1(z)/A_M1(z)| ~ a l(z) + c f_J[M1, sgn M1](z), with R^2 near 1 after a gauge constant.
+     [conj] If R^2 < 0.3, the refit does not carry the collapse where R1 reads it. That is (a).
+ (b) [exact] VMC minimises E_var[S|A|]. Flipping row x changes E_var at first order by -(4/N) A_x sum_b H_xb S_x S_b A_b; a VMC optimum has no flip with a negative first-order change, so it is an R1 fixed point to first order.
+     6x6 s2 is not one: R1(A_0) flips 417k rows at P 0.63 (rounds_split). [conj] A self-consistent start leaves one adapted round little to fix. That is (b).
+ (c) [exact] At fixed |M1|, Delta E_var(S) = <E_L^S - E_L^{sgn M1}>_{|M1|^2}, with E_L^S(x) = H_xx + sum_z H_xz S(z)|M1(z)|/(S(x)|M1(x)|) and S changed only on gated rows by the STEP 23 rule.
+     If -Delta E_var(B_R1) is below ~1.5e-6/site (3 sigma of B_R1's FN error), the FN arm could not show a gain whatever the rule's quality. That is (c).
+     The broken arm's Delta E_var must come out positive and large, matching its FN +2.2e-5.
+Checked: (a) at 6x6, A_1 against A_0 must reproduce R^2 ~ 1. That is a known case, and gives the bar. (c) G = empty gives Delta E_var = 0 exactly. (b) at k = infinity the fixed point is the FN-consistent sign.
+ Confidence the three tests separate the hypotheses: 75%.
+Prior results: STEP 23 (B_R1 +1.06(0.55)e-6, B_M1 +0.59(0.84)e-6, broken +22(12)e-6); rounds_split (k=0 0.24, k=1 0.74); cycle3_gate (Gchi f_J spread 0.016 against cut 0.009); u ~ l + 1.31 f_J[G] (STORAGE_PROBLEM).
+Known case: (a) 6x6 exact A_1 vs A_0, R^2 >= 0.9; broken = u shuffled within decades, R^2 ~ 0. (b) S* = R1 iterated to its fixed point on A_0 must flip 0 rows under R1(A_0).
+ (c) the broken arm, Delta E_var > 0.
+Not covered: (a) uses the one-step f_J as the reference for the true suppression; f_J itself carries M1's copy error.
+Next rung (existing tables and stored networks, no training, no FN):
+ 8x8 job, (a)+(c): on |M1|^2 samples, rows gated by the STEP 23 rule.
+  (a) R^2 of u_R1 against (l, f_J[M1]). (a) holds if R^2 < 0.3; it is dead if R^2 >= 0.7.
+  (c) Delta E_var for B_R1, B_M1 and broken. (c) holds if -Delta E_var(B_R1) < 1.5e-6.
+ 6x6 job, (b): S* = R1 fixed point on A_0; one exact round_map at fixed S* gives A_1*; gain share of R1(A_1*) over S* against T, as e* net. (b) holds if the share is < 30%.
+ Predictions: (a) holds 50%; (b) 35%; (c) holds 40%. Cost: 8x8 ~2 A40-h, 6x6 ~2 CPU-h.
+Status: DONE.

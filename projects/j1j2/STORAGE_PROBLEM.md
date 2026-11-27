@@ -1863,9 +1863,10 @@ ROUNDS 4-6 AT FIXED SIGN (S = S_avg2, B = s2), RESULT (amplitude lead 2026-11-27
   contract at the same ratio 0.87 and the stored sign buys a level offset that grows ~0.005/round. B also passes the 'long-chain floor 0.80' cited
   in the step back by round 7 if the ratio holds; that floor came from a different chain and does not bind here.
   Reading (equation level): with the sign fixed, alpha = 0 is best from round 2 on, so the round map is A -> A e^{1.307 f_J[A]} alone; its
-  contraction (0.87/round) does not depend on which fixed sign it sits under. The exact chain's 0.373 at round 3 needs alpha != 0, i.e. a sign
-  that moves with the round (T_k = sgn(G + alpha (H-E) G)). One stored sign for all rounds cannot reach N_3 <= 0.665 (0.901); the stored loop has
-  to store a sign per round. That is what the gate arms test (G6, Gchi: f_J of the round's own table sets the flip).
+  contraction (0.87/round) does not depend on which fixed sign it sits under.
+  CORRECTION (same day, after reading cycle3_gate): I first wrote here that one fixed sign cannot reach the margin and a per-round sign is needed.
+  Wrong: G6 is one fixed sign for all three rounds and reaches N_3 0.534 with alpha -0.07..-0.035 kept nonzero. alpha dies under S (w 0.574) and
+  B (w 1.227), not under G6 (w 0.263) or T (w 0.116): the Lanczos step survives only below some wrong weight between 0.26 and 0.57.
   Not checked: deterministic single runs, no error bars (no sampling); no rounds past 6.
 GATE SIGN IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; owner of the stored loop per PI 11-27)
 Sign S_g = s2 * (1 - 2 g), g = [f_J < -c]: flip s2 where the fixed-node round collapses (Kairon & Clark map; collapse block above). No network.
@@ -1876,6 +1877,28 @@ Mechanism: the gate's errors sit at the wrong domains' boundary (it reads the wa
   isolated-row cost (c) above, domain errors cost their boundary only.
 Prediction: G6 w ~ 0.26e-6, N_3 0.45-0.65 (50%); Gchi N_3 0.55-0.80 (45%). Objective margin N_3 <= 0.665 (half of exact gain). Kill of the gate route
   at 6x6: Gchi N_3 >= 0.90 (no better than the CNN copy avg2).
+GATE SIGN IN THE CYCLE, RESULT (amplitude lead 2026-11-27; runs/j1j2/consol_6x6/cycle3_gate/result.json md5 75d0899d, build/result_build.json, re-read)
+  Fixed sign, start chi_6, three exact rounds (1e-6/site):
+    arm    w      P/R (psi0^2)   N_0     N_1     N_2     N_3     alpha_3
+    G6   0.263   0.893/0.893   1.274   0.901   0.673   0.534   -0.035    margin MET, band 0.45-0.65 hit (exact-chain input: f_J of A_6)
+    Gchi 2.198   0.347/0.894   2.281   2.009   1.851   1.736    0        KILL fired (>= 0.90): f_J gate from the stored amplitude closed
+  Diagnosis of the kill: the cut c = 0.0088 was set on the exact chain's f_J, whose right-row spread is 0.0038 (unweighted std); chi_6's round has
+  0.0158, so the cut sits inside the stored amplitude's own copy noise and flips 1.43M rows (precision 0.35).
+  Same stored round, rule R1 (flip iff VA > SK): 359,588 flips, P/R 0.991/0.927 (psi0^2), so remaining wrong weight ~0.10 [derived from P/R, to be
+  measured]; R1 flips lie 94% inside the gate's, the gate's flips only 34% (weight) inside R1. R1 does not use the f_J magnitude, so the copy
+  noise that killed Gchi does not enter it.
+  N_3 against w over all fixed-sign arms from chi_6: T 0.116 -> 0.373, G6 0.263 -> 0.534, S 0.574 -> 0.901, s2 1.227 -> 0.958, Gchi 2.198 -> 1.736.
+
+R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; objective from FN-lead 11-27)
+  Sign S_R1 = s2 (1 - 2 [VA/SK > 1]), VA, SK from round_map's fJ_and_VsK on lG(chi_6, alpha -0.0517, E' of cycle1 armB round 1) under s2: the
+  same chain as Gchi (build_grade.py chain('Gchi')), stored pieces only (chi_6 + s2), SK = 0 repair as in build_grade.py.
+  Arm R1: fixed S_R1, start chi_6, three rounds (cycle3.py). Arm R1r: at each round k, S_k = s2 flipped by R1 evaluated on that round's own
+  start table A_k under s2 (its own line search for alpha and E'), then the round under S_k.
+  Paper: on the w -> N_3 points above, w 0.10 sits next to T (0.116); the deciding term is whether the Lanczos step survives (alpha_3 != 0).
+  Data: R1 P/R 0.991/0.927 on chi_6's round (build/result_build.json).
+  Predictions (mine): R1 N_3 0.38-0.52 (55%); w(S_R1) 0.08-0.13; alpha_3 nonzero. R1r N_3 <= R1's (60%). FN-lead's: 0.42-0.55 (50%).
+  Margin <= 0.665; kill >= 0.90. Between: report w and alpha per round, diagnose which term carries the miss.
+
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

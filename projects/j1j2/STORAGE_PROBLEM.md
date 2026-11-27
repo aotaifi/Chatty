@@ -1811,6 +1811,25 @@ Why w is the wrong weight (amplitude lead, paper step 2026-11-27, done while the
   that are then not violating, so clustered flips cost less than (c) sums: the cost is a bond count on the boundary of the wrong set.
   Consequence if it holds: the copy's target is the bond-boundary weight B(S) = sum_{viol ij} |H_ij| (a_i^2 + a_j^2), not w. The x run tests
   the scalar version (x = E_FN[S|psi0|]); B(S) is the per-row loss it would justify.
+FN COLLAPSE MARKS THE WRONG SIGNS (Kairon & Clark check), RESULT (amplitude lead 2026-11-27; FN-lead's registered check; job 18238556; runs/j1j2/consol_6x6/collapse/result.json md5 8bf06323, re-read)
+Known cases: f_J[G_2], f_J[G_6] rebuilt to the saved A_3, A_7 (broken E' fails); e* over oracle flips = signdepth flip_energy_signed; score = -label AUC 1; random 0.46-0.60.
+Weighted AUC, label = s2 wrong vs sgn psi0 (low score = collapsed):
+  | score          | psi0^2 | D3 (neighbour weight) | e* (clipped >= 0) |
+  | ln A_1/A_0     | 0.738  | 0.819 | 0.934 |
+  | ln A_2/A_0     | 0.785  | 0.864 | 0.963 |
+  | ln A_6/A_0     | 0.9996 | 0.990 | 0.984 |
+  | f_J[G_2] (one round) | 0.992 | 0.951 | 0.877 |
+  | f_J[G_6] (one round) | 0.99993 | 0.994 | 0.9995 |
+  | ln|psi0| (reference, not available in the loop) | 0.993 | 0.985 | 0.9998 |
+Label shuffle within |psi0|^2 decades: collapse scores fall to 0.42-0.55 (psi0^2, e*), D3 stays 0.71-0.80; ln|psi0| stays 0.99. So the collapse carries
+  information inside a decade (not just "small |psi0|"); the D3 residue is decade confounding of that weight.
+Gate from one round, {f_J[G_6] < -c}, psi0^2 weight: cut 0.5x wrong weight -> precision 0.9997 / recall 0.50; 1x -> 0.893 / 0.893; 2x -> 0.465 / 0.932.
+  D3 weight at 1x: 0.645 / 0.645.
+Caveat on the registered numbers: e* with the graded sign is NEGATIVE on wrong rows (401,993 orbits, 388,511 of them wrong), so clipping to >= 0 zeroes
+  the wrong class (W_wrong 6e-8 vs W_right 48): the e*-weighted AUC 0.984 and the e*-cut mass ratio 88 are not meaningful. Mass ratio s2/T on the
+  psi0^2 cut: 10.5 (s2 chain k=6 vs arm A r3); matched depth (arm B vs arm A, both 3 rounds from chi_6): 8.7 (psi0^2), 1.34 (e*), 1.40 (D3).
+Verdict: FN-lead's line passes on the meaningful weights (psi0^2, D3 AUC > 0.99 at k=6; kill 0.7 far); the mass-ratio claim holds on psi0^2 (8.7-10.5),
+  not on D3 at matched depth (1.4). A single round's f_J under the wrong sign finds ~89% of the wrong weight at 89% precision, with no network.
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

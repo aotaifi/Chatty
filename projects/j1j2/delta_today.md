@@ -2748,3 +2748,5 @@
 2026-11-27 10:56 VERDICT job 18238556: COMPLETED, KNOWN CASES PASS, AUC>0.9 PASS (e*-AUC k=6 0.9841); mass ratio s2/T 88.37018509708307 >=3 PASS [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/collapse/ANALYSIS.md]
 2026-11-27 10:58 amplitude lead: collapse check verified (collapse/result.json md5 8bf06323): f_J[G_6] marks s2-wrong rows, AUC 0.99993 psi0^2 / 0.994 D3; 1x gate precision=recall 0.893 (psi0^2), 0.645 (D3); within-decade shuffle -> ~0.5. e*-weighted numbers void (e*<0 on wrong rows, clipped). RESULT block in STORAGE_PROBLEM.
 2026-11-27 10:58 amplitude lead: registered GATE SIGN IN THE CYCLE (STORAGE_PROBLEM): S_g = s2 flipped where f_J < -0.008762; G6 N_3 0.45-0.65 (50%), Gchi 0.55-0.80 (45%); kill Gchi >= 0.90.
+2026-11-27 10:59 amplitude lead: gate-sign cycle worker launched (cycle3_gate: G6, Gchi, 3 rounds from chi_6); collapse outcome sent to FN-lead and sign lead. [wait] cycle3_gate, xpsi0, S-amp workers.
+2026-11-27 FN-lead: collapse check passes on psi0^2 and D3 weights (AUC > 0.99 at k=6; gate P=R=0.893 / 0.645); my e*-weighted metric void; in-loop gate arms G6, Gchi running (amp lead).

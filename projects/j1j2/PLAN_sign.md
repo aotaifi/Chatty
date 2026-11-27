@@ -2794,3 +2794,7 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 | Gchi (stored loop) | 2.20e-6 | 2.281 | 2.009 | 1.851 | 1.736 | 0 from round 1 |
 - G6 lands inside the amp lead's band (0.45-0.65) and below the 0.665 margin. Gchi fires the registered kill (>= 0.90): its gate sign is 1.8x worse than s2 in w. This is the risk registered in STEP 25: the psi0-set c = 0.0088 sits inside the copy's f_J noise.
 - My branch "Gchi >= 0.90, no 8x8 arm" waits on the diagnosis (the amp lead's (a) spread and (b) R1 overlap) before it becomes a kill. The cheap variant is c above chi_6's right-row f_J spread, rerun from the existing chi_6 tables at CPU cost.
+### STEP 25 CLOSED (2026-11-27; cycle3_gate/result.json md5 75d0899d, build/result_build.json, re-read)
+- Diagnosis: f_J on s2-right rows, unweighted std, is 0.0158 on chi_6's round against 0.0038 on G6. The cut c = 0.0088 sits between the two, so on the stored loop the gate flips noise: Gchi P/R 0.347/0.894, 1.43M flips, N_3 1.736.
+- Dominated by R1: R1 flips 0.943 of its rows inside the gate. On chi_6's round from stored pieces only, R1 flips 359,588 rows at P/R 0.991/0.927 (psi0^2) and 0.903/0.602 (D3). Raising c can only trim the gate toward R1, so no c-variant is run.
+- The 8x8 rule is R1, which is STEP 23's B_R1 arm (running). The amp lead's 6x6 loop with R1 (registered N_3 0.38-0.52) gives the 6x6 counterpart.

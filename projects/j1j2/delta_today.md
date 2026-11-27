@@ -2750,3 +2750,4 @@
 2026-11-27 10:58 amplitude lead: registered GATE SIGN IN THE CYCLE (STORAGE_PROBLEM): S_g = s2 flipped where f_J < -0.008762; G6 N_3 0.45-0.65 (50%), Gchi 0.55-0.80 (45%); kill Gchi >= 0.90.
 2026-11-27 10:59 amplitude lead: gate-sign cycle worker launched (cycle3_gate: G6, Gchi, 3 rounds from chi_6); collapse outcome sent to FN-lead and sign lead. [wait] cycle3_gate, xpsi0, S-amp workers.
 2026-11-27 FN-lead: collapse check passes on psi0^2 and D3 weights (AUC > 0.99 at k=6; gate P=R=0.893 / 0.645); my e*-weighted metric void; in-loop gate arms G6, Gchi running (amp lead).
+2026-11-27 11:01 sign lead: STEP 25 registered (PLAN_sign): f_J collapse gate to 8x8 = decision-rule swap on STEP 23's gated rows (SK < e^-c (D+VA) vs R1's SK < VA); waits on cycle3_gate Gchi; risk = copy noise in f_J at the 0.0088 cut.

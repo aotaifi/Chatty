@@ -2769,3 +2769,14 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
   - If it passes, add a collapse-gated arm at 8x8. R1 at all walker neighbours costs about one amp call each, so price it against the CF gate (about 0.91 t0 per gated row).
   - At 8x8 there is no exact sign, so STEP 23's stored R1/M1 can be compared only with first-order labels, not with the truth.
 - Chained copies lose accuracy (Wang, He, Lu arXiv:2502.01264, read by FN-lead): CE on |psi|^2 samples reaches 91% after one Lanczos step and 86% after two, because the targets shrink to small differences plus noise.
+
+## STEP 25 (2026-11-27, sign lead): the f_J collapse gate carried to 8x8. Registered, waits on cycle3_gate Gchi
+- Input: amp lead's collapse RESULT (STORAGE_PROBLEM 'FN COLLAPSE MARKS THE WRONG SIGNS', collapse/result.json md5 8bf06323): f_J[G_6] flags s2-wrong rows, AUC 0.99993 (psi0^2), 1x cut precision = recall 0.893. Queue condition (AUC > 0.9) met.
+- Equation [exact, round_map.fJ_and_VsK]: f_J(x) = ln SK(x) - ln(D(x) + VA(x)), SK = sum_kept |H_xy| A_y/A_x, VA = same over violated bonds, D = H_xx - E'.
+  - R1 (one-step exact sign, STEP 23) flips iff VA > SK. The gate flips iff SK < e^{-c}(D + VA). For D > c VA the gate's flips contain R1's.
+  - The extra rows (VA < SK < D + VA) agree with their neighbours' signs, but their kept flux cannot hold A_x: wrong domains being drained. R1 sees walls; the gate also sees domain interiors. [derived]
+- Risk at 8x8 [derived]: f_J = 0 at the FN fixed point. On a stored amplitude, f_J = sign signal + ((I-P) eps)_x, where eps is the copy error of ln A. c = 0.0088 (set with psi0) sits far below that noise, so c must be set above the right-row f_J spread of the stored amplitude.
+- Cost: the STEP 23 arm with one more scalar per gated row (SK and VA are already computed), about 11-12 A40-h per arm.
+- Decided by cycle3_gate (amp lead), Gchi vs G6: precision at the matched cut, and chi_6's right-row f_J spread.
+  - Gchi N_3 <= 0.80: stage arm B_fJ on the STEP 23 code, with c = 3x the spread, paired to B_M1 (seed 7102). Pass and kill lines as for B_R1.
+  - Gchi N_3 >= 0.90: route closed at 6x6, so no 8x8 arm.

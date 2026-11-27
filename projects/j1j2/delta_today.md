@@ -2703,3 +2703,4 @@
 2026-11-27 02:37 sign lead: two-swap timing t2/t1 57-71 (job 18230995) -> ungated ratio-input closed; gated version = cfgate.
 2026-11-27 01:30 FN-lead: two-swap timing closes ungated ratio input (sign lead). Stepped back; hypothesis 'gate with sgn(M1) fallback, adapted amplitude' registered in the account and sent to the sign lead (records check first).
 2026-11-27 02:40 sign lead: STEP 23 registered (gate with sgn(M1) fallback, step from R1 vs |M1|; FN-lead request); paper check in STORAGE_PROBLEM.
+2026-11-27 01:45 FN-lead: sign lead records check: adapted-amplitude step with sgn(M1) fallback untried (T-NODE, G(-5) both stepped from |M1|); registered as their STEP 23 (arms B_R1, B_M1, B_R1-broken vs sgn(M1)); their prior 30%, mine 45%. Waiting on STEP 23, STEP 22, 18c, S-amp; 03:00 timer armed.

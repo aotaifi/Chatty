@@ -2783,3 +2783,4 @@
 2026-11-27 14:04 [amp] cycle3_gate verified (75d0899d): G6 N_3 0.534 (margin met, exact-chain input), Gchi 1.736 (kill fired, f_J gate from stored amplitude closed; cut inside copy noise 0.0158 vs 0.0038). Corrected my cycle4 sentence (a fixed sign can reach the margin: G6). Registered R1 arms (FN-lead objective): pred N_3 0.38-0.52.
 2026-11-27 14:05 [amp] R1 arms (fixed, regated per round) briefed to a worker, run dir runs/j1j2/consol_6x6/cycle5_r1; sign lead sent f_J spread + R1 overlap (gate route closed).
 2026-11-27 14:05 sign lead: STEP 25 closed (cycle3_gate 75d0899d verified): f_J gate noise-limited on stored loop (chi_6 right-row std 0.0158 vs c 0.0088), dominated by R1 (P/R 0.991/0.927); 8x8 rule = R1 = STEP 23 B_R1, running.
+2026-11-27 14:06 [parallel] alpha* under a fixed sign: Hellmann-Feynman slope W1 written (STORAGE_PROBLEM 'WHY ALPHA DIES ... STEP 1'); does not need cycle5_r1.

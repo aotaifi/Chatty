@@ -1899,6 +1899,20 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-
   Predictions (mine): R1 N_3 0.38-0.52 (55%); w(S_R1) 0.08-0.13; alpha_3 nonzero. R1r N_3 <= R1's (60%). FN-lead's: 0.42-0.55 (50%).
   Margin <= 0.665; kill >= 0.90. Between: report w and alpha per round, diagnose which term carries the miss.
 
+WHY ALPHA DIES UNDER A FIXED SIGN, STEP 1 (amplitude lead 2026-11-27, paper, while cycle5_r1 runs)
+  Lattice FN (ten Haaf et al. 1995): H_FN[S,a] keeps sign-consistent hops and moves each violated bond (ij) into the diagonal as
+  |H_ij| a_j/a_i on row i. E_FN = lowest eigenvalue, ground state phi (normalised). The guide a enters only through those ratios, so by
+  Hellmann-Feynman, for G = a|1 + alpha(E_L - E)| (rows where 1 + alpha(E_L - E) > 0):
+    dE_FN/dalpha |_0 = sum_viol |H_ij| (E_L,j - E_L,i) [ phi_i^2 a_j/a_i - phi_j^2 a_i/a_j ]          (W1)
+  [cond: nondegenerate FN ground state; E_FN in round_map.py is this ten Haaf form - to check against the code]
+  Consequences: (i) the slope is a sum over violated bonds only, so with fewer wrong rows (T, G6) there are fewer terms but also less
+  cancellation; (ii) at a guide whose violated-bond ratios equal phi's (a = phi there), every bracket vanishes and alpha* = 0 exactly:
+  the alpha step has nothing left to do once the amplitude has relaxed to its sign's FN state on the wall. Under S and B, alpha* = 0 from
+  round 2 says their walls relaxed within two rounds; the later 0.87/round fall is the f_J dressing, not the Lanczos step.
+  Not yet derived: why the bracket stays nonzero under G6/T for three rounds (alpha_3 -0.035), i.e. how the slope scales with w.
+  Next step on paper: evaluate W1's bracket on a two-row toy (one violated bond, phi from the 2x2 FN problem) as a function of the bond's
+  share of psi0^2; the R1 arms' alpha_k (cycle5_r1) then test W1, they do not set it.
+
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

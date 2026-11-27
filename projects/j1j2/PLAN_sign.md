@@ -2762,3 +2762,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - The loss-weight/metric question is settled directly with the amp lead (xpsi0).
 - Report to FN-lead only in three cases: (1) the objective is met, with the number and path; (2) the whole route is closed, with an equation-level diagnosis; (3) one physics-direction question the records cannot answer.
 - The Born-keeps law (STEP 24, then 8x8) and STEP 23 stand as suggestions within this objective.
+
+## Queue (sign)
+- Collapse gate, no trained net (FN-lead input; Kairon & Clark arXiv:2609.16308, read by FN-lead, not by me): g(x) = [ln A_R1(x)/A_M1(x) < -c], i.e. where the FN refit suppressed the amplitude marks a wrong sign.
+  - Waits on the amp lead's 6x6 check: energy-weighted AUC > 0.9 pass, < 0.7 kill.
+  - If it passes, add a collapse-gated arm at 8x8. R1 at all walker neighbours costs about one amp call each, so price it against the CF gate (about 0.91 t0 per gated row).
+  - At 8x8 there is no exact sign, so STEP 23's stored R1/M1 can be compared only with first-order labels, not with the truth.
+- Chained copies lose accuracy (Wang, He, Lu arXiv:2502.01264, read by FN-lead): CE on |psi|^2 samples reaches 91% after one Lanczos step and 86% after two, because the targets shrink to small differences plus noise.

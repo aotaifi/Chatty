@@ -2727,3 +2727,6 @@
 2026-11-27 09:03 amplitude lead: FN-lead asked for D1 (eq 8 first-order cost e*_x on rows avg2/seeds != T, false/missed, per decade); added to xpsi0 worker with D2=sum|H|(a_x+a_y)^2 and D3=sum|H|a_y^2 (my paper step). [wait] xpsi0 worker; S-amp worker.
 2026-11-27 12:00 FN-lead: paper step on the cost of one wrong row registered before xpsi0 data (D1 vs amp lead's D2, D3).
 2026-11-27 09:04 sign lead: STEP 21 target (w) is wrong: avg2 keeps 10% of the cycle gain (amp lead, cycle2_ssign). Wall-cost mechanism and x(avg2) prediction 1.1-1.6e-6 written in STORAGE_PROBLEM before the amp lead's x.
+2026-11-27 09:04 amplitude lead: sign lead registered x(avg2) 1.1-1.6e-6 (kill <= 0.8) before x; its E_guide_var (x_var) request added to xpsi0 worker. [wait] xpsi0 worker; S-amp worker.
+2026-11-27 09:07 VERDICT job 18232344: COMPLETED, branch (a) candidate at n = none -> branch (b) candidate; w_gen<w(s2) and real held miss(cnt) < shuffled-0.1 (held flip eff n 1.71) [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve/ANALYSIS.md]
+2026-11-27 09:10 sign lead: STEP 22 verified. Flips are learnable in decades -13..-10 at n>=10k; deployment fails on untrained heavy decades (w 0.02-0.4). Sent the table and path to FN_lead.

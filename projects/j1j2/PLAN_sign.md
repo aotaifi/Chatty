@@ -2736,3 +2736,15 @@ Jobs 18231692 and 18231693, about 3.8 A40-h.
   - B_R1 <= -1.0e-5: pass. Report to FN_lead, then size the move to the deployed loop.
   - B_R1 >= 0 within error: kill. Diagnose with the flip precision on gated rows against the first-order sign, then report to FN_lead.
   - Between: report the Deltas, and paired B_R1 − B_M1, to FN_lead.
+
+### STEP 22 RESULT (2026-11-27, sign lead): mixed. Flips in the decades that carry weight are learnable; deployment fails off the training law.
+Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve/curve.md and result.json; threshold sweep in runs/j1j2/consol_6x6/flipcurve/thr_sweep.py.
+- Held flip miss by decade, real arms:
+  - -13: 16/62 at n=1k, 6/62 at 100k, 2/62 at all-but-held.
+  - -12: 0/11 for n >= 10k.
+  - Shuffled arms miss 62/62 and 11/11.
+- The count miss is flat at 0.95-0.97, so my prediction (< 0.35 by 100k, 55%) failed. Deep decades below -20 dominate the count.
+- Threshold sweep (nall and n100k): at tau=2, held false p is 0 and q_held 0.88, but the held flip mass has effective n 1.7. Not quotable.
+- Deployed w on all orbits is 0.02-0.4 at every tau. The training had no rows in decades -9 to -4 and keeps capped at 20 per flip, so the net flips heavy configurations it never saw.
+- Reading: the barrier is the training law, which needs keeps over the whole p-range. That is a sampler fix, closer to branch (a).
+- Superseded as a target: per the cycle result (STORAGE_PROBLEM 'WHY HALVING w'), the next copy should be judged by x or the wall loss, not by w.

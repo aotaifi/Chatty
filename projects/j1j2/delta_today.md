@@ -2840,3 +2840,5 @@
 2026-11-27 20:13 [amp-lead] correction: the z-input rebuild (proj) needs the round's p_out, so it cannot run parallel to the round; per round = round (~1.2 h) -> z (~2.5 h) -> GPU fit. Cr launchers approved, waiting on cycle6f values.
 2026-11-27 20:14 [wait] arm Cr submit needs cycle6f fit0 (chi_1) + nn_fit_jax equivalence pass (worker ad85...); Cr launchers staged in cycle6r_store, known case (a) = reproduce armR1r S_k1 md5 9ddb3c0c.
 2026-11-27 20:14 [wait] Cr worker ended staged (cycle6r_store, refuses without config); resume it with cycle6f's chi_1/md5, fit0 id, nn_fit_jax sha + A40 header once the fast-path worker reports. Needs cycle6f fit0.
+2026-11-27 20:34 VERDICT job 18231023: COMPLETED, BRANCHED_DONE, K_done 12, no CONTROL FAILED line. Delta = -2.352e-05 per site, err (scatter/√K) 7.87e-06, sd_pair 2.72e-05. I read the logs directly because the brief names no gate script. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate6_vs_cf/ANALYSIS.md]
+2026-11-27 20:36 sign lead: 18c verified: cfgate(2,-6)-CF -2.35(0.79)e-5 = 18b within 0.2(0.9)e-5; gate frontier closed. Running: rounds_split (6x6 CPU), STEP 24 fc24.

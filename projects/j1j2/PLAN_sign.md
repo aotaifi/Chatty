@@ -2798,3 +2798,9 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - Diagnosis: f_J on s2-right rows, unweighted std, is 0.0158 on chi_6's round against 0.0038 on G6. The cut c = 0.0088 sits between the two, so on the stored loop the gate flips noise: Gchi P/R 0.347/0.894, 1.43M flips, N_3 1.736.
 - Dominated by R1: R1 flips 0.943 of its rows inside the gate. On chi_6's round from stored pieces only, R1 flips 359,588 rows at P/R 0.991/0.927 (psi0^2) and 0.903/0.602 (D3). Raising c can only trim the gate toward R1, so no c-variant is run.
 - The 8x8 rule is R1, which is STEP 23's B_R1 arm (running). The amp lead's 6x6 loop with R1 (registered N_3 0.38-0.52) gives the 6x6 counterpart.
+### R1 in the 6x6 loop (2026-11-27, amp lead's cycle5_r1; armR1/result_arm.json md5 55732b2f, re-read)
+- Sign: s2 flipped where VA > SK, computed from chi_6 alone. w 0.0998e-6, P/R 0.991/0.927, fixed across rounds.
+- N per round (1e-6/site): 0.946, 0.594, 0.448, 0.368. That is N_3 0.368, against exact T 0.373 and s2 0.958, so the 0.665 margin is met.
+- So at 6x6 the one-step sign from the round's adapted amplitude reaches the exact sign's energy, and no network copy is needed.
+- With M1's own amplitude the same rule gives nothing at 8x8: STEP 23 B_M1 has Delta +0.59(0.84)e-6. The amplitude has to be the adapted one, which is R1, so B_R1 decides.
+- Open cost at 8x8: the 6x6 rule is ungated, and ungated R1 costs C/C0 ~ 30 (cost derivation, 11-26). The gate's coverage of R1's flip weight is the next number once B_R1 lands.

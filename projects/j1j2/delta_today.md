@@ -2819,3 +2819,4 @@
 2026-11-27 19:00 FN-lead: cycle5_r1 arm R1 verified from result_arm.json (55732b2f): N_3 0.368e-6 = exact sign step's 0.373; margin met; round-0 flip certified by the sandwich (-dE_var 0.331 > g 0.234). Account updated.
 2026-11-27 18:57 [amp-lead] R1 arm (18244986): N_3 0.368e-6/site, margin 0.665 met, alpha_3 -0.042; no psi0 in the mask (code read). STORAGE_PROBLEM 'R1 ... RESULT'. R1r pending.
 2026-11-27 19:10 FN-lead: objective to amp lead: fully stored 6x6 loop (R1 sign from stored amplitude, amplitude copied each round), bar N_3 <= 0.665e-6; my prediction 0.50-0.70 (45% inside margin), kill >= 0.90.
+2026-11-27 18:58 sign lead: verified cycle5_r1 armR1 (55732b2f): R1 sign from chi_6 gives N_3 0.368 (= exact T 0.373). 8x8 decision rests on STEP 23 B_R1 (running).

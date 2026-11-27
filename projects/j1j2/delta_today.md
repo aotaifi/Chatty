@@ -2817,3 +2817,4 @@
 2026-11-27 18:55 VERDICT job 18244986: COMPLETED, PARTIAL: arms not done yet {'R1': 'DONE', 'R1r': 'RUNNING'} (known so far pass) [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/armR1/ANALYSIS.md]
 2026-11-27 18:56 amplitude-lead worker (cycle5_r1): arm R1 job 18244986 DONE: N_3 0.368e-6 (margin met, below band 0.38-0.52, kill not fired), alpha_3 -0.0416, w 9.98e-8. Sent to lead. R1r 18244987 running.
 2026-11-27 19:00 FN-lead: cycle5_r1 arm R1 verified from result_arm.json (55732b2f): N_3 0.368e-6 = exact sign step's 0.373; margin met; round-0 flip certified by the sandwich (-dE_var 0.331 > g 0.234). Account updated.
+2026-11-27 18:57 [amp-lead] R1 arm (18244986): N_3 0.368e-6/site, margin 0.665 met, alpha_3 -0.042; no psi0 in the mask (code read). STORAGE_PROBLEM 'R1 ... RESULT'. R1r pending.

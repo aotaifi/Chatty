@@ -2837,3 +2837,4 @@
 2026-11-27 20:04 [amp-lead] R1r 18244987: N_3 0.359e-6 (R1 0.368), wrong weight falls 9.98->2.95e-8 over rounds. Arm Cr registered (branch of C after fit0).
 2026-11-27 20:05 [parallel] while arm C runs: paper step 'DOES THE COPY LOSS MEASURED UNDER s2 TRANSFER TO S_R1?' (L depends on sign only via violated bonds; transfers; open term = norm mismatch at lower targets).
 2026-11-27 20:07 [amp-lead] FN-lead: arm C too slow (30-45 h). Cause: numpy copy fit on CPU 6-12 h/round. Fast path cycle6f_store: JAX fp64 port of nn_fit with equivalence test, GPU fits, round_map || z-input jobs per round; slow chain kept as reference. Cr moved onto fast path. [wait] fast path launchers need worker; N_1 needs stage0 18249111.
+2026-11-27 20:13 [amp-lead] correction: the z-input rebuild (proj) needs the round's p_out, so it cannot run parallel to the round; per round = round (~1.2 h) -> z (~2.5 h) -> GPU fit. Cr launchers approved, waiting on cycle6f values.

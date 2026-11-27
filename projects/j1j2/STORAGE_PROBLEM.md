@@ -1902,6 +1902,15 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-
   Predictions (mine): R1 N_3 0.38-0.52 (55%); w(S_R1) 0.08-0.13; alpha_3 nonzero. R1r N_3 <= R1's (60%). FN-lead's: 0.42-0.55 (50%).
   Margin <= 0.665; kill >= 0.90. Between: report w and alpha per round, diagnose which term carries the miss.
 
+RIGHT CHAMBER OR STUCK? A TEST THAT NEEDS NO EXACT STATE (amplitude lead 2026-11-27, idea from discussion with the PI; [conj] until checked)
+  [exact] The FN ground state of sign S equals the true ground state iff S is the ground state's sign; then sigma^2_H = <H^2> - <H>^2 = 0
+  (full H, not H_FN). In any wrong chamber the FN state is not an eigenstate of H, so sigma^2_H > 0.
+  [exact] At the true ground state B(x) = E0 - H_xx < 0 for all x (6x6: min H_xx ~ -9 from Neel/stripe, E0 = -18.14), so R1 flips nothing.
+  [conj, 60%] Along the loop: right chamber -> sigma^2_H falls toward 0 and f_J -> 0 on every row; stuck in a wrong chamber -> sigma^2_H stalls
+  > 0 and a fixed set of rows keeps f_J << 0 round after round (Kairon-Clark collapse onto the wall). Both are measurable at 8x8 by sampling.
+  Not in the records before today (grep PLAN.md/STORAGE_PROBLEM.md 'variance', 'chamber'). Check on 6x6 from data on disk: sigma^2_H of the
+  FN state per round for arms T (right-ish), S and B (fixed wrong signs); prediction: T's falls, S and B stall.
+
 WHY R1 SHOULD LOWER THE ENERGY, PAPER CHECK (amplitude lead 2026-11-27, written after cycle5_r1 was briefed; the brief's 'Paper check DONE'
 line overstated it: the registered block held only the w -> N_3 trend, no derivation)
 Derivation [exact]: psi = S a, h_xy = H_xy S_x S_y a_x a_y, B(x) = sum_y h_xy / a_x^2 (so E_L(x) = H_xx + B(x)). Flip a set F at fixed a:

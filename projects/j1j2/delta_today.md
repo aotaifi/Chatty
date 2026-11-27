@@ -2791,3 +2791,6 @@
 2026-11-27 14:34 sign lead: STEP 23 B_R1_broken verified (result.json): Delta +2.23(1.25)e-5/site, 12/12 A=A controls, flips on gated nb 6.04% (= p 0.0601, matched to R1's 6.0%); pair 8 outlier 1.56e-4. Control ready; B_R1 must sit below it.
 2026-11-27 14:49 [amp] caveat added: G6 (0.534) leaks the exact sign through A_6's walls; only stored-input arms count.
 2026-11-27 14:52 [amp] R1 paper check written (R1a exact for E_var; FN penalty term unbounded; known case not done). Corrected: cycle5_r1 brief's 'Paper check DONE' overstated.
+2026-11-27 15:14 VERDICT job 18244246: STALLED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke/ANALYSIS.md]
+2026-11-27 15:20 amplitude-lead worker (cycle5_r1): smoke job 18244246 build part finished (build.log DONE) but the script hung afterwards with no output for 40 min; scancel'd by this worker (own job). smoke2 job 18244553 (arms only, fake solver) submitted (/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke2.sbatch); watcher armed.
+2026-11-27 15:56 [amp] chamber test written (variance of full H -> 0 only in the right chamber; exact sign is an R1 fixed point). Sent pointer to FN-lead.

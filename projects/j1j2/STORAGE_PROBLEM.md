@@ -1946,7 +1946,9 @@ Penalty term, STEP 2 (same day, while cycle5_r1 runs) [cond: the account's ident
   CONFLICT TO SETTLE: W1 (alpha slope) assumed the ten Haaf form with guide ratios |H| a_j/a_i on the diagonal; under that form, with state =
   guide, <H_FN> = <H> exactly and the (a_i - a_j)^2 identity does not hold. The identity holds for the ratio-free sign-flip term |H_xy|, or for
   ten Haaf with state != guide. Which form round_map.py / the FN grader uses decides whether R1 or R1_FN is the right single-flip rule.
-  Next: read the grader's H_FN construction (code read, no run).
+  SETTLED by code read (ansatz/code/delta0.py efn_vec l.21: Dg = D0 + (Vm @ a)/a): the grader is ten Haaf with guide ratios. So W1's form
+  is right and R1b is VOID for our grade (it needs the ratio-free form). What holds instead [exact]: E_FN[S', a] <= <H_FN[S',a]>_{S'a} =
+  E_var[S' a] = E_var[S a] + Delta E_var (R1a). R1 lowers the variational upper bound on the new FN energy, not E_FN itself.
 Known case + broken version: NOT DONE (a 4x4 exact check: R1 from a wrong sign, Delta E_var from (R1a) vs direct, and the same with B's
   sign reversed; CPU minutes).
 Status: NOT DONE: known case, penalty bound.

@@ -232,3 +232,11 @@ Sandwich check at round 0 [derived from the same file]: Delta E_var = 1.664 - 1.
 1.995 - 1.761 = 0.234; -Delta E_var > g, so the flip was certified, and E_FN(alpha=0) fell 1.761 -> 1.419.
 Not covered: the gate was evaluated on all rows by enumeration (at 8x8 it is evaluated on walker rows and costs
 neighbour evaluations); amplitude rounds were exact, not stored; regated arm still running.
+
+## Stopping indicators over three rounds: prediction missed (2026-11-27 19:25; amp lead's record, not re-read by me)
+
+My prediction (variance and R1-flag weight fall for A and G6, stall for B and Gchi) fails over rounds 0-3: both
+fall in every arm (amplitude error dominates and falls under any sign), and in A the variance rises while E_FN
+falls. B and S plateau only in rounds 3-6. Open reading [amp lead, 55%]: the plateau height marks a sign's floor;
+missing control: a right-sign arm to round 6. Sandwich on existing arms: every certified arm (A, R1) ends below B;
+S and G6 are uncertified yet also end below B, so the bound is sufficient, not necessary (as derived).

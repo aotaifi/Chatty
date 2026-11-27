@@ -2790,3 +2790,4 @@
 2026-11-27 14:30 VERDICT job 18237617: COMPLETED, Gate passed (K_done 12, 12/12 `control A=A passed=True`, BRANCHED_DONE present). Delta(B_R1_broken − A) = +2.234e-05 per site, err_scatter 1.246e-05 (about 1.8 sigma), sd_pair 4.32e-05. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/step23/B_R1_broken/ANALYSIS.md]
 2026-11-27 14:34 sign lead: STEP 23 B_R1_broken verified (result.json): Delta +2.23(1.25)e-5/site, 12/12 A=A controls, flips on gated nb 6.04% (= p 0.0601, matched to R1's 6.0%); pair 8 outlier 1.56e-4. Control ready; B_R1 must sit below it.
 2026-11-27 14:49 [amp] caveat added: G6 (0.534) leaks the exact sign through A_6's walls; only stored-input arms count.
+2026-11-27 14:52 [amp] R1 paper check written (R1a exact for E_var; FN penalty term unbounded; known case not done). Corrected: cycle5_r1 brief's 'Paper check DONE' overstated.

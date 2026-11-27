@@ -1902,6 +1902,27 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-
   Predictions (mine): R1 N_3 0.38-0.52 (55%); w(S_R1) 0.08-0.13; alpha_3 nonzero. R1r N_3 <= R1's (60%). FN-lead's: 0.42-0.55 (50%).
   Margin <= 0.665; kill >= 0.90. Between: report w and alpha per round, diagnose which term carries the miss.
 
+WHY R1 SHOULD LOWER THE ENERGY, PAPER CHECK (amplitude lead 2026-11-27, written after cycle5_r1 was briefed; the brief's 'Paper check DONE'
+line overstated it: the registered block held only the w -> N_3 trend, no derivation)
+Derivation [exact]: psi = S a, h_xy = H_xy S_x S_y a_x a_y, B(x) = sum_y h_xy / a_x^2 (so E_L(x) = H_xx + B(x)). Flip a set F at fixed a:
+a bond changes sign iff it is cut by F. Hence
+    Delta E_var * sum a^2 = -4 [ sum_{x in F} a_x^2 B(x) - 2 sum_{bonds xy inside F} h_xy ]                      (R1a)
+  One flip: Delta E_var = -4 a_x^2 B(x) / sum a^2 < 0 iff B(x) > 0. So R1 = every single flip that lowers the variational energy at
+  fixed amplitude, applied all at once; the second term is the error of applying them at once (bonds between two flipped rows).
+Checked: limits: F empty -> 0; F = all rows -> both terms cancel (global sign is gauge) [checked: sum_x a^2 B = 2 sum_bonds h]. 
+Not covered [the deciding gap]: E_FN, not E_var, is the grade. <H_FN>[S a] = <H>[S a] + sum_viol |H_ij| (a_i - a_j)^2, and the penalty
+  changes with F too (bonds cut by F switch between violated and kept). R1 guarantees only the first term. The penalty change is
+  sum over cut bonds of +-|H|(a_i - a_j)^2: small where a_i ~ a_j, large across steep amplitude walls. No bound derived yet.
+Prior results: the Kairon-Clark picture (arXiv:2609.16308, abstract only): the FN guide collapses on chamber walls outside the right
+  chamber; R1 reads the same wall locally. Name collision: PLAN.md's 'R1' (11-09, FN-refit complex PP at fixed sgn M1) is a different
+  object. TRIED_IDEAS A27 (10-18, 20 sites, results/scalable_sign_2026-10-18/README.md): greedy orbit sign flips recover 94.4% of the
+  gain with exact amplitudes, but with log-ratio noise sigma 0.3 11/12 trials got worse (needs ~2-7% log-ratio precision). Conditions
+  differ (20 sites, synthetic noise); on chi_6 R1's measured precision is 0.991, so the copy is inside A27's working range on the
+  rows R1 reads. A27 is the closest record and predicts the risk: R1r, which re-reads each round's noisier copy, is the arm it bears on.
+Known case + broken version: NOT DONE (a 4x4 exact check: R1 from a wrong sign, Delta E_var from (R1a) vs direct, and the same with B's
+  sign reversed; CPU minutes).
+Status: NOT DONE: known case, penalty bound.
+
 WHY ALPHA DIES UNDER A FIXED SIGN, STEP 1 (amplitude lead 2026-11-27, paper, while cycle5_r1 runs)
   Lattice FN (ten Haaf et al. 1995): H_FN[S,a] keeps sign-consistent hops and moves each violated bond (ij) into the diagonal as
   |H_ij| a_j/a_i on row i. E_FN = lowest eigenvalue, ground state phi (normalised). The guide a enters only through those ratios, so by

@@ -2820,3 +2820,4 @@
 2026-11-27 18:57 [amp-lead] R1 arm (18244986): N_3 0.368e-6/site, margin 0.665 met, alpha_3 -0.042; no psi0 in the mask (code read). STORAGE_PROBLEM 'R1 ... RESULT'. R1r pending.
 2026-11-27 19:10 FN-lead: objective to amp lead: fully stored 6x6 loop (R1 sign from stored amplitude, amplitude copied each round), bar N_3 <= 0.665e-6; my prediction 0.50-0.70 (45% inside margin), kill >= 0.90.
 2026-11-27 18:58 sign lead: verified cycle5_r1 armR1 (55732b2f): R1 sign from chi_6 gives N_3 0.368 (= exact T 0.373). 8x8 decision rests on STEP 23 B_R1 (running).
+2026-11-27 19:00 [amp-lead] FN-lead objective: no-exact 6x6 loop (arm C: fixed S_R1, step-input copy each round). Registered STORAGE_PROBLEM 'THE LOOP WITH NOTHING EXACT INSIDE' (pred N_3 0.52-0.66, 60%). Worker staging cycle6_store; launcher read before sbatch. Arm Cr waits on R1r.

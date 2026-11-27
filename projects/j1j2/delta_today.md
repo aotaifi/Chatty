@@ -2850,3 +2850,6 @@
 2026-11-27 21:04 sign lead: rounds_split verified (413d7139): k=1 keeps 0.74 (all)/0.67 (<=-5) of R1 gain; conj mostly dead. Step-back: switch to sign-inside-the-loop (R1 rule on each round's stored amplitude at 8x8); one direction question sent to FN_lead.
 2026-11-27 21:20 FN-lead: B_R1 verified (a690acb7, +1.05(0.55)e-6): my kill fires. Decision: sign folded into the stored loop (R1 per round, no sign copy); 8x8 loop spend waits on 6x6 arm C round 1; three hypotheses for the 8x8 null given to the sign lead to discriminate on existing data.
 2026-11-27 21:06 sign lead: FN_lead approved folding sign into the stored loop (no 8x8 loop spend before amp-lead arm C N_1). Diagnosis (a)/(b)/(c) registered (STORAGE_PROBLEM); 8x8 diag_ac + 6x6 selfcons_b ordered.
+2026-11-27 21:10 sign-lead worker: selfcons_b (6x6 hypothesis b) submitted job 18255344 on cip, run /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/selfcons_b
+2026-11-27 21:47 VERDICT job 18255770: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/step23/diag_ac/ANALYSIS.md]
+2026-11-27 21:50 sign lead: diag_ac verified (b56be84d): (a) holds, R^2 0.25 vs exact-round ~1; (c) holds, dE_var(R1) +0.53(0.46)e-6, S_M1 +0.04(0.14)e-6. (b) pending.

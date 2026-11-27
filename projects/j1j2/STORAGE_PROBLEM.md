@@ -2229,3 +2229,11 @@ Next rung (existing tables and stored networks, no training, no FN):
  6x6 job, (b): S* = R1 fixed point on A_0; one exact round_map at fixed S* gives A_1*; gain share of R1(A_1*) over S* against T, as e* net. (b) holds if the share is < 30%.
  Predictions: (a) holds 50%; (b) 35%; (c) holds 40%. Cost: 8x8 ~2 A40-h, 6x6 ~2 CPU-h.
 Status: DONE.
+ RESULT (a)+(c) (2026-11-27, job 18255770, runs/j1j2/sign_bad/branched/step23/diag_ac/result.json md5 b56be84d, re-read). Sample: own |M1|^2 Metropolis, 512 chains, n 20480, E_L0 -0.49865/site.
+  (a) HOLDS. u = ln|A_R1/M1| on gated rows against (l, f_J[M1]): R^2 0.251 (halves 0.253/0.249, shuffled 1e-4); a 0.10, c 4.1.
+   The exact 6x6 round reaches eps^2 0.0033, i.e. R^2 ~ 0.997, with a 1.0, c 1.3. So the 8x8 refit keeps a quarter of the round's structure on the rows R1 reads.
+  (c) HOLDS as registered: Delta E_var at fixed |M1| is +0.53(0.46)e-6 (S_R1), +0.04(0.14)e-6 (S_M1), +4.3(3.7)e-6 (broken).
+   R1's gated flips are neutral or slightly harmful at |M1|. S_M1 ~ 0 is what (b) predicts: sgn(M1) is first-order optimal for |M1|.
+   The lever is not zero: random flips at the same count move E_var by ~4e-6, and the FN arm by ~2e-5.
+  Reading: the 8x8 R1 label was read off an amplitude that does not carry the round; R^2 0.25 against ~1 is the failing term.
+   Inside the loop, the stored amplitude must reach R^2 against (l, f_J) near the exact round's before R1 on it can gain. Arm C at 6x6 measures this on a copy. (b) is pending (selfcons_b).

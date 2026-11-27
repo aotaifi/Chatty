@@ -135,3 +135,8 @@ Reading: the stored sign is still ABOVE sgn(M1) by 3.5(1.7)e-5, so at 8x8 the st
 My prediction "the current copy does not beat s2 (55%)" MISSED.
 Registered from eq (10) before the cycle arm runs: S-sign N_3 ~ 0.31 + 0.52*0.574 = 0.61e-6 (band 0.55-0.70), below the fixed-sign 0.958e-6.
 Not shown: generalisation. The copy was fit with the full 6x6 table available; whether it transfers to 8x8, where only sampled rows exist, is STEP 22's curve.
+
+## S-sign RESULT: eq (10) REFUTED (2026-11-27 11:30; `runs/j1j2/consol_6x6/cycle2_ssign/result.json`, md5 e11fb334, read by FN-lead)
+Stored sign (w 5.74e-7), exact amplitude rounds: N = 1.366, 1.056, 0.971, 0.901e-6 (rounds 0-3). Predicted 0.61 (0.55-0.70): missed by +0.29e-6. Passes the 0.958 bar by 6% only; tracks the fixed-sign arm B (ratio 0.94-0.99), best alpha -> 0 from round 2.
+Diagnosis (equation): eq (10) used the psi0^2 weight of wrong rows. Eq (8) already said the cost of a wrong row is e*_x = -4 T*_x a_x sum_y H_xy T*_y a_y / |a|^2, linear in a_x times its neighbours, not a_x^2. The copy's false flips sit in decades <= -11: negligible in psi0^2, not in e*. (10) had one independent point and I relied on it; the term to change is the weight in the copy's loss and in the bar: energy cost e*_x, not psi0^2.
+Amp lead's registered check (xpsi0 run): x = E_FN[S|psi0|]-E0 as the variable, predicted x(avg2) = 1.36e-6. Mine: agree (65%); if x(avg2) ~ 0.7 the cause is in the amplitude adaptation instead.

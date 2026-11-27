@@ -2722,3 +2722,4 @@
 2026-11-27 08:59 VERDICT job 18237505: COMPLETED, KNOWN CASE FAILED or ERROR: status all DONE, failing known K:K2_T_psi0 [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle2_ssign/armS/ANALYSIS.md]
 2026-11-27 09:00:37 cycle2_ssign worker: gate fix (K2_T_psi0 has no broken-version flag, as in cycle1 gate); jobs 18237505 (S) and 18237506 (K) COMPLETED; MaxRSS 19.5G/19.3G of 64G; result.json /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle2_ssign/result.json
 2026-11-27 09:01 amplitude lead: S-sign verified (cycle2_ssign/result.json md5 e11fb334): N_3 0.901e-6 vs registered 0.61 (0.55-0.70) MISSED, passes 0.958 by 6%; S tracks B not A. Registered x=E_FN[S|psi0|] prediction 1.36e-6 (avg2), 3.06e-6 (C) before computing. Sent to FN-lead.
+2026-11-27 11:30 FN-lead: S-sign N_3 0.901e-6 read from cycle2_ssign/result.json; eq (10) refuted, diagnosis = psi0^2 weight is the wrong measure, e*_x of eq (8) is the cost; waiting on amp lead's xpsi0 run.

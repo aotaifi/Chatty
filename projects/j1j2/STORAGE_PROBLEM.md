@@ -2165,3 +2165,16 @@ Next rung (data, CPU, existing tables): runs/j1j2/consol_6x6/decade_split.
  Kill: >= 50% at <= -5. Then the 8x8 null is R1's amplitude quality, and the question goes to the amp lead.
  Between: report the split. Cost < 1 CPU-h. Prediction: pass, 65%.
 Status: DONE.
+ RESULT (2026-11-27, job 18249001, runs/j1j2/consol_6x6/decade_split/result.json md5 a1b8a05d, re-read). KILL FIRES on the decade conjecture (4).
+  - At decades <= -5 sit 0.738 of s2's wrong e*-mass and 0.720 of R1's net gain (-3.82e-5 of -5.31e-5), but only 0.0033 of the psi0^2 mass. At <= -6: 0.392 / 0.364.
+  - Known cases are bit-identical, and the broken MREF+10 sends every share to 1.0.
+  - So at 6x6 a (<= -5) gate keeps ~72% of R1's gain. The gate's location does not explain the 8x8 null.
+ ADDENDUM: HOW MANY ADAPTED ROUNDS DOES THE ONE-STEP SIGN NEED? (sign lead, same day; this extends the paper check above)
+  Derivation: y_A(x) = sgn sum_b c_b |A(z_b)/A(x)| S(z_b) [exact definition].
+   - With A the amplitude that S came from, y_A ~ S: a near fixed point. Measured at 8x8: B_M1 flips 1.7% and gains +0.59(0.84)e-6.
+   - The information that S is wrong at x enters only through A's collapse at x relative to its neighbours. The collapse score ln A_k/A_0 grows with the round count k: AUC 0.738 (k=1), 0.785 (k=2), 0.9996 (k=6) (collapse/result.json).
+   - [conj, 60%] R1's gain needs several adapted rounds. The 8x8 R1 is ONE FN refit at fixed sgn(M1), which is k ~ 1, while the 6x6 success used chi_6, k = 6.
+  Next rung (data, CPU, existing tables A_k of the s2 chain, as in collapse.py): the one-step sign from A_k for k = 0, 1, 2, 3, 6 and from chi_6. For each: P/R (psi0^2), net e* gain against s2 (all rows and <= -5).
+   - Pass (conj holds): net(k=1) <= 30% of net(chi_6), rising with k. Then the 8x8 route is k adapted amplitude rounds at fixed sgn(M1) before the relabel, which is the amp lead's loop, and the question goes to FN_lead as a direction decision.
+   - Kill: net(k=1) >= 70%. Then 8x8 sgn(M1) itself differs from s2, and the one-step route at 8x8 is closed.
+   - Cost < 1 CPU-h. Prediction: pass, 60%.

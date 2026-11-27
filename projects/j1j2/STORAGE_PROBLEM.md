@@ -1879,3 +1879,24 @@ Known case: 6x6 r-scan above. Broken version for the run: same count of flips on
 Next rung: branched FN pairs vs sgn(M1) (18b grader), gate (2,-5) rows. Arms B_R1 (step from R1), B_M1 (step from |M1|), B_R1 broken. Pass: B_R1 Delta <= -1.0e-5/site; kill: B_R1 Delta >= 0
  within its error (then send flip precision on gated rows vs the first-order sign). Between: report. Prediction (mine): B_R1 pass 30%, B_M1 Delta in [-0.5, +1.0]e-5 65%. Cost ~7 A40-h per arm.
 Status: DONE (transfer of eq 9 to R1 conjectured, labelled).
+
+WHY HALVING w KEPT ONLY 10% OF THE CYCLE GAIN: AN ERROR'S COST IS ITS WALL, NOT ITS psi0^2 (sign lead, 2026-11-27, written before the amp lead's x(avg2))
+Data: STEP 21 avg2 has w 5.74e-7 against s2's 1.23e-6, yet N_3 is 0.901 against 0.958 (exact T 0.373). It keeps (0.958-0.901)/(0.958-0.373) = 10% of the gain (cycle2_ssign/result.json, re-read).
+Derivation (a = |psi0|, s0 = sgn psi0, S a stored sign, sigma_xy = S_x S_y s0_x s0_y, N = sum a^2):
+ (1) [exact] E_var[S a] - E0 = -(2/N) sum_{x<y, sigma_xy = -1} 2 H_xy psi0_x psi0_y. Only bonds whose relative sign is wrong cost energy (the wall), and a coherently flipped domain costs only its boundary.
+ (2) [exact, from H psi0 = E0 psi0] An isolated wrong row x costs (4/N) a_x^2 (H_xx - E0). This is its full psi0^2 times a large diagonal factor.
+     A domain D costs -(4/N) sum_{x in D, y not in D} H_xy psi0_x psi0_y, its wall only. Per unit psi0^2 that is smaller by about the wall/volume ratio.
+ (3) [cond: the FN cost per wrong row follows its var cost up to an O(1) factor; for an isolated row FN drives psi(x) to ~0, so its cost is ~ a_x^2 (H_xx - E0)]
+     The w metric weights every wrong row by a_x^2 and so ignores the wall/volume factor.
+     s2 and T are smooth functions of the configuration, so their errors are domains. A per-row CNN copy adds scattered isolated errors: 667k false flips and 279k missed flips, cut out of the T flip regions.
+ (4) [conj, 70%] Per unit psi0^2, a CNN copy's errors cost more than s2's or T's. Hence x/w(avg2) > x/w(s2) = 1.49/1.23 = 1.21.
+Prediction (recorded before the amp lead's x(avg2) arrives):
+ - x(avg2) lies in 1.1-1.6e-6, against the 0.70e-6 that w-proportional cost would give (1.49 x 0.468). That is x/w about 2-2.8.
+ - The x ordering of seed0, seed1 and avg2 follows their wall weight, not w.
+ - The between reading, x(avg2) 0.8-1.1e-6: walls matter, but part of the 10% retention sits elsewhere (FN versus var, item 3).
+ - Kill: x(avg2) <= 0.8e-6. Then w-proportional cost holds and the miss is not in the sign's energy.
+Consequence for the copy, if (4) holds [derived from (1)]:
+ - The training loss is a bond loss against the target, L = sum_bonds |H_xy| a_x a_y [S_x S_y != T_x T_y]. It is gauge-free, charges the wall, and makes a copy prefer coherent errors to scattered ones.
+ - Its row form for a single error is the 8x8 regret weight 4p|h| (audit_existing.py grade()), which is exact only for isolated errors.
+ - At 8x8 the guide's |M1| supplies a.
+ - Free check from existing code: efn_vec already returns E_guide_var. So x_var(S) = E_guide_var - E0 for T, s2, avg2, seed0 and seed1 at the exact amplitude tests (1)-(4) on paper data, at no training cost.

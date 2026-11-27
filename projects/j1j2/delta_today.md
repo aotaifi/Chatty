@@ -2726,3 +2726,4 @@
 2026-11-27 09:03 [parallel] amplitude lead: derived why w misses (STORAGE_PROBLEM S-sign block): FN cost of a wrong row ~ sum_j |H_ij| a_j^2 (neighbours' weight) after relaxation, so low-|psi0| false flips cost >> their w; target = bond-boundary weight B(S). [wait] xpsi0 job needs its worker; S-amp worker.
 2026-11-27 09:03 amplitude lead: FN-lead asked for D1 (eq 8 first-order cost e*_x on rows avg2/seeds != T, false/missed, per decade); added to xpsi0 worker with D2=sum|H|(a_x+a_y)^2 and D3=sum|H|a_y^2 (my paper step). [wait] xpsi0 worker; S-amp worker.
 2026-11-27 12:00 FN-lead: paper step on the cost of one wrong row registered before xpsi0 data (D1 vs amp lead's D2, D3).
+2026-11-27 09:04 sign lead: STEP 21 target (w) is wrong: avg2 keeps 10% of the cycle gain (amp lead, cycle2_ssign). Wall-cost mechanism and x(avg2) prediction 1.1-1.6e-6 written in STORAGE_PROBLEM before the amp lead's x.

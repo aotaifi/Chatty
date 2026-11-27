@@ -2724,3 +2724,5 @@
 2026-11-27 09:01 amplitude lead: S-sign verified (cycle2_ssign/result.json md5 e11fb334): N_3 0.901e-6 vs registered 0.61 (0.55-0.70) MISSED, passes 0.958 by 6%; S tracks B not A. Registered x=E_FN[S|psi0|] prediction 1.36e-6 (avg2), 3.06e-6 (C) before computing. Sent to FN-lead.
 2026-11-27 11:30 FN-lead: S-sign N_3 0.901e-6 read from cycle2_ssign/result.json; eq (10) refuted, diagnosis = psi0^2 weight is the wrong measure, e*_x of eq (8) is the cost; waiting on amp lead's xpsi0 run.
 2026-11-27 09:03 [parallel] amplitude lead: derived why w misses (STORAGE_PROBLEM S-sign block): FN cost of a wrong row ~ sum_j |H_ij| a_j^2 (neighbours' weight) after relaxation, so low-|psi0| false flips cost >> their w; target = bond-boundary weight B(S). [wait] xpsi0 job needs its worker; S-amp worker.
+2026-11-27 09:03 amplitude lead: FN-lead asked for D1 (eq 8 first-order cost e*_x on rows avg2/seeds != T, false/missed, per decade); added to xpsi0 worker with D2=sum|H|(a_x+a_y)^2 and D3=sum|H|a_y^2 (my paper step). [wait] xpsi0 worker; S-amp worker.
+2026-11-27 12:00 FN-lead: paper step on the cost of one wrong row registered before xpsi0 data (D1 vs amp lead's D2, D3).

@@ -140,3 +140,10 @@ Not shown: generalisation. The copy was fit with the full 6x6 table available; w
 Stored sign (w 5.74e-7), exact amplitude rounds: N = 1.366, 1.056, 0.971, 0.901e-6 (rounds 0-3). Predicted 0.61 (0.55-0.70): missed by +0.29e-6. Passes the 0.958 bar by 6% only; tracks the fixed-sign arm B (ratio 0.94-0.99), best alpha -> 0 from round 2.
 Diagnosis (equation): eq (10) used the psi0^2 weight of wrong rows. Eq (8) already said the cost of a wrong row is e*_x = -4 T*_x a_x sum_y H_xy T*_y a_y / |a|^2, linear in a_x times its neighbours, not a_x^2. The copy's false flips sit in decades <= -11: negligible in psi0^2, not in e*. (10) had one independent point and I relied on it; the term to change is the weight in the copy's loss and in the bar: energy cost e*_x, not psi0^2.
 Amp lead's registered check (xpsi0 run): x = E_FN[S|psi0|]-E0 as the variable, predicted x(avg2) = 1.36e-6. Mine: agree (65%); if x(avg2) ~ 0.7 the cause is in the amplitude adaptation instead.
+
+## Cost of one wrong row: paper step before the xpsi0 data (2026-11-27 12:00)
+Wrong sign on row x turns its bonds (x,y) into sign-violating ones. Standard fixed-node H: the off-diagonal -|H_xy| is removed and V_sf(x) = sum_y |H_xy| a_y/a_x, V_sf(y) += |H_xy| a_x/a_y are added (guide amplitude a).
+At fixed amplitude: dE = sum_y [2|H_xy| a_x a_y (lost bonding) + a_x^2 |H_xy| a_y/a_x + a_y^2 |H_xy| a_x/a_y] = 4 sum_y |H_xy| a_x a_y = e*_x (D1).
+After the FN state relaxes its weight on x to 0: the x-diagonal term drops, leaving ~3 sum_y |H_xy| a_x a_y. Still linear in a_x.
+So with this H_FN I do not get the amp lead's D2 = sum_y |H_xy|(a_x+a_y)^2 or D3 = sum_y |H_xy| a_y^2 (their paper step, STORAGE S-sign block, c120436); D3 would need a penalty at y that does not vanish with a_x.
+PREDICTION before the data: x tracks D1 with slope 0.75-0.95, not D3 (55%). If D1(avg2) is far below the measured x, either the code's H_FN differs from the form above or the loss is in the amplitude adaptation; then that is the next thing to read, not a new metric.

@@ -1840,3 +1840,17 @@ Next rung (existing data, roots only): fine-tune from CF on the 8192 training ro
  Measure the TRAIN-root flip miss (the underfit), held-out-root parts R^2 on flip rows, and held-out root keeps. Pass: P's train flip miss <= 0.25 with B >= 0.40 and keeps >= 0.98; kill: P within
  0.05 of B. Between: report. Prediction: 40% pass. Cost <= 1 A40-h.
 Status: DONE.
+
+GATE WITH sgn(M1) FALLBACK, STEP FROM THE ADAPTED AMPLITUDE, PAPER CHECK (sign lead, 2026-11-27; FN-lead hypothesis, docs/theory/2026-11-26_resting_energy.md step back)
+Derivation: guide s_B(x) = y_A(x) on gated rows, sgn M1(x) elsewhere, y_A(x) = sgn sum_b c_b |A(z_b)/A(x)| sgn M1(z_b) (one exact power step from sgn M1 with amplitude A) [exact
+ definition]. FN energy with |M1| amplitude: by eq (9) (exact at 6x6, uses H psi0 = E0 psi0), the bar to fix a wrong row is B_x > theta r/(1+r) and to break a correct row C_x > theta/(1+r):
+ an amplitude suppressed on wrong rows (r < 1) fixes more and breaks fewer. Transfer to 8x8 with A = R1 (FN-refit complex PP at fixed sgn M1) as the suppressed amplitude [conjectured:
+ R1's suppression on wrong rows is unmeasured]. Deciding term: sign of sum over gated rows of (fixed - broken) energy mass, which depends on A only through rho_b.
+Checked: limits: gate empty -> s_B = sgn M1, Delta = 0 exactly; A = psi0 -> exact step. 6x6 FN r-scan (gammascan/result.json md5 762926d4, FN-lead): T(r=0.03) from Marshall 2.76e-4 vs
+ 5.74e-4 (A_2 arm): amplitude dependence of one step under FN is a factor ~2 [cited, not re-run by me]. Confidence the design isolates the amplitude term: 80%; that R1 is wall-suppressed: 50%.
+Prior results: T-NODE (S_-7: exact step at decade <= -7, fallback sgn M1, FN on |M1|, step from |M1|): +8.0(4.1)e-6/site. G(-5) (fallback s306, decades <= -5, |M1|): +6.4(3.5)e-6.
+ Both: step from |M1|, amplitude-decade gate (not CF-confidence). No record with the step from an FN-adapted amplitude at 8x8 (recall j1j2 G(-5) T-NODE; PLAN_sign grep R1/S_-7).
+Known case: 6x6 r-scan above. Broken version for the run: same count of flips on random gated rows (must raise or not lower E_FN).
+Next rung: branched FN pairs vs sgn(M1) (18b grader), gate (2,-5) rows. Arms B_R1 (step from R1), B_M1 (step from |M1|), B_R1 broken. Pass: B_R1 Delta <= -1.0e-5/site; kill: B_R1 Delta >= 0
+ within its error (then send flip precision on gated rows vs the first-order sign). Between: report. Prediction (mine): B_R1 pass 30%, B_M1 Delta in [-0.5, +1.0]e-5 65%. Cost ~7 A40-h per arm.
+Status: DONE (transfer of eq 9 to R1 conjectured, labelled).

@@ -2704,3 +2704,7 @@ TWO-SWAP TIMING RESULT (2026-11-27, job 18230995, runs/j1j2/sign_bad/sigma_audit
  (bs 32-128, A40 slice, 'old' path; 20.9k pairs per walker). Registered bar t2/t1 <= 5.5 -> ungated ratio-input sign copy CLOSED (>= 10x over the bar; 'pack'/'dedup' paths untimed but
  cannot recover 10x: t2 ~ 145 one-swap evaluations by construction). Gated ratio-input is what cfgate already does exactly (exact label at gated neighbours), so it adds nothing.
  Remaining sigma levers: gate frontier (18c (2,-6)), cheaper per-gated-neighbour cost (0.91 per n_g), and STEP 22 (whether a configuration-only copy learns flips with more rows).
+
+## STEP 23 (2026-11-27, FN-lead step back): gate with sgn(M1) fallback, exact one-step sign on gated rows from the adapted amplitude, FN-graded vs sgn(M1). Paper check: STORAGE_PROBLEM
+ 'GATE WITH sgn(M1) FALLBACK'. Records: T-NODE +8.0(4.1)e-6 and G(-5) +6.4(3.5)e-6 both took the step from |M1| with amplitude-decade gates; the adapted-amplitude step is untried.
+ Arms (branched pairs, A = sgn(M1) guide, |M1| amplitude, 18b grader, gate (2,-5) rows): B_R1, B_M1, B_R1-broken. Pass B_R1 <= -1.0e-5; kill B_R1 >= 0 within error. Worker staging.

@@ -1830,6 +1830,15 @@ Caveat on the registered numbers: e* with the graded sign is NEGATIVE on wrong r
   psi0^2 cut: 10.5 (s2 chain k=6 vs arm A r3); matched depth (arm B vs arm A, both 3 rounds from chi_6): 8.7 (psi0^2), 1.34 (e*), 1.40 (D3).
 Verdict: FN-lead's line passes on the meaningful weights (psi0^2, D3 AUC > 0.99 at k=6; kill 0.7 far); the mass-ratio claim holds on psi0^2 (8.7-10.5),
   not on D3 at matched depth (1.4). A single round's f_J under the wrong sign finds ~89% of the wrong weight at 89% precision, with no network.
+GATE SIGN IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; owner of the stored loop per PI 11-27)
+Sign S_g = s2 * (1 - 2 g), g = [f_J < -c]: flip s2 where the fixed-node round collapses (Kairon & Clark map; collapse block above). No network.
+  G6:   f_J[G_6] of the exact s2 chain, c = 0.008762 (1x psi0^2 cut). Upper bound for the gate idea.
+  Gchi: f_J of the round chi_6 -> (s2), i.e. cycle1 arm B round 1's G; same numeric c (no psi0 used to set it). This is what the stored loop has.
+  Each: w, x = E_FN[S_g|psi0|], then 3 exact rounds from chi_6 at S_g (as cycle1/cycle2).
+Mechanism: the gate's errors sit at the wrong domains' boundary (it reads the wall), so they come in domains, not scattered like the CNN's; by the
+  isolated-row cost (c) above, domain errors cost their boundary only.
+Prediction: G6 w ~ 0.26e-6, N_3 0.45-0.65 (50%); Gchi N_3 0.55-0.80 (45%). Objective margin N_3 <= 0.665 (half of exact gain). Kill of the gate route
+  at 6x6: Gchi N_3 >= 0.90 (no better than the CNN copy avg2).
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

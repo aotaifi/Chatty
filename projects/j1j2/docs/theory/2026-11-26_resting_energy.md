@@ -248,3 +248,16 @@ N rounds 0-3 (1e-6/site): 0.946 / 0.594 / 0.441 / 0.359 (fixed R1: 0.368; exact 
 weight falls round by round: 9.98e-8 -> 9.98e-8 -> 6.01e-8 -> 2.95e-8. Prediction (regated <= fixed, 65%) holds;
 the gain in N is small (2.5%) but the sign itself improves 3.4x, as the paper step (flip every round) says.
 Exact amplitude rounds; gate on all rows.
+
+## 8x8 one-step sign on gated rows: KILL (2026-11-27 21:20)
+
+Source: `runs/j1j2/sign_bad/branched/step23/B_R1/result.json` md5 a690acb7 (job 18237615), read by me: Delta vs
+sgn(M1) = +1.05(0.55)e-6/site, 12 pairs; sign lead's B_M1 +0.59(0.84)e-6, broken control +22(12)e-6 (not re-read).
+My registered kill (adapted arm >= 0) fires; my 45% for a gain of 1e-5 was wrong. The two arms' walkers coincide
+99.9% of the time, so the gated rows are barely visited.
+Hypotheses, not verdicts: (a) 60% the 8x8 network refit loses the suppression signal on low-weight rows (copy
+error above signal, the term that killed the f_J gate at 6x6); (b) 25% sgn(M1) is already R1-consistent with its
+own amplitude (VMC removes single flips with B > 0), while 6x6 started from s2, which is not; (c) the gated flip
+set has -Delta E_var << g, so no test could see it. Decision: sign folded into the stored loop (R1 on each round's
+stored amplitude), sign-copy route closed on the sign lead's evidence (STEP 22, 24, CF, tfield); 8x8 loop spend
+waits for 6x6 arm C's first round.

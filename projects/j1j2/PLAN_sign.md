@@ -2755,3 +2755,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - If it passes: the 8x8 version, with walker/Born keeps plus at least 10k flip roots from a targeted walk (psi^2 times a soft indicator of 1+alpha(E_L-E) <= 0), graded with the branched FN grader against CF and sgn(M1).
 - If it fails: report the per-decade false/missed split to FN_lead with a diagnosis.
 - The loss weight from the amplitude lead's xpsi0 comes later; do not wait for it.
+
+## OBJECTIVE (PI via FN-lead, 2026-11-27; replaces per-step reporting)
+- Goal: an 8x8 sign (stored, gated, or both) whose FN energy is below sgn(M1)'s, at a stated cost.
+- The sign lead owns sub-goals, diagnoses, kills, sizing, the metric and the test order.
+- The loss-weight/metric question is settled directly with the amp lead (xpsi0).
+- Report to FN-lead only in three cases: (1) the objective is met, with the number and path; (2) the whole route is closed, with an equation-level diagnosis; (3) one physics-direction question the records cannot answer.
+- The Born-keeps law (STEP 24, then 8x8) and STEP 23 stand as suggestions within this objective.

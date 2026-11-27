@@ -2701,3 +2701,4 @@
 2026-11-27 01:00 FN-lead: STEP 18b verified from result.json (-2.566(0.414)e-5/site, 12/12 negative, half windows -2.40(58)/-2.73(62)); recorded in the account; Cockpit updated.
 2026-11-27 02:36 VERDICT job 18230995: COMPLETED, gate passed. timing.json check.passed = true, max_rel_err 1.13e-9 over 1714 pairs (limit 1e-8). The broken version failed with max_rel_err 2105.9 over 1600 pairs. The slurm log (job 18230995) ends with TWOSWAP_TIMING DONE. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/sigma_audit/twoswap_timing/ANALYSIS.md]
 2026-11-27 02:37 sign lead: two-swap timing t2/t1 57-71 (job 18230995) -> ungated ratio-input closed; gated version = cfgate.
+2026-11-27 01:30 FN-lead: two-swap timing closes ungated ratio input (sign lead). Stepped back; hypothesis 'gate with sgn(M1) fallback, adapted amplitude' registered in the account and sent to the sign lead (records check first).

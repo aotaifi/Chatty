@@ -122,3 +122,10 @@ Status: side result, off the critical path (the block is the stored sign). Not p
 `/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate_vs_cf/result.json` (job 18215513), re-read by FN-lead: Delta(cfgate(2,-5) - CF) = -2.57(0.41)e-5/site, 12/12 pairs negative, error from pair scatter (pairs branch from one parent chain). Half-window means -2.40(58) and -2.73(62)e-5: no drift inside the measurement.
 sigma 6.1(1.6) -> 3.5(1.7)e-5 [derived, assumes direct subtraction; the two errors are not independent of the shared CF baseline]. Cost 2.35x. Realized 0.31(5) of the first-order 8.22e-5.
 Reading: the stored sign is still ABOVE sgn(M1) by 3.5(1.7)e-5, so at 8x8 the stored loop does not yet beat the baseline; (2,-6) is predicted to add only 0.2e-5 for +0.5x cost, so the gate family alone saturates near sigma/2. The missing factor has to come from STEP 22's answer (learnable with more flip rows, or ratio input).
+
+## Step back (2026-11-27 01:30): two sign-copy routes closed (per-bond targets; ungated ratio input, t2/t1 = 57-71 vs bar 5.5, job 18230995)
+- Tool that makes it minutes: the 6x6 exact flip learning curve (STEP 22, running).
+- Who met this form: sign of a frustrated wavefunction learned from a subset, Westerhout et al. arXiv:1907.08186 [from memory, not re-read]: networks fit the training signs and fail to generalise near J2/J1 = 0.5 until the training fraction is large. Consistent with STEP 20.
+- Switch of question, not of method: stop asking the copy to carry the step. Gate with sgn(M1) fallback: exact one-step sign on gated rows, sgn(M1) elsewhere, step computed with the fixed-node-adapted amplitude (eq 9), FN-graded against sgn(M1) itself.
+  HYPOTHESIS [45%]: Delta(gate - M1) <= -1.0e-5/site with the adapted amplitude; zero or positive with |M1| (60%), which would explain the two earlier records that raised E_FN (G(-5), T-NODE).
+  KILL: adapted arm Delta >= 0 within error. Sent to the sign lead with a records check first.

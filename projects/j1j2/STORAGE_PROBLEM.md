@@ -1830,6 +1830,28 @@ Caveat on the registered numbers: e* with the graded sign is NEGATIVE on wrong r
   psi0^2 cut: 10.5 (s2 chain k=6 vs arm A r3); matched depth (arm B vs arm A, both 3 rounds from chi_6): 8.7 (psi0^2), 1.34 (e*), 1.40 (D3).
 Verdict: FN-lead's line passes on the meaningful weights (psi0^2, D3 AUC > 0.99 at k=6; kill 0.7 far); the mass-ratio claim holds on psi0^2 (8.7-10.5),
   not on D3 at matched depth (1.4). A single round's f_J under the wrong sign finds ~89% of the wrong weight at 89% precision, with no network.
+SIGN FN ENERGY AT THE EXACT AMPLITUDE (x) AND ROW COSTS D1-D3, RESULT (amplitude lead 2026-11-27; jobs 18238171 + 18239675; runs/j1j2/consol_6x6/xpsi0/result.json md5 b0f87777, re-read)
+Known: x(s2) 1.4935371e-6, x(T) 1.5207752e-7 to rel 9e-9; broken (s2 + 1% random flips) 8.11e-3 = signdepth K4. Per site, 1e-6:
+  | sign  | x     | x_var | w     | D1 (e*, rows != T) | D3 (nbr weight, 1e-3) | N_3 in cycle |
+  | T     | 0.152 | 0.163 | 0.116 | -                  | -                     | 0.373 |
+  | avg2  | 0.772 | 0.878 | 0.574 | 0.743              | 0.752                 | 0.901 |
+  | seed0 | 0.883 | 1.007 | 0.661 | 0.878              | 0.838                 | -     |
+  | seed1 | 0.938 | 1.074 | 0.700 | 0.947              | 0.968                 | -     |
+  | s2    | 1.494 | 1.653 | 1.227 | 1.527              | 1.829                 | 0.958 |
+  | C     | 2.915 | 3.966 | 2.567 | 3.841              | 1.868                 | 1.640 |
+Verdicts: my registered x(avg2) = 1.36 MISSED (0.772); the sign lead's 1.1-1.6 MISSED (its kill <= 0.8 fires); x(C) 3.06 vs 2.915 met.
+  (x - x_T)/D1 = 0.83, 0.83, 0.83, 0.88, 0.72 (avg2, seed0, seed1, s2, C): the first-order e* cost D1 predicts the static sign energy to ~10%.
+  D3/w is 1470 (avg2) vs 1600 (s2): the copy's scattered errors are NOT costlier per unit w at |psi0|; my eq (c) argument does not show here.
+  No static scalar sets N_3: on the A-B line x(avg2) = 0.772 predicts N_3 0.64, measured 0.901. avg2 is half-way between s2 and T at |psi0|
+  but behaves like s2 in three rounds from chi_6.
+STEP BACK (amplitude lead, two failed variables w and x for one question):
+  1. Verdict: continue, but change the observable: N_3 is a dynamic number (rest + speed of the round map from chi_6), and every static sign scalar
+     (w, x, D1-D3) has missed it. Under avg2 the best alpha falls to 0 from round 2, as under s2; under T it stays -0.04..-0.12.
+  2. Thought: a fixed-point iteration is judged by its contraction, not by the value at its fixed point; the stored sign may have a good rest
+     (x 0.77) and a stalled map (alpha -> 0). Aitken on S's rounds 1-3 gives ~0.58 (B's gives 0.67, against its long-chain floor 0.80, so Aitken
+     on 3 rounds is optimistic by ~0.13).
+  3. Cheapest test: rounds 4-6 for S and B from their round-3 tables (CPU ~2 h each). Prediction: S N_6 0.72-0.80, B N_6 0.88-0.92; if S keeps
+     falling at ratio >= 0.8 while B flattens, the stored sign's cost is speed, and the fix is in the map (alpha), not in the copy.
 GATE SIGN IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; owner of the stored loop per PI 11-27)
 Sign S_g = s2 * (1 - 2 g), g = [f_J < -c]: flip s2 where the fixed-node round collapses (Kairon & Clark map; collapse block above). No network.
   G6:   f_J[G_6] of the exact s2 chain, c = 0.008762 (1x psi0^2 cut). Upper bound for the gate idea.

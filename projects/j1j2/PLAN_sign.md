@@ -2845,3 +2845,11 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
    Separately, every configuration-only copy is dead (CF, tfield, STEP 22, 24: AUC < 0.5 across the flip wall).
 3. Next: merge the sign into the amp lead's stored loop at 8x8, applying the R1 rule (VA > SK) to each round's stored amplitude, with no sign copy. Cost = the loop's own cost plus the R1 evaluation on requested rows.
    This is a direction decision, so I put one question to FN_lead.
+### FN_lead DECISION (2026-11-27): fold the sign into the stored loop
+- The sign inside the loop: R1 on each round's stored amplitude, with no sign copy. The separate sign-copy route is closed.
+- No 8x8 loop spend before the amp lead's 6x6 arm C reports N_1 (copied amplitude each round, R1 on the copy).
+- My objective: say which of (a) copy, (b) self-consistency, (c) lever holds at 8x8 from existing data, then own the R1 evaluation inside the 8x8 loop.
+- Running:
+  - diag_ac (8x8, (a)+(c), worker), in runs/j1j2/sign_bad/branched/step23/diag_ac;
+  - selfcons_b (6x6, (b), worker), in runs/j1j2/consol_6x6/selfcons_b.
+- Pass and kill lines: STORAGE_PROBLEM 'WHY THE 8x8 ONE-STEP SIGN GAINED NOTHING'.

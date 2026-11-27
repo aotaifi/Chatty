@@ -1914,6 +1914,27 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, RESULT (amplitude lead 2026-11-2
   tables, as in every cycle3 arm the margin was set on. Not yet covered: amplitudes copied into the network each round; 8x8.
   Source: /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/armR1/result_arm.json (md5 55732b2f). R1r (per-round regate) pending.
 
+THE LOOP WITH NOTHING EXACT INSIDE, REGISTERED AND PAPER CHECK (amplitude lead 2026-11-27, before any run; objective from FN-lead 11-27)
+  Objective (FN-lead): 6x6, R1 sign from the stored amplitude, each round's amplitude copied into the network before the next round; N_3 <= 0.665e-6
+  (graded exactly); kill >= 0.90e-6; log per round the R1-flag count and A_k^2 weight. FN-lead's prediction 0.50-0.70 (45% inside).
+  Arm C (now): fixed S_R1 (cycle5_r1 build, md5 ecb4b8b5), start chi_6 = NNx/x1 t_R. Round k: exact round_map under S_R1 on the STORED chi_k -> target T_{k+1};
+  copy = the step-input network of NNx (nn_fit.py, width 64, 80k steps, cosine; inputs z + c1[chi_k] with c1 = ln|1+alpha(E_L-E)| recomputed on chi_k
+  UNDER S_R1); chi_{k+1} = the network table; N_k graded exactly under S_R1 (cycle5 grader). Arm Cr (regate S_k from chi_k each round) waits on R1r.
+  Derivation [approx, model fitted to the records]: stored N_{k+1} = M(N_k) + L_k, with M the exact round and L_k the copy loss (STORAGE_PROBLEM 'DESCENT ROUTE
+  ROUND 7': stored N = N(target) + L). M from arm R1's exact chain 0.946/0.594/0.448/0.368: N_{k+1} - N* = c (N_k - N*), c = 0.548, N* = 0.271
+  (rounds 1-3; round 0->1 contracts faster, c 0.41, used for round 1: M(0.946) = 0.594 and M(N) = 0.594 + 0.41 (N - 0.946) near it).
+  Measured L for the step-input copy (under s2): round 6 0.076 (x1) / 0.091 (x2), round 7 0.083 (X7, shadow input). Cheap z-only copy: 0.21-0.43 (floors near 1.07).
+  N_3(L constant): L 0.08 -> 0.674 / 0.572 / 0.516; L 0.12 -> 0.714 / 0.634 / 0.590; L 0.16 -> 0.754 / 0.696 / 0.664; L 0.35 (cheap copy) -> 0.944 / 0.990 / 1.015 (kill).
+  Deciding term: L at targets 0.37-0.6e-6, never measured (lowest copied target so far 1.096e-6). Margin is crossed at L ~ 0.16.
+  Checked: L = 0 returns the exact chain; c, N* reproduce rounds 2-3 exactly by construction (two equations, two unknowns), so the model's only test is round 1.
+  Prior results: copy error does not compound when it is constant (STORAGE_PROBLEM l.949, 1261); L grows as the target improves for a fixed-capacity copy (cheap
+  net 0.21 -> 0.43); A27 (greedy flips fail under sigma 0.3 amplitude noise) bears on Cr, not on C (sign fixed).
+  Known case for the run (worker builds): round 1 with the copy replaced by the exact target reproduces arm R1 round 1 N 0.5943e-6; broken: c1 computed under s2
+  instead of S_R1 must change the input and the fit; S_R1 file md5 and w as in cycle5.
+  Next rung: pass N_3 <= 0.665; kill >= 0.90; between: report L_k per round and whether L grows as the target falls (the representation limit) or stays flat.
+  Prediction (mine): N_3 0.52-0.66, 60% inside the margin; L_1 0.08-0.12. Risk as FN-lead: the copy, not the sign. Cost ~3 x 6 GPU-h serial + grades.
+  Status: DONE for the registered prediction; the model is [approx] and its one untested input is L at low targets, which is what the run measures.
+
 RIGHT CHAMBER OR STUCK? A TEST THAT NEEDS NO EXACT STATE (amplitude lead 2026-11-27, idea from discussion with the PI; [conj] until checked)
   [exact] The FN ground state of sign S equals the true ground state iff S is the ground state's sign; then sigma^2_H = <H^2> - <H>^2 = 0
   (full H, not H_FN). In any wrong chamber the FN state is not an eigenstate of H, so sigma^2_H > 0.

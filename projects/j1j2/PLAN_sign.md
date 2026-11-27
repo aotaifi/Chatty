@@ -2723,4 +2723,5 @@ Jobs 18231692 and 18231693, about 3.8 A40-h.
 - I re-graded avg2 myself with grade.py (T md5 c1187fc6…).
 - The table was delivered to the amp lead and w to FN_lead.
 - Most of the copy error is false flips, on rows where T and s2 agree.
+- Correction (from the amp lead): the stored avg2.npy has the global sign opposite to T and s2, not "T's gauge". w is gauge-fixed, so no energy changes. The amp lead runs a gauge-fixed copy, S_avg2.npy, as arm S.
 - Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/signcopy/{seed0,seed1,avg2}.npy, runs/j1j2/consol_6x6/signcopy/result.json.

@@ -2787,3 +2787,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - My wall-cost prediction (x(avg2) 1.1-1.6) is killed at 0.772: the copy's errors are not scattered (D3/w 1470 vs 1600). Diagnosis in STORAGE_PROBLEM.
 - Open, owned by the amp lead (cycle4_extend): avg2's x predicts N_3 0.64 but the cycle measured 0.901. Their working cause is the round map's speed, not the sign.
 - Effect on STEP 24 at 8x8: grade with D1/e* (FN energy), not w. e* needs psi0 at 6x6 only; at 8x8 the grade is the branched FN energy itself.
+### STEP 25 input (2026-11-27, cycle3_gate arm results, re-read: armG6/result_arm.json job 18240752, armGchi/result_arm.json job 18240753)
+| arm | w of gate sign | N_0 | N_1 | N_2 | N_3 (1e-6) | alpha |
+|---|---|---|---|---|---|---|
+| G6 (exact s2 chain) | 2.63e-7 | 1.274 | 0.901 | 0.673 | 0.534 | -0.07 to -0.035 |
+| Gchi (stored loop) | 2.20e-6 | 2.281 | 2.009 | 1.851 | 1.736 | 0 from round 1 |
+- G6 lands inside the amp lead's band (0.45-0.65) and below the 0.665 margin. Gchi fires the registered kill (>= 0.90): its gate sign is 1.8x worse than s2 in w. This is the risk registered in STEP 25: the psi0-set c = 0.0088 sits inside the copy's f_J noise.
+- My branch "Gchi >= 0.90, no 8x8 arm" waits on the diagnosis (the amp lead's (a) spread and (b) R1 overlap) before it becomes a kill. The cheap variant is c above chi_6's right-row f_J spread, rerun from the existing chi_6 tables at CPU cost.

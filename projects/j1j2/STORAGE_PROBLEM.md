@@ -1900,3 +1900,18 @@ Consequence for the copy, if (4) holds [derived from (1)]:
  - Its row form for a single error is the 8x8 regret weight 4p|h| (audit_existing.py grade()), which is exact only for isolated errors.
  - At 8x8 the guide's |M1| supplies a.
  - Free check from existing code: efn_vec already returns E_guide_var. So x_var(S) = E_guide_var - E0 for T, s2, avg2, seed0 and seed1 at the exact amplitude tests (1)-(4) on paper data, at no training cost.
+
+WALKER-LAW KEEPS PLUS FLIP ROWS (the PI's "rows from where the walkers are, plus the flip rows"; FN-lead STEP 24), PAPER CHECK (sign lead, 2026-11-27)
+Derivation:
+ (1) [exact] The deployed error of a flip classifier F_hat on s2 is w = sum_x p_x [s2 (1-2 F_hat) != s0]. Write it as w(T) + missed_p + false_p, as in grade.py's split, which is exact for a table that agrees with T or s2 on each row.
+ (2) [exact] An unweighted BCE on rows drawn from a law q minimises E_q[loss]. With q = p (Born keeps), a keep row's share of the loss equals its share of w's false term, so the training law matches the deployment weight.
+     STEP 22's law (decade-capped keeps, none in -9..-4) has q/p -> 0 on the heaviest rows. That is the measured failure: deployed w 0.02-0.4 while held false p was ~0 at tau 2.
+ (3) [approx] Flip rows drawn uniformly from the pool over-weight the light decades relative to p. The threshold is therefore fixed on the training rows by the p-weighted error, sum p[miss] + sum p[false], which corrects the class-prior shift (logit offset ln(q_flip/p_flip)).
+Checked: (1) reproduces grade.py on STEP 21 avg2 (missed 8.8e-8 + false 4.23e-7 + w(T)-overlap = 5.74e-7, result.json). (2) is the definition of an expected loss. STEP 21 is the known case: T labels on teacher-law rows (beta 0.5, which includes heavy rows) gave false p 4.2e-7, against STEP 22's 0.02-0.4 on capped rows. Confidence 85%.
+Prior results: STEP 21 (signcopy/result.json); STEP 22 (flipcurve/curve.md, thr_sweep.py); tfield/T-GROW (8x8, CF misses 45% of its own training flips: a different class and law).
+Known case plus broken version: the oracle F_hat = (T != s2) gives w = w(T); F_hat = 0 gives w(s2); shuffled flip labels are the broken arm and must give w >= w(s2) or q_held <= 0.
+Not covered: w is not the energy measure (cycle2_ssign: avg2 rested at 0.901 against s2's 0.958). This step tests learnability under the right law, and the energy weight comes later from the amplitude lead's xpsi0.
+Next rung: arms n_flip 10k and 100k, each real plus shuffled. Keeps are drawn from p over all decades (T == s2, held rows excluded), 20 per flip row; 40k steps; same held set.
+ Pass: deployed w < 1.227e-6 at the training-fixed threshold. Kill: w >= w(s2) at both n with held-by-weight miss > 0.5. Between: anything else.
+ Prediction (sign lead): pass at 100k 65%, at 10k 45%. The false flips set the outcome, and STEP 21's 4.2e-7 says the heavy rows can be held.
+Status: DONE

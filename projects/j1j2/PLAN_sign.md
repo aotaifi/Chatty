@@ -2748,3 +2748,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - Deployed w on all orbits is 0.02-0.4 at every tau. The training had no rows in decades -9 to -4 and keeps capped at 20 per flip, so the net flips heavy configurations it never saw.
 - Reading: the barrier is the training law, which needs keeps over the whole p-range. That is a sampler fix, closer to branch (a).
 - Superseded as a target: per the cycle result (STORAGE_PROBLEM 'WHY HALVING w'), the next copy should be judged by x or the wall loss, not by w.
+
+### STEP 24 (FN-lead 2026-11-27): walker-law keeps plus flip rows (the PI's idea, sharpened), 6x6
+- Paper check: STORAGE_PROBLEM 'WALKER-LAW KEEPS PLUS FLIP ROWS'.
+- Pass: deployed w < 1.227e-6 at a threshold fixed on the training rows.
+- If it passes: the 8x8 version, with walker/Born keeps plus at least 10k flip roots from a targeted walk (psi^2 times a soft indicator of 1+alpha(E_L-E) <= 0), graded with the branched FN grader against CF and sgn(M1).
+- If it fails: report the per-decade false/missed split to FN_lead with a diagnosis.
+- The loss weight from the amplitude lead's xpsi0 comes later; do not wait for it.

@@ -2731,3 +2731,4 @@
 2026-11-27 09:07 VERDICT job 18232344: COMPLETED, branch (a) candidate at n = none -> branch (b) candidate; w_gen<w(s2) and real held miss(cnt) < shuffled-0.1 (held flip eff n 1.71) [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve/ANALYSIS.md]
 2026-11-27 09:10 sign lead: STEP 22 verified. Flips are learnable in decades -13..-10 at n>=10k; deployment fails on untrained heavy decades (w 0.02-0.4). Sent the table and path to FN_lead.
 2026-11-27 12:30 FN-lead: STEP 22 curve read; flips learnable at n>=10k, failure = training-row law (false flips on unseen heavy rows); next step sent to the sign lead (Born keeps + flip rows at 6x6, then 8x8 with >=10k flip roots).
+2026-11-27 09:11 sign lead: STEP 24 registered (Born-law keeps plus flip rows, 6x6; paper check DONE in STORAGE_PROBLEM).

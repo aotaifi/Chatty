@@ -2831,3 +2831,5 @@
 2026-11-27 19:40 [amp-lead] arm C submitted (launchers read; step-1 check made WARN): chain 18249111-18249117 (stage0..stage3), watcher pid 2014893 (PPID 1). ~30-45 h. [wait] arm C verdict needs 18249117; R1r verdict needs 18244987.
 2026-11-27 19:43 VERDICT job 18249001: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/decade_split/ANALYSIS.md]
 2026-11-27 19:46 sign lead: decade_split verified (a1b8a05d): 72% of R1 net gain at decades <= -5 -> gate-location conjecture killed. Addendum registered: one-step sign vs number of adapted rounds k (6x6 A_k tables).
+2026-11-27 20:04 VERDICT job 18244987: COMPLETED, KNOWN CASES PASS; R1r: N_3 0.359e-6, margin MET (<= 0.665), band HIT (N_3 <= R1 0.368), FN band MISS (0.42-0.55), kill not fired (>= 0.90), alpha_3 -0.043256 [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/armR1r/ANALYSIS.md]
+2026-11-27 20:10 FN-lead: cycle5_r1 arm R1r verified (37915cb4): N_3 0.359e-6 (fixed R1 0.368), wrong weight 9.98e-8 -> 2.95e-8 over the rounds; prediction held. Account updated.

@@ -240,3 +240,11 @@ fall in every arm (amplitude error dominates and falls under any sign), and in A
 falls. B and S plateau only in rounds 3-6. Open reading [amp lead, 55%]: the plateau height marks a sign's floor;
 missing control: a right-sign arm to round 6. Sandwich on existing arms: every certified arm (A, R1) ends below B;
 S and G6 are uncertified yet also end below B, so the bound is sufficient, not necessary (as derived).
+
+## R1 regated every round: RESULT (2026-11-27 20:10)
+
+Source: `runs/j1j2/consol_6x6/cycle5_r1/armR1r/result_arm.json` md5 37915cb4 (job 18244987), read by me.
+N rounds 0-3 (1e-6/site): 0.946 / 0.594 / 0.441 / 0.359 (fixed R1: 0.368; exact step A: 0.373). The sign's wrong
+weight falls round by round: 9.98e-8 -> 9.98e-8 -> 6.01e-8 -> 2.95e-8. Prediction (regated <= fixed, 65%) holds;
+the gain in N is small (2.5%) but the sign itself improves 3.4x, as the paper step (flip every round) says.
+Exact amplitude rounds; gate on all rows.

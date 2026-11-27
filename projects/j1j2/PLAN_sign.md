@@ -2725,3 +2725,14 @@ Jobs 18231692 and 18231693, about 3.8 A40-h.
 - Most of the copy error is false flips, on rows where T and s2 agree.
 - Correction (from the amp lead): the stored avg2.npy has the global sign opposite to T and s2, not "T's gauge". w is gauge-fixed, so no energy changes. The amp lead runs a gauge-fixed copy, S_avg2.npy, as arm S.
 - Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/signcopy/{seed0,seed1,avg2}.npy, runs/j1j2/consol_6x6/signcopy/result.json.
+
+### STEP 23 staged (2026-11-27): GATE PASS, go given
+- Probe: runs/j1j2/sign_bad/branched/step23/probe (job 18236977, gate.json GATE PASS).
+- R1: theta_tail sha256 cbeecc75…; its ratios match full evaluation to 6.8e-12.
+- Flips on gated states (warm chain, 2463 states): B_M1 1.8%, B_R1 6.0%.
+- Cost: 5.0-5.7x an A block, about 11-12 h per arm.
+- Launcher: branch j1j2-m1gate db544af, branched_m1gate_a40s24.sbatch. All arms use seed 7102 (paired).
+- Next per verdict:
+  - B_R1 <= -1.0e-5: pass. Report to FN_lead, then size the move to the deployed loop.
+  - B_R1 >= 0 within error: kill. Diagnose with the flip precision on gated rows against the first-order sign, then report to FN_lead.
+  - Between: report the Deltas, and paired B_R1 − B_M1, to FN_lead.

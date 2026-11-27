@@ -1852,6 +1852,21 @@ STEP BACK (amplitude lead, two failed variables w and x for one question):
      on 3 rounds is optimistic by ~0.13).
   3. Cheapest test: rounds 4-6 for S and B from their round-3 tables (CPU ~2 h each). Prediction: S N_6 0.72-0.80, B N_6 0.88-0.92; if S keeps
      falling at ratio >= 0.8 while B flattens, the stored sign's cost is speed, and the fix is in the map (alpha), not in the copy.
+ROUNDS 4-6 AT FIXED SIGN (S = S_avg2, B = s2), RESULT (amplitude lead 2026-11-27; jobs 18241619, 18241620; runs/j1j2/consol_6x6/cycle4_extend/result.json md5 f75221c9, re-read)
+  N per round (1e-6/site; best alpha = 0 at every round, E_FN alpha0 = N):
+    round   3       4       5       6       drop ratio d5/d4, d6/d5
+    S     0.9006  0.8412  0.7899  0.7451   0.864, 0.876
+    B     0.9580  0.9042  0.8576  0.8167   0.866, 0.877
+    B-S   0.0574  0.0630  0.0677  0.0716
+  Known: round 0 = stored round 3 to double precision (both arms). Broken: start table graded at the other arm's sign 1.374e-6 (rel 0.53, 0.43).
+  Prediction: S N_6 0.72-0.80 hit; B 0.88-0.92 missed (B fell to 0.817). The 'speed, not rest' reading (S falls, B flattens) is refuted: both
+  contract at the same ratio 0.87 and the stored sign buys a level offset that grows ~0.005/round. B also passes the 'long-chain floor 0.80' cited
+  in the step back by round 7 if the ratio holds; that floor came from a different chain and does not bind here.
+  Reading (equation level): with the sign fixed, alpha = 0 is best from round 2 on, so the round map is A -> A e^{1.307 f_J[A]} alone; its
+  contraction (0.87/round) does not depend on which fixed sign it sits under. The exact chain's 0.373 at round 3 needs alpha != 0, i.e. a sign
+  that moves with the round (T_k = sgn(G + alpha (H-E) G)). One stored sign for all rounds cannot reach N_3 <= 0.665 (0.901); the stored loop has
+  to store a sign per round. That is what the gate arms test (G6, Gchi: f_J of the round's own table sets the flip).
+  Not checked: deterministic single runs, no error bars (no sampling); no rounds past 6.
 GATE SIGN IN THE CYCLE, REGISTERED (amplitude lead 2026-11-27, before the run; owner of the stored loop per PI 11-27)
 Sign S_g = s2 * (1 - 2 g), g = [f_J < -c]: flip s2 where the fixed-node round collapses (Kairon & Clark map; collapse block above). No network.
   G6:   f_J[G_6] of the exact s2 chain, c = 0.008762 (1x psi0^2 cut). Upper bound for the gate idea.

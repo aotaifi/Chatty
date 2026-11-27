@@ -1799,6 +1799,18 @@ Verdict: passes the bar (0.901 < 0.958) by 6% only; FN-lead's eq (10) prediction
 Registered before the next check (amplitude lead): if the sign's FN energy at the exact amplitude, x = E_FN[S|psi0|] - E0, sets N_3, the A-B line
   N_3 = 0.373 + 0.436 (x - 0.152) (x: T 0.1521, s2 1.4935, e-6) predicts x(avg2) = 1.36e-6 (band 1.2-1.5) and x(C) = 3.06e-6.
 Not covered: seed0/seed1 single copies in the cycle; deterministic single runs.
+Why w is the wrong weight (amplitude lead, paper step 2026-11-27, done while the x run waits).
+  H_FN for sign s: each violating bond (s_i H_ij s_j > 0) loses its off-diagonal and adds |H_ij| to both diagonals. For psi = s a, a >= 0:
+  (a) <H_FN>[s a] = <H>[s a] + sum_viol |H_ij| (a_i - a_j)^2                                       [exact]
+  (b) one isolated wrong row i, a = |psi0|, all other signs exact: <H>[s a] - E0 = 4 sum_j |H_ij| a_i a_j, so the
+      variational FN cost of the row is  c_i = sum_j |H_ij| (a_i + a_j)^2                          [exact, to first order in the single flip]
+  (c) relaxing the amplitude (the FN solve) drives a_i -> 0; the |H_ij| a_j^2 added to the neighbours' diagonals stays:
+      c_i(relaxed) ~ sum_j |H_ij| a_j^2 = the NEIGHBOURS' weight, not a_i^2                        [cond: isolated flip, first order in a_i/a_j]
+  So w = sum_wrong a_i^2 undercounts a false flip on a small row beside large ones by ~ sum_j |H_ij| a_j^2 / a_i^2. avg2's error is mostly
+  false flips (4.2e-7 of 5.7e-7) in |psi0|^2 decades <= -11: (c) predicts they cost far more than their w. Adjacent wrong rows share bonds
+  that are then not violating, so clustered flips cost less than (c) sums: the cost is a bond count on the boundary of the wrong set.
+  Consequence if it holds: the copy's target is the bond-boundary weight B(S) = sum_{viol ij} |H_ij| (a_i^2 + a_j^2), not w. The x run tests
+  the scalar version (x = E_FN[S|psi0|]); B(S) is the per-row loss it would justify.
 RATIO-INPUT SIGN COPY, PAPER CHECK (sign lead, 2026-11-26; FN-lead's sigma bar, docs/theory/2026-11-26_resting_energy.md)
 Derivation:
  (1) [exact] The C-free label is y(x) = sgn sum_b rho_b(x) c_b s_old(z_b), rho_b = |M1(z_b)/M1(x)| (RBM+PP, pp2_lemma), c_b = +-J_b/2 (audit_existing.py lines 38-49 assert it on every root).

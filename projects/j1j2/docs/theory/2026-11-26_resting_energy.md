@@ -117,3 +117,8 @@ k=2: 0.418 / 0.370 / 0.342 / 0.298 / 0.262 / 0.469     k=6: 0.091 / 0.0865 / 0.0
 Kill not fired (k=2: -29% at gamma=4, still falling). Prediction "minimum in [2,3]" WRONG at k=2 (monotone to 4), "R(A_2) <= 0.25" missed (0.262). At k=6 flat: a converged fixed-node amplitude is already wall-adapted, so over-relaxation only speeds early rounds; it does not lower the floor.
 r-scan under the FN grade: T(r=0.03) from Marshall 2.76e-4 (A_2 arm 5.74e-4), from s2 4.6e-10: eq (9) holds under FN, conjecture confirmed.
 Status: side result, off the critical path (the block is the stored sign). Not pursued further now; cheapest follow-up if wanted: gamma 6, 8 at k=2 and gamma=4 used in round 1 of the cycle.
+
+## 8x8: gated sign copy lowers the FN energy (sign lead STEP 18b; 2026-11-27 01:00)
+`/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate_vs_cf/result.json` (job 18215513), re-read by FN-lead: Delta(cfgate(2,-5) - CF) = -2.57(0.41)e-5/site, 12/12 pairs negative, error from pair scatter (pairs branch from one parent chain). Half-window means -2.40(58) and -2.73(62)e-5: no drift inside the measurement.
+sigma 6.1(1.6) -> 3.5(1.7)e-5 [derived, assumes direct subtraction; the two errors are not independent of the shared CF baseline]. Cost 2.35x. Realized 0.31(5) of the first-order 8.22e-5.
+Reading: the stored sign is still ABOVE sgn(M1) by 3.5(1.7)e-5, so at 8x8 the stored loop does not yet beat the baseline; (2,-6) is predicted to add only 0.2e-5 for +0.5x cost, so the gate family alone saturates near sigma/2. The missing factor has to come from STEP 22's answer (learnable with more flip rows, or ratio input).

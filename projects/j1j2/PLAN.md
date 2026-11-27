@@ -824,6 +824,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 with exact pieces, the complete loop (sign step plus amplitude rounds) reaches 0.37e-6 per site above the ground state after three rounds, against 0.96e-6 for the loop with a fixed sign.
-- NEXT (in progress, high): Repeat that cycle with the stored networks in the loop; it passes if the stored loop stays below the fixed-sign 0.96e-6.
-- NEXT (in progress, medium): Sign copy must keep about 90% of the flip weight of one sign step; test of a stronger wall suppression for the sign step's input is running.
+- STATUS (in progress, high): At 6x6 with exact pieces the complete loop rests at 0.37e-6 per site against 0.96e-6 with a fixed sign; at 8x8 a gated sign copy cuts the stored sign's cost from 6.1(1.6) to 3.5(1.7)e-5 per site at 2.35 times the run time.
+- NEXT (in progress, high): Repeat the 6x6 cycle with the stored networks in the loop; it passes if the stored loop stays below the fixed-sign 0.96e-6.
+- NEXT (in progress, high): Learning curve of a stored sign step at 6x6 decides between more flip rows and ratio inputs for the remaining sign cost at 8x8.

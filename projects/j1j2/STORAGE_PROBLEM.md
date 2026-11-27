@@ -2145,3 +2145,23 @@ Next rung: arms n_flip 10k and 100k, each real plus shuffled. Keeps are drawn fr
  Pass: deployed w < 1.227e-6 at the training-fixed threshold. Kill: w >= w(s2) at both n with held-by-weight miss > 0.5. Between: anything else.
  Prediction (sign lead): pass at 100k 65%, at 10k 45%. The false flips set the outcome, and STEP 21's 4.2e-7 says the heavy rows can be held.
 Status: DONE
+
+WHERE sgn(M1)'S ERROR ENERGY SITS BY DECADE: WHY THREE DECADE-GATED ONE-STEP SIGNS GAINED NOTHING AT 8x8, PAPER CHECK (sign lead, 2026-11-27)
+Derivation:
+ (1) [exact at 6x6, measured law] The static FN cost of a sign is set by its wrong rows' e*: x - x_T ~ 0.83 D1, with D1 = sum of e*_x over the wrong rows (xpsi0, amp lead).
+     So a relabel S -> S' gains ~ 0.83 [sum_fixed e*_x - sum_broken e*_x]. A gate G restricts both sums to G.
+ (2) [exact] With G = {decade <= d}, gain(G) = sum over decades <= d of net(decade). If sgn(M1)'s wrong e*-mass sits at decades > d, then gain(G) ~ 0 whatever the step's precision.
+ (3) [measured, 8x8] STEP 23: B_R1 flips 5.7% of gated neighbour states and gains +1.06(0.55)e-6. The same count of random flips loses 2.23(1.25)e-5.
+     So R1's gated flips are not random but net-neutral, i.e. fixed ~ broken mass inside G. 18b gained 2.57e-5 in the same G against CF, so G can hold gain when the base sign errs there.
+ (4) [conj, 65%] sgn(M1)'s error energy sits above decade -5. Deciding term: the per-decade net in (2).
+Checked: G = all rows recovers the 6x6 ungated R1 result (N_3 0.368 = exact 0.373, cycle5_r1). G = empty gives 0 exactly. e* sign convention as xpsi0 (negative on wrong rows).
+ Second route: the broken arm in (3) bounds the precision independently of the decade argument. Confidence that (1)-(3) are right: 85%; the decade claim (4) is what the data check tests.
+Prior results: T-NODE (A49) +8.0(4.1)e-6, G(-5) (A52) +6.4(3.5)e-6, STEP 23 B_R1 +1.06(0.55)e-6 / B_M1 +0.59(0.84)e-6. All are decade-gated <= -5..-7 over sgn(M1) or s306.
+ No record splits sign error energy by decade (searched TRIED_IDEAS, PLAN_sign for 'decade split', 'by decade', 'e*').
+Known case: the job must reproduce xpsi0's e_x_signed_sum_wrong (s2, T) to 1e-10 and R1's w = 9.98e-8. Broken version: MREF + 10 decades must move the cumulative shares.
+Not covered: 6x6 s2 stands in for 8x8 sgn(M1). The decade convention transfers by the psi^2-weighted median (gated_sign.py l.6), not by an identity.
+Next rung (data, CPU, existing tables): runs/j1j2/consol_6x6/decade_split.
+ Pass (conj holds): >= 80% of R1's net gain and of s2's wrong e*-mass at decades > -5. Then the 8x8 gate moves up (d = -3, -2, cost 1 + 0.91 n_g(d)).
+ Kill: >= 50% at <= -5. Then the 8x8 null is R1's amplitude quality, and the question goes to the amp lead.
+ Between: report the split. Cost < 1 CPU-h. Prediction: pass, 65%.
+Status: DONE.

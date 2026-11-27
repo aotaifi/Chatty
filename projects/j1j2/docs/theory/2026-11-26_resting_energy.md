@@ -129,3 +129,9 @@ Reading: the stored sign is still ABOVE sgn(M1) by 3.5(1.7)e-5, so at 8x8 the st
 - Switch of question, not of method: stop asking the copy to carry the step. Gate with sgn(M1) fallback: exact one-step sign on gated rows, sgn(M1) elsewhere, step computed with the fixed-node-adapted amplitude (eq 9), FN-graded against sgn(M1) itself.
   HYPOTHESIS [45%]: Delta(gate - M1) <= -1.0e-5/site with the adapted amplitude; zero or positive with |M1| (60%), which would explain the two earlier records that raised E_FN (G(-5), T-NODE).
   KILL: adapted arm Delta >= 0 within error. Sent to the sign lead with a records check first.
+
+## 6x6 stored copy of one sign step meets the bar (sign lead STEP 21; 2026-11-27 03:20)
+`/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/signcopy/result.json`, read by FN-lead: seeds w = 6.61e-7, 7.00e-7; two-seed average 5.74e-7 [sign lead's grade; the average arm not re-read by me] vs bar 1.23e-6 (s2) and 1.16e-7 (exact T). Error mostly false flips (4.2e-7) not missed flips (0.9e-7), all in decades <= -11.
+My prediction "the current copy does not beat s2 (55%)" MISSED.
+Registered from eq (10) before the cycle arm runs: S-sign N_3 ~ 0.31 + 0.52*0.574 = 0.61e-6 (band 0.55-0.70), below the fixed-sign 0.958e-6.
+Not shown: generalisation. The copy was fit with the full 6x6 table available; whether it transfers to 8x8, where only sampled rows exist, is STEP 22's curve.

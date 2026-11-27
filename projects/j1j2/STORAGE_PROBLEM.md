@@ -1995,6 +1995,16 @@ Known case + broken version: NOT DONE (a 4x4 exact check: R1 from a wrong sign, 
   sign reversed; CPU minutes).
 Status: NOT DONE: known case, penalty bound.
 
+R1 KNOWN CASE, 4x4 (amplitude lead 2026-11-27; ansatz/code/r1_4x4.py sha256 7768c4c25f3e..., ED, CPU 1 min; fills the known-case block of 'WHY R1 SHOULD LOWER THE ENERGY')
+  4x4 J1-J2, J2 = 0.5, PBC, Sz = 0 (D 12870), E0/N -0.52862. Start: Marshall sign (wrong weight 0.0127), amplitude |psi0| e^(sigma xi). One R1 pass (flip iff B > 0),
+  ten Haaf FN graded exactly. E_FN - E0 per site:
+    sigma 0.0: Marshall 7.28e-3 -> R1 2.06e-3 (3.5x lower); broken (same number of flips on B < 0 rows) 1.34e-1.
+    sigma 0.1: 7.80e-3 -> 3.25e-3; broken 1.44e-1.   sigma 0.3: 1.14e-2 -> 7.49e-3; broken 1.28e-1.
+  Flip precision 0.86; wrong weight 0.0127 -> 0.0029 / 0.0037 / 0.0044. At exact psi0 with exact sign R1 flags 0 rows (fixed point, as derived).
+  Reading: one R1 pass lowers E_FN at every noise level tried, and the broken rule raises it 18x; the gain shrinks with amplitude noise (3.5x -> 1.5x at sigma 0.3).
+  Against A27 (greedy flips fail under sigma 0.3): A27 was iterated greedy flips; this is one pass, which still gains at 0.3. Iterated R1 under noise is not covered.
+  Status of the R1 paper check: known case DONE; penalty bound still open.
+
 WHY ALPHA DIES UNDER A FIXED SIGN, STEP 1 (amplitude lead 2026-11-27, paper, while cycle5_r1 runs)
   Lattice FN (ten Haaf et al. 1995): H_FN[S,a] keeps sign-consistent hops and moves each violated bond (ij) into the diagonal as
   |H_ij| a_j/a_i on row i. E_FN = lowest eigenvalue, ground state phi (normalised). The guide a enters only through those ratios, so by

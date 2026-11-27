@@ -168,3 +168,24 @@ Not covered by the paper: sampled walkers, approximate projection, stored networ
 One round's f_J[G_6] separates s2-wrong from s2-right rows: AUC 0.99993 (psi0^2 weight), 0.994 (neighbour weight D3); after one early round f_J[G_2] 0.992 / 0.951. Shuffle within decades -> 0.42-0.55: the signal is not "small amplitude". Gate at the cut equal to the wrong weight: precision = recall = 0.893 (psi0^2), 0.645 (D3).
 My registered metric was flawed: e*_x is negative on wrong rows, so the e*-weighted AUC is void; on the meaningful weights the line passes and the kill (0.7) is far. Mass ratio s2/T at matched depth: 8.7 (psi0^2), 1.4 (D3): the ">= 3x" claim holds on one weight only.
 In-loop test registered by the amp lead (their block "GATE SIGN IN THE CYCLE"): sign = s2 flipped where f_J < -c, no network, no exact step; arms G6 (upper bound) and Gchi (what the stored loop has); kill Gchi N_3 >= 0.90e-6; objective margin N_3 <= 0.665e-6.
+
+## Collapse gate in the loop: RESULT (2026-11-27 14:10)
+
+Source: `runs/j1j2/consol_6x6/cycle3_gate/result.json` md5 75d0899d (jobs 18240405, 18240752, 18240753), read by me.
+N_3 (1e-6/site): G6 (gate from the exact chain's f_J) 0.534, margin 0.665 MET, in my band; Gchi (gate from one
+round on the stored amplitude) 1.736, kill (>= 0.90) FIRES. References: A 0.373, B 0.958, S 0.901.
+
+Diagnosis (before any verdict on the route). The gate is the cut f_J < -c with c = 0.0088. On the stored amplitude
+f_J = (node suppression) + (correction of the copy's own amplitude error). The second term has unweighted spread
+0.016 on right-sign rows (0.004 on the exact chain), larger than c. So the cut flips 1.43e6 rows instead of 4.8e5:
+recall 0.89 but precision 0.35 by psi0^2 weight, and the sign's wrong weight rises to 2.20e-6 (s2: 1.23e-6).
+Failing term: the amplitude-copy error inside f_J, compared against a 0.9% threshold.
+
+The same file holds a rule that does not have this term: R1, flip where the sign-violating neighbour sum exceeds
+the sign-keeping one (VA > SK), an O(1) comparison. On the stored amplitude: precision 0.991, recall 0.927
+(psi0^2), 0.903 / 0.602 (D3); on the exact chain 0.988 / 0.938. Its sign would have wrong weight about 1.0e-7 [derived:
+1.2265e-6 x 0.073 + 1.147e-6 x 0.009], below the exact step's 1.16e-7.
+
+Prediction (registered before the run): fixed sign = s2 flipped by R1 on the stored amplitude, three rounds:
+N_3 in 0.42-0.55e-6 (50%). Kill: N_3 >= 0.90e-6. Margin: <= 0.665e-6. Not measured: whether regating every round
+helps, and 8x8 (STEP 23 carries R1 there).

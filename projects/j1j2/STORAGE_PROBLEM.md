@@ -1910,6 +1910,14 @@ RIGHT CHAMBER OR STUCK? A TEST THAT NEEDS NO EXACT STATE (amplitude lead 2026-11
   > 0 and a fixed set of rows keeps f_J << 0 round after round (Kairon-Clark collapse onto the wall). Both are measurable at 8x8 by sampling.
   Not in the records before today (grep PLAN.md/STORAGE_PROBLEM.md 'variance', 'chamber'). Check on 6x6 from data on disk: sigma^2_H of the
   FN state per round for arms T (right-ish), S and B (fixed wrong signs); prediction: T's falls, S and B stall.
+  FN-lead amendments (11-27, message): (1) variance -> 0 proves an eigenstate, not the ground state; the certificate is variance -> 0 with the
+  energy monotone and at the lowest value seen. (2) At 8x8 the measurable quantity is the VMC energy variance of the stored guide S_k A_k
+  (E vs variance extrapolation axis, as in the NQS papers); a stuck loop shows as points stopping at finite variance. (3) Second indicator:
+  the guide-weighted share of R1-flagged rows (VA > SK) per round: -> 0 in the right chamber, stalls on the same rows when stuck (necessary,
+  not sufficient). FN-lead: no proof of reaching the right chamber; 65% at 6x6 from s2.
+  CHECK (rung 2, existing tables, registered before computing): per round, VMC variance of H and R1-flag weight (both A_k^2-weighted, psi0-free)
+  for arms A (sign T), G6, B (s2), S (S_avg2, rounds 0-6), Gchi. Prediction (mine, 50%): A and G6 variance falls >= 2x from round 0 to 3 and
+  flag weight falls >= 5x; B, S, Gchi variance falls < 30% over the same rounds and their flag weight stalls (< 2x). Between: report per arm.
 
 WHY R1 SHOULD LOWER THE ENERGY, PAPER CHECK (amplitude lead 2026-11-27, written after cycle5_r1 was briefed; the brief's 'Paper check DONE'
 line overstated it: the registered block held only the w -> N_3 trend, no derivation)

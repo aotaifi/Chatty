@@ -2827,3 +2827,14 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - Delta(cfgate(2,-6) - CF) = -2.35(0.79)e-5/site, K 12, sd_pair 2.7e-5. One pair is at +33.5e-6, the other eleven are negative. Gated share of neighbour states: 1.42%, against 1.02% at (2,-5).
 - This matches 18b (2,-5) at -2.57(0.41)e-5: the difference is +0.2(0.9)e-5. A gate one decade deeper buys nothing measurable, at a larger n_g.
 - The cfgate family stays ~3.5e-5 above sgn(M1). The gate-frontier lever is closed: (2,-5) is the best tested gate.
+### STEP 24 RESULT (2026-11-27, job 18238142, /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve24/curve24.md, re-read): KILL
+| arm | tau* | held miss (p) | held false (p) | AUC | w deployed |
+|---|---|---|---|---|---|
+| n10000_real | -1 | 0.985 | 0.103 | 0.318 | 1.41e-3 |
+| n100000_real | 6 | 0.999 | 0.0105 | 0.333 | 1.52e-5 |
+| shuffled controls | -2 | 1.0 | 0 | 0.37-0.50 | = s2 |
+- The pass line w < w(s2) = 1.2265e-6 is missed by 12x to 1100x. My prediction (pass at 100k, 65%) is wrong.
+- Diagnosis: the real arms have AUC 0.32-0.33, BELOW 0.5, so the net ranks held flips under held keeps. False flips sit in p-decades -16..-11, the same decades as the missed flips.
+  - [conj, 70%] Generalization from neighbours across the flip wall: a held flip's nearest training rows are keeps one exchange away, and a held keep's are flips.
+  - This is the same term as the tfield handoff (2026-11-24, point 2: the copy keeps b and loses -2bF on flips one exchange away). The training law (Born keeps) does not touch that term.
+- Closed with it: configuration-only sign copies under any row law (CF, tfield, STEP 22, STEP 24). TRIED_IDEAS row to add.

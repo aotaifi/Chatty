@@ -2842,3 +2842,5 @@
 2026-11-27 20:14 [wait] Cr worker ended staged (cycle6r_store, refuses without config); resume it with cycle6f's chi_1/md5, fit0 id, nn_fit_jax sha + A40 header once the fast-path worker reports. Needs cycle6f fit0.
 2026-11-27 20:34 VERDICT job 18231023: COMPLETED, BRANCHED_DONE, K_done 12, no CONTROL FAILED line. Delta = -2.352e-05 per site, err (scatter/√K) 7.87e-06, sd_pair 2.72e-05. I read the logs directly because the brief names no gate script. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/cfgate6_vs_cf/ANALYSIS.md]
 2026-11-27 20:36 sign lead: 18c verified: cfgate(2,-6)-CF -2.35(0.79)e-5 = 18b within 0.2(0.9)e-5; gate frontier closed. Running: rounds_split (6x6 CPU), STEP 24 fc24.
+2026-11-27 20:43 VERDICT job 18238142: COMPLETED, GATE PASS (pre-submission gate, not the run verdict; the gate printed no PASS/KILL/BETWEEN line) [/scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve24/ANALYSIS.md]
+2026-11-27 20:44 sign lead: STEP 24 KILL verified (curve24.md): held AUC 0.32-0.33 (<0.5), deployed w 1.5e-5..1.4e-3 vs s2 1.23e-6; anticorrelated generalization across the flip wall. Config-only sign copies closed.

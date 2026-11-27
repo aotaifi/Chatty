@@ -1902,6 +1902,18 @@ R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, REGISTERED (amplitude lead 2026-
   Predictions (mine): R1 N_3 0.38-0.52 (55%); w(S_R1) 0.08-0.13; alpha_3 nonzero. R1r N_3 <= R1's (60%). FN-lead's: 0.42-0.55 (50%).
   Margin <= 0.665; kill >= 0.90. Between: report w and alpha per round, diagnose which term carries the miss.
 
+R1 SIGN FROM THE STORED AMPLITUDE IN THE CYCLE, RESULT (amplitude lead 2026-11-27; arm R1, job 18244986, build 18244985)
+  N_3 = 0.368e-6 per site [exact FN, deterministic]: margin <= 0.665 MET, kill not fired, below both predicted bands (mine 0.38-0.52, FN-lead 0.42-0.55).
+  Per round N (1e-6/site): 0.946 / 0.594 / 0.448 / 0.368; alpha -0.122 / -0.125 / -0.053 / -0.042 (Lanczos step survives, alpha_3 != 0).
+  w(S_R1) 0.0998e-6 (s2 1.227e-6; T 0.116e-6), 359,588 flips = build_grade's Gchi R1 record; P/R (psi0^2) 0.991/0.927.
+  Reference arms: exact-T arm A 0.373, G6 0.534, s2 (B) 0.958. R1 sits at T's value, consistent with the w -> N_3 points (R1 w below T's).
+  Leak check (code read, build_r1.py l.90-108): mask VA/SK from lanc(chi_6, alpha_start, E') under s2 with alpha, E' from cycle1 armB map1;
+  psi0 enters only the grades (w, P/R). Known cases pass (R0 under s2 reproduces arm B round 0, rel 6e-10; broken versions fail).
+  Round 0 sandwich numbers (1e-6/site): E_var[S_R1 chi_6] 1.664, E_var[s2 chi_6] 1.995 (Delta E_var = -0.331), E_FN[S_R1, alpha 0] 1.419.
+  Scope: the sign is fixed (flip once) and computed by a local rule from the stored amplitude; amplitude rounds 1-3 are exact round_map
+  tables, as in every cycle3 arm the margin was set on. Not yet covered: amplitudes copied into the network each round; 8x8.
+  Source: /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/armR1/result_arm.json (md5 55732b2f). R1r (per-round regate) pending.
+
 RIGHT CHAMBER OR STUCK? A TEST THAT NEEDS NO EXACT STATE (amplitude lead 2026-11-27, idea from discussion with the PI; [conj] until checked)
   [exact] The FN ground state of sign S equals the true ground state iff S is the ground state's sign; then sigma^2_H = <H^2> - <H>^2 = 0
   (full H, not H_FN). In any wrong chamber the FN state is not an eigenstate of H, so sigma^2_H > 0.

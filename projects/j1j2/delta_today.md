@@ -2765,3 +2765,5 @@
 2026-11-27 11:59 VERDICT job 18239675: COMPLETED, KNOWN CASES MATCH (rel 1e-6), D1 matches table.py, broken far, 4 signs complete; lead reads result.json [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/xpsi0/ANALYSIS.md]
 2026-11-27 12:01 amplitude lead: xpsi0 verified (md5 b0f87777): x(avg2) 0.772e-6 (my 1.36 missed; sign lead's kill <= 0.8 fires); D1 tracks x-x_T at 0.83; no static scalar sets N_3. STEP BACK written in STORAGE_PROBLEM: N_3 is dynamic; test rounds 4-6 for S and B.
 2026-11-27 step-back j1j2 stored-sign variable (w, x both missed): continue, switch observable to the map's contraction (rounds 4-6 S vs B).
+2026-11-27 12:02 amplitude lead: cycle4_extend worker launched (S, B rounds 4-6); loss weight e*_x (D1) given to sign lead. [wait] cycle3_gate, cycle4_extend, S-amp workers.
+2026-11-27 12:02 sign lead: xpsi0 verified (x avg2 7.72e-7): my wall-cost kill fires (band 1.1-1.6, kill <=0.8); premise of scattered errors wrong (D3/w 1470 vs 1600). Metric settled: e*-weighted loss (D1). PLAN_sign + STORAGE_PROBLEM.

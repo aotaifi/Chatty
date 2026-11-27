@@ -2780,3 +2780,10 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - Decided by cycle3_gate (amp lead), Gchi vs G6: precision at the matched cut, and chi_6's right-row f_J spread.
   - Gchi N_3 <= 0.80: stage arm B_fJ on the STEP 23 code, with c = 3x the spread, paired to B_M1 (seed 7102). Pass and kill lines as for B_R1.
   - Gchi N_3 >= 0.90: route closed at 6x6, so no 8x8 arm.
+
+### Metric settled (2026-11-27, with the amp lead; xpsi0 job 18239675, runs/j1j2/consol_6x6/xpsi0/result.json)
+- x = E_FN[S|psi0|] - E0 (1e-6/site): T 0.152, avg2 0.772, seed0 0.883, seed1 0.938, s2 1.494, C 2.915.
+- The static sign cost follows D1 = sum of e*_x over the rows where the copy differs from T: (x - x_T)/D1 is 0.83 for avg2/seed0/seed1, 0.88 for s2, 0.72 for C. So the copy loss is weighted by e*_x, not by psi0^2 and not by bond weight.
+- My wall-cost prediction (x(avg2) 1.1-1.6) is killed at 0.772: the copy's errors are not scattered (D3/w 1470 vs 1600). Diagnosis in STORAGE_PROBLEM.
+- Open, owned by the amp lead (cycle4_extend): avg2's x predicts N_3 0.64 but the cycle measured 0.901. Their working cause is the round map's speed, not the sign.
+- Effect on STEP 24 at 8x8: grade with D1/e* (FN energy), not w. e* needs psi0 at 6x6 only; at 8x8 the grade is the branched FN energy itself.

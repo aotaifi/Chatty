@@ -1951,6 +1951,11 @@ Consequence for the copy, if (4) holds [derived from (1)]:
  - At 8x8 the guide's |M1| supplies a.
  - Free check from existing code: efn_vec already returns E_guide_var. So x_var(S) = E_guide_var - E0 for T, s2, avg2, seed0 and seed1 at the exact amplitude tests (1)-(4) on paper data, at no training cost.
 
+ RESULT (sign lead, 2026-11-27; xpsi0 job 18239675, runs/j1j2/consol_6x6/xpsi0/result.json, re-read): KILL FIRES. x(avg2) = 7.72e-7 (band 1.1-1.6, kill <= 0.8).
+  x/w: avg2 1.345, s2 1.218, so avg2 is 10% more costly per unit w, not the 1.5x my band needed. Diagnosis: the bond identity stands, but the premise that the CNN copy scatters its errors fails.
+  D3/w is 1470 (avg2) vs 1600 (s2), so avg2's wrong rows have as much neighbour weight per unit w as s2's domains.
+  The cycle gap (N_3 0.901 against 0.64 predicted from x on the T-s2 line) is not a static sign cost. The amp lead is testing whether it is the round map's speed (cycle4_extend).
+  Consequence: no bond/wall loss. The copy loss is weighted by e*_x (FN-lead's D1 predicts x - x_T to within 10%, ratio 0.83 for avg2/seed0/seed1, 0.88 for s2).
 WALKER-LAW KEEPS PLUS FLIP ROWS (the PI's "rows from where the walkers are, plus the flip rows"; FN-lead STEP 24), PAPER CHECK (sign lead, 2026-11-27)
 Derivation:
  (1) [exact] The deployed error of a flip classifier F_hat on s2 is w = sum_x p_x [s2 (1-2 F_hat) != s0]. Write it as w(T) + missed_p + false_p, as in grade.py's split, which is exact for a table that agrees with T or s2 on each row.

@@ -2804,3 +2804,21 @@ Job 18232344 (12 arms). Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcu
 - So at 6x6 the one-step sign from the round's adapted amplitude reaches the exact sign's energy, and no network copy is needed.
 - With M1's own amplitude the same rule gives nothing at 8x8: STEP 23 B_M1 has Delta +0.59(0.84)e-6. The amplitude has to be the adapted one, which is R1, so B_R1 decides.
 - Open cost at 8x8: the 6x6 rule is ungated, and ungated R1 costs C/C0 ~ 30 (cost derivation, 11-26). The gate's coverage of R1's flip weight is the next number once B_R1 lands.
+
+### STEP 23 RESULT (2026-11-27): KILL FIRES. Step-back fires: third variant of one mechanism
+| arm | job | Delta vs sgn(M1) (1e-6/site) | flips on gated nb |
+|---|---|---|---|
+| B_R1 | 18237615 | +1.06(0.55) | 5.7% |
+| B_M1 | 18237616 | +0.59(0.84) | 1.7% |
+| B_R1_broken | 18237617 | +22.3(12.5) | 5.7% (random) |
+- All arms: K 12, 12/12 A=A controls, A_series bit-identical. B_R1 - B_M1 = +0.47(1.14). Only 1.02% of neighbour states are gated.
+- Per run dir runs/j1j2/sign_bad/branched/step23/*/result.json, re-read by me; the worker's table agrees.
+- Mechanism count (point 3): T-NODE +8.0(4.1), G(-5) +6.4(3.5), and now B_R1/B_M1. All three put the exact one-step sign on decade-gated rows (decade(x) = floor((2 ln|psi(x)| - MREF)/ln 10) <= -5) over sgn(M1) or s306, and all three give no gain.
+- Diagnosis [derived]: the gain is sum over flipped rows of (fixed - broken) e*-mass (D1 law, 6x6 ratio 0.83).
+  - R1's flips are not random: the broken arm with the same count loses 2.2e-5. So on gated rows, fixed mass ~ broken mass, and sgn(M1) carries little error energy there.
+  - 18b's -2.57e-5 in the same gate came from CF's own errors, which do sit in low decades. sgn(M1)'s errors evidently do not.
+  - The 6x6 success (cycle5_r1, N_3 0.368 = exact) was ungated.
+  - [conj, 65%] The deciding term is the gate's location, not R1's quality: sgn(M1)'s error energy lives at decades above -5.
+- Next (rung 2, existing data, no FN):
+  - 6x6, decade split: s2's wrong e*-mass, and R1's fixed and broken e*-mass, per decade of psi0^2 relative to its psi0^2-weighted median, i.e. the 8x8 MREF convention.
+  - Prediction: >= 80% of R1's net gain sits at decades > -5. If instead >= 50% sits at <= -5, the conjecture dies and the 8x8 failure is R1's amplitude quality (amp-lead side).

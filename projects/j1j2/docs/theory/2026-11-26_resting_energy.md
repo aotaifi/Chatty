@@ -189,3 +189,12 @@ the sign-keeping one (VA > SK), an O(1) comparison. On the stored amplitude: pre
 Prediction (registered before the run): fixed sign = s2 flipped by R1 on the stored amplitude, three rounds:
 N_3 in 0.42-0.55e-6 (50%). Kill: N_3 >= 0.90e-6. Margin: <= 0.665e-6. Not measured: whether regating every round
 helps, and 8x8 (STEP 23 carries R1 there).
+
+## When a sign flip provably lowers E_FN (2026-11-27 14:50, paper step, not yet checked numerically)
+
+Amp lead's point: R1 lowers E_var[S'a], not the ten Haaf E_FN. Sandwich: E_FN[S,a] <= E_var[Sa], equality at the
+amplitude fixed point (a = FN ground state of its own H_FN, since <a|H_FN|a> = <a|H|a>). With slack
+g = E_var[Sa] - E_FN[S,a] >= 0: E_FN[S',a] <= E_FN[S,a] + g + Delta E_var. A flip set is certified iff
+-Delta E_var > g; at g = 0, single-row R1 (B > 0) is the provable rule. Direction only, not size: on a collapsed
+row Delta E_var ~ a_x^2 B -> 0. Our three-round arms have g > 0 and sit outside the guarantee.
+Prediction for the check on existing tables: arms with -Delta E_var > g end below B; Gchi has Delta E_var > 0.

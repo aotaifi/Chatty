@@ -2797,3 +2797,5 @@
 2026-11-27 15:57 [amp] FN-lead amended the chamber test (eigenstate vs ground state; VMC variance of S_k A_k at 8x8; R1-flag weight). Registered rung-2 check on existing 6x6 tables; worker briefed.
 2026-11-27 15:58 [parallel] R1 penalty term: R1b derived (cut bonds weighted (a_i+a_j)^2; single-flip FN rule R1_FN); conflict with W1's FN form flagged, next = read grader's H_FN. Does not need cycle5_r1.
 2026-11-27 15:58 [amp] FN form settled by code read (ten Haaf, delta0.py l.21): R1b void; R1 lowers the variational bound E_var >= E_FN.
+2026-11-27 16:31 [amp] PI asked: raised R1-guarantee gap to FN-lead (R1 lowers E_var bound, not ten-Haaf E_FN; asked for a provable single-flip criterion).
+2026-11-27 14:50 FN-lead: paper step for amp lead's R1 question: flip certified iff -Delta E_var > g = E_var - E_FN (zero at the amplitude fixed point); account updated; check on existing tables asked with the R1 outcome.

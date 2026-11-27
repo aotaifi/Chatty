@@ -2700,3 +2700,7 @@ Branches (FN-lead): (a) held miss falls with n and w_gen < 1.23e-6 at some n -> 
 Prediction (mine, before data): held count flip miss falls below 0.35 by n = 100k, 55%; q_held > 0.3 at all-but-held, 35%. FN-lead: (b) 60%.
 Job 18232344 (array 0-5%3, cip a40-16gb, 40k steps, gate PASS: oracle w = w(T), F_hat=0 w = w(s2), inverted q_held -22); run /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/flipcurve, code runs/j1j2/consol_6x6/flipcurve.
  Held flip p-mass eff n 1.7 orbits: q_held, w_gen noisy; read count miss and AUC.
+TWO-SWAP TIMING RESULT (2026-11-27, job 18230995, runs/j1j2/sign_bad/sigma_audit/twoswap_timing/timing.json; gate rel err 1.1e-9, broken 2.1e3): t2/t1 = 57-71 per walker state
+ (bs 32-128, A40 slice, 'old' path; 20.9k pairs per walker). Registered bar t2/t1 <= 5.5 -> ungated ratio-input sign copy CLOSED (>= 10x over the bar; 'pack'/'dedup' paths untimed but
+ cannot recover 10x: t2 ~ 145 one-swap evaluations by construction). Gated ratio-input is what cfgate already does exactly (exact label at gated neighbours), so it adds nothing.
+ Remaining sigma levers: gate frontier (18c (2,-6)), cheaper per-gated-neighbour cost (0.91 per n_g), and STEP 22 (whether a configuration-only copy learns flips with more rows).

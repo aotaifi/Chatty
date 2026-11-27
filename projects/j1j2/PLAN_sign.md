@@ -2708,3 +2708,19 @@ TWO-SWAP TIMING RESULT (2026-11-27, job 18230995, runs/j1j2/sign_bad/sigma_audit
 ## STEP 23 (2026-11-27, FN-lead step back): gate with sgn(M1) fallback, exact one-step sign on gated rows from the adapted amplitude, FN-graded vs sgn(M1). Paper check: STORAGE_PROBLEM
  'GATE WITH sgn(M1) FALLBACK'. Records: T-NODE +8.0(4.1)e-6 and G(-5) +6.4(3.5)e-6 both took the step from |M1| with amplitude-decade gates; the adapted-amplitude step is untried.
  Arms (branched pairs, A = sgn(M1) guide, |M1| amplitude, 18b grader, gate (2,-5) rows): B_R1, B_M1, B_R1-broken. Pass B_R1 <= -1.0e-5; kill B_R1 >= 0 within error. Worker staging.
+
+### STEP 21 RESULT (2026-11-27, sign lead): PASS
+The XL-CNN copies of T[s2,χ_6] were trained from scratch on T labels (S2a recipe, 80k steps) and graded exactly on all 15,804,956 orbits.
+Jobs 18231692 and 18231693, about 3.8 A40-h.
+
+| arm | w | w_T | missed p | false p | md5 |
+|---|---|---|---|---|---|
+| seed0 | 6.61e-7 | 5.99e-7 | 1.07e-7 | 4.93e-7 | 361f2943… |
+| seed1 | 7.00e-7 | 6.63e-7 | 1.06e-7 | 5.57e-7 | 226a0b1c… |
+| avg2 (logit average) | 5.74e-7 | 5.11e-7 | 8.8e-8 | 4.23e-7 | 1a4e9433… |
+
+- The target was w < 1.23e-6, so this passes at about 2.1x below s2. My prediction was 0.8-1.1e-6 for the average, so the result is better than predicted.
+- I re-graded avg2 myself with grade.py (T md5 c1187fc6…).
+- The table was delivered to the amp lead and w to FN_lead.
+- Most of the copy error is false flips, on rows where T and s2 agree.
+- Files: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/signcopy/{seed0,seed1,avg2}.npy, runs/j1j2/consol_6x6/signcopy/result.json.

@@ -2784,3 +2784,9 @@
 2026-11-27 14:05 [amp] R1 arms (fixed, regated per round) briefed to a worker, run dir runs/j1j2/consol_6x6/cycle5_r1; sign lead sent f_J spread + R1 overlap (gate route closed).
 2026-11-27 14:05 sign lead: STEP 25 closed (cycle3_gate 75d0899d verified): f_J gate noise-limited on stored loop (chi_6 right-row std 0.0158 vs c 0.0088), dominated by R1 (P/R 0.991/0.927); 8x8 rule = R1 = STEP 23 B_R1, running.
 2026-11-27 14:06 [parallel] alpha* under a fixed sign: Hellmann-Feynman slope W1 written (STORAGE_PROBLEM 'WHY ALPHA DIES ... STEP 1'); does not need cycle5_r1.
+2026-11-27 14:06 [amp] sign lead closed STEP 25 (no c-variant; R1 = 8x8 rule via STEP 23 B_R1); owes: send it cycle5_r1 N_3 when it lands.
+2026-11-27 14:09 [wait] R1 loop verdict needs cycle5_r1 worker's jobs (launched earlier today): N_3 of arms R1/R1r decides pass (<=0.665) or kill (>=0.90).
+2026-11-27 14:14 amplitude-lead worker (cycle5_r1): smoke job 18244246 submitted (/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke.sbatch, fake solver); watcher armed.
+2026-11-27 14:30 VERDICT job 18237617: COMPLETED, Gate passed (K_done 12, 12/12 `control A=A passed=True`, BRANCHED_DONE present). Delta(B_R1_broken − A) = +2.234e-05 per site, err_scatter 1.246e-05 (about 1.8 sigma), sd_pair 4.32e-05. [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/step23/B_R1_broken/ANALYSIS.md]
+2026-11-27 14:34 sign lead: STEP 23 B_R1_broken verified (result.json): Delta +2.23(1.25)e-5/site, 12/12 A=A controls, flips on gated nb 6.04% (= p 0.0601, matched to R1's 6.0%); pair 8 outlier 1.56e-4. Control ready; B_R1 must sit below it.
+2026-11-27 14:49 [amp] caveat added: G6 (0.534) leaks the exact sign through A_6's walls; only stored-input arms count.

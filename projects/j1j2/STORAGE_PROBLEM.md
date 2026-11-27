@@ -1882,6 +1882,9 @@ GATE SIGN IN THE CYCLE, RESULT (amplitude lead 2026-11-27; runs/j1j2/consol_6x6/
     arm    w      P/R (psi0^2)   N_0     N_1     N_2     N_3     alpha_3
     G6   0.263   0.893/0.893   1.274   0.901   0.673   0.534   -0.035    margin MET, band 0.45-0.65 hit (exact-chain input: f_J of A_6)
     Gchi 2.198   0.347/0.894   2.281   2.009   1.851   1.736    0        KILL fired (>= 0.90): f_J gate from the stored amplitude closed
+  CAVEAT on G6 (amplitude lead, same day): G6's f_J is taken on A_6 of the exact chain, which was built under the moving exact sign T, so
+  its wall shape already carries T's information; G6 passing is an upper reference, not evidence that a gate on a stored amplitude can pass.
+  Only stored-input arms (Gchi, R1, R1r) count for the objective.
   Diagnosis of the kill: the cut c = 0.0088 was set on the exact chain's f_J, whose right-row spread is 0.0038 (unweighted std); chi_6's round has
   0.0158, so the cut sits inside the stored amplitude's own copy noise and flips 1.43M rows (precision 0.35).
   Same stored round, rule R1 (flip iff VA > SK): 359,588 flips, P/R 0.991/0.927 (psi0^2), so remaining wrong weight ~0.10 [derived from P/R, to be

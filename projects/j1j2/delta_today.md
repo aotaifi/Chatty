@@ -2835,3 +2835,4 @@
 2026-11-27 20:10 FN-lead: cycle5_r1 arm R1r verified (37915cb4): N_3 0.359e-6 (fixed R1 0.368), wrong weight 9.98e-8 -> 2.95e-8 over the rounds; prediction held. Account updated.
 2026-11-27 20:04 amplitude-lead worker (cycle5_r1) RESULT: build 18244985, R1 18244986, R1r 18244987 DONE. N_3 R1 0.368e-6, R1r 0.359e-6 (both margin met, kill not fired, alpha_3 -0.0416/-0.0433). cycle5_r1/result.json md5 df8e0ab442060fbeb8df29251f87ec6e. Report sent to lead; nothing else launched.
 2026-11-27 20:04 [amp-lead] R1r 18244987: N_3 0.359e-6 (R1 0.368), wrong weight falls 9.98->2.95e-8 over rounds. Arm Cr registered (branch of C after fit0).
+2026-11-27 20:05 [parallel] while arm C runs: paper step 'DOES THE COPY LOSS MEASURED UNDER s2 TRANSFER TO S_R1?' (L depends on sign only via violated bonds; transfers; open term = norm mismatch at lower targets).

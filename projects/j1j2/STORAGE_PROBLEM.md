@@ -1892,6 +1892,17 @@ GATE SIGN IN THE CYCLE, RESULT (amplitude lead 2026-11-27; runs/j1j2/consol_6x6/
   noise that killed Gchi does not enter it.
   N_3 against w over all fixed-sign arms from chi_6: T 0.116 -> 0.373, G6 0.263 -> 0.534, S 0.574 -> 0.901, s2 1.227 -> 0.958, Gchi 2.198 -> 1.736.
 
+DOES THE COPY LOSS MEASURED UNDER s2 TRANSFER TO S_R1? (amplitude lead 2026-11-27, paper, while arm C runs)
+  [exact, ten Haaf] At fixed sign S the guide amplitude enters E_FN only through V_sf(x) = sum_{y: S_x H_xy S_y > 0} |H_xy| a_y/a_x (violated bonds of S).
+  [approx, 2nd order in d, l.1202] chi = T e^d: L = N(chi) - N(T) ~ sum_{viol(S)} |H_xy| phi_x phi_y 4 sinh^2((d_x - d_y)/2) / sum phi^2 (phi the FN state).
+  So L depends on the sign only through which bonds are violated. S_R1 differs from s2 on 359,588 of ~1.4e7 orbit rows (2.6%), so the violated set changes only on
+  bonds touching those rows; on the rest L is the s2 value. [cond: d not concentrated on the flipped rows] -> the s2-measured L 0.076-0.091 transfers to arm C
+  up to the share of sum |H| phi phi (Dd)^2 carried by bonds touching flipped rows (not computed; the flipped rows carry psi0^2 weight 1.15e-6 of 1).
+  What does not transfer: L at lower targets. Records show L grows at fixed fit MSE (cheap net 0.21 -> 0.43) because the MSE norm (n T^2) and the cost norm
+  (|H| phi_x phi_y on violated bonds) weight rows differently; the ratio of the two norms on the fit's residual is the term arm C measures through L_1, L_2.
+  Consequence for the prediction: unchanged (0.52-0.66); a miss with L_k rising round by round would point at the norm mismatch, the fix being a loss weighted
+  by the violated-bond cost instead of n T^2.
+
 RIGHT CHAMBER OR STUCK?, RESULT, AND THE SANDWICH CHECK (amplitude lead 2026-11-27; job 18244623; runs/j1j2/consol_6x6/chamber_check/result.json md5 aa840e7e, round 0 re-read)
   Prediction FAILED (50%): over rounds 0 -> 3 variance and flag weight fall in every arm, so neither separates the near-right signs (A, G6) from the fixed wrong ones.
   var3/var0, flag3/flag0: A 2.71, 0.128 | G6 0.225, 0.052 | B 0.339, 0.015 | S 0.235, 0.013 | Gchi 0.193, 0.006. (Predicted A, G6 var <= 0.5; B, S, Gchi var >= 0.7.)

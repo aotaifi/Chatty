@@ -219,3 +219,16 @@ excluded without a continuity argument.
 Timing: the certified gain of flipping a wrong row is 4 a_x^2 B(x) and a_x decays every round, so waiting loses
 gain; flip as soon as the flag is reliable, every round. Prediction: the arm regated every round ends at or below
 the fixed-R1 arm (65%).
+
+## R1 gate in the loop: RESULT (2026-11-27 19:00)
+
+Source: `runs/j1j2/consol_6x6/cycle5_r1/armR1/result_arm.json` md5 55732b2f (job 18244986), read by me. Sign = s2
+flipped once by R1 computed from the stored amplitude table (359,588 rows flipped, wrong weight 9.98e-8); no sign
+network, no exact-chain input; amplitude rounds exact.
+N rounds 0-3 (1e-6/site): 0.946 / 0.594 / 0.448 / 0.368. Exact sign step (arm A): 0.951 / 0.603 / 0.452 / 0.373.
+B (no sign step): 0.958 at round 3. Margin 0.665 met; my band 0.42-0.55 missed on the good side (amp lead's
+0.38-0.52 also).
+Sandwich check at round 0 [derived from the same file]: Delta E_var = 1.664 - 1.995 = -0.331; slack g of s2 =
+1.995 - 1.761 = 0.234; -Delta E_var > g, so the flip was certified, and E_FN(alpha=0) fell 1.761 -> 1.419.
+Not covered: the gate was evaluated on all rows by enumeration (at 8x8 it is evaluated on walker rows and costs
+neighbour evaluations); amplitude rounds were exact, not stored; regated arm still running.

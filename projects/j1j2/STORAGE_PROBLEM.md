@@ -1936,6 +1936,17 @@ Prior results: the Kairon-Clark picture (arXiv:2609.16308, abstract only): the F
   gain with exact amplitudes, but with log-ratio noise sigma 0.3 11/12 trials got worse (needs ~2-7% log-ratio precision). Conditions
   differ (20 sites, synthetic noise); on chi_6 R1's measured precision is 0.991, so the copy is inside A27's working range on the
   rows R1 reads. A27 is the closest record and predicts the risk: R1r, which re-reads each round's noisier copy, is the arm it bears on.
+Penalty term, STEP 2 (same day, while cycle5_r1 runs) [cond: the account's identity <H_FN>[S a] = <H>[S a] + sum_viol |H_ij|(a_i - a_j)^2, per
+  sum a^2, holds for the FN form the grader uses]: a bond cut by F switches violated <-> kept. Per bond, the <H> change (-+4|H| a_i a_j) and the
+  penalty change (-+|H|(a_i - a_j)^2) add to -+|H|(a_i + a_j)^2. Hence, exactly under that identity,
+    Delta <H_FN> * sum a^2 = - sum_{cut bonds} s_b |H_b| (a_i + a_j)^2,   s_b = +1 if the bond was violated, -1 if it was kept        (R1b)
+  Single flip of x: <H_FN> falls iff sum_{viol} |H_xy|(a_x + a_y)^2 > sum_{kept} |H_xy|(a_x + a_y)^2  (call it R1_FN; the D2 weight).
+  R1 compares sum |H_xy| a_x a_y instead. They agree where a_y ~ a_x and differ where x sits on a steep wall: with a_x << a_y both weight
+  by a_y but R1_FN by a_y^2, so R1_FN leans harder on the large neighbours. Bound on the disagreement: not derived.
+  CONFLICT TO SETTLE: W1 (alpha slope) assumed the ten Haaf form with guide ratios |H| a_j/a_i on the diagonal; under that form, with state =
+  guide, <H_FN> = <H> exactly and the (a_i - a_j)^2 identity does not hold. The identity holds for the ratio-free sign-flip term |H_xy|, or for
+  ten Haaf with state != guide. Which form round_map.py / the FN grader uses decides whether R1 or R1_FN is the right single-flip rule.
+  Next: read the grader's H_FN construction (code read, no run).
 Known case + broken version: NOT DONE (a 4x4 exact check: R1 from a wrong sign, Delta E_var from (R1a) vs direct, and the same with B's
   sign reversed; CPU minutes).
 Status: NOT DONE: known case, penalty bound.

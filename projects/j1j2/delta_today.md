@@ -2795,3 +2795,4 @@
 2026-11-27 15:20 amplitude-lead worker (cycle5_r1): smoke job 18244246 build part finished (build.log DONE) but the script hung afterwards with no output for 40 min; scancel'd by this worker (own job). smoke2 job 18244553 (arms only, fake solver) submitted (/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle5_r1/smoke2.sbatch); watcher armed.
 2026-11-27 15:56 [amp] chamber test written (variance of full H -> 0 only in the right chamber; exact sign is an R1 fixed point). Sent pointer to FN-lead.
 2026-11-27 15:57 [amp] FN-lead amended the chamber test (eigenstate vs ground state; VMC variance of S_k A_k at 8x8; R1-flag weight). Registered rung-2 check on existing 6x6 tables; worker briefed.
+2026-11-27 15:58 [parallel] R1 penalty term: R1b derived (cut bonds weighted (a_i+a_j)^2; single-flip FN rule R1_FN); conflict with W1's FN form flagged, next = read grader's H_FN. Does not need cycle5_r1.

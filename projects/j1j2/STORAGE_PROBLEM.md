@@ -1949,6 +1949,15 @@ Penalty term, STEP 2 (same day, while cycle5_r1 runs) [cond: the account's ident
   SETTLED by code read (ansatz/code/delta0.py efn_vec l.21: Dg = D0 + (Vm @ a)/a): the grader is ten Haaf with guide ratios. So W1's form
   is right and R1b is VOID for our grade (it needs the ratio-free form). What holds instead [exact]: E_FN[S', a] <= <H_FN[S',a]>_{S'a} =
   E_var[S' a] = E_var[S a] + Delta E_var (R1a). R1 lowers the variational upper bound on the new FN energy, not E_FN itself.
+FN-lead's SANDWICH (11-27, message; checked by me, each step [exact] for ten Haaf with guide S a): E_FN[S,a] <= <a|H_FN|a> = E_var[S a];
+  slack g = E_var[S a] - E_FN[S,a] >= 0 (= 0 at the amplitude fixed point a = phi). For a flip set F:
+    E_FN[S',a] <= E_var[S'a] = E_FN[S,a] + g + Delta E_var   =>   E_FN falls provably if  -Delta E_var > g                 (SW)
+  At the fixed point (g = 0) single-row R1 is exactly the provable rule. Off it, flips are certified only if their E_var drop beats g.
+  Consequences (FN-lead): loop "relax to f_J ~ 0, flip a set with Delta E_var < 0" is monotone in E_FN; the bound fixes direction, not
+  size (a fully collapsed row has a_x^2 B -> 0, gain comes in later rounds), so flip after partial collapse. Candidate reading of Gchi:
+  its flips had Delta E_var > 0, so nothing protected it.
+  CHECK (rung 2, existing data, registered): round-0 Delta E_var (vs s2, on chi_6) and g for arms A, B, S, G6, Gchi from the chamber-check
+  E_var values. Prediction (FN-lead, I agree 70%): Gchi has Delta E_var > 0; every arm with -Delta E_var > g ended below B at round 3.
 Known case + broken version: NOT DONE (a 4x4 exact check: R1 from a wrong sign, Delta E_var from (R1a) vs direct, and the same with B's
   sign reversed; CPU minutes).
 Status: NOT DONE: known case, penalty bound.

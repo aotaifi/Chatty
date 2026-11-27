@@ -2799,3 +2799,4 @@
 2026-11-27 15:58 [amp] FN form settled by code read (ten Haaf, delta0.py l.21): R1b void; R1 lowers the variational bound E_var >= E_FN.
 2026-11-27 16:31 [amp] PI asked: raised R1-guarantee gap to FN-lead (R1 lowers E_var bound, not ten-Haaf E_FN; asked for a provable single-flip criterion).
 2026-11-27 14:50 FN-lead: paper step for amp lead's R1 question: flip certified iff -Delta E_var > g = E_var - E_FN (zero at the amplitude fixed point); account updated; check on existing tables asked with the R1 outcome.
+2026-11-27 16:33 [amp] FN-lead's sandwich (E_FN[S',a] <= E_FN[S,a] + g + dE_var) checked and written; round-0 check folded into the chamber-check worker; R1 worker asked to log E_var per round.

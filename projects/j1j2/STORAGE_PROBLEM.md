@@ -2237,3 +2237,13 @@ Status: DONE.
    The lever is not zero: random flips at the same count move E_var by ~4e-6, and the FN arm by ~2e-5.
   Reading: the 8x8 R1 label was read off an amplitude that does not carry the round; R^2 0.25 against ~1 is the failing term.
    Inside the loop, the stored amplitude must reach R^2 against (l, f_J) near the exact round's before R1 on it can gain. Arm C at 6x6 measures this on a copy. (b) is pending (selfcons_b).
+
+RESULT (b), SELF-CONSISTENCY (sign lead, 2026-11-28). (b) DOES NOT HOLD.
+Iterating R1 on fixed A_0 converges in 10 steps to S* (flips 417426 -> 0, ~4x per step, no oscillation); w(S*) 1.011e-6 against 0.934e-6 after one step and T 0.116e-6.
+One exact round at S* (efn E' -18.136882, res 9.3e-7), then R1(A_1*): share of the attainable gain 0.548 (<=-5 decades: 0.546), P/R vs T 0.992/0.534, w 1.011e-6 -> 0.536e-6. Kill line was share < 0.30.
+For comparison, from s2 the same round gives a share of 0.764. Self-consistency costs about 0.22 of share, but R1 still keeps most of the round's gain once an exact round sits under it.
+Known cases: round at s2 reproduces stored lA_1 to 4.1e-10 (broken E'+1e-3: 1.1e-4, fails); R1(stored A_1) on s2 = rounds_split k=1 exactly (346546 flips, net -3.940488e-5). Broken version (R1 with A_0 on S*): 0 flips.
+Path: runs/j1j2/consol_6x6/selfcons_b/result.json (md5 a24514ee), job 18264587; attempt 1 (18255344, TIMEOUT) in attempt1/.
+VERDICT (a)/(b)/(c) at 8x8: (a) holds, (c) holds as registered, (b) does not. The failing term is the amplitude copy:
+the refit 8x8 amplitude carries the round with R^2 0.25 (exact 6x6 round ~0.997). R1 is not the problem; the amplitude it reads is.
+Consequence for the loop: the R1 evaluation inside the 8x8 loop can gain only as far as the stored amplitude carries each round; arm C's N_1 measures exactly that at 6x6.

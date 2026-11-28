@@ -2297,3 +2297,30 @@ COPY CAPACITY OR STEPS?, REGISTERED (amplitude lead 2026-11-28, before the run)
   Between: report both L_0 and their curves.
   Prediction (mine, 50%): W128 L_0 0.13-0.19; S240 0.17-0.21. Cost: 2 x ~1 h on a full A40 + 2 grades.
   Status: paper check DONE (deciding term from the result above, known case = fit0 reproduced by its own settings); data check DONE (c6_where re-read).
+
+COPY CAPACITY OR STEPS?, RESULT (amplitude lead 2026-11-28; jobs 18270434-36; runs/j1j2/consol_6x6/c6_cap/result.json md5 a8030866, re-read)
+  KILL fired: neither width nor steps is the term. Both arms have L_0 >= 0.20. My prediction (W128 0.13-0.19) MISSED.
+  L_0 (1e-6/site) and final train MSE:
+    fit0 (width 64, 80k steps): L_0 0.226, MSE 2.60e-6.
+    W128 (width 128, 80k steps): L_0 0.224, MSE 2.61e-6.
+    S240 (width 64, 240k steps): L_0 0.229, MSE 2.17e-6.
+  W128 under s2: L_s2 0.181. Known case chi_1 rel 0.
+  The fact that redirects: S240 cuts the MSE by 17% while L_0 does not move (+0.003). So the copy loss is not set by the size of the fitted residual.
+  Diagnosis [equation]: the l.1897 estimate is 2nd order in d because it assumes the guide sits at the FN optimum, where E_FN is stationary.
+    T_1 is not at that optimum: N(T_1) = 0.594, while the fixed point is N* = 0.271. So E_FN has a FIRST-order term:
+      N(T + d) - N(T) = sum_x g_x d_x + O(d^2),   g = dN/d(log guide) at T.
+    An MSE fit leaves a residual whose projection on g is not minimised. If its bias lies along g, it costs L linearly, whatever the width or steps.
+    x1's target (round 6, near the s2 fixed point, g small) would explain s2's 0.08. A flat L over rounds 1-3 also fits: all three rounds sit far from N*.
+
+FIRST OR SECOND ORDER?, REGISTERED (amplitude lead 2026-11-28, before the run; grades of existing tables)
+  Tables T_1 + lam (chi_1 - T_1 - c), c = 1.0142e-5 as in c6_where. Grade them for lam = 0.5, -0.5, -1 under S_R1.
+  Fit N(lam) - N(T_1) = a lam + b lam^2 through the 5 points (lam = 0 and 1 are already known: 0.5943, 0.8202).
+  Pure 2nd order: N(0.5) and N(-0.5) both sit +L/4 above T_1. Pure 1st order: they sit at +L/2 and -L/2.
+  Decision:
+    a/L >= 0.5 (1st order dominates): the copy loss is the MSE fit's bias along the FN gradient.
+      Next: a copy loss aware of the FN gradient, or a one-parameter correction along d. Write that on paper before any run.
+    a/L <= 0.2 (2nd order): the L-norm residual is not the MSE residual. Next: the violated-bond-weighted loss (l.1904).
+    Between: report a, b.
+  Known case: lam = 0 and 1 reproduce 0.5943 and 0.8202. Broken: the quadratic through 0, 0.5 and 1 must predict lam = -1 within 5% of L, or the form is wrong.
+  Prediction (mine, 55%): a/L >= 0.5, with N(-0.5) below N(T_1). Cost: 3 grades, ~40 min, cip 72G.
+  Status: paper check DONE (derivation above); data check DONE (c6_cap re-read).

@@ -2886,3 +2886,4 @@
 2026-11-28 step-back j1j2 amplitude copy (third null): continue one rung (input-reach + one refit), stop rule 75% of round 1's gain; else recommend closing stored-loop-at-depth for the 8x8 goal. PLAN.md block written.
 2026-11-28 12:22 VERDICT job 18274515: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_reach/ANALYSIS.md]
 2026-11-28 12:24 [amp-lead] c6_reach: + c2_0 R2 0.48-0.53 (base ~0), + chi_0 ~0; the shuffle gate missed in the harmless direction (-0.03), accepted with reason. Registered C2 AS A 13TH INPUT.
+2026-11-28 FN-lead: input-reach outcome noted (amp lead's record c6_reach/nnw.json 90b10ca5): c2 (f_J under S_R1) makes ~half of the copy error predictable, chi_0 adds nothing; refit with c2 as 13th input is the stop-rule test (pass L_0 <= 0.12).

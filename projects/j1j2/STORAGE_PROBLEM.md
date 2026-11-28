@@ -2361,3 +2361,29 @@ WHICH INPUT DOES THE S_R1 COPY MISS?, REGISTERED (amplitude lead 2026-11-28, bef
     Both < 0.1: the residual is spread over many hops; report.
   Prediction (mine, 50%): c2_0 dominant, +0.3 to +0.5. Cost ~1-2 h CPU.
   Status: paper check DONE (derivation above + the 11-23 records); data check DONE (c6_lam, c6_where re-read).
+
+WHICH INPUT DOES THE S_R1 COPY MISS?, RESULT (amplitude lead 2026-11-28; job 18274515; runs/j1j2/consol_6x6/c6_reach/nnw.json, re-read)
+  R2_w(d | columns), sample / S, k16 and k64:
+    base (fit0's 12 inputs): -0.01/-0.02 and 0.04/0.03.
+    + c2_0: 0.48/0.52 and 0.48/0.53.
+    + chi_0: 0.01/-0.02 and 0.06/0.03.
+    + c2_0 + chi_0: 0.49/0.53 and 0.49/0.53.
+    Known case, + d: 0.93/0.95 and 0.91/0.93.
+  Gate: the broken version (+ shuffled c2_0) MISSED its 0.03 tolerance: it fell BELOW base by 0.025-0.039 in all four cells.
+    I accept the run, as on 11-23 (NNw, 0.004 over).
+    The gate exists to catch a spurious GAIN, and the shuffled column produced a LOSS: a noise column blurs kNN.
+    The c2_0 gain (+0.49) is 13x that offset.
+  Verdict: c2_0 (= 1.307 f_J under S_R1, the part of the round where the flip acts) makes half of the copy error predictable; chi_0 adds nothing (no nesting loss).
+    My prediction (c2 dominant, +0.3-0.5, 50%): HIT at the top of the band.
+    S here is the old NNg top-|g| set (no g for this round), used only to pick rows; sample and S agree.
+
+C2 AS A 13TH INPUT, REGISTERED (amplitude lead 2026-11-28, before the run)
+  Refit of round 0 as fit0 (width 64, 80k steps, cosine, same 12 inputs), plus column 13 = c2_0 = T_1 - chi_0 - c1_0, graded under S_R1 (start N).
+  nn_fit_jax.py takes one extra column only. The copy nn_fit_jax_x3.py adds NN_EXTRA3 and changes nothing else.
+    Known case: with NN_EXTRA3 unset, step 1 equals fit0's chkS (1.05356e-1 / 8.04127e-2). GRADCHECK must pass with the 13th column.
+  Prior: 11-23, c1 as an input raised R2 to 0.60 and q_6 from 0.46 to 0.81, which is about 65% of the copy cost removed.
+  Pass: L_0 <= 0.12. Next: arm C with c2 as an input through 3 rounds (stage saves c2_k).
+  Kill: L_0 >= 0.20. The R2 gain then does not reach the grade; diagnose.
+  Prediction (mine, 50%): L_0 0.09-0.15.
+  Cost: one A40 fit (~20 min) + 1 grade. At 8x8, c2 costs z^2 chi_k evaluations per amplitude (delta_today [parallel] note).
+  Status: paper check DONE (result above; cost note); data check DONE (c6_reach re-read).

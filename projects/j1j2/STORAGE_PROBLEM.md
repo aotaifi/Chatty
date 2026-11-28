@@ -2387,3 +2387,18 @@ C2 AS A 13TH INPUT, REGISTERED (amplitude lead 2026-11-28, before the run)
   Prediction (mine, 50%): L_0 0.09-0.15.
   Cost: one A40 fit (~20 min) + 1 grade. At 8x8, c2 costs z^2 chi_k evaluations per amplitude (delta_today [parallel] note).
   Status: paper check DONE (result above; cost note); data check DONE (c6_reach re-read).
+
+C2 AS A 13TH INPUT, RESULT (amplitude lead 2026-11-28; jobs 18275658 (fit), 18275659 (grade); runs/j1j2/consol_6x6/c6_c2/result.json md5 68ae28c1, re-read)
+  L_0 = 0.094e-6/site (N 0.6886 vs T_1 0.5943): PASS (<= 0.12). fit0 lost 0.226, so 58% of the copy loss is removed. Prediction 0.09-0.15 (50%): HIT.
+  Fit MSE val 1.28e-6 vs fit0's 2.71e-6. Known case chi_1 rel 0. NN_EXTRA3-unset step 1 = fit0 chkS. GRADCHECK 5.6e-7. One seed.
+  Table: /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/c6_c2/C2/fit/tables/t_R.npy, md5 2c500225. c2_0 md5 ae43125f. Script nn_fit_jax_x3.py 40c445a.
+
+ARM C2 (THE STORED LOOP WITH c2 AS AN INPUT), REGISTERED (amplitude lead 2026-11-28, before the run)
+  The same chain as arm C (cycle6f_store: fixed S_R1, exact round_map on the stored chi_k, shadow step mapP_k, network copy, exact grade).
+  Each fit also takes c2_k = T_{k+1} - chi_k - c1_k = 1.307 f_J of the round on the stored chi_k (NN_EXTRA3, nn_fit_jax_x3.py).
+  Round 0 is the C2 refit above (chi_1 = 2c500225). The chain runs stage1, fit1, stage2, fit2, stage3.
+  Model (c 0.548, N* 0.271, measured L_0 0.094 held constant): N_1 0.688, N_2 0.594, N_3 0.542.
+  Pass: N_3 <= 0.665. Kill: >= 0.90. Between: report L_k per round.
+  Prediction (mine): N_3 0.50-0.62 (60%); 80% inside the margin. Risk: L rising as the target falls (the c2 share of d may change per round).
+  Cost: 2 fits (~35 min each, full A40) + 3 stages (~1 h each). About 4 h serial.
+  Status: paper check DONE (model, measured L_0); data check DONE (c6_c2 re-read).

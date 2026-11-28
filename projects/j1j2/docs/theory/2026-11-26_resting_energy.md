@@ -275,3 +275,10 @@ Hypothesis (55%), registered before the splice test: flipped rows and their one-
 of L, because the round must regrow rows that collapsed under s2 (large positive f_J on low-weight rows). Remedy if
 so: compute the regrowth on flagged rows by one local power step, psi_x = -(sum_y H_xy psi_y)/(H_xx - E), instead
 of learning it. Kill: loss diffuse (flipped rows < 50% of L).
+
+## Where the copy loses: my hypothesis refuted (2026-11-28; amp lead's record c6_where/result.json 38a54ec1, not re-read)
+
+Flipped rows plus one-exchange neighbours carry 43% of L_0 (bar >= 50%), flipped rows alone 0.4%; graded under s2
+the same copy loses 0.187, so the sign does not drive the loss. The regrowth is real (log miss 0.31) but carries
+negligible weight; the local power step would recover < 1% of L and is dropped. Failing term: fit error everywhere,
+4.3x the earlier fit at equal steps. Next (amp lead): round-0 refit at width 128 and at 3x steps; pass L_0 <= 0.12.

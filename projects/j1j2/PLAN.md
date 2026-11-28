@@ -824,6 +824,6 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
 ## Cockpit
-- STATUS (in progress, high): At 6x6 a no-network sign rule (flip where disagreeing neighbours outweigh agreeing ones), fed by the stored amplitude, matches the exact sign step: error 0.37e-6 per site after three exact amplitude rounds, against 0.96e-6 without a sign step.
-- NEXT (in progress, high): The same rule at 8x8 against the baseline sign is running; it decides whether the goal's number moves.
-- NEXT (open, medium): Repeat the 6x6 loop with stored (network) amplitude rounds instead of exact ones.
+- STATUS (in progress, high): The sign is solved at 6x6 without a sign network (a neighbour rule matches the exact sign step), but with the amplitude copied into a network each round the loop keeps only about a third of each round's gain (error 0.77e-6 per site after three rounds, target 0.665e-6); at 8x8 the same copy problem gave no gain over the baseline.
+- NEXT (in progress, high): Find where the amplitude copy loses (rows whose sign was just flipped, or everywhere), then one refit.
+- NEXT (open, medium): The 8x8 loop waits for a copy that keeps at least 75% of a round at 6x6.

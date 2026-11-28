@@ -261,3 +261,17 @@ own amplitude (VMC removes single flips with B > 0), while 6x6 started from s2, 
 set has -Delta E_var << g, so no test could see it. Decision: sign folded into the stored loop (R1 on each round's
 stored amplitude), sign-copy route closed on the sign lead's evidence (STEP 22, 24, CF, tfield); 8x8 loop spend
 waits for 6x6 arm C's first round.
+
+## 6x6 loop with nothing exact inside: RESULT (2026-11-28 05:00)
+
+Source: `runs/j1j2/consol_6x6/cycle6f_store/result.json` md5 f5d44545, read by me. Fixed R1 sign, amplitude copied
+into the network each round. N rounds 0-3 (1e-6/site): 0.946 / 0.820 / 0.801 / 0.774; exact round from each stored
+start: 0.594 / 0.546 / 0.539. Copy loss per round L = 0.226 / 0.256 / 0.235, flat. Between pass (0.665) and kill
+(0.90); my band 0.50-0.70 missed. The same copy under s2 lost 0.08 (amp lead's record).
+8x8 (sign lead's records, not re-read): the refit amplitude reproduces the round on gated rows with R^2 0.25
+(exact 6x6 round ~1); my hypothesis (b) refuted (R1-consistent start still keeps 0.55 of the gain).
+Reading: the sign rule is settled at 6x6; the failing term at both sizes is the amplitude copy.
+Hypothesis (55%), registered before the splice test: flipped rows and their one-exchange neighbours carry >= 50%
+of L, because the round must regrow rows that collapsed under s2 (large positive f_J on low-weight rows). Remedy if
+so: compute the regrowth on flagged rows by one local power step, psi_x = -(sum_y H_xy psi_y)/(H_xx - E), instead
+of learning it. Kill: loss diffuse (flipped rows < 50% of L).

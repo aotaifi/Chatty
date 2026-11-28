@@ -2273,3 +2273,27 @@ WHERE DOES ARM C's COPY LOSE?, REGISTERED (amplitude lead 2026-11-28, before the
     The reason, on paper: six s2 rounds collapsed these rows. After the flip, the round regrows them: a large positive f_J on rows of low weight, which the Born-weighted fit barely sees.
     The run adds splice G3b (R = flipped plus one-exchange neighbours).
     The remedy if it holds, alongside "flip as input": on R1-flagged rows, compute the guide by one local power step, psi_x = -(sum_{y!=x} H_xy psi_y)/(H_xx - E), instead of learning it. Check it against TRIED_IDEAS B18 (net + one hop kept 82%) before staging.
+
+WHERE DOES ARM C's COPY LOSE?, RESULT (amplitude lead 2026-11-28; job 18267822; runs/j1j2/consol_6x6/c6_where/result.json md5 38a54ec1, re-read)
+  The loss is spread across the table, reading (ii); my prediction HIT. FN-lead's flipped+ring >= 50% MISSED (43%).
+  L_0 shares (exact grades, 1e-7/site):
+    G3, flipped rows: 0.4%. G4 top 1% of |d|: 0.2%. G4 top 10%: 2.7%.
+    G3b, flipped + one-exchange ring (69% of rows, weight 0.169): 43%. Per unit of weight that is 2.6x the rest, but the ring is not local.
+  Known case: chi_1 and T_1 under S_R1 rel 0. Broken version: the unshifted splice differs by only 1e-13 (unusable); a +0.05 shift moves N by 5.6e-10.
+  Under s2 the same copy loses L_s2 = 0.187 (N 1.115 vs 0.928), so the sign does not drive it.
+    s2's 0.076-0.091 came from another copy (x1); x1's own target was deleted 11-26 and cannot be regraded.
+  Residuals: flipped rows miss by rms 0.31 in log, but carry weight 4e-7 and a negligible share of L.
+  Learning curves at equal steps (val): fit0 lags x1 from step 5k. At 20k: 6.9 vs 3.1e-6; at 80k: 2.7 vs 0.61e-6. Both fall 10-12% over the last 20k steps.
+  Deciding term: the fit residual everywhere (MSE 4.3x x1's).
+    Candidates: width, steps, inputs (the z column rebuilt by the NNc/NNd7 recipe, which x1's original inputs cannot be checked against), and the target itself.
+
+COPY CAPACITY OR STEPS?, REGISTERED (amplitude lead 2026-11-28, before the run)
+  Two refits of round 0, each on fit0's exact inputs (map0, mapP0, c1_0), graded by the round_map start N under S_R1:
+    W128: NN_WIDTH=128, 80k steps.
+    S240: width 64, NN_NSTEP=240000.
+  Prior: B31 (10-23, PP/RBM refit tax) found capacity and time did not cut the tax. Its class and objective differ, so it does not bind this MLP.
+  Pass: L_0 <= 0.12 in either arm. By the model that gives N_3 ~ 0.59 if it holds every round; the next step is that arm's settings through 3 rounds.
+  Kill: both arms L_0 >= 0.20. Then width and steps are not the term; the next step is the inputs (z-column rebuild vs the NNx recipe) or the target.
+  Between: report both L_0 and their curves.
+  Prediction (mine, 50%): W128 L_0 0.13-0.19; S240 0.17-0.21. Cost: 2 x ~1 h on a full A40 + 2 grades.
+  Status: paper check DONE (deciding term from the result above, known case = fit0 reproduced by its own settings); data check DONE (c6_where re-read).

@@ -2330,3 +2330,34 @@ FIRST OR SECOND ORDER?, REGISTERED (amplitude lead 2026-11-28, before the run; g
     FN-lead's prediction (40%): some gamma in [1.5, 3] gives N(gamma) <= N(chi_1) - 0.11. Kill: no gamma improves N by more than 0.03.
     Predictor computed before the grades: cos(d, s) and beta = <d,s>/<s,s>, weighted by n e^{2T_1} and by psi0^2. Shrinkage shows as a clearly negative value.
     Mine: I agree on the direction. 35% that it reaches >= 0.11, because the splice showed d is diffuse, while the step is concentrated where the round acts.
+
+FIRST OR SECOND ORDER?, RESULT (amplitude lead 2026-11-28; jobs 18272931 (lam), 18272966 (gamma); runs/j1j2/consol_6x6/c6_lam/result.json md5 122082f3, result_gamma.json md5 206fe951, re-read)
+  N(lam) - N(T_1), 1e-6/site:
+    lam -1: +0.068;  lam -0.5: +0.031;  lam 0: 0;  lam 0.5: +0.110;  lam 1: +0.226.
+  Exact 4-term solve: odd part 0.079 lam (cubic term ~0); even part 0.326 lam^2 - 0.180 lam^4.
+  The linear share is a/L = 0.35: BETWEEN. N(-0.5) lies ABOVE T_1, so my prediction (55%) MISSED.
+  The quadratic through 0, 0.5 and 1 misses lam = -1 by 1.19 L: the expansion fails beyond |lam| ~ 0.5 (even part saturates).
+  Reading: T_1 sits near the minimum of N along d. Reversing the error gains nothing, and the copy's error is not mainly a downhill bias.
+  Gamma (stored step over-relaxed, FN-lead's line): N 0.820 (gamma 1) / 0.772 (1.5) / 0.817 (2) / 1.742 (3).
+    Best gain 0.048: BETWEEN FN-lead's kill (0.03) and pass (0.11).
+    Predictor: cos(d, s) = -0.31 and beta = -0.27, weighted n e^{2T_1}. The copy keeps 73% of the step, and 90% of d's variance is orthogonal to it.
+    psi0^2 weighting is not computed: no psi0 table on the graders' path.
+  RECORDS LAPSE (mine): I registered the order test without running recall. The 11-23 records already held a line test and its sequel, under s2:
+    - 'LINE TEST', f2 copy: first order, f(-0.5) < 0.
+    - 'PRE-CORRECTED REFIT': the copy repeats its error (cos 0.87). The error is a REACH limit of the inputs; target shifting is closed.
+    - 'WHERE THE UNREACHABLE PART LIVES': adding the round's step c1 as an input made d 60% predictable (R2), and that gave x1 (q_6 0.81).
+  So today's capacity kill is that reach limit again. The lever is the inputs, not the loss or the target.
+
+WHICH INPUT DOES THE S_R1 COPY MISS?, REGISTERED (amplitude lead 2026-11-28, before the run; existing tables, no training; NNw method)
+  Derivation: T_1 = chi_0 + c1_0 + c2_0 exactly, with c2_0 = 1.307 f_J under S_R1 (= r of c6_where). fit0 sees z (10 columns), the shadow step (mapP0 l_part) and c1_0.
+    Under s2, f_J was minor (NNw: R2 +0.15). After a sign change the f_J part of the round is where the flip acts, so it is the candidate the inputs cannot see.
+    The other candidate: chi_0 itself (x1 = F(z, c1 of round 6)). Its round-6 input is not among fit0's inputs.
+  Measurement: R2_w(d | columns), d = chi_1 - T_1, w-weighted kNN on rank-transformed columns, k 16/64, as ref2hop/NNw/nnw.py. Column sets:
+    base = fit0's 12 inputs; base + c2_0; base + chi_0; base + c2_0 + chi_0.
+    Known case: base + d gives R2 >= 0.9. Broken: base + shuffled c2_0 stays within 0.03 of base.
+  Decision:
+    +c2_0 raises R2 by >= 0.3: next is one refit with c2_0 as a 13th input. That costs the same as c1, since f_J needs only chi_k at the neighbours.
+    +chi_0 raises R2 by >= 0.3 and c2 does not: the loss is nesting (round k's table depends on round k-1's step). Then a paper question for FN-lead (flat-cost design).
+    Both < 0.1: the residual is spread over many hops; report.
+  Prediction (mine, 50%): c2_0 dominant, +0.3 to +0.5. Cost ~1-2 h CPU.
+  Status: paper check DONE (derivation above + the 11-23 records); data check DONE (c6_lam, c6_where re-read).

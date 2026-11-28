@@ -2247,3 +2247,25 @@ Path: runs/j1j2/consol_6x6/selfcons_b/result.json (md5 a24514ee), job 18264587; 
 VERDICT (a)/(b)/(c) at 8x8: (a) holds, (c) holds as registered, (b) does not. The failing term is the amplitude copy:
 the refit 8x8 amplitude carries the round with R^2 0.25 (exact 6x6 round ~0.997). R1 is not the problem; the amplitude it reads is.
 Consequence for the loop: the R1 evaluation inside the 8x8 loop can gain only as far as the stored amplitude carries each round; arm C's N_1 measures exactly that at 6x6.
+
+ARM C (THE LOOP WITH NOTHING EXACT INSIDE), RESULT (amplitude lead 2026-11-28; runs/j1j2/consol_6x6/cycle6f_store/result.json md5 f5d44545, re-read; jobs 18260460-65)
+  N_3 = 0.774e-6 [exact grade, deterministic]: BETWEEN (pass <= 0.665, kill >= 0.90). Mine 0.52-0.66 (60%) and FN-lead 0.50-0.70 (45%): both MISSED.
+  Per round (1e-6/site): N(chi_k) 0.946 / 0.820 / 0.801 / 0.774; N(T_{k+1}) 0.594 / 0.546 / 0.539; L_k 0.226 / 0.256 / 0.235 (flat, not rising).
+  Flags on lG(chi_k) under S_R1: 75,936 / 93,611 / 87,477 / 130,878 rows, weight 1.5 / 1.0 / 2.1 / 1.1e-8. E_var - E0: 1.66 / 1.96 / 1.82 / 1.91.
+  The model with the measured L reproduces the chain (N_1 = M(0.946) + 0.226 = 0.820 exactly; N(T_2) 0.546 vs M(0.820) 0.572): the miss is L alone.
+  Deciding term: L 0.24, 3x the s2-measured 0.076-0.091 that the prediction carried. Fit MSE (same net, loss, steps) 2.6e-6 vs x1's 6.1e-7 (4.3x).
+  Flat L says no representation floor across these targets (0.59 -> 0.54); the step from s2 to S_R1 itself costs the copy.
+  Same verdict as the sign lead's 8x8 (a) (selfcons_b, md5 a24514ee): the amplitude copy is the failing term, not R1.
+
+WHERE DOES ARM C's COPY LOSE?, REGISTERED (amplitude lead 2026-11-28, before the run; rung 2, existing tables, grades only)
+  Derivation [approx, l.1897]: L ~ sum_{viol(S)} |H_xy| phi_x phi_y 4 sinh^2((d_x - d_y)/2) / sum phi^2, d = chi_1 - T_1. Two readings:
+  (i) sign-local: d is large on or next to the S_R1-flipped rows (the round's step is largest there; the net has no input that knows the flip);
+  (ii) diffuse: the S_R1 target is harder everywhere for width 64 (fit MSE 4.3x over the whole table).
+  Measurement [exact, grader = round_map start N]: splice tables, constant aligned (weighted mean of d removed): T_1 on rows R, chi_1 elsewhere.
+    G2: N(chi_1), N(T_1) under s2 -> L_s2.  G3: R = S_R1-flipped rows (359,588).  G4: R = top 1% and top 10% rows by |d| (by count).
+    Plus: rms of the round's step r = T_1 - chi_0 - c1_0 (weighted n e^{2T}) split flipped / not, vs the same on x1's round (if its target is on disk).
+  Known case: R = none -> 0.8202, R = all -> 0.5943 (result.json). Broken: splice without aligning the constant must change N.
+  Decision: (i) if G3 recovers >= 50% of L_0 -> next is one refit with the flip in the copy (input feature or bond-cost loss weight), ~20 min A40;
+    (ii) if G3 < 20% and G4(10%) < 50% -> next is a width-128 refit of round 0; between: report the shares.
+  Prediction (mine, 55%): (ii) diffuse; L_s2 0.15-0.25. Cost: ~8 grades, ~20 GB each, cip A40 node as the stages, ~3 h.
+  Status: paper check DONE (derivation l.1897, known case + broken above); data check DONE (result.json re-read, x1 nn.json loss 6.1e-7).

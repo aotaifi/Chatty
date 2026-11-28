@@ -2269,3 +2269,7 @@ WHERE DOES ARM C's COPY LOSE?, REGISTERED (amplitude lead 2026-11-28, before the
     (ii) if G3 < 20% and G4(10%) < 50% -> next is a width-128 refit of round 0; between: report the shares.
   Prediction (mine, 55%): (ii) diffuse; L_s2 0.15-0.25. Cost: ~8 grades, ~20 GB each, cip A40 node as the stages, ~3 h.
   Status: paper check DONE (derivation l.1897, known case + broken above); data check DONE (result.json re-read, x1 nn.json loss 6.1e-7).
+  Addendum (same day, before the run): FN-lead registers against mine: flipped rows + their one-exchange neighbours carry >= 50% of L_0 (55%).
+    The reason, on paper: six s2 rounds collapsed these rows. After the flip, the round regrows them: a large positive f_J on rows of low weight, which the Born-weighted fit barely sees.
+    The run adds splice G3b (R = flipped plus one-exchange neighbours).
+    The remedy if it holds, alongside "flip as input": on R1-flagged rows, compute the guide by one local power step, psi_x = -(sum_{y!=x} H_xy psi_y)/(H_xx - E), instead of learning it. Check it against TRIED_IDEAS B18 (net + one hop kept 82%) before staging.

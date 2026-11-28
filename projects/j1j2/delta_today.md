@@ -2853,3 +2853,8 @@
 2026-11-27 21:10 sign-lead worker: selfcons_b (6x6 hypothesis b) submitted job 18255344 on cip, run /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/selfcons_b
 2026-11-27 21:47 VERDICT job 18255770: COMPLETED, analysis FAILED (a command was refused, see ANALYSIS.md); run the gate by hand [/project/theorie/a/A.Otaifi/runs/j1j2/sign_bad/branched/step23/diag_ac/ANALYSIS.md]
 2026-11-27 21:50 sign lead: diag_ac verified (b56be84d): (a) holds, R^2 0.25 vs exact-round ~1; (c) holds, dE_var(R1) +0.53(0.46)e-6, S_M1 +0.04(0.14)e-6. (b) pending.
+2026-11-27 22:22 VERDICT job 18259930: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle6f_store/ANALYSIS.md]
+2026-11-27 23:04:00 [c6f] CHI1 /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/cycle6f_store/fit0/fit/tables/t_R.npy e40d974e2fe46db88e3f921b0f40ea0d FIT0 18260460
+2026-11-27 23:24:06 [c6f] N_1 = 8.201790e-07 (N(chi_1) under S_R1, round_map start N; chi_1 = /scratch/a/A.Otaifi/ansatz_runs/consol_6x6/cycle6f_store/fit0/fit/tables/t_R.npy md5 e40d974e2fe46db88e3f921b0f40ea0d; log /project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/cycle6f_store/logs/stage1.log, job 18260461)
+2026-11-28 03:10 VERDICT job 18255344: TIMEOUT [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/selfcons_b/ANALYSIS.md]
+2026-11-28 sign-lead: selfcons_b (b) job 18255344 TIMEOUT after 5/20 R1 iters (build 3000-5000 s on cip-cl-compute4 vs 141 s on compute1; memory stall); partial: flips 417426/86257/18098/4540/1223, w 0.934->1.011e-6, R1(A_1) share at s2 0.7645 reproduces rounds_split k=1; result.json md5 bcddd3ae (status RUNNING). Rerun with per-iter sign save delegated (attempt 2).

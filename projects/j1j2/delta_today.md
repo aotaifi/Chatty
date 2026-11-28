@@ -2872,3 +2872,4 @@
 2026-11-28 08:44 [amp-lead] c6_where: copy loss spread across the table (flipped 0.4%, top-10% 2.7%, flipped+ring 43%); L_s2 0.187 (sign not the driver). Registered COPY CAPACITY OR STEPS? (W128, S240).
 2026-11-28 FN-lead: splice outcome recorded: copy loss diffuse, my flipped-rows hypothesis (55%) refuted, local power step dropped; amp lead's capacity-or-steps refit is next.
 2026-11-28 08:44 [parallel] inputs check for the kill branch (fit logs): x1 Z range [-1.14e5,4.40e4], U [-15.56,7.59], c1 NNw/c1.npy; fit0 Z [-1.21e5,4.49e4], U [-17.48,7.87], c1 map0/l_part. Same scale, no gross input fault; fit0's target spans 2.2 more in log at the low end. [wait] c6_cap launchers need the worker's staging.
+2026-11-28 08:46 [amp-lead] c6_cap launchers read (W128, S240, grade afterok), OK given. [wait] L_0 per arm needs c6_cap fits + grade (~2.5 h).

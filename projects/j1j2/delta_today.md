@@ -2891,3 +2891,4 @@
 2026-11-28 13:43 VERDICT job 18275659: COMPLETED, DONE. `VERDICT_C6C2G DONE` with L_0 = 9.4336e-08 (0.0943 in 1e-6 per site); N(C2) = 6.8862e-07 minus 5.9428352e-07. This is at or below the Pass line of 0.12. [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_c2/ANALYSIS.md]
 2026-11-28 13:50 FN-lead: c6_c2 verified (68ae28c1): L_0 0.094 with c2 input, kept share of round 1 73% (was 36%); route stays open, three-round chain with c2 decides against N_3 <= 0.665.
 2026-11-28 13:46 [amp-lead] c6_c2 PASS: L_0 0.094 (fit0 0.226), c6_c2/result.json md5 68ae28c1. Registered ARM C2 (3-round stored loop with c2 input); predicted N_3 0.50-0.62.
+2026-11-28 13:58 FN-lead prediction for arm C2 (stored loop, c2 input each round), registered before the result: N_3 0.55-0.68e-6, 55% inside the 0.665 margin (amp lead: 0.50-0.62, 80%); my risk: L rising in later rounds as in fit0 (0.226 -> 0.256).

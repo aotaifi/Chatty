@@ -2324,3 +2324,9 @@ FIRST OR SECOND ORDER?, REGISTERED (amplitude lead 2026-11-28, before the run; g
   Known case: lam = 0 and 1 reproduce 0.5943 and 0.8202. Broken: the quadratic through 0, 0.5 and 1 must predict lam = -1 within 5% of L, or the form is wrong.
   Prediction (mine, 55%): a/L >= 0.5, with N(-0.5) below N(T_1). Cost: 3 grades, ~40 min, cip 72G.
   Status: paper check DONE (derivation above); data check DONE (c6_cap re-read).
+  Addendum (FN-lead, same day, before the run): a line that uses only stored objects, which therefore exists at 8x8. ln chi(gamma) = ln chi_0 + gamma (ln chi_1 - ln chi_0), with gamma = 1.5, 2, 3.
+    If the linear term dominates and the copy shrinks the step, then d is antiparallel to the step s = T_1 - chi_0, and over-relaxing reverses the shrinkage for free.
+    gammascan/result.json (762926d4) has gamma 2-4 speeding early exact rounds, so the two effects would add.
+    FN-lead's prediction (40%): some gamma in [1.5, 3] gives N(gamma) <= N(chi_1) - 0.11. Kill: no gamma improves N by more than 0.03.
+    Predictor computed before the grades: cos(d, s) and beta = <d,s>/<s,s>, weighted by n e^{2T_1} and by psi0^2. Shrinkage shows as a clearly negative value.
+    Mine: I agree on the direction. 35% that it reaches >= 0.11, because the splice showed d is diffuse, while the step is concentrated where the round acts.

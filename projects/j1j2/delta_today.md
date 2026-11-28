@@ -2878,3 +2878,4 @@
 2026-11-28 10:39 VERDICT job 18270436: COMPLETED, VERDICT_C6CG DONE and VERDICT_C6C DONE for W128 and S240. In units of 1e-6 per site, L_0 = 0.224 for W128 and 0.229 for S240, so both arms are at or above 0.20. [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_cap/ANALYSIS.md]
 2026-11-28 10:42 [amp-lead] c6_cap KILL: W128 L_0 0.224, S240 0.229 (MSE -17%, L unchanged) vs fit0 0.226 -> not capacity/steps. Diagnosis: T_1 off the FN optimum -> 1st-order term g.d. Registered FIRST OR SECOND ORDER? (lam scan, 3 grades).
 2026-11-28 FN-lead: copy refit kill recorded (width/steps not the cause); registered over-relaxation-of-the-stored-step prediction (40%) alongside amp lead's first-vs-second-order test.
+2026-11-28 10:43 [amp-lead] FN-lead added gamma over-relaxation of the stored step (gamma 1.5/2/3) + cos(d, step); added to c6_lam worker.

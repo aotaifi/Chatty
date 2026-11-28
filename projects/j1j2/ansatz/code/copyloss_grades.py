@@ -63,8 +63,9 @@ try:
     for nm in ('G3', 'G3b', 'G4_1pct', 'G4_10pct'):
         np.save(f'{SPL}/{nm}.npy', np.where(R[nm], T1 + c, chi1)); tabs[nm] = f'{SPL}/{nm}.npy'
     np.save(f'{SPL}/G3_broken.npy', np.where(fl, T1, chi1)); tabs['G3_broken'] = f'{SPL}/G3_broken.npy'
+    np.save(f'{SPL}/G3_shift.npy', np.where(fl, T1 + c + 0.05, chi1)); tabs['G3_shift'] = f'{SPL}/G3_shift.npy'
     del R, ad, w, r, d, dc, ring, nbr, G3b, L; gc.collect()
-    order = [('SR1', 'chi1', IN['chi1'][0]), ('SR1', 'T1', IN['T1'][0])] + [('SR1', nm, tabs[nm]) for nm in ('G3', 'G3b', 'G4_1pct', 'G4_10pct', 'G3_broken')] + [('s2', 'chi1', IN['chi1'][0]), ('s2', 'T1', IN['T1'][0])]
+    order = [('SR1', 'chi1', IN['chi1'][0]), ('SR1', 'T1', IN['T1'][0])] + [('SR1', nm, tabs[nm]) for nm in ('G3', 'G3b', 'G4_1pct', 'G4_10pct', 'G3_broken', 'G3_shift')] + [('s2', 'chi1', IN['chi1'][0]), ('s2', 'T1', IN['T1'][0])]
     src = open(RMAP).read(); head = src.split("ak, d, cache = search(lA0, 'start')")[0]; assert head != src; cur = None; G = None
     for sign, name, path in order:
         if sign != cur:
@@ -82,7 +83,8 @@ try:
             if rel > 1e-6: stop(f'KNOWN CASE FAILED {name} N {rec["N"]:.7e} vs {ref:.4e} rel {rel:.2e}', 2)
     g = {k: v['N'] for k, v in res['grades'].items()}; a, b = g['SR1/chi1'], g['SR1/T1']
     res['L_0_SR1'] = a - b; res['L_s2'] = g['s2/chi1'] - g['s2/T1']
-    res['L0_share'] = {nm: (a - g[f'SR1/{nm}']) / (a - b) for nm in ('G3', 'G3b', 'G4_1pct', 'G4_10pct', 'G3_broken')}
+    res['L0_share'] = {nm: (a - g[f'SR1/{nm}']) / (a - b) for nm in ('G3', 'G3b', 'G4_1pct', 'G4_10pct', 'G3_broken', 'G3_shift')}
+    res['broken_diff_vs_G3'] = dict(G3_broken=g['SR1/G3_broken'] - g['SR1/G3'], G3_shift=g['SR1/G3_shift'] - g['SR1/G3'])
     res['status'] = 'DONE'; dump(); log('VERDICT_C6W DONE ' + json.dumps(res['L0_share']))
 except SystemExit: raise
 except Exception:

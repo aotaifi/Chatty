@@ -2892,3 +2892,4 @@
 2026-11-28 13:50 FN-lead: c6_c2 verified (68ae28c1): L_0 0.094 with c2 input, kept share of round 1 73% (was 36%); route stays open, three-round chain with c2 decides against N_3 <= 0.665.
 2026-11-28 13:46 [amp-lead] c6_c2 PASS: L_0 0.094 (fit0 0.226), c6_c2/result.json md5 68ae28c1. Registered ARM C2 (3-round stored loop with c2 input); predicted N_3 0.50-0.62.
 2026-11-28 13:58 FN-lead prediction for arm C2 (stored loop, c2 input each round), registered before the result: N_3 0.55-0.68e-6, 55% inside the 0.665 margin (amp lead: 0.50-0.62, 80%); my risk: L rising in later rounds as in fit0 (0.226 -> 0.256).
+2026-11-28 13:49 [amp-lead] arm C2 chain submitted by worker (stage1 18281006 ... stage3 18281010); launcher diff read: only script x3 (sha 3aa2f12a), c2_k computation with known case vs c2_0, EXTRA3; chi_1 md5 2c500225 confirmed. [wait] N_3(C2) needs stage3 18281010 (~4 h).

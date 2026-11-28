@@ -2887,3 +2887,6 @@
 2026-11-28 12:22 VERDICT job 18274515: FAILED [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_reach/ANALYSIS.md]
 2026-11-28 12:24 [amp-lead] c6_reach: + c2_0 R2 0.48-0.53 (base ~0), + chi_0 ~0; the shuffle gate missed in the harmless direction (-0.03), accepted with reason. Registered C2 AS A 13TH INPUT.
 2026-11-28 FN-lead: input-reach outcome noted (amp lead's record c6_reach/nnw.json 90b10ca5): c2 (f_J under S_R1) makes ~half of the copy error predictable, chi_0 adds nothing; refit with c2 as 13th input is the stop-rule test (pass L_0 <= 0.12).
+2026-11-28 13:17 VERDICT job 18275658: COMPLETED, NOT DONE. The fit gate passed (`VERDICT_C6C2 DONE C2 2026-11-28 13:15:43`). The grade job 18275659 has no `result.json` and no `VERDICT_C6C2G` line, so L_0 was never computed. [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_c2/ANALYSIS.md]
+2026-11-28 13:43 VERDICT job 18275659: COMPLETED, DONE. `VERDICT_C6C2G DONE` with L_0 = 9.4336e-08 (0.0943 in 1e-6 per site); N(C2) = 6.8862e-07 minus 5.9428352e-07. This is at or below the Pass line of 0.12. [/project/theorie/a/A.Otaifi/runs/j1j2/consol_6x6/c6_c2/ANALYSIS.md]
+2026-11-28 13:50 FN-lead: c6_c2 verified (68ae28c1): L_0 0.094 with c2 input, kept share of round 1 73% (was 36%); route stays open, three-round chain with c2 decides against N_3 <= 0.665.

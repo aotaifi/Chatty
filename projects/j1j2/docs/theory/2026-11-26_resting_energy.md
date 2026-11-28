@@ -298,3 +298,12 @@ stored step: N 0.820 / 0.772 / 0.817 / 1.742 at gamma 1 / 1.5 / 2 / 3; best gain
 kill 0.03 not fired. The copy keeps 73% of the step and 90% of its error is orthogonal to the step.
 Step back (PLAN.md): the stored chain is at its resting point, exact gain per round ~ copy loss per round
 (0.26 vs 0.24 at round 3). Only a smaller loss per round moves it. One more rung (input reach), then a stop rule.
+
+## Copy with c2 as a 13th input: stop-rule test (2026-11-28 13:50)
+
+Source: `runs/j1j2/consol_6x6/c6_c2/result.json` md5 68ae28c1 (job 18275659), read by me. Round 1 under S_R1:
+N(copy with c2) = 0.689e-6, exact T_1 0.594, old copy 0.820, start 0.946. L_0 = 0.094 (was 0.226; amp lead's pass
+<= 0.12 met). Kept share of round 1's exact gain = (0.946 - 0.689)/(0.946 - 0.594) = 73% [derived] (was 36%).
+My stop rule was 75%: missed by two points on one round, one fit seed. Judgment: the route stays open; the stop
+rule is applied to the three-round chain, where the bar is N_3 <= 0.665. Open: c2 costs z^2 evaluations per
+amplitude at 8x8 unless the inner hop is replaced by a stand-in network (untested).

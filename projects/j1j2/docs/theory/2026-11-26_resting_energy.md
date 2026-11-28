@@ -282,3 +282,11 @@ Flipped rows plus one-exchange neighbours carry 43% of L_0 (bar >= 50%), flipped
 the same copy loses 0.187, so the sign does not drive the loss. The regrowth is real (log miss 0.31) but carries
 negligible weight; the local power step would recover < 1% of L and is dropped. Failing term: fit error everywhere,
 4.3x the earlier fit at equal steps. Next (amp lead): round-0 refit at width 128 and at 3x steps; pass L_0 <= 0.12.
+
+## Copy: neither width nor steps (2026-11-28; amp lead's record c6_cap/result.json a8030866, not re-read)
+
+L_0 = 0.224 (width 128), 0.229 (3x steps), 0.226 (original); fit error falls 17% with 3x steps while L does not
+move. Amp lead's reading: T_1 is not at the FN optimum, so N has a first-order term g.d in the copy error d; their
+test splits L into linear and quadratic parts along d. My addition, registered: if d is a shrinkage of the step,
+over-relaxing the stored step, ln chi_0 + gamma (ln chi_1^fit - ln chi_0), gamma in [1.5, 3], recovers >= half of
+L_0 (40%); kill: no gamma improves N by more than 0.03e-6. Uses only stored objects, so it transfers to 8x8.

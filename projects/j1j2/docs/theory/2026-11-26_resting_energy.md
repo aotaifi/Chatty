@@ -290,3 +290,11 @@ move. Amp lead's reading: T_1 is not at the FN optimum, so N has a first-order t
 test splits L into linear and quadratic parts along d. My addition, registered: if d is a shrinkage of the step,
 over-relaxing the stored step, ln chi_0 + gamma (ln chi_1^fit - ln chi_0), gamma in [1.5, 3], recovers >= half of
 L_0 (40%); kill: no gamma improves N by more than 0.03e-6. Uses only stored objects, so it transfers to 8x8.
+
+## Lambda and gamma scans: both between bars; step back (2026-11-28; amp lead's records c6_lam 122082f3, 206fe951, not re-read)
+
+Along d the target sits near the minimum (linear share 35%), so there is no bias to reverse. Over-relaxing the
+stored step: N 0.820 / 0.772 / 0.817 / 1.742 at gamma 1 / 1.5 / 2 / 3; best gain 0.048, my pass line 0.11 missed,
+kill 0.03 not fired. The copy keeps 73% of the step and 90% of its error is orthogonal to the step.
+Step back (PLAN.md): the stored chain is at its resting point, exact gain per round ~ copy loss per round
+(0.26 vs 0.24 at round 3). Only a smaller loss per round moves it. One more rung (input reach), then a stop rule.

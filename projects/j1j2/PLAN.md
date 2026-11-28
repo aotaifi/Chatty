@@ -823,6 +823,12 @@ Paderborn re-opened by the PI for the LP test (2026-10-26, 'use wisely'): lead's
 
 - Write-up angle (PI 2026-11-13): `PLAN_writeup.md`, session local_71c014c5; progress deck on both lines first, then the paper; numbers signed off by direct session message (board archived 11-17).
 
+## Step back 2026-11-28 (FN-lead; third null on the amplitude copy: width, steps, lambda/gamma lines)
+1. Verdict: continue one more rung (the input-reach test and one refit with the new input), with a stop rule: if that refit keeps < 75% of round 1's exact gain at 6x6, I recommend the PI close "stored loop at depth" as the route to the 8x8 goal.
+2. Thought that changed it: the stored chain already sits at its resting point. From each stored start the exact round gains 0.35 / 0.27 / 0.26e-6 and the copy loses 0.23 / 0.26 / 0.24e-6 (cycle6f_store/result.json f5d44545), so more rounds cannot help; only a smaller loss per round can. Same form as approximate value iteration: floor = where the gain of a step equals the fit loss.
+3. Cheapest next test: amp lead's input-reach test on today's d (1-2 h, existing fits), then one refit (cost of c1).
+Passed over: more width or steps (c6_cap a8030866, null), over-relaxing the stored step (c6_lam result_gamma 206fe951, gain 0.048 < 0.11), local power step on flipped rows (c6_where 38a54ec1, < 1% of L).
+
 ## Cockpit
 - STATUS (in progress, high): The sign is solved at 6x6 without a sign network (a neighbour rule matches the exact sign step), but with the amplitude copied into a network each round the loop keeps only about a third of each round's gain (error 0.77e-6 per site after three rounds, target 0.665e-6); at 8x8 the same copy problem gave no gain over the baseline.
 - NEXT (in progress, high): Find where the amplitude copy loses (rows whose sign was just flipped, or everywhere), then one refit.
